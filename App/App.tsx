@@ -8,6 +8,7 @@ export default function App() {
       <LogoHello /> 
       <StatusBar style="auto" /> 
     </View>
+  
   );
 }
 
