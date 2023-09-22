@@ -1,6 +1,8 @@
 import React from "react";
 import { Text } from "react-native";
 import styled from "styled-components/native";
+import LottieView from 'lottie-react-native';
+import thunk from 'red'
 
 const LogoImage = styled.Image`
   padding: 150px;
