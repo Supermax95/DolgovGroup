@@ -1,6 +1,9 @@
 const router = require('express').Router();
 
 module.exports = router.get('/', (req, res) => {
-  res.json('Lalala');
- // res.send('Работает');
+  const data = {
+    message: 'Привет от сервера!',
+    someOtherData: 'Дополнительные данные',
+  };
+  res.json(data);
 });

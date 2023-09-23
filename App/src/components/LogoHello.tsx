@@ -1,8 +1,6 @@
-import React from "react";
-import { Text } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Image, Text, View } from "react-native";
 import styled from "styled-components/native";
-import LottieView from 'lottie-react-native';
-import thunk from 'red'
 
 const LogoImage = styled.Image`
   padding: 150px;
@@ -13,11 +11,29 @@ const LogoImage = styled.Image`
 const PostView = styled.View`
   flex: 1;
   alignItems: center;
-  justifyContent: center; 
+  justifyContent: center;
 `;
 
-
 const LogoHello = () => {
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/");
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const jsonData = await response.json();
+        setData(jsonData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <PostView>
       <Text>Добро пожаловать</Text>
@@ -26,6 +42,8 @@ const LogoHello = () => {
           uri: "https://poisk-firm.ru/storage/employer/logo/70/ba/a9/abb46e24b581abb40de2b12ed1.jpg",
         }}
       />
+      <Text>{data.message}</Text>
+      <Text>{data.someOtherData}</Text>
     </PostView>
   );
 };

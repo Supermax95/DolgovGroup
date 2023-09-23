@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
-import LogoHello from './components/LogoHello'; 
+import LogoHello from './src/components/LogoHello'; 
 
 export default function App() {
   return (
