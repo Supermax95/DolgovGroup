@@ -1,1 +1,6 @@
 1
+Не подключали 
+express-session session-file-store
+
+# sessions в gitignore записать
+
