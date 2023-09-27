@@ -12,8 +12,8 @@ const LogoImage = styled.Image`
 
 const PostView = styled.View`
   flex: 1;
-  align-items: center;
-  justify-content: center;
+  alignItems: center;
+  justifyContent: center;
 `;
 
 
