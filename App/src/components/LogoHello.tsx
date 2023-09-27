@@ -9,11 +9,13 @@ const LogoImage = styled.Image`
   width: 240px;
   resizeMode: contain;
 `;
-const $PostView = styled.View`
+
+const PostView = styled.View`
   flex: 1;
-  alignItems: center;
-  justifyContent: center;
+  align-items: center;
+  justify-content: center;
 `;
+
 
 const LogoHello = () => {
   const [data, setData] = useState({});
@@ -35,7 +37,7 @@ const LogoHello = () => {
   }, []);
 
   return (
-    <$PostView>
+    <PostView>
       <Text>Добро пожаловать</Text>
       <LogoImage
         source={{
