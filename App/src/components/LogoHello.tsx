@@ -3,7 +3,7 @@ import { Image, Text, View } from 'react-native';
 import styled from 'styled-components/native';
 import { PORT, IP } from '@env';
 
-const $LogoImage = styled.Image`
+const LogoImage = styled.Image`
   padding: 150px;
   height: 240px;
   width: 240px;
@@ -35,7 +35,7 @@ const LogoHello = () => {
   }, []);
 
   return (
-    <PostView>
+    <$PostView>
       <Text>Добро пожаловать</Text>
       <LogoImage
         source={{
