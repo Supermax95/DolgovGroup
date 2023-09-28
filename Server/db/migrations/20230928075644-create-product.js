@@ -17,6 +17,12 @@ module.exports = {
       promo_end_date: {
         type: Sequelize.STRING,
       },
+      price_start: {
+        type: Sequelize.INTEGER,
+      },
+      price_end: {
+        type: Sequelize.INTEGER,
+      },
       is_new: {
         type: Sequelize.BOOLEAN,
       },
@@ -25,6 +31,9 @@ module.exports = {
       },
       photo: {
         allowNull: true,
+        type: Sequelize.STRING,
+      },
+      category: {
         type: Sequelize.STRING,
       },
       createdAt: {
