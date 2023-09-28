@@ -22,6 +22,8 @@ const LogoHello = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        console.log(IP);
+        
         const response = await fetch(`http://${IP}:${PORT}`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
