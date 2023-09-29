@@ -1,20 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Button,
-  StyleSheet,
-  ActivityIndicator,
-  Image,
-  Text,
-} from 'react-native';
-// import styled from 'styled-components/native';
-
-// const PostView = styled.View`
-//   flex: 1;
-//   alignItems: center;
-//   justifyContent: center;
-//   background-color: white;
-// `;
+import { View, Button, Image, Text } from 'react-native';
 
 export const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -43,45 +28,24 @@ export const LoginPage = () => {
 
   if (isLoading) {
     return (
-      <View
-        style={{
-          flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: 'white',
-        }}
-      >
+      <View className="flex-1 items-center justify-center bg-white">
         <Image
           source={{
             uri: 'https://poisk-firm.ru/storage/employer/logo/70/ba/a9/abb46e24b581abb40de2b12ed1.jpg',
           }}
-          style={{ width: 200, height: 200, resizeMode: 'contain' }}
+          className="h-[200px] w-[200px]"
+          resizeMode="contain"
         />
       </View>
     );
   }
 
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'white',
-      }}
-    >
-      <View style={styles.container}>
+    <View className="flex-1 items-center justify-center bg-white">
+      <View className="flex-1 items-center justify-center">
         <Button title="Войти" onPress={handleLoginClick} />
         <Button title="Зарегистрироваться" onPress={handleRegisterClick} />
       </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
