@@ -9,7 +9,8 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "@react-navigation/native": "^6.1.7",
+    "@react-navigation/native": "^6.1.8",
+    "@react-navigation/stack": "^6.3.18",
     "@reduxjs/toolkit": "^1.9.5",
     "dayjs": "^1.11.10",
     "expo": "~49.0.11",
@@ -23,14 +24,15 @@
     "react-native-screens": "~3.22.0",
     "redux-thunk": "^2.4.2",
     "tailwind-rn": "^4.2.0",
-    "tailwindcss": "^3.3.3"
+    "tailwindcss": "^3.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@tsconfig/react-native": "^3.0.2",
     "@types/jest": "^29.5.5",
-    "@types/react": "^18.2.22",
-    "@types/react-test-renderer": "^18.0.2",
+    "@types/react": "^18.2.23",
+    "@types/react-test-renderer": "^18.0.3",
+    "babel-plugin-module-resolver": "^5.0.0",
     "typescript": "^5.2.2"
   },
   "private": true

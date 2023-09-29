@@ -1,19 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { Text, View } from 'react-native';
+import { StyleSheet, SafeAreaView } from 'react-native';
+import { AppNavigator } from './src/navigation/Navigation';
+import { NavigationContainer } from '@react-navigation/native';
 
 export default function App() {
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'white',
-      }}
-    >
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <SafeAreaView className="flex-1">
+        <AppNavigator />
+        <StatusBar style="auto" />
+      </SafeAreaView>
+    </NavigationContainer>
   );
 }
