@@ -63,7 +63,6 @@ export const LogoHello = () => {
       <Text>{data.message}</Text>
       <Text>{data.someOtherData}</Text>
       <Button
-        className="rounded-md"
         title="Перейти на LoginPage"
         onPress={() => navigation.navigate('LoginPage')}
       />
