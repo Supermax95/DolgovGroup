@@ -1,13 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Image,
-  Text,
-  View,
-  StyleSheet,
-  ActivityIndicator,
-  Button,
-} from 'react-native';
-import styled from 'styled-components/native';
+import { Image, Text, View, ActivityIndicator, Button } from 'react-native';
+// import styled from 'styled-components/native';
 import { PORT, IP } from '@env';
 import { useNavigation } from '@react-navigation/native';
 
@@ -58,20 +51,14 @@ export const LogoHello = () => {
   }
 
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'white',
-      }}
-    >
+    <View className="flex-1 items-center justify-center bg-white">
       <Text>Добро пожаловать</Text>
       <Image
         source={{
           uri: 'https://poisk-firm.ru/storage/employer/logo/70/ba/a9/abb46e24b581abb40de2b12ed1.jpg',
         }}
-        style={{ padding: 150, height: 240, width: 240, resizeMode: 'contain' }}
+        className="p-{150px} h-[240px] w-[240px]"
+        resizeMode="contain"
       />
       <Text>{data.message}</Text>
       <Text>{data.someOtherData}</Text>
