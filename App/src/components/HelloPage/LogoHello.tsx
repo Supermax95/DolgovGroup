@@ -1,26 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Image, Text, View, ActivityIndicator, Button } from 'react-native';
-// import styled from 'styled-components/native';
 import { PORT, IP } from '@env';
 import { useNavigation } from '@react-navigation/native';
 
-// const LogoImage = styled.Image`
-//   padding: 150px;
-//   height: 240px;
-//   width: 240px;
-//   resizeMode: contain;
-// `;
-
-// const PostView = styled.View`
-//   flex: 1;
-//   alignItems: center;
-//   justifyContent: center;
-//   background-color:white ;
-// `;
 
 export const LogoHello = () => {
   const [data, setData] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -34,21 +19,13 @@ export const LogoHello = () => {
         setData(jsonData);
       } catch (error) {
         console.error('Error fetching data:', error);
-      } finally {
-        setIsLoading(false);
       }
     };
 
     fetchData();
   }, []);
 
-  if (isLoading) {
-    return (
-      <View>
-        <ActivityIndicator />
-      </View>
-    );
-  }
+
 
   return (
     <View className="flex-1 items-center justify-center bg-white">

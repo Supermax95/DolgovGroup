@@ -1,6 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import { LogoHello } from '../components/Start/LogoHello';
-import { LoginPage } from '../components/Start/LoginPage';
+import { LogoHello } from '../components/HelloPage/LogoHello';
+import { LoginPage } from '../components/LoginPage/LoginPage';
 
 const Stack = createStackNavigator();
 
