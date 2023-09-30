@@ -17,7 +17,6 @@ export const LoginPage = () => {
     alert('Вы вошли в систему!');
   };
 
- 
   return (
     <>
       {isLoading ? (
@@ -27,6 +26,10 @@ export const LoginPage = () => {
           <View className="flex-1 items-center justify-center">
             <Button title="Войти" onPress={handleLoginClick} />
             <Button title="Зарегистрироваться" onPress={() => navigation.navigate('Registration')} />
+            <Button
+              title="Перейти на SignIn"
+              onPress={() => navigation.navigate('SignIn')}
+            />
           </View>
         </View>
       )}
