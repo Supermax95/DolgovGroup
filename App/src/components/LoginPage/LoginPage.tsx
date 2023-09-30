@@ -7,6 +7,7 @@
 //   const [isLoading, setIsLoading] = useState(true);
 //   const navigation = useNavigation();
 
+
 //   useEffect(() => {
 //     setTimeout(() => {
 //       setIsLoading(false);
@@ -31,3 +32,4 @@
 //     </>
 //   );
 // };
+

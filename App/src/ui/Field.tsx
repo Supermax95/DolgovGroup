@@ -1,4 +1,4 @@
-import { View, Text, TextInput } from 'react-native';
+import { TextInput, TextInputProps } from 'react-native';
 import React, { FC } from 'react';
 
 interface IField {
@@ -6,16 +6,26 @@ interface IField {
   value: string;
   placeholder: string;
   isSecure?: boolean;
+  autoCapitalize?: TextInputProps['autoCapitalize'];
+  keyboardType?: TextInputProps['keyboardType'];
 }
 
-const Field: FC<IField> = ({ onChange, value, placeholder, isSecure }) => {
+const Field: FC<IField> = ({
+  onChange,
+  value,
+  placeholder,
+  isSecure,
+  autoCapitalize,
+  keyboardType,
+}) => {
   return (
     <TextInput
       onChangeText={onChange}
       placeholder={placeholder}
       value={value}
       secureTextEntry={isSecure}
-      autoCapitalize="none"
+      autoCapitalize={autoCapitalize}
+      keyboardType={keyboardType}
       className="rounded-xl bg-gray-100 mt-3 p-3 w-full"
     />
   );
