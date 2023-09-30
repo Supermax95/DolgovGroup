@@ -27,7 +27,7 @@ export const AppNavigator = () => {
       <Stack.Screen
         name="SignIn"
         component={SignIn}
-        options={{ title: 'SignIn' }}
+        options={{ title: 'Вход' }}
       />
     </Stack.Navigator>
   );

@@ -1,135 +1,136 @@
-import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Text } from 'react-native';
+// import Calendar from './Calendar';
+import React, { FC, useState } from 'react';
+import { View, Button, Text, StyleSheet } from 'react-native';
+import Field from 'ui/Field';
+import Calendar from './Calendar';
 
-export const Registration = () => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [middleName, setMiddleName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+interface IData {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  middleName: string;
+  birthdate: string;
+}
+
+export const Registration: FC = () => {
+  const [data, setData] = useState<IData>({} as IData);
   const [passwordCheck, setPasswordCheck] = useState('');
-  const [birthdate, setBirthdate] = useState('');
-  const [passwordError, setPasswordError] = useState(''); 
+  const [passwordError, setPasswordError] = useState('');
   const [emailError, setEmailError] = useState('');
+  const [allFieldsFilled, setAllFieldsFilled] = useState(false);
 
-  const handleFirstNameChange = (text) => {
-    setFirstName(text);
-  };
-
-  const handleLastNameChange = (text) => {
-    setLastName(text);
-  };
-
-  const handleMiddleNameChange = (text) => {
-    setMiddleName(text);
-  };
-
-  const handleEmailChange = (text) => {
-    setEmail(text);
-    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    if (!emailPattern.test(text)) {
-      setEmailError('Введите корректный email');
-    } else {
-      setEmailError('');
-    }
-  };
-
-  const handlePasswordChange = (text) => {
-    setPassword(text);
-    if (text.length < 6) {
-      setPasswordError('Пароль должен быть длиннее 6 символов');
-    } else {
-      setPasswordError('');
-    }
-  };
-
-  const handlePasswordCheck = (text) => {
-    setPasswordCheck(text);
-  };
-
-  const handleBirthdateChange = (text) => {
-    setBirthdate(text);
+  const handleFieldChange = (field: keyof IData, value: string) => {
+    setData((prevData) => ({ ...prevData, [field]: value }));
   };
 
   const handleSubmit = () => {
-    if (password !== passwordCheck) {
-      console.log('Пароли не совпадают');
+    setEmailError('');
+    setPasswordError('');
+
+    if (
+      !data.firstName ||
+      !data.lastName ||
+      !data.email ||
+      !data.password ||
+      !passwordCheck ||
+      !data.birthdate
+    ) {
+      console.log('Заполните все поля');
       return;
     }
 
-    if (password.length < 6) {
-      console.log('Пароль слишком короткий');
+    if (data.password !== passwordCheck) {
+      setPasswordError('Пароли не совпадают');
       return;
     }
 
-    console.log('Имя:', firstName);
-    console.log('Фамилия:', lastName);
-    console.log('Отчество:', middleName);
-    console.log('Email:', email);
-    console.log('Пароль:', password);
+    if (data.password.length < 6) {
+      setPasswordError('Пароль слишком короткий');
+      return;
+    }
+
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    if (!emailPattern.test(data.email)) {
+      setEmailError('Введите корректный email');
+      return;
+    }
+
+    console.log('Имя:', data.firstName);
+    console.log('Фамилия:', data.lastName);
+    console.log('Отчество:', data.middleName);
+    console.log('Email:', data.email);
+    console.log('Пароль:', data.password);
     console.log('Проверка пароля:', passwordCheck);
-    console.log('День рождения', birthdate);
+    console.log('День рождения', data.birthdate);
+
+    setAllFieldsFilled(true);
   };
 
   return (
     <View style={styles.container}>
-      <TextInput
-        style={styles.input}
+      <Field
+        value={data.firstName}
         placeholder="Имя"
-        onChangeText={handleFirstNameChange}
-        value={firstName}
+        onChange={(value) => handleFieldChange('firstName', value)}
+        autoCapitalize="words"
       />
-      <TextInput
-        style={styles.input}
+      <Field
+        value={data.lastName}
         placeholder="Фамилия"
-        onChangeText={handleLastNameChange}
-        value={lastName}
+        onChange={(value) => handleFieldChange('lastName', value)}
+        autoCapitalize="words"
       />
-      <TextInput
-        style={styles.input}
+      <Field
+        value={data.middleName}
         placeholder="Отчество"
-        onChangeText={handleMiddleNameChange}
-        value={middleName}
+        onChange={(value) => handleFieldChange('middleName', value)}
+        autoCapitalize="words"
       />
-  <TextInput
-        style={styles.input}
+      <Field
+        value={data.email}
         placeholder="Email"
-        onChangeText={handleEmailChange}
-        value={email}
-        keyboardType="email-address"
+        onChange={(value) => handleFieldChange('email', value)}
         autoCapitalize="none"
+        keyboardType="email-address"
       />
-      {emailError ? (
-        <Text style={styles.error}>{emailError}</Text>
-      ) : null}
-      <TextInput
-        style={styles.input}
+      {emailError ? <Text style={styles.error}>{emailError}</Text> : null}
+      <Field
+        value={data.password}
         placeholder="Пароль"
-        onChangeText={handlePasswordChange}
-        value={password}
-        secureTextEntry
+        onChange={(value) => handleFieldChange('password', value)}
+        isSecure={true}
         autoCapitalize="none"
       />
-      {passwordError ? (
-        <Text style={styles.error}>{passwordError}</Text>
-      ) : null}
-      <TextInput
-        style={styles.input}
-        placeholder="Подтвердите пароль"
-        onChangeText={handlePasswordCheck}
+      {passwordError ? <Text style={styles.error}>{passwordError}</Text> : null}
+      <Field
         value={passwordCheck}
-        secureTextEntry
+        placeholder="Подтвердите пароль"
+        onChange={(value) => setPasswordCheck(value)}
+        isSecure={true}
         autoCapitalize="none"
       />
-      <TextInput
-        style={styles.input}
+      {/* <Field
+        value={data.birthdate}
         placeholder="День рождения"
-        onChangeText={handleBirthdateChange}
-        value={birthdate}
-        keyboardType="email-address"
+        onChange={(value) => handleFieldChange('birthdate', value)}
+        keyboardType="numeric"
+      /> */}
+      <Calendar
+        onDateChange={(selectedDate) =>
+          handleFieldChange('birthdate', selectedDate)
+        }
+      />
+      <Field
+        value={data.birthdate ? data.birthdate.toLocaleDateString() : ''}
+        placeholder="День рождения"
+        keyboardType="numeric"
       />
 
-      <Button title="Отправить" onPress={handleSubmit} />
+      <Button title="Зарегистрироваться" onPress={handleSubmit} />
+      {allFieldsFilled && (
+        <Text style={styles.success}>Вы зарегистрированы</Text>
+      )}
     </View>
   );
 };
@@ -140,14 +141,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 16,
   },
-  input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 12,
-    paddingHorizontal: 8,
-  },
   error: {
     color: 'red',
+  },
+  success: {
+    color: 'green',
+    marginTop: 10,
   },
 });
