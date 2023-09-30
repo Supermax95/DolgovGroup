@@ -1,6 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import { LogoHello } from '../components/HelloPage/LogoHello';
-import { LoginPage } from '../components/LoginPage/LoginPage';
+//import { LoginPage } from '../components/LoginPage/LoginPage';
 import { Registration } from '../components/Registration/Registration';
 import SignIn from 'components/SignIn/SignIn';
 
@@ -14,11 +14,11 @@ export const AppNavigator = () => {
         component={LogoHello}
         options={{ title: 'Загрузка' }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="LoginPage"
         component={LoginPage}
         options={{ title: 'Login' }}
-      />
+      /> */}
       <Stack.Screen
         name="Registration"
         component={Registration}

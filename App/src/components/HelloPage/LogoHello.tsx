@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Image, Text, View, ActivityIndicator, Button } from 'react-native';
+import { Image, Text, View, Button } from 'react-native';
 import { PORT, IP } from '@env';
 import { useNavigation } from '@react-navigation/native';
-
 
 export const LogoHello = () => {
   const [data, setData] = useState({});
@@ -25,8 +24,6 @@ export const LogoHello = () => {
     fetchData();
   }, []);
 
-
-
   return (
     <View className="flex-1 items-center justify-center bg-white">
       <Text>Добро пожаловать</Text>
@@ -40,9 +37,10 @@ export const LogoHello = () => {
       <Text>{data.message}</Text>
       <Text>{data.someOtherData}</Text>
       <Button
-        title="Перейти на LoginPage"
-        onPress={() => navigation.navigate('LoginPage')}
+        title="Зарегистрироваться"
+        onPress={() => navigation.navigate('Registration')}
       />
+      <Button title="Вход" onPress={() => navigation.navigate('SignIn')} />
     </View>
   );
 };
