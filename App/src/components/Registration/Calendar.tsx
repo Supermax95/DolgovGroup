@@ -1,7 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
-import { View, Button } from 'react-native';
+import { View } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useState } from 'react';
+import Button from 'ui/Button';
+
 
 interface CalendarProps {
   onDateChange: (selectedDate: Date) => void;
@@ -20,7 +22,7 @@ export default function Calendar({ onDateChange }: CalendarProps) {
   );
 
   const onChange = (event, selectedDate) => {
-    setShowDatePicker(false); 
+    setShowDatePicker(false);
 
     if (selectedDate < minDate) {
       setDate(minDate);
@@ -35,12 +37,12 @@ export default function Calendar({ onDateChange }: CalendarProps) {
   };
 
   const showCalendar = () => {
-    setShowDatePicker(true); 
+    setShowDatePicker(true);
   };
 
   return (
-    <View>
-      <Button title="Выбрать дату рождения" onPress={showCalendar} />
+    <View  style={{alignItems: "center"}}>
+      <Button title="День рождения" onPress={showCalendar} />
       {showDatePicker && (
         <DateTimePicker
           value={date}
@@ -54,6 +56,8 @@ export default function Calendar({ onDateChange }: CalendarProps) {
     </View>
   );
 }
+
+
 
 // import { StatusBar } from "expo-status-bar";
 // import { StyleSheet, View } from "react-native";
@@ -87,11 +91,3 @@ export default function Calendar({ onDateChange }: CalendarProps) {
 //   );
 // }
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: "#fff",
-//     alignItems: "center",
-//     justifyContent: "center",
-//   },
-// });
