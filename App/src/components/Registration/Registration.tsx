@@ -1,9 +1,10 @@
 import React, { FC, useState } from 'react';
-import { View, Button, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text } from 'react-native';
 import Field from 'ui/Field';
 import Calendar from './Calendar';
 import { useDispatch, useSelector } from 'react-redux';
 import register from 'Redux/thunks/Register/reg.api';
+import Button from 'ui/Button';
 
 interface IData {
   email: string;
@@ -11,8 +12,10 @@ interface IData {
   firstName: string;
   lastName: string;
   middleName: string;
-  birthdate: string;
+  birthDate: string;
 }
+
+const styleCenter = 'h-full w-full bg-white pt-16';
 
 export const Registration: FC = () => {
   const isLoading = useSelector((state: RootState) => state.regSlice.isLoading);
@@ -25,55 +28,88 @@ export const Registration: FC = () => {
     firstName: '',
     lastName: '',
     middleName: '',
-    birthdate: '',
+    birthDate: '',
   });
   const [passwordCheck, setPasswordCheck] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [emailError, setEmailError] = useState('');
   const [allFieldsFilled, setAllFieldsFilled] = useState(false);
-  const [isCalendarVisible, setIsCalendarVisible] = useState(false);
+  const [errorMessages, setErrorMessages] = useState<IData>({
+    email: '',
+    password: '',
+    firstName: '',
+    lastName: '',
+    middleName: '',
+    birthDate: '',
+  });
 
   const dispatch = useDispatch();
 
   const handleFieldChange = (field: keyof IData, value: string) => {
     setData((prevData) => ({ ...prevData, [field]: value }));
-  };
-
-  const toggleCalendar = () => {
-    setIsCalendarVisible(!isCalendarVisible);
+    setErrorMessages((prevErrors) => ({ ...prevErrors, [field]: '' }));
   };
 
   const handleSubmit = () => {
-    setEmailError('');
-    setPasswordError('');
+    const newErrorMessages = {} as IData;
+    let hasError = false;
 
-    if (
-      !data.firstName ||
-      !data.lastName ||
-      !data.email ||
-      !data.password ||
-      !passwordCheck ||
-      !data.birthdate
-    ) {
-      console.log('Заполните все поля');
-      return;
+    if (!data.firstName) {
+      newErrorMessages.firstName = 'Заполните имя';
+      hasError = true;
+    }
+
+    if (!data.lastName) {
+      newErrorMessages.lastName = 'Заполните фамилию';
+      hasError = true;
+    }
+
+    if (!data.middleName) {
+      newErrorMessages.middleName = 'Заполните отчество';
+      hasError = true;
+    }
+
+    if (!data.email) {
+      newErrorMessages.email = 'Заполните email';
+      hasError = true;
+    }
+
+    if (!data.password) {
+      newErrorMessages.password = 'Заполните пароль';
+      hasError = true;
+    }
+
+    if (!passwordCheck) {
+      newErrorMessages.password = 'Подтвердите пароль';
+      hasError = true;
+    }
+
+    if (!data.birthDate) {
+      newErrorMessages.birthDate = 'Введите дату рождения';
+      hasError = true;
     }
 
     if (data.password !== passwordCheck) {
-      setPasswordError('Пароли не совпадают');
-      return;
+      newErrorMessages.password = 'Пароли не совпадают';
+      hasError = true;
     }
 
     if (data.password.length < 6) {
-      setPasswordError('Пароль слишком короткий');
-      return;
+      newErrorMessages.password = 'Пароль слишком короткий';
+      hasError = true;
     }
 
     const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     if (!emailPattern.test(data.email)) {
-      setEmailError('Введите корректный email');
+      newErrorMessages.email = 'Введите корректный email';
+      hasError = true;
+    }
+
+    if (hasError) {
+      setErrorMessages(newErrorMessages);
       return;
     }
+
     dispatch(register(data));
 
     console.log('Имя:', data.firstName);
@@ -82,102 +118,105 @@ export const Registration: FC = () => {
     console.log('Email:', data.email);
     console.log('Пароль:', data.password);
     console.log('Проверка пароля:', passwordCheck);
-    console.log('День рождения', data.birthdate);
+    console.log('День рождения', data.birthDate);
 
     setAllFieldsFilled(true);
   };
 
   return (
-    <View style={styles.container}>
-      <Field
-        value={data.firstName}
-        placeholder="Имя"
-        onChange={(value) => handleFieldChange('firstName', value)}
-        autoCapitalize="words"
-      />
-      <Field
-        value={data.lastName}
-        placeholder="Фамилия"
-        onChange={(value) => handleFieldChange('lastName', value)}
-        autoCapitalize="words"
-      />
-      <Field
-        value={data.middleName}
-        placeholder="Отчество"
-        onChange={(value) => handleFieldChange('middleName', value)}
-        autoCapitalize="words"
-      />
-      <Field
-        value={data.email}
-        placeholder="Email"
-        onChange={(value) => handleFieldChange('email', value)}
-        autoCapitalize="none"
-        keyboardType="email-address"
-      />
-      {emailError ? <Text style={styles.error}>{emailError}</Text> : null}
-      <Field
-        value={data.password}
-        placeholder="Пароль"
-        onChange={(value) => handleFieldChange('password', value)}
-        isSecure={true}
-        autoCapitalize="none"
-      />
-      {passwordError ? <Text style={styles.error}>{passwordError}</Text> : null}
-      <Field
-        value={passwordCheck}
-        placeholder="Подтвердите пароль"
-        onChange={(value) => setPasswordCheck(value)}
-        isSecure={true}
-        autoCapitalize="none"
-      />
-      <TouchableOpacity onPress={toggleCalendar} style={styles.calendarButton}>
-        <Text style={styles.calendarButtonText}>Выбрать дату рождения</Text>
-      </TouchableOpacity>
-      {isCalendarVisible && (
-        <Calendar
-          onDateChange={(selectedDate) =>
-            handleFieldChange('birthdate', selectedDate)
-          }
-        />
-      )}
-      <Text>{data.birthdate ? data.birthdate.toLocaleDateString() : ''}</Text>
+    <View className={styleCenter}>
+      <View className="mx-1 justify-center items-center h-full">
+        <Text className="text-center text-gray-800 text-2xl font-bold mb-2">
+          Регистрация
+        </Text>
+        <View className="w-10/12">
+          <Field
+            value={data.firstName}
+            placeholder="Имя"
+            onChange={(value) => handleFieldChange('firstName', value)}
+            autoCapitalize="words"
+          />
+          {errorMessages.firstName && (
+            <Text className="text-red-500 ml-1 mt-1 text-xs">{errorMessages.firstName}</Text>
+          )}
+          <Field
+            value={data.lastName}
+            placeholder="Фамилия"
+            onChange={(value) => handleFieldChange('lastName', value)}
+            autoCapitalize="words"
+          />
+          {errorMessages.lastName && (
+            <Text className="text-red-500 ml-1 mt-1 text-xs">{errorMessages.lastName}</Text>
+          )}
+          <Field
+            value={data.middleName}
+            placeholder="Отчество"
+            onChange={(value) => handleFieldChange('middleName', value)}
+            autoCapitalize="words"
+          />
+          {errorMessages.middleName && (
+            <Text className="text-red-500 ml-1 mt-1 text-xs">
+              {errorMessages.middleName}
+            </Text>
+          )}
+          <Field
+            value={data.email}
+            placeholder="Email"
+            onChange={(value) => handleFieldChange('email', value)}
+            autoCapitalize="none"
+            keyboardType="email-address"
+          />
+          {errorMessages.email && (
+            <Text className="text-red-500 ml-1 mt-1 text-xs">{errorMessages.email}</Text>
+          )}
+          <Field
+            value={data.password}
+            placeholder="Пароль"
+            onChange={(value) => handleFieldChange('password', value)}
+            isSecure={true}
+            autoCapitalize="none"
+          />
+          {errorMessages.password && (
+            <Text className="text-red-500 ml-1 mt-1 text-xs">{errorMessages.password}</Text>
+          )}
+          <Field
+            value={passwordCheck}
+            placeholder="Подтвердите пароль"
+            onChange={(value) => setPasswordCheck(value)}
+            isSecure={true}
+            autoCapitalize="none"
+          />
+          {errorMessages.password && (
+            <Text className="text-red-500 ml-1 mt-1 text-xs">{errorMessages.password}</Text>
+          )}
 
-      <Button title="Зарегистрироваться" onPress={handleSubmit} />
-      {isLoading ? (
-        // Показать загрузочное сообщение
-        <Text>Loading...</Text>
-      ) : user ? (
-        // Показать сообщение об успешной регистрации
-        <Text>Регистрация прошла успешно</Text>
-      ) : error ? (
-        // Показать сообщение об ошибке
-        <Text style={styles.error}>{error}</Text>
-      ) : null}
+          <Calendar
+            onDateChange={(selectedDate) =>
+              handleFieldChange('birthDate', selectedDate)
+            }
+          />
+
+          {errorMessages.birthDate && (
+            <Text className="text-red-500 ml-1 mt-1 text-xs">{errorMessages.birthDate}</Text>
+          )}
+
+          <Text className="text-center text-lg">
+            {data.birthDate ? data.birthDate.toLocaleDateString() : ''}
+          </Text>
+
+          <Button onPress={handleSubmit} title={`Зарегистрироваться`} />
+          {isLoading ? (
+            // Показать загрузочное сообщение
+            <Text>Loading...</Text>
+          ) : user ? (
+            // Показать сообщение об успешной регистрации
+            <Text>Регистрация прошла успешно</Text>
+          ) : error ? (
+            // Показать сообщение об ошибке
+            <Text className="text-red-500 ml-1 mt-1 text-xs">{error}</Text>
+          ) : null}
+        </View>
+      </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 16,
-  },
-  error: {
-    color: 'red',
-  },
-  success: {
-    color: 'green',
-    marginTop: 10,
-  },
-  calendarButton: {
-    marginTop: 10,
-    backgroundColor: '#007BFF',
-    padding: 10,
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-  calendarButtonText: {
-    color: 'white',
-  },
-});
