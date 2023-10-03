@@ -1,14 +1,16 @@
-const router = require('express').Router();
 const bcrypt = require('bcrypt');
+const express = require('express');
+const { DiscountCard } = require('../db/models');
 
-const { Discount_Cards } = require('../db/models');
+const router = express.Router();
 
 router.post('/register', async (req, res) => {
-  const { last_name, first_name, middle_name, email, birth_date, password } =
+  const { lastName, firstName, middleName, email, birthDate, password } =
     req.body;
 
   try {
-    const user = await Discount_Cards.findOne({ where: { email } });
+    const hash = await bcrypt.hash(password, 10);
+    const user = await DiscountCard.findOne({ where: { email } });
 
     if (user) {
       return res.status(409).json({
@@ -16,22 +18,13 @@ router.post('/register', async (req, res) => {
       });
     }
 
-    const hash = await bcrypt.hash(password, 10);
-
-    const newUser = await Discount_Cards.create({
+    const newUser = await DiscountCard.create({
       lastName,
-      first_name,
-      middle_name,
+      firstName,
+      middleName,
       email,
-      birth_date,
+      birthDate,
       password: hash,
-    });
-
-    req.session.save(() => {
-      res.status(201).json({
-        msg: 'Пользователь успешно зарегистрирован',
-        email: newUser.email,
-      });
     });
   } catch (error) {
     console.error('Ошибка регистрации:', error);

@@ -2,6 +2,8 @@ import React, { FC, useState } from 'react';
 import { View, Button, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Field from 'ui/Field';
 import Calendar from './Calendar';
+import { useDispatch, useSelector } from 'react-redux';
+import register from 'Redux/thunks/Register/reg.api';
 
 interface IData {
   email: string;
@@ -13,6 +15,10 @@ interface IData {
 }
 
 export const Registration: FC = () => {
+  const isLoading = useSelector((state: RootState) => state.regSlice.isLoading);
+  const user = useSelector((state: RootState) => state.regSlice.user);
+  const error = useSelector((state: RootState) => state.regSlice.error);
+
   const [data, setData] = useState<IData>({
     email: '',
     password: '',
@@ -26,6 +32,8 @@ export const Registration: FC = () => {
   const [emailError, setEmailError] = useState('');
   const [allFieldsFilled, setAllFieldsFilled] = useState(false);
   const [isCalendarVisible, setIsCalendarVisible] = useState(false);
+
+  const dispatch = useDispatch();
 
   const handleFieldChange = (field: keyof IData, value: string) => {
     setData((prevData) => ({ ...prevData, [field]: value }));
@@ -66,6 +74,7 @@ export const Registration: FC = () => {
       setEmailError('Введите корректный email');
       return;
     }
+    dispatch(register(data));
 
     console.log('Имя:', data.firstName);
     console.log('Фамилия:', data.lastName);
@@ -125,14 +134,25 @@ export const Registration: FC = () => {
         <Text style={styles.calendarButtonText}>Выбрать дату рождения</Text>
       </TouchableOpacity>
       {isCalendarVisible && (
-        <Calendar onDateChange={(selectedDate) => handleFieldChange('birthdate', selectedDate)} />
+        <Calendar
+          onDateChange={(selectedDate) =>
+            handleFieldChange('birthdate', selectedDate)
+          }
+        />
       )}
       <Text>{data.birthdate ? data.birthdate.toLocaleDateString() : ''}</Text>
 
       <Button title="Зарегистрироваться" onPress={handleSubmit} />
-      {allFieldsFilled && (
-        <Text style={styles.success}>Вы зарегистрированы</Text>
-      )}
+      {isLoading ? (
+        // Показать загрузочное сообщение
+        <Text>Loading...</Text>
+      ) : user ? (
+        // Показать сообщение об успешной регистрации
+        <Text>Регистрация прошла успешно</Text>
+      ) : error ? (
+        // Показать сообщение об ошибке
+        <Text style={styles.error}>{error}</Text>
+      ) : null}
     </View>
   );
 };
