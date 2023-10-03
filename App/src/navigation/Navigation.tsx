@@ -12,37 +12,52 @@ import Shops from 'screens/Shops/Shops';
 import Support from 'screens/Support/Support';
 import Profile from 'screens/Profile/Profile';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { NavigationContainer } from '@react-navigation/native';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export const AppNavigator: FC = () => {
   return (
-    <Stack.Navigator initialRouteName="Auth">
-      <Stack.Screen name="Auth" component={Auth} options={{ title: 'Вход' }} />
+    <NavigationContainer>
+      {/* <Stack.Navigator initialRouteName="LogoHello"> */}
+      <Stack.Navigator>
+        <Stack.Screen
+          name="FooterTabs"
+          component={FooterTabs}
+          // options={{ title: 'Вход' }}
+        />
 
-      <Stack.Screen
-        name="Registration"
-        component={Registration}
-        options={{ title: 'Регистрация' }}
-      />
-      <Stack.Screen
-        name="SignIn"
-        component={SignIn}
-        options={{ title: 'Вход' }}
-      />
-
-      <Stack.Screen name="FooterTabs" component={FooterTabs} />
-    </Stack.Navigator>
+        <Stack.Screen
+          name="Registration"
+          component={Registration}
+          options={{ title: 'Регистрация' }}
+        />
+        <Stack.Screen
+          name="SignIn"
+          component={SignIn}
+          options={{ title: 'Вход' }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
 export const FooterTabs: FC = ({}) => {
+  const screenOptions = {};
+
   return (
-    <Tab.Navigator
-      initialRouteName="Home"
-      screenOptions={{ headerShown: false }}
-    >
+    <Tab.Navigator>
+      <Tab.Screen
+        name="Auth"
+        component={Auth}
+        options={{
+          title: 'Auth',
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome name="credit-card" color={color} size={size} />
+          ),
+        }}
+      />
       <Tab.Screen
         name="Home"
         component={Home}
