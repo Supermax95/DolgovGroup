@@ -20,14 +20,12 @@ const Tab = createBottomTabNavigator();
 export const AppNavigator: FC = () => {
   return (
     <NavigationContainer>
-      {/* <Stack.Navigator initialRouteName="LogoHello"> */}
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName="FooterTabs">
         <Stack.Screen
           name="FooterTabs"
           component={FooterTabs}
-          // options={{ title: 'Вход' }}
+          options={{ headerShown: false }}
         />
-
         <Stack.Screen
           name="Registration"
           component={Registration}
@@ -44,8 +42,6 @@ export const AppNavigator: FC = () => {
 };
 
 export const FooterTabs: FC = ({}) => {
-  const screenOptions = {};
-
   return (
     <Tab.Navigator>
       <Tab.Screen
