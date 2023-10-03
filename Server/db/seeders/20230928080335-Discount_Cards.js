@@ -4,36 +4,36 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     const hash = await bcrypt.hash('1', 10);
     const hashedPassword = await bcrypt.hash('123', 10);
-    await queryInterface.bulkInsert('Discount_Cards', [
+    await queryInterface.bulkInsert('DiscountCards', [
       {
-        last_name: 'Фамилия1',
-        first_name: 'Имя1',
-        middle_name: 'Отчество1',
+        lastName: 'Фамилия1',
+        firstName: 'Имя1',
+        middleName: 'Отчество1',
         email: 'email1@example.com',
-        birth_date: '1990-01-01',
+        birthDate: '1990-01-01',
         password: hash,
-        card_type: '',
+        cardType: '',
         barcode: '3200000322318',
-        bonus_program: '',
-        is_employee: false,
+        bonusProgram: '',
+        isEmployee: false,
         balance: 1000,
-        is_admin: false,
+        isAdmin: false,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
-        last_name: 'Фамилия2',
-        first_name: 'Имя2',
-        middle_name: 'Отчество2',
+        lastName: 'Фамилия2',
+        firstName: 'Имя2',
+        middleName: 'Отчество2',
         email: 'email2@example.com',
-        birth_date: '1995-02-15',
+        birthDate: '1995-02-15',
         password: hash,
-        card_type: '',
+        cardType: '',
         barcode: '3200000322318',
-        bonus_program: '',
-        is_employee: false,
+        bonusProgram: '',
+        isEmployee: false,
         balance: 2000,
-        is_admin: true,
+        isAdmin: true,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -41,6 +41,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('Discount_Cards', null, {});
+    await queryInterface.bulkDelete('DiscountCards', null, {});
   },
 };

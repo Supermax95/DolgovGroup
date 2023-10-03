@@ -1,20 +1,20 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Discount_Cards', {
+    await queryInterface.createTable('DiscountCards', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      last_name: {
+      lastName: {
         type: Sequelize.STRING,
       },
-      first_name: {
+      firstName: {
         type: Sequelize.STRING,
       },
-      middle_name: {
+      middleName: {
         type: Sequelize.STRING,
       },
       photo: {
@@ -24,30 +24,30 @@ module.exports = {
       email: {
         type: Sequelize.STRING,
       },
-      birth_date: {
+      birthDate: {
         type: Sequelize.DATE,
       },
       password: {
         type: Sequelize.STRING,
       },
-      card_type: {
+      cardType: {
         defaultValue: 'БОНУСНАЯ КАРТА ПОКУПАТЕЛЯ',
         type: Sequelize.STRING,
       },
       barcode: {
         type: Sequelize.STRING,
       },
-      bonus_program: {
+      bonusProgram: {
         defaultValue: '1 БОНУС = 1 РУБЛЮ',
         type: Sequelize.STRING,
       },
-      is_employee: {
+      isEmployee: {
         type: Sequelize.BOOLEAN,
       },
       balance: {
         type: Sequelize.INTEGER,
       },
-      is_admin: {
+      isAdmin: {
         type: Sequelize.BOOLEAN,
       },
       createdAt: {
@@ -61,6 +61,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Discount_Cards');
+    await queryInterface.dropTable('DiscountCards');
   },
 };
