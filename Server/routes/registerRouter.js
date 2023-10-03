@@ -4,7 +4,8 @@ const bcrypt = require('bcrypt');
 const { Discount_Cards } = require('../db/models');
 
 router.post('/register', async (req, res) => {
-  const { last_name, first_name, middle_name, email, birth_date, password } = req.body;
+  const { last_name, first_name, middle_name, email, birth_date, password } =
+    req.body;
 
   try {
     const user = await Discount_Cards.findOne({ where: { email } });
@@ -18,7 +19,7 @@ router.post('/register', async (req, res) => {
     const hash = await bcrypt.hash(password, 10);
 
     const newUser = await Discount_Cards.create({
-      last_name,
+      lastName,
       first_name,
       middle_name,
       email,

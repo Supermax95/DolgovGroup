@@ -11,19 +11,19 @@ module.exports = {
       name: {
         type: Sequelize.STRING,
       },
-      promo_start_date: {
+      promoStartDate: {
         type: Sequelize.STRING,
       },
-      promo_end_date: {
+      promoEndDate: {
         type: Sequelize.STRING,
       },
-      price_start: {
+      priceStart: {
         type: Sequelize.INTEGER,
       },
-      price_end: {
+      priceEnd: {
         type: Sequelize.INTEGER,
       },
-      is_new: {
+      isNew: {
         type: Sequelize.BOOLEAN,
       },
       description: {

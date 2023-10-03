@@ -1,6 +1,5 @@
-// import Calendar from './Calendar';
 import React, { FC, useState } from 'react';
-import { View, Button, Text, StyleSheet } from 'react-native';
+import { View, Button, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Field from 'ui/Field';
 import Calendar from './Calendar';
 
@@ -14,14 +13,26 @@ interface IData {
 }
 
 export const Registration: FC = () => {
-  const [data, setData] = useState<IData>({} as IData);
+  const [data, setData] = useState<IData>({
+    email: '',
+    password: '',
+    firstName: '',
+    lastName: '',
+    middleName: '',
+    birthdate: '',
+  });
   const [passwordCheck, setPasswordCheck] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [emailError, setEmailError] = useState('');
   const [allFieldsFilled, setAllFieldsFilled] = useState(false);
+  const [isCalendarVisible, setIsCalendarVisible] = useState(false);
 
   const handleFieldChange = (field: keyof IData, value: string) => {
     setData((prevData) => ({ ...prevData, [field]: value }));
+  };
+
+  const toggleCalendar = () => {
+    setIsCalendarVisible(!isCalendarVisible);
   };
 
   const handleSubmit = () => {
@@ -110,22 +121,13 @@ export const Registration: FC = () => {
         isSecure={true}
         autoCapitalize="none"
       />
-      {/* <Field
-        value={data.birthdate}
-        placeholder="День рождения"
-        onChange={(value) => handleFieldChange('birthdate', value)}
-        keyboardType="numeric"
-      /> */}
-      <Calendar
-        onDateChange={(selectedDate) =>
-          handleFieldChange('birthdate', selectedDate)
-        }
-      />
-      <Field
-        value={data.birthdate ? data.birthdate.toLocaleDateString() : ''}
-        placeholder="День рождения"
-        keyboardType="numeric"
-      />
+      <TouchableOpacity onPress={toggleCalendar} style={styles.calendarButton}>
+        <Text style={styles.calendarButtonText}>Выбрать дату рождения</Text>
+      </TouchableOpacity>
+      {isCalendarVisible && (
+        <Calendar onDateChange={(selectedDate) => handleFieldChange('birthdate', selectedDate)} />
+      )}
+      <Text>{data.birthdate ? data.birthdate.toLocaleDateString() : ''}</Text>
 
       <Button title="Зарегистрироваться" onPress={handleSubmit} />
       {allFieldsFilled && (
@@ -147,5 +149,15 @@ const styles = StyleSheet.create({
   success: {
     color: 'green',
     marginTop: 10,
+  },
+  calendarButton: {
+    marginTop: 10,
+    backgroundColor: '#007BFF',
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  calendarButtonText: {
+    color: 'white',
   },
 });
