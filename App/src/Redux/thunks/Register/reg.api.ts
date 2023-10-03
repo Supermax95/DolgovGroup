@@ -6,8 +6,10 @@ const register = createAsyncThunk('registration/register', async (newUser) => {
   const response: AxiosResponse = await axios.post(
     'http://localhost:3000/register',
     newUser
-  );
-  return response.data;
+    );
+    return response.data;
 });
 
 export default register;
+
+
