@@ -9,12 +9,13 @@ import { AppNavigator } from './src/navigation/Navigation';
 export default function App() {
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <SafeAreaView style={{ flex: 1 }}>
-          <AppNavigator />
-        </SafeAreaView>
-        <StatusBar style="auto" />
-      </NavigationContainer>
+      {/* <NavigationContainer> */}
+      {/* <SafeAreaView style={{ flex: 1 }}> */}
+      <AppNavigator />
+      {/* </SafeAreaView> */}
+
+      <StatusBar style="auto" />
+      {/* </NavigationContainer> */}
     </Provider>
   );
 }
