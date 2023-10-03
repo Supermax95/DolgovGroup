@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import Field from 'ui/Field';
 import Calendar from './Calendar';
 import { useDispatch, useSelector } from 'react-redux';
@@ -124,6 +124,7 @@ export const Registration: FC = () => {
   };
 
   return (
+    <ScrollView contentContainerStyle={{ flex: 1 }}>
     <View className={styleCenter}>
       <View className="mx-1 justify-center items-center h-full">
         <Text className="text-center text-gray-800 text-2xl font-bold mb-2">
@@ -137,7 +138,9 @@ export const Registration: FC = () => {
             autoCapitalize="words"
           />
           {errorMessages.firstName && (
-            <Text className="text-red-500 ml-1 mt-1 text-xs">{errorMessages.firstName}</Text>
+            <Text className="text-red-500 ml-1 mt-1 text-xs">
+              {errorMessages.firstName}
+            </Text>
           )}
           <Field
             value={data.lastName}
@@ -146,7 +149,9 @@ export const Registration: FC = () => {
             autoCapitalize="words"
           />
           {errorMessages.lastName && (
-            <Text className="text-red-500 ml-1 mt-1 text-xs">{errorMessages.lastName}</Text>
+            <Text className="text-red-500 ml-1 mt-1 text-xs">
+              {errorMessages.lastName}
+            </Text>
           )}
           <Field
             value={data.middleName}
@@ -167,7 +172,9 @@ export const Registration: FC = () => {
             keyboardType="email-address"
           />
           {errorMessages.email && (
-            <Text className="text-red-500 ml-1 mt-1 text-xs">{errorMessages.email}</Text>
+            <Text className="text-red-500 ml-1 mt-1 text-xs">
+              {errorMessages.email}
+            </Text>
           )}
           <Field
             value={data.password}
@@ -177,7 +184,9 @@ export const Registration: FC = () => {
             autoCapitalize="none"
           />
           {errorMessages.password && (
-            <Text className="text-red-500 ml-1 mt-1 text-xs">{errorMessages.password}</Text>
+            <Text className="text-red-500 ml-1 mt-1 text-xs">
+              {errorMessages.password}
+            </Text>
           )}
           <Field
             value={passwordCheck}
@@ -187,7 +196,9 @@ export const Registration: FC = () => {
             autoCapitalize="none"
           />
           {errorMessages.password && (
-            <Text className="text-red-500 ml-1 mt-1 text-xs">{errorMessages.password}</Text>
+            <Text className="text-red-500 ml-1 mt-1 text-xs">
+              {errorMessages.password}
+            </Text>
           )}
 
           <Calendar
@@ -197,7 +208,9 @@ export const Registration: FC = () => {
           />
 
           {errorMessages.birthDate && (
-            <Text className="text-red-500 ml-1 mt-1 text-xs">{errorMessages.birthDate}</Text>
+            <Text className="text-red-500 ml-1 mt-1 text-xs">
+              {errorMessages.birthDate}
+            </Text>
           )}
 
           <Text className="text-center text-lg">
@@ -218,5 +231,6 @@ export const Registration: FC = () => {
         </View>
       </View>
     </View>
+    </ScrollView>
   );
 };
