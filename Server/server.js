@@ -32,7 +32,7 @@ app.use(
   cors({
     origin: `http://${IP}:8081`,
     credentials: true,
-  })
+  }),
 );
 
 app.use(morgan('dev'));

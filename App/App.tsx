@@ -1,36 +1,20 @@
+import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native';
-import { AppNavigator, FooterTabs } from './src/navigation/Navigation';
 import { NavigationContainer } from '@react-navigation/native';
-
-//import { useNavigationContainerRef } from '@react-navigation/native';
-
-// export default function App() {
-//   // const refNavigate = useNavigationContainerRef();
-
-//   return (
-//     <>
-//       {/* <NavigationContainer ref={refNavigate}> */}
-//       <NavigationContainer>
-//         <SafeAreaView className="flex-1">
-//           <AppNavigator />
-//           <FooterTabs />
-
-//           <StatusBar style="auto" />
-//         </SafeAreaView>
-//       </NavigationContainer>
-//       {/* <Footer navigate={refNavigate.navigate} /> */}
-//     </>
-//   );
-// }
+import { Provider } from 'react-redux';
+import store from './src/Redux/store';
+import { AppNavigator } from './src/navigation/Navigation';
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <SafeAreaView style={{ flex: 1 }}>
-        <AppNavigator />
+    <Provider store={store}>
+      <NavigationContainer>
+        <SafeAreaView style={{ flex: 1 }}>
+          <AppNavigator />
+        </SafeAreaView>
         <StatusBar style="auto" />
-      </SafeAreaView>
-    </NavigationContainer>
+      </NavigationContainer>
+    </Provider>
   );
 }
