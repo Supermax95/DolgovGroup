@@ -33,7 +33,7 @@ export const Auth = () => {
           source={{
             uri: 'https://poisk-firm.ru/storage/employer/logo/70/ba/a9/abb46e24b581abb40de2b12ed1.jpg',
           }}
-          className="p-{150px} h-[240px] w-[240px]"
+          className="h-[240px] w-[240px]"
           resizeMode="contain"
         />
         <Text>{data.message}</Text>
