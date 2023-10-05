@@ -11,7 +11,7 @@ export const Auth = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://${IP}:${PORT}`);
+        const response = await fetch(`http://${IP}:${PORT}/api`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
