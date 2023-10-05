@@ -4,7 +4,6 @@ import { PORT, IP } from '@env';
 
 const auth = createAsyncThunk('api/login', async ({ token, userData }) => {
   try {
-      console.log('=====>',token)
       const config = {
           headers: {
               Authorization: `Bearer ${token}`,
@@ -13,7 +12,7 @@ const auth = createAsyncThunk('api/login', async ({ token, userData }) => {
         };
         
     const response = await axios.post(
-      `http://${IP}:${PORT}/login`,
+      `http://${IP}:${PORT}/api/login`,
       userData,
       config
     );
