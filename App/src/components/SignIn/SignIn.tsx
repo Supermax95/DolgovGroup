@@ -1,8 +1,45 @@
+// import React, { FC, useState } from 'react';
+// import { Text, View } from 'react-native';
+// import Field from 'ui/Field';
+
+// interface IData {
+//   email: string;
+//   password: string;
+// }
+
+// const SignIn: FC = () => {
+//   const [data, setData] = useState<IData>({} as IData);
+
+//   return (
+//     <View className="flex-1">
+//       <View className="mx-5 justify-center items-center h-full">
+//         <Field
+//           value={data.email}
+//           placeholder="Введите email"
+//           onChange={(value) => setData({ ...data, email: value })}
+//         />
+//         <Field
+//           value={data.password}
+//           placeholder="Введите пароль"
+//           onChange={(value) => setData({ ...data, password: value })}
+//           isSecure={true}
+//         />
+//       </View>
+//     </View>
+//   );
+// };
+
+// export default SignIn;
+
+
+
 import React, { FC, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Pressable, Text, View } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux'; 
 import Button from 'ui/Button';
 import Field from 'ui/Field';
+import auth from 'Redux/thunks/Auth/auth.api';
 
 interface IData {
   email: string;
@@ -13,10 +50,26 @@ const styleCenter = 'h-full w-full bg-white pt-16';
 
 const SignIn: FC = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const { token, isLoading } = useSelector((state) => state.authSlice);
 
   const [data, setData] = useState<IData>({} as IData);
 
-  const authHandler = () => {};
+  const authHandler = async () => {
+    const userData = {
+      email: data.email,
+      password: data.password,
+    };
+
+    try {
+     
+      await dispatch(auth({ token, userData }));
+      navigation.navigate('Home'); 
+    } catch (error) {
+      console.error('Ошибка при авторизации:', error);
+    }
+  };
 
   return (
     <View className={styleCenter}>
@@ -38,7 +91,7 @@ const SignIn: FC = () => {
             onChange={(value) => setData({ ...data, password: value })}
             isSecure={true}
           />
-          <Button onPress={authHandler} title={`Войти`} />
+          <Button onPress={authHandler} title={`Войти`} disabled={isLoading} />
           <Pressable onPress={() => navigation.navigate('Registration')}>
             <Text className="text-gray-800 opacity-50 text-sm text-center">
               Зарегистрироваться

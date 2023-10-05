@@ -18,10 +18,11 @@ interface IData {
 const styleCenter = 'h-full w-full bg-white pt-16';
 
 export const Registration: FC = () => {
+  const dispatch = useDispatch();
   const isLoading = useSelector((state: RootState) => state.regSlice.isLoading);
   const user = useSelector((state: RootState) => state.regSlice.user);
   const error = useSelector((state: RootState) => state.regSlice.error);
-
+//   const token = useSelector((state:RootState) => state.regSlice.)
   const [data, setData] = useState<IData>({
     email: '',
     password: '',
@@ -42,8 +43,6 @@ export const Registration: FC = () => {
     middleName: '',
     birthDate: '',
   });
-
-  const dispatch = useDispatch();
 
   const handleFieldChange = (field: keyof IData, value: string) => {
     setData((prevData) => ({ ...prevData, [field]: value }));
@@ -125,112 +124,112 @@ export const Registration: FC = () => {
 
   return (
     <ScrollView contentContainerStyle={{ flex: 1 }}>
-    <View className={styleCenter}>
-      <View className="mx-1 justify-center items-center h-full">
-        <Text className="text-center text-gray-800 text-2xl font-bold mb-2">
-          Регистрация
-        </Text>
-        <View className="w-10/12">
-          <Field
-            value={data.firstName}
-            placeholder="Имя"
-            onChange={(value) => handleFieldChange('firstName', value)}
-            autoCapitalize="words"
-          />
-          {errorMessages.firstName && (
-            <Text className="text-red-500 ml-1 mt-1 text-xs">
-              {errorMessages.firstName}
-            </Text>
-          )}
-          <Field
-            value={data.lastName}
-            placeholder="Фамилия"
-            onChange={(value) => handleFieldChange('lastName', value)}
-            autoCapitalize="words"
-          />
-          {errorMessages.lastName && (
-            <Text className="text-red-500 ml-1 mt-1 text-xs">
-              {errorMessages.lastName}
-            </Text>
-          )}
-          <Field
-            value={data.middleName}
-            placeholder="Отчество"
-            onChange={(value) => handleFieldChange('middleName', value)}
-            autoCapitalize="words"
-          />
-          {errorMessages.middleName && (
-            <Text className="text-red-500 ml-1 mt-1 text-xs">
-              {errorMessages.middleName}
-            </Text>
-          )}
-          <Field
-            value={data.email}
-            placeholder="Email"
-            onChange={(value) => handleFieldChange('email', value)}
-            autoCapitalize="none"
-            keyboardType="email-address"
-          />
-          {errorMessages.email && (
-            <Text className="text-red-500 ml-1 mt-1 text-xs">
-              {errorMessages.email}
-            </Text>
-          )}
-          <Field
-            value={data.password}
-            placeholder="Пароль"
-            onChange={(value) => handleFieldChange('password', value)}
-            isSecure={true}
-            autoCapitalize="none"
-          />
-          {errorMessages.password && (
-            <Text className="text-red-500 ml-1 mt-1 text-xs">
-              {errorMessages.password}
-            </Text>
-          )}
-          <Field
-            value={passwordCheck}
-            placeholder="Подтвердите пароль"
-            onChange={(value) => setPasswordCheck(value)}
-            isSecure={true}
-            autoCapitalize="none"
-          />
-          {errorMessages.password && (
-            <Text className="text-red-500 ml-1 mt-1 text-xs">
-              {errorMessages.password}
-            </Text>
-          )}
-
-          <Calendar
-            onDateChange={(selectedDate) =>
-              handleFieldChange('birthDate', selectedDate)
-            }
-          />
-
-          {errorMessages.birthDate && (
-            <Text className="text-red-500 ml-1 mt-1 text-xs">
-              {errorMessages.birthDate}
-            </Text>
-          )}
-
-          <Text className="text-center text-lg">
-            {data.birthDate ? data.birthDate.toLocaleDateString() : ''}
+      <View className={styleCenter}>
+        <View className="mx-1 justify-center items-center h-full">
+          <Text className="text-center text-gray-800 text-2xl font-bold mb-2">
+            Регистрация
           </Text>
+          <View className="w-10/12">
+            <Field
+              value={data.firstName}
+              placeholder="Имя"
+              onChange={(value) => handleFieldChange('firstName', value)}
+              autoCapitalize="words"
+            />
+            {errorMessages.firstName && (
+              <Text className="text-red-500 ml-1 mt-1 text-xs">
+                {errorMessages.firstName}
+              </Text>
+            )}
+            <Field
+              value={data.lastName}
+              placeholder="Фамилия"
+              onChange={(value) => handleFieldChange('lastName', value)}
+              autoCapitalize="words"
+            />
+            {errorMessages.lastName && (
+              <Text className="text-red-500 ml-1 mt-1 text-xs">
+                {errorMessages.lastName}
+              </Text>
+            )}
+            <Field
+              value={data.middleName}
+              placeholder="Отчество"
+              onChange={(value) => handleFieldChange('middleName', value)}
+              autoCapitalize="words"
+            />
+            {errorMessages.middleName && (
+              <Text className="text-red-500 ml-1 mt-1 text-xs">
+                {errorMessages.middleName}
+              </Text>
+            )}
+            <Field
+              value={data.email}
+              placeholder="Email"
+              onChange={(value) => handleFieldChange('email', value)}
+              autoCapitalize="none"
+              keyboardType="email-address"
+            />
+            {errorMessages.email && (
+              <Text className="text-red-500 ml-1 mt-1 text-xs">
+                {errorMessages.email}
+              </Text>
+            )}
+            <Field
+              value={data.password}
+              placeholder="Пароль"
+              onChange={(value) => handleFieldChange('password', value)}
+              isSecure={true}
+              autoCapitalize="none"
+            />
+            {errorMessages.password && (
+              <Text className="text-red-500 ml-1 mt-1 text-xs">
+                {errorMessages.password}
+              </Text>
+            )}
+            <Field
+              value={passwordCheck}
+              placeholder="Подтвердите пароль"
+              onChange={(value) => setPasswordCheck(value)}
+              isSecure={true}
+              autoCapitalize="none"
+            />
+            {errorMessages.password && (
+              <Text className="text-red-500 ml-1 mt-1 text-xs">
+                {errorMessages.password}
+              </Text>
+            )}
 
-          <Button onPress={handleSubmit} title={`Зарегистрироваться`} />
-          {isLoading ? (
-            // Показать загрузочное сообщение
-            <Text>Loading...</Text>
-          ) : user ? (
-            // Показать сообщение об успешной регистрации
-            <Text>Регистрация прошла успешно</Text>
-          ) : error ? (
-            // Показать сообщение об ошибке
-            <Text className="text-red-500 ml-1 mt-1 text-xs">{error}</Text>
-          ) : null}
+            <Calendar
+              onDateChange={(selectedDate) =>
+                handleFieldChange('birthDate', selectedDate)
+              }
+            />
+
+            {errorMessages.birthDate && (
+              <Text className="text-red-500 ml-1 mt-1 text-xs">
+                {errorMessages.birthDate}
+              </Text>
+            )}
+
+            <Text className="text-center text-lg">
+              {data.birthDate ? data.birthDate.toLocaleDateString() : ''}
+            </Text>
+
+            <Button onPress={handleSubmit} title={`Зарегистрироваться`} />
+            {isLoading ? (
+              // Показать загрузочное сообщение
+              <Text>Loading...</Text>
+            ) : user ? (
+              // Показать сообщение об успешной регистрации
+              <Text>Регистрация прошла успешно</Text>
+            ) : error ? (
+              // Показать сообщение об ошибке
+              <Text className="text-red-500 ml-1 mt-1 text-xs">{error}</Text>
+            ) : null}
+          </View>
         </View>
       </View>
-    </View>
     </ScrollView>
   );
 };

@@ -2,13 +2,8 @@ const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class DiscountCard extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
+    static associate({ Token }) {
+      this.hasMany(Token, { foreignKey: 'discountCardId' });
     }
   }
   DiscountCard.init(
@@ -17,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       firstName: DataTypes.STRING,
       middleName: DataTypes.STRING,
       email: DataTypes.STRING,
-      birthDate: DataTypes.DATE,
+      birthDate: DataTypes.DATEONLY,
       password: DataTypes.STRING,
       cardType: DataTypes.STRING,
       barcode: DataTypes.STRING,
@@ -25,7 +20,9 @@ module.exports = (sequelize, DataTypes) => {
       isEmployee: DataTypes.BOOLEAN,
       balance: DataTypes.INTEGER,
       isAdmin: DataTypes.BOOLEAN,
+      isActivated: DataTypes.BOOLEAN,
       photo: DataTypes.STRING,
+      activationLink: DataTypes.STRING,
     },
     {
       sequelize,

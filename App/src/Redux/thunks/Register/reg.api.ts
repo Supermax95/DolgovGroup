@@ -1,13 +1,14 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { AxiosResponse } from 'axios';
 import axios from 'axios';
+import { PORT, IP } from '@env';
 
-const register = createAsyncThunk('registration/register', async (newUser) => {
+const register = createAsyncThunk('api/register', async (newUser) => {
   const response: AxiosResponse = await axios.post(
-    'http://localhost:3000/register',
+    `http://${IP}:${PORT}/register`,
     newUser
-    );
-    return response.data;
+  );
+  return response.data;
 });
 
 export default register;

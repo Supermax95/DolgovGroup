@@ -25,7 +25,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       birthDate: {
-        type: Sequelize.DATE,
+        type: Sequelize.DATEONLY,
       },
       password: {
         type: Sequelize.STRING,
@@ -49,6 +49,13 @@ module.exports = {
       },
       isAdmin: {
         type: Sequelize.BOOLEAN,
+      },
+      isActivated: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
+      activationLink: {
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
