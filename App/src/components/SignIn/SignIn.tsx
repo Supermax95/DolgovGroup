@@ -31,12 +31,10 @@
 
 // export default SignIn;
 
-
-
 import React, { FC, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Pressable, Text, View } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux'; 
+import { useSelector, useDispatch } from 'react-redux';
 import Button from 'ui/Button';
 import Field from 'ui/Field';
 import auth from 'Redux/thunks/Auth/auth.api';
@@ -63,9 +61,8 @@ const SignIn: FC = () => {
     };
 
     try {
-     
       await dispatch(auth({ token, userData }));
-      navigation.navigate('Home'); 
+      navigation.navigate('Home');
     } catch (error) {
       console.error('Ошибка при авторизации:', error);
     }
