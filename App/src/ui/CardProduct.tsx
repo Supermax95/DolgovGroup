@@ -9,7 +9,7 @@ interface ICardProduct {
   originalPrice: number;
   discountedPrice: number;
   discountPercentage: number;
-  image: string;
+  image: object;
 }
 
 const CardProduct: FC<ICardProduct> = ({
