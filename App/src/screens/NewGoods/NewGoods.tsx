@@ -35,7 +35,7 @@ export const NewGoods = () => {
 
   return (
     <View>
-      <View className="flex-row flex-wrap justify-center ">
+      <View className="flex-row flex-wrap justify-center mb-2">
         <CardProduct
           productName="Название продукта"
           promoStartDate="2023-10-10"
@@ -46,7 +46,7 @@ export const NewGoods = () => {
             originalPrice,
             discountedPrice
           )}
-          image={require('../../assets/ChocoMilka.png')}
+          imageProduct={require('../../assets/ChocoMilka.png')}
         />
       </View>
     </View>
