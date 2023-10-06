@@ -42,10 +42,7 @@ export const NewGoods = () => {
           promoEndDate="2023-10-20"
           originalPrice={10.0}
           discountedPrice={8.0}
-          discountPercentage={calculateDiscountPercentageWithCents(
-            originalPrice,
-            discountedPrice
-          )}
+          discountPercentage={discountPercentage}
           imageProduct={require('../../assets/ChocoMilka.png')}
         />
       </View>
