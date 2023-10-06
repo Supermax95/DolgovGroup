@@ -9,7 +9,7 @@ import auth from 'Redux/thunks/Auth/auth.api';
 interface IData {
   email: string;
   password: string;
-} 
+}
 
 const styleCenter = 'h-full w-full bg-white pt-16';
 
