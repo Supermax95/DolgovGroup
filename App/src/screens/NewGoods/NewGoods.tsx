@@ -46,43 +46,7 @@ export const NewGoods = () => {
             originalPrice,
             discountedPrice
           )}
-          image={require('../../assets/ChocoMilka.png')}
-        />
-        <CardProduct
-          productName="Название продукта"
-          promoStartDate="2023-10-10"
-          promoEndDate="2023-10-20"
-          originalPrice={10.0}
-          discountedPrice={8.0}
-          discountPercentage={calculateDiscountPercentageWithCents(
-            originalPrice,
-            discountedPrice
-          )}
-          image={require('../../assets/ChocoMilka.png')}
-        />
-        <CardProduct
-          productName="Название продукта"
-          promoStartDate="2023-10-10"
-          promoEndDate="2023-10-20"
-          originalPrice={10.0}
-          discountedPrice={8.0}
-          discountPercentage={calculateDiscountPercentageWithCents(
-            originalPrice,
-            discountedPrice
-          )}
-          image={require('../../assets/ChocoMilka.png')}
-        />
-        <CardProduct
-          productName="Название продукта"
-          promoStartDate="2023-10-10"
-          promoEndDate="2023-10-20"
-          originalPrice={10.0}
-          discountedPrice={8.0}
-          discountPercentage={calculateDiscountPercentageWithCents(
-            originalPrice,
-            discountedPrice
-          )}
-          image={require('../../assets/ChocoMilka.png')}
+          imageProduct={require('../../assets/ChocoMilka.png')}
         />
       </View>
     </View>

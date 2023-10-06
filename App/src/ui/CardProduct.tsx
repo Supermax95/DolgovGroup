@@ -9,7 +9,7 @@ interface ICardProduct {
   originalPrice: number;
   discountedPrice: number;
   discountPercentage: number;
-  image: object;
+  imageProduct: object;
 }
 
 const CardProduct: FC<ICardProduct> = ({
@@ -19,14 +19,14 @@ const CardProduct: FC<ICardProduct> = ({
   originalPrice,
   discountedPrice,
   discountPercentage,
-  image,
+  imageProduct,
 }) => {
   return (
     <View className="px-1">
       <View className="rounded-md mt-4" style={{ ...BOX_SHADOW }}>
         <View className="bg-white w-40 h-64 rounded-xl items-center justify-center">
           <View className="relative">
-            <Image source={image} className="h-32 w-32 mt-2" />
+            <Image source={imageProduct} className="h-32 w-32 mt-2" />
             <View className="px-2 py-1 bg-yellow-300 rounded-full absolute top-0 left-0 ">
               <Text className="text-xs font-light opacity-80">
                 -{discountPercentage}%
