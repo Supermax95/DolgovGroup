@@ -1,75 +1,50 @@
 import { Image, Text, View } from 'react-native';
 import React from 'react';
+import CardProduct from 'ui/CardProduct';
 
 export const NewGoods = () => {
+  function calculateDiscountPercentageWithCents(
+    originalPrice: number,
+    discountedPrice: number
+  ) {
+    if (originalPrice <= 0 || discountedPrice <= 0) {
+      return 0; // Защита от деления на ноль или отрицательных значений
+    }
+
+    // Вычисляем скидку в копейках
+    const originalCents = originalPrice * 100;
+    const discountedCents = discountedPrice * 100;
+    const discountAmountCents = originalCents - discountedCents;
+
+    // Вычисляем процент скидки
+    const discountPercentage = (discountAmountCents / originalCents) * 100;
+
+    return Number(discountPercentage.toFixed(0)); // Округляем до двух знаков после запятой
+  }
+
+  // Пример использования функции
+  const originalPrice = 122.73; // Исходная цена, включая копейки
+  const discountedPrice = 116.36; // Цена со скидкой, включая копейки
+
+  const discountPercentage = calculateDiscountPercentageWithCents(
+    originalPrice,
+    discountedPrice
+  );
+
+  console.log(`Скидка составляет ${discountPercentage}%`);
+
   return (
-    // <View className="bg-zinc-100">
-    <View className="">
-      <View className="flex-row flex-wrap justify-center ">
-        <View>
-          <View className="rounded-2xl mt-4">
-            <View className="bg-white w-36 h-64 ml-2 mr-2 rounded-xl items-center justify-center">
-              <Image
-                source={require('../../assets/ChocoMilka.png')}
-                className="h-32 w-32"
-              />
-              <View className="bg-white w-36 h-24 ml-2 mr-2 pl-1 rounded-xl mt-0">
-                <Text className="text-sm font-ligth opasity-80 mt-2">
-                  Milk Domik v Derevne, 150 ml
-                </Text>
-                <Text className="text-sm font-normal opacity-50 line-through mt-4">
-                  159,99 ₽
-                </Text>
-                <Text className="text-lg font-bold text-red-600">79,99 ₽</Text>
-              </View>
-            </View>
-            {/* <View className="bg-white w-36 h-24 ml-2 mr-2 pl-1 rounded-xl mt-2">
-              <Text className="text-lg font-normal">79,99 ₽</Text>
-              <Text className="text-sm font-normal opacity-50 line-through">
-                159,99 ₽
-              </Text>
-              <Text className="text-sm font-semibold opasity-80 mt-2">
-                Milk Domik v Derevne, 150 ml
-              </Text>
-            </View> */}
-          </View>
-        </View>
-        <View>
-          <View className="bg-blue-50 w-36 h-36 ml-2 mr-2 rounded-xl mt-4 items-center justify-center">
-            <Image
-              source={require('../../assets/kinder.png')}
-              className="h-32 w-32"
-            />
-          </View>
-          <View className="bg-white w-36 h-24 ml-2 mr-2 pl-1 rounded-xl mt-2">
-            <Text className="text-lg font-normal">79,99 ₽</Text>
-            <Text className="text-sm font-normal opacity-50 line-through">
-              159,99P
-            </Text>
-            <Text className="text-sm font-semibold opasity-80 mt-2">
-              Milk Domik v Derevne, 150 ml
-            </Text>
-          </View>
-        </View>
-        <View>
-          <View className="bg-blue-50 w-36 h-36 ml-2 mr-2 rounded-xl mt-4 items-center justify-center">
-            <Image
-              source={{
-                uri: 'https://png.pngtree.com/element_our/20190603/ourlarge/pngtree-healthy-drink-milk-image_1440016.jpg',
-              }}
-              className="h-32 w-32"
-            />
-          </View>
-          <View className="bg-gray-100 w-36 h-24 ml-2 mr-2 pl-1 rounded-xl mt-2">
-            <Text className="text-lg font-normal">79,99 ₽</Text>
-            <Text className="text-sm font-normal opacity-50 line-through">
-              159,99P
-            </Text>
-            <Text className="text-sm font-semibold opasity-80 mt-2">
-              Milk Domik v Derevne, 150 ml
-            </Text>
-          </View>
-        </View>
+    <View>
+      <View className="flex-row flex-wrap justify-center mb-2">
+        <CardProduct
+          productName="Название продукта"
+          promoStartDate="2023-10-10"
+          promoEndDate="2023-10-20"
+          originalPrice={10.0}
+          discountedPrice={8.0}
+          discountPercentage={discountPercentage}
+          imageProduct={require('../../assets/ChocoMilka.png')}
+        />
       </View>
     </View>
   );

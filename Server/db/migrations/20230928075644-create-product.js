@@ -8,7 +8,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      name: {
+      productName: {
         type: Sequelize.STRING,
       },
       promoStartDate: {
@@ -17,13 +17,16 @@ module.exports = {
       promoEndDate: {
         type: Sequelize.STRING,
       },
-      priceStart: {
+      originalPrice: {
         type: Sequelize.INTEGER,
       },
-      priceEnd: {
+      discountedPrice: {
         type: Sequelize.INTEGER,
       },
       isNew: {
+        type: Sequelize.BOOLEAN,
+      },
+      isDiscounted: {
         type: Sequelize.BOOLEAN,
       },
       description: {
