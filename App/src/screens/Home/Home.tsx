@@ -1,5 +1,5 @@
 // import { styled } from 'nativewind';
-import { Image, View, Text } from 'react-native';
+import { Image, View, Text, ScrollView } from 'react-native';
 import React from 'react';
 
 import { withExpoSnack } from 'nativewind';
@@ -10,6 +10,7 @@ import NewGoods from 'screens/NewGoods/NewGoods';
 
 const Home = () => {
   return (
+    <ScrollView contentContainerStyle={{ minHeight: '100%' }}>
     <View className="bg-white h-full">
       <View
         style={{ elevation: 2 }}
@@ -39,6 +40,7 @@ const Home = () => {
       </View>
       <NewGoods />
     </View>
+    </ScrollView>
   );
 };
 

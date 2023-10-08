@@ -14,6 +14,7 @@ module.exports = {
           model: 'DiscountCards',
           key: 'id',
         },
+        onDelete: 'CASCADE',
       },
       refreshToken: {
         type: Sequelize.STRING,

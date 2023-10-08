@@ -1,3 +1,5 @@
+require('dotenv').config();
+const cookieParser = require('cookie-parser');
 const userService = require('../services/user-service');
 
 class UserController {
@@ -13,6 +15,7 @@ class UserController {
         birthDate,
         password
       );
+      req.session.userId = userData.newUser.id;
       res.cookie('refreshToken', userData.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true,
@@ -37,6 +40,7 @@ class UserController {
     try {
       const { email, password } = req.body;
       const userData = await userService.login(email, password);
+      req.session.userId = userData.user.id;
       res.cookie('refreshToken', userData.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true,
@@ -47,12 +51,30 @@ class UserController {
     }
   }
 
+  // async logout(req, res, next) {
+  //   try {
+  //     const { refreshToken } = req.cookies;
+  //     const token = await userService.logout(refreshToken);
+  //     req.session.destroy(() => {
+  //       res.clearCookie('name');
+  //       res.status(200).json({ message: 'Logged out successfully' });
+  //     res.clearCookie(refreshToken);
+  //     return res.json(token);
+  //   } catch (e) {
+  //     next(e);
+  //   }
+  // }
   async logout(req, res, next) {
     try {
       const { refreshToken } = req.cookies;
       const token = await userService.logout(refreshToken);
-      res.clearCookie(refreshToken);
-      return res.json(token);
+
+      // Очищаем сессию и куки
+      req.session.destroy(() => {
+        res.clearCookie('name');
+        res.clearCookie(refreshToken);
+        res.status(200).json({ message: 'Logged out successfully' });
+      });
     } catch (e) {
       next(e);
     }

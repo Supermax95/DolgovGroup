@@ -1,10 +1,11 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import Field from 'ui/Field';
 import Calendar from './Calendar';
 import { useDispatch, useSelector } from 'react-redux';
-import register from 'Redux/thunks/Register/reg.api';
+import userRegister from 'Redux/thunks/User/reg.api';
 import Button from 'ui/Button';
+import { useNavigation } from '@react-navigation/native';
 
 interface IData {
   email: string;
@@ -18,11 +19,19 @@ interface IData {
 const styleCenter = 'h-full w-full bg-white pt-16';
 
 export const Registration: FC = () => {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
-  const isLoading = useSelector((state: RootState) => state.regSlice.isLoading);
-  const user = useSelector((state: RootState) => state.regSlice.user);
-  const error = useSelector((state: RootState) => state.regSlice.error);
-//   const token = useSelector((state:RootState) => state.regSlice.)
+
+  const isLoading = useSelector(
+    (state: RootState) => state.userSlice.isLoading
+  );
+  const user = useSelector((state: RootState) => state.userSlice.user);
+  console.log(user);
+  
+
+
+  const error = useSelector((state: RootState) => state.userSlice.error);
+
   const [data, setData] = useState<IData>({
     email: '',
     password: '',
@@ -49,7 +58,7 @@ export const Registration: FC = () => {
     setErrorMessages((prevErrors) => ({ ...prevErrors, [field]: '' }));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const newErrorMessages = {} as IData;
     let hasError = false;
 
@@ -108,22 +117,20 @@ export const Registration: FC = () => {
       setErrorMessages(newErrorMessages);
       return;
     }
-
-    dispatch(register(data));
-
-    console.log('Имя:', data.firstName);
-    console.log('Фамилия:', data.lastName);
-    console.log('Отчество:', data.middleName);
-    console.log('Email:', data.email);
-    console.log('Пароль:', data.password);
-    console.log('Проверка пароля:', passwordCheck);
-    console.log('День рождения', data.birthDate);
+    try {
+      const result = await dispatch(userRegister(data));
+      if (result.meta.requestStatus === 'fulfilled') {
+        navigation.navigate('CheckMail');
+      }
+    } catch (error) {
+      console.error('Произошла ошибка при отправке запроса:', error);
+    }
 
     setAllFieldsFilled(true);
   };
 
   return (
-    <ScrollView contentContainerStyle={{ flex: 1 }}>
+    <ScrollView contentContainerStyle={{ minHeight: '100%' }}>
       <View className={styleCenter}>
         <View className="mx-1 justify-center items-center h-full">
           <Text className="text-center text-gray-800 text-2xl font-bold mb-2">

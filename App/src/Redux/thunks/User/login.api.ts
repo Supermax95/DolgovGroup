@@ -2,15 +2,15 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { PORT, IP } from '@env';
 
-const auth = createAsyncThunk('api/login', async ({ token, userData }) => {
+const userLogin = createAsyncThunk('api/login', async ({ token, userData }) => {
   try {
-      const config = {
-          headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
-        };
-        
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    };
+
     const response = await axios.post(
       `http://${IP}:${PORT}/api/login`,
       userData,
@@ -23,4 +23,4 @@ const auth = createAsyncThunk('api/login', async ({ token, userData }) => {
   }
 });
 
-export default auth;
+export default userLogin;
