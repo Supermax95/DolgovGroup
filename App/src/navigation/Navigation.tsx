@@ -13,11 +13,13 @@ import Support from 'screens/Support/Support';
 import Profile from 'screens/Profile/Profile';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { NavigationContainer } from '@react-navigation/native';
+import CheckMail from 'components/Registration/CheckMail';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export const AppNavigator: FC = () => {
+  
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="FooterTabs">
@@ -35,6 +37,11 @@ export const AppNavigator: FC = () => {
           name="SignIn"
           component={SignIn}
           options={{ title: 'Вход' }}
+        />
+           <Stack.Screen
+          name="CheckMail"
+          component={CheckMail}
+          options={{ title: 'Проверка активации' }}
         />
       </Stack.Navigator>
     </NavigationContainer>
@@ -54,6 +61,7 @@ export const FooterTabs: FC = ({}) => {
           ),
         }}
       />
+      
       <Tab.Screen
         name="Home"
         component={Home}

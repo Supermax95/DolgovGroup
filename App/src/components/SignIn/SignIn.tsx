@@ -1,10 +1,10 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { Pressable, Text, View } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
+import { Alert, Pressable, Text, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import userLogin from 'Redux/thunks/User/login.api';
 import Button from 'ui/Button';
 import Field from 'ui/Field';
-import auth from 'Redux/thunks/Auth/auth.api';
 
 interface IData {
   email: string;
@@ -17,20 +17,43 @@ const SignIn: FC = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const { token, isLoading } = useSelector((state) => state.authSlice);
+  const [data, setData] = useState<IData>({
+    email: '',
+    password: '',
+  });
 
-  const [data, setData] = useState<IData>({} as IData);
+  const isLoading = useSelector((state: RootState) => state.userSlice.isLoading);
+
+  const user = useSelector((state: RootState) => state.userSlice.user);
+  console.log(user);
 
   const authHandler = async () => {
-    const userData = {
-      email: data.email,
-      password: data.password,
-    };
-
     try {
-      await dispatch(auth({ token, userData }));
-      navigation.navigate('Home');
+      if (!data.email || !data.password) {
+        Alert.alert('Ошибка', 'Введите email и пароль');
+        return;
+      }
+
+      const result = await dispatch(
+        userLogin({ userData: data })
+      );
+
+      if (result.meta.requestStatus === 'fulfilled') {
+        // Успешная авторизация
+        navigation.navigate('Home');
+      } else {
+        // Обработка ошибок
+        Alert.alert(
+          'Ошибка',
+          'Невозможно авторизоваться. Проверьте данные и попробуйте снова.'
+        );
+      }
     } catch (error) {
+      // Обработка ошибок
+      Alert.alert(
+        'Ошибка',
+        'Невозможно авторизоваться. Проверьте данные и попробуйте снова.'
+      );
       console.error('Ошибка при авторизации:', error);
     }
   };
