@@ -5,6 +5,7 @@ import NewGoods from 'screens/NewGoods/NewGoods';
 import { BOX_SHADOW } from 'styles';
 import LargeCard from 'ui/LargeCard';
 import { useSelector } from 'react-redux';
+import Heading from 'ui/Heading';
 
 const Home = () => {
   function formatPoints(numberPoints: number) {
@@ -12,7 +13,7 @@ const Home = () => {
       return '0 баллов';
     }
     const user = useSelector((state: RootState) => state.userSlice.user);
-    console.log('я юзуер на хосме',user);
+    console.log('я юзуер на хосме', user);
     const lastDigit = numberPoints % 10;
     const lastTwoDigits = numberPoints % 100;
 
@@ -39,12 +40,8 @@ const Home = () => {
           numberPoints={numberPointsRub}
           barcode={require('../../assets/shtrihkod.jpg')}
         />
-        <View
-          style={{ ...BOX_SHADOW }}
-          className="bg-lime-300 rounded-lg p-2 w-80 mx-auto mt-4"
-        >
-          <Text className="text-center text-lg font-bold">Акции</Text>
-        </View>
+        <Heading title="Акции" />
+
         <NewGoods />
       </View>
     </ScrollView>
