@@ -22,7 +22,9 @@ const SignIn: FC = () => {
     password: '',
   });
 
-  const isLoading = useSelector((state: RootState) => state.userSlice.isLoading);
+  const isLoading = useSelector(
+    (state: RootState) => state.userSlice.isLoading
+  );
 
   const user = useSelector((state: RootState) => state.userSlice.user);
   console.log(user);
@@ -34,9 +36,7 @@ const SignIn: FC = () => {
         return;
       }
 
-      const result = await dispatch(
-        userLogin({ userData: data })
-      );
+      const result = await dispatch(userLogin({ userData: data }));
 
       if (result.meta.requestStatus === 'fulfilled') {
         // Успешная авторизация

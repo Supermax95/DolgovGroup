@@ -6,6 +6,7 @@ import { BOX_SHADOW } from 'styles';
 import LargeCard from 'ui/LargeCard';
 import { useSelector } from 'react-redux';
 import Heading from 'ui/Heading';
+import Padding from 'ui/Padding';
 
 const Home = () => {
   function formatPoints(numberPoints: number) {
@@ -40,12 +41,21 @@ const Home = () => {
           numberPoints={numberPointsRub}
           barcode={require('../../assets/shtrihkod.jpg')}
         />
-        <Heading title="Скидки недели" />
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+        <Padding>
+          <Heading title="Акции" />
+        </Padding>
+
+        <ScrollView
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          className="px-1"
+        >
           <NewGoods />
         </ScrollView>
 
-        <Heading title="Акции" />
+        <Padding>
+          <Heading title="Персональные предложения" />
+        </Padding>
 
         <NewGoods />
       </View>

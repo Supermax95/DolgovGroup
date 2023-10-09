@@ -186,6 +186,7 @@ export const Registration: FC = () => {
               placeholder="Пароль"
               onChange={(value) => handleFieldChange('password', value)}
               isSecure={true}
+              //!
               autoCapitalize="none"
             />
             {errorMessages.password && (
@@ -198,6 +199,7 @@ export const Registration: FC = () => {
               placeholder="Подтвердите пароль"
               onChange={(value) => setPasswordCheck(value)}
               isSecure={true}
+              //!
               autoCapitalize="none"
             />
             {errorMessages.password && (

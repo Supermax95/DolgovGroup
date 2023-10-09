@@ -14,12 +14,15 @@ import Profile from 'screens/Profile/Profile';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { NavigationContainer } from '@react-navigation/native';
 import CheckMail from 'components/Registration/CheckMail';
+import EditProfile from 'components/UserProfile/EditProfile/EditProfile';
+import AccumulatedUserPoints from 'components/UserProfile/AccumulatedUserPoints/AccumulatedUserPoints';
+import NotificationSettings from 'components/UserProfile/NotificationSettings/NotificationSettings';
+import AboutApplication from 'components/UserProfile/AboutApplication/AboutApplication';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export const AppNavigator: FC = () => {
-  
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="FooterTabs">
@@ -38,7 +41,27 @@ export const AppNavigator: FC = () => {
           component={SignIn}
           options={{ title: 'Вход' }}
         />
-           <Stack.Screen
+        <Stack.Screen
+          name="EditProfile"
+          component={EditProfile}
+          options={{ title: 'Редактировать профиль' }}
+        />
+        <Stack.Screen
+          name="AccumulatedUserPoints"
+          component={AccumulatedUserPoints}
+          options={{ title: 'Накопленные баллы' }}
+        />
+        <Stack.Screen
+          name="NotificationSettings"
+          component={NotificationSettings}
+          options={{ title: 'Настройка уведомлений' }}
+        />
+        <Stack.Screen
+          name="AboutApplication"
+          component={AboutApplication}
+          options={{ title: 'О приложении' }}
+        />
+        <Stack.Screen
           name="CheckMail"
           component={CheckMail}
           options={{ title: 'Проверка активации' }}
@@ -61,7 +84,7 @@ export const FooterTabs: FC = ({}) => {
           ),
         }}
       />
-      
+
       <Tab.Screen
         name="Home"
         component={Home}
