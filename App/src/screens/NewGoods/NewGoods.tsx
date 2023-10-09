@@ -34,19 +34,37 @@ export const NewGoods = () => {
   console.log(`Скидка составляет ${discountPercentage}%`);
 
   return (
-    <View>
-      <View className="flex-row flex-wrap justify-center mb-2">
-        <CardProduct
-          productName="Название продукта"
-          promoStartDate="2023-10-10"
-          promoEndDate="2023-10-20"
-          originalPrice={10.0}
-          discountedPrice={8.0}
-          discountPercentage={discountPercentage}
-          imageProduct={require('../../assets/ChocoMilka.png')}
-        />
-      </View>
+    // <View>
+    <View className="flex-row flex-wrap justify-center mb-2">
+      <CardProduct
+        productName="Название продуктаbvhdn dbkdnkn lbnskl"
+        promoStartDate="2023-10-10"
+        promoEndDate="2023-10-20"
+        originalPrice={10.99}
+        discountedPrice={8.99}
+        discountPercentage={discountPercentage}
+        imageProduct={require('../../assets/ChocoMilka.png')}
+      />
+      <CardProduct
+        productName="Название продуктаbvhdn dbkdnkn lbnskl"
+        promoStartDate="2023-10-10"
+        promoEndDate="2023-10-20"
+        originalPrice={10.99}
+        discountedPrice={8.99}
+        discountPercentage={discountPercentage}
+        imageProduct={require('../../assets/ChocoMilka.png')}
+      />
+      <CardProduct
+        productName="Название продуктаbvhdn dbkdnkn lbnskl"
+        promoStartDate="2023-10-10"
+        promoEndDate="2023-10-20"
+        originalPrice={10.99}
+        discountedPrice={8.99}
+        discountPercentage={discountPercentage}
+        imageProduct={require('../../assets/ChocoMilka.png')}
+      />
     </View>
+    // </View>
   );
 };
 
