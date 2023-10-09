@@ -26,10 +26,7 @@ export const Registration: FC = () => {
     (state: RootState) => state.userSlice.isLoading
   );
   const user = useSelector((state: RootState) => state.userSlice.user);
- console.log('я юзуер на регистрации',user);
- 
-  
-
+  console.log('я юзуер на регистрации', user);
 
   const error = useSelector((state: RootState) => state.userSlice.error);
 
@@ -188,6 +185,7 @@ export const Registration: FC = () => {
               placeholder="Пароль"
               onChange={(value) => handleFieldChange('password', value)}
               isSecure={true}
+              //!
               autoCapitalize="none"
             />
             {errorMessages.password && (
@@ -200,6 +198,7 @@ export const Registration: FC = () => {
               placeholder="Подтвердите пароль"
               onChange={(value) => setPasswordCheck(value)}
               isSecure={true}
+              //!
               autoCapitalize="none"
             />
             {errorMessages.password && (

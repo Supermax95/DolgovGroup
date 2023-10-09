@@ -23,25 +23,21 @@ const Profile: FC<IProfile> = ({ username = 'Hulia' }) => {
           onPress={() => navigation.navigate('EditProfile')}
           icon="cog"
           title="Редактировать профиль"
-          isLast={false}
         />
         <FieldDetail
           onPress={() => navigation.navigate('AccumulatedUserPoints')}
           icon="bookmark"
           title="Накопленные баллы"
-          isLast={false}
         />
         <FieldDetail
           onPress={() => navigation.navigate('NotificationSettings')}
           icon="bell"
           title="Настройка уведомлений"
-          isLast={false}
         />
         <FieldDetail
           onPress={() => navigation.navigate('AboutApplication')}
           icon="info-circle"
           title="О приложении"
-          isLast={false}
         />
         <FieldDetail
           onPress={() => navigation.navigate('Home')}

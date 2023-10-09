@@ -7,10 +7,15 @@ interface IFieldDetail {
   onPress: () => void;
   icon: keyof typeof FontAwesome.glyphMap;
   title: string;
-  isLast: boolean;
+  isLast?: boolean;
 }
 
-const FieldDetail: FC<IFieldDetail> = ({ onPress, title, icon, isLast }) => {
+const FieldDetail: FC<IFieldDetail> = ({
+  onPress,
+  title,
+  icon,
+  isLast = false,
+}) => {
   const tailwindClass = isLast ? '' : 'border-b-[1px] border-zinc-200';
   return (
     <Padding>
