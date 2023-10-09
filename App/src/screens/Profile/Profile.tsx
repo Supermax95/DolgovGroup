@@ -1,8 +1,10 @@
 import { View, Text } from 'react-native';
 import React, { FC } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
 import Padding from 'ui/Padding';
 import FieldDetail from 'ui/FieldDetail';
+import userLogout from 'Redux/thunks/User/logout.api';
 
 interface IProfile {
   username: string;
@@ -10,6 +12,12 @@ interface IProfile {
 
 const Profile: FC<IProfile> = ({ username = 'Hulia' }) => {
   const navigation = useNavigation();
+
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(userLogout());
+  };
 
   return (
     <View className="bg-white h-full">
@@ -40,7 +48,7 @@ const Profile: FC<IProfile> = ({ username = 'Hulia' }) => {
           title="О приложении"
         />
         <FieldDetail
-          onPress={() => navigation.navigate('Home')}
+          onPress={handleLogout}
           icon="sign-out"
           title="Выход"
           isLast={true}
