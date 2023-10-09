@@ -43,13 +43,22 @@ class UserService {
       `http://${IP}:${PORT}/api/activate/${activationLink}`
     );
     const userDto = new UserDto(newUser);
-    const tokens = tokenService.generateTokens({ ...userDto });
-    await tokenService.saveToken(userDto.id, tokens.refreshToken);
+    // const tokens = tokenService.generateTokens({ ...userDto });
+    // await tokenService.saveToken(userDto.id, tokens.refreshToken);
     return {
-      ...tokens,
+      //   ...tokens,
       newUser: userDto,
     };
   }
+
+  // async activate(activationLink) {
+  //   const newUser = await DiscountCard.findOne({ where: { activationLink } });
+  //   if (!newUser) {
+  //     throw ApiError.BadRequest('Некорректная ссылка активации');
+  //   }
+  //   newUser.isActivated = true;
+  //   await newUser.save();
+  // }
 
   async activate(activationLink) {
     const newUser = await DiscountCard.findOne({ where: { activationLink } });
@@ -58,6 +67,15 @@ class UserService {
     }
     newUser.isActivated = true;
     await newUser.save();
+
+    const userDto = new UserDto(newUser);
+    const tokens = tokenService.generateTokens({ ...userDto });
+    await tokenService.saveToken(userDto.id, tokens.refreshToken);
+
+    return {
+      user: userDto,
+      refreshToken: tokens.refreshToken,
+    };
   }
 
   async login(email, password) {

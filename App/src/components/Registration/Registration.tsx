@@ -26,7 +26,8 @@ export const Registration: FC = () => {
     (state: RootState) => state.userSlice.isLoading
   );
   const user = useSelector((state: RootState) => state.userSlice.user);
-  console.log(user);
+ console.log('я юзуер на регистрации',user);
+ 
   
 
 
