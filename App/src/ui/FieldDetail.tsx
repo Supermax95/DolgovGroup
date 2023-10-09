@@ -12,7 +12,6 @@ interface IFieldDetail {
 
 const FieldDetail: FC<IFieldDetail> = ({ onPress, title, icon, isLast }) => {
   const tailwindClass = isLast ? '' : 'border-b-[1px] border-zinc-200';
-
   return (
     <Padding>
       <Pressable onPress={onPress} className={`py-4 flex-row ${tailwindClass}`}>
