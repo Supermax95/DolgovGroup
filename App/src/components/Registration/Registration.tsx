@@ -26,10 +26,7 @@ export const Registration: FC = () => {
     (state: RootState) => state.userSlice.isLoading
   );
   const user = useSelector((state: RootState) => state.userSlice.user);
- console.log('я юзуер на регистрации',user);
- 
-  
-
+  console.log('я юзуер на регистрации', user);
 
   const error = useSelector((state: RootState) => state.userSlice.error);
 
@@ -139,25 +136,26 @@ export const Registration: FC = () => {
           </Text>
           <View className="w-10/12">
             <Field
-              value={data.firstName}
-              placeholder="Имя"
-              onChange={(value) => handleFieldChange('firstName', value)}
-              autoCapitalize="words"
-            />
-            {errorMessages.firstName && (
-              <Text className="text-red-500 ml-1 mt-1 text-xs">
-                {errorMessages.firstName}
-              </Text>
-            )}
-            <Field
-              value={data.lastName}
-              placeholder="Фамилия"
+              value={data.lastName} 
+              placeholder="Фамилия" 
               onChange={(value) => handleFieldChange('lastName', value)}
               autoCapitalize="words"
             />
             {errorMessages.lastName && (
               <Text className="text-red-500 ml-1 mt-1 text-xs">
                 {errorMessages.lastName}
+              </Text>
+            )}
+
+            <Field
+              value={data.firstName} // Здесь firstName
+              placeholder="Имя" // Здесь Имя
+              onChange={(value) => handleFieldChange('firstName', value)}
+              autoCapitalize="words"
+            />
+            {errorMessages.firstName && (
+              <Text className="text-red-500 ml-1 mt-1 text-xs">
+                {errorMessages.firstName}
               </Text>
             )}
             <Field
