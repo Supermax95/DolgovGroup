@@ -83,6 +83,14 @@ class UserService {
     if (!user) {
       throw ApiError.BadRequest('Пользователь с данным e-mail не найден');
     }
+
+    // if (!user.isActivated) {
+    //   throw ApiError.Forbidden('Аккаунт не активирован');
+    // }
+    if (user.isActivated !== true) {
+      throw new Error('Аккаунт не активирован');
+    }
+
     const isPassEquels = await bcrypt.compare(password, user.password);
     if (!isPassEquels) {
       throw ApiError.BadRequest('Пароль введён неверно');
