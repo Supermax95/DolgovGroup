@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native';
 import React from 'react';
 
-const SettingApplication = () => {
+const NotificationSettings = () => {
   return (
     <View>
       <Text>SettingApplication</Text>
@@ -9,4 +9,4 @@ const SettingApplication = () => {
   );
 };
 
-export default SettingApplication;
+export default NotificationSettings;
