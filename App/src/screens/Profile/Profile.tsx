@@ -1,10 +1,55 @@
 import { View, Text } from 'react-native';
-import React from 'react';
+import React, { FC } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import Padding from 'ui/Padding';
+import FieldDetail from 'ui/FieldDetail';
 
-const Profile = () => {
+interface IProfile {
+  username: string;
+}
+
+const Profile: FC<IProfile> = ({ username = 'Hulia' }) => {
+  const navigation = useNavigation();
+
   return (
-    <View>
-      <Text>Profile</Text>
+    <View className="bg-white h-full">
+      <Padding>
+        <View className="mt-4 mb-2">
+          <Text className="text-center text-xl font-bold text-zinc-500">
+            Добро пожаловать, {username}!
+          </Text>
+        </View>
+        <FieldDetail
+          onPress={() => navigation.navigate('Home')}
+          icon="cog"
+          title="Редактировать профиль"
+          isLast={false}
+        />
+        <FieldDetail
+          onPress={() => navigation.navigate('Home')}
+          icon="bookmark"
+          title="Накопленные баллы"
+          isLast={false}
+        />
+        <FieldDetail
+          onPress={() => navigation.navigate('Home')}
+          icon="bell"
+          title="Настройка уведомлений"
+          isLast={false}
+        />
+        <FieldDetail
+          onPress={() => navigation.navigate('Home')}
+          icon="info-circle"
+          title="О приложении"
+          isLast={false}
+        />
+        <FieldDetail
+          onPress={() => navigation.navigate('Home')}
+          icon="sign-out"
+          title="Выход"
+          isLast={true}
+        />
+      </Padding>
     </View>
   );
 };

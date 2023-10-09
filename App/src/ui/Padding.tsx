@@ -1,10 +1,6 @@
 import { View } from 'react-native';
 import React, { FC } from 'react';
 
-// interface IPadding {
-//   style?: any;
-// }
-
 const Padding: FC<{ children: any; style?: any }> = ({
   children,
   style = {},

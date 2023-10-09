@@ -47,19 +47,10 @@
 //     <View
 //       className={`p-4 flex-row justify-between items-center w-full bg-gray-10 px-0 pb-4 pt-2 border-t-2  border-neutral-100 border-x-1`}
 //     >
-//       {/* <Text>Footer</Text> */}
 //       {menu.map((item) => (
 //         <NavItem key={item.title} item={item} navigate={navigate} />
 //       ))}
 //     </View>
-//   );
-// };
-
-// const Footer: FC = ({}) => {
-//   return (
-//     <View
-//       className={`p-4 flex-row justify-between items-center w-full bg-gray-10 px-0 pb-4 pt-2 border-t-2  border-neutral-100 border-x-1`}
-//     ></View>
 //   );
 // };
 
