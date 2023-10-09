@@ -4,13 +4,15 @@ import React from 'react';
 import NewGoods from 'screens/NewGoods/NewGoods';
 import { BOX_SHADOW } from 'styles';
 import LargeCard from 'ui/LargeCard';
+import { useSelector } from 'react-redux';
 
 const Home = () => {
   function formatPoints(numberPoints: number) {
     if (numberPoints === 0) {
       return '0 баллов';
     }
-
+    const user = useSelector((state: RootState) => state.userSlice.user);
+    console.log('я юзуер на хосме',user);
     const lastDigit = numberPoints % 10;
     const lastTwoDigits = numberPoints % 100;
 

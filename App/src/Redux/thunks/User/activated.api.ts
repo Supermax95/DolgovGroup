@@ -6,8 +6,9 @@ const checkActivation = createAsyncThunk('api/activate', async (userId) => {
   try {
     const response = await axios.get(`http://${IP}:${PORT}/check/${userId}`);
     return response.status === 200;
-  } catch (error) {
-    console.error('Ошибка при проверке активации:', error);
+  } 
+  catch (error) {
+    // console.error('Ошибка при проверке активации:', error);
     return false;
   }
 });

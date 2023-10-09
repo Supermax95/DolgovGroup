@@ -11,6 +11,8 @@ const CheckMail: FC = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
+  const user = useSelector((state: RootState) => state.userSlice.user);
+  console.log(user);
   const userId = useSelector(
     (state: RootState) => state.userSlice.user?.newUser?.id
   );
