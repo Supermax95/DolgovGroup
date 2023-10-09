@@ -1,4 +1,4 @@
-import { Image, Text, View } from 'react-native';
+import { View } from 'react-native';
 import React from 'react';
 import CardProduct from 'ui/CardProduct';
 
@@ -31,22 +31,40 @@ export const NewGoods = () => {
     discountedPrice
   );
 
-  console.log(`Скидка составляет ${discountPercentage}%`);
+  //console.log(`Скидка составляет ${discountPercentage}%`);
 
   return (
-    <View>
-      <View className="flex-row flex-wrap justify-center mb-2">
+    <>
+      <View className="flex-row flex-wrap justify-center mx-2 mb-2">
         <CardProduct
-          productName="Название продукта"
+          productName="Название продуктаbvhdn dbkdnkn lbnskl"
           promoStartDate="2023-10-10"
           promoEndDate="2023-10-20"
-          originalPrice={10.0}
-          discountedPrice={8.0}
+          originalPrice={10.99}
+          discountedPrice={8.99}
+          discountPercentage={discountPercentage}
+          imageProduct={require('../../assets/ChocoMilka.png')}
+        />
+        <CardProduct
+          productName="Название продуктаbvhdn dbkdnkn lbnskl"
+          promoStartDate="2023-10-10"
+          promoEndDate="2023-10-20"
+          originalPrice={10.99}
+          discountedPrice={8.99}
+          discountPercentage={discountPercentage}
+          imageProduct={require('../../assets/ChocoMilka.png')}
+        />
+        <CardProduct
+          productName="Название продуктаbvhdn dbkdnkn lbnskl"
+          promoStartDate="2023-10-10"
+          promoEndDate="2023-10-20"
+          originalPrice={10.99}
+          discountedPrice={8.99}
           discountPercentage={discountPercentage}
           imageProduct={require('../../assets/ChocoMilka.png')}
         />
       </View>
-    </View>
+    </>
   );
 };
 
