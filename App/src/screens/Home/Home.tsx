@@ -13,7 +13,7 @@ const Home = () => {
       return '0 баллов';
     }
     const user = useSelector((state: RootState) => state.userSlice.user);
-    console.log('я юзуер на хосме', user);
+    // console.log('я user на home', user);
     const lastDigit = numberPoints % 10;
     const lastTwoDigits = numberPoints % 100;
 
@@ -31,15 +31,20 @@ const Home = () => {
   const numberPoints = 15;
 
   const numberPointsRub = formatPoints(numberPoints);
-  console.log(numberPointsRub);
+  //console.log(numberPointsRub);
 
   return (
-    <ScrollView contentContainerStyle={{ minHeight: '100%' }}>
+    <ScrollView alwaysBounceVertical>
       <View className="bg-white h-full">
         <LargeCard
           numberPoints={numberPointsRub}
           barcode={require('../../assets/shtrihkod.jpg')}
         />
+        <Heading title="Скидки недели" />
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+          <NewGoods />
+        </ScrollView>
+
         <Heading title="Акции" />
 
         <NewGoods />
