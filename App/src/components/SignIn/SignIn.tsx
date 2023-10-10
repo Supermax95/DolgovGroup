@@ -97,9 +97,9 @@ const SignIn: FC = () => {
               }}
             />
           </View>
-          <Button onPress={authHandler} title={`Войти`} disabled={isLoading} />
+          <Button onPress={authHandler} title={`Войти`} disabled={isLoading}  />
           <Pressable onPress={() => navigation.navigate('Registration')}>
-            <Text className="text-gray-800 opacity-50 text-sm text-center">
+            <Text className="text-gray-800 mt-4 opacity-50 text-sm text-center">
               Зарегистрироваться
             </Text>
           </Pressable>
