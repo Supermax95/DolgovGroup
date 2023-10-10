@@ -20,7 +20,7 @@ const FieldDetail: FC<IFieldDetail> = ({
   return (
     <Padding>
       <Pressable onPress={onPress} className={`py-4 flex-row ${tailwindClass}`}>
-        <View className="mr-2 w-7">
+        <View className="w-7">
           <MaterialCommunityIcons name={icon} size={19} color="gray" />
         </View>
         <View>
