@@ -11,7 +11,7 @@ import Catalog from 'screens/Catalog/Catalog';
 import Shops from 'screens/Shops/Shops';
 import Support from 'screens/Support/Support';
 import Profile from 'screens/Profile/Profile';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { NavigationContainer } from '@react-navigation/native';
 import CheckMail from 'components/Registration/CheckMail';
 import EditProfile from 'components/UserProfile/EditProfile/EditProfile';
@@ -80,7 +80,7 @@ export const FooterTabs: FC = ({}) => {
         options={{
           title: 'Auth',
           tabBarIcon: ({ color, size }) => (
-            <FontAwesome name="credit-card" color={color} size={size} />
+            <MaterialCommunityIcons name="account" color={color} size={size} />
           ),
         }}
       />
@@ -91,7 +91,11 @@ export const FooterTabs: FC = ({}) => {
         options={{
           title: 'Главная',
           tabBarIcon: ({ color, size }) => (
-            <FontAwesome name="credit-card" color={color} size={size} />
+            <MaterialCommunityIcons
+              name="credit-card-outline"
+              color={color}
+              size={27}
+            />
           ),
         }}
       />
@@ -101,7 +105,11 @@ export const FooterTabs: FC = ({}) => {
         options={{
           title: 'Каталог',
           tabBarIcon: ({ color, size }) => (
-            <FontAwesome name="th-large" color={color} size={size} />
+            <MaterialCommunityIcons
+              name="text-box-search-outline"
+              color={color}
+              size={25}
+            />
           ),
         }}
       />
@@ -111,7 +119,11 @@ export const FooterTabs: FC = ({}) => {
         options={{
           title: 'Магазины',
           tabBarIcon: ({ color, size }) => (
-            <FontAwesome name="map-marker" color={color} size={size} />
+            <MaterialCommunityIcons
+              name="map-marker-outline"
+              color={color}
+              size={25}
+            />
           ),
         }}
       />
@@ -121,7 +133,11 @@ export const FooterTabs: FC = ({}) => {
         options={{
           title: 'Помощь',
           tabBarIcon: ({ color, size }) => (
-            <FontAwesome name="comments" color={color} size={size} />
+            <MaterialCommunityIcons
+              name="chat-question-outline"
+              color={color}
+              size={25}
+            />
           ),
         }}
       />
@@ -131,7 +147,11 @@ export const FooterTabs: FC = ({}) => {
         options={{
           title: 'Профиль',
           tabBarIcon: ({ color, size }) => (
-            <FontAwesome name="user" color={color} size={size} />
+            <MaterialCommunityIcons
+              name="account-outline"
+              color={color}
+              size={25}
+            />
           ),
         }}
       />

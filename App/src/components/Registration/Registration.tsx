@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import userRegister from 'Redux/thunks/User/reg.api';
 import Button from 'ui/Button';
 import { useNavigation } from '@react-navigation/native';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 interface IData {
   email: string;
@@ -50,6 +51,12 @@ export const Registration: FC = () => {
     middleName: '',
     birthDate: '',
   });
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleFieldChange = (field: keyof IData, value: string) => {
     setData((prevData) => ({ ...prevData, [field]: value }));
@@ -136,8 +143,8 @@ export const Registration: FC = () => {
           </Text>
           <View className="w-10/12">
             <Field
-              value={data.lastName} 
-              placeholder="Фамилия" 
+              value={data.lastName}
+              placeholder="Фамилия"
               onChange={(value) => handleFieldChange('lastName', value)}
               autoCapitalize="words"
             />
@@ -181,19 +188,35 @@ export const Registration: FC = () => {
                 {errorMessages.email}
               </Text>
             )}
-            <Field
-              value={data.password}
-              placeholder="Пароль"
-              onChange={(value) => handleFieldChange('password', value)}
-              isSecure={true}
-              //!
-              autoCapitalize="none"
-            />
-            {errorMessages.password && (
-              <Text className="text-red-500 ml-1 mt-1 text-xs">
-                {errorMessages.password}
-              </Text>
-            )}
+            <View className="flex-row items-center">
+              <Field
+                value={data.password}
+                placeholder="Пароль"
+                onChange={(value) => handleFieldChange('password', value)}
+                isSecure={!showPassword}
+                //!
+                autoCapitalize="none"
+              />
+              <View className="">
+                <FontAwesome
+                  name={showPassword ? 'eye' : 'eye-slash'}
+                  size={22}
+                  color="gray"
+                  onPress={toggleShowPassword}
+                  style={{
+                    position: 'absolute',
+                    right: 15, // Отступ справа для иконки
+                    transform: [{ translateY: -5 }], // Выравнивание иконки по вертикали
+                  }}
+                />
+              </View>
+              {errorMessages.password && (
+                <Text className="text-red-500 ml-1 mt-1 text-xs">
+                  {errorMessages.password}
+                </Text>
+              )}
+            </View>
+
             <Field
               value={passwordCheck}
               placeholder="Подтвердите пароль"
@@ -202,6 +225,12 @@ export const Registration: FC = () => {
               //!
               autoCapitalize="none"
             />
+            {/* <FontAwesome
+              name={passwordCheck ? 'eye-slash' : 'eye'}
+              size={18}
+              color="gray"
+              onPress={toggleShowPassword}
+            /> */}
             {errorMessages.password && (
               <Text className="text-red-500 ml-1 mt-1 text-xs">
                 {errorMessages.password}
