@@ -73,7 +73,15 @@ export const AppNavigator: FC = () => {
 
 export const FooterTabs: FC = ({}) => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={{
+        tabBarStyle: {
+          height: 50,
+          paddingTop: 5,
+          paddingBottom: 5,
+        },
+      }}
+    >
       <Tab.Screen
         name="Auth"
         component={Auth}
