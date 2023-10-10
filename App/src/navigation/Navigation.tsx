@@ -76,9 +76,9 @@ export const FooterTabs: FC = ({}) => {
     <Tab.Navigator
       screenOptions={{
         tabBarStyle: {
-          height: 50,
+          height: 55,
           paddingTop: 5,
-          paddingBottom: 5,
+          paddingBottom: 10,
         },
       }}
     >
