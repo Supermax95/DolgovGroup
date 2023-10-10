@@ -11,7 +11,7 @@ const LargeCard: FC<ILargeCard> = ({ numberPoints, barcode }) => {
   return (
     <View
       style={{ ...BOX_SHADOW }}
-      className="bg-white rounded-2xl p-4 mt-6 w-[97%] h-52 mx-auto"
+      className="bg-white rounded-2xl p-4 mt-6 w-[97%] h-56 mx-auto"
     >
       <View className="text-center mb-4">
         <Image source={barcode} className="mt-2 h-14 w-full" />
