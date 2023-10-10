@@ -1,12 +1,10 @@
-import { ScrollView, Image, View, Text, StyleSheet } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import React from 'react';
-
-import NewGoods from 'screens/NewGoods/NewGoods';
-import { BOX_SHADOW } from 'styles';
-import LargeCard from 'ui/LargeCard';
 import { useSelector } from 'react-redux';
-import Heading from 'ui/Heading';
 import Padding from 'ui/Padding';
+import LargeCard from 'ui/LargeCard';
+import Heading from 'ui/Heading';
+import NewGoods from 'screens/NewGoods/NewGoods';
 
 const Home = () => {
   function formatPoints(numberPoints: number) {
@@ -37,27 +35,25 @@ const Home = () => {
   return (
     <ScrollView alwaysBounceVertical>
       <View className="bg-white h-full">
-        <LargeCard
-          numberPoints={numberPointsRub}
-          barcode={require('../../assets/shtrihkod.jpg')}
-        />
         <Padding>
+          <LargeCard
+            numberPoints={numberPointsRub}
+            barcode={require('../../assets/shtrihkod.jpg')}
+          />
           <Heading title="Акции" />
-        </Padding>
 
-        <ScrollView
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          className="px-1"
-        >
-          <NewGoods />
-        </ScrollView>
+          <ScrollView
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            className="px-1"
+          >
+            <NewGoods />
+          </ScrollView>
 
-        <Padding>
           <Heading title="Персональные предложения" />
-        </Padding>
 
-        <NewGoods />
+          <NewGoods />
+        </Padding>
       </View>
     </ScrollView>
   );
