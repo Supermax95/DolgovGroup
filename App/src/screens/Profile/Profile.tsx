@@ -15,8 +15,13 @@ const Profile: FC<IProfile> = ({ username = 'Hulia' }) => {
 
   const dispatch = useDispatch();
 
-  const handleLogout = () => {
-    dispatch(userLogout());
+  const handleLogout = async () => {
+    try {
+      await dispatch(userLogout());
+      navigation.navigate('SignIn');
+    } catch (error) {
+      console.error('Ошибка при выходе:', error);
+    }
   };
 
   return (

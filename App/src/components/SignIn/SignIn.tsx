@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import userLogin from 'Redux/thunks/User/login.api';
 import Button from 'ui/Button';
 import Field from 'ui/Field';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 interface IData {
   email: string;
@@ -21,6 +22,7 @@ const SignIn: FC = () => {
     email: '',
     password: '',
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   const isLoading = useSelector(
     (state: RootState) => state.userSlice.isLoading
@@ -28,6 +30,10 @@ const SignIn: FC = () => {
 
   const user = useSelector((state: RootState) => state.userSlice.user);
   console.log(user);
+
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   const authHandler = async () => {
     try {
@@ -71,13 +77,26 @@ const SignIn: FC = () => {
             autoCapitalize="none"
             onChange={(value) => setData({ ...data, email: value })}
           />
-          <Field
-            value={data.password}
-            placeholder="Введите пароль"
-            autoCapitalize="none"
-            onChange={(value) => setData({ ...data, password: value })}
-            isSecure={true}
-          />
+          <View className="flex-row items-center">
+            <Field
+              value={data.password}
+              placeholder="Введите пароль"
+              autoCapitalize="none"
+              onChange={(value) => setData({ ...data, password: value })}
+              isSecure={!showPassword}
+            />
+            <MaterialCommunityIcons
+              name={showPassword ? 'eye' : 'eye-off'}
+              size={25}
+              color="gray"
+              onPress={toggleShowPassword}
+              style={{
+                position: 'absolute',
+                right: 15,
+                transform: [{ translateY: 5 }],
+              }}
+            />
+          </View>
           <Button onPress={authHandler} title={`Войти`} disabled={isLoading} />
           <Pressable onPress={() => navigation.navigate('Registration')}>
             <Text className="text-gray-800 opacity-50 text-sm text-center">

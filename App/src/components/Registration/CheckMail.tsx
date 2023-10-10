@@ -5,7 +5,7 @@ import userActivate from 'Redux/thunks/User/activated.api';
 import { useNavigation } from '@react-navigation/native';
 import Button from 'ui/Button';
 
-const styleCenter = 'h-full w-full bg-white pt-16';
+const styleCenter = 'h-full w-full bg-white ';
 
 const CheckMail: FC = () => {
   const navigation = useNavigation();
@@ -37,7 +37,7 @@ const CheckMail: FC = () => {
         navigation.navigate('Home');
       } else {
         setActivationMessage(
-          'Пожалуйста, проверьте свою почту и активируйте аккаунт.'
+          'Аккаунт не активирован ,проверьте почту/спам.'
         );
       }
     } catch (error) {
@@ -47,12 +47,21 @@ const CheckMail: FC = () => {
   };
 
   return (
+    <>
     <View className={styleCenter}>
       <View className="mx-1 justify-center items-center h-full">
-      <Button title="Проверить активацию" onPress={handleCheckActivation} />
-      <Text className="text-red-500 ml-1 mt-1 text-xs">{activationMessage}</Text>
+      <View className="w-10/12">
+      <Text className="text-center text-gray-800 text-lg font-normal">
+        На вашу почту отправленно письмо 
+      </Text>
+        <Button title="Проверить активацию" onPress={handleCheckActivation} />
+        <Text className="text-red-500 ml-1 mt-1 text-xs">
+          {activationMessage}
+        </Text>
+        </View>
       </View>
     </View>
+    </>
   );
 };
 

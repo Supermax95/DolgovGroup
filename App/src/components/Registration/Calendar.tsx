@@ -42,7 +42,7 @@ export default function Calendar({ onDateChange }: CalendarProps) {
 
   return (
     <View  style={{alignItems: "center"}}>
-      <Button title="День рождения" onPress={showCalendar} />
+      <Button title="День рождения" onPress={showCalendar} colors={['bg-lime-200','bg-lime-300' ]}/>
       {showDatePicker && (
         <DateTimePicker
           value={date}
@@ -57,37 +57,4 @@ export default function Calendar({ onDateChange }: CalendarProps) {
   );
 }
 
-
-
-// import { StatusBar } from "expo-status-bar";
-// import { StyleSheet, View } from "react-native";
-// import DateTimePicker from "@react-native-community/datetimepicker";
-// import { useState } from "react";
-
-// export default function Calendar() {
-//   const [date, setDate] = useState(new Date());
-
-//   const onChange = (e, selectedDate) => {
-//     setDate(selectedDate);
-//   };
-
-//   return (
-//     <View style={styles.container}>
-//       <DateTimePicker
-//         value={date}
-//         mode={"date"}
-//         is24Hour={true}
-//         onChange={onChange}
-//       />
-//       {/* <DateTimePicker
-//         value={date}
-//         mode={"time"}
-//         is24Hour={true}
-//         onChange={onChange}
-//       /> */}
-//       {/* <Text>{date.toLocaleString()}</Text> */}
-//       <StatusBar style="auto" />
-//     </View>
-//   );
-// }
 
