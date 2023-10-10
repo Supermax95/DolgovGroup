@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import userRegister from 'Redux/thunks/User/reg.api';
 import Button from 'ui/Button';
 import { useNavigation } from '@react-navigation/native';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 interface IData {
   email: string;
@@ -40,8 +40,11 @@ export const Registration: FC = () => {
     birthDate: '',
   });
   const [passwordCheck, setPasswordCheck] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [emailError, setEmailError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordRepeat, setShowPasswordRepeat] = useState(false);
+
+  // const [passwordError, setPasswordError] = useState('');
+  // const [emailError, setEmailError] = useState('');
   const [allFieldsFilled, setAllFieldsFilled] = useState(false);
   const [errorMessages, setErrorMessages] = useState<IData>({
     email: '',
@@ -52,10 +55,12 @@ export const Registration: FC = () => {
     birthDate: '',
   });
 
-  const [showPassword, setShowPassword] = useState(false);
-
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
+  };
+
+  const toggleShowPasswordRepeat = () => {
+    setShowPasswordRepeat(!showPasswordRepeat);
   };
 
   const handleFieldChange = (field: keyof IData, value: string) => {
@@ -194,22 +199,19 @@ export const Registration: FC = () => {
                 placeholder="Пароль"
                 onChange={(value) => handleFieldChange('password', value)}
                 isSecure={!showPassword}
-                //!
                 autoCapitalize="none"
               />
-              <View className="">
-                <FontAwesome
-                  name={showPassword ? 'eye' : 'eye-slash'}
-                  size={22}
-                  color="gray"
-                  onPress={toggleShowPassword}
-                  style={{
-                    position: 'absolute',
-                    right: 15, // Отступ справа для иконки
-                    transform: [{ translateY: -5 }], // Выравнивание иконки по вертикали
-                  }}
-                />
-              </View>
+              <MaterialCommunityIcons
+                name={showPassword ? 'eye' : 'eye-off'}
+                size={25}
+                color="gray"
+                onPress={toggleShowPassword}
+                style={{
+                  position: 'absolute',
+                  right: 15, // Отступ справа для иконки
+                  transform: [{ translateY: 5 }], // Выравнивание иконки по вертикали
+                }}
+              />
               {errorMessages.password && (
                 <Text className="text-red-500 ml-1 mt-1 text-xs">
                   {errorMessages.password}
@@ -217,25 +219,31 @@ export const Registration: FC = () => {
               )}
             </View>
 
-            <Field
-              value={passwordCheck}
-              placeholder="Подтвердите пароль"
-              onChange={(value) => setPasswordCheck(value)}
-              isSecure={true}
-              //!
-              autoCapitalize="none"
-            />
-            {/* <FontAwesome
-              name={passwordCheck ? 'eye-slash' : 'eye'}
-              size={18}
-              color="gray"
-              onPress={toggleShowPassword}
-            /> */}
-            {errorMessages.password && (
-              <Text className="text-red-500 ml-1 mt-1 text-xs">
-                {errorMessages.password}
-              </Text>
-            )}
+            <View className="flex-row items-center">
+              <Field
+                value={passwordCheck}
+                placeholder="Подтвердите пароль"
+                onChange={(value) => setPasswordCheck(value)}
+                isSecure={!showPasswordRepeat}
+                autoCapitalize="none"
+              />
+              <MaterialCommunityIcons
+                name={showPasswordRepeat ? 'eye' : 'eye-off'}
+                size={25}
+                color="gray"
+                onPress={toggleShowPasswordRepeat}
+                style={{
+                  position: 'absolute',
+                  right: 15, // Отступ справа для иконки
+                  transform: [{ translateY: 5 }], // Выравнивание иконки по вертикали
+                }}
+              />
+              {errorMessages.password && (
+                <Text className="text-red-500 ml-1 mt-1 text-xs">
+                  {errorMessages.password}
+                </Text>
+              )}
+            </View>
 
             <Calendar
               onDateChange={(selectedDate) =>
