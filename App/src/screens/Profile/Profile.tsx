@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native';
 import React, { FC } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Padding from 'ui/Padding';
 import FieldDetail from 'ui/FieldDetail';
 import userLogout from 'Redux/thunks/User/logout.api';
@@ -10,11 +10,11 @@ interface IProfile {
   username: string;
 }
 
-const Profile: FC<IProfile> = ({ username = 'Hulia' }) => {
+const Profile: FC<IProfile> = () => {
   const navigation = useNavigation();
 
   const dispatch = useDispatch();
-
+  const username = useSelector((state: RootState) => state.userSlice.user.firstName);
   const handleLogout = async () => {
     try {
       await dispatch(userLogout());
@@ -29,7 +29,7 @@ const Profile: FC<IProfile> = ({ username = 'Hulia' }) => {
       <Padding>
         <View className="mt-4 mb-2">
           <Text className="text-center text-xl font-bold text-zinc-500">
-            Добро пожаловать, {username}!
+          Добро пожаловать, {username}!
           </Text>
         </View>
         <FieldDetail

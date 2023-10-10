@@ -19,9 +19,9 @@ interface IData {
 export const Registration: FC = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const isLoading = useSelector(
-    (state: RootState) => state.userSlice.isLoading
-  );
+  // const isLoading = useSelector(
+  //   (state: RootState) => state.userSlice.isLoading
+  // );
   const user = useSelector((state: RootState) => state.userSlice.user);
   console.log('я юзуер на регистрации', user);
 
