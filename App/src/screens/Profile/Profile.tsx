@@ -34,7 +34,7 @@ const Profile: FC<IProfile> = ({ username = 'Hulia' }) => {
         />
         <FieldDetail
           onPress={() => navigation.navigate('AccumulatedUserPoints')}
-          icon="bookmark"
+          icon="receipt"
           title="Накопленные баллы"
         />
         <FieldDetail
@@ -49,7 +49,7 @@ const Profile: FC<IProfile> = ({ username = 'Hulia' }) => {
         />
         <FieldDetail
           onPress={handleLogout}
-          icon="sign-out"
+          icon="sign-out-alt"
           title="Выход"
           isLast={true}
         />

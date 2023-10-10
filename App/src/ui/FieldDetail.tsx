@@ -1,11 +1,11 @@
 import { View, Text, Pressable } from 'react-native';
 import React, { FC } from 'react';
 import Padding from 'ui/Padding';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
 interface IFieldDetail {
   onPress: () => void;
-  icon: keyof typeof FontAwesome.glyphMap;
+  icon: keyof typeof FontAwesome5.glyphMap;
   title: string;
   isLast?: boolean;
 }
@@ -21,7 +21,7 @@ const FieldDetail: FC<IFieldDetail> = ({
     <Padding>
       <Pressable onPress={onPress} className={`py-4 flex-row ${tailwindClass}`}>
         <View className="mr-2 w-5">
-          <FontAwesome name={icon} size={18} color="gray" />
+          <FontAwesome5 name={icon} size={18} color="gray" />
         </View>
         <View>
           <Text>{title}</Text>
