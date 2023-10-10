@@ -35,7 +35,7 @@ export const NewGoods = () => {
 
   return (
     <>
-      <View className="flex-row flex-wrap justify-center mx-2 mb-2">
+      <View className="flex-row flex-wrap justify-center mb-2">
         <CardProduct
           productName="Название продуктаbvhdn dbkdnkn lbnskl"
           promoStartDate="2023-10-10"
