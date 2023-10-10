@@ -29,7 +29,7 @@ const Profile: FC<IProfile> = ({ username = 'Hulia' }) => {
         </View>
         <FieldDetail
           onPress={() => navigation.navigate('EditProfile')}
-          icon="cog"
+          icon="account"
           title="Редактировать профиль"
         />
         <FieldDetail
@@ -44,12 +44,12 @@ const Profile: FC<IProfile> = ({ username = 'Hulia' }) => {
         />
         <FieldDetail
           onPress={() => navigation.navigate('AboutApplication')}
-          icon="info-circle"
+          icon="information"
           title="О приложении"
         />
         <FieldDetail
           onPress={handleLogout}
-          icon="sign-out-alt"
+          icon="location-exit"
           title="Выход"
           isLast={true}
         />
