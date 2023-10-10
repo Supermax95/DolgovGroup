@@ -34,7 +34,7 @@ const NotificationSettings: FC = () => {
             <Switch
               trackColor={{ false: '#d6d3d1', true: '#a7f3d0' }}
               thumbColor={isEnabledPush ? '#22c55e' : '#f5f5f4'}
-              ios_backgroundColor="#3e3e3e"
+              ios_backgroundColor="#d6d3d1"
               onValueChange={toggleSwitchPush}
               value={isEnabledPush}
             />
@@ -47,7 +47,7 @@ const NotificationSettings: FC = () => {
               <Switch
                 trackColor={{ false: '#d6d3d1', true: '#a7f3d0' }}
                 thumbColor={isEnabledEmail ? '#22c55e' : '#f5f5f4'}
-                ios_backgroundColor="#3e3e3e"
+                ios_backgroundColor="#d6d3d1"
                 onValueChange={toggleSwitchEmail}
                 value={isEnabledEmail}
               />
