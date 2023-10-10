@@ -4,7 +4,7 @@ import Padding from 'ui/Padding';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 interface IFieldDetail {
-  onPress: () => void;
+  onPress?: () => void;
   icon: keyof typeof MaterialCommunityIcons.glyphMap;
   title: string;
   isLast?: boolean;
