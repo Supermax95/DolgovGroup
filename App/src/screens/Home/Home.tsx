@@ -33,7 +33,8 @@ const Home = () => {
   //console.log(numberPointsRub);
 
   return (
-    <ScrollView alwaysBounceVertical>
+    <ScrollView alwaysBounceVertical 
+    showsVerticalScrollIndicator={false}>
       <View className="bg-white h-full">
         <Padding>
           <LargeCard
