@@ -4,6 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import resetPassword from 'Redux/thunks/User/newPassword.api';
 import Button from 'ui/Button';
 import Field from 'ui/Field';
+import { useNavigation } from '@react-navigation/native';
+
+// Регулярное выражение для проверки email
+const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
 
 interface IResetPassword {
   email: string;
@@ -12,6 +16,7 @@ interface IResetPassword {
 const styleCenter = 'h-full w-full bg-white pt-16';
 
 const ResetPassword: FC<IResetPassword> = () => {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const [data, setData] = useState<IResetPassword>({
     email: '',
@@ -19,20 +24,33 @@ const ResetPassword: FC<IResetPassword> = () => {
   const error = useSelector((state: RootState) => state.userSlice.error);
 
   const handleResetPassword = async () => {
+    if (!data.email) {
+      Alert.alert('Ошибка', 'Введите email');
+      return;
+    }
+
     try {
-      if (!data.email) {
-        Alert.alert('Ошибка', 'Введите email');
+      if (!emailRegex.test(data.email)) {
+        Alert.alert('Ошибка', 'Введите корректный email');
         return;
       }
+
       const result = await dispatch(resetPassword(data.email));
-      console.log('Result:', result);
+
       if (result.meta.requestStatus === 'rejected') {
         Alert.alert(
           'Ошибка',
           'Данного пользователя не существует или произошла ошибка'
         );
       } else if (result.meta.requestStatus === 'fulfilled') {
-        Alert.alert('Пароль выслан на вашу почту');
+        Alert.alert('Пароль выслан на вашу почту', '', [
+          {
+            text: 'OK',
+            onPress: () => {
+              navigation.navigate('SignIn');
+            },
+          },
+        ]);
       }
     } catch (error) {
       Alert.alert(
@@ -54,7 +72,6 @@ const ResetPassword: FC<IResetPassword> = () => {
         onChange={(value) => setData({ ...data, email: value })}
       />
       <Button onPress={handleResetPassword} title={`Сбросить пароль`} />
-      {/* {error && <Text className="text-red-500 ml-1 mt-1 text-xs">{error}</Text>} */}
     </View>
   );
 };
