@@ -34,7 +34,9 @@ const SignIn: FC = () => {
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
-
+  const handleForgotPassword = () => {
+    navigation.navigate('ResetPassword');
+  };
   const authHandler = async () => {
     try {
       if (!data.email || !data.password) {
@@ -45,17 +47,14 @@ const SignIn: FC = () => {
       const result = await dispatch(userLogin({ userData: data }));
 
       if (result.meta.requestStatus === 'fulfilled') {
-        // Успешная авторизация
         navigation.navigate('Home');
       } else {
-        // Обработка ошибок
         Alert.alert(
           'Ошибка',
           'Невозможно авторизоваться. Проверьте данные и попробуйте снова.'
         );
       }
     } catch (error) {
-      // Обработка ошибок
       Alert.alert(
         'Ошибка',
         'Невозможно авторизоваться. Проверьте данные и попробуйте снова.'
@@ -97,7 +96,12 @@ const SignIn: FC = () => {
               }}
             />
           </View>
-          <Button onPress={authHandler} title={`Войти`} disabled={isLoading}  />
+          <Button onPress={authHandler} title={`Войти`} disabled={isLoading} />
+          <Pressable onPress={handleForgotPassword}>
+            <Text className="text-gray-800 mt-4 opacity-50 text-sm text-center">
+              Забыли пароль?
+            </Text>
+          </Pressable>
           <Pressable onPress={() => navigation.navigate('Registration')}>
             <Text className="text-gray-800 mt-4 opacity-50 text-sm text-center">
               Зарегистрироваться

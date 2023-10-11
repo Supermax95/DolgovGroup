@@ -1,10 +1,9 @@
-
-
 import { createSlice } from '@reduxjs/toolkit';
 import userRegister from './thunks/User/reg.api';
 import userLogout from './thunks/User/logout.api';
 import userLogin from './thunks/User/login.api';
 import userActivate from './thunks/User/activated.api';
+import resetPassword from './thunks/User/newPassword.api';
 
 const initialState = {
   token: '',
@@ -13,6 +12,7 @@ const initialState = {
   isLoading: false,
   error: null,
   isActivated: false,
+  email: '', 
 };
 
 const userSlice = createSlice({
@@ -67,6 +67,17 @@ const userSlice = createSlice({
         state.isAuth = true;
       })
       .addCase(userActivate.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      .addCase(resetPassword.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(resetPassword.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.email = action.payload; 
+      })
+      .addCase(resetPassword.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       });

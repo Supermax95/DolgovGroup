@@ -127,5 +127,29 @@ class UserService {
       user: userDto,
     };
   }
+
+  async newPassword(email) {
+    function generateNewPassword(length = 6) {
+      const charset =
+        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      let newPassword = '';
+      for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * charset.length);
+        newPassword += charset[randomIndex];
+      }
+      return newPassword;
+    }
+    const newPassword = generateNewPassword();
+    const hash = await bcrypt.hash(newPassword, 10);
+    const user = await DiscountCard.findOne({ where: { email } });
+    if (!user) {
+      throw new Error('Пользователь с указанным email не существует');
+    }
+    await DiscountCard.update({ password: hash }, { where: { email } });
+    await MailService.sendNewPasswordMail(email, newPassword);
+
+    console.log('Новый пароль успешно установлен и отправлен по почте');
+  }
 }
+
 module.exports = new UserService();

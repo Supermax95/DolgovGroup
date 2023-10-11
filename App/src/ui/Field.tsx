@@ -20,7 +20,7 @@ const Field: FC<IField> = ({
 }) => {
   return (
     <TextInput 
-    showSoftInputOnFocus={false}
+    // showSoftInputOnFocus={false}
       onChangeText={onChange}
       placeholder={placeholder}
       value={value}

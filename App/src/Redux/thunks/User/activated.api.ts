@@ -8,7 +8,6 @@ const checkActivation = createAsyncThunk('api/activate', async (userId) => {
     return response.status === 200;
   } 
   catch (error) {
-    // console.error('Ошибка при проверке активации:', error);
     return false;
   }
 });
