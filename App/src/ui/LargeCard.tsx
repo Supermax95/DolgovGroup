@@ -11,17 +11,16 @@ const LargeCard: FC<ILargeCard> = ({ numberPoints, barcode }) => {
   return (
     <View
       style={{ ...BOX_SHADOW }}
-      className="bg-white rounded-2xl p-4 w-full h-48 mx-auto mt-6"
+      className="bg-white rounded-2xl p-4 mt-6 w-[97%] h-56 mx-auto"
     >
       <View className="text-center mb-4">
-        <Image source={barcode} className="mt-2  h-14 w-full" />
+        <Image source={barcode} className="mt-2 h-14 w-full" />
       </View>
       <View className="mt-2">
         <View className="flex-row justify-between">
           <Text className="ml-1 text-2xl font-extrabold text-lime-600">
             {numberPoints}
           </Text>
-          {/* <Text className="text-xl text-lime-600">{totalAmount}</Text> */}
         </View>
       </View>
     </View>

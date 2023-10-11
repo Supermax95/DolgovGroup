@@ -1,4 +1,4 @@
-import { ScrollView, View } from 'react-native';
+import { Image, ScrollView, Text, View } from 'react-native';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import Padding from 'ui/Padding';
@@ -33,15 +33,14 @@ const Home = () => {
   //console.log(numberPointsRub);
 
   return (
-    <ScrollView alwaysBounceVertical>
-      <View className="bg-white h-full">
+    <View className="bg-white h-full">
+      <ScrollView alwaysBounceVertical>
         <Padding>
           <LargeCard
             numberPoints={numberPointsRub}
             barcode={require('../../assets/shtrihkod.jpg')}
           />
           <Heading title="Акции" />
-
           <ScrollView
             horizontal={true}
             showsHorizontalScrollIndicator={false}
@@ -49,13 +48,12 @@ const Home = () => {
           >
             <NewGoods />
           </ScrollView>
-
           <Heading title="Персональные предложения" />
 
           <NewGoods />
         </Padding>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
 
