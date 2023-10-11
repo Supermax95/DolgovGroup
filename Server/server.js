@@ -14,6 +14,7 @@ const cookieParser = require('cookie-parser');
 // const indexrouter = require('./routes/index.router');
 const router = require('./routes');
 const activateRouter = require('./routes/activateRouter');
+const userProfileRouter = require('./routes/userProfileRouter');
 // const authRouter = require('./routes/authRouter');
 
 // middleware
@@ -32,7 +33,6 @@ const sessionConfig = {
     httpOnly: true,
   },
 };
-
 
 const app = express();
 
@@ -53,6 +53,8 @@ app.use(cookieParser());
 // app.use('/', indexrouter);
 app.use('/api', router);
 app.use('/', activateRouter);
+app.use('/', userProfileRouter);
+
 app.use(errorMiddleware);
 app.listen(PORT, () => {
   console.log(`Сервер крутится на ${PORT} порту`);

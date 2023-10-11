@@ -14,7 +14,9 @@ const Profile: FC<IProfile> = () => {
   const navigation = useNavigation();
 
   const dispatch = useDispatch();
-  const username = useSelector((state: RootState) => state.userSlice.user.firstName);
+  const username = useSelector(
+    (state: RootState) => state.userSlice.user.firstName
+  );
   const handleLogout = async () => {
     try {
       await dispatch(userLogout());
@@ -29,13 +31,13 @@ const Profile: FC<IProfile> = () => {
       <Padding>
         <View className="mt-4 mb-2">
           <Text className="text-center text-xl font-bold text-zinc-500">
-          Добро пожаловать, {username}!
+            Добро пожаловать, {username}!
           </Text>
         </View>
         <FieldDetail
           onPress={() => navigation.navigate('EditProfile')}
           icon="account"
-          title="Редактировать профиль"
+          title="Редактирование данных"
         />
         <FieldDetail
           onPress={() => navigation.navigate('AccumulatedUserPoints')}

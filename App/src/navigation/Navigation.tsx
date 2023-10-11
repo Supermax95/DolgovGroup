@@ -44,7 +44,7 @@ export const AppNavigator: FC = () => {
         <Stack.Screen
           name="EditProfile"
           component={EditProfile}
-          options={{ title: 'Редактировать профиль' }}
+          options={{ title: 'Редактирование данных' }}
         />
         <Stack.Screen
           name="AccumulatedUserPoints"
