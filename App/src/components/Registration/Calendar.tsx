@@ -8,7 +8,7 @@ import Button from 'ui/Button';
 interface CalendarProps {
   onDateChange: (selectedDate: Date) => void;
 }
-
+const styleCenter = 'h-full w-full bg-white ';
 export default function Calendar({ onDateChange }: CalendarProps) {
   const [date, setDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -50,6 +50,7 @@ export default function Calendar({ onDateChange }: CalendarProps) {
           minimumDate={minDate}
           maximumDate={maxDate}
           onChange={onChange}
+           locale="ru-RU"
         />
       )}
       <StatusBar style="auto" />

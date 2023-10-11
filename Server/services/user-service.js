@@ -4,6 +4,7 @@ const { PORT, IP } = process.env;
 
 const bcrypt = require('bcrypt');
 const uuid = require('uuid');
+const moment = require('moment');
 const MailService = require('./mail-service');
 // const TokenService = require('./token-service');
 const UserDto = require('../dtos/user-dto');
@@ -28,13 +29,18 @@ class UserService {
       );
     }
     const hash = await bcrypt.hash(password, 10);
+    console.log('======>', birthDate);
+    const formattedBirthDate = moment(birthDate, 'YYYY-MM-DD').format(
+      'DD-MM-YYYY'
+    );
+    console.log('======>', formattedBirthDate);
     const activationLink = uuid.v4();
     const newUser = await DiscountCard.create({
       lastName,
       firstName,
       middleName,
       email,
-      birthDate,
+      birthDate: formattedBirthDate,
       password: hash,
       activationLink,
     });
