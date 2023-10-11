@@ -93,6 +93,18 @@ class UserController {
       next(e);
     }
   }
+
+  async newPassword(req, res, next) {
+    try {
+      const { email } = req.body;
+
+      await userService.newPassword(email);
+
+      return res.json({ message: 'Новый пароль отправлен на указанный email' });
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 
 module.exports = new UserController();

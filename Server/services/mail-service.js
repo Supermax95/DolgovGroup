@@ -32,6 +32,26 @@ class MailService {
       console.error('Ошибка отправки письма: ', error);
     }
   }
+
+  async sendNewPasswordMail(to, newPassword) {
+    try {
+      await this.transporter.sendMail({
+        from: process.env.EMAIL,
+        to,
+        subject: 'Изменение пароля',
+        text: `Ваш новый временный пароль: ${newPassword}`,
+        html: `
+          <div>
+            <h1>Ваш новый временный пароль</h1>
+            <p>Ваш временный пароль: ${newPassword}</p>
+          </div>
+        `,
+      });
+      console.log('Письмо успешно отправлено');
+    } catch (error) {
+      console.error('Ошибка отправки письма: ', error);
+    }
+  }
 }
 
 module.exports = new MailService();
