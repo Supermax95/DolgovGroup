@@ -28,7 +28,9 @@ router.get('/check/:userId', async (req, res) => {
         httpOnly: true,
       });
 
-      return res.status(200).json({ message: 'Аккаунт активирован', tokens, user: userDto });
+      return res
+        .status(200)
+        .json({ message: 'Аккаунт активирован', tokens, user: userDto });
     }
 
     return res.status(403).json({ message: 'Аккаунт не активирован' });
