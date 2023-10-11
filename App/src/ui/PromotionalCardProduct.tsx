@@ -24,7 +24,7 @@ const PromotionalCardProduct: FC<IPromotionalCardProduct> = ({
   return (
     <View
       style={{ ...BOX_SHADOW }}
-      className="bg-white h-64 w-48 mt-2 rounded-2xl items-center"
+      className="bg-white h-64 w-48 mt-2 mb-2 rounded-2xl items-center"
     >
       <Image source={imageProduct} className="h-32 w-36 mt-6" />
       <View className="px-2 py-1 bg-yellow-300 rounded-full absolute left-3 mt-2">

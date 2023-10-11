@@ -34,7 +34,7 @@ export const NewGoods = () => {
   //console.log(`Скидка составляет ${discountPercentage}%`);
 
   return (
-    <View className="flex-row flex-wrap justify-between">
+    <View className="flex-row flex-wrap justify-between mb-2">
       <CardProduct
         productName="Название продуктаbvhdn dbkdnkn lbnskl"
         promoStartDate="2023-10-10"
