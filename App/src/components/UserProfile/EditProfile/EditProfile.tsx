@@ -1,47 +1,11 @@
-import { View, Text, Pressable, TouchableOpacity } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import React, { FC, useEffect, useState } from 'react';
 import Padding from 'ui/Padding';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import getProfileInfo from 'Redux/thunks/Profile/profileInfo.api';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import Calendar from 'components/Registration/Calendar';
 
-// interface CalendarProps {
-//   onDateChange: (selectedDate: Date) => void;
-// }
-
-// const EditProfile = ({ onDateChange }: CalendarProps) => {
 const EditProfile = () => {
-  // const [date, setDate] = useState(new Date());
-  // const [showDatePicker, setShowDatePicker] = useState(false);
-
-  // const currentDate = new Date();
-  // const maxDate = currentDate;
-  // const minDate = new Date(
-  //   currentDate.getFullYear() - 100,
-  //   currentDate.getMonth(),
-  //   currentDate.getDate()
-  // );
-
-  // const onChange = (event, selectedDate) => {
-  //   setShowDatePicker(false);
-
-  //   if (selectedDate < minDate) {
-  //     setDate(minDate);
-  //     onDateChange(minDate);
-  //   } else if (selectedDate > maxDate) {
-  //     setDate(maxDate);
-  //     onDateChange(maxDate);
-  //   } else {
-  //     setDate(selectedDate);
-  //     onDateChange(selectedDate);
-  //   }
-  // };
-
-  // const showCalendar = () => {
-  //   setShowDatePicker(true);
-  // };
-
   const dispatch = useAppDispatch();
 
   const userId = useAppSelector((state) => state.userSlice.user.id);
@@ -74,30 +38,6 @@ const EditProfile = () => {
             </View>
           </Pressable>
         </Padding>
-        {/* <Padding>
-          <Pressable
-            onPress={showCalendar}
-            className={`py-4 flex-row border-b-[1px] border-zinc-200 justify-between`}
-          >
-            <View>
-              <Text>День рождения</Text>
-            </View>
-            <View>
-              {showDatePicker && (
-                <DateTimePicker
-                  value={date}
-                  mode="date"
-                  minimumDate={minDate}
-                  maximumDate={maxDate}
-                  onChange={onChange}
-                  locale="ru-RU"
-                />
-              )}
-
-              <Text className="text-zinc-500">{profile.birthDate}</Text>
-            </View>
-          </Pressable>
-        </Padding> */}
         <Padding>
           <Calendar
             onDateChange={(selectedDate) =>
@@ -111,7 +51,7 @@ const EditProfile = () => {
           </Calendar>
         </Padding>
         <Padding>
-          <TouchableOpacity
+          <Pressable
             // onPress={onPress}
             className={`py-4 flex-row border-b-[1px] border-zinc-200 justify-between`}
           >
@@ -121,7 +61,7 @@ const EditProfile = () => {
             <View>
               <Text className="text-zinc-500">{profile.email}</Text>
             </View>
-          </TouchableOpacity>
+          </Pressable>
         </Padding>
         <Padding>
           <Pressable
@@ -136,10 +76,6 @@ const EditProfile = () => {
             </View>
           </Pressable>
         </Padding>
-
-        {/* <FieldEditProfile title="Дата рождения" fieldСhange="12.07.2000" />
-        <FieldEditProfile title="Email" fieldСhange="rbirbrty0@gmail.com" />
-        <FieldEditProfile title="Пароль" fieldСhange="Сброс пароля" /> */}
       </Padding>
     </View>
   );
