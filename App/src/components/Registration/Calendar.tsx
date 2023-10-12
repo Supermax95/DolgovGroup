@@ -1,17 +1,20 @@
 import { StatusBar } from 'expo-status-bar';
-import { Pressable, Text, View } from 'react-native';
+import { Platform, Pressable, Text, View } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { Children, useState } from 'react';
-import Button from 'ui/Button';
+import { useState } from 'react';
+import { format } from 'date-fns';
 
 interface CalendarProps {
   onDateChange: (selectedDate: Date) => void;
   styleCSS?: [string];
   children?: React.ReactNode;
 }
+
 export default function Calendar({
   onDateChange,
-  styleCSS = ['rounded-xl bg-gray-100 mt-3 px-3 py-4 w-full '],
+  styleCSS = [
+    'rounded-xl bg-gray-100 mt-3 px-3 py-4 w-full flex-row justify-between',
+  ],
   children,
 }: CalendarProps) {
   const [date, setDate] = useState(new Date());
@@ -26,8 +29,7 @@ export default function Calendar({
   );
 
   const onChange = (event, selectedDate) => {
-    setShowDatePicker(false);
-
+    setShowDatePicker(Platform.OS === 'ios');
     if (selectedDate < minDate) {
       setDate(minDate);
       onDateChange(minDate);
@@ -45,13 +47,14 @@ export default function Calendar({
   };
 
   return (
-    <Pressable onPress={showCalendar} className={`${styleCSS}`}>
-      <View>
+    <View className={`${styleCSS}`}>
+      <Pressable onPress={showCalendar}>
         <View>
           <Text>День рождения</Text>
         </View>
-        <View>
-          {showDatePicker && (
+
+        {showDatePicker && (
+          <View>
             <DateTimePicker
               value={date}
               mode="date"
@@ -59,11 +62,19 @@ export default function Calendar({
               maximumDate={maxDate}
               onChange={onChange}
               locale="ru-RU"
+              display="spinner"
             />
-          )}
+            <Pressable className='justify-center items-center' onPress={() => setShowDatePicker(false)}>
+              <Text > ОК</Text>
+            </Pressable>
+          </View>
+        )}
+
+        <View>{children}</View>
+        <View>
+          <Text>{format(date, 'dd/MM/yyyy')}</Text>
         </View>
-      </View>
-      <View>{children}</View>
-    </Pressable>
+      </Pressable>
+    </View>
   );
 }

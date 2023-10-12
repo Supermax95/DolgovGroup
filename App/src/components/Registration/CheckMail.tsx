@@ -55,7 +55,7 @@ const CheckMail: FC = () => {
         На вашу почту отправленно письмо 
       </Text>
         <Button title="Проверить активацию" onPress={handleCheckActivation} />
-        <Text className="text-red-500 ml-1 mt-1 text-xs">
+        <Text className="text-red-500 ml-1 mt-1 text-xs ">
           {activationMessage}
         </Text>
         </View>
