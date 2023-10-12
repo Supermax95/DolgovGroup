@@ -10,7 +10,7 @@ module.exports = router.get('/edit/:userId', async (req, res) => {
     if (dataUser && dataUser.birthDate) {
       dataUser.dataValues.birthDate = moment(
         dataUser.dataValues.birthDate
-      ).format('DD-MM-YYYY');
+      ).format('DD.MM.YYYY');
     }
     res.json(dataUser);
   } catch (error) {

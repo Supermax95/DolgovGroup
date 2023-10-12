@@ -19,8 +19,8 @@ const Field: FC<IField> = ({
   keyboardType,
 }) => {
   return (
-    <TextInput 
-    // showSoftInputOnFocus={false}
+    <TextInput
+      // showSoftInputOnFocus={false}
       onChangeText={onChange}
       placeholder={placeholder}
       value={value}
