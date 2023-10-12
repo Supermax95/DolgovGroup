@@ -11,10 +11,10 @@ const CheckMail: FC = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const user = useSelector((state: RootState) => state.userSlice.user);
+  const user = useSelector((state: RootState) => state.userSlice.newUser);
   console.log(user);
   const userId = useSelector(
-    (state: RootState) => state.userSlice.user?.newUser?.id
+    (state: RootState) => state.userSlice.user.newUser.id
   );
   console.log(userId);
 

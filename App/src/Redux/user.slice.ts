@@ -12,7 +12,7 @@ const initialState = {
   isLoading: false,
   error: null,
   isActivated: false,
-  email: '', 
+  email: '',
 };
 
 const userSlice = createSlice({
@@ -65,6 +65,11 @@ const userSlice = createSlice({
         state.isActivated = action.payload;
         state.isLoading = false;
         state.isAuth = true;
+        state.token = action.payload.token;
+        state.user = {
+          ...state.user,
+          ...action.payload.newUser,
+        };
       })
       .addCase(userActivate.rejected, (state, action) => {
         state.isLoading = false;
@@ -75,7 +80,7 @@ const userSlice = createSlice({
       })
       .addCase(resetPassword.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.email = action.payload; 
+        state.email = action.payload;
       })
       .addCase(resetPassword.rejected, (state, action) => {
         state.isLoading = false;

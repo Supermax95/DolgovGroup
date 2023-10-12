@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { format } from 'date-fns';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 
+
 interface CalendarProps {
   onDateChange: (selectedDate: Date) => void;
   styleCSS?: [string];
@@ -20,6 +21,11 @@ export default function Calendar({
 }: CalendarProps) {
   const [date, setDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const userId = useAppSelector((state) => state.userSlice.user.id);
+  const user =  useAppSelector((state) => state.userSlice.id);
+  
+  
+  console.log('profile',user);
 
   const userId = useAppSelector((state) => state.userSlice.user.id);
   // console.log('userId', userId);
@@ -54,7 +60,6 @@ export default function Calendar({
     <Pressable onPress={showCalendar}>
       <View className={`${styleCSS}`}>
         <Text>День рождения</Text>
-
         {userId ? (
           <View>{children}</View>
         ) : (

@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import getProfileInfo from './thunks/Profile/profileInfo.api';
+import changeProfilePass from './thunks/Profile/profileChangePass.api';
 import { IUser } from 'Types/IUser';
 
 const initialState: IUser = {
@@ -8,6 +9,9 @@ const initialState: IUser = {
   middleName: '',
   birthDate: '',
   email: '',
+  isLoading: false, 
+  error: null, 
+  successMessage: null, 
 };
 
 const profileSlice = createSlice({
@@ -18,10 +22,10 @@ const profileSlice = createSlice({
     builder
       .addCase(getProfileInfo.pending, (state) => {
         state.isLoading = true;
+        state.error = null; // Сброс ошибки при загрузке
       })
       .addCase(getProfileInfo.fulfilled, (state, action) => {
         state.isLoading = false;
-        // Здесь мы можем обновить свойства профиля с данными из action.payload
         const { lastName, firstName, middleName, birthDate, email } =
           action.payload;
         state.lastName = lastName;
@@ -32,7 +36,19 @@ const profileSlice = createSlice({
       })
       .addCase(getProfileInfo.rejected, (state, action) => {
         state.isLoading = false;
-        //! Обработка ошибок, например, установка значений по умолчанию или вывод ошибки.
+        state.error = action.error.message;
+      })
+      .addCase(changeProfilePass.pending, (state) => {
+        state.isLoading = true;
+        state.error = null; 
+        state.successMessage = null; 
+      })
+      .addCase(changeProfilePass.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.successMessage = action.payload.message;
+      })
+      .addCase(changeProfilePass.rejected, (state, action) => {
+        state.isLoading = false;
         state.error = action.error.message;
       });
   },
