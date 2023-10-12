@@ -5,7 +5,7 @@ import { PORT, IP } from '@env';
 const getProfileInfo = createAsyncThunk('api/profileInfo', async (userId) => {
   try {
     const response = await axios.get(`http://${IP}:${PORT}/edit/${userId}`);
-    //console.log(response, 'responseresponseresponse');
+    console.log('================>', response);
 
     if (response.status === 200) {
       const { data } = response;
@@ -22,15 +22,17 @@ const getProfileInfo = createAsyncThunk('api/profileInfo', async (userId) => {
     } else {
       console.error('Ошибка при получении данных', response.status);
       // Вернуть пустой объект или что-то другое в случае ошибки
-      return {};
+      return {
+        firstName: 'Нет данных',
+        birthDate: 'Нет данных',
+        email: 'Нет данных',
+      };
     }
   } catch (error) {
     console.error('Ошибка при получении данных', error);
     // Вернуть пустой объект или что-то другое в случае ошибки
     return {
-      lastName: 'Нет данных',
       firstName: 'Нет данных',
-      middleName: 'Нет данных',
       birthDate: 'Нет данных',
       email: 'Нет данных',
     };

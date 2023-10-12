@@ -61,7 +61,6 @@ export const Registration: FC = () => {
   };
 
   const handleSubmit = async () => {
-   
     if (step === 2) {
       if (!data.email || !data.password || !passwordCheck) {
         setErrorMessages({
@@ -70,10 +69,10 @@ export const Registration: FC = () => {
           password: !data.password ? 'Заполните пароль' : '',
           passwordCheck: !passwordCheck ? 'Подтвердите пароль' : '',
         });
-        return; 
+        return;
       } else if (data.password !== passwordCheck) {
         setErrorMessages({ ...errorMessages, password: 'Пароли не совпадают' });
-        return; 
+        return;
       } else {
         setErrorMessages({});
       }
@@ -259,12 +258,16 @@ export const Registration: FC = () => {
                     {errorMessages.password}
                   </Text>
                 )}
-               <View className='mt-2'>
-                    <Text className=" text-gray-800 ml-1 text-xs font-normal">
-                   Регестрируясь вы соглашаетесь продать душу дьяволу
-                </Text>
+                <View className="mt-2">
+                  <Text className=" text-gray-800 ml-1 text-xs font-normal">
+                    Регестрируясь вы соглашаетесь продать душу дьяволу
+                  </Text>
                 </View>
-                <Button onPress={handlePrevStep} title="Назад" colors={['bg-red-200','bg-lime-300' ]}/>
+                <Button
+                  onPress={handlePrevStep}
+                  title="Назад"
+                  colors={['bg-red-200', 'bg-lime-300']}
+                />
                 <Button onPress={handleSubmit} title={`Зарегистрироваться`} />
               </>
             )}
