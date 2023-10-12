@@ -1,4 +1,4 @@
-import { View, Text, Pressable } from 'react-native';
+import { View, Text, Pressable, TouchableOpacity } from 'react-native';
 import React, { FC, useEffect, useState } from 'react';
 import Padding from 'ui/Padding';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
@@ -111,7 +111,7 @@ const EditProfile = () => {
           </Calendar>
         </Padding>
         <Padding>
-          <Pressable
+          <TouchableOpacity
             // onPress={onPress}
             className={`py-4 flex-row border-b-[1px] border-zinc-200 justify-between`}
           >
@@ -121,7 +121,7 @@ const EditProfile = () => {
             <View>
               <Text className="text-zinc-500">{profile.email}</Text>
             </View>
-          </Pressable>
+          </TouchableOpacity>
         </Padding>
         <Padding>
           <Pressable

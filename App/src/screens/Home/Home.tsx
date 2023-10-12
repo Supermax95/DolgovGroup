@@ -34,9 +34,7 @@ const Home = () => {
 
   return (
     <View className="bg-white h-full">
-    <ScrollView alwaysBounceVertical 
-    showsVerticalScrollIndicator={false}>
-
+      <ScrollView alwaysBounceVertical showsVerticalScrollIndicator={false}>
         <Padding>
           <LargeCard
             numberPoints={numberPointsRub}

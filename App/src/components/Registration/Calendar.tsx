@@ -3,6 +3,7 @@ import { Platform, Pressable, Text, View } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useState } from 'react';
 import { format } from 'date-fns';
+import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 
 interface CalendarProps {
   onDateChange: (selectedDate: Date) => void;
@@ -19,6 +20,9 @@ export default function Calendar({
 }: CalendarProps) {
   const [date, setDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
+
+  const userId = useAppSelector((state) => state.userSlice.user.id);
+  // console.log('userId', userId);
 
   const currentDate = new Date();
   const maxDate = currentDate;
@@ -47,34 +51,41 @@ export default function Calendar({
   };
 
   return (
-    <View className={`${styleCSS}`}>
-      <Pressable onPress={showCalendar}>
-        <View>
-          <Text>День рождения</Text>
-        </View>
+    <Pressable onPress={showCalendar}>
+      <View className={`${styleCSS}`}>
+        <Text>День рождения</Text>
 
-        {showDatePicker && (
+        {userId ? (
+          <View>{children}</View>
+        ) : (
           <View>
-            <DateTimePicker
-              value={date}
-              mode="date"
-              minimumDate={minDate}
-              maximumDate={maxDate}
-              onChange={onChange}
-              locale="ru-RU"
-              display="spinner"
-            />
-            <Pressable className='justify-center items-center' onPress={() => setShowDatePicker(false)}>
-              <Text > ОК</Text>
-            </Pressable>
+            <Text>{format(date, 'dd/MM/yyyy')}</Text>
           </View>
         )}
+      </View>
 
-        <View>{children}</View>
+      {showDatePicker && (
         <View>
-          <Text>{format(date, 'dd/MM/yyyy')}</Text>
+          <DateTimePicker
+            value={date}
+            mode="date"
+            minimumDate={minDate}
+            maximumDate={maxDate}
+            onChange={onChange}
+            locale="ru-RU"
+            display="spinner"
+          />
+
+          {Platform.OS === 'ios' && (
+            <Pressable
+              className="justify-center items-center"
+              onPress={() => setShowDatePicker(false)}
+            >
+              <Text>ОК</Text>
+            </Pressable>
+          )}
         </View>
-      </Pressable>
-    </View>
+      )}
+    </Pressable>
   );
 }

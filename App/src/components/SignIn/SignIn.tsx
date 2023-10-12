@@ -12,7 +12,7 @@ interface IData {
   password: string;
 }
 
-const styleCenter = 'h-full w-full bg-white pt-16';
+const styleCenter = 'h-full w-full bg-white';
 
 const SignIn: FC = () => {
   const navigation = useNavigation();
@@ -44,9 +44,9 @@ const SignIn: FC = () => {
         Alert.alert('Ошибка', 'Введите email и пароль');
         return;
       }
-  
+
       const result = await dispatch(userLogin({ userData: data }));
-  
+
       if (result.meta.requestStatus === 'rejected') {
         Alert.alert(
           'Ошибка',
@@ -63,7 +63,6 @@ const SignIn: FC = () => {
       console.error('Ошибка при авторизации:', error);
     }
   };
-  
 
   return (
     <View className={styleCenter}>
