@@ -37,22 +37,23 @@ const SignIn: FC = () => {
   const handleForgotPassword = () => {
     navigation.navigate('ResetPassword');
   };
+
   const authHandler = async () => {
     try {
       if (!data.email || !data.password) {
         Alert.alert('Ошибка', 'Введите email и пароль');
         return;
       }
-
+  
       const result = await dispatch(userLogin({ userData: data }));
-
-      if (result.meta.requestStatus === 'fulfilled') {
-        navigation.navigate('Home');
-      } else {
+  
+      if (result.meta.requestStatus === 'rejected') {
         Alert.alert(
           'Ошибка',
-          'Невозможно авторизоваться. Проверьте данные и попробуйте снова.'
+          'Данного пользователя не существует или произошла ошибка'
         );
+      } else if (result.meta.requestStatus === 'fulfilled') {
+        navigation.navigate('Home');
       }
     } catch (error) {
       Alert.alert(
@@ -62,6 +63,7 @@ const SignIn: FC = () => {
       console.error('Ошибка при авторизации:', error);
     }
   };
+  
 
   return (
     <View className={styleCenter}>
