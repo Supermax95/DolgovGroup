@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import getProfileInfo from 'Redux/thunks/Profile/profileInfo.api';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Calendar from 'components/Registration/Calendar';
+import { useNavigation } from '@react-navigation/native';
 
 // interface CalendarProps {
 //   onDateChange: (selectedDate: Date) => void;
@@ -43,7 +44,7 @@ const EditProfile = () => {
   // };
 
   const dispatch = useAppDispatch();
-
+  const navigation = useNavigation();
   const userId = useAppSelector((state) => state.userSlice.user.id);
   // console.log('userId', userId);
 
@@ -55,6 +56,9 @@ const EditProfile = () => {
 
   const profile = useAppSelector((state) => state.profileSlice);
   console.log(profile);
+  const navigateToChangePassword = () => {
+    navigation.navigate('ChangePassword');
+  };
 
   return (
     <View className="bg-white h-full">
@@ -124,9 +128,9 @@ const EditProfile = () => {
           </Pressable>
         </Padding>
         <Padding>
-          <Pressable
-            // onPress={onPress}
+        <Pressable
             className={`py-4 flex-row border-b-[1px] border-zinc-200 justify-between`}
+            onPress={navigateToChangePassword} // Добавили обработчик нажатия
           >
             <View>
               <Text>Пароль</Text>
