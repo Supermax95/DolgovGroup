@@ -133,7 +133,7 @@ export const Registration: FC = () => {
 
   return (
     <ScrollView contentContainerStyle={{ minHeight: '100%' }}>
-      <View className="h-full w-full bg-white pt-16">
+      <View className="h-full w-full bg-white">
         <View className="mx-1 justify-center items-center h-full">
           <View className="w-10/12">
             {step === 1 && (
@@ -179,13 +179,7 @@ export const Registration: FC = () => {
                     handleFieldChange('birthDate', selectedDate)
                   }
                 />
-                <Text
-                  className={`text-center text-lg ${
-                    data.birthDate ? 'hidden' : ''
-                  }`}
-                >
-                  {data.birthDate ? data.birthDate.toLocaleDateString() : ''}
-                </Text>
+
                 {errorMessages.birthDate && (
                   <Text className="text-red-500 ml-1 mt-1 text-xs">
                     {errorMessages.birthDate}
