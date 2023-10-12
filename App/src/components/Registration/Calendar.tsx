@@ -3,7 +3,8 @@ import { Platform, Pressable, Text, View } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useState } from 'react';
 import { format } from 'date-fns';
-import { useAppSelector } from 'Redux/hooks';
+import { useAppDispatch, useAppSelector } from 'Redux/hooks';
+
 
 interface CalendarProps {
   onDateChange: (selectedDate: Date) => void;
@@ -25,6 +26,9 @@ export default function Calendar({
   
   
   console.log('profile',user);
+
+  const userId = useAppSelector((state) => state.userSlice.user.id);
+  // console.log('userId', userId);
 
   const currentDate = new Date();
   const maxDate = currentDate;
@@ -53,42 +57,9 @@ export default function Calendar({
   };
 
   return (
-    //   <View className={`${styleCSS}`}>
-    //   <Pressable onPress={showCalendar}>
-    //     <View>
-    //       <Text>День рождения</Text>
-    //     </View>
-
-    //     {showDatePicker && (
-    //       <View>
-    //         <DateTimePicker
-    //           value={date}
-    //           mode="date"
-    //           minimumDate={minDate}
-    //           maximumDate={maxDate}
-    //           onChange={onChange}
-    //           locale="ru-RU"
-    //           display="spinner"
-    //         />
-    //         {Platform.OS === 'ios' && (
-    //           <Pressable className='justify-center items-center' onPress={() => setShowDatePicker(false)}>
-    //             <Text>ОК</Text>
-    //           </Pressable>
-    //         )}
-    //       </View>
-    //     )}
-
-    //     <View>{children}</View>
-    //     <View>
-    //       <Text>{format(date, 'dd/MM/yyyy')}</Text>
-    //     </View>
-    //   </Pressable>
-    // </View>
-
     <Pressable onPress={showCalendar}>
       <View className={`${styleCSS}`}>
         <Text>День рождения</Text>
-
         {userId ? (
           <View>{children}</View>
         ) : (
