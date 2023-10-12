@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, Alert } from 'react-native';
 import Field from 'ui/Field';
 import Calendar from './Calendar';
 import { useDispatch, useSelector } from 'react-redux';
@@ -80,7 +80,12 @@ export const Registration: FC = () => {
 
     try {
       const result = await dispatch(userRegister(data));
-      if (result.meta.requestStatus === 'fulfilled') {
+      if (result.meta.requestStatus === 'rejected') {
+        Alert.alert(
+          'Ошибка',
+          'Пользователь с данным email существует или произошла ошибка'
+        );
+      } else if (result.meta.requestStatus === 'fulfilled') {
         navigation.navigate('CheckMail');
       }
     } catch (error) {
@@ -174,14 +179,18 @@ export const Registration: FC = () => {
                     handleFieldChange('birthDate', selectedDate)
                   }
                 />
+                <Text
+                  className={`text-center text-lg ${
+                    data.birthDate ? 'hidden' : ''
+                  }`}
+                >
+                  {data.birthDate ? data.birthDate.toLocaleDateString() : ''}
+                </Text>
                 {errorMessages.birthDate && (
                   <Text className="text-red-500 ml-1 mt-1 text-xs">
                     {errorMessages.birthDate}
                   </Text>
                 )}
-                <Text className="text-center text-lg">
-                  {data.birthDate ? data.birthDate.toLocaleDateString() : ''}
-                </Text>
                 <Button onPress={handleNextStep} title="Далее" />
               </>
             )}
