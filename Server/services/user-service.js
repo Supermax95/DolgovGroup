@@ -28,8 +28,7 @@ class UserService {
       );
     }
     const hash = await bcrypt.hash(password, 10);
- 
-  
+
     const activationLink = uuid.v4();
     const newUser = await DiscountCard.create({
       lastName,
@@ -45,10 +44,10 @@ class UserService {
       `http://${IP}:${PORT}/api/activate/${activationLink}`
     );
     const userDto = new UserDto(newUser);
-    // const tokens = tokenService.generateTokens({ ...userDto });
-    // await tokenService.saveToken(userDto.id, tokens.refreshToken);
+    const tokens = tokenService.generateTokens({ ...userDto });
+    await tokenService.saveToken(userDto.id, tokens.refreshToken);
     return {
-      //   ...tokens,
+      ...tokens,
       newUser: userDto,
     };
   }
@@ -70,13 +69,13 @@ class UserService {
     newUser.isActivated = true;
     await newUser.save();
 
-    const userDto = new UserDto(newUser);
-    const tokens = tokenService.generateTokens({ ...userDto });
-    await tokenService.saveToken(userDto.id, tokens.refreshToken);
+    // const userDto = new UserDto(newUser);
+    // const tokens = tokenService.generateTokens({ ...userDto });
+    // await tokenService.saveToken(userDto.id, tokens.refreshToken);
 
     return {
-      user: userDto,
-      refreshToken: tokens.refreshToken,
+      // user: userDto,
+      // refreshToken: tokens.refreshToken,
     };
   }
 
