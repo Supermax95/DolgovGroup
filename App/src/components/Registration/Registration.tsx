@@ -2,7 +2,8 @@ import React, { FC, useState } from 'react';
 import { View, Text, ScrollView, Alert } from 'react-native';
 import Field from 'ui/Field';
 import Calendar from './Calendar';
-import { useDispatch, useSelector } from 'react-redux';
+//import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import userRegister from 'Redux/thunks/User/reg.api';
 import Button from 'ui/Button';
 import { useNavigation } from '@react-navigation/native';
@@ -18,14 +19,14 @@ interface IData {
 }
 export const Registration: FC = () => {
   const navigation = useNavigation();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   // const isLoading = useSelector(
   //   (state: RootState) => state.userSlice.isLoading
   // );
-  const user = useSelector((state: RootState) => state.userSlice.user);
+  const user = useAppSelector((state) => state.userSlice.user);
   console.log('я юзуер на регистрации', user);
 
-  const error = useSelector((state: RootState) => state.userSlice.error);
+  const error = useAppSelector((state) => state.userSlice.error);
   const [step, setStep] = useState(1);
   const [data, setData] = useState<IData>({
     email: '',
@@ -92,6 +93,7 @@ export const Registration: FC = () => {
       console.error('Произошла ошибка при отправке запроса:', error);
     }
   };
+
   const handleNextStep = () => {
     if (step === 1) {
       if (

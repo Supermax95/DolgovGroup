@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { format } from 'date-fns';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 
-
 interface CalendarProps {
   onDateChange: (selectedDate: Date) => void;
   styleCSS?: [string];
@@ -21,14 +20,10 @@ export default function Calendar({
 }: CalendarProps) {
   const [date, setDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
-  // const userId = useAppSelector((state) => state.userSlice.user.id);
-  const user =  useAppSelector((state) => state.userSlice.id);
-  
-  
-  console.log('profile',user);
 
   const userId = useAppSelector((state) => state.userSlice.user.id);
-  // console.log('userId', userId);
+
+  //console.log('Я юзер на календаре, мать твою', userId);
 
   const currentDate = new Date();
   const maxDate = currentDate;
@@ -64,7 +59,7 @@ export default function Calendar({
           <View>{children}</View>
         ) : (
           <View>
-            <Text>{format(date, 'dd/MM/yyyy')}</Text>
+            <Text>{format(date, 'dd.MM.yyyy')}</Text>
           </View>
         )}
       </View>
