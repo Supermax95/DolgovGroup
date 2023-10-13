@@ -21,7 +21,7 @@ export default function Calendar({
 }: CalendarProps) {
   const [date, setDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const userId = useAppSelector((state) => state.userSlice.user.id);
+  // const userId = useAppSelector((state) => state.userSlice.user.id);
   const user =  useAppSelector((state) => state.userSlice.id);
   
   
