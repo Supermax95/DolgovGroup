@@ -20,9 +20,9 @@ class UserService {
     birthDate,
     password
   ) {
-    const user = await DiscountCard.findOne({ where: { email } });
-
-    if (user) {
+    const userReg = await DiscountCard.findOne({ where: { email } });
+console.log('======>', userReg);
+    if (userReg) {
       throw ApiError.BadRequest(
         `Пользователь с такой электронной почтой ${email} уже существует`
       );
@@ -30,7 +30,7 @@ class UserService {
     const hash = await bcrypt.hash(password, 10);
 
     const activationLink = uuid.v4();
-    const newUser = await DiscountCard.create({
+    const user = await DiscountCard.create({
       lastName,
       firstName,
       middleName,
@@ -43,12 +43,12 @@ class UserService {
       email,
       `http://${IP}:${PORT}/api/activate/${activationLink}`
     );
-    const userDto = new UserDto(newUser);
-    const tokens = tokenService.generateTokens({ ...userDto });
-    await tokenService.saveToken(userDto.id, tokens.refreshToken);
+    const userDto = new UserDto(user);
+    // const tokens = tokenService.generateTokens({ ...userDto });
+    // await tokenService.saveToken(userDto.id, tokens.refreshToken);
     return {
-      ...tokens,
-      newUser: userDto,
+      // ...tokens,
+      user: userDto,
     };
   }
 
@@ -62,19 +62,19 @@ class UserService {
   // }
 
   async activate(activationLink) {
-    const newUser = await DiscountCard.findOne({ where: { activationLink } });
-    if (!newUser) {
+    const user = await DiscountCard.findOne({ where: { activationLink } });
+    if (!user) {
       throw ApiError.BadRequest('Некорректная ссылка активации');
     }
-    newUser.isActivated = true;
-    await newUser.save();
+    user.isActivated = true;
+    await user.save();
 
     // const userDto = new UserDto(newUser);
     // const tokens = tokenService.generateTokens({ ...userDto });
     // await tokenService.saveToken(userDto.id, tokens.refreshToken);
 
     return {
-      // user: userDto,
+      user: userDto,
       // refreshToken: tokens.refreshToken,
     };
   }

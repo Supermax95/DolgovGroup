@@ -39,7 +39,7 @@ const userSlice = createSlice({
       })
       .addCase(userRegister.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.user = action.payload;
+        state.user = action.payload.user;
         state.isAuth = true;
       })
       .addCase(userRegister.rejected, (state, action) => {
@@ -65,12 +65,8 @@ const userSlice = createSlice({
       .addCase(userActivate.fulfilled, (state, action) => {
         state.isActivated = action.payload;
         state.isLoading = false;
-        // state.isAuth = true;
-        // state.token = action.payload.token;
-        // state.user = {
-        //   ...state.user,
-        //   ...action.payload.newUser,
-        // };
+        state.isAuth = true;
+        state.token = action.payload.token;
       })
       .addCase(userActivate.rejected, (state, action) => {
         state.isLoading = false;

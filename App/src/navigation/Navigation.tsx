@@ -138,7 +138,7 @@ export const FooterTabs: FC = ({}) => {
         name="Shops"
         component={Shops}
         options={{
-          title: 'Магазины',
+          title: 'Магазины поблизости',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               name="map-marker-outline"

@@ -11,13 +11,13 @@ const CheckMail: FC = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const user = useSelector((state: RootState) => state.userSlice.newUser);
-  console.log(user);
-  const userId = useSelector(
-    (state: RootState) => state.userSlice.user.newUser.id
-  );
-  console.log(userId);
-
+  const user = useSelector((state: RootState) => state.userSlice.user);
+  console.log('юзер на активации', user);
+  const userId = useSelector((state: RootState) => state.userSlice.user.id);
+  console.log('userid',userId);
+  
+  // const u = useSelector((state: RootState) => state.userSlice);
+  // console.log('===>u', u);
   const isActivated = useSelector((state) => state.userSlice.isActivated);
   console.log('===>', isActivated);
 
@@ -25,6 +25,8 @@ const CheckMail: FC = () => {
 
   useEffect(() => {
     if (userId) {
+      console.log('диспатч',userId);
+      
       dispatch(userActivate(userId));
     }
   }, [dispatch, userId]);
@@ -36,9 +38,7 @@ const CheckMail: FC = () => {
       if (response.payload === true) {
         navigation.navigate('Home');
       } else {
-        setActivationMessage(
-          'Аккаунт не активирован ,проверьте почту/спам.'
-        );
+        setActivationMessage('Аккаунт не активирован ,проверьте почту/спам.');
       }
     } catch (error) {
       console.error('Ошибка при проверке активации:', error);
@@ -48,19 +48,22 @@ const CheckMail: FC = () => {
 
   return (
     <>
-    <View className={styleCenter}>
-      <View className="mx-1 justify-center items-center h-full">
-      <View className="w-10/12">
-      <Text className="text-center text-gray-800 text-lg font-normal">
-        На вашу почту отправленно письмо 
-      </Text>
-        <Button title="Проверить активацию" onPress={handleCheckActivation} />
-        <Text className="text-red-500 ml-1 mt-1 text-xs ">
-          {activationMessage}
-        </Text>
+      <View className={styleCenter}>
+        <View className="mx-1 justify-center items-center h-full">
+          <View className="w-10/12">
+            <Text className="text-center text-gray-800 text-lg font-normal">
+              На вашу почту отправленно письмо
+            </Text>
+            <Button
+              title="Проверить активацию"
+              onPress={handleCheckActivation}
+            />
+            <Text className="text-red-500 ml-1 mt-1 text-xs ">
+              {activationMessage}
+            </Text>
+          </View>
         </View>
       </View>
-    </View>
     </>
   );
 };

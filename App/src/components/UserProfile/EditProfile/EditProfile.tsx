@@ -10,7 +10,7 @@ const EditProfile = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
   const userId = useAppSelector((state) => state.userSlice.user.id);
-  // console.log('userId', userId);
+  console.log('userId', userId);
 
   useEffect(() => {
     if (userId) {
