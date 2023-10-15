@@ -14,9 +14,13 @@ const EditProfile = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
   const userId = useAppSelector((state) => state.userSlice.user.id);
+
+  console.log('userId', userId);
+
   // console.log('userId', userId);
   const profile = useAppSelector((state) => state.profileSlice);
   console.log('profileAll============>', profile);
+
 
   useEffect(() => {
     if (userId) {

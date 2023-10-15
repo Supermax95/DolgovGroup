@@ -19,11 +19,11 @@ import type { AxiosResponse } from 'axios';
 import axios from 'axios';
 import { PORT, IP } from '@env';
 
-const userRegister = createAsyncThunk('api/register', async (newUser) => {
+const userRegister = createAsyncThunk('api/register', async (user) => {
   try {
     const response: AxiosResponse = await axios.post(
       `http://${IP}:${PORT}/api/registration`,
-      newUser
+      user
     );
     
   
