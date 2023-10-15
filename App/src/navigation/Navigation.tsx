@@ -20,6 +20,7 @@ import NotificationSettings from 'components/UserProfile/NotificationSettings/No
 import AboutApplication from 'components/UserProfile/AboutApplication/AboutApplication';
 import { ResetPassword } from 'components/SignIn/ResetPassword';
 import { ChangePassword } from 'components/UserProfile/EditProfile/ChangePassword/ChangePassword';
+import { ChangeDate } from 'components/UserProfile/EditProfile/EditBD';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -77,6 +78,11 @@ export const AppNavigator: FC = () => {
           name="ChangePassword"
           component={ChangePassword}
           options={{ title: 'Изменение пароля' }}
+        />
+            <Stack.Screen
+          name="ChangeDate"
+          component={ChangeDate}
+          options={{ title: 'Изменение ДР' }}
         />
       </Stack.Navigator>
     </NavigationContainer>

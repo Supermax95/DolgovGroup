@@ -2,6 +2,7 @@ const router = require('express').Router();
 const bcrypt = require('bcrypt');
 const moment = require('moment');
 const { DiscountCard } = require('../db/models');
+// const { log } = require('console');
 
 module.exports = router
   .get('/edit/:userId', async (req, res) => {
@@ -25,6 +26,7 @@ module.exports = router
     try {
       const { userId } = req.params;
       const { newBirthDate } = req.body;
+      console.log('Пришедшие данные newBirthDate:', newBirthDate);
 
       const user = await DiscountCard.findOne({ where: { id: userId } });
 
@@ -33,7 +35,7 @@ module.exports = router
       }
 
       const birthDateUpdate = await user.update({
-        where: { birthDate: newBirthDate },
+        birthDate: newBirthDate,
       });
 
       console.log('================>', birthDateUpdate);

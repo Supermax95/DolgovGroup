@@ -9,6 +9,7 @@ import profileChangeBirthDate from '../../../Redux/thunks/Profile/profileChangeB
 // rfktylfhm
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { format } from 'date-fns';
+import Button from 'ui/Button';
 
 const EditProfile = () => {
   const dispatch = useAppDispatch();
@@ -20,8 +21,9 @@ const EditProfile = () => {
   // console.log('userId', userId);
   const profile = useAppSelector((state) => state.profileSlice);
   console.log('profileAll============>', profile);
-
-
+  const transferToBirthdate = async () => {
+  navigation.navigate('ChangeDate');
+}
   useEffect(() => {
     if (userId) {
       dispatch(getProfileInfo(userId));
@@ -205,6 +207,7 @@ const EditProfile = () => {
           </Pressable>
         </Padding>
       </Padding>
+      <Button onPress={transferToBirthdate} title={'ДР'}/>
     </View>
   );
 };
