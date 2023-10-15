@@ -5,7 +5,7 @@ import { PORT, IP } from '@env';
 const getProfileInfo = createAsyncThunk('api/profileInfo', async (userId) => {
   try {
     const response = await axios.get(`http://${IP}:${PORT}/edit/${userId}`);
-    console.log('================>', response);
+    // console.log('================>', response);
 
     if (response.status === 200) {
       const { data } = response;

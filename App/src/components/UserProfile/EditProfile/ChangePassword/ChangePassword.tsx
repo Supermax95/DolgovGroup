@@ -1,12 +1,11 @@
 import React, { FC, useState } from 'react';
+import { useAppDispatch, useAppSelector } from 'Redux/hooks';
+import { useNavigation } from '@react-navigation/native';
 import { View, Text, Alert } from 'react-native';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Field from 'ui/Field';
 import Button from 'ui/Button';
-import { useDispatch } from 'react-redux';
 import changeProfilePass from 'Redux/thunks/Profile/profileChangePass.api';
-import { useAppSelector } from 'Redux/hooks';
-import { useNavigation } from '@react-navigation/native';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 const styleCenter = 'h-full w-full bg-white ';
 
@@ -17,7 +16,7 @@ interface PasswordChangeData {
 }
 
 export const ChangePassword: FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigation = useNavigation();
   const userId = useAppSelector((state) => state.userSlice.user.id);
 
@@ -127,6 +126,7 @@ export const ChangePassword: FC = () => {
           placeholder="Новый пароль"
           onChange={(value) => handleFieldChange('newPassword', value)}
           isSecure={!showPassword}
+          autoCapitalize="none"
         />
         <MaterialCommunityIcons
           name={showPassword ? 'eye' : 'eye-off'}
@@ -151,6 +151,7 @@ export const ChangePassword: FC = () => {
           placeholder="Подтвердите новый пароль"
           onChange={(value) => handleFieldChange('confirmPassword', value)}
           isSecure={!showPassword}
+          autoCapitalize="none"
         />
         <MaterialCommunityIcons
           name={showPassword ? 'eye' : 'eye-off'}

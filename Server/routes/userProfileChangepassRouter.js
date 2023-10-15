@@ -13,7 +13,7 @@ router.put('/newpassword/:userId', async (req, res) => {
       return res.status(404).json({ error: 'Пользователь не найден' });
     }
 
-    const isPasswordValid = await bcrypt.compare(oldPassword, user.password); 
+    const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
 
     if (!isPasswordValid) {
       return res.status(400).json({ error: 'Старый пароль неверен' });

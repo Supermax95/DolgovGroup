@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { IUser } from 'Types/IUser';
 import getProfileInfo from './thunks/Profile/profileInfo.api';
 import changeProfilePass from './thunks/Profile/profileChangePass.api';
-import { IUser } from 'Types/IUser';
+import profileChangeBirthDate from './thunks/Profile/profileChangeBirthDate.api';
 
 const initialState: IUser = {
   lastName: '',
@@ -9,9 +10,9 @@ const initialState: IUser = {
   middleName: '',
   birthDate: '',
   email: '',
-  isLoading: false, 
-  error: null, 
-  successMessage: null, 
+  isLoading: false,
+  error: null,
+  successMessage: null,
 };
 
 const profileSlice = createSlice({
@@ -40,8 +41,8 @@ const profileSlice = createSlice({
       })
       .addCase(changeProfilePass.pending, (state) => {
         state.isLoading = true;
-        state.error = null; 
-        state.successMessage = null; 
+        state.error = null;
+        state.successMessage = null;
       })
       .addCase(changeProfilePass.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -50,6 +51,18 @@ const profileSlice = createSlice({
       .addCase(changeProfilePass.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
+      })
+      .addCase(profileChangeBirthDate.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(profileChangeBirthDate.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.birthDate = action.payload.birthDate;
+      })
+      .addCase(profileChangeBirthDate.rejected, (state) => {
+        state.isLoading = false;
+        state.error = null;
       });
   },
 });

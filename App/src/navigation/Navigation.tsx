@@ -18,9 +18,8 @@ import EditProfile from 'components/UserProfile/EditProfile/EditProfile';
 import AccumulatedUserPoints from 'components/UserProfile/AccumulatedUserPoints/AccumulatedUserPoints';
 import NotificationSettings from 'components/UserProfile/NotificationSettings/NotificationSettings';
 import AboutApplication from 'components/UserProfile/AboutApplication/AboutApplication';
-import { ChangePassword } from 'components/UserProfile/ChangePassword/ChangePassword';
 import { ResetPassword } from 'components/SignIn/ResetPassword';
-
+import { ChangePassword } from 'components/UserProfile/EditProfile/ChangePassword/ChangePassword';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -74,7 +73,7 @@ export const AppNavigator: FC = () => {
           component={ResetPassword}
           options={{ title: 'Сброс пароля' }}
         />
-            <Stack.Screen
+        <Stack.Screen
           name="ChangePassword"
           component={ChangePassword}
           options={{ title: 'Изменение пароля' }}
