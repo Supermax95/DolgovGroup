@@ -21,6 +21,7 @@ import AboutApplication from 'components/UserProfile/AboutApplication/AboutAppli
 import { ResetPassword } from 'components/SignIn/ResetPassword';
 import { ChangePassword } from 'components/UserProfile/EditProfile/ChangePassword/ChangePassword';
 import { ChangeDate } from 'components/UserProfile/EditProfile/EditBD';
+import ChangeFullName from 'components/UserProfile/EditProfile/ChangeFullName/ChangeFullName';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -70,6 +71,11 @@ export const AppNavigator: FC = () => {
           options={{ title: 'Проверка активации' }}
         />
         <Stack.Screen
+          name="ChangeFullName"
+          component={ChangeFullName}
+          options={{ title: 'Изменение профиля' }}
+        />
+        <Stack.Screen
           name="ResetPassword"
           component={ResetPassword}
           options={{ title: 'Сброс пароля' }}
@@ -77,9 +83,9 @@ export const AppNavigator: FC = () => {
         <Stack.Screen
           name="ChangePassword"
           component={ChangePassword}
-          options={{ title: 'Изменение пароля' }}
+          options={{ title: 'Изменение профиля' }}
         />
-            <Stack.Screen
+        <Stack.Screen
           name="ChangeDate"
           component={ChangeDate}
           options={{ title: 'Изменение ДР' }}

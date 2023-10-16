@@ -9,7 +9,7 @@ import changeProfilePass from 'Redux/thunks/Profile/profileChangePass.api';
 
 const styleCenter = 'h-full w-full bg-white ';
 
-interface PasswordChangeData {
+interface IPasswordChangeData {
   oldPassword: string;
   newPassword: string;
   confirmPassword: string;
@@ -20,14 +20,14 @@ export const ChangePassword: FC = () => {
   const navigation = useNavigation();
   const userId = useAppSelector((state) => state.userSlice.user.id);
 
-  const [data, setData] = useState<PasswordChangeData>({
+  const [data, setData] = useState<IPasswordChangeData>({
     oldPassword: '',
     newPassword: '',
     confirmPassword: '',
   });
   const [showPassword, setShowPassword] = useState(false);
 
-  const [errorMessages, setErrorMessages] = useState<PasswordChangeData>({
+  const [errorMessages, setErrorMessages] = useState<IPasswordChangeData>({
     oldPassword: '',
     newPassword: '',
     confirmPassword: '',
@@ -38,7 +38,7 @@ export const ChangePassword: FC = () => {
   };
 
   const handleFieldChange = (
-    field: keyof PasswordChangeData,
+    field: keyof IPasswordChangeData,
     value: string
   ) => {
     setData((prevData) => ({ ...prevData, [field]: value }));
@@ -170,7 +170,7 @@ export const ChangePassword: FC = () => {
           {errorMessages.confirmPassword}
         </Text>
       )}
-      <Button onPress={handleSubmit} title="Изменить пароль" />
+      <Button onPress={handleSubmit} title="Сохранить" />
     </View>
   );
 };

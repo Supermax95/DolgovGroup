@@ -22,8 +22,8 @@ const EditProfile = () => {
   const profile = useAppSelector((state) => state.profileSlice);
   console.log('profileAll============>', profile);
   const transferToBirthdate = async () => {
-  navigation.navigate('ChangeDate');
-}
+    navigation.navigate('ChangeDate');
+  };
   useEffect(() => {
     if (userId) {
       dispatch(getProfileInfo(userId));
@@ -59,10 +59,6 @@ const EditProfile = () => {
   //     );
   //   }
   // };
-
-  const navigateToChangePassword = () => {
-    navigation.navigate('ChangePassword');
-  };
 
   // календарь
 
@@ -130,7 +126,7 @@ const EditProfile = () => {
       <Padding>
         <Padding>
           <Pressable
-            // onPress={onPress}
+            onPress={() => navigation.navigate('ChangeFullName')}
             className={`py-4 flex-row border-b-[1px] border-zinc-200 justify-between`}
           >
             <View>
@@ -196,7 +192,7 @@ const EditProfile = () => {
         <Padding>
           <Pressable
             className={`py-4 flex-row border-b-[1px] border-zinc-200 justify-between`}
-            onPress={navigateToChangePassword} // Добавили обработчик нажатия
+            onPress={() => navigation.navigate('ChangePassword')}
           >
             <View>
               <Text>Пароль</Text>
@@ -207,7 +203,7 @@ const EditProfile = () => {
           </Pressable>
         </Padding>
       </Padding>
-      <Button onPress={transferToBirthdate} title={'ДР'}/>
+      <Button onPress={transferToBirthdate} title={'ДР'} />
     </View>
   );
 };

@@ -12,7 +12,10 @@ const profileChangeBirthDate = createAsyncThunk(
         `http://${IP}:${PORT}/calendar/${userId}`,
         { newBirthDate: newBirthDate.toISOString() }
       );
-      console.log('responseresponseresponseresponseresponseresponseresponse', response);
+      console.log(
+        'responseresponseresponseresponseresponseresponseresponse',
+        response
+      );
       return response.data;
     } catch (error) {
       console.error('Error:', error);
