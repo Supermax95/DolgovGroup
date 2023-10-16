@@ -35,7 +35,7 @@ const EditProfile: FC = () => {
         >
           {profile.birthDate
             ? format(new Date(profile.birthDate), 'dd.MM.yyyy')
-            : 'Не указан'}
+            : 'Не указана'}
         </FieldEditProfile>
         <FieldEditProfile
           onPress={() => navigation.navigate('ChangeEmail')}
