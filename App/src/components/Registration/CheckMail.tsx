@@ -14,8 +14,8 @@ const CheckMail: FC = () => {
   const user = useSelector((state: RootState) => state.userSlice.user);
   console.log('юзер на активации', user);
   const userId = useSelector((state: RootState) => state.userSlice.user.id);
-  console.log('userid',userId);
-  
+  console.log('userid', userId);
+
   // const u = useSelector((state: RootState) => state.userSlice);
   // console.log('===>u', u);
   const isActivated = useSelector((state) => state.userSlice.isActivated);
@@ -25,16 +25,15 @@ const CheckMail: FC = () => {
 
   useEffect(() => {
     if (userId) {
-      console.log('диспатч',userId);
-      
-      dispatch(userActivate(userId));
+      console.log('диспатч', userId);
+
+      dispatch(userActivate({ userId }));
     }
   }, [dispatch, userId]);
 
   const handleCheckActivation = async () => {
     try {
-      const response = await dispatch(userActivate(userId, { force: true }));
-
+      const response = await dispatch(userActivate({ userId, force: true }));
       if (response.payload === true) {
         navigation.navigate('Home');
       } else {

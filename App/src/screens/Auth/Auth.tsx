@@ -30,9 +30,7 @@ export const Auth = () => {
       <View className="flex-1 items-center justify-center bg-white">
         <Text>Добро пожаловать</Text>
         <Image
-          source={{
-            uri: 'https://poisk-firm.ru/storage/employer/logo/70/ba/a9/abb46e24b581abb40de2b12ed1.jpg',
-          }}
+          source={require('../../assets/наш_продукт_лого.png')}
           className="h-[240px] w-[240px]"
           resizeMode="contain"
         />

@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import { StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import * as Location from 'expo-location';
+import { Feather } from '@expo/vector-icons';
 //Калинград
 const locations = [
   {
@@ -576,74 +577,6 @@ const locations = [
   },
 ];
 
-// const Shops = () => {
-//   const [location, setLocation] = useState(null);
-//   const [errorMsg, setErrorMsg] = useState(null);
-
-//   useEffect(() => {
-//     (async () => {
-//       let { status } = await Location.requestForegroundPermissionsAsync();
-//       if (status !== 'granted') {
-//         setErrorMsg('Permission to access location was denied');
-//         return;
-//       }
-
-//       let location = await Location.getCurrentPositionAsync({});
-//       setLocation(location);
-//     })();
-//   }, []);
-
-//   return (
-//     <View style={styles.container}>
-//       <MapView
-//         provider={PROVIDER_GOOGLE}
-//         style={styles.map}
-//         initialRegion={{
-//           latitude: location ? location.coords.latitude : 54.725607,
-//           longitude: location ? location.coords.longitude : 20.5382,
-//           latitudeDelta: 0.0922,
-//           longitudeDelta: 0.0421,
-//         }}
-//       >
-//         {locations.map((shop, index) => (
-//           <Marker
-//             key={index}
-//             coordinate={{
-//               latitude: shop.latitude,
-//               longitude: shop.longitude,
-//             }}
-//             title={shop.name}
-//             pinColor="#006400"
-//           />
-//         ))}
-//         {location && (
-//           <Marker
-//             coordinate={{
-//               latitude: location.coords.latitude,
-//               longitude: location.coords.longitude,
-//             }}
-//             title="Ваше местоположение"
-//             pinColor="red" // Цвет маркера для текущей локации
-//           />
-//         )}
-//       </MapView>
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//   },
-//   map: {
-//     width: '100%',
-//     height: '100%',
-//   },
-// });
-
-// export default Shops;
-
-
 const Shops = () => {
   const [location, setLocation] = useState(null);
   const [errorMsg] = useState(null);
@@ -694,9 +627,15 @@ const Shops = () => {
               longitude: shop.longitude,
             }}
             title={shop.name}
-            pinColor="#006400"
-          />
+            pinColor="green"
+          >
+            {/* <Image
+      source={require('../../assets/наш_продукт_лого-min.png')}
+      style={{ width: 70, height: 70, resizeMode: 'contain' }}
+    /> */}
+          </Marker>
         ))}
+
         {location && (
           <Marker
             coordinate={{
@@ -704,7 +643,7 @@ const Shops = () => {
               longitude: location.coords.longitude,
             }}
             title="Ваше местоположение"
-            pinColor="#FF0000"
+            pinColor="red"
           />
         )}
       </MapView>

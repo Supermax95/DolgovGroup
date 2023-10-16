@@ -26,7 +26,7 @@ module.exports = router
     try {
       const { userId } = req.params;
       const { newBirthDate } = req.body;
-      console.log('Пришедшие данные newBirthDate:', newBirthDate);
+      console.log('Пришедшие данные newBirthDate:',newBirthDate);
 
       const user = await DiscountCard.findOne({ where: { id: userId } });
 
@@ -39,7 +39,7 @@ module.exports = router
       });
 
       console.log('================>', birthDateUpdate);
-      res.status(200).json({ message: 'День рождения успешно изменено' });
+      res.status(200).json({ message: 'День рождения успешно изменено', birthDate: newBirthDate });
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Произошла ошибка на сервере' });

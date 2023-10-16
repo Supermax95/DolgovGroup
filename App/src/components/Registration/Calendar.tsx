@@ -1,35 +1,21 @@
-import { StatusBar } from 'expo-status-bar';
-import { Platform, Pressable, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { Text, View, Platform, Pressable } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { useState } from 'react';
 import { format } from 'date-fns';
-import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 
 interface CalendarProps {
   onDateChange: (selectedDate: Date) => void;
-  styleCSS?: [string];
-  children?: React.ReactNode;
+  styleCSS?: string[];
+  initialDate?: Date | null; // Добавлено начальное значение для даты рождения
 }
 
-export default function Calendar({
+const Calendar: React.FC<CalendarProps> = ({
   onDateChange,
-  styleCSS = [
-    'rounded-xl bg-gray-100 mt-3 px-3 py-4 w-full flex-row justify-between',
-  ],
-  children,
-}: CalendarProps) {
-  const [date, setDate] = useState(new Date());
+  styleCSS = ['rounded-xl bg-gray-100 mt-3 px-3 py-4 w-full flex-row justify-between'],
+  initialDate = null, // Используется начальное значение из пропсов
+}) => {
+  const [date, setDate] = useState(initialDate || new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
-
-  // const userId = useAppSelector((state) => state.userSlice.user.id);
-  const user = useAppSelector((state) => state.userSlice.user.id);
-
-  console.log('profile', user);
-
-
-  const userId = useAppSelector((state) => state.userSlice.user.id);
-
-  //console.log('Я юзер на календаре, мать твою', userId);
 
   const currentDate = new Date();
   const maxDate = currentDate;
@@ -39,17 +25,19 @@ export default function Calendar({
     currentDate.getDate()
   );
 
-  const onChange = (event, selectedDate) => {
-    setShowDatePicker(Platform.OS === 'ios');
-    if (selectedDate < minDate) {
-      setDate(minDate);
-      onDateChange(minDate);
-    } else if (selectedDate > maxDate) {
-      setDate(maxDate);
-      onDateChange(maxDate);
-    } else {
-      setDate(selectedDate);
-      onDateChange(selectedDate);
+  const onChange = (_event: any, selectedDate: Date | undefined) => {
+    if (selectedDate) {
+      setShowDatePicker(Platform.OS === 'ios');
+      if (selectedDate < minDate) {
+        setDate(minDate);
+        onDateChange(minDate);
+      } else if (selectedDate > maxDate) {
+        setDate(maxDate);
+        onDateChange(maxDate);
+      } else {
+        setDate(selectedDate);
+        onDateChange(selectedDate);
+      }
     }
   };
 
@@ -59,17 +47,12 @@ export default function Calendar({
 
   return (
     <Pressable onPress={showCalendar}>
-      <View className={`${styleCSS}`}>
+      <View style={styleCSS}>
         <Text>День рождения</Text>
-        {userId ? (
-          <View>{children}</View>
-        ) : (
-          <View>
-            <Text>{format(date, 'dd.MM.yyyy')}</Text>
-          </View>
-        )}
+        <View>
+          <Text>{format(date, 'dd.MM.yyyy')}</Text>
+        </View>
       </View>
-
       {showDatePicker && (
         <View>
           <DateTimePicker
@@ -81,10 +64,9 @@ export default function Calendar({
             locale="ru-RU"
             display="spinner"
           />
-
           {Platform.OS === 'ios' && (
             <Pressable
-              className="justify-center items-center"
+              style={{ justifyContent: 'center', alignItems: 'center' }}
               onPress={() => setShowDatePicker(false)}
             >
               <Text>ОК</Text>
@@ -94,4 +76,6 @@ export default function Calendar({
       )}
     </Pressable>
   );
-}
+};
+
+export default Calendar;
