@@ -1,8 +1,6 @@
 import { FC } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-// import { LogoHello } from '../components/HelloPage/LogoHello';
-//import { LoginPage } from '../components/LoginPage/LoginPage';
 import { Registration } from '../components/Registration/Registration';
 import SignIn from 'components/SignIn/SignIn';
 import Home from 'screens/Home/Home';
@@ -19,10 +17,11 @@ import AccumulatedUserPoints from 'components/UserProfile/AccumulatedUserPoints/
 import NotificationSettings from 'components/UserProfile/NotificationSettings/NotificationSettings';
 import AboutApplication from 'components/UserProfile/AboutApplication/AboutApplication';
 import { ResetPassword } from 'components/SignIn/ResetPassword';
-import { ChangePassword } from 'components/UserProfile/EditProfile/ChangePassword/ChangePassword';
-import ChangeFullName from 'components/UserProfile/EditProfile/ChangeFullName/ChangeFullName';
-import { ChangeBirthDate } from 'components/UserProfile/EditProfile/ChangeBirthDate/ChangeBirthDate';
+import ChangeFullName from 'components/UserProfile/EditProfile/ChangeFullName/ChangeFullName'
 import ShopsList from 'screens/Shops/ShopsList';
+import ChangeBirthDate from 'components/UserProfile/EditProfile/ChangeBirthDate/ChangeBirthDate';
+import ChangeEmail from 'components/UserProfile/EditProfile/ChangeEmail/ChangeEmail';
+import ChangePassword from 'components/UserProfile/EditProfile/ChangePassword/ChangePassword';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -82,13 +81,18 @@ export const AppNavigator: FC = () => {
           options={{ title: 'Изменение профиля' }}
         />
         <Stack.Screen
-          name="ChangePassword"
-          component={ChangePassword}
+          name="ChangeBirthDate"
+          component={ChangeBirthDate}
           options={{ title: 'Изменение профиля' }}
         />
         <Stack.Screen
-          name="ChangeBirthDate"
-          component={ChangeBirthDate}
+          name="ChangeEmail"
+          component={ChangeEmail}
+          options={{ title: 'Изменение профиля' }}
+        />
+        <Stack.Screen
+          name="ChangePassword"
+          component={ChangePassword}
           options={{ title: 'Изменение профиля' }}
         />
         <Stack.Screen

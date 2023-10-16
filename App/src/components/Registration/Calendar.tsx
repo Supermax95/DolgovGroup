@@ -6,13 +6,15 @@ import { format } from 'date-fns';
 interface CalendarProps {
   onDateChange: (selectedDate: Date) => void;
   styleCSS?: string[];
-  initialDate?: Date | null; // Добавлено начальное значение для даты рождения
+  initialDate?: Date | null;
 }
 
 const Calendar: React.FC<CalendarProps> = ({
   onDateChange,
-  styleCSS = ['rounded-xl bg-gray-100 mt-3 px-3 py-4 w-full flex-row justify-between'],
-  initialDate = null, // Используется начальное значение из пропсов
+  styleCSS = [
+    'rounded-xl bg-gray-100 mt-3 px-3 py-4 w-full flex-row justify-between',
+  ],
+  initialDate = null,
 }) => {
   const [date, setDate] = useState(initialDate || new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -47,8 +49,8 @@ const Calendar: React.FC<CalendarProps> = ({
 
   return (
     <Pressable onPress={showCalendar}>
-      <View style={styleCSS}>
-        <Text>День рождения</Text>
+      <View className={`${styleCSS}`}>
+        <Text>Дата рождения</Text>
         <View>
           <Text>{format(date, 'dd.MM.yyyy')}</Text>
         </View>

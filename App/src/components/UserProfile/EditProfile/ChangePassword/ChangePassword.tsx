@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { useNavigation } from '@react-navigation/native';
 import { View, Text, Alert } from 'react-native';
@@ -6,28 +6,27 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Field from 'ui/Field';
 import Button from 'ui/Button';
 import changeProfilePass from 'Redux/thunks/Profile/profileChangePass.api';
+import Padding from 'ui/Padding';
 
-const styleCenter = 'h-full w-full bg-white ';
-
-interface IPasswordChangeData {
+interface PasswordChangeData {
   oldPassword: string;
   newPassword: string;
   confirmPassword: string;
 }
 
-export const ChangePassword: FC = () => {
+const ChangePassword = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
   const userId = useAppSelector((state) => state.userSlice.user.id);
 
-  const [data, setData] = useState<IPasswordChangeData>({
+  const [data, setData] = useState<PasswordChangeData>({
     oldPassword: '',
     newPassword: '',
     confirmPassword: '',
   });
   const [showPassword, setShowPassword] = useState(false);
 
-  const [errorMessages, setErrorMessages] = useState<IPasswordChangeData>({
+  const [errorMessages, setErrorMessages] = useState<PasswordChangeData>({
     oldPassword: '',
     newPassword: '',
     confirmPassword: '',
@@ -38,7 +37,7 @@ export const ChangePassword: FC = () => {
   };
 
   const handleFieldChange = (
-    field: keyof IPasswordChangeData,
+    field: keyof PasswordChangeData,
     value: string
   ) => {
     setData((prevData) => ({ ...prevData, [field]: value }));
@@ -94,83 +93,89 @@ export const ChangePassword: FC = () => {
   };
 
   return (
-    <View className={styleCenter}>
-      <View className="flex-row items-center">
-        <Field
-          value={data.oldPassword}
-          placeholder="Старый пароль"
-          onChange={(value) => handleFieldChange('oldPassword', value)}
-          isSecure={!showPassword}
-          autoCapitalize="none"
-        />
-        <MaterialCommunityIcons
-          name={showPassword ? 'eye' : 'eye-off'}
-          size={25}
-          color="gray"
-          onPress={toggleShowPassword}
-          style={{
-            position: 'absolute',
-            right: 15,
-            transform: [{ translateY: 5 }],
-          }}
-        />
-      </View>
-      {errorMessages.oldPassword && (
-        <Text className="text-red-500 ml-1 mt-1 text-xs">
-          {errorMessages.oldPassword}
-        </Text>
-      )}
-      <View className="flex-row items-center">
-        <Field
-          value={data.newPassword}
-          placeholder="Новый пароль"
-          onChange={(value) => handleFieldChange('newPassword', value)}
-          isSecure={!showPassword}
-          autoCapitalize="none"
-        />
-        <MaterialCommunityIcons
-          name={showPassword ? 'eye' : 'eye-off'}
-          size={25}
-          color="gray"
-          onPress={toggleShowPassword}
-          style={{
-            position: 'absolute',
-            right: 15,
-            transform: [{ translateY: 5 }],
-          }}
-        />
-      </View>
-      {errorMessages.newPassword && (
-        <Text className="text-red-500 ml-1 mt-1 text-xs">
-          {errorMessages.newPassword}
-        </Text>
-      )}
-      <View className="flex-row items-center">
-        <Field
-          value={data.confirmPassword}
-          placeholder="Подтвердите новый пароль"
-          onChange={(value) => handleFieldChange('confirmPassword', value)}
-          isSecure={!showPassword}
-          autoCapitalize="none"
-        />
-        <MaterialCommunityIcons
-          name={showPassword ? 'eye' : 'eye-off'}
-          size={25}
-          color="gray"
-          onPress={toggleShowPassword}
-          style={{
-            position: 'absolute',
-            right: 15,
-            transform: [{ translateY: 5 }],
-          }}
-        />
-      </View>
-      {errorMessages.confirmPassword && (
-        <Text className="text-red-500 ml-1 mt-1 text-xs">
-          {errorMessages.confirmPassword}
-        </Text>
-      )}
-      <Button onPress={handleSubmit} title="Сохранить" />
+    <View className="bg-white h-full">
+      <Padding>
+        <Padding>
+          <View className="flex-row items-center">
+            <Field
+              value={data.oldPassword}
+              placeholder="Старый пароль"
+              onChange={(value) => handleFieldChange('oldPassword', value)}
+              isSecure={!showPassword}
+              autoCapitalize="none"
+            />
+            <MaterialCommunityIcons
+              name={showPassword ? 'eye' : 'eye-off'}
+              size={25}
+              color="gray"
+              onPress={toggleShowPassword}
+              style={{
+                position: 'absolute',
+                right: 15,
+                transform: [{ translateY: 5 }],
+              }}
+            />
+          </View>
+          {errorMessages.oldPassword && (
+            <Text className="text-red-500 ml-1 mt-1 text-xs">
+              {errorMessages.oldPassword}
+            </Text>
+          )}
+          <View className="flex-row items-center">
+            <Field
+              value={data.newPassword}
+              placeholder="Новый пароль"
+              onChange={(value) => handleFieldChange('newPassword', value)}
+              isSecure={!showPassword}
+              autoCapitalize="none"
+            />
+            <MaterialCommunityIcons
+              name={showPassword ? 'eye' : 'eye-off'}
+              size={25}
+              color="gray"
+              onPress={toggleShowPassword}
+              style={{
+                position: 'absolute',
+                right: 15,
+                transform: [{ translateY: 5 }],
+              }}
+            />
+          </View>
+          {errorMessages.newPassword && (
+            <Text className="text-red-500 ml-1 mt-1 text-xs">
+              {errorMessages.newPassword}
+            </Text>
+          )}
+          <View className="flex-row items-center">
+            <Field
+              value={data.confirmPassword}
+              placeholder="Подтвердите новый пароль"
+              onChange={(value) => handleFieldChange('confirmPassword', value)}
+              isSecure={!showPassword}
+              autoCapitalize="none"
+            />
+            <MaterialCommunityIcons
+              name={showPassword ? 'eye' : 'eye-off'}
+              size={25}
+              color="gray"
+              onPress={toggleShowPassword}
+              style={{
+                position: 'absolute',
+                right: 15,
+                transform: [{ translateY: 5 }],
+              }}
+            />
+          </View>
+          {errorMessages.confirmPassword && (
+            <Text className="text-red-500 ml-1 mt-1 text-xs">
+              {errorMessages.confirmPassword}
+            </Text>
+          )}
+          <Button onPress={handleSubmit} title="Сохранить" />
+        </Padding>
+      </Padding>
     </View>
   );
 };
+
+export default ChangePassword;

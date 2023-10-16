@@ -1,46 +1,33 @@
-// import { View, Text, Pressable } from 'react-native';
-// import React, { FC } from 'react';
-// import Padding from 'ui/Padding';
+import { View, Text, Pressable } from 'react-native';
+import React, { FC } from 'react';
+import Padding from 'ui/Padding';
 
-// interface IFieldEditProfile {
-//   onPress?: () => void;
-//   title: string;
-//   lastName: object;
-//   firstName: object;
-//   middleName: object;
-//   birthDate: object;
-//   email: object;
-//   fieldСhange: string;
-//   isLast?: boolean;
-// }
+interface IFieldEditProfile {
+  onPress?: () => void;
+  title: string;
+  children?: React.ReactNode;
+}
 
-// const FieldEditProfile: FC<IFieldEditProfile> = ({
-//   onPress,
-//   title,
-//   lastName,
-//   firstName,
-//   middleName,
-//   birthDate,
-//   email,
-//   fieldСhange,
-// }) => {
-//   return (
-//     <Padding>
-//       <Pressable
-//         onPress={onPress}
-//         className={`py-4 flex-row border-b-[1px] border-zinc-200 justify-between`}
-//       >
-//         <View>
-//           <Text>{title}</Text>
-//         </View>
-//         <View>
-//           <Text className="text-zinc-500">
-//             {lastName} {firstName} {middleName}
-//           </Text>
-//         </View>
-//       </Pressable>
-//     </Padding>
-//   );
-// };
+const FieldEditProfile: FC<IFieldEditProfile> = ({
+  onPress,
+  title,
+  children,
+}) => {
+  return (
+    <Padding>
+      <Pressable
+        onPress={onPress}
+        className="py-4 flex-row border-b-[1px] border-zinc-200 justify-between"
+      >
+        <View>
+          <Text>{title}</Text>
+        </View>
+        <View>
+          <Text className="text-zinc-500">{children}</Text>
+        </View>
+      </Pressable>
+    </Padding>
+  );
+};
 
-// export default FieldEditProfile;
+export default FieldEditProfile;
