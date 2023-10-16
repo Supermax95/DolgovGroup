@@ -9,9 +9,7 @@ import Padding from 'ui/Padding';
 import profileChangeEmail from 'Redux/thunks/Profile/profileChangeEmail.api';
 
 interface IChangeEmail {
-  newLastName: string;
-  newFirstName: string;
-  newMiddleName: string;
+  newEmail: string;
 }
 
 const ChangeEmail = () => {
