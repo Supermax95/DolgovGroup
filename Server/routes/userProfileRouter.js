@@ -22,6 +22,51 @@ module.exports = router
     }
   })
 
+  .put('/fullname/:userId', async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const { newLastName, newFirstName, newMiddleName } = req.body;
+      console.log('Пришедшие данные newBirthDate:', {
+        newLastName,
+        newFirstName,
+        newMiddleName,
+      });
+
+      const user = await DiscountCard.findOne({ where: { id: userId } });
+
+      if (!user) {
+        return res.status(404).json({ error: 'Пользователь не найден' });
+      }
+
+      const lastNameUpdate = await user.update({
+        lastName: newLastName,
+      });
+      console.log('================>lastNameUpdate', lastNameUpdate);
+
+      const firstNameUpdate = await user.update({
+        firstName: newFirstName,
+      });
+      console.log('================>firstNameUpdate', firstNameUpdate);
+
+      const middleNameUpdate = await user.update({
+        middleName: newMiddleName,
+      });
+      console.log('================>middleNameUpdate', middleNameUpdate);
+
+      res
+        .status(200)
+        .json({
+          ...lastNameUpdate,
+          firstNameUpdate,
+          middleNameUpdate,
+          message: 'Фамилия имя отчество успешно изменено',
+        });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Произошла ошибка на сервере' });
+    }
+  })
+
   .put('/calendar/:userId', async (req, res) => {
     try {
       const { userId } = req.params;

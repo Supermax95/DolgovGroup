@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native';
 import React, { FC } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import Padding from 'ui/Padding';
 import FieldDetail from 'ui/FieldDetail';
 import userLogout from 'Redux/thunks/User/logout.api';
@@ -13,11 +13,9 @@ interface IProfile {
 const Profile: FC<IProfile> = () => {
   const navigation = useNavigation();
 
-  const dispatch = useDispatch();
-  const username = useSelector(
-    (state: RootState) => state.userSlice.user.firstName
-  );
-  const a = useSelector((state: RootState) => state.userSlice.user);
+  const dispatch = useAppDispatch();
+  const username = useAppSelector((state) => state.userSlice.user.firstName);
+  const a = useAppSelector((state) => state.userSlice.user);
   console.log('Editprof', a);
 
   const handleLogout = async () => {

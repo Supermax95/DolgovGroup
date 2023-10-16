@@ -4,7 +4,6 @@ import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import Padding from 'ui/Padding';
 import getProfileInfo from 'Redux/thunks/Profile/profileInfo.api';
-// import Button from 'ui/Button';
 import { format } from 'date-fns';
 
 const EditProfile: FC = () => {
@@ -12,26 +11,26 @@ const EditProfile: FC = () => {
   const navigation = useNavigation();
   const userId = useAppSelector((state) => state.userSlice.user.id);
   const profile = useAppSelector((state) => state.profileSlice);
+  console.log('profileAll============>', profile);
+  const transferToBirthdate = async () => {
+    navigation.navigate('ChangeDate');
+  };
 
-  useEffect(() => {
+    useEffect(() => {
     if (userId) {
       dispatch(getProfileInfo({ userId }));
     }
   }, [dispatch, userId]);
 
-  const navigateToChangePassword = () => {
-    navigation.navigate('ChangePassword');
-  };
-
-  const navigateToChangeBirthdate = () => {
-    navigation.navigate('ChangeBirthDate');
-  };
 
   return (
     <View className="bg-white h-full">
       <Padding>
         <Padding>
-          <Pressable className="py-4 flex-row border-b-[1px] border-zinc-200 justify-between">
+          <Pressable
+            onPress={() => navigation.navigate('ChangeFullName')}
+            className="py-4 flex-row border-b-[1px] border-zinc-200 justify-between"
+          >
             <View>
               <Text>Имя</Text>
             </View>
@@ -46,7 +45,7 @@ const EditProfile: FC = () => {
           <View className="py-4 flex-row border-b-[1px] border-zinc-200 justify-between">
             <Text>День рождения</Text>
             <View>
-              <Pressable onPress={navigateToChangeBirthdate}>
+              <Pressable onPress={() => navigation.navigate('ChangeBirthDate');}>
              <Text className="text-zinc-500">
   {profile.birthDate
     ? new Date(profile.birthDate).toLocaleDateString()
@@ -70,7 +69,7 @@ const EditProfile: FC = () => {
         <Padding>
           <Pressable
             className="py-4 flex-row border-b-[1px] border-zinc-200 justify-between"
-            onPress={navigateToChangePassword}
+            onPress={() => navigation.navigate('ChangePassword')}
           >
             <View>
               <Text>Пароль</Text>

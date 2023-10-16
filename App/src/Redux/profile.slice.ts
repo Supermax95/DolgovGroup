@@ -3,6 +3,7 @@ import { IUser } from 'Types/IUser';
 import getProfileInfo from './thunks/Profile/profileInfo.api';
 import changeProfilePass from './thunks/Profile/profileChangePass.api';
 import profileChangeBirthDate from './thunks/Profile/profileChangeBirthDate.api';
+import profileChangeFullName from './thunks/Profile/profileChangeFullName.api';
 
 const initialState: IUser = {
   lastName: '',
@@ -39,18 +40,24 @@ const profileSlice = createSlice({
         state.isLoading = false;
         state.error = action.error.message;
       })
-      .addCase(changeProfilePass.pending, (state) => {
+      .addCase(profileChangeFullName.pending, (state) => {
         state.isLoading = true;
         state.error = null;
-        state.successMessage = null;
+        //* */
       })
-      .addCase(changeProfilePass.fulfilled, (state, action) => {
+      .addCase(profileChangeFullName.fulfilled, (state, action) => {
         state.isLoading = false;
+        const { lastName, firstName, middleName } = action.payload;
+        state.lastName = lastName;
+        state.firstName = firstName;
+        state.middleName = middleName;
         state.successMessage = action.payload.message;
+        //* */
       })
-      .addCase(changeProfilePass.rejected, (state, action) => {
+      .addCase(profileChangeFullName.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
+        //* */
       })
       .addCase(profileChangeBirthDate.pending, (state) => {
         state.isLoading = true;
@@ -63,6 +70,19 @@ const profileSlice = createSlice({
       .addCase(profileChangeBirthDate.rejected, (state) => {
         state.isLoading = false;
         state.error = null;
+      })
+      .addCase(changeProfilePass.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+        state.successMessage = null;
+      })
+      .addCase(changeProfilePass.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.successMessage = action.payload.message;
+      })
+      .addCase(changeProfilePass.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
       });
   },
 });
