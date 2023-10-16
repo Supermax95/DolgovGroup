@@ -5,8 +5,7 @@ import { View, Text, Alert } from 'react-native';
 import Field from 'ui/Field';
 import Button from 'ui/Button';
 import profileChangeFullName from 'Redux/thunks/Profile/profileChangeFullName.api';
-
-const styleCenter = 'h-full w-full bg-white ';
+import Padding from 'ui/Padding';
 
 interface IFullName {
   newLastName: string;
@@ -81,41 +80,45 @@ const ChangeFullName = () => {
   };
 
   return (
-    <View className={styleCenter}>
-      <Field
-        value={data.newLastName}
-        placeholder="Фамилия"
-        onChange={(value) => handleFieldChange('newLastName', value)}
-        autoCapitalize="words"
-      />
-      {errorMessages.newLastName && (
-        <Text className="text-red-500 ml-1 mt-1 text-xs">
-          {errorMessages.newLastName}
-        </Text>
-      )}
-      <Field
-        value={data.newFirstName}
-        placeholder="Имя"
-        onChange={(value) => handleFieldChange('newFirstName', value)}
-        autoCapitalize="words"
-      />
-      {errorMessages.newFirstName && (
-        <Text className="text-red-500 ml-1 mt-1 text-xs">
-          {errorMessages.newFirstName}
-        </Text>
-      )}
-      <Field
-        value={data.newMiddleName}
-        placeholder="Отчество"
-        onChange={(value) => handleFieldChange('newMiddleName', value)}
-        autoCapitalize="words"
-      />
-      {errorMessages.newMiddleName && (
-        <Text className="text-red-500 ml-1 mt-1 text-xs">
-          {errorMessages.newMiddleName}
-        </Text>
-      )}
-      <Button onPress={handlerSubmitFullName} title="Сохранить" />
+    <View className="bg-white h-full">
+      <Padding>
+        <Padding>
+          <Field
+            value={data.newLastName}
+            placeholder="Фамилия"
+            onChange={(value) => handleFieldChange('newLastName', value)}
+            autoCapitalize="words"
+          />
+          {errorMessages.newLastName && (
+            <Text className="text-red-500 ml-1 mt-1 text-xs">
+              {errorMessages.newLastName}
+            </Text>
+          )}
+          <Field
+            value={data.newFirstName}
+            placeholder="Имя"
+            onChange={(value) => handleFieldChange('newFirstName', value)}
+            autoCapitalize="words"
+          />
+          {errorMessages.newFirstName && (
+            <Text className="text-red-500 ml-1 mt-1 text-xs">
+              {errorMessages.newFirstName}
+            </Text>
+          )}
+          <Field
+            value={data.newMiddleName}
+            placeholder="Отчество"
+            onChange={(value) => handleFieldChange('newMiddleName', value)}
+            autoCapitalize="words"
+          />
+          {errorMessages.newMiddleName && (
+            <Text className="text-red-500 ml-1 mt-1 text-xs">
+              {errorMessages.newMiddleName}
+            </Text>
+          )}
+          <Button onPress={handlerSubmitFullName} title="Сохранить" />
+        </Padding>
+      </Padding>
     </View>
   );
 };
