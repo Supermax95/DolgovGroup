@@ -19,7 +19,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/adaptive-icon2.png",
+        "foregroundImage": "./src/assets/наш_продукт_лого.png",
         "backgroundColor": "#ffffff"
       }
     },

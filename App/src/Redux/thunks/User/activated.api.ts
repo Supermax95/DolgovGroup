@@ -4,7 +4,7 @@ import { PORT, IP } from '@env';
 
 const checkActivation = createAsyncThunk(
   'api/activate',
-  async (userId, { token }) => {
+  async ({ userId, token }) => {
     console.log('userId axios', userId);
 
     try {

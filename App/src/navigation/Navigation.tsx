@@ -20,8 +20,8 @@ import NotificationSettings from 'components/UserProfile/NotificationSettings/No
 import AboutApplication from 'components/UserProfile/AboutApplication/AboutApplication';
 import { ResetPassword } from 'components/SignIn/ResetPassword';
 import { ChangePassword } from 'components/UserProfile/EditProfile/ChangePassword/ChangePassword';
-import { ChangeDate } from 'components/UserProfile/EditProfile/EditBD';
 import ChangeFullName from 'components/UserProfile/EditProfile/ChangeFullName/ChangeFullName';
+import { ChangeBirthDate } from 'components/UserProfile/EditProfile/ChangeBirthDate/ChangeBirthDate';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -71,14 +71,14 @@ export const AppNavigator: FC = () => {
           options={{ title: 'Проверка активации' }}
         />
         <Stack.Screen
-          name="ChangeFullName"
-          component={ChangeFullName}
-          options={{ title: 'Изменение профиля' }}
-        />
-        <Stack.Screen
           name="ResetPassword"
           component={ResetPassword}
           options={{ title: 'Сброс пароля' }}
+        />
+        <Stack.Screen
+          name="ChangeFullName"
+          component={ChangeFullName}
+          options={{ title: 'Изменение профиля' }}
         />
         <Stack.Screen
           name="ChangePassword"
@@ -86,9 +86,9 @@ export const AppNavigator: FC = () => {
           options={{ title: 'Изменение профиля' }}
         />
         <Stack.Screen
-          name="ChangeDate"
-          component={ChangeDate}
-          options={{ title: 'Изменение ДР' }}
+          name="ChangeBirthDate"
+          component={ChangeBirthDate}
+          options={{ title: 'Изменение профиля' }}
         />
       </Stack.Navigator>
     </NavigationContainer>

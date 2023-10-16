@@ -5,17 +5,15 @@ import { PORT, IP } from '@env';
 
 const profileChangeBirthDate = createAsyncThunk(
   'api/profileChangeBirthDate',
+  
   async ({ userId, newBirthDate }) => {
+    console.log('===>', newBirthDate)
     try {
-      console.log('=====>', newBirthDate);
       const response: AxiosResponse = await axios.put(
         `http://${IP}:${PORT}/calendar/${userId}`,
-        { newBirthDate: newBirthDate.toISOString() }
+        { newBirthDate }
       );
-      console.log(
-        'responseresponseresponseresponseresponseresponseresponse',
-        response
-      );
+      // console.log('responseresponseresponseresponseresponseresponseresponse', response);
       return response.data;
     } catch (error) {
       console.error('Error:', error);
