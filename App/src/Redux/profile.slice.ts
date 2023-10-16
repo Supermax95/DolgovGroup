@@ -51,8 +51,6 @@ const profileSlice = createSlice({
         state.lastName = lastName;
         state.firstName = firstName;
         state.middleName = middleName;
-        state.successMessage = action.payload.message;
-        //* */
       })
       .addCase(profileChangeFullName.rejected, (state, action) => {
         state.isLoading = false;

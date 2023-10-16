@@ -57,10 +57,6 @@ export const ChangeBirthDate: FC = () => {
     }
   };
 
-  useEffect(() => {
-    // Если `userDate` из Redux еще не загружена, попробуйте загрузить ее здесь.
-  }, []);
-
   return (
     <View className="bg-white h-full">
       <Padding>

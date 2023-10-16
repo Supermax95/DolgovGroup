@@ -2,7 +2,6 @@ const router = require('express').Router();
 const bcrypt = require('bcrypt');
 const moment = require('moment');
 const { DiscountCard } = require('../db/models');
-// const { log } = require('console');
 
 module.exports = router
   .get('/edit/:userId', async (req, res) => {
@@ -41,17 +40,17 @@ module.exports = router
       const firstNameUpdate = await user.update({
         firstName: newFirstName,
       });
-      console.log('================>firstNameUpdate', firstNameUpdate);
+      console.log('===========>firstNameUpdate', firstNameUpdate);
 
       const middleNameUpdate = await user.update({
         middleName: newMiddleName,
       });
-      console.log('================>middleNameUpdate', middleNameUpdate);
+      console.log('====>middleNameUpdate', middleNameUpdate);
 
       res.status(200).json({
-        ...lastNameUpdate,
-        firstNameUpdate,
-        middleNameUpdate,
+        lastName: newLastName,
+        firstName: newFirstName,
+        middleName: newMiddleName,
         message: 'Фамилия имя отчество успешно изменено',
       });
     } catch (error) {
@@ -77,12 +76,10 @@ module.exports = router
       });
 
       console.log('================>', birthDateUpdate);
-      res
-        .status(200)
-        .json({
-          message: 'День рождения успешно изменено',
-          birthDate: newBirthDate,
-        });
+      res.status(200).json({
+        message: 'День рождения успешно изменено',
+        birthDate: newBirthDate,
+      });
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Произошла ошибка на сервере' });
