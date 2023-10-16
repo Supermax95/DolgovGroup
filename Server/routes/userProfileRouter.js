@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
-const moment = require('moment');
 const { DiscountCard } = require('../db/models');
 
 module.exports = router
@@ -20,7 +19,7 @@ module.exports = router
     try {
       const { userId } = req.params;
       const { newLastName, newFirstName, newMiddleName } = req.body;
-      console.log('Пришедшие данные newBirthDate:', {
+      console.log('Пришедшие данные:', {
         newLastName,
         newFirstName,
         newMiddleName,
@@ -79,6 +78,35 @@ module.exports = router
       res.status(200).json({
         message: 'День рождения успешно изменено',
         birthDate: newBirthDate,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Произошла ошибка на сервере' });
+    }
+  })
+
+  .put('/email/:userId', async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const { newEmail } = req.body;
+      console.log('Пришедшие данные newEmail:', {
+        newEmail,
+      });
+
+      const user = await DiscountCard.findOne({ where: { id: userId } });
+
+      if (!user) {
+        return res.status(404).json({ error: 'Пользователь не найден' });
+      }
+
+      const emailUpdate = await user.update({
+        email: newEmail,
+      });
+      console.log('================>emailUpdate', emailUpdate);
+
+      res.status(200).json({
+        email: newEmail,
+        message: 'Фамилия имя отчество успешно изменено',
       });
     } catch (error) {
       console.error(error);

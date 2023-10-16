@@ -12,11 +12,10 @@ const cookieParser = require('cookie-parser');
 
 // Require routes
 // const indexrouter = require('./routes/index.router');
+// const authRouter = require('./routes/authRouter');
 const router = require('./routes');
 const activateRouter = require('./routes/activateRouter');
 const userProfileRouter = require('./routes/userProfileRouter');
-//const userProfileChangepassRouter = require('./routes/userProfileChangepassRouter');
-// const authRouter = require('./routes/authRouter');
 
 // middleware
 const errorMiddleware = require('./middlewares/error-middleware');
@@ -55,7 +54,6 @@ app.use(cookieParser());
 app.use('/api', router);
 app.use('/', activateRouter);
 app.use('/', userProfileRouter);
-//app.use('/', userProfileChangepassRouter);
 app.use(errorMiddleware);
 app.listen(PORT, () => {
   console.log(`Сервер крутится на ${PORT} порту`);
