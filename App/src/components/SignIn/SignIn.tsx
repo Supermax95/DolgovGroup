@@ -75,6 +75,7 @@ const SignIn: FC = () => {
             value={data.email}
             placeholder="Введите email"
             autoCapitalize="none"
+            keyboardType="email-address"
             onChange={(value) => setData({ ...data, email: value })}
           />
           <View className="flex-row items-center">
