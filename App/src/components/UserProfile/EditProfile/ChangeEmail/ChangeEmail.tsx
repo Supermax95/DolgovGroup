@@ -4,7 +4,6 @@ import { useNavigation } from '@react-navigation/native';
 import { View, Text, Alert } from 'react-native';
 import Field from 'ui/Field';
 import Button from 'ui/Button';
-import profileChangeFullName from 'Redux/thunks/Profile/profileChangeFullName.api';
 import Padding from 'ui/Padding';
 import profileChangeEmail from 'Redux/thunks/Profile/profileChangeEmail.api';
 
@@ -49,7 +48,7 @@ const ChangeEmail = () => {
         if (result.meta.requestStatus === 'rejected') {
           Alert.alert(
             'Ошибка',
-            'Произошла ошибка при изменении личных данных. Пожалуйста, попробуйте ещё раз.'
+            'Пользователь с такой электронной почтой уже существует'
           );
         } else if (result.meta.requestStatus === 'fulfilled') {
           Alert.alert(
@@ -82,7 +81,7 @@ const ChangeEmail = () => {
             value={data.newEmail}
             placeholder="Email"
             onChange={(value) => handleFieldChange('newEmail', value)}
-            autoCapitalize="words"
+            autoCapitalize="none"
           />
           {errorMessages.newEmail && (
             <Text className="text-red-500 ml-1 mt-1 text-xs">

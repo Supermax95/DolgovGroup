@@ -15,7 +15,6 @@ const profileChangeEmail = createAsyncThunk(
       console.log('responseresponseresponse --> newEmail', response);
       return response.data;
     } catch (error) {
-      console.error('Error:', error);
       throw error;
     }
   }
