@@ -22,6 +22,7 @@ import { ResetPassword } from 'components/SignIn/ResetPassword';
 import { ChangePassword } from 'components/UserProfile/EditProfile/ChangePassword/ChangePassword';
 import ChangeFullName from 'components/UserProfile/EditProfile/ChangeFullName/ChangeFullName';
 import { ChangeBirthDate } from 'components/UserProfile/EditProfile/ChangeBirthDate/ChangeBirthDate';
+import ShopsList from 'screens/Shops/ShopsList';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -89,6 +90,11 @@ export const AppNavigator: FC = () => {
           name="ChangeBirthDate"
           component={ChangeBirthDate}
           options={{ title: 'Изменение профиля' }}
+        />
+        <Stack.Screen
+          name="ShopsList"
+          component={ShopsList}
+          options={{ title: 'Список магазинов' }}
         />
       </Stack.Navigator>
     </NavigationContainer>

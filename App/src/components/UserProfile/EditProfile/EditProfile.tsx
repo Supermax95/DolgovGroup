@@ -11,17 +11,12 @@ const EditProfile: FC = () => {
   const navigation = useNavigation();
   const userId = useAppSelector((state) => state.userSlice.user.id);
   const profile = useAppSelector((state) => state.profileSlice);
-  console.log('profileAll============>', profile);
-  const transferToBirthdate = async () => {
-    navigation.navigate('ChangeDate');
-  };
 
-    useEffect(() => {
+  useEffect(() => {
     if (userId) {
       dispatch(getProfileInfo({ userId }));
     }
   }, [dispatch, userId]);
-
 
   return (
     <View className="bg-white h-full">
@@ -45,13 +40,12 @@ const EditProfile: FC = () => {
           <View className="py-4 flex-row border-b-[1px] border-zinc-200 justify-between">
             <Text>День рождения</Text>
             <View>
-              <Pressable onPress={() => navigation.navigate('ChangeBirthDate');}>
-             <Text className="text-zinc-500">
-  {profile.birthDate
-    ? new Date(profile.birthDate).toLocaleDateString()
-    : 'Не указан'}
-</Text>
-
+              <Pressable onPress={() => navigation.navigate('ChangeBirthDate')}>
+                <Text className="text-zinc-500">
+                  {profile.birthDate
+                    ? new Date(profile.birthDate).toLocaleDateString()
+                    : 'Не указан'}
+                </Text>
               </Pressable>
             </View>
           </View>
