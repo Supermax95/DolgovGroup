@@ -30,7 +30,7 @@ const EditProfile: FC = () => {
         </FieldEditProfile>
         <FieldEditProfile
           onPress={() => navigation.navigate('ChangeBirthDate')}
-          title="День рождения"
+          title="Дата рождения"
         >
           {profile.birthDate
             ? new Date(profile.birthDate).toLocaleDateString()
