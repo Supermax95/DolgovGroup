@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { useNavigation } from '@react-navigation/native';
 import { View, Text, Alert } from 'react-native';
@@ -9,25 +9,25 @@ import changeProfilePass from 'Redux/thunks/Profile/profileChangePass.api';
 
 const styleCenter = 'h-full w-full bg-white ';
 
-interface IPasswordChangeData {
+interface PasswordChangeData {
   oldPassword: string;
   newPassword: string;
   confirmPassword: string;
 }
 
-export const ChangePassword: FC = () => {
+const ChangePassword = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
   const userId = useAppSelector((state) => state.userSlice.user.id);
 
-  const [data, setData] = useState<IPasswordChangeData>({
+  const [data, setData] = useState<PasswordChangeData>({
     oldPassword: '',
     newPassword: '',
     confirmPassword: '',
   });
   const [showPassword, setShowPassword] = useState(false);
 
-  const [errorMessages, setErrorMessages] = useState<IPasswordChangeData>({
+  const [errorMessages, setErrorMessages] = useState<PasswordChangeData>({
     oldPassword: '',
     newPassword: '',
     confirmPassword: '',
@@ -38,7 +38,7 @@ export const ChangePassword: FC = () => {
   };
 
   const handleFieldChange = (
-    field: keyof IPasswordChangeData,
+    field: keyof PasswordChangeData,
     value: string
   ) => {
     setData((prevData) => ({ ...prevData, [field]: value }));
@@ -170,7 +170,9 @@ export const ChangePassword: FC = () => {
           {errorMessages.confirmPassword}
         </Text>
       )}
-      <Button onPress={handleSubmit} title="Сохранить" />
+      <Button onPress={handleSubmit} title="Изменить пароль" />
     </View>
   );
 };
+
+export default ChangePassword;
