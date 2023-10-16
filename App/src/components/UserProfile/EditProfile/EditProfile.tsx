@@ -12,7 +12,7 @@ const EditProfile: FC = () => {
   const navigation = useNavigation();
   const userId = useAppSelector((state) => state.userSlice.user.id);
   const profile = useAppSelector((state) => state.profileSlice);
-  console.log('profileAll============>', profile);
+
 
   useEffect(() => {
     if (userId) {
@@ -23,6 +23,7 @@ const EditProfile: FC = () => {
   return (
     <View className="bg-white h-full">
       <Padding>
+
         <FieldEditProfile
           onPress={() => navigation.navigate('ChangeFullName')}
           title="Имя"

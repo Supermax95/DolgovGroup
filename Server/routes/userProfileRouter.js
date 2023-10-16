@@ -45,6 +45,7 @@ module.exports = router
       const middleNameUpdate = await user.update({
         middleName: newMiddleName,
       });
+
       console.log('====>middleNameUpdate', middleNameUpdate);
 
       res.status(200).json({
@@ -63,19 +64,20 @@ module.exports = router
     try {
       const { userId } = req.params;
       const { newBirthDate } = req.body;
-      console.log('Пришедшие данные newBirthDate:', newBirthDate);
 
+      console.log('Пришедшие данные newBirthDate:', newBirthDate);
       const user = await DiscountCard.findOne({ where: { id: userId } });
 
       if (!user) {
         return res.status(404).json({ error: 'Пользователь не найден' });
       }
 
-      const birthDateUpdate = await user.update({
+      await user.update({
         birthDate: newBirthDate,
       });
 
       console.log('================>', birthDateUpdate);
+
       res.status(200).json({
         message: 'День рождения успешно изменено',
         birthDate: newBirthDate,

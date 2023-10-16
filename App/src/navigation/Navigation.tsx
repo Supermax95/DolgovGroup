@@ -17,7 +17,8 @@ import AccumulatedUserPoints from 'components/UserProfile/AccumulatedUserPoints/
 import NotificationSettings from 'components/UserProfile/NotificationSettings/NotificationSettings';
 import AboutApplication from 'components/UserProfile/AboutApplication/AboutApplication';
 import { ResetPassword } from 'components/SignIn/ResetPassword';
-import ChangeFullName from 'components/UserProfile/EditProfile/ChangeFullName/ChangeFullName';
+import ChangeFullName from 'components/UserProfile/EditProfile/ChangeFullName/ChangeFullName'
+import ShopsList from 'screens/Shops/ShopsList';
 import ChangeBirthDate from 'components/UserProfile/EditProfile/ChangeBirthDate/ChangeBirthDate';
 import ChangeEmail from 'components/UserProfile/EditProfile/ChangeEmail/ChangeEmail';
 import ChangePassword from 'components/UserProfile/EditProfile/ChangePassword/ChangePassword';
@@ -93,6 +94,11 @@ export const AppNavigator: FC = () => {
           name="ChangePassword"
           component={ChangePassword}
           options={{ title: 'Изменение профиля' }}
+        />
+        <Stack.Screen
+          name="ShopsList"
+          component={ShopsList}
+          options={{ title: 'Список магазинов' }}
         />
       </Stack.Navigator>
     </NavigationContainer>
