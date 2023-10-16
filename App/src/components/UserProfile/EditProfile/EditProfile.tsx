@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import Padding from 'ui/Padding';
 import getProfileInfo from 'Redux/thunks/Profile/profileInfo.api';
 import FieldEditProfile from 'ui/FieldEditProfile';
+import { format } from 'date-fns';
 
 const EditProfile: FC = () => {
   const dispatch = useAppDispatch();
@@ -30,10 +31,10 @@ const EditProfile: FC = () => {
         </FieldEditProfile>
         <FieldEditProfile
           onPress={() => navigation.navigate('ChangeBirthDate')}
-          title="День рождения"
+          title="Дата рождения"
         >
           {profile.birthDate
-            ? new Date(profile.birthDate).toLocaleDateString()
+            ? format(new Date(profile.birthDate), 'dd.MM.yyyy')
             : 'Не указан'}
         </FieldEditProfile>
         <FieldEditProfile
