@@ -17,7 +17,7 @@ interface IData {
   middleName: string;
   birthDate: string;
 }
-export const Registration: FC = () => {
+export const Registration = () => {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
   // const isLoading = useSelector(

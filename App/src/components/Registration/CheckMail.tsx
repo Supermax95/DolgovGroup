@@ -12,11 +12,11 @@ const CheckMail = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const user = useAppSelector((state)=> state.userSlice);
+  const user = useAppSelector((state) => state.userSlice);
   console.log('юзер на активации', user);
-  const data = useAppSelector((state)=> state.userSlice.data);
-  console.log('dddddaaaaattta',data);
-  
+  const data = useAppSelector((state) => state.userSlice.data);
+  console.log('dddddaaaaattta', data);
+
   const userId = useAppSelector((state) => state.userSlice.user.id);
   console.log('userid', userId);
 
@@ -36,7 +36,6 @@ const CheckMail = () => {
     try {
       const result = await dispatch(
         userActivate({ token, userId, force: true })
-        
       );
       if (result.meta.requestStatus === 'fulfilled') {
         navigation.navigate('Home');
