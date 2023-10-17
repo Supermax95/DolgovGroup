@@ -22,7 +22,7 @@ import ShopsList from 'screens/Shops/ShopsList';
 import ChangeBirthDate from 'components/UserProfile/EditProfile/ChangeBirthDate/ChangeBirthDate';
 import ChangeEmail from 'components/UserProfile/EditProfile/ChangeEmail/ChangeEmail';
 import ChangePassword from 'components/UserProfile/EditProfile/ChangePassword/ChangePassword';
-import { RootStackParamList, TabNavigatorOptions } from './types';
+import { RootStackParamList, TabNavigatorOptions, TabProps } from './types';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabNavigatorOptions>();
@@ -107,6 +107,89 @@ export const AppNavigator = () => {
 };
 
 export const FooterTabs = () => {
+  //* новая типизация  const tabProps: TabProps[]
+  const tabProps: TabProps[] = [
+    {
+      name: 'Auth',
+      component: Auth,
+      options: {
+        title: 'Auth',
+        tabBarIcon: ({ color, size, focused }) => (
+          <MaterialCommunityIcons name="account" color={color} size={size} />
+        ),
+      },
+    },
+    {
+      name: 'Home',
+      component: Home,
+      options: {
+        title: 'Главная',
+        tabBarIcon: ({ color, size, focused }) => (
+          <MaterialCommunityIcons
+            name="credit-card-outline"
+            color={color}
+            size={27}
+          />
+        ),
+      },
+    },
+    {
+      name: 'Catalog',
+      component: Catalog,
+      options: {
+        title: 'Каталог',
+        tabBarIcon: ({ color, size, focused }) => (
+          <MaterialCommunityIcons
+            name="text-box-search-outline"
+            color={color}
+            size={25}
+          />
+        ),
+      },
+    },
+    {
+      name: 'Shops',
+      component: Shops,
+      options: {
+        title: 'Магазины поблизости',
+        tabBarIcon: ({ color, size, focused }) => (
+          <MaterialCommunityIcons
+            name="map-marker-outline"
+            color={color}
+            size={25}
+          />
+        ),
+      },
+    },
+    {
+      name: 'Support',
+      component: Support,
+      options: {
+        title: 'Помощь',
+        tabBarIcon: ({ color, size, focused }) => (
+          <MaterialCommunityIcons
+            name="chat-question-outline"
+            color={color}
+            size={25}
+          />
+        ),
+      },
+    },
+    {
+      name: 'Profile',
+      component: Profile,
+      options: {
+        title: 'Профиль',
+        tabBarIcon: ({ color, size, focused }) => (
+          <MaterialCommunityIcons
+            name="account-outline"
+            color={color}
+            size={25}
+          />
+        ),
+      },
+    },
+  ];
   return (
     <Tab.Navigator
       screenOptions={{
@@ -117,87 +200,17 @@ export const FooterTabs = () => {
         },
       }}
     >
-      <Tab.Screen
-        name="Auth"
-        component={Auth}
-        options={{
-          title: 'Auth',
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="account" color={color} size={size} />
-          ),
-        }}
-      />
-
-      <Tab.Screen
-        name="Home"
-        component={Home}
-        options={{
-          title: 'Главная',
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons
-              name="credit-card-outline"
-              color={color}
-              size={27}
-            />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Catalog"
-        component={Catalog}
-        options={{
-          title: 'Каталог',
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons
-              name="text-box-search-outline"
-              color={color}
-              size={25}
-            />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Shops"
-        component={Shops}
-        options={{
-          title: 'Магазины поблизости',
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons
-              name="map-marker-outline"
-              color={color}
-              size={25}
-            />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Support"
-        component={Support}
-        options={{
-          title: 'Помощь',
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons
-              name="chat-question-outline"
-              color={color}
-              size={25}
-            />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Profile"
-        component={Profile}
-        options={{
-          title: 'Профиль',
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons
-              name="account-outline"
-              color={color}
-              size={25}
-            />
-          ),
-        }}
-      />
+      {tabProps.map((tab) => (
+        <Tab.Screen
+          key={tab.name}
+          name={tab.name}
+          component={tab.component}
+          options={{
+            title: tab.options.title,
+            tabBarIcon: tab.options.tabBarIcon,
+          }}
+        />
+      ))}
     </Tab.Navigator>
   );
 };

@@ -1,4 +1,5 @@
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
 
 type RootStackParamList = {
   FooterTabs: undefined;
@@ -46,8 +47,16 @@ type TabNavigatorOptions = {
   };
 };
 
+//* новая типизация  const tabProps: TabProps[]
+type TabProps = {
+  name: keyof TabNavigatorOptions;
+  component: React.ComponentType<any>;
+  options: BottomTabNavigationOptions;
+};
+
 export type {
   RootStackParamList,
   IMaterialCommunityIcons,
   TabNavigatorOptions,
+  TabProps,
 };
