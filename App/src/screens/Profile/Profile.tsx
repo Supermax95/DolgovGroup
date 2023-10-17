@@ -1,10 +1,11 @@
 import { View, Text } from 'react-native';
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import Padding from 'ui/Padding';
 import FieldDetail from 'ui/FieldDetail';
 import userLogout from 'Redux/thunks/User/logout.api';
+import getProfileInfo from 'Redux/thunks/Profile/profileInfo.api';
 
 interface IProfile {
   username: string;
@@ -12,9 +13,17 @@ interface IProfile {
 
 const Profile: FC<IProfile> = () => {
   const navigation = useNavigation();
-
   const dispatch = useAppDispatch();
-  const username = useAppSelector((state) => state.userSlice.user.firstName);
+  const userId = useAppSelector((state) => state.userSlice.user.id);
+  const username = useAppSelector((state) => state.profileSlice.firstName);
+  
+
+  useEffect(() => {
+    if (userId) {
+      dispatch(getProfileInfo({ userId }));
+    }
+  }, [dispatch, userId]);
+
   const a = useAppSelector((state) => state.userSlice.user);
   console.log('Editprof', a);
 

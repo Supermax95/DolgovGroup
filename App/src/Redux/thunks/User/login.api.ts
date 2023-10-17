@@ -1,6 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { PORT, IP } from '@env';
+
+
 
 const userLogin = createAsyncThunk('api/login', async ({ token, userData }) => {
   try {
@@ -11,7 +13,7 @@ const userLogin = createAsyncThunk('api/login', async ({ token, userData }) => {
       },
     };
 
-    const response = await axios.post(
+    const response: AxiosResponse = await axios.post(
       `http://${IP}:${PORT}/api/login`,
       userData,
       config
