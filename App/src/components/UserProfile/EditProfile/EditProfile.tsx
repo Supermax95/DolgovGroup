@@ -2,9 +2,9 @@ import React, { FC, useEffect } from 'react';
 import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAppSelector } from 'Redux/hooks';
+import { format } from 'date-fns';
 import Padding from 'ui/Padding';
 import FieldEditProfile from 'ui/FieldEditProfile';
-import { format } from 'date-fns';
 
 const EditProfile: FC = () => {
   const navigation = useNavigation();

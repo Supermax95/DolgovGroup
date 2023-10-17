@@ -4,6 +4,7 @@ import getProfileInfo from './thunks/Profile/profileInfo.api';
 import changeProfilePass from './thunks/Profile/profileChangePass.api';
 import profileChangeBirthDate from './thunks/Profile/profileChangeBirthDate.api';
 import profileChangeFullName from './thunks/Profile/profileChangeFullName.api';
+import profileChangeEmail from './thunks/Profile/profileChangeEmail.api';
 
 const initialState: IUser = {
   lastName: '',
@@ -41,9 +42,9 @@ const profileSlice = createSlice({
         state.error = action.error.message;
       })
       .addCase(profileChangeFullName.pending, (state) => {
+        /** Fullname */
         state.isLoading = true;
         state.error = null;
-        //* */
       })
       .addCase(profileChangeFullName.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -55,9 +56,9 @@ const profileSlice = createSlice({
       .addCase(profileChangeFullName.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
-        //* */
       })
       .addCase(profileChangeBirthDate.pending, (state) => {
+        /** birth */
         state.isLoading = true;
         state.error = null;
       })
@@ -69,7 +70,22 @@ const profileSlice = createSlice({
         state.isLoading = false;
         state.error = null;
       })
+      .addCase(profileChangeEmail.pending, (state) => {
+        /** email */
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(profileChangeEmail.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const { email } = action.payload;
+        state.email = email;
+      })
+      .addCase(profileChangeEmail.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
       .addCase(changeProfilePass.pending, (state) => {
+        /** */
         state.isLoading = true;
         state.error = null;
         state.successMessage = null;
