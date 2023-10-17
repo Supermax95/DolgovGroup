@@ -11,7 +11,6 @@ export default function App() {
       {/* <SafeAreaView style={{ flex: 1 }}> */}
       <AppNavigator />
       {/* </SafeAreaView> */}
-
       <StatusBar style="auto" />
     </Provider>
   );

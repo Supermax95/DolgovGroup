@@ -7,15 +7,8 @@ import Padding from 'ui/Padding';
 import FieldEditProfile from 'ui/FieldEditProfile';
 
 const EditProfile = () => {
-  const dispatch = useAppDispatch();
   const navigation = useNavigation();
   const profile = useAppSelector((state) => state.profileSlice);
-
-  useEffect(() => {
-    if (userId) {
-      dispatch(getProfileInfo({ userId }));
-    }
-  }, [dispatch, userId]);
 
   return (
     <View className="bg-white h-full">
