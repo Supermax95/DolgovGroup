@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Registration } from '../components/Registration/Registration';
 import SignIn from 'components/SignIn/SignIn';
 import Home from 'screens/Home/Home';
@@ -9,7 +10,6 @@ import Catalog from 'screens/Catalog/Catalog';
 import Shops from 'screens/Shops/Shops';
 import Support from 'screens/Support/Support';
 import Profile from 'screens/Profile/Profile';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { NavigationContainer } from '@react-navigation/native';
 import CheckMail from 'components/Registration/CheckMail';
 import EditProfile from 'components/UserProfile/EditProfile/EditProfile';
@@ -22,50 +22,7 @@ import ShopsList from 'screens/Shops/ShopsList';
 import ChangeBirthDate from 'components/UserProfile/EditProfile/ChangeBirthDate/ChangeBirthDate';
 import ChangeEmail from 'components/UserProfile/EditProfile/ChangeEmail/ChangeEmail';
 import ChangePassword from 'components/UserProfile/EditProfile/ChangePassword/ChangePassword';
-
-type RootStackParamList = {
-  FooterTabs: undefined;
-  Registration: undefined;
-  SignIn: undefined;
-  EditProfile: undefined;
-  AccumulatedUserPoints: undefined;
-  NotificationSettings: undefined;
-  AboutApplication: undefined;
-  CheckMail: undefined;
-  ResetPassword: undefined;
-  ChangeFullName: undefined;
-  ChangeBirthDate: undefined;
-  ChangeEmail: undefined;
-  ChangePassword: undefined;
-  ShopsList: undefined;
-};
-
-type TabNavigatorOptions = {
-  Auth: {
-    title: string;
-    tabBarIcon: (props: { color: string; size: number }) => JSX.Element;
-  };
-  Home: {
-    title: string;
-    tabBarIcon: (props: { color: string; size: number }) => JSX.Element;
-  };
-  Catalog: {
-    title: string;
-    tabBarIcon: (props: { color: string; size: number }) => JSX.Element;
-  };
-  Shops: {
-    title: string;
-    tabBarIcon: (props: { color: string; size: number }) => JSX.Element;
-  };
-  Support: {
-    title: string;
-    tabBarIcon: (props: { color: string; size: number }) => JSX.Element;
-  };
-  Profile: {
-    title: string;
-    tabBarIcon: (props: { color: string; size: number }) => JSX.Element;
-  };
-};
+import { RootStackParamList, TabNavigatorOptions } from './types';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabNavigatorOptions>();
