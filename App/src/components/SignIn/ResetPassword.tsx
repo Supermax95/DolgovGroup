@@ -15,7 +15,7 @@ interface IResetPassword {
 
 const styleCenter = 'h-full w-full bg-white pt-16';
 
-export const ResetPassword: FC<IResetPassword> = () => {
+export const ResetPassword: FC  = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [data, setData] = useState<IResetPassword>({

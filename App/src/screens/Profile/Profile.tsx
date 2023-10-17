@@ -7,16 +7,18 @@ import FieldDetail from 'ui/FieldDetail';
 import userLogout from 'Redux/thunks/User/logout.api';
 import getProfileInfo from 'Redux/thunks/Profile/profileInfo.api';
 
-interface IProfile {
-  username: string;
+interface IUser {
+  firstName: string;
+  id: number;
 }
 
-const Profile: FC<IProfile> = () => {
+const Profile: FC = () => {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
-  const userId = useAppSelector((state) => state.userSlice.user.id);
-  const username = useAppSelector((state) => state.profileSlice.firstName);
-  
+  const userId = useAppSelector<IUser>((state) => state.userSlice.user.id);
+  const firstName = useAppSelector<IUser>(
+    (state) => state.profileSlice.firstName
+  );
 
   useEffect(() => {
     if (userId) {
@@ -26,7 +28,6 @@ const Profile: FC<IProfile> = () => {
 
   const a = useAppSelector((state) => state.userSlice.user);
   console.log('Editprof', a);
-
 
   const handleLogout = async () => {
     try {
@@ -42,7 +43,7 @@ const Profile: FC<IProfile> = () => {
       <Padding>
         <View className="mt-4 mb-2">
           <Text className="text-center text-xl font-bold text-zinc-500">
-            Добро пожаловать, {username}!
+            Добро пожаловать, {firstName}!
           </Text>
         </View>
         <FieldDetail
