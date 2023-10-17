@@ -26,9 +26,10 @@ const userSlice = createSlice({
       })
       .addCase(userLogin.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.token = action.payload.token;
+        state.token = action.payload.accessToken;   
         state.user = action.payload.user;
         state.isAuth = true;
+        console.log('я в диспетче', state.token);
       })
       .addCase(userLogin.rejected, (state, action) => {
         state.isLoading = false;
@@ -66,7 +67,9 @@ const userSlice = createSlice({
         state.isActivated = action.payload;
         state.isLoading = false;
         state.isAuth = true;
-        state.token = action.payload.token;
+        state.token = action.payload; 
+        console.log('я в диспетче на активации', state.token);
+        
       })
       .addCase(userActivate.rejected, (state, action) => {
         state.isLoading = false;

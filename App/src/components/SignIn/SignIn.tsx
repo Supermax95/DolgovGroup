@@ -1,11 +1,11 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Alert, Pressable, Text, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 import userLogin from 'Redux/thunks/User/login.api';
 import Button from 'ui/Button';
 import Field from 'ui/Field';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { useAppSelector, useAppDispatch } from 'Redux/hooks';
 
 interface IData {
   email: string;
@@ -16,7 +16,7 @@ const styleCenter = 'h-full w-full bg-white';
 
 const SignIn: FC = () => {
   const navigation = useNavigation();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [data, setData] = useState<IData>({
     email: '',
@@ -24,12 +24,9 @@ const SignIn: FC = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
 
-  const isLoading = useSelector(
-    (state: RootState) => state.userSlice.isLoading
-  );
-
-  const user = useSelector((state: RootState) => state.userSlice.user);
-  console.log(user);
+  const isLoading = useAppSelector((state) => state.userSlice.isLoading);
+  const token = useAppSelector((state) => state.userSlice.token);
+  
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -45,7 +42,7 @@ const SignIn: FC = () => {
         return;
       }
 
-      const result = await dispatch(userLogin({ userData: data }));
+      const result = await dispatch(userLogin({ token, userData: data }));
 
       if (result.meta.requestStatus === 'rejected') {
         Alert.alert(

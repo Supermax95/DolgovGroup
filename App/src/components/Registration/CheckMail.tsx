@@ -1,9 +1,10 @@
 import React, { FC, useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import userActivate from 'Redux/thunks/User/activated.api';
 import { useNavigation } from '@react-navigation/native';
 import Button from 'ui/Button';
+import { useAppSelector } from 'Redux/hooks';
 
 const styleCenter = 'h-full w-full bg-white ';
 
@@ -11,16 +12,16 @@ const CheckMail = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const user = useSelector((state: RootState) => state.userSlice.user);
+  const user = useAppSelector((state)=> state.userSlice);
   console.log('юзер на активации', user);
-  const userId = useSelector((state: RootState) => state.userSlice.user.id);
+  const data = useAppSelector((state)=> state.userSlice.data);
+  console.log('dddddaaaaattta',data);
+  
+  const userId = useAppSelector((state) => state.userSlice.user.id);
   console.log('userid', userId);
 
-  // const u = useSelector((state: RootState) => state.userSlice);
-  // console.log('===>u', u);
-  const isActivated = useSelector((state) => state.userSlice.isActivated);
-  console.log('===>', isActivated);
-
+  const isActivated = useAppSelector((state) => state.userSlice.isActivated);
+  const token = useAppSelector((state) => state.userSlice.token);
   const [activationMessage, setActivationMessage] = useState('');
 
   useEffect(() => {
@@ -33,8 +34,11 @@ const CheckMail = () => {
 
   const handleCheckActivation = async () => {
     try {
-      const response = await dispatch(userActivate({ userId, force: true }));
-      if (response.payload === true) {
+      const result = await dispatch(
+        userActivate({ token, userId, force: true })
+        
+      );
+      if (result.meta.requestStatus === 'fulfilled') {
         navigation.navigate('Home');
       } else {
         setActivationMessage('Аккаунт не активирован ,проверьте почту/спам.');
