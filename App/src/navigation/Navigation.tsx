@@ -17,16 +17,60 @@ import AccumulatedUserPoints from 'components/UserProfile/AccumulatedUserPoints/
 import NotificationSettings from 'components/UserProfile/NotificationSettings/NotificationSettings';
 import AboutApplication from 'components/UserProfile/AboutApplication/AboutApplication';
 import { ResetPassword } from 'components/SignIn/ResetPassword';
-import ChangeFullName from 'components/UserProfile/EditProfile/ChangeFullName/ChangeFullName'
+import ChangeFullName from 'components/UserProfile/EditProfile/ChangeFullName/ChangeFullName';
 import ShopsList from 'screens/Shops/ShopsList';
 import ChangeBirthDate from 'components/UserProfile/EditProfile/ChangeBirthDate/ChangeBirthDate';
 import ChangeEmail from 'components/UserProfile/EditProfile/ChangeEmail/ChangeEmail';
 import ChangePassword from 'components/UserProfile/EditProfile/ChangePassword/ChangePassword';
 
-const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
+type RootStackParamList = {
+  FooterTabs: undefined;
+  Registration: undefined;
+  SignIn: undefined;
+  EditProfile: undefined;
+  AccumulatedUserPoints: undefined;
+  NotificationSettings: undefined;
+  AboutApplication: undefined;
+  CheckMail: undefined;
+  ResetPassword: undefined;
+  ChangeFullName: undefined;
+  ChangeBirthDate: undefined;
+  ChangeEmail: undefined;
+  ChangePassword: undefined;
+  ShopsList: undefined;
+};
 
-export const AppNavigator: FC = () => {
+type TabNavigatorOptions = {
+  Auth: {
+    title: string;
+    tabBarIcon: (props: { color: string; size: number }) => JSX.Element;
+  };
+  Home: {
+    title: string;
+    tabBarIcon: (props: { color: string; size: number }) => JSX.Element;
+  };
+  Catalog: {
+    title: string;
+    tabBarIcon: (props: { color: string; size: number }) => JSX.Element;
+  };
+  Shops: {
+    title: string;
+    tabBarIcon: (props: { color: string; size: number }) => JSX.Element;
+  };
+  Support: {
+    title: string;
+    tabBarIcon: (props: { color: string; size: number }) => JSX.Element;
+  };
+  Profile: {
+    title: string;
+    tabBarIcon: (props: { color: string; size: number }) => JSX.Element;
+  };
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
+const Tab = createBottomTabNavigator<TabNavigatorOptions>();
+
+export const AppNavigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="FooterTabs">
@@ -105,7 +149,7 @@ export const AppNavigator: FC = () => {
   );
 };
 
-export const FooterTabs: FC = ({}) => {
+export const FooterTabs = () => {
   return (
     <Tab.Navigator
       screenOptions={{

@@ -8,7 +8,7 @@ import { parseISO } from 'date-fns';
 import Padding from 'ui/Padding';
 import { useNavigation } from '@react-navigation/native';
 
-export const ChangeBirthDate: FC = () => {
+export const ChangeBirthDate = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
   const userId = useAppSelector((state) => state.userSlice.user.id);
