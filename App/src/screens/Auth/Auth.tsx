@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Image, Text, View, Button } from 'react-native';
 import { PORT, IP } from '@env';
 import { useNavigation } from '@react-navigation/native';
-import { FooterTabs } from 'navigation/Navigation';
 
 export const Auth = () => {
   const [data, setData] = useState({});
@@ -42,7 +41,6 @@ export const Auth = () => {
         />
         <Button title="Вход" onPress={() => navigation.navigate('SignIn')} />
       </View>
-      {/* <FooterTabs /> */}
     </>
   );
 };

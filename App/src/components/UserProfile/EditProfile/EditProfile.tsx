@@ -2,10 +2,10 @@ import React, { FC, useEffect } from 'react';
 import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
+import { format } from 'date-fns';
 import Padding from 'ui/Padding';
 import getProfileInfo from 'Redux/thunks/Profile/profileInfo.api';
 import FieldEditProfile from 'ui/FieldEditProfile';
-import { format } from 'date-fns';
 
 const EditProfile: FC = () => {
   const dispatch = useAppDispatch();

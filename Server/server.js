@@ -1,19 +1,15 @@
 require('dotenv').config();
 
 const express = require('express');
+const morgan = require('morgan');
 const cors = require('cors');
+
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
-const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
-// const session = require('express-session');
-// const FileStore = require('session-file-store')(session);
-// token
 
 // Require routes
-// const indexrouter = require('./routes/index.router');
-// const authRouter = require('./routes/authRouter');
-const router = require('./routes');
+const router = require('./routes/indexRouter');
 const activateRouter = require('./routes/activateRouter');
 const userProfileRouter = require('./routes/userProfileRouter');
 

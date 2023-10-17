@@ -85,43 +85,6 @@ module.exports = router
     }
   })
 
-  // .put('/email/:userId', async (req, res) => {
-  //   try {
-  //     const { userId } = req.params;
-  //     const { newEmail } = req.body;
-  //     console.log('Пришедшие данные newEmail:', {
-  //       newEmail,
-  //     });
-
-  //     const searchEmail = await DiscountCard.findOne({
-  //       where: { newEmail },
-  //     });
-  //     console.log('======>', searchEmail);
-  //     if (searchEmail) {
-  //       return res.status(404).json({
-  //         error: 'Пользователь с такой электронной почтой уже существует',
-  //       });
-  //     }
-
-  //     const user = await DiscountCard.findOne({ where: { id: userId } });
-  //     if (!user) {
-  //       return res.status(404).json({ error: 'Пользователь не найден' });
-  //     }
-
-  //     const emailUpdate = await user.update({
-  //       email: newEmail,
-  //     });
-  //     console.log('================>emailUpdate', emailUpdate);
-
-  //     res.status(200).json({
-  //       email: newEmail,
-  //       message: 'Фамилия имя отчество успешно изменено',
-  //     });
-  //   } catch (error) {
-  //     console.error(error);
-  //     res.status(500).json({ message: 'Произошла ошибка на сервере' });
-  //   }
-  // })
   .put('/email/:userId', async (req, res) => {
     try {
       const { userId } = req.params;
