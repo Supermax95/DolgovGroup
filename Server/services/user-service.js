@@ -98,6 +98,7 @@ console.log('======>', userReg);
     }
     const userDto = new UserDto(user);
     const tokens = tokenService.generateTokens({ ...userDto });
+    console.log(tokens);
     await tokenService.saveToken(userDto.id, tokens.refreshToken);
     return {
       ...tokens,
