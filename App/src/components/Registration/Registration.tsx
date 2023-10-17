@@ -21,15 +21,13 @@ interface IData {
 export const Registration = () => {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
-  // const isLoading = useSelector(
-  //   (state: RootState) => state.userSlice.isLoading
-  // );
+  //const isLoading = useAppSelector((state) => state.userSlice.isLoading);
   const user = useAppSelector((state) => state.userSlice.user);
-  console.log('я юзуер на регистрации', user);
+  // console.log('я юзуер на регистрации', user);
 
   const error = useAppSelector((state) => state.userSlice.error);
 
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState<number>(1);
   const [data, setData] = useState<IData>({
     email: '',
     password: '',
@@ -98,7 +96,7 @@ export const Registration = () => {
     }
   };
 
-  const handleNextStep = () => {
+  const handleNextStep = (): void => {
     if (step === 1) {
       if (
         !data.firstName ||
@@ -133,7 +131,7 @@ export const Registration = () => {
     }
   };
 
-  const handlePrevStep = () => {
+  const handlePrevStep = (): void => {
     setStep(step - 1);
   };
 
