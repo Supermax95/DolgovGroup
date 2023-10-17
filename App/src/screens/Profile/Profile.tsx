@@ -14,9 +14,7 @@ const Profile: FC<IProfile> = () => {
   const navigation = useNavigation();
 
   const dispatch = useAppDispatch();
-  const username = useAppSelector((state) => state.userSlice.user.firstName);
-  const a = useAppSelector((state) => state.userSlice.user);
-  console.log('Editprof', a);
+  const username = useAppSelector((state) => state.profileSlice.firstName);
 
   const handleLogout = async () => {
     try {

@@ -1,22 +1,17 @@
 require('dotenv').config();
 
 const express = require('express');
+const morgan = require('morgan');
 const cors = require('cors');
+
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
-const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
-// const session = require('express-session');
-// const FileStore = require('session-file-store')(session);
-// token
 
 // Require routes
-// const indexrouter = require('./routes/index.router');
-const router = require('./routes');
+const router = require('./routes/indexRouter');
 const activateRouter = require('./routes/activateRouter');
 const userProfileRouter = require('./routes/userProfileRouter');
-//const userProfileChangepassRouter = require('./routes/userProfileChangepassRouter');
-// const authRouter = require('./routes/authRouter');
 
 // middleware
 const errorMiddleware = require('./middlewares/error-middleware');
@@ -55,7 +50,6 @@ app.use(cookieParser());
 app.use('/api', router);
 app.use('/', activateRouter);
 app.use('/', userProfileRouter);
-//app.use('/', userProfileChangepassRouter);
 app.use(errorMiddleware);
 app.listen(PORT, () => {
   console.log(`Сервер крутится на ${PORT} порту`);
