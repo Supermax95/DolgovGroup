@@ -8,7 +8,7 @@ import { useAppSelector } from 'Redux/hooks';
 
 const styleCenter = 'h-full w-full bg-white ';
 
-const CheckMail: FC = () => {
+const CheckMail = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 

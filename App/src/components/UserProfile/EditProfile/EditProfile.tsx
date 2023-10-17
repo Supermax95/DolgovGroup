@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAppSelector } from 'Redux/hooks';
@@ -6,9 +6,16 @@ import { format } from 'date-fns';
 import Padding from 'ui/Padding';
 import FieldEditProfile from 'ui/FieldEditProfile';
 
-const EditProfile: FC = () => {
+const EditProfile = () => {
+  const dispatch = useAppDispatch();
   const navigation = useNavigation();
   const profile = useAppSelector((state) => state.profileSlice);
+
+  useEffect(() => {
+    if (userId) {
+      dispatch(getProfileInfo({ userId }));
+    }
+  }, [dispatch, userId]);
 
   return (
     <View className="bg-white h-full">
