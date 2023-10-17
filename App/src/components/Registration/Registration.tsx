@@ -2,7 +2,6 @@ import React, { FC, useState } from 'react';
 import { View, Text, ScrollView, Alert } from 'react-native';
 import Field from 'ui/Field';
 import Calendar from './Calendar';
-//import { useDispatch, useSelector } from 'react-redux';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import userRegister from 'Redux/thunks/User/reg.api';
 import Button from 'ui/Button';
