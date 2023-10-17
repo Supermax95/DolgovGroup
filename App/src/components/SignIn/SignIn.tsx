@@ -14,7 +14,7 @@ interface IData {
 
 const styleCenter = 'h-full w-full bg-white';
 
-const SignIn: FC = () => {
+const SignIn = () => {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
 
@@ -26,7 +26,6 @@ const SignIn: FC = () => {
 
   const isLoading = useAppSelector((state) => state.userSlice.isLoading);
   const token = useAppSelector((state) => state.userSlice.token);
-  
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);

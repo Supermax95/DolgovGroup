@@ -12,7 +12,7 @@ interface IUser {
   id: number;
 }
 
-const Profile: FC = () => {
+const Profile = () => {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const userId = useAppSelector<IUser>((state) => state.userSlice.user.id);
