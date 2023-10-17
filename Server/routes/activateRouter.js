@@ -18,18 +18,20 @@ router.get('/check/:userId', async (req, res) => {
 
     if (user.isActivated === true) {
       const userDto = new UserDto(user);
-      const tokens = tokenService.generateTokens({ ...userDto });
-      console.log('Access Token:', tokens.accessToken);
-      await tokenService.saveToken(user.id, tokens.refreshToken);
+      const token = tokenService.generateTokens({ ...userDto });
+      console.log('Access Token:', token.accessToken);
+      await tokenService.saveToken(user.id, token.refreshToken);
       req.session.userId = userDto.id;
-      res.cookie('refreshToken', tokens.refreshToken, {
+      res.cookie('refreshToken', token.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true,
       });
-
-      return res
-        .status(200)
-        .json({ message: 'Аккаунт активирован', tokens, user: userDto });
+      console.log('Отправлен токен:', token);
+      return res.status(200).json({
+        message: 'Аккаунт активирован',
+        token,
+        user: userDto,
+      });
     }
 
     return res.status(403).json({ message: 'Аккаунт не активирован' });
