@@ -10,12 +10,13 @@ import { useNavigation } from '@react-navigation/native';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 interface IData {
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  middleName: string;
-  birthDate: string;
+  email?: string;
+  password?: string;
+  firstName?: string;
+  lastName?: string;
+  middleName?: string;
+  birthDate?: string;
+  passwordCheck?: string;
 }
 export const Registration = () => {
   const navigation = useNavigation();
@@ -27,6 +28,7 @@ export const Registration = () => {
   console.log('я юзуер на регистрации', user);
 
   const error = useAppSelector((state) => state.userSlice.error);
+
   const [step, setStep] = useState(1);
   const [data, setData] = useState<IData>({
     email: '',
@@ -36,9 +38,10 @@ export const Registration = () => {
     middleName: '',
     birthDate: '',
   });
-  const [passwordCheck, setPasswordCheck] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [showPasswordRepeat, setShowPasswordRepeat] = useState(false);
+
+  const [passwordCheck, setPasswordCheck] = useState<string>('');
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showPasswordRepeat, setShowPasswordRepeat] = useState<boolean>(false);
   const [errorMessages, setErrorMessages] = useState<IData>({
     email: '',
     password: '',
@@ -46,6 +49,7 @@ export const Registration = () => {
     lastName: '',
     middleName: '',
     birthDate: '',
+    passwordCheck: '',
   });
 
   const toggleShowPassword = () => {
@@ -56,12 +60,12 @@ export const Registration = () => {
     setShowPasswordRepeat(!showPasswordRepeat);
   };
 
-  const handleFieldChange = (field: keyof IData, value: string) => {
+  const handleFieldChange = (field: keyof IData, value: string): void => {
     setData((prevData) => ({ ...prevData, [field]: value }));
     setErrorMessages((prevErrors) => ({ ...prevErrors, [field]: '' }));
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (): Promise<void> => {
     if (step === 2) {
       if (!data.email || !data.password || !passwordCheck) {
         setErrorMessages({

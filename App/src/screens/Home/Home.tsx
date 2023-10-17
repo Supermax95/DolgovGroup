@@ -1,6 +1,5 @@
-import { Image, ScrollView, Text, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import React from 'react';
-import { useSelector } from 'react-redux';
 import Padding from 'ui/Padding';
 import LargeCard from 'ui/LargeCard';
 import Heading from 'ui/Heading';
@@ -11,8 +10,7 @@ const Home = () => {
     if (numberPoints === 0) {
       return '0 баллов';
     }
-    const user = useSelector((state: RootState) => state.userSlice.user);
-    // console.log('я user на home', user);
+
     const lastDigit = numberPoints % 10;
     const lastTwoDigits = numberPoints % 100;
 

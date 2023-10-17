@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 
 interface IField {
   onChange: (value: string) => void;
-  value: string;
+  value?: string;
   placeholder: string;
   isSecure?: boolean;
   autoCapitalize?: TextInputProps['autoCapitalize'];
