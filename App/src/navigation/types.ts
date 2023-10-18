@@ -33,10 +33,10 @@ type TabNavigatorOptions = {
   Profile: undefined;
 };
 
-type StackNavigationProp = NativeStackNavigationProp<RootStackParamList>; // только навигации, не для TAB
-//* ссылка на типизацию StackNavigationProp https://stackoverflow.com/questions/73328944/react-navigation-navigation-navigatesomescreen-error-in-typescript
-
+type StackNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 type TabScreenNavigationProp = BottomTabNavigationProp<TabNavigatorOptions>;
+//* ссылка на типизацию StackNavigationProp https://stackoverflow.com/questions/73328944/react-navigation-navigation-navigatesomescreen-error-in-typescript
+//* https://benjaminwoojang.medium.com/react-navigation-with-typescript-270dfa8d5cad
 
 export type {
   RootStackParamList,

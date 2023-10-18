@@ -6,7 +6,7 @@ import locations from './locations';
 import Field from 'ui/Field';
 
 const ShopsList = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<TabScreenNavigationProp>();
   const [searchText, setSearchText] = useState('');
 
   const filteredLocations = locations.filter((shop) =>
