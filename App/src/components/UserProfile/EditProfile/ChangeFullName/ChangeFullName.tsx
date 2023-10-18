@@ -14,7 +14,7 @@ interface IFullName {
   newMiddleName: string;
 }
 
-const ChangeFullName = () => {
+const ChangeFullName = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<StackNavigationProp>();
   const userId = useAppSelector((state) => state.userSlice.user.id);
