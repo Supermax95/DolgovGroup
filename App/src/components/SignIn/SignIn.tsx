@@ -31,16 +31,13 @@ const SignIn = () => {
     email: '',
     password: '',
   });
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const isLoading = useAppSelector((state) => state.userSlice.isLoading);
   const token = useAppSelector((state) => state.userSlice.token);
 
   const toggleShowPassword = (): void => {
     setShowPassword(!showPassword);
-  };
-  const handleForgotPassword = () => {
-    navigation.navigate('ResetPassword');
   };
 
   const authHandler = async (): Promise<void> => {
@@ -104,7 +101,7 @@ const SignIn = () => {
             />
           </View>
           <Button onPress={authHandler} title={`Войти`} disabled={isLoading} />
-          <Pressable onPress={handleForgotPassword}>
+          <Pressable onPress={() => navigation.navigate('ResetPassword')}>
             <Text className="text-gray-800 mt-4 opacity-50 text-sm text-center">
               Забыли пароль?
             </Text>
