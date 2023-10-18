@@ -9,13 +9,12 @@ const userRegister = createAsyncThunk('api/register', async (user) => {
       `http://${IP}:${PORT}/api/registration`,
       user
     );
-    
-  
+
     if (response.status === 200) {
-      console.log('=====>',response.data)
-      return response.data; 
+      console.log('=====>', response.data);
+      return response.data;
     } else {
-      throw new Error('Ошибка при регистрации'); 
+      throw new Error('Ошибка при регистрации');
     }
   } catch (error) {
     throw error;

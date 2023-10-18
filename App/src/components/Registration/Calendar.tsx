@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { Text, View, Platform, Pressable } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { format } from 'date-fns';
@@ -9,7 +9,7 @@ interface CalendarProps {
   initialDate?: Date | null;
 }
 
-const Calendar: React.FC<CalendarProps> = ({
+const Calendar: FC<CalendarProps> = ({
   onDateChange,
   styleCSS = [
     'rounded-xl bg-gray-100 mt-3 px-3 py-4 w-full flex-row justify-between',
@@ -17,7 +17,7 @@ const Calendar: React.FC<CalendarProps> = ({
   initialDate = null,
 }) => {
   const [date, setDate] = useState(initialDate || new Date());
-  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
 
   const currentDate = new Date();
   const maxDate = currentDate;
@@ -27,7 +27,7 @@ const Calendar: React.FC<CalendarProps> = ({
     currentDate.getDate()
   );
 
-  const onChange = (_event: any, selectedDate: Date | undefined) => {
+  const onChange = (_event: any, selectedDate: Date | undefined): void => {
     if (selectedDate) {
       setShowDatePicker(Platform.OS === 'ios');
       if (selectedDate < minDate) {
@@ -43,7 +43,7 @@ const Calendar: React.FC<CalendarProps> = ({
     }
   };
 
-  const showCalendar = () => {
+  const showCalendar = (): void => {
     setShowDatePicker(true);
   };
 
