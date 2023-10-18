@@ -59,7 +59,10 @@ export const Registration = (): JSX.Element => {
     setShowPasswordRepeat(!showPasswordRepeat);
   };
 
-  const handleFieldChange = (field: keyof IData, value: string): void => {
+  const handleFieldChange = (
+    field: keyof IData,
+    value: Date | string
+  ): void => {
     setData((prevData) => ({ ...prevData, [field]: value }));
     setErrorMessages((prevErrors) => ({ ...prevErrors, [field]: '' }));
   };
