@@ -2,7 +2,7 @@ import { View, Text, Switch } from 'react-native';
 import React, { FC, useState } from 'react';
 import Padding from 'ui/Padding';
 
-const NotificationSettings = () => {
+const NotificationSettings = (): JSX.Element => {
   const [isEnabledPush, setIsEnabledPush] = useState(false);
   const [isEnabledEmail, setIsEnabledEmail] = useState(false);
 

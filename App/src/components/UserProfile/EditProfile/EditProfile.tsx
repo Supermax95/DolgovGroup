@@ -7,7 +7,7 @@ import { format } from 'date-fns';
 import Padding from 'ui/Padding';
 import FieldEditProfile from 'ui/FieldEditProfile';
 
-const EditProfile = () => {
+const EditProfile = (): JSX.Element => {
   const navigation = useNavigation<StackNavigationProp>();
   const profile = useAppSelector((state) => state.profileSlice);
 

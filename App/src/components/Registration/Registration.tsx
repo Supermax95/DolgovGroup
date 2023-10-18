@@ -19,7 +19,7 @@ interface IData {
   passwordCheck?: string;
 }
 
-export const Registration = () => {
+export const Registration = (): JSX.Element => {
   const navigation = useNavigation<StackNavigationProp>();
   const dispatch = useAppDispatch();
   //const isLoading = useAppSelector((state) => state.userSlice.isLoading);

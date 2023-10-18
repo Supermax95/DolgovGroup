@@ -15,7 +15,7 @@ interface PasswordChangeData {
   confirmPassword: string;
 }
 
-const ChangePassword = () => {
+const ChangePassword = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<StackNavigationProp>();
   const userId = useAppSelector((state) => state.userSlice.user.id);

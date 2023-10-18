@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { StackNavigationProp } from 'navigation/types';
@@ -13,7 +13,7 @@ interface IUser {
   id: number;
 }
 
-const Profile: FC = () => {
+const Profile = (): JSX.Element => {
   const navigation = useNavigation<StackNavigationProp>();
   const dispatch = useAppDispatch();
   const userId = useAppSelector<IUser>((state) => state.userSlice.user.id);

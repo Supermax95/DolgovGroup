@@ -15,7 +15,7 @@ interface IResetPassword {
 
 const styleCenter = 'h-full w-full bg-white pt-16';
 
-export const ResetPassword = () => {
+export const ResetPassword = (): JSX.Element => {
   const navigation = useNavigation<StackNavigationProp>();
   const dispatch = useAppDispatch();
   const [data, setData] = useState<IResetPassword>({

@@ -12,7 +12,7 @@ interface IChangeEmail {
   newEmail: string;
 }
 
-const ChangeEmail = () => {
+const ChangeEmail = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<StackNavigationProp>();
   const userId = useAppSelector((state) => state.userSlice.user.id);
