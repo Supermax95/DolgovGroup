@@ -5,6 +5,7 @@ interface IButton {
   onPress: () => void;
   title: string;
   colors?: [string, string];
+  disabled?: boolean;
 }
 
 const Button: FC<IButton> = ({

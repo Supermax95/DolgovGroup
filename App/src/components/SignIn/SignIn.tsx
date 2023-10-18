@@ -1,8 +1,11 @@
 import React, { FC, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import {
+  CompositeNavigationProp,
+  useNavigation,
+} from '@react-navigation/native';
 import { Alert, Pressable, Text, View } from 'react-native';
 import { useAppSelector, useAppDispatch } from 'Redux/hooks';
-import { StackNavigationProp } from 'navigation/types';
+import { StackNavigationProp, TabScreenNavigationProp } from 'navigation/types';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import userLogin from 'Redux/thunks/User/login.api';
 import Button from 'ui/Button';
@@ -13,29 +16,31 @@ interface IData {
   password: string;
 }
 
+type HomeAndPropResetPassword = CompositeNavigationProp<
+  StackNavigationProp,
+  TabScreenNavigationProp
+>;
+
 const styleCenter = 'h-full w-full bg-white';
 
 const SignIn = () => {
-  const navigation = useNavigation<StackNavigationProp>();
+  const navigation = useNavigation<HomeAndPropResetPassword>();
   const dispatch = useAppDispatch();
 
   const [data, setData] = useState<IData>({
     email: '',
     password: '',
   });
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const isLoading = useAppSelector((state) => state.userSlice.isLoading);
   const token = useAppSelector((state) => state.userSlice.token);
 
-  const toggleShowPassword = () => {
+  const toggleShowPassword = (): void => {
     setShowPassword(!showPassword);
   };
-  const handleForgotPassword = () => {
-    navigation.navigate('ResetPassword');
-  };
 
-  const authHandler = async () => {
+  const authHandler = async (): Promise<void> => {
     try {
       if (!data.email || !data.password) {
         Alert.alert('Ошибка', 'Введите email и пароль');
@@ -96,7 +101,7 @@ const SignIn = () => {
             />
           </View>
           <Button onPress={authHandler} title={`Войти`} disabled={isLoading} />
-          <Pressable onPress={handleForgotPassword}>
+          <Pressable onPress={() => navigation.navigate('ResetPassword')}>
             <Text className="text-gray-800 mt-4 opacity-50 text-sm text-center">
               Забыли пароль?
             </Text>
