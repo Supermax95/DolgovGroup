@@ -1,11 +1,9 @@
 import { View, Text, Pressable } from 'react-native';
 import React, { FC } from 'react';
 import Padding from 'ui/Padding';
-import { RootStackParamList } from 'navigation/types';
 
 interface IFieldEditProfile {
-  //onPress?: () => void;
-  onPress: (screenName: keyof RootStackParamList | string) => void;
+  onPress?: () => void;
   title: string;
   children?: React.ReactNode;
 }

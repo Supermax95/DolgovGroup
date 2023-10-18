@@ -1,12 +1,13 @@
-import React, { FC, useState } from 'react';
+import React, { useState } from 'react';
+import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { View, Text, ScrollView, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from 'navigation/types';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import Button from 'ui/Button';
 import Field from 'ui/Field';
 import Calendar from './Calendar';
-import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import userRegister from 'Redux/thunks/User/reg.api';
-import Button from 'ui/Button';
-import { useNavigation } from '@react-navigation/native';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 interface IData {
   email?: string;
@@ -17,8 +18,9 @@ interface IData {
   birthDate?: string;
   passwordCheck?: string;
 }
+
 export const Registration = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp>();
   const dispatch = useAppDispatch();
   //const isLoading = useAppSelector((state) => state.userSlice.isLoading);
   const user = useAppSelector((state) => state.userSlice.user);

@@ -1,16 +1,17 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
-import { View, Text, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from 'navigation/types';
+import { View, Alert } from 'react-native';
+import { parseISO } from 'date-fns';
 import Calendar from '../../../Registration/Calendar';
 import Button from 'ui/Button';
 import profileChangeBirthDate from 'Redux/thunks/Profile/profileChangeBirthDate.api';
-import { parseISO } from 'date-fns';
 import Padding from 'ui/Padding';
-import { useNavigation } from '@react-navigation/native';
 
 export const ChangeBirthDate = () => {
   const dispatch = useAppDispatch();
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp>();
   const userId = useAppSelector((state) => state.userSlice.user.id);
   const userDate = useAppSelector((state) => state.profileSlice.birthDate);
   console.log('userDate in file ChangeBirthDate', parseISO(userDate));

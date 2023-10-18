@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from 'navigation/types';
 import { View, Text, Alert } from 'react-native';
 import Field from 'ui/Field';
 import Button from 'ui/Button';
@@ -15,7 +16,7 @@ interface IFullName {
 
 const ChangeFullName = () => {
   const dispatch = useAppDispatch();
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp>();
   const userId = useAppSelector((state) => state.userSlice.user.id);
 
   const dateProfile = useAppSelector((state) => state.profileSlice);

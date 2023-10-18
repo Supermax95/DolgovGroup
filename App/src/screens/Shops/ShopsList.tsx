@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { TabScreenNavigationProp } from 'navigation/types';
 import { View, FlatList, Text, TouchableHighlight } from 'react-native';
 import locations from './locations';
 import Field from 'ui/Field';
-import { useNavigation } from '@react-navigation/native';
 
 const ShopsList = () => {
+  const navigation = useNavigation<TabScreenNavigationProp>();
   const [searchText, setSearchText] = useState('');
-  const navigation = useNavigation();
 
-  const filteredLocations = locations.filter(shop =>
+  const filteredLocations = locations.filter((shop) =>
     shop.name.toLowerCase().includes(searchText.toLowerCase())
   );
 
   const handleShopSelected = (selectedShop1) => {
     navigation.navigate('Shops', { selectedShop1 });
-  }
+  };
 
   return (
     <View>

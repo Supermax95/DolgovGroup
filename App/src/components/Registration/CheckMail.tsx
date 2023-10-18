@@ -1,16 +1,16 @@
 import React, { FC, useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch, useAppSelector } from 'Redux/hooks';
+import { TabScreenNavigationProp } from 'navigation/types';
 import userActivate from 'Redux/thunks/User/activated.api';
 import { useNavigation } from '@react-navigation/native';
 import Button from 'ui/Button';
-import { useAppSelector } from 'Redux/hooks';
 
 const styleCenter = 'h-full w-full bg-white ';
 
 const CheckMail = () => {
-  const navigation = useNavigation();
-  const dispatch = useDispatch();
+  const navigation = useNavigation<TabScreenNavigationProp>();
+  const dispatch = useAppDispatch();
 
   const user = useAppSelector((state) => state.userSlice);
   console.log('юзер на активации', user);

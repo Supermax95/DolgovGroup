@@ -1,7 +1,8 @@
-import { View, Text } from 'react-native';
 import React, { FC, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
+import { StackNavigationProp } from 'navigation/types';
+import { View, Text } from 'react-native';
 import Padding from 'ui/Padding';
 import FieldDetail from 'ui/FieldDetail';
 import userLogout from 'Redux/thunks/User/logout.api';
@@ -13,7 +14,7 @@ interface IUser {
 }
 
 const Profile: FC = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp>();
   const dispatch = useAppDispatch();
   const userId = useAppSelector<IUser>((state) => state.userSlice.user.id);
   const firstName = useAppSelector<IUser>(

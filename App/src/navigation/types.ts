@@ -1,5 +1,9 @@
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
+import {
+  BottomTabNavigationOptions,
+  BottomTabNavigationProp,
+} from '@react-navigation/bottom-tabs';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 type RootStackParamList = {
   FooterTabs: undefined;
@@ -21,42 +25,23 @@ type RootStackParamList = {
 type IMaterialCommunityIcons = keyof typeof MaterialCommunityIcons.glyphMap;
 
 type TabNavigatorOptions = {
-  Auth: {
-    title: string;
-    tabBarIcon: IMaterialCommunityIcons;
-  };
-  Home: {
-    title: string;
-    tabBarIcon: IMaterialCommunityIcons;
-  };
-  Catalog: {
-    title: string;
-    tabBarIcon: IMaterialCommunityIcons;
-  };
-  Shops: {
-    title: string;
-    tabBarIcon: IMaterialCommunityIcons;
-  };
-  Support: {
-    title: string;
-    tabBarIcon: IMaterialCommunityIcons;
-  };
-  Profile: {
-    title: string;
-    tabBarIcon: IMaterialCommunityIcons;
-  };
+  Auth: undefined;
+  Home: undefined;
+  Catalog: undefined;
+  Shops: undefined;
+  Support: undefined;
+  Profile: undefined;
 };
 
-//* новая типизация  const tabProps: TabProps[]
-type TabProps = {
-  name: keyof TabNavigatorOptions;
-  component: React.ComponentType<any>;
-  options: BottomTabNavigationOptions;
-};
+type StackNavigationProp = NativeStackNavigationProp<RootStackParamList>;
+type TabScreenNavigationProp = BottomTabNavigationProp<TabNavigatorOptions>;
+//* ссылка на типизацию StackNavigationProp https://stackoverflow.com/questions/73328944/react-navigation-navigation-navigatesomescreen-error-in-typescript
+//* https://benjaminwoojang.medium.com/react-navigation-with-typescript-270dfa8d5cad
 
 export type {
   RootStackParamList,
   IMaterialCommunityIcons,
   TabNavigatorOptions,
-  TabProps,
+  StackNavigationProp,
+  TabScreenNavigationProp,
 };

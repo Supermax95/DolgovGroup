@@ -1,11 +1,12 @@
 import React, { FC, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Alert, Pressable, Text, View } from 'react-native';
+import { useAppSelector, useAppDispatch } from 'Redux/hooks';
+import { StackNavigationProp } from 'navigation/types';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import userLogin from 'Redux/thunks/User/login.api';
 import Button from 'ui/Button';
 import Field from 'ui/Field';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { useAppSelector, useAppDispatch } from 'Redux/hooks';
 
 interface IData {
   email: string;
@@ -15,7 +16,7 @@ interface IData {
 const styleCenter = 'h-full w-full bg-white';
 
 const SignIn = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp>();
   const dispatch = useAppDispatch();
 
   const [data, setData] = useState<IData>({
