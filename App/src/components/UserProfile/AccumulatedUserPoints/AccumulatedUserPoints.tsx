@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native';
 import React from 'react';
 
-const AccumulatedUserPoints = () => {
+const AccumulatedUserPoints = (): JSX.Element => {
   return (
     <View>
       <Text>AccumulatedUserPoints</Text>

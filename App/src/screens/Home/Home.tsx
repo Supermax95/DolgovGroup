@@ -5,7 +5,7 @@ import LargeCard from 'ui/LargeCard';
 import Heading from 'ui/Heading';
 import NewGoods from 'screens/NewGoods/NewGoods';
 
-const Home = () => {
+const Home = (): JSX.Element => {
   function formatPoints(numberPoints: number) {
     if (numberPoints === 0) {
       return '0 баллов';

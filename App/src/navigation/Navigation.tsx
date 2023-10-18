@@ -27,7 +27,7 @@ import { RootStackParamList, TabNavigatorOptions } from './types';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabNavigatorOptions>();
 
-export const AppNavigator = () => {
+export const AppNavigator = (): JSX.Element => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="FooterTabs">
@@ -106,7 +106,7 @@ export const AppNavigator = () => {
   );
 };
 
-export const FooterTabs = () => {
+export const FooterTabs = (): JSX.Element => {
   return (
     <Tab.Navigator
       screenOptions={{

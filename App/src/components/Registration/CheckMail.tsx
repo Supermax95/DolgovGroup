@@ -8,7 +8,7 @@ import Button from 'ui/Button';
 
 const styleCenter = 'h-full w-full bg-white ';
 
-const CheckMail = () => {
+const CheckMail = (): JSX.Element => {
   const navigation = useNavigation<TabScreenNavigationProp>();
   const dispatch = useAppDispatch();
 

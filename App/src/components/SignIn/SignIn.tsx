@@ -23,7 +23,7 @@ type HomeAndPropResetPassword = CompositeNavigationProp<
 
 const styleCenter = 'h-full w-full bg-white';
 
-const SignIn = () => {
+const SignIn = (): JSX.Element => {
   const navigation = useNavigation<HomeAndPropResetPassword>();
   const dispatch = useAppDispatch();
 

@@ -5,7 +5,7 @@ import { View, FlatList, Text, TouchableHighlight } from 'react-native';
 import locations from './locations';
 import Field from 'ui/Field';
 
-const ShopsList = () => {
+const ShopsList = (): JSX.Element => {
   const navigation = useNavigation<TabScreenNavigationProp>();
   const [searchText, setSearchText] = useState('');
 
