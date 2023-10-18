@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, Alert } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
+import { useAppDispatch, useAppSelector } from 'Redux/hooks';
+import { StackNavigationProp } from 'navigation/types';
 import resetPassword from 'Redux/thunks/User/newPassword.api';
 import Button from 'ui/Button';
 import Field from 'ui/Field';
-import { useNavigation } from '@react-navigation/native';
 
 const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
 
@@ -15,12 +16,12 @@ interface IResetPassword {
 const styleCenter = 'h-full w-full bg-white pt-16';
 
 export const ResetPassword = () => {
-  const navigation = useNavigation();
-  const dispatch = useDispatch();
+  const navigation = useNavigation<StackNavigationProp>();
+  const dispatch = useAppDispatch();
   const [data, setData] = useState<IResetPassword>({
     email: '',
   });
-  const error = useSelector((state: RootState) => state.userSlice.error);
+  const error = useAppSelector((state) => state.userSlice.error);
 
   const handleResetPassword = async () => {
     if (!data.email) {

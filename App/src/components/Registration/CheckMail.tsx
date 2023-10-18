@@ -5,11 +5,12 @@ import userActivate from 'Redux/thunks/User/activated.api';
 import { useNavigation } from '@react-navigation/native';
 import Button from 'ui/Button';
 import { useAppSelector } from 'Redux/hooks';
+import { TabScreenNavigationProp } from 'navigation/types';
 
 const styleCenter = 'h-full w-full bg-white ';
 
 const CheckMail = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<TabScreenNavigationProp>();
   const dispatch = useDispatch();
 
   const user = useAppSelector((state) => state.userSlice);

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from 'navigation/types';
 import { View, Text, Alert } from 'react-native';
 import Field from 'ui/Field';
 import Button from 'ui/Button';
@@ -13,7 +14,7 @@ interface IChangeEmail {
 
 const ChangeEmail = () => {
   const dispatch = useAppDispatch();
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp>();
   const userId = useAppSelector((state) => state.userSlice.user.id);
 
   const emailProfile = useAppSelector((state) => state.profileSlice.email);
@@ -57,9 +58,9 @@ const ChangeEmail = () => {
             [
               {
                 text: 'OK',
-                // onPress: () => {
-                //   navigation.navigate('EditProfile');
-                // },
+                onPress: () => {
+                  navigation.navigate('EditProfile');
+                },
               },
             ]
           );

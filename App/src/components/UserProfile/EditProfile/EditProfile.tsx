@@ -2,12 +2,13 @@ import React from 'react';
 import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAppSelector } from 'Redux/hooks';
+import { StackNavigationProp } from 'navigation/types';
 import { format } from 'date-fns';
 import Padding from 'ui/Padding';
 import FieldEditProfile from 'ui/FieldEditProfile';
 
 const EditProfile = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp>();
   const profile = useAppSelector((state) => state.profileSlice);
 
   return (
@@ -29,7 +30,7 @@ const EditProfile = () => {
         </FieldEditProfile>
         <FieldEditProfile
           onPress={() => navigation.navigate('ChangeEmail')}
-          title="Emal"
+          title="Email"
         >
           {profile.email}
         </FieldEditProfile>

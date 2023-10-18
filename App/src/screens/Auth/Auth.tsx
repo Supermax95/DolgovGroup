@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Image, Text, View, Button } from 'react-native';
 import { PORT, IP } from '@env';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from 'navigation/types';
 
 export const Auth = () => {
   const [data, setData] = useState({});
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp>();
 
   useEffect(() => {
     const fetchData = async () => {

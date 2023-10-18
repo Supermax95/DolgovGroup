@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from 'navigation/types';
 import { View, Text, Alert } from 'react-native';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Field from 'ui/Field';
@@ -16,7 +17,7 @@ interface PasswordChangeData {
 
 const ChangePassword = () => {
   const dispatch = useAppDispatch();
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp>();
   const userId = useAppSelector((state) => state.userSlice.user.id);
 
   const [data, setData] = useState<PasswordChangeData>({
