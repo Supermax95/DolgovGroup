@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native';
-import React from 'react';
+import React, { FC } from 'react';
 
-const AccumulatedUserPoints = (): JSX.Element => {
+const AccumulatedUserPoints: FC = () => {
   return (
     <View>
       <Text>AccumulatedUserPoints</Text>

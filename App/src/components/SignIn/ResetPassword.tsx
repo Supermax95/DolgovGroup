@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { View, Text, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
@@ -15,15 +15,16 @@ interface IResetPassword {
 
 const styleCenter = 'h-full w-full bg-white pt-16';
 
-export const ResetPassword = (): JSX.Element => {
+export const ResetPassword: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
   const dispatch = useAppDispatch();
+
   const [data, setData] = useState<IResetPassword>({
     email: '',
   });
   //const error = useAppSelector((state) => state.userSlice.error);
 
-  const handleResetPassword = async () => {
+  const handleResetPassword = async (): Promise<void> => {
     if (!data.email) {
       Alert.alert('Ошибка', 'Введите email');
       return;

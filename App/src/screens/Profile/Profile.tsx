@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { StackNavigationProp } from 'navigation/types';
@@ -8,24 +8,13 @@ import FieldDetail from 'ui/FieldDetail';
 import userLogout from 'Redux/thunks/User/logout.api';
 import getProfileInfo from 'Redux/thunks/Profile/profileInfo.api';
 
-interface IUser {
-  firstName: string;
-  id: number;
-}
-
-const Profile = (): JSX.Element => {
+const Profile: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
   const dispatch = useAppDispatch();
   const userId = useAppSelector<number>((state) => state.userSlice.user.id);
   const firstName = useAppSelector<string>(
     (state) => state.profileSlice.firstName
   );
-  //const userId = useAppSelector<IUser>((state) => state.userSlice.user.id);
-  // const firstName = useAppSelector<IUser>(
-  //   (state) => state.profileSlice.firstName
-  // );
-  // const a = useAppSelector((state) => state.userSlice.user);
-  // console.log('Editprof', a);
 
   useEffect(() => {
     if (userId) {
@@ -33,7 +22,7 @@ const Profile = (): JSX.Element => {
     }
   }, [dispatch, userId]);
 
-  const handleLogout = async () => {
+  const handleLogout = async (): Promise<void> => {
     try {
       await dispatch(userLogout());
       navigation.navigate('SignIn');

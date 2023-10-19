@@ -1,4 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import type { AxiosResponse } from 'axios';
 import axios from 'axios';
 import { PORT, IP } from '@env';
 
@@ -19,7 +20,9 @@ const getProfileInfo = createAsyncThunk<
   IProfileInfoRequest
 >('api/profileInfo', async ({ userId }) => {
   try {
-    const response = await axios.get(`http://${IP}:${PORT}/edit/${userId}`);
+    const response: AxiosResponse = await axios.get(
+      `http://${IP}:${PORT}/edit/${userId}`
+    );
 
     if (response.status === 200) {
       const { data } = response;
