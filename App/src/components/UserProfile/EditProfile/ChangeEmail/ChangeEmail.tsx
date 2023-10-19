@@ -15,9 +15,10 @@ interface IChangeEmail {
 const ChangeEmail = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<StackNavigationProp>();
-  const userId = useAppSelector((state) => state.userSlice.user.id);
-
-  const emailProfile = useAppSelector((state) => state.profileSlice.email);
+  const userId = useAppSelector<number>((state) => state.userSlice.user.id);
+  const emailProfile = useAppSelector<string>(
+    (state) => state.profileSlice.email
+  );
 
   const [data, setData] = useState<IChangeEmail>({
     newEmail: emailProfile || '',

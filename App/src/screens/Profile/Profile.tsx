@@ -16,19 +16,22 @@ interface IUser {
 const Profile = (): JSX.Element => {
   const navigation = useNavigation<StackNavigationProp>();
   const dispatch = useAppDispatch();
-  const userId = useAppSelector<IUser>((state) => state.userSlice.user.id);
-  const firstName = useAppSelector<IUser>(
+  const userId = useAppSelector<number>((state) => state.userSlice.user.id);
+  const firstName = useAppSelector<string>(
     (state) => state.profileSlice.firstName
   );
+  //const userId = useAppSelector<IUser>((state) => state.userSlice.user.id);
+  // const firstName = useAppSelector<IUser>(
+  //   (state) => state.profileSlice.firstName
+  // );
+  // const a = useAppSelector((state) => state.userSlice.user);
+  // console.log('Editprof', a);
 
   useEffect(() => {
     if (userId) {
       dispatch(getProfileInfo({ userId }));
     }
   }, [dispatch, userId]);
-
-  const a = useAppSelector((state) => state.userSlice.user);
-  console.log('Editprof', a);
 
   const handleLogout = async () => {
     try {
