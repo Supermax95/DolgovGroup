@@ -1,7 +1,7 @@
+import React, { FC } from 'react';
 import { View, Text } from 'react-native';
-import React from 'react';
 
-const Support = (): JSX.Element => {
+const Support: FC = () => {
   return (
     <View>
       <Text>Support</Text>

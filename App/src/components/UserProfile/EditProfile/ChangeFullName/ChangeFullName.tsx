@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from 'navigation/types';
@@ -14,12 +14,14 @@ interface IFullName {
   newMiddleName: string;
 }
 
-const ChangeFullName = (): JSX.Element => {
+const ChangeFullName: FC = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<StackNavigationProp>();
-  const userId = useAppSelector((state) => state.userSlice.user.id);
+  const userId = useAppSelector<number>((state) => state.userSlice.user.id);
+  // const userFullName = useAppSelector((state) => state.userSlice.user);
+  // console.log('userFullNameuserFullName====>', userFullName);
 
-  const dateProfile = useAppSelector((state) => state.profileSlice);
+  const dateProfile = useAppSelector((state) => state.profileSlice); // хз, нужно ли это типизировать
 
   const [data, setData] = useState<IFullName>({
     newLastName: dateProfile.lastName || '',
@@ -33,12 +35,12 @@ const ChangeFullName = (): JSX.Element => {
     newMiddleName: '',
   });
 
-  const handleFieldChange = (field: keyof IFullName, value: string) => {
+  const handleFieldChange = (field: keyof IFullName, value: string): void => {
     setData((prevData) => ({ ...prevData, [field]: value }));
     setErrorMessages((prevErrors) => ({ ...prevErrors, [field]: '' }));
   };
 
-  const handlerSubmitFullName = async () => {
+  const handlerSubmitFullName = async (): Promise<void> => {
     if (!data.newLastName || !data.newFirstName || !data.newMiddleName) {
       setErrorMessages({
         newLastName: !data.newLastName ? 'Введите свою фамилию' : '',

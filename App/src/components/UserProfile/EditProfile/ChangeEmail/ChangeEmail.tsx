@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from 'navigation/types';
@@ -12,27 +12,30 @@ interface IChangeEmail {
   newEmail: string;
 }
 
-const ChangeEmail = (): JSX.Element => {
+const ChangeEmail: FC = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<StackNavigationProp>();
-  const userId = useAppSelector((state) => state.userSlice.user.id);
-
-  const emailProfile = useAppSelector((state) => state.profileSlice.email);
+  const userId = useAppSelector<number>((state) => state.userSlice.user.id);
+  const emailProfile = useAppSelector<string>(
+    (state) => state.profileSlice.email
+  );
 
   const [data, setData] = useState<IChangeEmail>({
     newEmail: emailProfile || '',
   });
-
   const [errorMessages, setErrorMessages] = useState<IChangeEmail>({
     newEmail: '',
   });
 
-  const handleFieldChange = (field: keyof IChangeEmail, value: string) => {
+  const handleFieldChange = (
+    field: keyof IChangeEmail,
+    value: string
+  ): void => {
     setData((prevData) => ({ ...prevData, [field]: value }));
     setErrorMessages((prevErrors) => ({ ...prevErrors, [field]: '' }));
   };
 
-  const handlerSubmitFullName = async () => {
+  const handlerSubmitFullName = async (): Promise<void> => {
     if (!data.newEmail) {
       setErrorMessages({
         newEmail: !data.newEmail ? 'Введите почту' : '',
@@ -83,6 +86,7 @@ const ChangeEmail = (): JSX.Element => {
             placeholder="Email"
             onChange={(value) => handleFieldChange('newEmail', value)}
             autoCapitalize="none"
+            keyboardType="email-address"
           />
           {errorMessages.newEmail && (
             <Text className="text-red-500 ml-1 mt-1 text-xs">

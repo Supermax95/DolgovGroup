@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { TabScreenNavigationProp } from 'navigation/types';
 import { View, FlatList, Text, TouchableHighlight } from 'react-native';
 import locations from './locations';
 import Field from 'ui/Field';
 
-const ShopsList = (): JSX.Element => {
+const ShopsList: FC = () => {
   const navigation = useNavigation<TabScreenNavigationProp>();
   const [searchText, setSearchText] = useState('');
 

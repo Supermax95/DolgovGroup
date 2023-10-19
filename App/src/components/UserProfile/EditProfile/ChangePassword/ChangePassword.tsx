@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from 'navigation/types';
@@ -15,17 +15,17 @@ interface PasswordChangeData {
   confirmPassword: string;
 }
 
-const ChangePassword = (): JSX.Element => {
+const ChangePassword: FC = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<StackNavigationProp>();
-  const userId = useAppSelector((state) => state.userSlice.user.id);
+  const userId = useAppSelector<number>((state) => state.userSlice.user.id);
 
   const [data, setData] = useState<PasswordChangeData>({
     oldPassword: '',
     newPassword: '',
     confirmPassword: '',
   });
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const [errorMessages, setErrorMessages] = useState<PasswordChangeData>({
     oldPassword: '',
@@ -33,19 +33,19 @@ const ChangePassword = (): JSX.Element => {
     confirmPassword: '',
   });
 
-  const toggleShowPassword = () => {
+  const toggleShowPassword = (): void => {
     setShowPassword(!showPassword);
   };
 
   const handleFieldChange = (
     field: keyof PasswordChangeData,
     value: string
-  ) => {
+  ): void => {
     setData((prevData) => ({ ...prevData, [field]: value }));
     setErrorMessages((prevErrors) => ({ ...prevErrors, [field]: '' }));
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (): Promise<void> => {
     if (!data.oldPassword || !data.newPassword || !data.confirmPassword) {
       setErrorMessages({
         oldPassword: !data.oldPassword ? 'Введите старый пароль' : '',

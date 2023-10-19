@@ -1,11 +1,11 @@
 import { ScrollView, View } from 'react-native';
-import React from 'react';
+import React, { FC } from 'react';
 import Padding from 'ui/Padding';
 import LargeCard from 'ui/LargeCard';
 import Heading from 'ui/Heading';
 import NewGoods from 'screens/NewGoods/NewGoods';
 
-const Home = (): JSX.Element => {
+const Home: FC = () => {
   function formatPoints(numberPoints: number) {
     if (numberPoints === 0) {
       return '0 баллов';

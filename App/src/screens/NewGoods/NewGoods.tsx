@@ -1,8 +1,8 @@
 import { View } from 'react-native';
-import React from 'react';
+import React, { FC } from 'react';
 import CardProduct from 'ui/PromotionalCardProduct';
 
-export const NewGoods = (): JSX.Element => {
+export const NewGoods: FC = () => {
   function calculateDiscountPercentageWithCents(
     originalPrice: number,
     discountedPrice: number

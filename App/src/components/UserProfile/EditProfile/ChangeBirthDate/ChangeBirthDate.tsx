@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from 'navigation/types';
@@ -9,22 +9,24 @@ import Button from 'ui/Button';
 import profileChangeBirthDate from 'Redux/thunks/Profile/profileChangeBirthDate.api';
 import Padding from 'ui/Padding';
 
-export const ChangeBirthDate = (): JSX.Element => {
+export const ChangeBirthDate: FC = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<StackNavigationProp>();
-  const userId = useAppSelector((state) => state.userSlice.user.id);
-  const userDate = useAppSelector((state) => state.profileSlice.birthDate);
+  const userId = useAppSelector<number>((state) => state.userSlice.user.id);
+  const userDate = useAppSelector<string>(
+    (state) => state.profileSlice.birthDate
+  );
   console.log('userDate in file ChangeBirthDate', parseISO(userDate));
 
   const [data, setData] = useState({
     newBirthDate: parseISO(userDate) || new Date(),
   });
 
-  const handleFieldChange = (field: string, value: Date) => {
+  const handleFieldChange = (field: string, value: Date): void => {
     setData({ ...data, [field]: value });
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (): Promise<void> => {
     try {
       if (!data.newBirthDate) {
         Alert.alert('Ошибка', 'Выберите дату');

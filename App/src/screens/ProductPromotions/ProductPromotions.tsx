@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native';
-import React from 'react';
+import React, { FC } from 'react';
 
-const ProductPromotions = (): JSX.Element => {
+const ProductPromotions: FC = () => {
   return (
     <View>
       <Text>ProductPromotions</Text>

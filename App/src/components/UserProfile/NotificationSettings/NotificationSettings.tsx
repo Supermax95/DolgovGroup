@@ -2,14 +2,14 @@ import { View, Text, Switch } from 'react-native';
 import React, { FC, useState } from 'react';
 import Padding from 'ui/Padding';
 
-const NotificationSettings = (): JSX.Element => {
-  const [isEnabledPush, setIsEnabledPush] = useState(false);
-  const [isEnabledEmail, setIsEnabledEmail] = useState(false);
+const NotificationSettings: FC = () => {
+  const [isEnabledPush, setIsEnabledPush] = useState<boolean>(false);
+  const [isEnabledEmail, setIsEnabledEmail] = useState<boolean>(false);
 
-  const toggleSwitchPush = () =>
+  const toggleSwitchPush = (): void =>
     setIsEnabledPush((previousStatePush) => !previousStatePush);
 
-  const toggleSwitchEmail = () =>
+  const toggleSwitchEmail = (): void =>
     setIsEnabledEmail((previousStateEmail) => !previousStateEmail);
 
   return (

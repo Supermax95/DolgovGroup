@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import {
   CompositeNavigationProp,
   useNavigation,
@@ -23,18 +23,20 @@ type HomeAndPropResetPassword = CompositeNavigationProp<
 
 const styleCenter = 'h-full w-full bg-white';
 
-const SignIn = (): JSX.Element => {
+const SignIn: FC = () => {
   const navigation = useNavigation<HomeAndPropResetPassword>();
   const dispatch = useAppDispatch();
+
+  const isLoading = useAppSelector<boolean>(
+    (state) => state.userSlice.isLoading
+  );
+  const token = useAppSelector<string>((state) => state.userSlice.token);
 
   const [data, setData] = useState<IData>({
     email: '',
     password: '',
   });
   const [showPassword, setShowPassword] = useState<boolean>(false);
-
-  const isLoading = useAppSelector((state) => state.userSlice.isLoading);
-  const token = useAppSelector((state) => state.userSlice.token);
 
   const toggleShowPassword = (): void => {
     setShowPassword(!showPassword);

@@ -1,10 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { IUser } from 'Types/IUser';
 import getProfileInfo from './thunks/Profile/profileInfo.api';
 import changeProfilePass from './thunks/Profile/profileChangePass.api';
 import profileChangeBirthDate from './thunks/Profile/profileChangeBirthDate.api';
 import profileChangeFullName from './thunks/Profile/profileChangeFullName.api';
 import profileChangeEmail from './thunks/Profile/profileChangeEmail.api';
+
+interface IUser {
+  lastName: string;
+  firstName: string;
+  middleName: string;
+  birthDate: string;
+  email: string;
+  isLoading: boolean;
+  error: any; //* указать конкретный тип для ошибок, если он известен
+  successMessage: any; //* указать конкретный тип для ошибок, если он известен
+}
 
 const initialState: IUser = {
   lastName: '',
@@ -30,7 +40,13 @@ const profileSlice = createSlice({
       .addCase(getProfileInfo.fulfilled, (state, action) => {
         state.isLoading = false;
         const { lastName, firstName, middleName, birthDate, email } =
-          action.payload;
+          action.payload as {
+            lastName: string;
+            firstName: string;
+            middleName: string;
+            birthDate: string;
+            email: string;
+          };
         state.lastName = lastName;
         state.firstName = firstName;
         state.middleName = middleName;

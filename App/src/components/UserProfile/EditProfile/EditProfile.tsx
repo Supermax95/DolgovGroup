@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAppSelector } from 'Redux/hooks';
@@ -7,7 +7,7 @@ import { format } from 'date-fns';
 import Padding from 'ui/Padding';
 import FieldEditProfile from 'ui/FieldEditProfile';
 
-const EditProfile = (): JSX.Element => {
+const EditProfile: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
   const profile = useAppSelector((state) => state.profileSlice);
 

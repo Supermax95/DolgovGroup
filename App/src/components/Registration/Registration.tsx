@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { View, Text, ScrollView, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -19,7 +19,7 @@ interface IData {
   passwordCheck?: string;
 }
 
-export const Registration = (): JSX.Element => {
+export const Registration: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
   const dispatch = useAppDispatch();
   //const isLoading = useAppSelector((state) => state.userSlice.isLoading);
@@ -51,11 +51,11 @@ export const Registration = (): JSX.Element => {
     passwordCheck: '',
   });
 
-  const toggleShowPassword = () => {
+  const toggleShowPassword = (): void => {
     setShowPassword(!showPassword);
   };
 
-  const toggleShowPasswordRepeat = () => {
+  const toggleShowPasswordRepeat = (): void => {
     setShowPasswordRepeat(!showPasswordRepeat);
   };
 

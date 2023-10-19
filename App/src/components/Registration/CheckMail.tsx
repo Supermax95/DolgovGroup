@@ -8,21 +8,20 @@ import Button from 'ui/Button';
 
 const styleCenter = 'h-full w-full bg-white ';
 
-const CheckMail = (): JSX.Element => {
+const CheckMail: FC = () => {
   const navigation = useNavigation<TabScreenNavigationProp>();
   const dispatch = useAppDispatch();
 
+  const userId = useAppSelector<number>((state) => state.userSlice.user.id);
+  console.log('userid', userId);
+  const token = useAppSelector<string>((state) => state.userSlice.token);
+  const [activationMessage, setActivationMessage] = useState<string>('');
+
   const user = useAppSelector((state) => state.userSlice);
   console.log('юзер на активации', user);
-  const data = useAppSelector((state) => state.userSlice.data);
-  console.log('dddddaaaaattta', data);
-
-  const userId = useAppSelector((state) => state.userSlice.user.id);
-  console.log('userid', userId);
-
-  const isActivated = useAppSelector((state) => state.userSlice.isActivated);
-  const token = useAppSelector((state) => state.userSlice.token);
-  const [activationMessage, setActivationMessage] = useState('');
+  // const data = useAppSelector((state) => state.userSlice.data);
+  // console.log('dddddaaaaattta', data);
+  //const isActivated = useAppSelector((state) => state.userSlice.isActivated);
 
   useEffect(() => {
     if (userId) {

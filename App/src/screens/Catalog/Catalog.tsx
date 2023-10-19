@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native';
-import React from 'react';
+import React, { FC } from 'react';
 
-const Catalog = (): JSX.Element => {
+const Catalog: FC = () => {
   return (
     <View>
       <Text>Catalog</Text>
