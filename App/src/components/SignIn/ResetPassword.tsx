@@ -71,6 +71,7 @@ export const ResetPassword = (): JSX.Element => {
         placeholder="Введите email"
         autoCapitalize="none"
         onChange={(value) => setData({ ...data, email: value })}
+        keyboardType="email-address"
       />
       <Button onPress={handleResetPassword} title={`Сбросить пароль`} />
     </View>

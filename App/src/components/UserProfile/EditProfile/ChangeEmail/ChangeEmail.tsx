@@ -83,6 +83,7 @@ const ChangeEmail = (): JSX.Element => {
             placeholder="Email"
             onChange={(value) => handleFieldChange('newEmail', value)}
             autoCapitalize="none"
+            keyboardType="email-address"
           />
           {errorMessages.newEmail && (
             <Text className="text-red-500 ml-1 mt-1 text-xs">
