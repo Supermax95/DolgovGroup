@@ -18,6 +18,8 @@ const ChangeFullName = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<StackNavigationProp>();
   const userId = useAppSelector((state) => state.userSlice.user.id);
+  const userFullName = useAppSelector((state) => state.userSlice.user);
+  console.log('userFullNameuserFullName====>', userFullName);
 
   const dateProfile = useAppSelector((state) => state.profileSlice);
 

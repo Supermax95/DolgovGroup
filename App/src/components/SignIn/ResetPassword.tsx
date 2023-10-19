@@ -9,9 +9,9 @@ import Field from 'ui/Field';
 
 const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
 
-interface IResetPassword {
+type IResetPassword = {
   email: string;
-}
+};
 
 const styleCenter = 'h-full w-full bg-white pt-16';
 
@@ -21,7 +21,7 @@ export const ResetPassword = (): JSX.Element => {
   const [data, setData] = useState<IResetPassword>({
     email: '',
   });
-  const error = useAppSelector((state) => state.userSlice.error);
+  //const error = useAppSelector((state) => state.userSlice.error);
 
   const handleResetPassword = async () => {
     if (!data.email) {
@@ -36,6 +36,7 @@ export const ResetPassword = (): JSX.Element => {
       }
 
       const result = await dispatch(resetPassword(data.email));
+      console.log('resultresultresult------->', result);
 
       if (result.meta.requestStatus === 'rejected') {
         Alert.alert(
