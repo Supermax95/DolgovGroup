@@ -7,7 +7,7 @@ import Field from 'ui/Field';
 
 const ShopsList: FC = () => {
   const navigation = useNavigation<TabScreenNavigationProp>();
-  const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState<string>('');
 
   const filteredLocations = locations.filter((shop) =>
     shop.name.toLowerCase().includes(searchText.toLowerCase())

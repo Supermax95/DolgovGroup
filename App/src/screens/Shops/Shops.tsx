@@ -1,12 +1,14 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
-import MapView, { Callout, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import { useRoute, useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from 'navigation/types';
 import { View, StyleSheet, Button as RNButton, Text } from 'react-native';
+import MapView, { Callout, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import Button from 'ui/Button';
 import locations from './locations';
-import { useRoute, useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
 
 const Shops: FC = () => {
+  const navigation = useNavigation<StackNavigationProp>();
   const mapRef = useRef(null);
   const route = useRoute();
   const selectedShop = route.params?.selectedShop1;
@@ -29,8 +31,6 @@ const Shops: FC = () => {
       }
     })();
   }, [selectedShop]);
-
-  const navigation = useNavigation();
 
   const showMyLocation = () => {
     if (userLocation && mapRef.current) {
