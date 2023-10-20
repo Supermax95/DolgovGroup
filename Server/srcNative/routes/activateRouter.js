@@ -2,7 +2,7 @@ const express = require('express');
 const tokenService = require('../services/token-service');
 
 const router = express.Router();
-const { DiscountCard } = require('../db/models');
+const { DiscountCard } = require('../../db/models');
 const UserDto = require('../dtos/user-dto');
 
 router.get('/check/:userId', async (req, res) => {

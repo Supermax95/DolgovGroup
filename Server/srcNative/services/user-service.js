@@ -7,7 +7,7 @@ const uuid = require('uuid');
 const MailService = require('./mail-service');
 // const TokenService = require('./token-service');
 const UserDto = require('../dtos/user-dto');
-const { DiscountCard } = require('../db/models');
+const { DiscountCard } = require('../../db/models');
 const ApiError = require('../middlewares/error-middleware');
 const tokenService = require('./token-service');
 

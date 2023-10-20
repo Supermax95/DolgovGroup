@@ -8,13 +8,15 @@ const session = require('express-session');
 const FileStore = require('session-file-store')(session);
 const cookieParser = require('cookie-parser');
 
-// Require routes
-const router = require('./routes/indexRouter');
-const activateRouter = require('./routes/activateRouter');
-const userProfileRouter = require('./routes/userProfileRouter');
+//* Require routes ReactNative
+const indexRouter = require('./srcNative/routes/indexRouter');
+const activateRouter = require('./srcNative/routes/activateRouter');
+const userProfileRouter = require('./srcNative/routes/userProfileRouter');
+
+// ? Require Routes React
 
 // middleware
-const errorMiddleware = require('./middlewares/error-middleware');
+const errorMiddleware = require('./srcNative/middlewares/error-middleware');
 
 const { PORT, IP } = process.env;
 
@@ -32,9 +34,10 @@ const sessionConfig = {
 
 const app = express();
 
+//* ReactNative
 app.use(
   cors({
-    origin: `http://${IP}:8081`,
+    origin: [`http://${IP}:8081`, 'http://localhost:5173'],
     credentials: true,
   })
 );
@@ -45,12 +48,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// Routes
-// app.use('/', indexrouter);
-app.use('/api', router);
+//* Routes ReactNative
+app.use('/api', indexRouter);
 app.use('/', activateRouter);
 app.use('/', userProfileRouter);
 app.use(errorMiddleware);
+
+// ? Routes React
+
 app.listen(PORT, () => {
   console.log(`Сервер крутится на ${PORT} порту`);
 });

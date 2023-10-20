@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
-const { DiscountCard } = require('../db/models');
+const { DiscountCard } = require('../../db/models');
 
 module.exports = router
   .get('/edit/:userId', async (req, res) => {

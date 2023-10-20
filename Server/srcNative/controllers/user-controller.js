@@ -1,5 +1,5 @@
+/* eslint-disable class-methods-use-this */
 require('dotenv').config();
-const cookieParser = require('cookie-parser');
 const userService = require('../services/user-service');
 
 class UserController {
@@ -51,19 +51,6 @@ class UserController {
     }
   }
 
-  // async logout(req, res, next) {
-  //   try {
-  //     const { refreshToken } = req.cookies;
-  //     const token = await userService.logout(refreshToken);
-  //     req.session.destroy(() => {
-  //       res.clearCookie('name');
-  //       res.status(200).json({ message: 'Logged out successfully' });
-  //     res.clearCookie(refreshToken);
-  //     return res.json(token);
-  //   } catch (e) {
-  //     next(e);
-  //   }
-  // }
   async logout(req, res, next) {
     try {
       const { refreshToken } = req.cookies;
