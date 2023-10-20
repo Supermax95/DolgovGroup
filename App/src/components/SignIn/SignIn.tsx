@@ -30,7 +30,14 @@ const SignIn: FC = () => {
   const isLoading = useAppSelector<boolean>(
     (state) => state.userSlice.isLoading
   );
-  const token = useAppSelector<string>((state) => state.userSlice.token);
+  const token = useAppSelector<string>((state) => state.userSlice.token.accessToken);
+  console.log('======>' , token);
+  
+  
+  const userSlice = useAppSelector<string>(
+    (state) => state.userSlice
+  );
+  console.log('userslicelogin', userSlice);
 
   const [data, setData] = useState<IData>({
     email: '',
@@ -48,7 +55,7 @@ const SignIn: FC = () => {
         Alert.alert('Ошибка', 'Введите email и пароль');
         return;
       }
-
+      // const result = await dispatch(userLogin({ token, userData: data }));
       const result = await dispatch(userLogin({ token, userData: data }));
 
       if (result.meta.requestStatus === 'rejected') {

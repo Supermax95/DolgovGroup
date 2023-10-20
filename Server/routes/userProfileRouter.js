@@ -74,9 +74,6 @@ module.exports = router
       await user.update({
         birthDate: newBirthDate,
       });
-
-      console.log('================>', birthDateUpdate);
-
       res.status(200).json({
         message: 'День рождения успешно изменено',
         birthDate: newBirthDate,

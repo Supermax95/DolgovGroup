@@ -21,7 +21,7 @@ class UserService {
     password
   ) {
     const userReg = await DiscountCard.findOne({ where: { email } });
-console.log('======>', userReg);
+    console.log('userReg', userReg);
     if (userReg) {
       throw ApiError.BadRequest(
         `Пользователь с такой электронной почтой ${email} уже существует`
@@ -73,10 +73,10 @@ console.log('======>', userReg);
     // const tokens = tokenService.generateTokens({ ...userDto });
     // await tokenService.saveToken(userDto.id, tokens.refreshToken);
 
-    return {
-      user: userDto,
-      // refreshToken: tokens.refreshToken,
-    };
+    // return {
+    // user: userDto,
+    // refreshToken: tokens.refreshToken,
+    // };
   }
 
   async login(email, password) {
@@ -97,6 +97,7 @@ console.log('======>', userReg);
       throw ApiError.BadRequest('Пароль введён неверно');
     }
     const userDto = new UserDto(user);
+    console.log('=====>', userDto);
     const tokens = tokenService.generateTokens({ ...userDto });
     console.log(tokens);
     await tokenService.saveToken(userDto.id, tokens.refreshToken);

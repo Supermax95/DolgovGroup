@@ -11,7 +11,6 @@ const userRegister = createAsyncThunk('api/register', async (user) => {
     );
 
     if (response.status === 200) {
-      console.log('=====>', response.data);
       return response.data;
     } else {
       throw new Error('Ошибка при регистрации');

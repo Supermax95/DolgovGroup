@@ -1,70 +1,68 @@
-// import { createAsyncThunk } from '@reduxjs/toolkit';
-// import axios, { AxiosResponse } from 'axios';
-// import { PORT, IP } from '@env';
-
-// interface IPropsActivate {
-//   token: string;
-//   userId : number;
-// }
-
-// const checkActivation = createAsyncThunk(
-//   'api/activate',
-//   async ({ userId, token }:IPropsActivate) => {
-//     console.log('userId axios', token);
-
-//     try {
-//       const config = {
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//           'Content-Type': 'application/json',
-//         },
-//       };
-//       const response: AxiosResponse= await axios.get(
-//         `http://${IP}:${PORT}/check/${userId}`,
-//         config
-//       );
-//       return response.status === 200;
-//     } catch (error) {
-//       return false;
-//     }
-//   }
-// );
-
-// export default checkActivation;
-
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
 import { PORT, IP } from '@env';
 
-interface IPropsActivate {
-  token: string;
-  userId : number;
+interface IPropsActivateResponse {
+  token: {
+    accessToken: string;
+    refreshToken?: string;
+  };
+  user: {
+    email: string;
+    firstName: string;
+    id: number;
+    isActivated: boolean;
+  };
 }
 
-const checkActivation = createAsyncThunk(
-  'api/activate',
-  async ({ userId, token }:IPropsActivate) => {
-    console.log('userId axios', token);
+ interface IPropsActivateRequest {
+  userId: number;
+  token: {
+    accessToken: string;
+    refreshToken?: string;
+  };
+}
+// interface IPropsActivate {
+//   userId:number
+//   token:
+// }
 
-    try {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
+const checkActivation = createAsyncThunk<
+  IPropsActivateResponse | undefined,
+  IPropsActivateRequest
+>('api/activate', async ({ userId, token }) => {
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    };
+    const response: AxiosResponse = await axios.get(
+      `http://${IP}:${PORT}/check/${userId}`,
+      config
+    );
+
+    if (response.status === 200) {
+      const { data } = response;
+
+      const activatedInfo = {
+        token: {
+          accessToken: data.token.accessToken,
+          refreshToken: data.token.refreshToken,
+        },
+        user: {
+          email: data.user.email,
+          firstName: data.user.firstName,
+          id: data.user.id,
+          isActivated: data.user.isActivated,
         },
       };
-      const response: AxiosResponse= await axios.get(
-        `http://${IP}:${PORT}/check/${userId}`,
-        config
-      );
-      console.log('-------->', response.data);
-      
-      return response.data;
-    } catch (error) {
-      return false;
+      return activatedInfo;
     }
+  } catch (error) {
+    throw error;
   }
-);
+});
 
 export default checkActivation;
-

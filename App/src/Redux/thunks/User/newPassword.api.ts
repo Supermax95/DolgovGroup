@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import type { AxiosResponse } from 'axios';
+// import type { AxiosResponse } from 'axios';
 import axios from 'axios';
 import { PORT, IP } from '@env';
 
@@ -7,13 +7,13 @@ const resetPassword = createAsyncThunk<string, string>(
   'api/resetpassword',
   async (email) => {
     try {
-      const response: AxiosResponse = await axios.post(
+      // const response: AxiosResponse =  
+      await axios.post(
         `http://${IP}:${PORT}/api/new-password`,
-        { email: email } // запрос
+        { email: email }
       );
-      // console.log('Пароль успешно сброшен', response.data);
-      // console.log('emailemailemailemailemailemail', email);
-      return email; // ответ
+
+      return email;
     } catch (error) {
       console.error('Произошла ошибка при сбросе пароля', error);
       throw error;
