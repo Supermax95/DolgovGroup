@@ -2,14 +2,29 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
 import { PORT, IP } from '@env';
 
-interface IPropsLogin {
+interface RequestData {
   token: string;
-  userData: object;
+  // userData: object;
+  userData: {
+    password: string;
+    email: string;
+  };
 }
 
-const userLogin = createAsyncThunk(
+interface ResponseData {
+  accessToken: string;
+  refreshToken?: string;
+  user: {
+    email: string;
+    firstName: string;
+    id: number;
+    isActivated: boolean;
+  };
+}
+
+const userLogin = createAsyncThunk<ResponseData, RequestData>(
   'api/login',
-  async ({ token, userData }: IPropsLogin) => {
+  async ({ token, userData }) => {
     try {
       const config = {
         headers: {
@@ -23,6 +38,7 @@ const userLogin = createAsyncThunk(
         userData,
         config
       );
+      console.log('response axios', response.data);
 
       return response.data;
     } catch (error) {

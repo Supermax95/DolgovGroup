@@ -11,19 +11,25 @@ type User = {
   id: number;
   isActivated: boolean;
 };
+type IToken = {
+  accessToken: string ;
+  refreshToken: string;
+};
 
 type UserState = {
-  token: string;
+  token: IToken | undefined;
   user: User;
   isAuth: boolean;
   isLoading: boolean;
   error: any; //* указать конкретный тип для ошибок, если он известен
-  isActivated: boolean;
   email: string;
 };
 
 const initialState: UserState = {
-  token: '',
+  token: {
+    accessToken: '',
+    refreshToken: '',
+  },
   user: {
     email: '',
     firstName: '',
@@ -33,7 +39,6 @@ const initialState: UserState = {
   isAuth: false,
   isLoading: false,
   error: null,
-  isActivated: false,
   email: '',
 };
 
@@ -45,13 +50,18 @@ const userSlice = createSlice({
     builder
       .addCase(userLogin.pending, (state) => {
         state.isLoading = true;
+        state.isAuth = false;
       })
       .addCase(userLogin.fulfilled, (state, action) => {
+        if (action.payload) 
         state.isLoading = false;
-        state.token = action.payload.accessToken;
+        state.token = {
+          accessToken: action.payload.accessToken || '',
+          refreshToken: '',
+        };
         state.user = action.payload.user;
         state.isAuth = true;
-        console.log('я в диспетче', state.token);
+        console.log('я в диспетче', state.token.accessToken);
       })
       .addCase(userLogin.rejected, (state, action) => {
         state.isLoading = false;
@@ -74,7 +84,10 @@ const userSlice = createSlice({
       })
       .addCase(userLogout.fulfilled, (state) => {
         state.isLoading = false;
-        state.token = '';
+        state.token = {
+          accessToken: '',
+          refreshToken: '',
+        };
         state.user = {
           email: '',
           firstName: '',
@@ -89,13 +102,30 @@ const userSlice = createSlice({
       })
       .addCase(userActivate.pending, (state) => {
         state.isLoading = true;
+        state.isAuth = false;
       })
+      // .addCase(userActivate.fulfilled, (state, action) => {
+      //   state.user = action.payload.user;
+      //   state.isLoading = false;
+      //   state.isAuth = true;
+      //   state.token = {
+      //     accessToken: action.payload.token.accessToken,
+      //     refreshToken: '',
+      //   };
+      //   console.log('state user', state.user);
+
+      // })
+
       .addCase(userActivate.fulfilled, (state, action) => {
-        state.isActivated = action.payload;
+        if (action.payload) 
+        state.user = action.payload.user;
         state.isLoading = false;
         state.isAuth = true;
-        state.token = action.payload;
-        console.log('я в диспетче на активации', state.token);
+        state.token = {
+          accessToken: action.payload?.token.accessToken || '',
+          refreshToken: '',
+        };
+        console.log('state user', state.user);
       })
       .addCase(userActivate.rejected, (state, action) => {
         state.isLoading = false;

@@ -23,10 +23,10 @@ export const Registration: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
   const dispatch = useAppDispatch();
   //const isLoading = useAppSelector((state) => state.userSlice.isLoading);
-  const user = useAppSelector((state) => state.userSlice.user);
+  // const user = useAppSelector((state) => state.userSlice.user);
   // console.log('я юзуер на регистрации', user);
 
-  const error = useAppSelector((state) => state.userSlice.error);
+  // const error = useAppSelector((state) => state.userSlice.error);
 
   const [step, setStep] = useState<number>(1);
   const [data, setData] = useState<IData>({
