@@ -37,7 +37,11 @@ const app = express();
 //* ReactNative
 app.use(
   cors({
-    origin: [`http://${IP}:8081`, 'http://localhost:5173'],
+    origin: [
+      `http://${IP}:8081`,
+      'http://localhost:5173',
+      'http://localhost:5174',
+    ],
     credentials: true,
   })
 );
