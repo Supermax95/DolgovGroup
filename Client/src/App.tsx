@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import './App.css';
+import { VITE_URL } from './VITE_URL';
+
 
 function App() {
   const [data, setData] = useState({});
@@ -9,7 +11,8 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api`);
+      
+        const response = await fetch(`${VITE_URL}/api`); 
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
