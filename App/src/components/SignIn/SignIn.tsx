@@ -30,14 +30,13 @@ const SignIn: FC = () => {
   const isLoading = useAppSelector<boolean>(
     (state) => state.userSlice.isLoading
   );
-  const token = useAppSelector<string>((state) => state.userSlice.token.accessToken);
-  console.log('======>' , token);
-  
-  
-  const userSlice = useAppSelector<string>(
-    (state) => state.userSlice
+  const token = useAppSelector<string>(
+    (state) => state.userSlice.token.accessToken
   );
-  console.log('userslicelogin', userSlice);
+  console.log('======>', token);
+
+  // const userSlice = useAppSelector<string>((state) => state.userSlice);
+  // console.log('userslicelogin', userSlice);
 
   const [data, setData] = useState<IData>({
     email: '',

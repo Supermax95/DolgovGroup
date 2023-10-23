@@ -12,7 +12,7 @@ type User = {
   isActivated: boolean;
 };
 type IToken = {
-  accessToken: string ;
+  accessToken: string;
   refreshToken: string;
 };
 
@@ -53,8 +53,7 @@ const userSlice = createSlice({
         state.isAuth = false;
       })
       .addCase(userLogin.fulfilled, (state, action) => {
-        if (action.payload) 
-        state.isLoading = false;
+        if (action.payload) state.isLoading = false;
         state.token = {
           accessToken: action.payload.accessToken || '',
           refreshToken: '',
@@ -117,8 +116,7 @@ const userSlice = createSlice({
       // })
 
       .addCase(userActivate.fulfilled, (state, action) => {
-        if (action.payload) 
-        state.user = action.payload.user;
+        if (action.payload) state.user = action.payload.user;
         state.isLoading = false;
         state.isAuth = true;
         state.token = {
