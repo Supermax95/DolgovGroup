@@ -8,6 +8,14 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      managerId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Managers',
+          key: 'id',
+        },
+        onDelete: 'CASCADE',
+      },
       lastName: {
         type: Sequelize.STRING,
       },
@@ -17,17 +25,17 @@ module.exports = {
       middleName: {
         type: Sequelize.STRING,
       },
-      photo: {
-        allowNull: true,
-        type: Sequelize.STRING,
+      birthDate: {
+        type: Sequelize.DATEONLY,
       },
       email: {
         type: Sequelize.STRING,
       },
-      birthDate: {
-        type: Sequelize.DATEONLY,
-      },
       password: {
+        type: Sequelize.STRING,
+      },
+      photo: {
+        allowNull: true,
         type: Sequelize.STRING,
       },
       cardType: {
@@ -41,14 +49,12 @@ module.exports = {
         defaultValue: '1 БОНУС = 1 РУБЛЮ',
         type: Sequelize.STRING,
       },
-      isEmployee: {
-        type: Sequelize.BOOLEAN,
-      },
       balance: {
         type: Sequelize.INTEGER,
       },
-      isAdmin: {
-        type: Sequelize.BOOLEAN,
+      userStatus: {
+        defaultValue: 'Клиент',
+        type: Sequelize.STRING,
       },
       isActivated: {
         type: Sequelize.BOOLEAN,

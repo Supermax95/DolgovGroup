@@ -2,26 +2,27 @@ const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class DiscountCard extends Model {
-    static associate({ Token }) {
-      this.hasMany(Token, { foreignKey: 'discountCardId' });
+    static associate({ Token, Manager }) {
+      this.hasMany(Token, { foreignKey: 'managerId' });
+      this.belongsTo(Manager, { foreignKey: 'managerId' });
     }
   }
   DiscountCard.init(
     {
+      managerId: DataTypes.INTEGER,
       lastName: DataTypes.STRING,
       firstName: DataTypes.STRING,
       middleName: DataTypes.STRING,
-      email: DataTypes.STRING,
       birthDate: DataTypes.DATEONLY,
+      email: DataTypes.STRING,
       password: DataTypes.STRING,
+      photo: DataTypes.STRING,
       cardType: DataTypes.STRING,
       barcode: DataTypes.STRING,
       bonusProgram: DataTypes.STRING,
-      isEmployee: DataTypes.BOOLEAN,
       balance: DataTypes.INTEGER,
-      isAdmin: DataTypes.BOOLEAN,
+      userStatus: DataTypes.STRING,
       isActivated: DataTypes.BOOLEAN,
-      photo: DataTypes.STRING,
       activationLink: DataTypes.STRING,
     },
     {

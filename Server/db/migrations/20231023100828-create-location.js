@@ -1,7 +1,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Products', {
+    await queryInterface.createTable('Locations', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -16,35 +16,19 @@ module.exports = {
         },
         onDelete: 'CASCADE',
       },
-      productName: {
+      city: {
         type: Sequelize.STRING,
       },
-      promoStartDate: {
+      adress: {
         type: Sequelize.STRING,
       },
-      promoEndDate: {
+      latitude: {
         type: Sequelize.STRING,
       },
-      originalPrice: {
-        type: Sequelize.INTEGER,
-      },
-      discountedPrice: {
-        type: Sequelize.INTEGER,
-      },
-      isNew: {
-        type: Sequelize.BOOLEAN,
-      },
-      isDiscounted: {
-        type: Sequelize.BOOLEAN,
-      },
-      description: {
+      longitude: {
         type: Sequelize.STRING,
       },
-      photo: {
-        allowNull: true,
-        type: Sequelize.STRING,
-      },
-      category: {
+      hours: {
         type: Sequelize.STRING,
       },
       createdAt: {
@@ -58,6 +42,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Products');
+    await queryInterface.dropTable('Locations');
   },
 };

@@ -1,51 +1,34 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Products', {
+    await queryInterface.createTable('Managers', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      managerId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Managers',
-          key: 'id',
-        },
-        onDelete: 'CASCADE',
-      },
-      productName: {
+      firstName: {
         type: Sequelize.STRING,
       },
-      promoStartDate: {
+      lastName: {
         type: Sequelize.STRING,
       },
-      promoEndDate: {
+      middleName: {
         type: Sequelize.STRING,
       },
-      originalPrice: {
-        type: Sequelize.INTEGER,
+      birthDate: {
+        type: Sequelize.DATEONLY,
       },
-      discountedPrice: {
-        type: Sequelize.INTEGER,
+      email: {
+        type: Sequelize.STRING,
       },
-      isNew: {
+      password: {
+        type: Sequelize.STRING,
+      },
+      isAdmin: {
+        defaultValue: false,
         type: Sequelize.BOOLEAN,
-      },
-      isDiscounted: {
-        type: Sequelize.BOOLEAN,
-      },
-      description: {
-        type: Sequelize.STRING,
-      },
-      photo: {
-        allowNull: true,
-        type: Sequelize.STRING,
-      },
-      category: {
-        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
@@ -58,6 +41,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Products');
+    await queryInterface.dropTable('Managers');
   },
 };
