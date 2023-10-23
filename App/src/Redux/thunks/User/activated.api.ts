@@ -3,10 +3,12 @@ import axios, { AxiosResponse } from 'axios';
 import { PORT, IP } from '@env';
 
 interface IPropsActivateResponse {
-  token: {
-    accessToken: string;
-    refreshToken?: string;
-  };
+  token:
+    | {
+        accessToken: string;
+        refreshToken?: string;
+      }
+    | undefined;
   user: {
     email: string;
     firstName: string;
@@ -15,17 +17,16 @@ interface IPropsActivateResponse {
   };
 }
 
- interface IPropsActivateRequest {
+interface IPropsActivateRequest {
   userId: number;
-  token: {
-    accessToken: string;
-    refreshToken?: string;
-  };
+  token:
+    | {
+        accessToken: string;
+        refreshToken?: string;
+      }
+    | undefined;
+  force?: boolean;
 }
-// interface IPropsActivate {
-//   userId:number
-//   token:
-// }
 
 const checkActivation = createAsyncThunk<
   IPropsActivateResponse | undefined,

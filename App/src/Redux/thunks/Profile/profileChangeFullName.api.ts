@@ -19,14 +19,9 @@ const profileChangeFullName = createAsyncThunk(
     newMiddleName,
   }: IProfileChangeFullName) => {
     try {
-      console.log('=====>', newLastName, newFirstName, newMiddleName);
       const response: AxiosResponse = await axios.put(
         `http://${IP}:${PORT}/fullname/${userId}`,
         { newLastName, newFirstName, newMiddleName }
-      );
-      console.log(
-        'responseresponseresponse --> newLastName, newFirstName, newMiddleName',
-        response
       );
       return response.data;
     } catch (error) {

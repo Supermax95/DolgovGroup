@@ -7,6 +7,7 @@ interface CalendarProps {
   onDateChange: (selectedDate: Date) => void;
   styleCSS?: string[];
   initialDate?: Date | null;
+  selectedDate?: Date | null;
 }
 
 const Calendar: FC<CalendarProps> = ({

@@ -9,7 +9,13 @@ import FieldEditProfile from 'ui/FieldEditProfile';
 
 const EditProfile: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
-  const profile = useAppSelector((state) => state.profileSlice);
+  const profile = useAppSelector<{
+    lastName?: string;
+    firstName?: string;
+    middleName?: string;
+    birthDate?: Date | null | string;
+    email?: string;
+  }>((state) => state.profileSlice);
 
   return (
     <View className="bg-white h-full">

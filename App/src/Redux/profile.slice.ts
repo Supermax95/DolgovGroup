@@ -9,7 +9,7 @@ interface IUser {
   lastName: string;
   firstName: string;
   middleName: string;
-  birthDate: string;
+  birthDate:  Date | null | string;
   email: string;
   isLoading: boolean;
   error: any; //* указать конкретный тип для ошибок, если он известен
@@ -20,7 +20,7 @@ const initialState: IUser = {
   lastName: '',
   firstName: '',
   middleName: '',
-  birthDate: '',
+  birthDate: null || '',
   email: '',
   isLoading: false,
   error: null,
@@ -44,7 +44,7 @@ const profileSlice = createSlice({
             lastName: string;
             firstName: string;
             middleName: string;
-            birthDate: string;
+            birthDate:  Date | null | string;
             email: string;
           };
         state.lastName = lastName;

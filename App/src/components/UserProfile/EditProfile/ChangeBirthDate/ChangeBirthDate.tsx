@@ -13,13 +13,15 @@ export const ChangeBirthDate: FC = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<StackNavigationProp>();
   const userId = useAppSelector<number>((state) => state.userSlice.user.id);
-  const userDate = useAppSelector<string>(
+  const userDate = useAppSelector<Date | null | string>(
     (state) => state.profileSlice.birthDate
   );
-  console.log('userDate in file ChangeBirthDate', parseISO(userDate));
+
+  const userDateAsDate =
+    userDate !== null ? parseISO(userDate as string) : null;
 
   const [data, setData] = useState({
-    newBirthDate: parseISO(userDate) || new Date(),
+    newBirthDate: userDateAsDate || new Date(),
   });
 
   const handleFieldChange = (field: string, value: Date): void => {

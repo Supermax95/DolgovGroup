@@ -5,6 +5,12 @@ import { View, FlatList, Text, TouchableHighlight } from 'react-native';
 import locations from './locations';
 import Field from 'ui/Field';
 
+interface ISelectedShop {
+  latitude?: number;
+  longitude?: number;
+  name?: string;
+}
+
 const ShopsList: FC = () => {
   const navigation = useNavigation<TabScreenNavigationProp>();
   const [searchText, setSearchText] = useState<string>('');
@@ -13,9 +19,11 @@ const ShopsList: FC = () => {
     shop.name.toLowerCase().includes(searchText.toLowerCase())
   );
 
-  const handleShopSelected = (selectedShop1) => {
-    navigation.navigate('Shops', { selectedShop1 });
+  const handleShopSelected = (selectedShop: ISelectedShop) => {
+    navigation.navigate('Shops', { selectedShop1: selectedShop } as any);
   };
+  
+  
 
   return (
     <View>

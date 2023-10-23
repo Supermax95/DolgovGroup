@@ -55,7 +55,10 @@ const ChangePassword: FC = () => {
           : '',
       });
     } else if (data.newPassword !== data.confirmPassword) {
-      setErrorMessages({ newPassword: 'Пароли не совпадают' });
+      setErrorMessages((prevErrors) => ({
+        ...prevErrors,
+        newPassword: 'Пароли не совпадают',
+      }));
     } else {
       try {
         const result = await dispatch(
@@ -167,6 +170,11 @@ const ChangePassword: FC = () => {
               }}
             />
           </View>
+          {errorMessages.newPassword && (
+            <Text className="text-red-500 ml-1 mt-1 text-xs">
+              {errorMessages.newPassword}
+            </Text>
+          )}
           {errorMessages.confirmPassword && (
             <Text className="text-red-500 ml-1 mt-1 text-xs">
               {errorMessages.confirmPassword}

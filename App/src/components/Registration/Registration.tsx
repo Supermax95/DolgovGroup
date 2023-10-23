@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { useAppDispatch, useAppSelector } from 'Redux/hooks';
+import { useAppDispatch } from 'Redux/hooks';
 import { View, Text, ScrollView, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from 'navigation/types';
@@ -15,19 +15,13 @@ interface IData {
   firstName?: string;
   lastName?: string;
   middleName?: string;
-  birthDate?: string;
+  birthDate?: Date | null | string;
   passwordCheck?: string;
 }
 
 export const Registration: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
   const dispatch = useAppDispatch();
-  //const isLoading = useAppSelector((state) => state.userSlice.isLoading);
-  // const user = useAppSelector((state) => state.userSlice.user);
-  // console.log('я юзуер на регистрации', user);
-
-  // const error = useAppSelector((state) => state.userSlice.error);
-
   const [step, setStep] = useState<number>(1);
   const [data, setData] = useState<IData>({
     email: '',
@@ -35,7 +29,7 @@ export const Registration: FC = () => {
     firstName: '',
     lastName: '',
     middleName: '',
-    birthDate: '',
+    birthDate: null || '',
   });
 
   const [passwordCheck, setPasswordCheck] = useState<string>('');
@@ -47,7 +41,7 @@ export const Registration: FC = () => {
     firstName: '',
     lastName: '',
     middleName: '',
-    birthDate: '',
+    birthDate: null || '',
     passwordCheck: '',
   });
 
@@ -61,7 +55,7 @@ export const Registration: FC = () => {
 
   const handleFieldChange = (
     field: keyof IData,
-    value: Date | string
+    value: string | Date
   ): void => {
     setData((prevData) => ({ ...prevData, [field]: value }));
     setErrorMessages((prevErrors) => ({ ...prevErrors, [field]: '' }));
@@ -190,7 +184,9 @@ export const Registration: FC = () => {
 
                 {errorMessages.birthDate && (
                   <Text className="text-red-500 ml-1 mt-1 text-xs">
-                    {errorMessages.birthDate}
+                    {errorMessages.birthDate
+                      ? errorMessages.birthDate.toLocaleString()
+                      : ''}
                   </Text>
                 )}
                 <Button onPress={handleNextStep} title="Далее" />

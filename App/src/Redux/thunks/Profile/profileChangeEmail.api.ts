@@ -18,7 +18,6 @@ const profileChangeEmail = createAsyncThunk<
   IProfileChangeEmailRequest
 >('api/profileChangeEmail', async ({ userId, newEmail }) => {
   try {
-    console.log('=====>', newEmail);
     const response: AxiosResponse = await axios.put(
       `http://${IP}:${PORT}/email/${userId}`,
       { newEmail }

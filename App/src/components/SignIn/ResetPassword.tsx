@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { View, Text, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useAppDispatch, useAppSelector } from 'Redux/hooks';
+import { useAppDispatch } from 'Redux/hooks';
 import { StackNavigationProp } from 'navigation/types';
 import resetPassword from 'Redux/thunks/User/newPassword.api';
 import Button from 'ui/Button';
@@ -10,7 +10,7 @@ import Field from 'ui/Field';
 const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
 
 interface IResetPassword {
-  email: string;
+email: string;
 }
 
 const styleCenter = 'h-full w-full bg-white pt-16';
@@ -22,23 +22,17 @@ export const ResetPassword: FC = () => {
   const [data, setData] = useState<IResetPassword>({
     email: '',
   });
-  //const error = useAppSelector((state) => state.userSlice.error);
-
   const handleResetPassword = async (): Promise<void> => {
     if (!data.email) {
       Alert.alert('Ошибка', 'Введите email');
       return;
     }
-
     try {
       if (!emailRegex.test(data.email)) {
         Alert.alert('Ошибка', 'Введите корректный email');
         return;
       }
-
-      const result = await dispatch(resetPassword(data.email));
-      console.log('resultresultresult------->', result);
-
+      const result = await dispatch(resetPassword({ email: data.email }));
       if (result.meta.requestStatus === 'rejected') {
         Alert.alert(
           'Ошибка',

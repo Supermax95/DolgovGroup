@@ -11,10 +11,12 @@ type User = {
   id: number;
   isActivated: boolean;
 };
-type IToken = {
-  accessToken: string;
-  refreshToken: string;
-};
+type IToken =
+  | {
+      accessToken: string;
+      refreshToken: string;
+    }
+  | undefined;
 
 type UserState = {
   token: IToken | undefined;
@@ -60,8 +62,9 @@ const userSlice = createSlice({
         };
         state.user = action.payload.user;
         state.isAuth = true;
-        console.log('я в диспетче', state.token.accessToken);
+        console.log('tokenslice', state.token);
       })
+      
       .addCase(userLogin.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
@@ -103,27 +106,14 @@ const userSlice = createSlice({
         state.isLoading = true;
         state.isAuth = false;
       })
-      // .addCase(userActivate.fulfilled, (state, action) => {
-      //   state.user = action.payload.user;
-      //   state.isLoading = false;
-      //   state.isAuth = true;
-      //   state.token = {
-      //     accessToken: action.payload.token.accessToken,
-      //     refreshToken: '',
-      //   };
-      //   console.log('state user', state.user);
-
-      // })
-
       .addCase(userActivate.fulfilled, (state, action) => {
         if (action.payload) state.user = action.payload.user;
         state.isLoading = false;
         state.isAuth = true;
         state.token = {
-          accessToken: action.payload?.token.accessToken || '',
+          accessToken: action.payload?.token?.accessToken || '',
           refreshToken: '',
         };
-        console.log('state user', state.user);
       })
       .addCase(userActivate.rejected, (state, action) => {
         state.isLoading = false;
@@ -134,8 +124,7 @@ const userSlice = createSlice({
       })
       .addCase(resetPassword.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.email = action.payload;
-        console.log(' state.email ', state.email);
+        state.email = action.payload.message;
       })
       .addCase(resetPassword.rejected, (state, action) => {
         state.isLoading = false;

@@ -3,7 +3,16 @@ import type { AxiosResponse } from 'axios';
 import axios from 'axios';
 import { PORT, IP } from '@env';
 
-const changeProfilePass = createAsyncThunk(
+interface RequestData {
+  userId: number;
+  newPassword: string;
+  oldPassword: string;
+}
+interface ResponseData {
+  message?: string;
+}
+
+const changeProfilePass = createAsyncThunk<ResponseData, RequestData>(
   'api/profileChangePass',
   async ({ userId, newPassword, oldPassword }) => {
     try {
@@ -11,6 +20,8 @@ const changeProfilePass = createAsyncThunk(
         `http://${IP}:${PORT}/newpassword/${userId}`,
         { oldPassword, newPassword }
       );
+      console.log('response', response.data);
+
       return response.data;
     } catch (error) {
       console.error('Error:', error);

@@ -4,7 +4,7 @@ import axios from 'axios';
 import { PORT, IP } from '@env';
 
 interface RequestData {
-  birthDate?: string;
+  birthDate?: Date | null | string;
   email?: string;
   firstName?: string;
   lastName?: string;
@@ -24,16 +24,11 @@ interface ResponseData {
 const userRegister = createAsyncThunk<ResponseData, RequestData>(
   'api/register',
   async (user) => {
-    // console.log('datadatadatadatadatadata', typeof user.birthDate);
-    //console.log('datadatadatadatadatadata', user.birthDate.getMonth());
-
     try {
       const response: AxiosResponse = await axios.post(
         `http://${IP}:${PORT}/api/registration`,
         user
       );
-      //console.log('response.datadatadatadatadatadata', response.data);
-
       if (response.status === 200) {
         return response.data;
       } else {

@@ -20,23 +20,25 @@ type HomeAndPropResetPassword = CompositeNavigationProp<
   StackNavigationProp,
   TabScreenNavigationProp
 >;
+type IToken =
+  | {
+      accessToken: string;
+      refreshToken: string;
+    }
+  | undefined;
 
 const styleCenter = 'h-full w-full bg-white';
 
 const SignIn: FC = () => {
   const navigation = useNavigation<HomeAndPropResetPassword>();
   const dispatch = useAppDispatch();
+  const userToken = useAppSelector<IToken | undefined>(
+    (state) => state.userSlice.token
+  );
 
   const isLoading = useAppSelector<boolean>(
     (state) => state.userSlice.isLoading
   );
-  const token = useAppSelector<string>(
-    (state) => state.userSlice.token.accessToken
-  );
-  console.log('======>', token);
-
-  // const userSlice = useAppSelector<string>((state) => state.userSlice);
-  // console.log('userslicelogin', userSlice);
 
   const [data, setData] = useState<IData>({
     email: '',
@@ -54,8 +56,10 @@ const SignIn: FC = () => {
         Alert.alert('Ошибка', 'Введите email и пароль');
         return;
       }
-      // const result = await dispatch(userLogin({ token, userData: data }));
-      const result = await dispatch(userLogin({ token, userData: data }));
+
+      const result = await dispatch(
+        userLogin({ token: userToken, userData: data })
+      );
 
       if (result.meta.requestStatus === 'rejected') {
         Alert.alert(

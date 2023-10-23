@@ -18,11 +18,15 @@ const ChangeFullName: FC = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<StackNavigationProp>();
   const userId = useAppSelector<number>((state) => state.userSlice.user.id);
-  // const userFullName = useAppSelector((state) => state.userSlice.user);
-  // console.log('userFullNameuserFullName====>', userFullName);
 
-  const dateProfile = useAppSelector((state) => state.profileSlice); // хз, нужно ли это типизировать
 
+  const dateProfile = useAppSelector<{
+    lastName?: string;
+    firstName?: string;
+    middleName?: string;
+  }>((state) => state.profileSlice); 
+  
+  
   const [data, setData] = useState<IFullName>({
     newLastName: dateProfile.lastName || '',
     newFirstName: dateProfile.firstName || '',
