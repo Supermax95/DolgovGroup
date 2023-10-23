@@ -3,7 +3,7 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class DiscountCard extends Model {
     static associate({ Token, Manager }) {
-      this.hasMany(Token, { foreignKey: 'managerId' });
+      this.hasMany(Token, { foreignKey: 'discountCardId' });
       this.belongsTo(Manager, { foreignKey: 'managerId' });
     }
   }

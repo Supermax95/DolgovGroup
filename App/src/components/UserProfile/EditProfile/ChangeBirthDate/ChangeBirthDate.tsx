@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from 'navigation/types';
 import { View, Alert } from 'react-native';
 import { parseISO } from 'date-fns';
-import Calendar from '../../../Registration/Calendar';
+import Calendar from '../../../Calendar/Calendar';
 import Button from 'ui/Button';
 import profileChangeBirthDate from 'Redux/thunks/Profile/profileChangeBirthDate.api';
 import Padding from 'ui/Padding';

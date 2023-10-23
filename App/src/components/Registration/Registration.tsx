@@ -6,7 +6,7 @@ import { StackNavigationProp } from 'navigation/types';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Button from 'ui/Button';
 import Field from 'ui/Field';
-import Calendar from './Calendar';
+import Calendar from '../Calendar/Calendar';
 import userRegister from 'Redux/thunks/User/reg.api';
 
 interface IData {
