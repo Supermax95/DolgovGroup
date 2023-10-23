@@ -13,10 +13,12 @@ const CheckMail: FC = () => {
   const dispatch = useAppDispatch();
   const userSlice = useAppSelector((state) => state.userSlice);
   console.log('userSlice', userSlice);
-  
+
   const userId = useAppSelector((state) => state.userSlice.user.id);
   console.log('userid', userId);
-  const token = useAppSelector<string>((state) => state.userSlice.token.accessToken);
+  const token = useAppSelector<string>(
+    (state) => state.userSlice.token.accessToken
+  );
   const [activationMessage, setActivationMessage] = useState<string>('');
 
   const user = useAppSelector((state) => state.userSlice);
@@ -25,9 +27,9 @@ const CheckMail: FC = () => {
 
   useEffect(() => {
     if (userId) {
-      console.log('диспатч', {userId});
+      console.log('диспатч', { userId });
 
-      dispatch(userActivate({ userId ,token}));
+      dispatch(userActivate({ userId, token }));
     }
   }, [dispatch, userId]);
 
@@ -38,8 +40,7 @@ const CheckMail: FC = () => {
       );
       if (result.meta.requestStatus === 'fulfilled') {
         navigation.navigate('Home');
-      }
-      else {
+      } else {
         setActivationMessage('Аккаунт не активирован ,проверьте почту/спам.');
       }
     } catch (error) {
