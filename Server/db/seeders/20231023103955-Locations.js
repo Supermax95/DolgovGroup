@@ -3,7 +3,7 @@ module.exports = {
     await queryInterface.bulkInsert('Locations', [
       {
         city: 'Калинград',
-        adress: 'ул. Куйбышева, 109-111',
+        address: 'ул. Куйбышева, 109-111',
         latitude: 54.725607,
         longitude: 20.5382,
         hours: 'ежедневно с 8:00 до 20:00 (14:00-14:30)',
@@ -12,7 +12,7 @@ module.exports = {
       },
       {
         city: 'Калинград',
-        adress: 'ул. Черняховская, 129-111',
+        address: 'ул. Черняховская, 129-111',
         latitude: 55.725607,
         longitude: 30.5382,
         hours: 'ежедневно с 8:00 до 20:00 (14:00-14:30)',
@@ -21,7 +21,7 @@ module.exports = {
       },
       {
         city: 'Калинград',
-        adress: 'ул. Черняховская, 129-111',
+        address: 'ул. Аерняховская, 129-111',
         latitude: 55.725607,
         longitude: 32.5382,
         hours: 'ежедневно с 8:00 до 20:00 (14:00-14:30)',

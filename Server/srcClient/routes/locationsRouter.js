@@ -4,7 +4,10 @@ const { Location } = require('../../db/models');
 router.get('/admin/locations', async (req, res) => {
   try {
     const locations = await Location.findAll({
-      order: [['city', 'ASC']],
+      order: [
+        ['city', 'ASC'],
+        ['address', 'ASC'],
+      ],
       raw: true,
     });
     res.json(locations);
