@@ -43,8 +43,9 @@ router.delete('/admin/locations/:id', async (req, res) => {
 
 router.put('/admin/locations/:id', async (req, res) => {
   const locationId = req.params.id;
+  const { newInfo } = req.body;
   try {
-    await Location.update(req.body, {
+    await Location.update(newInfo, {
       where: { id: locationId },
     });
     const locations = await Location.findAll({ raw: true });

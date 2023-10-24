@@ -14,6 +14,8 @@ interface IUser {
   isLoading: boolean;
   error: any; //* указать конкретный тип для ошибок, если он известен
   successMessage: any; //* указать конкретный тип для ошибок, если он известен
+  // error?: string | null; 
+  // successMessage?: string | null; 
 }
 
 const initialState: IUser = {
