@@ -115,9 +115,9 @@ import React, { FC, useEffect, useRef, useState } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from 'navigation/types';
 import { View, StyleSheet, Button as RNButton } from 'react-native';
-import MapView, { Marker, PROVIDER_GOOGLE, Region, LatLng } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
 import Button from 'ui/Button';
-import locations from './locations';
+import locations, { LocationObjectCoords } from './locations';
 import * as Location from 'expo-location';
 
 interface ISelectedShop {
@@ -131,21 +131,26 @@ const Shops: FC = () => {
   const mapRef = useRef<MapView | null>(null);
   const route = useRoute();
   const selectedShop = route.params?.selectedShop1 as ISelectedShop | undefined;
-  const [userLocation, setUserLocation] = useState<LatLng | null>(null);
+  const [userLocation, setUserLocation] = useState<LocationObjectCoords | null>(
+    null
+  );
 
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status === 'granted') {
         let userLocation = await Location.getCurrentPositionAsync({});
-        setUserLocation({
-          latitude: userLocation.coords.latitude,
-          longitude: userLocation.coords.longitude,
-        });
+        setUserLocation(userLocation.coords);
         if (selectedShop && mapRef.current) {
           const region: Region = {
-            latitude: selectedShop.latitude || userLocation.coords.latitude || 54.725607,
-            longitude: selectedShop.longitude || userLocation.coords.longitude || 20.5382,
+            latitude:
+              selectedShop.latitude ||
+              userLocation.coords.latitude ||
+              54.725607,
+            longitude:
+              selectedShop.longitude ||
+              userLocation.coords.longitude ||
+              20.5382,
             latitudeDelta: 0.005,
             longitudeDelta: 0.005,
           };
@@ -178,8 +183,12 @@ const Shops: FC = () => {
         provider={PROVIDER_GOOGLE}
         style={styles.map}
         initialRegion={{
-          latitude: selectedShop?.latitude || userLocation?.latitude || 54.725607,
-          longitude: selectedShop?.longitude || userLocation?.longitude || 20.5382,
+          latitude:
+            selectedShop?.latitude ||
+            (userLocation ? userLocation.latitude : 54.725607),
+          longitude:
+            selectedShop?.longitude ||
+            (userLocation ? userLocation.longitude : 20.5382),
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
@@ -192,9 +201,16 @@ const Shops: FC = () => {
               longitude: shop.longitude,
             }}
             title={shop.name}
-            pinColor={selectedShop === shop ? 'blue' : 'green'}
+            pinColor={
+              selectedShop &&
+              selectedShop.latitude === shop.latitude &&
+              selectedShop.longitude === shop.longitude
+                ? 'blue'
+                : 'green'
+            }
           />
         ))}
+
         {userLocation && (
           <Marker
             coordinate={{

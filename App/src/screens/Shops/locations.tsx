@@ -1,3 +1,11 @@
+
+export interface LocationObjectCoords {
+  latitude: number;
+  longitude: number;
+  name:string;
+}
+
+
 const locations = [
     {
       latitude: 54.725607,
@@ -570,6 +578,5 @@ const locations = [
       name: 'п. Волочаевское, ул. Центральная, 34 ежедневно с 8.00 до 20.00',
     },
   ];
-
 
   export default locations;
