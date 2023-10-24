@@ -8,8 +8,8 @@ module.exports = (sequelize, DataTypes) => {
     {
       city: DataTypes.STRING,
       adress: DataTypes.STRING,
-      latitude: DataTypes.INTEGER,
-      longitude: DataTypes.INTEGER,
+      latitude: DataTypes.FLOAT,
+      longitude: DataTypes.FLOAT,
       hours: DataTypes.STRING,
     },
     {
