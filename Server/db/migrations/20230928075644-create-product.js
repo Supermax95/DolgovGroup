@@ -8,22 +8,28 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      name: {
+      productName: {
         type: Sequelize.STRING,
       },
-      promo_start_date: {
+      promoStartDate: {
         type: Sequelize.STRING,
       },
-      promo_end_date: {
+      promoEndDate: {
         type: Sequelize.STRING,
       },
-      price_start: {
+      originalPrice: {
         type: Sequelize.INTEGER,
       },
-      price_end: {
+      customerPrice: {
         type: Sequelize.INTEGER,
       },
-      is_new: {
+      employeePrice: {
+        type: Sequelize.INTEGER,
+      },
+      isNew: {
+        type: Sequelize.BOOLEAN,
+      },
+      isDiscounted: {
         type: Sequelize.BOOLEAN,
       },
       description: {
@@ -33,8 +39,15 @@ module.exports = {
         allowNull: true,
         type: Sequelize.STRING,
       },
-      category: {
-        type: Sequelize.STRING,
+      categoryId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: 'Categories',
+          },
+          key: 'id',
+        },
+        onDelete: 'CASCADE',
       },
       createdAt: {
         allowNull: false,

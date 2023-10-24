@@ -1,0 +1,56 @@
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import axios, { AxiosResponse } from 'axios';
+import { PORT, IP } from '@env';
+
+interface RequestData {
+  token:
+    | {
+        accessToken: string;
+        refreshToken?: string;
+      }
+    | undefined;
+  userData: {
+    password: string;
+    email: string;
+  };
+}
+
+interface ResponseData {
+  accessToken: string;
+  refreshToken?: string;
+  user: {
+    email: string;
+    firstName: string;
+    id: number;
+    isActivated: boolean;
+  };
+}
+
+const userLogin = createAsyncThunk<ResponseData, RequestData>(
+  'api/login',
+  async ({ token, userData }) => {
+    console.log('token===>' , token);
+    
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      };
+
+      const response: AxiosResponse = await axios.post(
+        `http://${IP}:${PORT}/api/login`,
+        userData,
+        config
+      );
+      console.log('response axios', response.data);
+
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
+export default userLogin;

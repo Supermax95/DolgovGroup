@@ -1,54 +1,59 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Discount_Cards', {
+    await queryInterface.createTable('DiscountCards', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      last_name: {
+      lastName: {
         type: Sequelize.STRING,
       },
-      first_name: {
+      firstName: {
         type: Sequelize.STRING,
       },
-      middle_name: {
+      middleName: {
+        type: Sequelize.STRING,
+      },
+      birthDate: {
+        type: Sequelize.DATEONLY,
+      },
+      email: {
+        type: Sequelize.STRING,
+      },
+      password: {
         type: Sequelize.STRING,
       },
       photo: {
         allowNull: true,
         type: Sequelize.STRING,
       },
-      email: {
-        type: Sequelize.STRING,
-      },
-      birth_date: {
-        type: Sequelize.DATE,
-      },
-      password: {
-        type: Sequelize.STRING,
-      },
-      card_type: {
+      cardType: {
         defaultValue: 'БОНУСНАЯ КАРТА ПОКУПАТЕЛЯ',
         type: Sequelize.STRING,
       },
       barcode: {
         type: Sequelize.STRING,
       },
-      bonus_program: {
+      bonusProgram: {
         defaultValue: '1 БОНУС = 1 РУБЛЮ',
         type: Sequelize.STRING,
-      },
-      is_employee: {
-        type: Sequelize.BOOLEAN,
       },
       balance: {
         type: Sequelize.INTEGER,
       },
-      is_admin: {
+      userStatus: {
+        defaultValue: 'Клиент',
+        type: Sequelize.STRING,
+      },
+      isActivated: {
         type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
+      activationLink: {
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
@@ -61,6 +66,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Discount_Cards');
+    await queryInterface.dropTable('DiscountCards');
   },
 };

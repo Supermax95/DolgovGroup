@@ -1,45 +1,66 @@
 require('dotenv').config();
 
 const express = require('express');
-const cors = require('cors');
 const morgan = require('morgan');
-// const session = require('express-session');
-// const FileStore = require('session-file-store')(session);
+const cors = require('cors');
 
-// Require routes
-const indexRouter = require('./routes/index.router');
+const session = require('express-session');
+const FileStore = require('session-file-store')(session);
+const cookieParser = require('cookie-parser');
 
-// // Cookie
-// const sessionConfig = {
-//   name: 'Cookie',
-//   store: new FileStore(),
-//   secret: process.env.SESSION_SECRET ?? 'Секретное слово',
-//   resave: false, // * если true, пересохранит сессию, даже если она не менялась
-//   saveUninitialized: false, // * если false, куки появятся только при установке req.session
-//   cookie: {
-//     maxAge: 9999999, // * время жизни в мс (ms)
-//     httpOnly: true,
-//   },
-// };
+//* Require routes ReactNative
+const indexRouter = require('./srcNative/routes/indexRouter');
+const activateRouter = require('./srcNative/routes/activateRouter');
+const userProfileRouter = require('./srcNative/routes/userProfileRouter');
+
+// ? Require Routes React
+const locationRouter = require('./srcClient/routes/locationsRouter');
+
+// middleware
+const errorMiddleware = require('./srcNative/middlewares/error-middleware');
 
 const { PORT, IP } = process.env;
 
+const sessionConfig = {
+  name: 'name',
+  store: new FileStore(),
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+    httpOnly: true,
+  },
+};
+
 const app = express();
 
+//* ReactNative
 app.use(
   cors({
-    origin: `http://${IP}:8081`,
+    origin: [
+      `http://${IP}:8081`,
+      'http://localhost:5173',
+      'http://localhost:5174',
+    ],
     credentials: true,
   })
 );
 
+app.use(session(sessionConfig));
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// app.use(session(sessionConfig)); // Подключаем сессии
+app.use(cookieParser());
 
-// Routes
-app.use('/', indexRouter);
+//* Routes ReactNative
+app.use('/api', indexRouter);
+app.use('/', activateRouter);
+app.use('/', userProfileRouter);
+app.use(errorMiddleware);
+
+// ? Routes React
+app.use('/', locationRouter);
 
 app.listen(PORT, () => {
   console.log(`Сервер крутится на ${PORT} порту`);

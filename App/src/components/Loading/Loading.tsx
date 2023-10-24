@@ -7,7 +7,7 @@ const Loading = () => {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setIsLoading(false);
-    }, 3000);
+    }, 50);
 
     return () => clearTimeout(timeout);
   }, []);
@@ -22,7 +22,7 @@ const Loading = () => {
           className="h-[200px] w-[200px]"
           resizeMode="contain"
         />
-        <ActivityIndicator size="large" color="#0000ff" />
+        <ActivityIndicator size="large" color="green" />
       </View>
     );
   }

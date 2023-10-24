@@ -1,0 +1,1 @@
+export const VITE_URL = import.meta.env.VITE_URL;

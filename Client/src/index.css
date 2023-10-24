@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.form-container {
+  max-height: 100vh;
+  height: 600px;
+  overflow-y: auto;
+}

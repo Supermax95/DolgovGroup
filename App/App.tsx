@@ -1,15 +1,17 @@
+import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native';
+import { Provider } from 'react-redux';
+import store from './src/Redux/store';
 import { AppNavigator } from './src/navigation/Navigation';
-import { NavigationContainer } from '@react-navigation/native';
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <SafeAreaView className="flex-1">
-        <AppNavigator />
-        <StatusBar style="auto" />
-      </SafeAreaView>
-    </NavigationContainer>
+    <Provider store={store}>
+      {/* <SafeAreaView style={{ flex: 1 }}> */}
+      <AppNavigator />
+      {/* </SafeAreaView> */}
+      <StatusBar style="auto" />
+    </Provider>
   );
 }
