@@ -8,14 +8,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      managerId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Managers',
-          key: 'id',
-        },
-        onDelete: 'CASCADE',
-      },
       productName: {
         type: Sequelize.STRING,
       },
@@ -28,7 +20,10 @@ module.exports = {
       originalPrice: {
         type: Sequelize.INTEGER,
       },
-      discountedPrice: {
+      customerPrice: {
+        type: Sequelize.INTEGER,
+      },
+      employeePrice: {
         type: Sequelize.INTEGER,
       },
       isNew: {
@@ -44,8 +39,15 @@ module.exports = {
         allowNull: true,
         type: Sequelize.STRING,
       },
-      category: {
-        type: Sequelize.STRING,
+      categoryId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: 'Categories',
+          },
+          key: 'id',
+        },
+        onDelete: 'CASCADE',
       },
       createdAt: {
         allowNull: false,

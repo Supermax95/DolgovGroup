@@ -2,17 +2,14 @@ const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Location extends Model {
-    static associate({ Manager }) {
-      this.belongsTo(Manager, { foreignKey: 'managerId' });
-    }
+    static associate() {}
   }
   Location.init(
     {
-      managerId: DataTypes.INTEGER,
       city: DataTypes.STRING,
       adress: DataTypes.STRING,
-      latitude: DataTypes.STRING,
-      longitude: DataTypes.STRING,
+      latitude: DataTypes.INTEGER,
+      longitude: DataTypes.INTEGER,
       hours: DataTypes.STRING,
     },
     {

@@ -2,14 +2,12 @@ const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class DiscountCard extends Model {
-    static associate({ Token, Manager }) {
+    static associate({ Token }) {
       this.hasMany(Token, { foreignKey: 'discountCardId' });
-      this.belongsTo(Manager, { foreignKey: 'managerId' });
     }
   }
   DiscountCard.init(
     {
-      managerId: DataTypes.INTEGER,
       lastName: DataTypes.STRING,
       firstName: DataTypes.STRING,
       middleName: DataTypes.STRING,

@@ -8,14 +8,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      managerId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Managers',
-          key: 'id',
-        },
-        onDelete: 'CASCADE',
-      },
       lastName: {
         type: Sequelize.STRING,
       },
