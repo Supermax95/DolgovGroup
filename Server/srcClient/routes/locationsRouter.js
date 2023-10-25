@@ -18,9 +18,25 @@ router.get('/admin/locations', async (req, res) => {
 });
 
 router.post('/admin/locations', async (req, res) => {
+  const { newLocation } = req.body;
+
   try {
-    await Location.create(req.body);
-    const locations = await Location.findAll({ raw: true });
+    const createdLocation = await Location.create({
+      city: newLocation.city,
+      address: newLocation.address,
+      latitude: newLocation.latitude,
+      longitude: newLocation.longitude,
+      hours: newLocation.hours,
+    });
+
+    const locations = await Location.findAll({
+      order: [
+        ['city', 'ASC'],
+        ['address', 'ASC'],
+      ],
+      raw: true,
+    });
+
     res.json(locations);
   } catch (error) {
     console.error('Ошибка при добавлении данных', error);
@@ -34,7 +50,14 @@ router.delete('/admin/locations/:id', async (req, res) => {
     await Location.destroy({
       where: { id: locationId },
     });
-    res.status(204).end();
+    const locations = await Location.findAll({
+      order: [
+        ['city', 'ASC'],
+        ['address', 'ASC'],
+      ],
+      raw: true,
+    });
+    res.json(locations);
   } catch (error) {
     console.error('Ошибка при удалении данных', error);
     res.status(500).json({ error: 'Произошла ошибка на сервере' });
@@ -48,7 +71,13 @@ router.put('/admin/locations/:id', async (req, res) => {
     await Location.update(newInfo, {
       where: { id: locationId },
     });
-    const locations = await Location.findAll({ raw: true });
+    const locations = await Location.findAll({
+      order: [
+        ['city', 'ASC'],
+        ['address', 'ASC'],
+      ],
+      raw: true,
+    });
     res.json(locations);
   } catch (error) {
     console.error('Ошибка при обновлении данных', error);

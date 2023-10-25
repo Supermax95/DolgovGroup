@@ -3,9 +3,7 @@ import axios, { AxiosResponse } from 'axios';
 import { VITE_URL } from '../../../VITE_URL';
 
 interface RequestData {
-  locationId: number;
-  newInfo: {
-    id: number;
+  newLocation: {
     city: string;
     address: string;
     latitude: string;
@@ -25,14 +23,16 @@ interface ResponseData {
 
 type ArrayResponseData = Array<ResponseData>;
 
-const editLocation = createAsyncThunk<ArrayResponseData, RequestData>(
-  'admin/editlocation',
+const addLocation = createAsyncThunk<ArrayResponseData, RequestData>(
+  'admin/addlocation',
 
-  async ({ locationId, newInfo }) => {
+  async ({ newLocation }) => {
     try {
-      const response: AxiosResponse = await axios.put(
-        `${VITE_URL}/admin/locations/${locationId}`,
-        { newInfo }
+      console.log('axios', newLocation);
+
+      const response: AxiosResponse = await axios.post(
+        `${VITE_URL}/admin/locations`,
+        { newLocation }
       );
       return response.data;
     } catch (error) {
@@ -42,4 +42,4 @@ const editLocation = createAsyncThunk<ArrayResponseData, RequestData>(
   }
 );
 
-export default editLocation;
+export default addLocation;
