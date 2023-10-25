@@ -29,8 +29,6 @@ interface ResponseData {
 const userLogin = createAsyncThunk<ResponseData, RequestData>(
   'api/login',
   async ({ token, userData }) => {
-    console.log('token===>' , token);
-    
     try {
       const config = {
         headers: {
@@ -44,7 +42,7 @@ const userLogin = createAsyncThunk<ResponseData, RequestData>(
         userData,
         config
       );
-      console.log('response axios', response.data);
+      // console.log('response axios', response.data);
 
       return response.data;
     } catch (error) {
