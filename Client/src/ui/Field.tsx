@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC } from 'react';
+import { ChangeEvent, FC } from 'react';
 
 interface IField {
   onChange?: (value: string) => void;
@@ -7,13 +7,13 @@ interface IField {
   type: string;
   value?: string;
   placeholder: string;
-  isSecure?: boolean;
   autoCapitalize?: string;
   autoComplete: string;
   styleCSSInput?: string[];
   title: string;
   htmlFor: string;
   styleCSSLabel?: string[];
+  required?: boolean;
 }
 
 const Field: FC<IField> = ({
@@ -23,7 +23,6 @@ const Field: FC<IField> = ({
   type,
   value,
   placeholder,
-  isSecure,
   autoCapitalize,
   autoComplete,
   styleCSSInput = [
@@ -34,6 +33,7 @@ const Field: FC<IField> = ({
   styleCSSLabel = [
     'absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm',
   ],
+  required,
 }) => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -48,13 +48,13 @@ const Field: FC<IField> = ({
         onChange={handleChange}
         id={id}
         name={name}
-        // type={isSecure ? 'password' : type}
         type={type}
         value={value}
         placeholder={placeholder}
         autoComplete={autoComplete}
         autoCapitalize={autoCapitalize}
         className={`${styleCSSInput}`}
+        required={required}
       />
       <label htmlFor={htmlFor} className={`${styleCSSLabel}`}>
         {title}

@@ -1,11 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-
+import managerLogin from './manager.slice';
 
 const store = configureStore({
-    reducer: {
+  reducer: {
+    managerLogin,
+  },
+});
 
-    },
-  });
-  
-  export default store;
-  
+export default store;

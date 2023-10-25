@@ -1,7 +1,7 @@
 import './App.css';
 import { Route, Routes } from 'react-router-dom';
 import Portal from './components/Portal/Portal';
-import { VITE_URL } from './VITE_URL';
+//import { VITE_URL } from './VITE_URL';
 
 function App() {
   return (

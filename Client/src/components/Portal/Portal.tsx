@@ -1,8 +1,46 @@
-import React from 'react';
+import { FC, useState } from 'react';
 import Button from '../../ui/Button';
 import Field from '../../ui/Field';
+import ToggleShowPassword from '../../ui/ToggleShowPassword';
+import { useAppDispatch } from '../../Redux/hooks';
+import { useNavigate } from 'react-router-dom';
+import portalLogin from '../../Redux/thunks/PortalLogin/PortalLogin.api';
 
-function Portal() {
+interface IDate {
+  email: string;
+  password: string;
+}
+
+const Portal: FC = () => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [data, setData] = useState<IDate>({ email: '', password: '' });
+
+  const toggleShowPassword = (): void => {
+    setShowPassword(!showPassword);
+  };
+
+  const authHandler = async (e: React.FormEvent): Promise<void> => {
+    e.preventDefault();
+    try {
+      const resultAction = await dispatch(portalLogin(data));
+
+      if (portalLogin.fulfilled.match(resultAction)) {
+        navigate('/');
+      }
+
+      if (portalLogin.rejected.match(resultAction)) {
+        alert(
+          'Невозможно авторизоваться. Проверьте данные и попробуйте снова.'
+        );
+      }
+    } catch (error) {
+      console.error('Ошибка при аутентификации:', error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-100 py-6 flex flex-col justify-center sm:py-12">
       <div className="relative py-3 sm:max-w-xl sm:mx-auto">
@@ -14,23 +52,9 @@ function Portal() {
                 Портал авторизации. Продуктивной работы 😎
               </h1>
             </div>
-            <div className="divide-y divide-gray-200">
+            <form onSubmit={authHandler} className="divide-y divide-gray-200">
               <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
                 <div className="relative">
-                  {/* <input
-                    autoComplete="off"
-                    id="email"
-                    name="email"
-                    type="text"
-                    className="block py-2.5 px-0 w-full text-sm text-green-600 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
-                    placeholder=""
-                  />
-                  <label
-                    htmlFor="email"
-                    className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm"
-                  >
-                    Email
-                  </label> */}
                   <Field
                     id="email"
                     name="email"
@@ -40,35 +64,38 @@ function Portal() {
                     autoComplete="off"
                     htmlFor="email"
                     title="Email"
+                    onChange={(value) => setData({ ...data, email: value })}
+                    required={true}
                   />
                 </div>
                 <div className="relative">
                   <Field
                     id="password"
                     name="password"
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}
                     placeholder=""
                     autoCapitalize="none"
                     autoComplete="off"
                     htmlFor="password"
                     title="Пароль"
+                    onChange={(value) => setData({ ...data, password: value })}
+                    required={true}
+                  />
+                  <ToggleShowPassword
+                    showPassword={showPassword}
+                    toggleShowPassword={toggleShowPassword}
                   />
                 </div>
                 <div className="relative flex justify-center">
-                  <Button
-                    title="Войти"
-                    // onClick={function (): void {
-                    //   throw new Error('Function not implemented.');
-                    // }}
-                  />
+                  <Button title="Войти" />
                 </div>
               </div>
-            </div>
+            </form>
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default Portal;

@@ -1,11 +1,10 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 
 interface IButton {
   onClick?: () => void;
   title: string;
   styleCSSButton?: string[];
   styleCSSSpan?: string[];
-  // disabled?: boolean;
 }
 
 const Button: FC<IButton> = ({

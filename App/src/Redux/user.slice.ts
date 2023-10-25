@@ -11,6 +11,7 @@ type User = {
   id: number;
   isActivated: boolean;
 };
+
 type IToken =
   | {
       accessToken: string;
@@ -64,7 +65,7 @@ const userSlice = createSlice({
         state.isAuth = true;
         console.log('tokenslice', state.token);
       })
-      
+
       .addCase(userLogin.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
