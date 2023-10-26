@@ -1,7 +1,12 @@
 import React from 'react';
+import Wrapper from '../../../ui/Wrapper';
 
 function Clients() {
-  return <div>Clients</div>;
+  return (
+    <Wrapper>
+      <div>Clients</div>
+    </Wrapper>
+  );
 }
 
 export default Clients;

@@ -1,7 +1,12 @@
 import React from 'react';
+import Wrapper from '../../../ui/Wrapper';
 
 function ProfileManager() {
-  return <div>ProfileManager</div>;
+  return (
+    <Wrapper>
+      <div>ProfileManager</div>
+    </Wrapper>
+  );
 }
 
 export default ProfileManager;
