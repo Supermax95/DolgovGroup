@@ -5,8 +5,8 @@ import { IManager } from '../../Redux/manager.slice';
 import portalLogout from '../../Redux/thunks/PortalLogin/portalLogout.api';
 
 interface INavigation {
-  manager: { name: string; href: string }[];
-  admin: { name: string; href: string }[];
+  manager: { id: string; name: string; href: string }[];
+  admin: { id: string; name: string; href: string }[];
 }
 
 const UserMenu: FC = () => {
@@ -28,12 +28,16 @@ const UserMenu: FC = () => {
 
   const roles: INavigation = {
     manager: [
-      { name: 'Личный кабинет', href: '/profileManager' },
-      { name: 'Выход', href: '/' },
+      {
+        id: 'profile-manager',
+        name: 'Личный кабинет',
+        href: '/profileManager',
+      },
+      { id: 'logout-manager', name: 'Выход', href: '/' },
     ],
     admin: [
-      { name: 'Личный кабинет', href: '/profileAdmin' },
-      { name: 'Выход', href: '/' },
+      { id: 'profile-admin', name: 'Личный кабинет', href: '/profileAdmin' },
+      { id: 'logout-admin', name: 'Выход', href: '/' },
     ],
   };
 
@@ -86,9 +90,9 @@ const UserMenu: FC = () => {
           aria-labelledby="user-menu-button"
         >
           <li>
-            {userRoles.map((item, index) => (
+            {userRoles.map((item) => (
               <Link
-                key={index}
+                key={item.id}
                 to={item.href}
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                 role="menuitem"
