@@ -16,7 +16,9 @@ module.exports = router.post('/login', async (req, res) => {
         res.status(401).json({ message: 'Неверный пароль' });
       } else {
         req.session.email = manager.email;
-        res.json({ message: 'Вы успешно авторизованы!', manager });
+        req.session.save(() => {
+          res.json({ message: 'Вы успешно авторизованы!', manager });
+        });
       }
     }
   } catch (error) {
