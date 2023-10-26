@@ -30,6 +30,7 @@ const Location: React.FC = () => {
   const [editedLocation, setEditedLocation] = useState<
     Location | null | undefined
   >(null);
+  const [selectedCity, setSelectedCity] = useState<string | null>(null);
 
   useEffect(() => {
     dispatch(getLocations());
@@ -39,7 +40,11 @@ const Location: React.FC = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
-  const displayedLocations = locations.slice(startIndex, endIndex);
+  const filteredLocations = selectedCity
+    ? locations.filter((location) => location.city === selectedCity)
+    : locations;
+
+  const displayedLocations = filteredLocations.slice(startIndex, endIndex);
 
   const openEditModal = (location: Location) => {
     setSelectedLocation(location);
@@ -83,18 +88,21 @@ const Location: React.FC = () => {
     }
   };
 
-  const totalPages = Math.ceil(locations.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredLocations.length / itemsPerPage);
   const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
 
-  const handlePageChange = (page: React.SetStateAction<number>) => {
-    setCurrentPage(page);
-  };
+  // Извлекаем уникальные города
+  const uniqueCities = [...new Set(locations.map((location) => location.city))];
 
   return (
     <Wrapper>
-      <div className="p-4 ">
+      <div className="p-4">
         <div className="flex">
-          <Sidebar menuItems={locations} onMenuItemClick={openEditModal} />
+          <Sidebar
+            menuItems={uniqueCities}
+            onMenuItemClick={setSelectedCity}
+            title="Города"
+          />
           <div className="p-4">
             <h1 className="text-2xl font-bold mb-4">Список магазинов</h1>
             <div className="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 pr-10 lg:px-8">
@@ -172,7 +180,9 @@ const Location: React.FC = () => {
               {pageNumbers.map((page) => (
                 <button
                   key={page}
-                  onClick={() => handlePageChange(page)}
+
+                  onClick={() => setCurrentPage(page)}
+
                   className={`px-3 py-2 rounded ${
                     page === currentPage
                       ? 'bg-blue-500 text-white'
