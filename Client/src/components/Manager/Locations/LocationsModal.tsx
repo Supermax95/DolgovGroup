@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { useAppDispatch } from '../../Redux/hooks';
-import deleteLocation from '../../Redux/thunks/Locations/deleteLocation.api';
-import addLocation from '../../Redux/thunks/Locations/addLocation.api';
+import { useAppDispatch } from '../../../Redux/hooks';
+import addLocation from '../../../Redux/thunks/Locations/addLocation.api';
+import deleteLocation from '../../../Redux/thunks/Locations/deleteLocation.api';
 
 interface Location {
   id: number;

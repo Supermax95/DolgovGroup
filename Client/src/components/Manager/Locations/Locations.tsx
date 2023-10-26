@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../Redux/hooks';
-import getLocations from '../../Redux/thunks/Locations/getLocations.api';
-import editLocation from '../../Redux/thunks/Locations/editLocation.api';
+import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import LocationsModal from './LocationsModal';
+import getLocations from '../../../Redux/thunks/Locations/getLocations.api';
+import editLocation from '../../../Redux/thunks/Locations/editLocation.api';
 
 interface Location {
   id: number;
