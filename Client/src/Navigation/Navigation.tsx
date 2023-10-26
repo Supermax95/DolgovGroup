@@ -10,6 +10,7 @@ import Products from '../components/Manager/Products/Products';
 import ProfileManager from '../components/Manager/ProfileManager/ProfileManager';
 import Stock from '../components/Manager/Stock/Stock';
 
+
 function Navigation() {
   return (
     <>
@@ -26,7 +27,6 @@ function Navigation() {
 
           <Route path="/profileAdmin" element={<ProfileAdmin />} />
           <Route path="/profileManager" element={<ProfileManager />} />
-
           <Route />
         </Route>
       </Routes>
