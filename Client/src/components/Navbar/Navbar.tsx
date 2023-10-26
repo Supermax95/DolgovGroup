@@ -4,40 +4,41 @@ import UserMenu from './UserMenu';
 import { FC } from 'react';
 
 interface INavigation {
+  id: number;
   name: string;
   href: string;
 }
 
 //! не удалять
 // interface INavigation {
-//   manager: { name: string; href: string }[];
-//   admin: { name: string; href: string }[];
+//   manager: { id:number, name: string; href: string }[];
+//   admin: {id:number, name: string; href: string }[];
 // }
 
 const Navbar: FC = () => {
   const navigation: INavigation[] = [
-    { name: 'Вход', href: '/portal' },
-    { name: 'Клиенты', href: '/clients' },
-    { name: 'Сотрудники', href: '/employees' },
-    { name: 'Продукты', href: '/products' },
-    { name: 'Магазины', href: '/locations' },
-    { name: 'Акции', href: '/stock' },
+    { id: 11, name: 'Вход', href: '/portal' },
+    { id: 1, name: 'Клиенты', href: '/clients' },
+    { id: 2, name: 'Сотрудники', href: '/employees' },
+    { id: 3, name: 'Продукты', href: '/products' },
+    { id: 4, name: 'Магазины', href: '/locations' },
+    { id: 5, name: 'Акции', href: '/stock' },
   ];
 
   //! не удалять
   // const roles: INavigation = {
-  //   manager: [
-  // { name: 'Продукты', href: '/products' },
-  // { name: 'Магазины', href: '/locations' },
-  // { name: 'Акции', href: '/stock' },
-  //   ],
-  //   admin: [
-  // { name: 'Клиенты', href: '/clients' },
-  // { name: 'Сотрудники', href: '/employees' },
-  // { name: 'Продукты', href: '/products' },
-  // { name: 'Магазины', href: '/locations' },
-  // { name: 'Акции', href: '/stock' },
-  //   ],
+  // manager: [
+  //   { id: 'manager-products', name: 'Продукты', href: '/products' },
+  //   { id: 'manager-locations', name: 'Магазины', href: '/locations' },
+  //   { id: 'manager-stock', name: 'Акции', href: '/stock' },
+  // ],
+  // admin: [
+  //   { id: 'admin-clients', name: 'Клиенты', href: '/clients' },
+  //   { id: 'admin-employees', name: 'Сотрудники', href: '/employees' },
+  //   { id: 'admin-products', name: 'Продукты', href: '/products' },
+  //   { id: 'admin-locations', name: 'Магазины', href: '/locations' },
+  //   { id: 'admin-stock', name: 'Акции', href: '/stock' },
+  // ]
   // };
 
   return (
@@ -89,9 +90,9 @@ const Navbar: FC = () => {
             id="navbar-sticky"
           >
             <div className="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-              {navigation.map((item, index) => (
+              {navigation.map((item) => (
                 <Link
-                  key={index}
+                  key={item.id}
                   to={item.href}
                   className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover-bg-gray-700 dark:hover:text-white md:dark:hover-bg-transparent dark:border-gray-700"
                   aria-current="page"
