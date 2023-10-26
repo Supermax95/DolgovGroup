@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import portalLogin from './thunks/PortalLogin/portalLogin.api';
+import portalLogout from './thunks/PortalLogin/portalLogout.api';
 
-interface IManager {
+export interface IManager {
   id: number;
   lastName: string;
   firstName: string;
@@ -48,9 +49,24 @@ const managerSlice = createSlice({
       .addCase(portalLogin.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isAuth = true;
+        //state.manager.isAdmin = action.payload.manager.isAdmin;
         state.manager = action.payload.manager;
+        console.log(' action.payload', action.payload);
       })
       .addCase(portalLogin.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      .addCase(portalLogout.pending, (state) => {
+        state.isLoading = true;
+        state.isAuth = false;
+      })
+      .addCase(portalLogout.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isAuth = false;
+        state.manager = action.payload.manager;
+      })
+      .addCase(portalLogout.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       });

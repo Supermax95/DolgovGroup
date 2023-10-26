@@ -1,7 +1,23 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../Redux/hooks';
+import { IManager } from '../../Redux/manager.slice';
+import portalLogout from '../../Redux/thunks/PortalLogin/portalLogout.api';
+
+interface INavigation {
+  manager: { name: string; href: string }[];
+  admin: { name: string; href: string }[];
+}
 
 const UserMenu = () => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const manager = useAppSelector<IManager>(
+    (state) => state.managerLogin.manager
+  );
+  console.log('managermanagermanagermanager', manager);
+
   const [isMenuOpen, setMenuOpen] = useState<boolean>(false);
 
   const toggleMenu = (): void => {
@@ -10,11 +26,27 @@ const UserMenu = () => {
 
   const menuClass = isMenuOpen ? 'block' : 'hidden';
 
-  const navigation = [
-    { name: 'Личный кабинет М ', href: '/profileManager' },
-    { name: 'Личный кабинет А', href: '/profileAdmin' },
-    { name: 'Выход', href: '/portal/logout' },
-  ];
+  const roles: INavigation = {
+    manager: [
+      { name: 'Личный кабинет', href: '/profileManager' },
+      { name: 'Выход', href: '/' },
+    ],
+    admin: [
+      { name: 'Личный кабинет', href: '/profileAdmin' },
+      { name: 'Выход', href: '/' },
+    ],
+  };
+
+  const userRoles = manager.isAdmin ? roles.admin : roles.manager;
+
+  const handleLogout = async (): Promise<void> => {
+    try {
+      await dispatch(portalLogout());
+      navigate('/portal');
+    } catch (error) {
+      console.error('Ошибка при выходе:', error);
+    }
+  };
 
   return (
     <div className="relative inline-block text-left">
@@ -22,14 +54,18 @@ const UserMenu = () => {
         <button
           type="button"
           onClick={toggleMenu}
-          className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+          className="flex text-sm bg-green-500 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-lime-600"
         >
           <span className="sr-only">Open user menu</span>
-          <img
-            className="w-8 h-8 rounded-full"
-            src="/docs/images/people/profile-picture-3.jpg"
-            alt="user photo"
-          />
+          {manager.isAdmin ? (
+            <div className="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gradient-to-b from-cyan-500 to-blue-500 rounded-full dark:bg-gray-600">
+              <span className="font-normal text-2xl text-white">A</span>
+            </div>
+          ) : (
+            <div className="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gradient-to-b from-orange-300 to-orange-400 rounded-full dark:bg-gray-600">
+              <span className="font-normal text-2xl text-white">M</span>
+            </div>
+          )}
         </button>
       </div>
       <div
@@ -37,10 +73,10 @@ const UserMenu = () => {
       >
         <div className="px-4 py-3">
           <span className="block text-sm text-gray-900 dark:text-white">
-            Bonnie Green
+            {manager.firstName} {manager.lastName}
           </span>
           <span className="block text-sm text-gray-500 truncate dark:text-gray-400">
-            name@flowbite.com
+            {manager.email}
           </span>
         </div>
         <ul
@@ -50,12 +86,13 @@ const UserMenu = () => {
           aria-labelledby="user-menu-button"
         >
           <li>
-            {navigation.map((item) => (
+            {userRoles.map((item) => (
               <Link
                 key={item.name}
                 to={item.href}
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                 role="menuitem"
+                onClick={item.name === 'Выход' ? handleLogout : undefined}
               >
                 {item.name}
               </Link>

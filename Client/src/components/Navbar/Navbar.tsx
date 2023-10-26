@@ -1,16 +1,43 @@
-import React from 'react';
+//import React from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import UserMenu from './UserMenu';
 
+interface INavigation {
+  name: string;
+  href: string;
+}
+
+//! не удалять
+// interface INavigation {
+//   manager: { name: string; href: string }[];
+//   admin: { name: string; href: string }[];
+// }
+
 function Navbar() {
-  const navigation = [
+  const navigation: INavigation[] = [
+    { name: 'Вход', href: '/portal' },
     { name: 'Клиенты', href: '/clients' },
     { name: 'Сотрудники', href: '/employees' },
     { name: 'Продукты', href: '/products' },
     { name: 'Магазины', href: '/locations' },
     { name: 'Акции', href: '/stock' },
-    // { name: 'Сотрудники', href: '/employees' },
   ];
+
+  //! не удалять
+  // const roles: INavigation = {
+  //   manager: [
+  // { name: 'Продукты', href: '/products' },
+  // { name: 'Магазины', href: '/locations' },
+  // { name: 'Акции', href: '/stock' },
+  //   ],
+  //   admin: [
+  // { name: 'Клиенты', href: '/clients' },
+  // { name: 'Сотрудники', href: '/employees' },
+  // { name: 'Продукты', href: '/products' },
+  // { name: 'Магазины', href: '/locations' },
+  // { name: 'Акции', href: '/stock' },
+  //   ],
+  // };
 
   return (
     <>
@@ -47,9 +74,9 @@ function Navbar() {
               >
                 <path
                   stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
                   d="M1 1h15M1 7h15M1 13h15"
                 />
               </svg>
@@ -60,7 +87,7 @@ function Navbar() {
             className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
             id="navbar-sticky"
           >
-            <ul className="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+            <div className="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
               {navigation.map((item) => (
                 <Link
                   key={item.name}
@@ -71,7 +98,7 @@ function Navbar() {
                   {item.name}
                 </Link>
               ))}
-            </ul>
+            </div>
           </div>
         </div>
       </nav>
