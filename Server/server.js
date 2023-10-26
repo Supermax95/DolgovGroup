@@ -12,7 +12,7 @@ const cookieParser = require('cookie-parser');
 const indexRouter = require('./srcNative/routes/indexRouter');
 const activateRouter = require('./srcNative/routes/activateRouter');
 const userProfileRouter = require('./srcNative/routes/userProfileRouter');
-
+const locationUserRouter = require('./srcNative/routes/locationsUserRouter')
 // ? Require Routes React
 const locationRouter = require('./srcClient/routes/locationsRouter');
 const portalRouter = require('./srcClient/routes/portalRouter');
@@ -58,6 +58,7 @@ app.use(cookieParser());
 app.use('/api', indexRouter);
 app.use('/', activateRouter);
 app.use('/', userProfileRouter);
+app.use('/', locationUserRouter);
 app.use(errorMiddleware);
 
 // ? Routes React
