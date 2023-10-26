@@ -1,6 +1,7 @@
 //import React from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import UserMenu from './UserMenu';
+import { FC } from 'react';
 
 interface INavigation {
   name: string;
@@ -13,7 +14,7 @@ interface INavigation {
 //   admin: { name: string; href: string }[];
 // }
 
-function Navbar() {
+const Navbar: FC = () => {
   const navigation: INavigation[] = [
     { name: 'Вход', href: '/portal' },
     { name: 'Клиенты', href: '/clients' },
@@ -105,6 +106,6 @@ function Navbar() {
       <Outlet />
     </>
   );
-}
+};
 
 export default Navbar;

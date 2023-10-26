@@ -1,11 +1,12 @@
 //import { useEffect } from 'react';
+import { FC } from 'react';
 import './App.css';
 import Navigation from './Navigation/Navigation';
 import { useAppDispatch, useAppSelector } from './Redux/hooks';
 import { IManager } from './Redux/manager.slice';
 //import portalLogin from './Redux/thunks/PortalLogin/portalLogin.api';
 
-function App() {
+const App: FC = () => {
   const dispatch = useAppDispatch();
 
   const manager = useAppSelector<IManager>(
@@ -24,6 +25,6 @@ function App() {
       <Navigation />
     </>
   );
-}
+};
 
 export default App;

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../Redux/hooks';
 import { IManager } from '../../Redux/manager.slice';
@@ -9,7 +9,7 @@ interface INavigation {
   admin: { name: string; href: string }[];
 }
 
-const UserMenu = () => {
+const UserMenu: FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
