@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import portalLogin from './thunks/PortalLogin/PortalLogin.api';
+import portalLogin from './thunks/PortalLogin/portalLogin.api';
 
 interface IManager {
   id: number;
@@ -15,6 +15,7 @@ interface managerState {
   manager: IManager;
   isAuth: boolean;
   isLoading: boolean;
+  message: string;
   error: unknown;
 }
 
@@ -30,6 +31,7 @@ const initialState: managerState = {
   },
   isAuth: false,
   isLoading: false,
+  message: '',
   error: null,
 };
 

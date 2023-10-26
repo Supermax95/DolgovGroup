@@ -4,7 +4,7 @@ import Field from '../../ui/Field';
 import ToggleShowPassword from '../../ui/ToggleShowPassword';
 import { useAppDispatch } from '../../Redux/hooks';
 import { useNavigate } from 'react-router-dom';
-import portalLogin from '../../Redux/thunks/PortalLogin/PortalLogin.api';
+import portalLogin from '../../Redux/thunks/PortalLogin/portalLogin.api';
 
 interface IDate {
   email: string;
@@ -87,7 +87,7 @@ const Portal: FC = () => {
                   />
                 </div>
                 <div className="relative flex justify-center">
-                  <Button title="Войти" />
+                  <Button type="submit" title="Войти" />
                 </div>
               </div>
             </form>
