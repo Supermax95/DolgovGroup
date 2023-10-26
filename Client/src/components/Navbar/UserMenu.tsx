@@ -16,7 +16,7 @@ const UserMenu = () => {
   const manager = useAppSelector<IManager>(
     (state) => state.managerLogin.manager
   );
-  console.log('managermanagermanagermanager', manager);
+  //console.log('managermanagermanagermanager', manager);
 
   const [isMenuOpen, setMenuOpen] = useState<boolean>(false);
 
