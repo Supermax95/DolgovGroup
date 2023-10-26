@@ -28,7 +28,8 @@ const Portal: FC = () => {
       const resultAction = await dispatch(portalLogin(data));
 
       if (portalLogin.fulfilled.match(resultAction)) {
-        navigate('/');
+        //! вход для всех - магазины. затем надо будет исправить, что для админа редирект на что-то одно, для менеджера другое, мб
+        navigate('/locations');
       }
 
       if (portalLogin.rejected.match(resultAction)) {
