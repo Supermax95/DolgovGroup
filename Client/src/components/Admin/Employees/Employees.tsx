@@ -1,7 +1,12 @@
 import React from 'react';
+import Wrapper from '../../../ui/Wrapper';
 
 function Employees() {
-  return <div>Employees</div>;
+  return (
+    <Wrapper>
+      <div>Employees</div>
+    </Wrapper>
+  );
 }
 
 export default Employees;

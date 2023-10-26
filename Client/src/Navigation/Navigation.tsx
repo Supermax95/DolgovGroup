@@ -16,19 +16,19 @@ function Navigation() {
     <>
       <Routes>
         <Route path="/" element={<Navbar />}>
-          <Route path="/portal" element={<Portal />} />
-
+          <Route path="/portal" element={<Portal />} />{' '}
           <Route path="/clients" element={<Clients />} />
           <Route path="/employees" element={<Employees />} />
           <Route path="/products" element={<Products />} />
           <Route path="/locations" element={<Locations />} />
-
           <Route path="/stock" element={<Stock />} />
-
           <Route path="/profileAdmin" element={<ProfileAdmin />} />
           <Route path="/profileManager" element={<ProfileManager />} />
           <Route />
         </Route>
+        {/* 
+        //!не трогать
+        <Route path="/portal" element={<Portal />} /> */}
       </Routes>
     </>
   );

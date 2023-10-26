@@ -4,6 +4,8 @@ import LocationsModal from './LocationsModal';
 import getLocations from '../../../Redux/thunks/Locations/getLocations.api';
 import editLocation from '../../../Redux/thunks/Locations/editLocation.api';
 import Sidebar from '../../Sidebar/Sidebar';
+import Wrapper from '../../../ui/Wrapper';
+
 
 interface Location {
   id: number;
@@ -90,6 +92,8 @@ const Location: React.FC = () => {
   };
 
   return (
+    <Wrapper>
+           <div className="p-4 ">
     <div className="flex">
       <Sidebar menuItems={locations} onMenuItemClick={openEditModal} />
       <div className="p-4">
@@ -151,7 +155,11 @@ const Location: React.FC = () => {
                     <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500">
                       <button
                         onClick={() => openEditModal(location)}
+
                         className="bg-blue-500 hover-bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2"
+
+                       
+
                       >
                         Редактировать
                       </button>
@@ -191,7 +199,11 @@ const Location: React.FC = () => {
           />
         )}
       </div>
+
     </div>
+
+    </Wrapper>
+
   );
 };
 
