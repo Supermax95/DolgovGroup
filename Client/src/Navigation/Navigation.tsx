@@ -9,14 +9,14 @@ import Locations from '../components/Manager/Locations/Locations';
 import Products from '../components/Manager/Products/Products';
 import ProfileManager from '../components/Manager/ProfileManager/ProfileManager';
 import Stock from '../components/Manager/Stock/Stock';
+import { FC } from 'react';
 
-
-function Navigation() {
+const Navigation: FC = () => {
   return (
     <>
       <Routes>
         <Route path="/" element={<Navbar />}>
-          <Route path="/portal" element={<Portal />} />{' '}
+          <Route path="/portal" element={<Portal />} />
           <Route path="/clients" element={<Clients />} />
           <Route path="/employees" element={<Employees />} />
           <Route path="/products" element={<Products />} />
@@ -32,6 +32,6 @@ function Navigation() {
       </Routes>
     </>
   );
-}
+};
 
 export default Navigation;

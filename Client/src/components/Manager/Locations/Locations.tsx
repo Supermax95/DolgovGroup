@@ -103,7 +103,6 @@ const Location: React.FC = () => {
             onMenuItemClick={setSelectedCity}
             title="Города"
           />
-
           <div className="p-4">
             <h1 className="text-2xl font-bold mb-4">Список магазинов</h1>
             <div className="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 pr-10 lg:px-8">
@@ -181,7 +180,9 @@ const Location: React.FC = () => {
               {pageNumbers.map((page) => (
                 <button
                   key={page}
+
                   onClick={() => setCurrentPage(page)}
+
                   className={`px-3 py-2 rounded ${
                     page === currentPage
                       ? 'bg-blue-500 text-white'
