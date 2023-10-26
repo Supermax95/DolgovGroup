@@ -86,9 +86,9 @@ const UserMenu = () => {
           aria-labelledby="user-menu-button"
         >
           <li>
-            {userRoles.map((item) => (
+            {userRoles.map((item, index) => (
               <Link
-                key={item.name}
+                key={index}
                 to={item.href}
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                 role="menuitem"
