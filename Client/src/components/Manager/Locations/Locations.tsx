@@ -3,7 +3,9 @@ import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import LocationsModal from './LocationsModal';
 import getLocations from '../../../Redux/thunks/Locations/getLocations.api';
 import editLocation from '../../../Redux/thunks/Locations/editLocation.api';
+import Sidebar from '../../Sidebar/Sidebar';
 import Wrapper from '../../../ui/Wrapper';
+
 
 interface Location {
   id: number;
@@ -14,7 +16,7 @@ interface Location {
   hours: string;
 }
 
-const Locations: React.FC = () => {
+const Location: React.FC = () => {
   const dispatch = useAppDispatch();
   const locations = useAppSelector<Location[]>(
     (state) => state.locationsSlice.data
@@ -26,7 +28,6 @@ const Locations: React.FC = () => {
     null
   );
   const [isAddingMode, setAddingMode] = useState(false);
-  // const [editedLocation, setEditedLocation] = useState<Location | null>();
   const [editedLocation, setEditedLocation] = useState<
     Location | null | undefined
   >(null);
@@ -92,7 +93,10 @@ const Locations: React.FC = () => {
 
   return (
     <Wrapper>
-      <div className="p-4 ">
+           <div className="p-4 ">
+    <div className="flex">
+      <Sidebar menuItems={locations} onMenuItemClick={openEditModal} />
+      <div className="p-4">
         <h1 className="text-2xl font-bold mb-4">Список магазинов</h1>
         <div className="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 pr-10 lg:px-8">
           <div className="align-middle inline-block min-w-full shadow overflow-hidden bg-white shadow-dashboard rounded-bl-lg rounded-br-lg">
@@ -151,7 +155,11 @@ const Locations: React.FC = () => {
                     <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500">
                       <button
                         onClick={() => openEditModal(location)}
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2"
+
+                        className="bg-blue-500 hover-bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2"
+
+                       
+
                       >
                         Редактировать
                       </button>
@@ -191,8 +199,12 @@ const Locations: React.FC = () => {
           />
         )}
       </div>
+
+    </div>
+
     </Wrapper>
+
   );
 };
 
-export default Locations;
+export default Location;
