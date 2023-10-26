@@ -64,16 +64,36 @@ const Shops: FC = () => {
     }
   }, [selectedShop]);
 
+  // const showMyLocation = () => {
+  //   if (userLocation && mapRef.current) {
+  //     mapRef.current.animateToRegion({
+  //       latitude: userLocation.coords.latitude,
+  //       longitude: userLocation.coords.longitude,
+  //       latitudeDelta: 0.005,
+  //       longitudeDelta: 0.005,
+  //     });
+  //   }
+  // };
+  
+//? Сейчас навешан форс для того чтобы актуализировать данные от админа
   const showMyLocation = () => {
     if (userLocation && mapRef.current) {
-      mapRef.current.animateToRegion({
-        latitude: userLocation.coords.latitude,
-        longitude: userLocation.coords.longitude,
-        latitudeDelta: 0.005,
-        longitudeDelta: 0.005,
-      });
+      mapRef.current.animateToRegion(
+        {
+          latitude: userLocation.coords.latitude,
+          longitude: userLocation.coords.longitude,
+          latitudeDelta: 0.005,
+          longitudeDelta: 0.005,
+        },
+        1000
+      );
+  
+      setTimeout(() => {
+        dispatch(getUserLocations({ force: true }));
+      }, 1000);
     }
   };
+  
 
   const initialRegion = selectedShop
     ? {
