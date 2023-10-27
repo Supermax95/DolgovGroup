@@ -124,33 +124,7 @@ const Location: FC = () => {
             setCurrentPage={setCurrentPage}
             displayKey={(city) => city}
           />
-          {/* то, что нужно вынести */}
           <div className="p-4">
-            {/* <Table
-              nameTable="Список магазинов"
-              columnsName={tableTitle}
-              childrenButtonAdd={
-                <Button
-                  type="button"
-                  onClick={openAddModal}
-                  styleCSSSpan={
-                    'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0'
-                  }
-                  title="Добавить"
-                />
-              }
-              data={displayedLocations}
-              columns={columnsToShow}
-              //onEditClick={openEditModal} // Передаем функцию openEditModal
-              childrenButtonEdit={
-                <Button
-                  type="button"
-                  onClick={() => openEditModal()}
-                  styleCSSButton={`relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-normal text-slate-600 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200`}
-                  title="Редактировать"
-                />
-              }
-            /> */}
             <Table
               nameTable="Список магазинов"
               columns={tableTitle}
