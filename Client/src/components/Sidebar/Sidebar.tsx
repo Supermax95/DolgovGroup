@@ -4,22 +4,24 @@ interface SidebarProps {
   menuItems: string[];
   onMenuItemClick: (selectedCity: string) => void;
   title: string;
-
+//   currentPage:number;
+  setCurrentPage: (page: number) => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ menuItems, onMenuItemClick, title,
-     }) => {
+const Sidebar: React.FC<SidebarProps> = ({ menuItems, onMenuItemClick, title, setCurrentPage, }) => {
   const [selectedCity, setSelectedCity] = useState('Все магазины');
   const [isCityListVisible, setCityListVisible] = useState(false);
 
   const handleCityChange = (city: string) => {
     if (city === 'all') {
       setSelectedCity('Все магазины');
-      setCityListVisible(!isCityListVisible); // Открываем или скрываем список городов при выборе "Все магазины"
-      onMenuItemClick(''); // Сбрасываем фильтры
+      setCityListVisible(!isCityListVisible); 
+      onMenuItemClick(''); 
+      setCurrentPage(1);
     } else {
       setSelectedCity(city);
       onMenuItemClick(city);
+      setCurrentPage(1)
     }
   };
 
