@@ -4,8 +4,8 @@ interface IButton {
   onClick?: () => void;
   type: 'button' | 'submit' | 'reset';
   title: string;
-  styleCSSButton?: string[];
-  styleCSSSpan?: string[];
+  styleCSSButton?: string | string[];
+  styleCSSSpan?: string | string[];
 }
 
 const Button: FC<IButton> = ({
@@ -21,7 +21,7 @@ const Button: FC<IButton> = ({
 }) => {
   return (
     <button onClick={onClick} type={type} className={`${styleCSSButton}`}>
-      <span className={`${styleCSSSpan}`}> {title}</span>
+      <span className={`${styleCSSSpan}`}>{title}</span>
     </button>
   );
 };

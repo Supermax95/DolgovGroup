@@ -18,7 +18,7 @@ interface INavigation {
 // }
 
 const Navbar: FC = () => {
-  const location = useLocation();
+  const location = useLocation(); // хз, как типизировать
 
   const navigation: INavigation[] = [
     {

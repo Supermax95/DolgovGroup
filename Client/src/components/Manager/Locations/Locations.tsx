@@ -4,6 +4,7 @@ import LocationsModal from './LocationsModal';
 import getLocations from '../../../Redux/thunks/Locations/getLocations.api';
 import editLocation from '../../../Redux/thunks/Locations/editLocation.api';
 import Wrapper from '../../../ui/Wrapper';
+import Button from '../../../ui/Button';
 import Sidebar from '../../../ui/Sidebar';
 import Pagination from '../../../ui/Paggination';
 
@@ -89,6 +90,23 @@ const Location: React.FC = () => {
   // Извлекаем уникальные города
   const uniqueCities = [...new Set(locations.map((location) => location.city))];
 
+  const tableTitle = [
+    { columnТame: '#' },
+    { columnТame: 'Город' },
+    { columnТame: 'Адрес' },
+    { columnТame: 'Широта' },
+    { columnТame: 'Долгота' },
+    { columnТame: ' Рабочее время' },
+  ];
+  const columnsToShow = [
+    'id',
+    'city',
+    'address',
+    'latitude',
+    'longitude',
+    'hours',
+  ];
+
   return (
     <Wrapper>
       <div className="p-4">
@@ -100,42 +118,37 @@ const Location: React.FC = () => {
             setCurrentPage={setCurrentPage}
             displayKey={(city) => city}
           />
+          {/* то, что нужно вынести */}
           <div className="p-4">
-            <h1 className="text-2xl font-bold mb-4">Список магазинов</h1>
+            <h1 className="text-xl text-lime-600 font-medium mb-4">
+              Список магазинов
+            </h1>
             <div className="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 pr-10 lg:px-8">
               <div className="align-middle inline-block min-w-full shadow overflow-hidden bg-white shadow-dashboard rounded-bl-lg rounded-br-lg">
                 <table className="min-w-full">
                   <thead>
                     <tr>
-                      <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-blue-500 tracking-wider">
-                        #
-                      </th>
-                      <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-blue-500 tracking-wider">
-                        Город
-                      </th>
-                      <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-blue-500 tracking-wider">
-                        Адрес
-                      </th>
-                      <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-blue-500 tracking-wider">
-                        Широта
-                      </th>
-                      <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-blue-500 tracking-wider">
-                        Долгота
-                      </th>
-                      <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-blue-500 tracking-wider">
-                        Рабочее время
-                      </th>
-                      <th className="px-6 py-3 border-b-2 border-gray-300">
-                        <button
-                          onClick={openAddModal}
-                          className="py-2 px-10 rounded bg-green-500 text-white"
+                      {tableTitle.map((item, index) => (
+                        <th
+                          key={index + item.columnТame}
+                          className="w-40 px-6 py-3 border-b-2 border-orange-300 text-left leading-4 text-slate-700 text-sm font-bold tracking-wider"
                         >
-                          Добавить
-                        </button>
+                          {item.columnТame}
+                        </th>
+                      ))}
+                      <th className=" border-b-2 border-orange-300">
+                        <Button
+                          type="button"
+                          onClick={openAddModal}
+                          styleCSSSpan={
+                            'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0'
+                          }
+                          title="Добавить"
+                        />
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white">
+                  {/* <tbody className="bg-white">
                     {displayedLocations.map((location, index) => (
                       <tr key={location.id}>
                         <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
@@ -158,13 +171,70 @@ const Location: React.FC = () => {
                         <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
                           <p className="text-gray-600"> {location.hours}</p>
                         </td>
+
                         <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500">
-                          <button
-                            onClick={() => openEditModal(location)}
-                            className="bg-blue-500 hover-bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2"
+                          <div className="relative flex justify-center">
+                            <Button
+                              type="button"
+                              onClick={() => openEditModal(location)}
+                              styleCSSButton={`relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200`}
+                              title="Редактировать"
+                            />
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody> */}
+
+                  {/* <tbody className="bg-white">
+                    {displayedLocations.map((location, index) => (
+                      <tr key={location.id}>
+                        {columnsToShow.map((columnName) => (
+                          <td
+                            key={columnName}
+                            className="px-6 py-4 whitespace-no-wrap border-b border-slate-400 text-slate-600 text-sm font-normal"
                           >
-                            Редактировать
-                          </button>
+                            {columnName === 'id'
+                              ? index + 1
+                              : location[columnName]}
+                          </td>
+                        ))}
+                        <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-slate-400">
+                          <div className="relative flex justify-center">
+                            <Button
+                              type="button"
+                              onClick={() => openEditModal(location)}
+                              styleCSSButton={`relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-normal text-slate-600 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200`}
+                              title="Редактировать"
+                            />
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody> */}
+                  <tbody className="bg-white">
+                    {displayedLocations.map((location, index) => (
+                      <tr key={location.id}>
+                        <td className="text-center border-b border-slate-400 text-slate-600 text-sm font-normal">
+                          {index + 1}
+                        </td>
+                        {columnsToShow.slice(1).map((columnName) => (
+                          <td
+                            key={columnName}
+                            className="px-6 py-4 whitespace-no-wrap border-b border-slate-400 text-slate-600 text-sm font-normal"
+                          >
+                            {location[columnName]}
+                          </td>
+                        ))}
+                        <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-slate-400">
+                          <div className="relative flex justify-center">
+                            <Button
+                              type="button"
+                              onClick={() => openEditModal(location)}
+                              styleCSSButton={`relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-normal text-slate-600 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200`}
+                              title="Редактировать"
+                            />
+                          </div>
                         </td>
                       </tr>
                     ))}
@@ -172,6 +242,7 @@ const Location: React.FC = () => {
                 </table>
               </div>
             </div>
+
 
             {/* Используем компонент Pagination */}
             <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
