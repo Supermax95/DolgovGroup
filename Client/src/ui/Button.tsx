@@ -4,8 +4,8 @@ interface IButton {
   onClick?: () => void;
   type: 'button' | 'submit' | 'reset';
   title: string;
-  styleCSSButton?: string[];
-  styleCSSSpan?: string[];
+  styleCSSButton?: string | string[];
+  styleCSSSpan?: string | string[];
 }
 
 const Button: FC<IButton> = ({

@@ -5,6 +5,7 @@ import getLocations from '../../../Redux/thunks/Locations/getLocations.api';
 import editLocation from '../../../Redux/thunks/Locations/editLocation.api';
 import Sidebar from '../../Sidebar/Sidebar';
 import Wrapper from '../../../ui/Wrapper';
+import Button from '../../../ui/Button';
 
 interface Location {
   id: number;
@@ -131,12 +132,16 @@ const Location: React.FC = () => {
                         Рабочее время
                       </th>
                       <th className="px-6 py-3 border-b-2 border-gray-300">
-                        <button
-                          onClick={openAddModal}
-                          className="py-2 px-10 rounded bg-green-500 text-white"
-                        >
-                          Добавить
-                        </button>
+                        <div className="relative flex justify-center">
+                          <Button
+                            type="button"
+                            onClick={openAddModal}
+                            styleCSSSpan={
+                              'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0'
+                            }
+                            title="Добавить"
+                          />
+                        </div>
                       </th>
                     </tr>
                   </thead>
@@ -164,12 +169,14 @@ const Location: React.FC = () => {
                           <p className="text-gray-600"> {location.hours}</p>
                         </td>
                         <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500">
-                          <button
-                            onClick={() => openEditModal(location)}
-                            className="bg-blue-500 hover-bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2"
-                          >
-                            Редактировать
-                          </button>
+                          <div className="relative flex justify-center">
+                            <Button
+                              type="button"
+                              onClick={() => openEditModal(location)}
+                              styleCSSButton={`relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200`}
+                              title="Редактировать"
+                            />
+                          </div>
                         </td>
                       </tr>
                     ))}
@@ -182,9 +189,7 @@ const Location: React.FC = () => {
               {pageNumbers.map((page) => (
                 <button
                   key={page}
-
                   onClick={() => setCurrentPage(page)}
-
                   className={`px-3 py-2 rounded ${
                     page === currentPage
                       ? 'bg-blue-500 text-white'
