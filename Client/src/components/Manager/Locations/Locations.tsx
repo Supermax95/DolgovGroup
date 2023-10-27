@@ -102,6 +102,8 @@ const Location: React.FC = () => {
             menuItems={uniqueCities}
             onMenuItemClick={setSelectedCity}
             title="Города"
+            // currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
           />
 
           <div className="p-4">
