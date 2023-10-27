@@ -3,8 +3,9 @@ import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import LocationsModal from './LocationsModal';
 import getLocations from '../../../Redux/thunks/Locations/getLocations.api';
 import editLocation from '../../../Redux/thunks/Locations/editLocation.api';
-import Sidebar from '../../Sidebar/Sidebar';
+// import Sidebar from '../../Sidebar/Sidebar';
 import Wrapper from '../../../ui/Wrapper';
+import Sidebar from '../../../ui/Sidebar';
 
 interface Location {
   id: number;
@@ -99,11 +100,11 @@ const Location: React.FC = () => {
       <div className="p-4">
         <div className="flex">
           <Sidebar
-            menuItems={uniqueCities}
-            onMenuItemClick={setSelectedCity}
-            title="Города"
-            // currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
+            items={uniqueCities} // Ваши города
+            onItemSelect={setSelectedCity} // Функция для выбора города
+            title="Города" // Заголовок
+            setCurrentPage={setCurrentPage} // Функция для установки текущей страницы
+            displayKey={(city) => city} // Функция для отображения города в списке
           />
           <div className="p-4">
             <h1 className="text-2xl font-bold mb-4">Список магазинов</h1>
@@ -182,9 +183,7 @@ const Location: React.FC = () => {
               {pageNumbers.map((page) => (
                 <button
                   key={page}
-
                   onClick={() => setCurrentPage(page)}
-
                   className={`px-3 py-2 rounded ${
                     page === currentPage
                       ? 'bg-blue-500 text-white'
