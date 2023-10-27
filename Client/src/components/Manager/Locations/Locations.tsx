@@ -3,9 +3,11 @@ import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import LocationsModal from './LocationsModal';
 import getLocations from '../../../Redux/thunks/Locations/getLocations.api';
 import editLocation from '../../../Redux/thunks/Locations/editLocation.api';
-import Sidebar from '../../Sidebar/Sidebar';
 import Wrapper from '../../../ui/Wrapper';
 import Button from '../../../ui/Button';
+import Sidebar from '../../../ui/Sidebar';
+import Pagination from '../../../ui/Paggination';
+
 
 interface Location {
   id: number;
@@ -18,19 +20,13 @@ interface Location {
 
 const Location: React.FC = () => {
   const dispatch = useAppDispatch();
-  const locations = useAppSelector<Location[]>(
-    (state) => state.locationsSlice.data
-  );
+  const locations = useAppSelector<Location[]>((state) => state.locationsSlice.data);
 
   const [isModalOpen, setModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedLocation, setSelectedLocation] = useState<Location | null>(
-    null
-  );
+  const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
   const [isAddingMode, setAddingMode] = useState(false);
-  const [editedLocation, setEditedLocation] = useState<
-    Location | null | undefined
-  >(null);
+  const [editedLocation, setEditedLocation] = useState<Location | null | undefined>(null);
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
 
   useEffect(() => {
@@ -90,7 +86,6 @@ const Location: React.FC = () => {
   };
 
   const totalPages = Math.ceil(filteredLocations.length / itemsPerPage);
-  const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   // Извлекаем уникальные города
   const uniqueCities = [...new Set(locations.map((location) => location.city))];
@@ -117,11 +112,11 @@ const Location: React.FC = () => {
       <div className="p-4">
         <div className="flex">
           <Sidebar
-            menuItems={uniqueCities}
-            onMenuItemClick={setSelectedCity}
+            items={uniqueCities}
+            onItemSelect={setSelectedCity}
             title="Города"
-            // currentPage={currentPage}
             setCurrentPage={setCurrentPage}
+            displayKey={(city) => city}
           />
           {/* то, что нужно вынести */}
           <div className="p-4">
@@ -248,21 +243,9 @@ const Location: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex space-x-2 mt-4">
-              {pageNumbers.map((page) => (
-                <button
-                  key={page}
-                  onClick={() => setCurrentPage(page)}
-                  className={`px-3 py-2 rounded ${
-                    page === currentPage
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-white text-blue-500 hover-bg-blue-200'
-                  }`}
-                >
-                  {page}
-                </button>
-              ))}
-            </div>
+
+            {/* Используем компонент Pagination */}
+            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
 
             {isModalOpen && (selectedLocation || isAddingMode) && (
               <LocationsModal
