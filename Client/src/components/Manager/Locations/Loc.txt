@@ -1,0 +1,66 @@
+      {/* <tbody className="bg-white">
+                    {displayedLocations.map((location, index) => (
+                      <tr key={location.id}>
+                        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
+                          {(currentPage - 1) * itemsPerPage + index + 1}
+                        </td>
+                        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
+                          <h2 className="text-xl font-semibold">
+                            {location.city}
+                          </h2>
+                        </td>
+                        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
+                          <p className="text-gray-600">{location.address}</p>
+                        </td>
+                        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
+                          <p className="text-gray-600">{location.latitude}</p>
+                        </td>
+                        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
+                          <p className="text-gray-600">{location.longitude}</p>
+                        </td>
+                        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
+                          <p className="text-gray-600"> {location.hours}</p>
+                        </td>
+
+                        <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500">
+                          <div className="relative flex justify-center">
+                            <Button
+                              type="button"
+                              onClick={() => openEditModal(location)}
+                              styleCSSButton={`relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200`}
+                              title="Редактировать"
+                            />
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody> */}
+
+
+                  // здесь по-другому стоит число
+                  {/* <tbody className="bg-white">
+                    {displayedLocations.map((location, index) => (
+                      <tr key={location.id}>
+                        {columnsToShow.map((columnName) => (
+                          <td
+                            key={columnName}
+                            className="px-6 py-4 whitespace-no-wrap border-b border-slate-400 text-slate-600 text-sm font-normal"
+                          >
+                            {columnName === 'id'
+                              ? index + 1
+                              : location[columnName]}
+                          </td>
+                        ))}
+                        <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-slate-400">
+                          <div className="relative flex justify-center">
+                            <Button
+                              type="button"
+                              onClick={() => openEditModal(location)}
+                              styleCSSButton={`relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-normal text-slate-600 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200`}
+                              title="Редактировать"
+                            />
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody> */}
