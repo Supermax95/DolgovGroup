@@ -103,6 +103,14 @@ const Location: React.FC = () => {
     { columnТame: 'Долгота' },
     { columnТame: ' Рабочее время' },
   ];
+  const columnsToShow = [
+    'id',
+    'city',
+    'address',
+    'latitude',
+    'longitude',
+    'hours',
+  ];
 
   return (
     <Wrapper>
@@ -145,7 +153,7 @@ const Location: React.FC = () => {
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white">
+                  {/* <tbody className="bg-white">
                     {displayedLocations.map((location, index) => (
                       <tr key={location.id}>
                         <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
@@ -168,12 +176,40 @@ const Location: React.FC = () => {
                         <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
                           <p className="text-gray-600"> {location.hours}</p>
                         </td>
+
                         <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500">
                           <div className="relative flex justify-center">
                             <Button
                               type="button"
                               onClick={() => openEditModal(location)}
                               styleCSSButton={`relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200`}
+                              title="Редактировать"
+                            />
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody> */}
+                  <tbody className="bg-white">
+                    {displayedLocations.map((location, index) => (
+                      <tr key={location.id}>
+                        <td className="text-center border-b border-slate-400 text-slate-600 text-sm font-normal">
+                          {index + 1}
+                        </td>
+                        {columnsToShow.slice(1).map((columnName) => (
+                          <td
+                            key={columnName}
+                            className="px-6 py-4 whitespace-no-wrap border-b border-slate-400 text-slate-600 text-sm font-normal"
+                          >
+                            {location[columnName]}
+                          </td>
+                        ))}
+                        <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-slate-400">
+                          <div className="relative flex justify-center">
+                            <Button
+                              type="button"
+                              onClick={() => openEditModal(location)}
+                              styleCSSButton={`relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-normal text-slate-600 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200`}
                               title="Редактировать"
                             />
                           </div>
