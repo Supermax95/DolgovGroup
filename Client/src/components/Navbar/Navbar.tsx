@@ -3,7 +3,6 @@ import { Link, Outlet } from 'react-router-dom';
 import UserMenu from './UserMenu';
 import { FC } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Location } from 'history';
 
 interface INavigation {
   id: number;
@@ -19,7 +18,7 @@ interface INavigation {
 // }
 
 const Navbar: FC = () => {
-  const location: Location = useLocation();
+  const location = useLocation(); // хз, как типизировать
 
   const navigation: INavigation[] = [
     {

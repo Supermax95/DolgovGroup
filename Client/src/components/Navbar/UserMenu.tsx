@@ -5,8 +5,8 @@ import { IManager } from '../../Redux/manager.slice';
 import portalLogout from '../../Redux/thunks/PortalLogin/portalLogout.api';
 
 interface INavigation {
-  manager: { id: string; name: string; href?: string }[];
-  admin: { id: string; name: string; href?: string }[];
+  manager: { id: string; name: string; href: string }[];
+  admin: { id: string; name: string; href: string }[];
 }
 
 const UserMenu: FC = () => {
@@ -33,11 +33,9 @@ const UserMenu: FC = () => {
         name: 'Личный кабинет',
         href: '/profileManager',
       },
-      { id: 'logout-manager', name: 'Выход' },
     ],
     admin: [
       { id: 'profile-admin', name: 'Личный кабинет', href: '/profileAdmin' },
-      { id: 'logout-admin', name: 'Выход' },
     ],
   };
 
@@ -101,6 +99,12 @@ const UserMenu: FC = () => {
                 {item.name}
               </Link>
             ))}
+            <div
+              className="block px-4 py-2 text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+              onClick={handleLogout}
+            >
+              Выход
+            </div>
           </li>
         </ul>
       </div>
