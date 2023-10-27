@@ -1,10 +1,9 @@
-import React, { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import LocationsModal from './LocationsModal';
 import getLocations from '../../../Redux/thunks/Locations/getLocations.api';
 import editLocation from '../../../Redux/thunks/Locations/editLocation.api';
 import Wrapper from '../../../ui/Wrapper';
-import Button from '../../../ui/Button';
 import Sidebar from '../../../ui/Sidebar';
 import Pagination from '../../../ui/Paggination';
 import Table from '../../../ui/Table';
@@ -17,6 +16,18 @@ interface Location {
   longitude: string;
   hours: string;
 }
+
+interface IColumnsDefaultName {
+  name: string;
+}
+
+type IColumnsListDb =
+  | 'id'
+  | 'city'
+  | 'address'
+  | 'latitude'
+  | 'longitude'
+  | 'hours';
 
 const Location: FC = () => {
   const dispatch = useAppDispatch();
@@ -34,6 +45,23 @@ const Location: FC = () => {
     Location | null | undefined
   >(null);
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
+
+  const columnsDefaultName: IColumnsDefaultName[] = [
+    { name: 'Город' },
+    { name: 'Адрес' },
+    { name: 'Широта' },
+    { name: 'Долгота' },
+    { name: ' Рабочее время' },
+  ];
+
+  const columnsListDb: IColumnsListDb[] = [
+    'id',
+    'city',
+    'address',
+    'latitude',
+    'longitude',
+    'hours',
+  ];
 
   useEffect(() => {
     dispatch(getLocations());
@@ -95,23 +123,6 @@ const Location: FC = () => {
 
   // Извлекаем уникальные города
   const uniqueCities = [...new Set(locations.map((location) => location.city))];
-
-  const columnsDefaultName = [
-    { name: 'Город' },
-    { name: 'Адрес' },
-    { name: 'Широта' },
-    { name: 'Долгота' },
-    { name: ' Рабочее время' },
-  ];
-
-  const columnsListDb = [
-    'id',
-    'city',
-    'address',
-    'latitude',
-    'longitude',
-    'hours',
-  ];
 
   return (
     <Wrapper>
