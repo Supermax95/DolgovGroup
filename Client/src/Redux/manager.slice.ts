@@ -49,9 +49,8 @@ const managerSlice = createSlice({
       .addCase(portalLogin.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isAuth = true;
-        //state.manager.isAdmin = action.payload.manager.isAdmin;
         state.manager = action.payload.manager;
-        console.log(' action.payload', action.payload);
+        console.log(' state.manager',  state.manager);
       })
       .addCase(portalLogin.rejected, (state, action) => {
         state.isLoading = false;
