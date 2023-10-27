@@ -24,7 +24,7 @@ interface ResponseData {
 const portalLogin = createAsyncThunk<ResponseData, RequestData>(
   'api/login',
   async (manager) => {
-    console.log('managermanagermanager', manager);
+    console.log('manager', manager);
 
     const response: AxiosResponse = await axios.post(
       `${VITE_URL}/portal/login`,

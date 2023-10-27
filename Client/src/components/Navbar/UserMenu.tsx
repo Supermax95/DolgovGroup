@@ -14,9 +14,9 @@ const UserMenu: FC = () => {
   const dispatch = useAppDispatch();
 
   const manager = useAppSelector<IManager>(
-    (state) => state.managerLogin.manager
+    (state) => state.managerSlice.manager
   );
-  //console.log('managermanagermanagermanager', manager);
+  console.log('userMenu', manager);
 
   const [isMenuOpen, setMenuOpen] = useState<boolean>(false);
 
