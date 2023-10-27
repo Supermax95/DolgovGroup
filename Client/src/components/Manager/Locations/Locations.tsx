@@ -96,15 +96,15 @@ const Location: FC = () => {
   // Извлекаем уникальные города
   const uniqueCities = [...new Set(locations.map((location) => location.city))];
 
-  const tableTitle = [
-    { columnName: '#' },
-    { columnName: 'Город' },
-    { columnName: 'Адрес' },
-    { columnName: 'Широта' },
-    { columnName: 'Долгота' },
-    { columnName: ' Рабочее время' },
+  const columnsDefaultName = [
+    { name: 'Город' },
+    { name: 'Адрес' },
+    { name: 'Широта' },
+    { name: 'Долгота' },
+    { name: ' Рабочее время' },
   ];
-  const columnsToShow = [
+
+  const columnsListDb = [
     'id',
     'city',
     'address',
@@ -126,10 +126,10 @@ const Location: FC = () => {
           />
           <div className="p-4">
             <Table
-              nameTable="Список магазинов"
-              columns={tableTitle}
+              title="Список магазинов"
+              columnsDefaultName={columnsDefaultName}
               data={displayedLocations}
-              columnsToShow={columnsToShow}
+              columnsListDb={columnsListDb}
               onAddClick={openAddModal}
               onEditClick={openEditModal}
             />
