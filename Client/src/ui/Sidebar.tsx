@@ -34,7 +34,7 @@ const Sidebar: FC<SidebarProps<any>> = ({
   };
 
   return (
-    <div className="flex flex-col w-64 bg-white h-full border-r">
+    <div className="flex flex-col w-64 bg-white h-full border-r border-slate-300">
       <div className="h-16 flex items-center justify-center border-b">
         <div
           className="text-xl text-slate-700 font-medium"
@@ -44,7 +44,7 @@ const Sidebar: FC<SidebarProps<any>> = ({
         </div>
       </div>
       <div className="flex-1 overflow-y-auto">
-        <ul className="py-4 space-y-1">
+        <ul className="py-2 space-y-1">
           <li>
             <button
               className="flex items-center w-full h-12 px-4 text-slate-700 hover:text-amber-600 focus:outline-none focus:bg-slate-100"
@@ -57,15 +57,17 @@ const Sidebar: FC<SidebarProps<any>> = ({
               >
                 ▶
               </span>
-              <span className="text-sm">Все {title.toLowerCase()}</span>
+              <span className="text-sm text-slate-700 font-bold">
+                Все {title.toLowerCase()}
+              </span>
             </button>
           </li>
           {isItemListVisible &&
             items.map((item, index) => (
               <li key={index}>
                 <button
-                  className={`flex items-center w-full h-12 px-4 text-slate-700 hover:text-amber-600 focus:outline-none focus:bg-slate-100 ${
-                    selectedItem === item ? 'bg-gray-100' : ''
+                  className={`flex items-center w-full h-12 px-4 text-slate-600 text-sm font-normal hover:text-amber-600 focus:outline-none focus:bg-slate-100 ${
+                    selectedItem === item ? 'bg-slate-100' : ''
                   }`}
                   onClick={() => handleItemChange(item)}
                 >
