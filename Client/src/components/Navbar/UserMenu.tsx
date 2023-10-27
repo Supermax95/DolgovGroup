@@ -58,7 +58,7 @@ const UserMenu: FC = () => {
         <button
           type="button"
           onClick={toggleMenu}
-          className="flex text-sm bg-green-500 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-lime-600"
+          className="flex text-sm bg-lime-100 rounded-full focus:ring-2 focus:ring-lime-600/50 dark:focus:ring-lime-600/50"
         >
           <span className="sr-only">Open user menu</span>
           {manager.isAdmin ? (
@@ -76,10 +76,10 @@ const UserMenu: FC = () => {
         className={`origin-top-right absolute right-0 mt-2 w-48 rounded-lg shadow-lg bg-white divide-y divide-gray-100 ${menuClass}`}
       >
         <div className="px-4 py-3">
-          <span className="block text-sm text-gray-900 dark:text-white">
+          <span className="block text-sm text-slate-600 dark:text-white">
             {manager.firstName} {manager.lastName}
           </span>
-          <span className="block text-sm text-gray-500 truncate dark:text-gray-400">
+          <span className="block text-sm text-slate-500 truncate dark:text-gray-400">
             {manager.email}
           </span>
         </div>
@@ -94,7 +94,7 @@ const UserMenu: FC = () => {
               <Link
                 key={item.id}
                 to={item.href}
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                className="block px-4 py-2 text-sm text-slate-600 hover:bg-slate-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                 role="menuitem"
                 onClick={item.name === 'Выход' ? handleLogout : undefined}
               >
