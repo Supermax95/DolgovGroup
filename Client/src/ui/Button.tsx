@@ -21,7 +21,7 @@ const Button: FC<IButton> = ({
 }) => {
   return (
     <button onClick={onClick} type={type} className={`${styleCSSButton}`}>
-      <span className={`${styleCSSSpan}`}> {title}</span>
+      <span className={`${styleCSSSpan}`}>{title}</span>
     </button>
   );
 };

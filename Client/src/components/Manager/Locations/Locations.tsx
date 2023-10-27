@@ -95,6 +95,15 @@ const Location: React.FC = () => {
   // Извлекаем уникальные города
   const uniqueCities = [...new Set(locations.map((location) => location.city))];
 
+  const list = [
+    { columnТame: '#' },
+    { columnТame: 'Город' },
+    { columnТame: 'Адрес' },
+    { columnТame: 'Широта' },
+    { columnТame: 'Долгота' },
+    { columnТame: ' Рабочее время' },
+  ];
+
   return (
     <Wrapper>
       <div className="p-4">
@@ -113,35 +122,23 @@ const Location: React.FC = () => {
                 <table className="min-w-full">
                   <thead>
                     <tr>
-                      <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-blue-500 tracking-wider">
-                        #
-                      </th>
-                      <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-blue-500 tracking-wider">
-                        Город
-                      </th>
-                      <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-blue-500 tracking-wider">
-                        Адрес
-                      </th>
-                      <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-blue-500 tracking-wider">
-                        Широта
-                      </th>
-                      <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-blue-500 tracking-wider">
-                        Долгота
-                      </th>
-                      <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-blue-500 tracking-wider">
-                        Рабочее время
-                      </th>
-                      <th className="px-6 py-3 border-b-2 border-gray-300">
-                        <div className="relative flex justify-center">
-                          <Button
-                            type="button"
-                            onClick={openAddModal}
-                            styleCSSSpan={
-                              'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0'
-                            }
-                            title="Добавить"
-                          />
-                        </div>
+                      {list.map((item, index) => (
+                        <th
+                          key={index + item.columnТame}
+                          className="w-40 px-6 py-3 border-b-2 border-orange-300 text-left leading-4 text-slate-700 text-sm font-bold tracking-wider"
+                        >
+                          {item.columnТame}
+                        </th>
+                      ))}
+                      <th className=" border-b-2 border-orange-300">
+                        <Button
+                          type="button"
+                          onClick={openAddModal}
+                          styleCSSSpan={
+                            'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0'
+                          }
+                          title="Добавить"
+                        />
                       </th>
                     </tr>
                   </thead>
