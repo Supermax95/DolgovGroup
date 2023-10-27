@@ -95,7 +95,7 @@ const Location: React.FC = () => {
   // Извлекаем уникальные города
   const uniqueCities = [...new Set(locations.map((location) => location.city))];
 
-  const list = [
+  const tableTitle = [
     { columnТame: '#' },
     { columnТame: 'Город' },
     { columnТame: 'Адрес' },
@@ -115,14 +115,17 @@ const Location: React.FC = () => {
             // currentPage={currentPage}
             setCurrentPage={setCurrentPage}
           />
+          {/* то, что нужно вынести */}
           <div className="p-4">
-            <h1 className="text-2xl font-bold mb-4">Список магазинов</h1>
+            <h1 className="text-xl text-lime-600 font-medium mb-4">
+              Список магазинов
+            </h1>
             <div className="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 pr-10 lg:px-8">
               <div className="align-middle inline-block min-w-full shadow overflow-hidden bg-white shadow-dashboard rounded-bl-lg rounded-br-lg">
                 <table className="min-w-full">
                   <thead>
                     <tr>
-                      {list.map((item, index) => (
+                      {tableTitle.map((item, index) => (
                         <th
                           key={index + item.columnТame}
                           className="w-40 px-6 py-3 border-b-2 border-orange-300 text-left leading-4 text-slate-700 text-sm font-bold tracking-wider"
