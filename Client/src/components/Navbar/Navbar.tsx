@@ -2,11 +2,13 @@
 import { Link, Outlet } from 'react-router-dom';
 import UserMenu from './UserMenu';
 import { FC } from 'react';
+import { useLocation } from 'react-router-dom';
 
 interface INavigation {
   id: number;
   name: string;
   href: string;
+  isActive: boolean;
 }
 
 //! не удалять
@@ -16,28 +18,60 @@ interface INavigation {
 // }
 
 const Navbar: FC = () => {
+  const location = useLocation();
+
   const navigation: INavigation[] = [
-    { id: 11, name: 'Вход', href: '/portal' },
-    { id: 1, name: 'Клиенты', href: '/clients' },
-    { id: 2, name: 'Сотрудники', href: '/employees' },
-    { id: 3, name: 'Продукты', href: '/products' },
-    { id: 4, name: 'Магазины', href: '/locations' },
-    { id: 5, name: 'Акции', href: '/stock' },
+    {
+      id: 11,
+      name: 'Вход',
+      href: '/portal',
+      isActive: location.pathname === '/portal',
+    },
+    {
+      id: 1,
+      name: 'Клиенты',
+      href: '/clients',
+      isActive: location.pathname === '/clients',
+    },
+    {
+      id: 2,
+      name: 'Сотрудники',
+      href: '/employees',
+      isActive: location.pathname === '/employees',
+    },
+    {
+      id: 3,
+      name: 'Продукты',
+      href: '/products',
+      isActive: location.pathname === '/products',
+    },
+    {
+      id: 4,
+      name: 'Магазины',
+      href: '/locations',
+      isActive: location.pathname === '/locations',
+    },
+    {
+      id: 5,
+      name: 'Акции',
+      href: '/stock',
+      isActive: location.pathname === '/stock',
+    },
   ];
 
   //! не удалять
   // const roles: INavigation = {
   // manager: [
-  //   { id: 'manager-products', name: 'Продукты', href: '/products' },
-  //   { id: 'manager-locations', name: 'Магазины', href: '/locations' },
-  //   { id: 'manager-stock', name: 'Акции', href: '/stock' },
+  //   { id: 'manager-products', name: 'Продукты', href: '/products', isActive: location.pathname === '/products',  },
+  //   { id: 'manager-locations', name: 'Магазины', href: '/locations', isActive: location.pathname === '/locations', },
+  //   { id: 'manager-stock', name: 'Акции', href: '/stock',  isActive: location.pathname === '/stock', },
   // ],
   // admin: [
-  //   { id: 'admin-clients', name: 'Клиенты', href: '/clients' },
-  //   { id: 'admin-employees', name: 'Сотрудники', href: '/employees' },
-  //   { id: 'admin-products', name: 'Продукты', href: '/products' },
-  //   { id: 'admin-locations', name: 'Магазины', href: '/locations' },
-  //   { id: 'admin-stock', name: 'Акции', href: '/stock' },
+  //   { id: 'admin-clients', name: 'Клиенты', href: '/clients', isActive: location.pathname === '/clients', },
+  //   { id: 'admin-employees', name: 'Сотрудники', href: '/employees', isActive: location.pathname === '/employees', },
+  //   { id: 'admin-products', name: 'Продукты', href: '/products', isActive: location.pathname === '/products',  },
+  //   { id: 'admin-locations', name: 'Магазины', href: '/locations', isActive: location.pathname === '/locations', },
+  //   { id: 'admin-stock', name: 'Акции', href: '/stock', isActive: location.pathname === '/stock', },
   // ]
   // };
 
@@ -94,7 +128,9 @@ const Navbar: FC = () => {
                 <Link
                   key={item.id}
                   to={item.href}
-                  className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover-bg-gray-700 dark:hover:text-white md:dark:hover-bg-transparent dark:border-gray-700"
+                  className={`block py-2 pl-3 pr-4 text-slate-500 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-lime-600 md:p-0 md:dark:hover-text-lime-600 dark:text-white dark:hover-bg-gray-700 dark:hover-text-white md:dark:hover-bg-transparent dark:border-gray-700 ${
+                    item.isActive ? 'text-lime-600 ' : 'text-slate-500'
+                  }`}
                   aria-current="page"
                 >
                   {item.name}
