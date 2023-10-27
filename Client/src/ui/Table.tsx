@@ -53,18 +53,18 @@ const Table: FC<ITable> = ({
             <tbody className="bg-white">
               {data.map((item, index) => (
                 <tr key={item.id}>
-                  <td className="w-16 text-left pl-6 py-0 whitespace-no-wrap border-b border-slate-400 text-slate-600 text-sm font-normal pr-[-25px]">
+                  <td className="w-16 text-left pl-6 py-0 whitespace-no-wrap border-b-2 border-slate-300 text-slate-600 text-sm font-normal pr-[-25px]">
                     {index + 1}
                   </td>
                   {columnsListDb.slice(1).map((columnName) => (
                     <td
                       key={columnName}
-                      className="px-4 py-4 whitespace-no-wrap border-b border-slate-400 text-slate-600 text-sm font-normal"
+                      className="px-4 py-4 whitespace-no-wrap border-b-2 border-slate-300 text-slate-600 text-sm font-normal"
                     >
                       {item[columnName]}
                     </td>
                   ))}
-                  <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-slate-400">
+                  <td className="px-6 py-4 whitespace-no-wrap text-right border-b-2 border-slate-300">
                     <Button
                       type="button"
                       onClick={() => onEditClick(item)}
