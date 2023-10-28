@@ -6,7 +6,11 @@ interface PaginationProps {
   onPageChange: (page: number) => void;
 }
 
-const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPageChange }) => {
+const Pagination: React.FC<PaginationProps> = ({
+  currentPage,
+  totalPages,
+  onPageChange,
+}) => {
   const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   return (
@@ -17,8 +21,8 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
           onClick={() => onPageChange(page)}
           className={`px-3 py-2 rounded ${
             page === currentPage
-              ? 'bg-blue-500 text-white'
-              : 'bg-white text-blue-500 hover-bg-blue-200'
+              ? 'bg-gradient-to-br from-teal-300 to-lime-300  text-white'
+              : 'bg-white text-lime-600 hover:bg-lime-200'
           }`}
         >
           {page}
