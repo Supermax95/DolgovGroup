@@ -21,7 +21,7 @@ const Table: FC<ITable> = ({
   return (
     <div>
       <h1 className="text-xl text-lime-600 font-medium mb-4">{title}</h1>
-      <div className="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 pr-10 lg:px-8">
+      <div className="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 pr-10 lg:px-4">
         <div className="align-middle inline-block min-w-full shadow overflow-hidden bg-white shadow-dashboard rounded-bl-lg rounded-br-lg">
           <table className="min-w-full">
             <thead>
