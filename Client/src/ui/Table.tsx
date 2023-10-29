@@ -42,7 +42,7 @@ const Table: FC<ITable> = ({
                     type="button"
                     onClick={onAddClick}
                     styleCSSSpan={
-                      'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0'
+                      'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0 hover:text-white'
                     }
                     title="Добавить"
                   />
@@ -68,7 +68,7 @@ const Table: FC<ITable> = ({
                     <Button
                       type="button"
                       onClick={() => onEditClick(item)}
-                      styleCSSButton={`relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-normal text-slate-600 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200`}
+                      styleCSSButton={`relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-normal text-slate-600 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 hover:text-white`}
                       title="Редактировать"
                     />
                   </td>
