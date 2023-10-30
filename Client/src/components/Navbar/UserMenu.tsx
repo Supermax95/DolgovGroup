@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../Redux/hooks';
 import { IManager } from '../../Redux/manager.slice';
@@ -13,17 +13,31 @@ const UserMenu: FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
+  const [isMenuOpen, setMenuOpen] = useState<boolean>(false);
+  const menuRef = useRef<HTMLDivElement | null>(null);
+
   const manager = useAppSelector<IManager>(
     (state) => state.managerSlice.manager
   );
-
-  const [isMenuOpen, setMenuOpen] = useState<boolean>(false);
 
   const toggleMenu = (): void => {
     setMenuOpen(!isMenuOpen);
   };
 
   const menuClass = isMenuOpen ? 'block' : 'hidden';
+
+  const handleClickOutside = (e: MouseEvent): void => {
+    if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+      setMenuOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const roles: INavigation = {
     manager: [
@@ -49,13 +63,8 @@ const UserMenu: FC = () => {
     }
   };
 
-  // const handleLogout = () => {
-  //   dispatch(portalLogout());
-  //   navigate('/portal');
-  // };
-
   return (
-    <div className="relative inline-block text-left">
+    <div className="relative inline-block text-left group" ref={menuRef}>
       <div>
         <button
           type="button"
@@ -75,7 +84,7 @@ const UserMenu: FC = () => {
         </button>
       </div>
       <div
-        className={`origin-top-right absolute right-0 mt-2 w-48 rounded-lg shadow-lg bg-white divide-y divide-gray-100 ${menuClass}`}
+        className={`origin-top-right absolute right-0 mt-2 w-48 rounded-lg shadow-lg bg-white divide-y divide-gray-100 group-hover:none ${menuClass}`}
       >
         <div className="px-4 py-3">
           <span className="block text-sm text-slate-600 dark:text-white">
