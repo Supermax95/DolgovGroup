@@ -106,7 +106,7 @@ const LocationsModal: React.FC<LocationsModalProps> = ({
   return (
     <Wrapper>
       <div
-        className="py-12 bg-gray-700 bg-opacity-70 transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0 rounded-lg"
+        className="py-12 bg-gray-700 bg-opacity-70 fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center"
         id="modal"
       >
         <div
@@ -189,7 +189,6 @@ const LocationsModal: React.FC<LocationsModalProps> = ({
                 onChange={(e) => {
                   const value = e.target.value;
                   const newValue = value.replace(/,/g, '.');
-                  // Проверка на пробелы
                   if (
                     !newValue.includes(' ') &&
                     !isNaN(+newValue) &&
