@@ -88,9 +88,6 @@ const managerSlice = createSlice({
         };
         state.message = action.payload.message;
       })
-      // .addCase(portalLogout.fulfilled, (state, action) => {
-      //   Object.assign(state, initialState);
-      // })
       .addCase(portalLogout.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
