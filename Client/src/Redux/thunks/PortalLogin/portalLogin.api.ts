@@ -28,8 +28,12 @@ const portalLogin = createAsyncThunk<ResponseData, RequestData>(
 
     const response: AxiosResponse = await axios.post(
       `${VITE_URL}/portal/login`,
-      manager
+      manager,
+      {
+        withCredentials: true,
+      }
     );
+
     console.log('response axios', response.data);
 
     return response.data;
