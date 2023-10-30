@@ -16,7 +16,7 @@ const UserMenu: FC = () => {
   const manager = useAppSelector<IManager>(
     (state) => state.managerSlice.manager
   );
-  console.log('userMenu', manager);
+
 
   const [isMenuOpen, setMenuOpen] = useState<boolean>(false);
 
