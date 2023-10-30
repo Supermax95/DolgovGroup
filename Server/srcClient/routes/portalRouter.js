@@ -13,7 +13,7 @@ module.exports = router
       if (!manager) {
         res.status(401).json({ message: 'Пользователь не авторизован' });
       } else {
-        res.json({ message: 'Вы залогинены!', manager });
+        res.json({ message: 'Вы точно авторизованы!', manager });
       }
     } catch (error) {
       console.error(error);
@@ -41,7 +41,6 @@ module.exports = router
           req.session.save(() => {
             res.json({ message: 'Вы успешно авторизованы!', manager });
           });
-          // console.log('asdfghjkl', req.session);
         }
       }
     } catch (error) {
@@ -59,6 +58,10 @@ module.exports = router
           res.clearCookie('name');
           res.status(200).json({ message: 'Пользователь вышёл из профиля' });
         }
+        // req.session.destroy(() => {
+        //   res.clearCookie('name');
+        //   res.status(200).json({ message: 'Пользователь вышёл из профиля' });
+        // });
       });
     } catch (error) {
       console.error('Ошибка при получении данных из базы данных', error);
