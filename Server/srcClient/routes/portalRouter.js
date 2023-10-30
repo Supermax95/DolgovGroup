@@ -3,23 +3,6 @@ const bcrypt = require('bcrypt');
 const { Manager } = require('../../db/models');
 
 module.exports = router
-
-  // .get('/check', async (req, res) => {
-  //   try {
-  //     const manager = await Manager.findOne({
-  //       where: { email: req.session?.email },
-  //     });
-
-  //     if (!manager) {
-  //       res.status(401).json({ message: 'Пользователь не авторизован' });
-  //     } else {
-  //       res.json({ message: 'Вы точно авторизованы!', manager });
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //     res.status(500).json({ message: 'Произошла ошибка на сервере' });
-  //   }
-  // })
   .get('/check', async (req, res) => {
     if (!req.session || !req.session.email) {
       return res.status(401).json({ message: 'Пользователь не авторизован' });
