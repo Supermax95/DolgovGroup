@@ -3,6 +3,34 @@ const bcrypt = require('bcrypt');
 const { Manager } = require('../../db/models');
 
 module.exports = router
+  // .get('/auth', async (req, res) => {
+  //   const { passport } = req.session;
+  //   if (passport) {
+  //     res.json({ email: passport.user.email });
+  //   } else {
+  //     res.json({
+  //       email: req.session?.email,
+  //       //isAdmin: req.session?.isAdmin,
+  //     });
+  //   }
+  // })
+  .get('/check', async (req, res) => {
+    try {
+      const manager = await Manager.findOne({
+        where: { email: req.session?.email },
+      });
+
+      if (!manager) {
+        res.json({ message: 'Хуй' });
+      } else {
+        res.json(manager);
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Произошла ошибка на сервере' });
+    }
+  })
+
   .post('/login', async (req, res) => {
     const { email, password } = req.body;
     try {
@@ -23,6 +51,7 @@ module.exports = router
           req.session.save(() => {
             res.json({ message: 'Вы успешно авторизованы!', manager });
           });
+          // console.log('asdfghjkl', req.session);
         }
       }
     } catch (error) {
