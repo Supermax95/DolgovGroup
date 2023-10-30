@@ -21,6 +21,7 @@ const portalCheck = createAsyncThunk<any, ResponseData>(
   async () => {
     const response: AxiosResponse = await axios.get(
       `${VITE_URL}/portal/check`,
+
       {
         withCredentials: true,
       }
