@@ -16,7 +16,7 @@ interface ResponseData {
   message: string;
 }
 
-const portalCheck = createAsyncThunk<any, ResponseData>(
+const portalCheck = createAsyncThunk<ResponseData, void>(
   'api/check',
   async () => {
     const response: AxiosResponse = await axios.get(

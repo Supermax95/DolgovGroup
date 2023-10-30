@@ -3,18 +3,16 @@ const bcrypt = require('bcrypt');
 const { Manager } = require('../../db/models');
 
 module.exports = router
-
   .get('/check', async (req, res) => {
+    if (!req.session || !req.session.email) {
+      return res.status(401).json({ message: 'Пользователь не авторизован' });
+    }
+
     try {
       const manager = await Manager.findOne({
-        where: { email: req.session?.email },
+        where: { email: req.session.email },
       });
-
-      if (!manager) {
-        res.status(401).json({ message: 'Пользователь не авторизован' });
-      } else {
-        res.json({ message: 'Вы точно авторизованы!', manager });
-      }
+      res.json({ message: 'Вы залогинены!', manager });
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Произошла ошибка на сервере' });
@@ -58,10 +56,6 @@ module.exports = router
           res.clearCookie('name');
           res.status(200).json({ message: 'Пользователь вышёл из профиля' });
         }
-        // req.session.destroy(() => {
-        //   res.clearCookie('name');
-        //   res.status(200).json({ message: 'Пользователь вышёл из профиля' });
-        // });
       });
     } catch (error) {
       console.error('Ошибка при получении данных из базы данных', error);
