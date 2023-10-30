@@ -51,7 +51,7 @@ const managerSlice = createSlice({
         state.isLoading = false;
         state.isAuth = true;
         state.manager = action.payload.manager;
-            })
+      })
       .addCase(portalLogin.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
@@ -62,9 +62,9 @@ const managerSlice = createSlice({
       })
       .addCase(portalCheck.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.isAuth = true;
+        state.isAuth = false;
         state.manager = action.payload.manager;
-        console.log('======>',action.payload)
+        // console.log('======>', action.payload);
       })
       .addCase(portalCheck.rejected, (state, action) => {
         state.isLoading = false;
@@ -77,8 +77,20 @@ const managerSlice = createSlice({
       .addCase(portalLogout.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isAuth = false;
-        state.manager = action.payload.manager;
+        state.manager = {
+          id: 0,
+          lastName: '',
+          firstName: '',
+          middleName: '',
+          birthDate: null,
+          email: '',
+          isAdmin: false,
+        };
+        state.message = action.payload.message;
       })
+      // .addCase(portalLogout.fulfilled, (state, action) => {
+      //   Object.assign(state, initialState);
+      // })
       .addCase(portalLogout.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;

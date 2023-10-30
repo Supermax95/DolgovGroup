@@ -17,7 +17,6 @@ const UserMenu: FC = () => {
     (state) => state.managerSlice.manager
   );
 
-
   const [isMenuOpen, setMenuOpen] = useState<boolean>(false);
 
   const toggleMenu = (): void => {
@@ -49,6 +48,11 @@ const UserMenu: FC = () => {
       console.error('Ошибка при выходе:', error);
     }
   };
+
+  // const handleLogout = () => {
+  //   dispatch(portalLogout());
+  //   navigate('/portal');
+  // };
 
   return (
     <div className="relative inline-block text-left">
