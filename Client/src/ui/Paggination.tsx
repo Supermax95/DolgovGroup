@@ -11,28 +11,31 @@ const Pagination: React.FC<PaginationProps> = ({
   totalPages,
   onPageChange,
 }) => {
+  const itemsPerPage = 6; 
   const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
+  const maxIndex = Math.min(totalPages, itemsPerPage);
+  const startIndex = Math.max(1, currentPage - Math.floor(itemsPerPage / 2));
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      onPageChange(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      onPageChange(currentPage + 1);
+    }
+  };
 
   return (
-    <>
-      {/* <div className="flex space-x-2 mt-4">
-        {pageNumbers.map((page) => (
-          <button
-            key={page}
-            onClick={() => onPageChange(page)}
-            className={`px-4 py-2 rounded-full ${
-              page === currentPage
-                ? 'bg-gradient-to-br from-teal-300 to-lime-300  text-white'
-                : 'bg-white text-lime-600 hover:bg-lime-200'
-            }`}
+    <ul className="flex items-center space-x-1 font-light my-4 justify-center">
+      {currentPage > 1 && (
+        <li>
+          <a
+            onClick={handlePrevPage}
+            className="border border-slate-300 rounded-full text-slate-500 hover:bg-slate-200 hover:border-slate-200 bg-white w-8 h-8 flex items-center justify-center"
           >
-            {page}
-          </button>
-        ))}
-      </div> */}
-      <ul className="flex items-center space-x-1 font-light my-4 justify-center">
-        <li className="border border-slate-300 rounded-full text-slate-500 hover:bg-slate-200 hover:border-slate-200 bg-white">
-          <a href="#" className="w-8 h-8 flex items-center justify-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-4 w-4"
@@ -49,24 +52,66 @@ const Pagination: React.FC<PaginationProps> = ({
             </svg>
           </a>
         </li>
-        {pageNumbers.map((page) => (
-          <li
-            key={page}
-            onClick={() => onPageChange(page)}
-            //  className="border border-slate-300 rounded-full text-slate-500 hover:bg-slate-200 hover:border-slate-200 bg-white"
-            className={`border border-slate-300 rounded-full ${
-              page === currentPage
-                ? // 'bg-gradient-to-br from-teal-300 to-lime-300  text-white'
-                  'bg-slate-300 text-white'
-                : //: 'bg-white text-slate-500 hover:bg-gradient-to-br from-teal-300 to-lime-300 '
-                  'bg-white text-slate-500 hover:bg-slate-300 '
-            }`}
+      )}
+
+      {startIndex > 1 && (
+        <li>
+          <a
+            onClick={() => onPageChange(1)}
+            className="border border-slate-300 rounded-full bg-white w-8 h-8 flex items-center justify-center"
           >
-            <a className="w-8 h-8 flex items-center justify-center">{page}</a>
-          </li>
-        ))}
-        <li className="border border-slate-300 rounded-full text-slate-500 hover:bg-slate-200 hover:border-slate-200 bg-white">
-          <a href="#" className="w-8 h-8 flex items-center justify-center">
+            1
+          </a>
+        </li>
+      )}
+
+      {startIndex > 2 && (
+        <li>
+          <span className="border border-slate-300 rounded-full bg-white w-8 h-8 flex items-center justify-center">
+            ...
+          </span>
+        </li>
+      )}
+
+      {pageNumbers.slice(startIndex - 1, startIndex + maxIndex - 1).map((page) => (
+        <li
+          key={page}
+          onClick={() => onPageChange(page)}
+          className={`border border-slate-300 rounded-full ${
+            page === currentPage
+              ? 'bg-slate-300 text-white'
+              : 'bg-white text-slate-500 hover-bg-slate-300'
+          }`}
+        >
+          <a className="w-8 h-8 flex items-center justify-center">{page}</a>
+        </li>
+      ))}
+
+      {startIndex + maxIndex <= totalPages && (
+        <li>
+          <span className="border border-slate-300 rounded-full bg-white w-8 h-8 flex items-center justify-center">
+            ...
+          </span>
+        </li>
+      )}
+
+      {startIndex + maxIndex < totalPages && (
+        <li>
+          <a
+            onClick={() => onPageChange(totalPages)}
+            className="border border-slate-300 rounded-full bg-white w-8 h-8 flex items-center justify-center"
+          >
+            {totalPages}
+          </a>
+        </li>
+      )}
+
+      {currentPage < totalPages && (
+        <li>
+          <a
+            onClick={handleNextPage}
+            className="border border-slate-300 rounded-full text-slate-500 hover:bg-slate-200 hover:border-slate-200 bg-white w-8 h-8 flex items-center justify-center"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-4 w-4"
@@ -83,8 +128,8 @@ const Pagination: React.FC<PaginationProps> = ({
             </svg>
           </a>
         </li>
-      </ul>
-    </>
+      )}
+    </ul>
   );
 };
 
