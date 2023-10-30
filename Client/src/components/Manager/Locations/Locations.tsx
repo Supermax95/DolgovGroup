@@ -140,6 +140,8 @@ const Location: FC = () => {
               title="Список магазинов"
               columnsDefaultName={columnsDefaultName}
               data={displayedLocations}
+              currentPage={currentPage}
+              itemsPerPage={itemsPerPage}
               columnsListDb={columnsListDb}
               onAddClick={openAddModal}
               onEditClick={openEditModal}
