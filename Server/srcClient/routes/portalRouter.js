@@ -3,17 +3,7 @@ const bcrypt = require('bcrypt');
 const { Manager } = require('../../db/models');
 
 module.exports = router
-  // .get('/auth', async (req, res) => {
-  //   const { passport } = req.session;
-  //   if (passport) {
-  //     res.json({ email: passport.user.email });
-  //   } else {
-  //     res.json({
-  //       email: req.session?.email,
-  //       //isAdmin: req.session?.isAdmin,
-  //     });
-  //   }
-  // })
+
   .get('/check', async (req, res) => {
     try {
       const manager = await Manager.findOne({
@@ -21,9 +11,9 @@ module.exports = router
       });
 
       if (!manager) {
-        res.json({ message: 'Хуй' });
+        res.status(401).json({ message: 'Пользователь не авторизован' });
       } else {
-        res.json(manager);
+        res.json({ message: 'Вы залогинены!', manager });
       }
     } catch (error) {
       console.error(error);

@@ -51,8 +51,7 @@ const managerSlice = createSlice({
         state.isLoading = false;
         state.isAuth = true;
         state.manager = action.payload.manager;
-        console.log(' state.manager', state.manager);
-      })
+            })
       .addCase(portalLogin.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
@@ -65,7 +64,7 @@ const managerSlice = createSlice({
         state.isLoading = false;
         state.isAuth = true;
         state.manager = action.payload.manager;
-        //  console.log(' state.manager', state.manager);
+        console.log('======>',action.payload)
       })
       .addCase(portalCheck.rejected, (state, action) => {
         state.isLoading = false;

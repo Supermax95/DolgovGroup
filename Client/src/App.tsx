@@ -9,9 +9,7 @@ const App: FC = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    // if (manager) {
     dispatch(portalCheck());
-    //  }
   }, [dispatch]);
 
   const manager = useAppSelector<IManager>(
