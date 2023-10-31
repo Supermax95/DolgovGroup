@@ -21,7 +21,7 @@ const Sidebar: FC<SidebarProps<any>> = ({
 
   console.log('items:', items);
   console.log('onItemSelect', onItemSelect);
-  
+
   const handleItemChange = (item: T | null) => {
     if (item === null) {
       setSelectedItem(null);
@@ -37,7 +37,7 @@ const Sidebar: FC<SidebarProps<any>> = ({
   };
 
   return (
-    <div className="flex flex-col w-64 bg-white h-full border-r-2 border-orange-300">
+    <div className="flex flex-col w-52 bg-white h-full border-r-2 border-orange-300">
       <div className="h-16 flex items-center justify-center border-b-2 border-orange-300">
         <div
           className="text-xl text-slate-700 font-medium "

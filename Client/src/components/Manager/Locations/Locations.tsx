@@ -51,7 +51,7 @@ const Location: FC = () => {
     { name: 'Адрес' },
     { name: 'Широта' },
     { name: 'Долгота' },
-    { name: ' Рабочее время' },
+    { name: 'Часы работы' },
   ];
 
   const columnsListDb: IColumnsListDb[] = [
@@ -126,47 +126,43 @@ const Location: FC = () => {
 
   return (
     <Wrapper>
-      <div>
-        <div className="flex">
-          <Sidebar
-            items={uniqueCities}
-            onItemSelect={setSelectedCity}
-            title="Города"
-            setCurrentPage={setCurrentPage}
-            displayKey={(city) => city}
+      <Sidebar
+        items={uniqueCities}
+        onItemSelect={setSelectedCity}
+        title="Города"
+        setCurrentPage={setCurrentPage}
+        displayKey={(city) => city}
+      />
+      <div className="p-4">
+        <Table
+          title="Список магазинов"
+          columnsDefaultName={columnsDefaultName}
+          data={displayedLocations}
+          currentPage={currentPage}
+          itemsPerPage={itemsPerPage}
+          columnsListDb={columnsListDb}
+          onAddClick={openAddModal}
+          onEditClick={openEditModal}
+        />
+
+        {/* Используем компонент Pagination */}
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
+
+        {isModalOpen && (selectedLocation || isAddingMode) && (
+          <LocationsModal
+            isOpen={isModalOpen}
+            location={selectedLocation}
+            onSave={handleSave}
+            onClose={closeEditModal}
+            isAddingMode={isAddingMode}
+            editedLocation={editedLocation}
+            setEditedLocation={setEditedLocation}
           />
-          <div className="p-4">
-            <Table
-              title="Список магазинов"
-              columnsDefaultName={columnsDefaultName}
-              data={displayedLocations}
-              currentPage={currentPage}
-              itemsPerPage={itemsPerPage}
-              columnsListDb={columnsListDb}
-              onAddClick={openAddModal}
-              onEditClick={openEditModal}
-            />
-
-            {/* Используем компонент Pagination */}
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={setCurrentPage}
-            />
-
-            {isModalOpen && (selectedLocation || isAddingMode) && (
-              <LocationsModal
-                isOpen={isModalOpen}
-                location={selectedLocation}
-                onSave={handleSave}
-                onClose={closeEditModal}
-                isAddingMode={isAddingMode}
-                editedLocation={editedLocation}
-                setEditedLocation={setEditedLocation}
-              />
-            )}
-          </div>
-        </div>
+        )}
       </div>
     </Wrapper>
   );

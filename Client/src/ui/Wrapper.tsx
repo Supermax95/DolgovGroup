@@ -5,7 +5,11 @@ interface IWrapper {
 }
 
 const Wrapper: FC<IWrapper> = ({ children }) => {
-  return <div className="mt-20 mx-auto w-11/12">{children} </div>;
+  return (
+    <div className="mt-20 mx-auto">
+      <div className="flex justify-center">{children}</div>
+    </div>
+  );
 };
 
 export default Wrapper;
