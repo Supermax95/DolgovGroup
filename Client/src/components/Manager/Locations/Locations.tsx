@@ -8,7 +8,7 @@ import Sidebar from '../../../ui/Sidebar';
 import Pagination from '../../../ui/Paggination';
 import Table from '../../../ui/Table';
 
-interface Location {
+export interface ILocation {
   id: number;
   city: string;
   address: string;
@@ -31,18 +31,18 @@ type IColumnsListDb =
 
 const Location: FC = () => {
   const dispatch = useAppDispatch();
-  const locations = useAppSelector<Location[]>(
+  const locations = useAppSelector<ILocation[]>(
     (state) => state.locationsSlice.data
   );
 
   const [isModalOpen, setModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedLocation, setSelectedLocation] = useState<Location | null>(
+  const [selectedLocation, setSelectedLocation] = useState<ILocation | null>(
     null
   );
   const [isAddingMode, setAddingMode] = useState(false);
   const [editedLocation, setEditedLocation] = useState<
-    Location | null | undefined
+    ILocation | null | undefined
   >(null);
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
 
@@ -77,7 +77,7 @@ const Location: FC = () => {
 
   const displayedLocations = filteredLocations.slice(startIndex, endIndex);
 
-  const openEditModal = (location: Location) => {
+  const openEditModal = (location: ILocation) => {
     setSelectedLocation(location);
     setEditedLocation({ ...location });
     setAddingMode(false);
@@ -103,7 +103,7 @@ const Location: FC = () => {
     setModalOpen(false);
   };
 
-  const handleSave = async (editedLocation: Location) => {
+  const handleSave = async (editedLocation: ILocation) => {
     try {
       if (selectedLocation) {
         await dispatch(
