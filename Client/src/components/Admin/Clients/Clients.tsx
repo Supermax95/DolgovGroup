@@ -4,8 +4,8 @@ import Wrapper from '../../../ui/Wrapper';
 import Sidebar from '../../../ui/Sidebar';
 import Pagination from '../../../ui/Paggination';
 import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
-import getClients from '../../../Redux/thunks/Clients/getClients.api';
-import editClients from '../../../Redux/thunks/Clients/editClients.api';
+import getClients from '../../../Redux/thunks/Users/getClients.api';
+import editClients from '../../../Redux/thunks/Users/editClients.api';
 
 // import UsersModal from './UsersModal';
 
@@ -71,12 +71,13 @@ const Clients: FC = () => {
   const itemsPerPage = 50;
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  
-  const filteredUsers = selectedStatus === null
-  ? users 
-  : users.filter((user) => selectedStatus === 'Активные' ? user.isActivated : !user.isActivated);
 
-
+  const filteredUsers =
+    selectedStatus === null
+      ? users
+      : users.filter((user) =>
+          selectedStatus === 'Активные' ? user.isActivated : !user.isActivated
+        );
 
   const displayedUsers = filteredUsers.slice(startIndex, endIndex);
 
