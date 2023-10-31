@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import Button from './Button';
 
 interface ITable {
@@ -8,6 +8,7 @@ interface ITable {
   columnsListDb: string[];
   currentPage: number;
   itemsPerPage: number;
+  // filtredExtra?: any[];
   onAddClick: () => void;
   onEditClick: (item: any) => void;
 }
@@ -19,9 +20,19 @@ const Table: FC<ITable> = ({
   data,
   currentPage,
   itemsPerPage,
+  // filtredExtra,
   onAddClick,
   onEditClick,
 }) => {
+  // const [showActive, setShowActive] = useState(true);
+
+  // const handleShowActiveChange = () => {
+  //   setShowActive(!showActive);
+  // };
+  
+  // const filteredData = showActive
+  // ? filtredExtra.filter((item) => item.isActivated)
+  // : filtredExtra.filter((item) => !item.isActivated);
   return (
     <div>
       <div className="flex justify-between">
@@ -35,7 +46,18 @@ const Table: FC<ITable> = ({
           title="Добавить"
         />
       </div>
+
+            {/* <div>
+              <input
+                type="checkbox"
+                checked={showActive}
+                onChange={handleShowActiveChange}
+                className="mr-2"
+              />
+              Показать активных
+            </div> */}
       <div className="my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 pr-10 lg:px-4">
+        
         <div className="align-middle inline-block min-w-full shadow overflow-hidden bg-white shadow-dashboard rounded-bl-lg rounded-br-lg">
           <table className="min-w-full">
             <thead>
