@@ -19,6 +19,9 @@ const Sidebar: FC<SidebarProps<any>> = ({
   const [selectedItem, setSelectedItem] = useState<T | null>(null);
   const [isItemListVisible, setItemListVisible] = useState(false);
 
+  console.log('items:', items);
+  console.log('onItemSelect', onItemSelect);
+  
   const handleItemChange = (item: T | null) => {
     if (item === null) {
       setSelectedItem(null);
