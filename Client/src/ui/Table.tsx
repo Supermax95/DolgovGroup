@@ -46,6 +46,7 @@ const Table: FC<ITable> = ({
           title="Добавить"
         />
       </div>
+
             {/* <div>
               <input
                 type="checkbox"
@@ -55,7 +56,6 @@ const Table: FC<ITable> = ({
               />
               Показать активных
             </div> */}
-
       <div className="my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 pr-10 lg:px-4">
         
         <div className="align-middle inline-block min-w-full shadow overflow-hidden bg-white shadow-dashboard rounded-bl-lg rounded-br-lg">

@@ -44,9 +44,9 @@ const Employees: FC = () => {
     { name: 'Фамилия' },
     { name: 'Имя' },
     { name: 'Отчество' },
-    { name: 'email' },
-    { name: 'Карта' },
-    { name: 'Пользователь' },
+    { name: 'Email' },
+    { name: 'Номер карты' },
+    { name: 'Статус' },
     { name: 'Активен' },
   ];
 
