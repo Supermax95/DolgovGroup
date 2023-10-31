@@ -6,8 +6,8 @@ interface ITable {
   columnsDefaultName: { name: string }[];
   data: any[];
   columnsListDb: string[];
-  currentPage:number;
-  itemsPerPage:number;
+  currentPage: number;
+  itemsPerPage: number;
   onAddClick: () => void;
   onEditClick: (item: any) => void;
 }
@@ -25,18 +25,19 @@ const Table: FC<ITable> = ({
   return (
     <div>
       <h1 className="text-xl text-lime-600 font-medium mb-4">{title}</h1>
-      <div className="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 pr-10 lg:px-4">
+      {/* <div className="overflow-x-scroll"> */}
+      <div className="my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 pr-10 lg:px-4">
         <div className="align-middle inline-block min-w-full shadow overflow-hidden bg-white shadow-dashboard rounded-bl-lg rounded-br-lg">
           <table className="min-w-full">
             <thead>
               <tr>
-                <th className="w-16 pl-6 py-3 border-b-2 border-orange-300 text-left leading-4 text-slate-700 text-sm font-bold ">
+                <th className="w-16 pl-6 py-3   text-center   border-b-2 border-orange-300 leading-4 text-slate-700 text-sm font-bold ">
                   №
                 </th>
                 {columnsDefaultName.map((columnDefaultName, index) => (
                   <th
                     key={index + columnDefaultName.name}
-                    className="w-40 px-6 py-3 border-b-2 border-orange-300 text-left leading-4 text-slate-700 text-sm font-bold tracking-wider"
+                    className="w-40 px-6 py-3   text-center   border-b-2 border-orange-300 leading-4 text-slate-700 text-sm font-bold tracking-wider"
                   >
                     {columnDefaultName.name}
                   </th>
@@ -57,18 +58,18 @@ const Table: FC<ITable> = ({
             <tbody className="bg-white">
               {data.map((item, index) => (
                 <tr key={item.id}>
-                  <td className="w-16 text-left pl-6 py-0 whitespace-no-wrap border-b-2 border-slate-300 text-slate-600 text-sm font-normal pr-[-25px]">
-                  {(currentPage - 1) * itemsPerPage + index + 1}
+                  <td className="w-16  text-center   pl-6 py-0 whitespace-no-wrap border-b-2 border-slate-300 text-slate-600 text-sm font-normal">
+                    {(currentPage - 1) * itemsPerPage + index + 1}
                   </td>
                   {columnsListDb.slice(1).map((columnName) => (
                     <td
                       key={columnName}
-                      className="px-4 py-4 whitespace-no-wrap border-b-2 border-slate-300 text-slate-600 text-sm font-normal"
+                      className="px-6 py-3  text-center  whitespace-no-wrap border-b-2 border-slate-300 text-slate-600 text-sm font-normal"
                     >
                       {item[columnName]}
                     </td>
                   ))}
-                  <td className="px-6 py-4 whitespace-no-wrap text-right border-b-2 border-slate-300">
+                  <td className="px-6 py-3 whitespace-no-wrap text-right border-b-2 border-slate-300">
                     <Button
                       type="button"
                       onClick={() => onEditClick(item)}
@@ -82,6 +83,7 @@ const Table: FC<ITable> = ({
           </table>
         </div>
       </div>
+      {/* </div> */}
     </div>
   );
 };

@@ -47,9 +47,9 @@ const Employees: FC = () => {
     { name: 'Фамилия' },
     { name: 'Имя' },
     { name: 'Отчество' },
-    { name: 'email' },
-    { name: 'Карта' },
-    { name: 'Пользователь' },
+    { name: 'Email' },
+    { name: 'Номер карты' },
+    { name: 'Статус пользователя' },
     { name: 'Активен' },
   ];
 
@@ -113,34 +113,32 @@ const Employees: FC = () => {
   const uniqueStatus = ['Активные', 'Неактивные'];
   return (
     <Wrapper>
-      <div>
-        <div className="flex">
-          <Sidebar
-            items={uniqueStatus}
-            onItemSelect={setSelectedStatus}
-            title="Сотрудники"
-            setCurrentPage={setCurrentPage}
-            displayKey={(status) => status}
-          />
-          <div className="p-4">
-            <Table
-              title="Список сотрудников"
-              columnsDefaultName={columnsDefaultName}
-              data={displayedUsers}
-              currentPage={currentPage}
-              itemsPerPage={itemsPerPage}
-              columnsListDb={columnsListDb}
-              // onEditClick={openEditModal}
-              onAddClick={function (): void {
-                throw new Error('Function not implemented.');
-              }}
-            />
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={setCurrentPage}
-            />
-            {/* {isModalOpen && selectedUser && (
+      <Sidebar
+        items={uniqueStatus}
+        onItemSelect={setSelectedStatus}
+        title="Сотрудники"
+        setCurrentPage={setCurrentPage}
+        displayKey={(status) => status}
+      />
+      <div className="p-4">
+        <Table
+          title="Список сотрудников"
+          columnsDefaultName={columnsDefaultName}
+          data={displayedUsers}
+          currentPage={currentPage}
+          itemsPerPage={itemsPerPage}
+          columnsListDb={columnsListDb}
+          // onEditClick={openEditModal}
+          onAddClick={function (): void {
+            throw new Error('Function not implemented.');
+          }}
+        />
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
+        {/* {isModalOpen && selectedUser && (
               // <UsersModal
               <UsersModal
                 isOpen={isModalOpen}
@@ -150,9 +148,7 @@ const Employees: FC = () => {
                 editedUser={editedUser}
                 setEditedUser={setEditedUser}
               /> */}
-            {/* )} */}
-          </div>
-        </div>
+        {/* )} */}
       </div>
     </Wrapper>
   );
