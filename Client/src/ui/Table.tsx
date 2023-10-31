@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import Button from './Button';
 
 interface ITable {
@@ -8,6 +8,7 @@ interface ITable {
   columnsListDb: string[];
   currentPage: number;
   itemsPerPage: number;
+  // filtredExtra?: any[];
   onAddClick: () => void;
   onEditClick: (item: any) => void;
 }
@@ -19,14 +20,44 @@ const Table: FC<ITable> = ({
   data,
   currentPage,
   itemsPerPage,
+  // filtredExtra,
   onAddClick,
   onEditClick,
 }) => {
+  // const [showActive, setShowActive] = useState(true);
+
+  // const handleShowActiveChange = () => {
+  //   setShowActive(!showActive);
+  // };
+  
+  // const filteredData = showActive
+  // ? filtredExtra.filter((item) => item.isActivated)
+  // : filtredExtra.filter((item) => !item.isActivated);
   return (
     <div>
-      <h1 className="text-xl text-lime-600 font-medium mb-4">{title}</h1>
-      {/* <div className="overflow-x-scroll"> */}
+      <div className="flex justify-between">
+        <h1 className="text-xl text-lime-600 font-medium mb-4">{title}</h1>
+        <Button
+          type="button"
+          onClick={onAddClick}
+          styleCSSSpan={
+            'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
+          }
+          title="Добавить"
+        />
+      </div>
+            {/* <div>
+              <input
+                type="checkbox"
+                checked={showActive}
+                onChange={handleShowActiveChange}
+                className="mr-2"
+              />
+              Показать активных
+            </div> */}
+
       <div className="my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 pr-10 lg:px-4">
+        
         <div className="align-middle inline-block min-w-full shadow overflow-hidden bg-white shadow-dashboard rounded-bl-lg rounded-br-lg">
           <table className="min-w-full">
             <thead>
@@ -43,14 +74,14 @@ const Table: FC<ITable> = ({
                   </th>
                 ))}
                 <th className="w-36 border-b-2 border-orange-300">
-                  <Button
+                  {/* <Button
                     type="button"
                     onClick={onAddClick}
                     styleCSSSpan={
                       'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
                     }
                     title="Добавить"
-                  />
+                  /> */}
                 </th>
               </tr>
             </thead>
@@ -83,7 +114,6 @@ const Table: FC<ITable> = ({
           </table>
         </div>
       </div>
-      {/* </div> */}
     </div>
   );
 };
