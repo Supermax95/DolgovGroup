@@ -5,8 +5,6 @@ interface ITable {
   title: string;
   columnsDefaultName: { name: string }[];
   data: any[];
-  currentPage:number;
-  itemsPerPage:number;
   columnsListDb: string[];
   onAddClick: () => void;
   onEditClick: (item: any) => void;
@@ -15,8 +13,6 @@ interface ITable {
 const Table: FC<ITable> = ({
   title,
   columnsDefaultName,
-  currentPage,
-  itemsPerPage,
   columnsListDb,
   data,
   onAddClick,
@@ -58,7 +54,7 @@ const Table: FC<ITable> = ({
               {data.map((item, index) => (
                 <tr key={item.id}>
                   <td className="w-16 text-left pl-6 py-0 whitespace-no-wrap border-b-2 border-slate-300 text-slate-600 text-sm font-normal pr-[-25px]">
-                  {(currentPage - 1) * itemsPerPage + index + 1}
+                    {index + 1}
                   </td>
                   {columnsListDb.slice(1).map((columnName) => (
                     <td

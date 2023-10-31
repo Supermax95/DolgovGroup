@@ -16,6 +16,7 @@ const locationUserRouter = require('./srcNative/routes/locationsUserRouter');
 // ? Require Routes React
 const locationRouter = require('./srcClient/routes/locationsRouter');
 const portalRouter = require('./srcClient/routes/portalRouter');
+const clientsRouter = require('./srcClient/routes/clientsRouter');
 
 // middleware
 const errorMiddleware = require('./srcNative/middlewares/error-middleware');
@@ -64,6 +65,7 @@ app.use(errorMiddleware);
 // ? Routes React
 app.use('/', locationRouter);
 app.use('/portal', portalRouter);
+app.use('/', clientsRouter);
 
 app.listen(PORT, () => {
   console.log(`Сервер крутится на ${PORT} порту`);
