@@ -3,7 +3,7 @@ import axios, { AxiosResponse } from 'axios';
 import { VITE_URL } from '../../../VITE_URL';
 
 interface RequestData {
-    clientId: number;
+    employeeId: number;
   newInfo: {
     id: number;
     lastName: string;
@@ -29,13 +29,13 @@ interface ResponseData {
 
 type ArrayResponseData = Array<ResponseData>;
 
-const editClients = createAsyncThunk<ArrayResponseData, RequestData>(
-  'admin/editlocation',
+const editEmployees = createAsyncThunk<ArrayResponseData, RequestData>(
+  'admin/editemployee',
 
-  async ({ clientId, newInfo }) => {
+  async ({ employeeId, newInfo }) => {
     try {
       const response: AxiosResponse = await axios.put(
-        `${VITE_URL}/admin/clients/${clientId}`,
+        `${VITE_URL}/admin/employees/${employeeId}`,
         { newInfo }
       );
       return response.data;
@@ -46,4 +46,4 @@ const editClients = createAsyncThunk<ArrayResponseData, RequestData>(
   }
 );
 
-export default editClients;
+export default editEmployees;
