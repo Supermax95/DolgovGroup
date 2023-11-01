@@ -12,11 +12,10 @@ const App: FC = () => {
     dispatch(portalCheck());
   }, [dispatch]);
 
-  const manager = useAppSelector<IManager>(
-    (state) => state.managerSlice.manager
-  );
-
-  console.log('manApp', manager);
+  // const manager = useAppSelector<IManager>(
+  //   (state) => state.managerSlice.manager
+  // );
+  //console.log('manApp', manager);
 
   return (
     <>

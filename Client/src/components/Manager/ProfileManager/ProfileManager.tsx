@@ -2,33 +2,63 @@ import React, { useState } from 'react';
 import Wrapper from '../../../ui/Wrapper';
 import Field from '../../../ui/Field';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '../../../Redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import ToggleShowPassword from '../../../ui/ToggleShowPassword';
 import Button from '../../../ui/Button';
 
 interface IDate {
-  email: string;
-  password: string;
+  newLastName: string;
+  newFirstName: string;
+  newMiddleName: string;
+  newEmail: string;
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
 }
+
+const initialDate: IDate = {
+  newLastName: '',
+  newFirstName: '',
+  newMiddleName: '',
+  newEmail: '',
+  oldPassword: '',
+  newPassword: '',
+  confirmPassword: '',
+};
 
 function ProfileManager() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [showRepeatPassword, setShowRepeatPassword] = useState<boolean>(false);
+  const managerProfile = useAppSelector((state) => state.managerSlice.manager);
+  console.log('managerProfile', managerProfile);
 
-  const [data, setData] = useState<IDate>({ email: '', password: '' });
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
+  const [showConfirmPassword, setShowConfirmPassword] =
+    useState<boolean>(false);
+
+  const [data, setData] = useState<IDate>(initialDate);
 
   const toggleShowPassword = (): void => {
     setShowPassword(!showPassword);
   };
-  const toggleShowRepeatPassword = (): void => {
-    setShowRepeatPassword(!showRepeatPassword);
+  const toggleShowNewPassword = (): void => {
+    setShowNewPassword(!showNewPassword);
+  };
+  const toggleShowConfirmPassword = (): void => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
+  const handleFieldChangeProfileManager = (
+    field: keyof IDate,
+    value: string
+  ): void => {
+    setData((prevDate) => ({ ...prevDate, [field]: value }));
   };
 
   return (
-    <div className="flex flex-wrap mt-20">
+    <div className="flex flex-wrap pt-20">
       <div className="flex w-full flex-col md:w-1/2">
         {/* <div className="flex justify-center pt-12 md:-mb-24 md:justify-start md:pl-12">
           <a
@@ -41,7 +71,7 @@ function ProfileManager() {
         </div> */}
         <div className="lg:w-[28rem] mx-auto my-auto flex flex-col justify-center pt-8 md:justify-start md:px-6 md:pt-0">
           <p className="text-left text-3xl font-bold text-slate-600">
-            Добро пожаловать, Olivia
+            Добро пожаловать, {managerProfile.firstName}
           </p>
           {/* <p className="mt-2 text-left text-gray-500">
             Welcome back, please enter your details.
@@ -69,7 +99,10 @@ function ProfileManager() {
                 autoComplete="off"
                 htmlFor="lastName"
                 title="Фамилия"
-                onChange={(value) => setData({ ...data, email: value })}
+                value={data.newLastName}
+                onChange={(value) =>
+                  handleFieldChangeProfileManager('newLastName', value)
+                }
                 required={true}
               />
               <Field
@@ -81,7 +114,10 @@ function ProfileManager() {
                 autoComplete="off"
                 htmlFor="firstName"
                 title="Имя"
-                onChange={(value) => setData({ ...data, email: value })}
+                value={data.newFirstName}
+                onChange={(value) =>
+                  handleFieldChangeProfileManager('newFirstName', value)
+                }
                 required={true}
               />
               <Field
@@ -93,7 +129,10 @@ function ProfileManager() {
                 autoComplete="off"
                 htmlFor="middleName"
                 title="Отчество"
-                onChange={(value) => setData({ ...data, email: value })}
+                value={data.newMiddleName}
+                onChange={(value) =>
+                  handleFieldChangeProfileManager('newMiddleName', value)
+                }
                 required={true}
               />
               <Field
@@ -105,7 +144,10 @@ function ProfileManager() {
                 autoComplete="off"
                 htmlFor="email"
                 title="Email"
-                onChange={(value) => setData({ ...data, email: value })}
+                value={data.newEmail}
+                onChange={(value) =>
+                  handleFieldChangeProfileManager('newEmail', value)
+                }
                 required={true}
               />
 
@@ -117,8 +159,11 @@ function ProfileManager() {
                 autoCapitalize="none"
                 autoComplete="off"
                 htmlFor="password"
-                title="Пароль"
-                onChange={(value) => setData({ ...data, password: value })}
+                title="Старый пароль"
+                value={data.oldPassword}
+                onChange={(value) =>
+                  handleFieldChangeProfileManager('oldPassword', value)
+                }
                 required={true}
               >
                 <ToggleShowPassword
@@ -126,21 +171,45 @@ function ProfileManager() {
                   toggleShowPassword={toggleShowPassword}
                 />
               </Field>
+
               <Field
-                id="repeatPassword"
+                id="password"
                 name="password"
-                type={showPassword ? 'text' : 'password'}
+                type={showNewPassword ? 'text' : 'password'}
                 placeholder=""
                 autoCapitalize="none"
                 autoComplete="off"
-                htmlFor="repeatPassword"
-                title="Повторите пароль"
-                onChange={(value) => setData({ ...data, password: value })}
+                htmlFor="password"
+                title="Новый пароль"
+                value={data.newPassword}
+                onChange={(value) =>
+                  handleFieldChangeProfileManager('newPassword', value)
+                }
                 required={true}
               >
                 <ToggleShowPassword
-                  showPassword={showRepeatPassword}
-                  toggleShowPassword={toggleShowRepeatPassword}
+                  showPassword={showNewPassword}
+                  toggleShowPassword={toggleShowNewPassword}
+                />
+              </Field>
+              <Field
+                id="confirmPassword"
+                name="password"
+                type={showConfirmPassword ? 'text' : 'password'}
+                placeholder=""
+                autoCapitalize="none"
+                autoComplete="off"
+                htmlFor="confirmPassword"
+                title="Повторите пароль"
+                value={data.confirmPassword}
+                onChange={(value) =>
+                  handleFieldChangeProfileManager('confirmPassword', value)
+                }
+                required={true}
+              >
+                <ToggleShowPassword
+                  showPassword={showConfirmPassword}
+                  toggleShowPassword={toggleShowConfirmPassword}
                 />
               </Field>
               {/* <button
