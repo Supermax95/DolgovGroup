@@ -14,6 +14,7 @@ interface IField {
   htmlFor: string;
   styleCSSLabel?: string[];
   required?: boolean;
+  children?: React.ReactNode;
 }
 
 const Field: FC<IField> = ({
@@ -26,7 +27,7 @@ const Field: FC<IField> = ({
   autoCapitalize,
   autoComplete,
   styleCSSInput = [
-    'block py-2.5 px-0 w-full text-sm text-green-600 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500',
+    'block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500',
   ],
   title,
   htmlFor,
@@ -34,6 +35,7 @@ const Field: FC<IField> = ({
     'absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm',
   ],
   required,
+  children,
 }) => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -43,7 +45,7 @@ const Field: FC<IField> = ({
   };
 
   return (
-    <>
+    <div className="relative">
       <input
         onChange={handleChange}
         id={id}
@@ -59,7 +61,8 @@ const Field: FC<IField> = ({
       <label htmlFor={htmlFor} className={`${styleCSSLabel}`}>
         {title}
       </label>
-    </>
+      {children}
+    </div>
   );
 };
 
