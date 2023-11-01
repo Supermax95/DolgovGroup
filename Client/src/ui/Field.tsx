@@ -6,7 +6,7 @@ interface IField {
   name: string;
   type: string;
   value?: string;
-  placeholder: string;
+  placeholder?: string;
   autoCapitalize?: string;
   autoComplete: string;
   styleCSSInput?: string[];

@@ -46,17 +46,18 @@ const ProfileManager: FC = () => {
     useState<boolean>(false);
 
   //* третий способ
-  //   const managerId = useAppSelector((state) => state.managerSlice.manager.id);
-  //   console.log('managerId', managerId);
-  //   useEffect(() => {
-  //     if (managerId) {
-  //       dispatch(getProfileManager({ managerId }));
-  //     }
-  //   }, [dispatch, managerId]);
+  const managerId = useAppSelector<number>(
+    (state) => state.managerSlice.manager.id
+  );
+  console.log('managerId', managerId);
 
-  //* второй способ
+  //! отправляет данные на бэк, чтобы получить ответ о конкретном менеджере
+  useEffect(() => {
+    if (managerId) {
+      dispatch(getProfileManager({ managerId }));
+    }
+  }, [dispatch, managerId]);
 
-  //* данные исчезают после перезагрузки страницы
   const [data, setData] = useState<IDate>({
     newLastName: managerProfile.lastName || '',
     newFirstName: managerProfile.firstName || '',
@@ -67,38 +68,20 @@ const ProfileManager: FC = () => {
     confirmPassword: '',
   });
 
-  //   useEffect(() => {
-  //     setData({
-  //       newLastName: managerProfile.lastName || '',
-  //       newFirstName: managerProfile.firstName || '',
-  //       newMiddleName: managerProfile.middleName || '',
-  //       newEmail: managerProfile.email || '',
-  //       oldPassword: '',
-  //       newPassword: '',
-  //       confirmPassword: '',
-  //     });
-  //   }, [managerProfile]);
-
-  //! один спосб
-  //   const localStorageData = JSON.parse(
-  //     localStorage.getItem('profileManagerData')
-  //   );
-
-  //   const [data, setData] = useState<IDate>({
-  //     newLastName: localStorageData?.newLastName || managerProfile.lastName || '',
-  //     newFirstName:
-  //       localStorageData?.newFirstName || managerProfile.firstName || '',
-  //     newMiddleName:
-  //       localStorageData?.newMiddleName || managerProfile.middleName || '',
-  //     newEmail: localStorageData?.newEmail || managerProfile.email || '',
-  //     oldPassword: localStorageData?.oldPassword || '',
-  //     newPassword: localStorageData?.newPassword || '',
-  //     confirmPassword: localStorageData?.confirmPassword || '',
-  //   });
-
-  //   useEffect(() => {
-  //     localStorage.setItem('profileManagerData', JSON.stringify(data));
-  //   }, [data]);
+  // ! предзаполняет поля инпутов
+  //* из-за него в placeholder={data.newLastName} требуется такая запись, а если бы было из локального стора,
+  //* то placeholder=''
+  useEffect(() => {
+    setData({
+      newLastName: managerProfile.lastName || '',
+      newFirstName: managerProfile.firstName || '',
+      newMiddleName: managerProfile.middleName || '',
+      newEmail: managerProfile.email || '',
+      oldPassword: '',
+      newPassword: '',
+      confirmPassword: '',
+    });
+  }, [managerProfile]);
 
   const toggleShowPassword = (): void => {
     setShowPassword(!showPassword);
@@ -154,7 +137,7 @@ const ProfileManager: FC = () => {
                 id="lastName"
                 name="lastName"
                 type="text"
-                placeholder=""
+                placeholder={data.newLastName}
                 autoCapitalize="words"
                 autoComplete="off"
                 htmlFor="lastName"
@@ -169,7 +152,7 @@ const ProfileManager: FC = () => {
                 id="firstName"
                 name="firstName"
                 type="text"
-                placeholder=""
+                placeholder={data.newFirstName}
                 autoCapitalize="words"
                 autoComplete="off"
                 htmlFor="firstName"
@@ -184,7 +167,7 @@ const ProfileManager: FC = () => {
                 id="middleName"
                 name="middleName"
                 type="text"
-                placeholder=""
+                placeholder={data.newMiddleName}
                 autoCapitalize="words"
                 autoComplete="off"
                 htmlFor="middleName"
@@ -199,7 +182,7 @@ const ProfileManager: FC = () => {
                 id="email"
                 name="email"
                 type="text"
-                placeholder=""
+                placeholder={data.newEmail}
                 autoCapitalize="none"
                 autoComplete="off"
                 htmlFor="email"
@@ -215,7 +198,7 @@ const ProfileManager: FC = () => {
                 id="password"
                 name="password"
                 type={showPassword ? 'text' : 'password'}
-                placeholder=""
+                placeholder={data.oldPassword}
                 autoCapitalize="none"
                 autoComplete="off"
                 htmlFor="password"
@@ -236,7 +219,7 @@ const ProfileManager: FC = () => {
                 id="password"
                 name="password"
                 type={showNewPassword ? 'text' : 'password'}
-                placeholder=""
+                placeholder={data.newPassword}
                 autoCapitalize="none"
                 autoComplete="off"
                 htmlFor="password"
@@ -256,7 +239,7 @@ const ProfileManager: FC = () => {
                 id="confirmPassword"
                 name="password"
                 type={showConfirmPassword ? 'text' : 'password'}
-                placeholder=""
+                placeholder={data.confirmPassword}
                 autoCapitalize="none"
                 autoComplete="off"
                 htmlFor="confirmPassword"

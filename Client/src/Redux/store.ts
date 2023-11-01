@@ -16,39 +16,40 @@ import locationsSlice from './locations.slice';
 import managerSlice from './manager.slice';
 import usersSlice from './user.slice';
 
-const rootReducer = combineReducers({
-  locationsSlice,
-  managerSlice,
-  usersSlice,
-});
-
-const persistConfig = {
-  key: 'root',
-  storage,
-};
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-
-// const store = configureStore({
-//   reducer: {
-//     locationsSlice,
-//     managerSlice,
-//     usersSlice,
-//   },
+// const rootReducer = combineReducers({
+//   locationsSlice,
+//   managerSlice,
+//   usersSlice,
 // });
 
+// const persistConfig = {
+//   key: 'root',
+//   storage,
+// };
+// const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+//* чтобы работал локальный стор, это в коммент с 32 по 38, остальное расскоментить, что в комменте
 const store = configureStore({
-  reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
-    }),
+  reducer: {
+    locationsSlice,
+    managerSlice,
+    usersSlice,
+  },
 });
 
-export const persistor = persistStore(store);
+// const store = configureStore({
+//   reducer: persistedReducer,
+//   middleware: (getDefaultMiddleware) =>
+//     getDefaultMiddleware({
+//       serializableCheck: {
+//         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+//       },
+//     }),
+// });
+
+// export const persistor = persistStore(store);
 
 export default store;
 
-//! ищи по названию Blacklist & Whitelist
+//! фильтрация того, что можно положить в локальный стор: ищи по названию Blacklist & Whitelist
 //! https://www.npmjs.com/package/reduxjs-toolkit-persist
