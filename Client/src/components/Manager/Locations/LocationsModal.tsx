@@ -52,9 +52,7 @@ const LocationsModal: React.FC<LocationsModalProps> = ({
     }
   }, [location, isAddingMode, setEditedLocation]);
 
-  const modalTitle = isAddingMode
-    ? 'Новая точка продажи'
-    : 'Редактировать магазин';
+  const modalTitle = isAddingMode ? 'Новая точка продажи' : 'Редактирование';
 
   const handleCancel = () => {
     setEditedLocation(undefined);

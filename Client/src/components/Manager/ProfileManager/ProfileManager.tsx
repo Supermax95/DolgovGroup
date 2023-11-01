@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import Wrapper from '../../../ui/Wrapper';
 import Field from '../../../ui/Field';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import ToggleShowPassword from '../../../ui/ToggleShowPassword';
 import Button from '../../../ui/Button';
+import portalCheck from '../../../Redux/thunks/PortalLogin/portalCheck';
+import getProfileManager from '../../../Redux/thunks/Manager/profileManager.api';
 
 interface IDate {
   newLastName: string;
@@ -16,29 +18,87 @@ interface IDate {
   confirmPassword: string;
 }
 
-const initialDate: IDate = {
-  newLastName: '',
-  newFirstName: '',
-  newMiddleName: '',
-  newEmail: '',
-  oldPassword: '',
-  newPassword: '',
-  confirmPassword: '',
-};
+// const initialDate: IDate = {
+//   newLastName: '',
+//   newFirstName: '',
+//   newMiddleName: '',
+//   newEmail: '',
+//   oldPassword: '',
+//   newPassword: '',
+//   confirmPassword: '',
+// };
 
-function ProfileManager() {
+const ProfileManager: FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const managerProfile = useAppSelector((state) => state.managerSlice.manager);
-  console.log('managerProfile', managerProfile);
+  const managerProfile = useAppSelector<{
+    lastName?: string;
+    firstName?: string;
+    middleName?: string;
+    email?: string;
+    password?: string;
+  }>((state) => state.managerSlice.manager);
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
 
-  const [data, setData] = useState<IDate>(initialDate);
+  //* третий способ
+  //   const managerId = useAppSelector((state) => state.managerSlice.manager.id);
+  //   console.log('managerId', managerId);
+  //   useEffect(() => {
+  //     if (managerId) {
+  //       dispatch(getProfileManager({ managerId }));
+  //     }
+  //   }, [dispatch, managerId]);
+
+  //* второй способ
+
+  //* данные исчезают после перезагрузки страницы
+  const [data, setData] = useState<IDate>({
+    newLastName: managerProfile.lastName || '',
+    newFirstName: managerProfile.firstName || '',
+    newMiddleName: managerProfile.middleName || '',
+    newEmail: managerProfile.email || '',
+    oldPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+  });
+
+  //   useEffect(() => {
+  //     setData({
+  //       newLastName: managerProfile.lastName || '',
+  //       newFirstName: managerProfile.firstName || '',
+  //       newMiddleName: managerProfile.middleName || '',
+  //       newEmail: managerProfile.email || '',
+  //       oldPassword: '',
+  //       newPassword: '',
+  //       confirmPassword: '',
+  //     });
+  //   }, [managerProfile]);
+
+  //! один спосб
+  //   const localStorageData = JSON.parse(
+  //     localStorage.getItem('profileManagerData')
+  //   );
+
+  //   const [data, setData] = useState<IDate>({
+  //     newLastName: localStorageData?.newLastName || managerProfile.lastName || '',
+  //     newFirstName:
+  //       localStorageData?.newFirstName || managerProfile.firstName || '',
+  //     newMiddleName:
+  //       localStorageData?.newMiddleName || managerProfile.middleName || '',
+  //     newEmail: localStorageData?.newEmail || managerProfile.email || '',
+  //     oldPassword: localStorageData?.oldPassword || '',
+  //     newPassword: localStorageData?.newPassword || '',
+  //     confirmPassword: localStorageData?.confirmPassword || '',
+  //   });
+
+  //   useEffect(() => {
+  //     localStorage.setItem('profileManagerData', JSON.stringify(data));
+  //   }, [data]);
 
   const toggleShowPassword = (): void => {
     setShowPassword(!showPassword);
@@ -70,7 +130,7 @@ function ProfileManager() {
           </a>
         </div> */}
         <div className="lg:w-[28rem] mx-auto my-auto flex flex-col justify-center pt-8 md:justify-start md:px-6 md:pt-0">
-          <p className="text-left text-3xl font-bold text-slate-600">
+          <p className="text-2xl font-bold text-slate-600 text-center">
             Добро пожаловать, {managerProfile.firstName}
           </p>
           {/* <p className="mt-2 text-left text-gray-500">
@@ -243,6 +303,6 @@ function ProfileManager() {
       </div>
     </div>
   );
-}
+};
 
 export default ProfileManager;

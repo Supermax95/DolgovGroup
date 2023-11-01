@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import portalLogin from './thunks/PortalLogin/portalLogin.api';
 import portalLogout from './thunks/PortalLogin/portalLogout.api';
 import portalCheck from './thunks/PortalLogin/portalCheck';
+//import getProfileManager from './thunks/Manager/profileManager.api';
 
 export interface IManager {
   id: number;
@@ -92,6 +93,19 @@ const managerSlice = createSlice({
         state.isLoading = false;
         state.error = action.error.message;
       });
+    // .addCase(getProfileManager.pending, (state) => {
+    //   state.isLoading = true;
+    //   state.isAuth = false;
+    // })
+    // .addCase(getProfileManager.fulfilled, (state, action) => {
+    //   state.isLoading = false;
+    //   state.isAuth = true;
+    //   state.manager = action.payload.manager;
+    // })
+    // .addCase(getProfileManager.rejected, (state, action) => {
+    //   state.isLoading = false;
+    //   state.error = action.error.message;
+    // });
   },
 });
 
