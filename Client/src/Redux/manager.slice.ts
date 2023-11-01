@@ -92,20 +92,22 @@ const managerSlice = createSlice({
       .addCase(portalLogout.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
-      });
-    // .addCase(getProfileManager.pending, (state) => {
-    //   state.isLoading = true;
-    //   state.isAuth = false;
-    // })
-    // .addCase(getProfileManager.fulfilled, (state, action) => {
-    //   state.isLoading = false;
-    //   state.isAuth = true;
-    //   state.manager = action.payload.manager;
-    // })
-    // .addCase(getProfileManager.rejected, (state, action) => {
-    //   state.isLoading = false;
-    //   state.error = action.error.message;
-    // });
+      })
+
+      //! почему-то в профиле менеджера отображается информация и без этого аксиоса, но он нужен будет для апдейта, наверное
+      // .addCase(getProfileManager.pending, (state) => {
+      //   state.isLoading = true;
+      //   state.isAuth = false;
+      // })
+      // .addCase(getProfileManager.fulfilled, (state, action) => {
+      //   state.isLoading = false;
+      //   state.isAuth = true;
+      //   state.manager = action.payload.manager;
+      // })
+      // .addCase(getProfileManager.rejected, (state, action) => {
+      //   state.isLoading = false;
+      //   state.error = action.error.message;
+      // });
   },
 });
 

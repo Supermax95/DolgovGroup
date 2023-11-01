@@ -19,10 +19,10 @@ interface IDate {
 }
 
 // const initialDate: IDate = {
-//   newLastName: '',
-//   newFirstName: '',
-//   newMiddleName: '',
-//   newEmail: '',
+//   newLastName: managerProfile.lastName || '',
+//   newFirstName: managerProfile.firstName || '',
+//   newMiddleName: managerProfile.middleName || '',
+//   newEmail: managerProfile.email || '',
 //   oldPassword: '',
 //   newPassword: '',
 //   confirmPassword: '',
