@@ -42,6 +42,39 @@ const Portal: FC = () => {
     }
   };
 
+  const inputFields = [
+    {
+      id: 'email',
+      name: 'email',
+      type: 'text',
+      placeholder: '',
+      autoCapitalize: 'none',
+      autoComplete: 'off',
+      htmlFor: 'email',
+      title: 'Email',
+      onChange: (value: string) => setData({ ...data, email: value }),
+      required: true,
+    },
+    {
+      id: 'password',
+      name: 'password',
+      type: showPassword ? 'text' : 'password',
+      placeholder: '',
+      autoCapitalize: 'none',
+      autoComplete: 'off',
+      htmlFor: 'password',
+      title: 'Пароль',
+      onChange: (value: string) => setData({ ...data, password: value }),
+      required: true,
+      children: (
+        <ToggleShowPassword
+          showPassword={showPassword}
+          toggleShowPassword={toggleShowPassword}
+        />
+      ),
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-slate-100 py-6 flex flex-col justify-center sm:py-12">
       <div className="relative py-3 sm:max-w-xl sm:mx-auto">
@@ -55,35 +88,7 @@ const Portal: FC = () => {
             </div>
             <form onSubmit={authHandler} className="divide-y divide-gray-200">
               <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                <Field
-                  id="email"
-                  name="email"
-                  type="text"
-                  placeholder=""
-                  autoCapitalize="none"
-                  autoComplete="off"
-                  htmlFor="email"
-                  title="Email"
-                  onChange={(value) => setData({ ...data, email: value })}
-                  required={true}
-                />
-                <Field
-                  id="password"
-                  name="password"
-                  type={showPassword ? 'text' : 'password'}
-                  placeholder=""
-                  autoCapitalize="none"
-                  autoComplete="off"
-                  htmlFor="password"
-                  title="Пароль"
-                  onChange={(value) => setData({ ...data, password: value })}
-                  required={true}
-                >
-                  <ToggleShowPassword
-                    showPassword={showPassword}
-                    toggleShowPassword={toggleShowPassword}
-                  />
-                </Field>
+                <Field inputFields={inputFields} />
                 <div className="relative flex justify-center">
                   <Button type="submit" title="Войти" />
                 </div>

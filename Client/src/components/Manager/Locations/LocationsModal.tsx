@@ -37,6 +37,7 @@ const LocationsModal: React.FC<LocationsModalProps> = ({
   setEditedLocation,
 }) => {
   const dispatch = useAppDispatch();
+
   location || {
     id: 0,
     city: '',

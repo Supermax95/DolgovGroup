@@ -18,6 +18,16 @@ interface IDate {
   confirmPassword: string;
 }
 
+// const initialDate: IDate = {
+//   newLastName: managerProfile.lastName || '',
+//   newFirstName: managerProfile.firstName || '',
+//   newMiddleName: managerProfile.middleName || '',
+//   newEmail: managerProfile.email || '',
+//   oldPassword: '',
+//   newPassword: '',
+//   confirmPassword: '',
+// };
+
 const ProfileManager: FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -90,127 +100,7 @@ const ProfileManager: FC = () => {
     setData((prevDate) => ({ ...prevDate, [field]: value }));
   };
 
-  const inputFields = [
-    {
-      id: 'lastName',
-      name: 'lastName',
-      type: 'text',
-      placeholder: data.newLastName,
-      autoCapitalize: 'words',
-      autoComplete: 'off',
-      htmlFor: 'lastName',
-      title: 'Фамилия',
-      value: data.newLastName,
-      onChange: (value: string) =>
-        handleFieldChangeProfileManager('newLastName', value),
-      required: true,
-    },
-    {
-      id: 'firstName',
-      name: 'firstName',
-      type: 'text',
-      placeholder: data.newFirstName,
-      autoCapitalize: 'words',
-      autoComplete: 'off',
-      htmlFor: 'firstName',
-      title: 'Имя',
-      value: data.newFirstName,
-      onChange: (value: string) =>
-        handleFieldChangeProfileManager('newFirstName', value),
-      required: true,
-    },
-    {
-      id: 'middleName',
-      name: 'middleName',
-      type: 'text',
-      placeholder: data.newMiddleName,
-      autoCapitalize: 'words',
-      autoComplete: 'off',
-      htmlFor: 'middleName',
-      title: 'Отчество',
-      value: data.newMiddleName,
-      onChange: (value: string) =>
-        handleFieldChangeProfileManager('newMiddleName', value),
-      required: true,
-    },
-    {
-      id: 'email',
-      name: 'email',
-      type: 'text',
-      placeholder: data.newEmail,
-      autoCapitalize: 'none',
-      autoComplete: 'off',
-      htmlFor: 'email',
-      title: 'Email',
-      value: data.newEmail,
-      onChange: (value: string) =>
-        handleFieldChangeProfileManager('newEmail', value),
-      required: true,
-    },
-    {
-      id: 'oldPassword',
-      //!
-      name: 'oldPassword',
-      type: showPassword ? 'text' : 'password',
-      placeholder: data.oldPassword,
-      autoCapitalize: 'none',
-      autoComplete: 'off',
-      htmlFor: 'password',
-      title: 'Старый пароль',
-      value: data.oldPassword,
-      onChange: (value: string) =>
-        handleFieldChangeProfileManager('oldPassword', value),
-      required: false,
-      children: (
-        <ToggleShowPassword
-          showPassword={showPassword}
-          toggleShowPassword={toggleShowPassword}
-        />
-      ),
-    },
-    {
-      id: 'newPassword',
-      //!
-      name: 'newPassword',
-      type: showNewPassword ? 'text' : 'password',
-      placeholder: data.newPassword,
-      autoCapitalize: 'none',
-      autoComplete: 'off',
-      htmlFor: 'newPassword',
-      title: 'Новый пароль',
-      value: data.newPassword,
-      onChange: (value: string) =>
-        handleFieldChangeProfileManager('newPassword', value),
-      required: false,
-      children: (
-        <ToggleShowPassword
-          showPassword={showNewPassword}
-          toggleShowPassword={toggleShowNewPassword}
-        />
-      ),
-    },
-    {
-      id: 'confirmPassword',
-      //!
-      name: 'confirmPassword',
-      type: showConfirmPassword ? 'text' : 'password',
-      placeholder: data.confirmPassword,
-      autoCapitalize: 'none',
-      autoComplete: 'off',
-      htmlFor: 'confirmPassword',
-      title: 'Повторите пароль',
-      value: data.confirmPassword,
-      onChange: (value: string) =>
-        handleFieldChangeProfileManager('confirmPassword', value),
-      required: false,
-      children: (
-        <ToggleShowPassword
-          showPassword={showConfirmPassword}
-          toggleShowPassword={toggleShowConfirmPassword}
-        />
-      ),
-    },
-  ];
+
 
   return (
     <div className="flex flex-wrap pt-20">
@@ -228,9 +118,9 @@ const ProfileManager: FC = () => {
           <p className="text-2xl font-bold text-slate-600 text-center">
             Добро пожаловать, {managerProfile.firstName}
           </p>
-          <p className="mt-2 text-center text-slate-500">
-            Здесь вы можете обновить свои данные
-          </p>
+          {/* <p className="mt-2 text-left text-gray-500">
+            Welcome back, please enter your details.
+          </p> */}
           {/* <button className="-2 mt-8 flex items-center justify-center rounded-md border px-4 py-1 outline-none ring-gray-400 ring-offset-2 transition focus:ring-2 hover:border-transparent hover:bg-black hover:text-white">
             <img
               className="mr-2 h-5"
@@ -245,8 +135,137 @@ const ProfileManager: FC = () => {
           </div> */}
           <form className="flex flex-col">
             <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-              <Field inputFields={inputFields} />
 
+            <Field
+                id="lastName"
+                name="lastName"
+                type="text"
+                placeholder={data.newLastName}
+                autoCapitalize="words"
+                autoComplete="off"
+                htmlFor="lastName"
+                title="Фамилия"
+                value={data.newLastName}
+                onChange={(value) =>
+                  handleFieldChangeProfileManager('newLastName', value)
+                }
+                required={true}
+              />
+              <Field
+                id="firstName"
+                name="firstName"
+                type="text"
+                placeholder={data.newFirstName}
+                autoCapitalize="words"
+                autoComplete="off"
+                htmlFor="firstName"
+                title="Имя"
+                value={data.newFirstName}
+                onChange={(value) =>
+                  handleFieldChangeProfileManager('newFirstName', value)
+                }
+                required={true}
+              />
+              <Field
+                id="middleName"
+                name="middleName"
+                type="text"
+                placeholder={data.newMiddleName}
+                autoCapitalize="words"
+                autoComplete="off"
+                htmlFor="middleName"
+                title="Отчество"
+                value={data.newMiddleName}
+                onChange={(value) =>
+                  handleFieldChangeProfileManager('newMiddleName', value)
+                }
+                required={true}
+              />
+              <Field
+                id="email"
+                name="email"
+                type="text"
+                placeholder={data.newEmail}
+                autoCapitalize="none"
+                autoComplete="off"
+                htmlFor="email"
+                title="Email"
+                value={data.newEmail}
+                onChange={(value) =>
+                  handleFieldChangeProfileManager('newEmail', value)
+                }
+                required={true}
+              />
+
+              <Field
+                id="password"
+                //!
+                name="password"
+                type={showPassword ? 'text' : 'password'}
+                placeholder={data.oldPassword}
+                autoCapitalize="none"
+                autoComplete="off"
+                htmlFor="password"
+                title="Старый пароль"
+                value={data.oldPassword}
+                onChange={(value) =>
+                  handleFieldChangeProfileManager('oldPassword', value)
+                }
+                required={true}
+              >
+                <ToggleShowPassword
+                  showPassword={showPassword}
+                  toggleShowPassword={toggleShowPassword}
+                />
+              </Field>
+
+              <Field
+                id="newPassword"
+                //!
+                name="password"
+                type={showNewPassword ? 'text' : 'password'}
+                placeholder={data.newPassword}
+                autoCapitalize="none"
+                autoComplete="off"
+                htmlFor="newPassword"
+                title="Новый пароль"
+                value={data.newPassword}
+                onChange={(value) =>
+                  handleFieldChangeProfileManager('newPassword', value)
+                }
+                required={true}
+              >
+                <ToggleShowPassword
+                  showPassword={showNewPassword}
+                  toggleShowPassword={toggleShowNewPassword}
+                />
+              </Field>
+              <Field
+                id="confirmPassword"
+                name="confirmPassword"
+                type={showConfirmPassword ? 'text' : 'password'}
+                placeholder={data.confirmPassword}
+                autoCapitalize="none"
+                autoComplete="off"
+                htmlFor="confirmPassword"
+                title="Повторите пароль"
+                value={data.confirmPassword}
+                onChange={(value) =>
+                  handleFieldChangeProfileManager('confirmPassword', value)
+                }
+                required={true}
+              >
+                <ToggleShowPassword
+                  showPassword={showConfirmPassword}
+                  toggleShowPassword={toggleShowConfirmPassword}
+                />
+              </Field> 
+              {/* <button
+                type="submit"
+                className="w-full rounded-lg bg-gray-900 px-4 py-2 text-center text-base font-semibold text-white shadow-md ring-gray-500 ring-offset-2 transition focus:ring-2"
+              >
+                Сохранить
+              </button> */}
               <div className="relative flex justify-center">
                 <Button type="submit" title="Сохранить" />
               </div>
