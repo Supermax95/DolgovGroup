@@ -215,17 +215,8 @@ const ProfileManager: FC = () => {
   return (
     <div className="flex flex-wrap pt-20">
       <div className="flex w-full flex-col md:w-1/2">
-        {/* <div className="flex justify-center pt-12 md:-mb-24 md:justify-start md:pl-12">
-          <a
-            href="#"
-            className="border-b-gray-700 border-b-4 pb-2 text-2xl font-bold text-gray-900"
-          >
-            {' '}
-            Damasus .{' '}
-          </a>
-        </div> */}
         <div className="lg:w-[28rem] mx-auto my-auto flex flex-col justify-center pt-8 md:justify-start md:px-6 md:pt-0">
-          <p className="text-2xl font-bold text-slate-600 text-center">
+          <p className="text-center text-2xl font-bold text-slate-600">
             Добро пожаловать, {managerProfile.firstName}
           </p>
           <p className="mt-2 text-center text-slate-500">
