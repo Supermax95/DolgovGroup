@@ -196,6 +196,7 @@ const ProfileManager: FC = () => {
 
               <Field
                 id="password"
+                //!
                 name="password"
                 type={showPassword ? 'text' : 'password'}
                 placeholder={data.oldPassword}
@@ -216,13 +217,14 @@ const ProfileManager: FC = () => {
               </Field>
 
               <Field
-                id="password"
+                id="newPassword"
+                //!
                 name="password"
                 type={showNewPassword ? 'text' : 'password'}
                 placeholder={data.newPassword}
                 autoCapitalize="none"
                 autoComplete="off"
-                htmlFor="password"
+                htmlFor="newPassword"
                 title="Новый пароль"
                 value={data.newPassword}
                 onChange={(value) =>
@@ -237,7 +239,7 @@ const ProfileManager: FC = () => {
               </Field>
               <Field
                 id="confirmPassword"
-                name="password"
+                name="confirmPassword"
                 type={showConfirmPassword ? 'text' : 'password'}
                 placeholder={data.confirmPassword}
                 autoCapitalize="none"
