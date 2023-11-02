@@ -7,7 +7,7 @@ const Footer = () => {
         <span className="text-sm text-slate-500 sm:text-center dark:text-slate-400">
           © 2023{' '}
           <a href="https://flowbite.com/" className="hover:underline">
-            DolgovGroup™{' '}
+            DolgovGroup{' '}
           </a>
           Все права защищены.
         </span>
