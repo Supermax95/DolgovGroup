@@ -1,12 +1,9 @@
 import React, { useState, useEffect, FC } from 'react';
-import Wrapper from '../../../ui/Wrapper';
 import Field from '../../../ui/Field';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import ToggleShowPassword from '../../../ui/ToggleShowPassword';
 import Button from '../../../ui/Button';
-import portalCheck from '../../../Redux/thunks/PortalLogin/portalCheck';
-import getProfileManager from '../../../Redux/thunks/Manager/profileManager.api';
 
 interface IDate {
   newLastName: string;
@@ -30,24 +27,10 @@ const ProfileManager: FC = () => {
     password?: string;
   }>((state) => state.managerSlice.manager);
 
-
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
-
-  //* третий способ
-  const managerId = useAppSelector<number>(
-    (state) => state.managerSlice.manager.id
-  );
-
-
-  //! отправляет данные на бэк, чтобы получить ответ о конкретном менеджере
-  useEffect(() => {
-    if (managerId) {
-      dispatch(getProfileManager({ managerId }));
-    }
-  }, [dispatch, managerId]);
 
   const [data, setData] = useState<IDate>({
     newLastName: managerProfile.lastName || '',
@@ -59,13 +42,24 @@ const ProfileManager: FC = () => {
     confirmPassword: '',
   });
 
-
   // ! предзаполняет поля инпутов
   //* из-за него в placeholder={data.newLastName} требуется такая запись, а если бы было из локального стора,
   //* то placeholder=''
+  // useEffect(() => {
+  //   setData((prevData) => ({
+  //     ...prevData,
+  //     newLastName: managerProfile.lastName || '',
+  //     newFirstName: managerProfile.firstName || '',
+  //     newMiddleName: managerProfile.middleName || '',
+  //     newEmail: managerProfile.email || '',
+  //     oldPassword: '',
+  //     newPassword: '',
+  //     confirmPassword: '',
+  //   }));
+  // }, [managerProfile]);
+
   useEffect(() => {
-    setData((prevData) => ({
-      ...prevData,
+    setData(() => ({
       newLastName: managerProfile.lastName || '',
       newFirstName: managerProfile.firstName || '',
       newMiddleName: managerProfile.middleName || '',
@@ -200,7 +194,6 @@ const ProfileManager: FC = () => {
       ),
     },
   ];
-
 
   return (
     <div className="pt-[70px]">
