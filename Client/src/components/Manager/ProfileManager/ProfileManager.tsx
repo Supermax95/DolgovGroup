@@ -30,6 +30,7 @@ const ProfileManager: FC = () => {
     password?: string;
   }>((state) => state.managerSlice.manager);
 
+
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] =
@@ -39,7 +40,7 @@ const ProfileManager: FC = () => {
   const managerId = useAppSelector<number>(
     (state) => state.managerSlice.manager.id
   );
-  console.log('managerId', managerId);
+
 
   //! отправляет данные на бэк, чтобы получить ответ о конкретном менеджере
   useEffect(() => {
@@ -58,11 +59,13 @@ const ProfileManager: FC = () => {
     confirmPassword: '',
   });
 
+
   // ! предзаполняет поля инпутов
   //* из-за него в placeholder={data.newLastName} требуется такая запись, а если бы было из локального стора,
   //* то placeholder=''
   useEffect(() => {
-    setData({
+    setData((prevData) => ({
+      ...prevData,
       newLastName: managerProfile.lastName || '',
       newFirstName: managerProfile.firstName || '',
       newMiddleName: managerProfile.middleName || '',
@@ -70,7 +73,7 @@ const ProfileManager: FC = () => {
       oldPassword: '',
       newPassword: '',
       confirmPassword: '',
-    });
+    }));
   }, [managerProfile]);
 
   const toggleShowPassword = (): void => {
@@ -133,20 +136,6 @@ const ProfileManager: FC = () => {
         handleFieldChangeProfileManager('newMiddleName', value),
       required: true,
     },
-    // {
-    //   id: 'email',
-    //   name: 'email',
-    //   type: 'text',
-    //   placeholder: data.newEmail,
-    //   autoCapitalize: 'none',
-    //   autoComplete: 'off',
-    //   htmlFor: 'email',
-    //   title: 'Email',
-    //   value: data.newEmail,
-    //   onChange: (value: string) =>
-    //     handleFieldChangeProfileManager('newEmail', value),
-    //   required: true,
-    // },
     {
       id: 'oldPassword',
       //!
@@ -211,6 +200,7 @@ const ProfileManager: FC = () => {
       ),
     },
   ];
+
 
   return (
     <div className="pt-[70px]">
