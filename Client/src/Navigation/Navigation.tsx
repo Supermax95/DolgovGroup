@@ -10,16 +10,24 @@ import Products from '../components/Manager/Products/Products';
 import ProfileManager from '../components/Manager/ProfileManager/ProfileManager';
 import Stock from '../components/Manager/Stock/Stock';
 import { FC } from 'react';
+import Footer from '../components/Footer/Footer';
 
 const Navigation: FC = () => {
   return (
-    <>
+    <div className="wrapperCss ">
       <Routes>
         <Route path="/" element={<Navbar />}>
           <Route path="/portal" element={<Portal />} />
           <Route path="/clients" element={<Clients />} />
           <Route path="/employees" element={<Employees />} />
-          <Route path="/products" element={<Products />} />
+          <Route
+            path="/products"
+            element={
+              // <div className="contentCss">
+              <Products />
+              // </div>
+            }
+          />
           <Route path="/locations" element={<Locations />} />
           <Route path="/stock" element={<Stock />} />
           <Route path="/profileAdmin" element={<ProfileAdmin />} />
@@ -28,9 +36,14 @@ const Navigation: FC = () => {
         </Route>
         {/* 
         //!не трогать
-        <Route path="/portal" element={<Portal />} /> */}
+      <Route path="/portal" element={<Portal />} /> */}
       </Routes>
-    </>
+      {/* <div className="footerCss"> */}
+      <Footer />
+      {/* </div> */}
+
+      {/* <Route path="/footer" element={<Footer />} /> */}
+    </div>
   );
 };
 

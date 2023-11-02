@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import portalLogin from './thunks/PortalLogin/portalLogin.api';
 import portalLogout from './thunks/PortalLogin/portalLogout.api';
 import portalCheck from './thunks/PortalLogin/portalCheck';
+import getProfileManager from './thunks/Manager/profileManager.api';
 
 export interface IManager {
   id: number;
@@ -89,6 +90,23 @@ const managerSlice = createSlice({
         state.message = action.payload.message;
       })
       .addCase(portalLogout.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+
+      //! почему-то в профиле менеджера отображается информация и без этого аксиоса, но он нужен будет для апдейта, наверное
+      //* наверное, стоит вынести в отдельный слайс, а то в браузере много консолей выводится из-за редкса
+      .addCase(getProfileManager.pending, (state) => {
+        state.isLoading = true;
+        state.isAuth = false;
+      })
+      .addCase(getProfileManager.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isAuth = true;
+        state.manager = action.payload.manager;
+        //console.log('======>', action.payload);
+      })
+      .addCase(getProfileManager.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       });

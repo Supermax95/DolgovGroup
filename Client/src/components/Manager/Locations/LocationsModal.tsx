@@ -37,6 +37,7 @@ const LocationsModal: React.FC<LocationsModalProps> = ({
   setEditedLocation,
 }) => {
   const dispatch = useAppDispatch();
+
   location || {
     id: 0,
     city: '',
@@ -52,9 +53,7 @@ const LocationsModal: React.FC<LocationsModalProps> = ({
     }
   }, [location, isAddingMode, setEditedLocation]);
 
-  const modalTitle = isAddingMode
-    ? 'Новая точка продажи'
-    : 'Редактировать магазин';
+  const modalTitle = isAddingMode ? 'Новая точка продажи' : 'Редактирование';
 
   const handleCancel = () => {
     setEditedLocation(undefined);
@@ -112,7 +111,7 @@ const LocationsModal: React.FC<LocationsModalProps> = ({
       type: 'text',
       value: editedLocation.city,
       placeholder: '',
-      autoCapitalize: 'word',
+      autoCapitalize: 'words',
       autoComplete: 'off',
       title: 'Город',
       htmlFor: 'city',
@@ -127,7 +126,7 @@ const LocationsModal: React.FC<LocationsModalProps> = ({
       type: 'text',
       value: editedLocation.address,
       placeholder: '',
-      autoCapitalize: 'word',
+      autoCapitalize: 'words',
       autoComplete: 'off',
       title: 'Адрес',
       htmlFor: 'address',

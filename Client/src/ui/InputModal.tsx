@@ -30,7 +30,7 @@ const InputModal: FC<IInputModal> = ({ inputFields }) => {
             placeholder={field.placeholder}
             autoComplete={field.autoComplete}
             autoCapitalize={field.autoCapitalize}
-            className="block py-2.5 px-0 w-full text-sm text-green-600 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
+            className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
             required={field.required}
           />
           <label
