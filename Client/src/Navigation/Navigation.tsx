@@ -10,6 +10,7 @@ import Products from '../components/Manager/Products/Products';
 import ProfileManager from '../components/Manager/ProfileManager/ProfileManager';
 import Stock from '../components/Manager/Stock/Stock';
 import { FC } from 'react';
+import Footer from '../components/Footer/Footer';
 
 const Navigation: FC = () => {
   return (
@@ -28,8 +29,11 @@ const Navigation: FC = () => {
         </Route>
         {/* 
         //!не трогать
-        <Route path="/portal" element={<Portal />} /> */}
+      <Route path="/portal" element={<Portal />} /> */}
       </Routes>
+      <Footer />
+
+      {/* <Route path="/footer" element={<Footer />} /> */}
     </>
   );
 };
