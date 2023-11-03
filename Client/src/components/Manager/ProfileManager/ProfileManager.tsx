@@ -4,12 +4,20 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import ToggleShowPassword from '../../../ui/ToggleShowPassword';
 import Button from '../../../ui/Button';
+import editProfileManager from '../../../Redux/thunks/Manager/profileManager.api';
+import changePassword from '../../../Redux/thunks/Manager/changePassword.api';
 
 interface IDate {
   newLastName: string;
   newFirstName: string;
   newMiddleName: string;
   newEmail: string;
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
+interface PasswordChangeData {
   oldPassword: string;
   newPassword: string;
   confirmPassword: string;
@@ -27,10 +35,19 @@ const ProfileManager: FC = () => {
     password?: string;
   }>((state) => state.managerSlice.manager);
 
+  const managerId = useAppSelector<number>(
+    (state) => state.managerSlice.manager.id
+  );
+
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
+  const [errorMessages, setErrorMessages] = useState<PasswordChangeData>({
+    oldPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+  });
 
   const [data, setData] = useState<IDate>({
     newLastName: managerProfile.lastName || '',
@@ -45,19 +62,6 @@ const ProfileManager: FC = () => {
   // ! предзаполняет поля инпутов
   //* из-за него в placeholder={data.newLastName} требуется такая запись, а если бы было из локального стора,
   //* то placeholder=''
-  // useEffect(() => {
-  //   setData((prevData) => ({
-  //     ...prevData,
-  //     newLastName: managerProfile.lastName || '',
-  //     newFirstName: managerProfile.firstName || '',
-  //     newMiddleName: managerProfile.middleName || '',
-  //     newEmail: managerProfile.email || '',
-  //     oldPassword: '',
-  //     newPassword: '',
-  //     confirmPassword: '',
-  //   }));
-  // }, [managerProfile]);
-
   useEffect(() => {
     setData(() => ({
       newLastName: managerProfile.lastName || '',
@@ -70,6 +74,42 @@ const ProfileManager: FC = () => {
     }));
   }, [managerProfile]);
 
+  const handleFieldChangeProfileManager = (
+    field: keyof IDate,
+    value: string
+  ): void => {
+    setData((prevDate) => ({ ...prevDate, [field]: value }));
+    setErrorMessages((prevErr) => ({ ...prevErr, [field]: '' }));
+  };
+
+  //! нужна регулярка, проверяющая верность кириллицы на введение ФИО  её прокинуть в native
+  const handleSubmitProfileManager = async (
+    e: React.FormEvent
+  ): Promise<void> => {
+    e.preventDefault();
+
+    try {
+      const resultEdit = await dispatch(
+        editProfileManager({
+          managerId,
+          newLastName: data.newLastName,
+          newFirstName: data.newFirstName,
+          newMiddleName: data.newMiddleName,
+        })
+      );
+
+      if (editProfileManager.fulfilled.match(resultEdit)) {
+        alert('Данные успешно обновлены');
+      }
+
+      if (editProfileManager.rejected.match(resultEdit)) {
+        alert('Не удалось обновить данные. Попробуйте ещё раз.');
+      }
+    } catch (error) {
+      console.error('Ошибка обновления данных:', error);
+    }
+  };
+
   const toggleShowPassword = (): void => {
     setShowPassword(!showPassword);
   };
@@ -80,20 +120,53 @@ const ProfileManager: FC = () => {
     setShowConfirmPassword(!showConfirmPassword);
   };
 
-  const handleFieldChangeProfileManager = (
-    field: keyof IDate,
-    value: string
-  ): void => {
-    setData((prevDate) => ({ ...prevDate, [field]: value }));
+  //! нужна регулярка, проверяющая пароль по условиям надёжности и её прокинуть в native
+  const handleSubmitProfileManagerPassword = async (
+    e: React.FormEvent
+  ): Promise<void> => {
+    e.preventDefault();
+
+    if (!data.oldPassword || !data.newPassword || !data.confirmPassword) {
+      setErrorMessages({
+        oldPassword: !data.oldPassword ? 'Введите текущий пароль' : '',
+        newPassword: !data.newPassword ? 'Введите новый пароль' : '',
+        confirmPassword: !data.confirmPassword
+          ? 'Подтвердите новый пароль'
+          : '',
+      });
+    } else if (data.newPassword !== data.confirmPassword) {
+      setErrorMessages((prevErrors) => ({
+        ...prevErrors,
+        newPassword: 'Пароли не совпадают',
+      }));
+    } else {
+      try {
+        const resultEdit = await dispatch(
+          changePassword({
+            managerId,
+            oldPassword: data.oldPassword,
+            newPassword: data.newPassword,
+          })
+        );
+        if (changePassword.rejected.match(resultEdit)) {
+          alert('Не удалось обновить данные. Попробуйте ещё раз');
+        } else if (changePassword.fulfilled.match(resultEdit)) {
+          alert('Пароль успешно изменён');
+        }
+      } catch (error) {
+        alert('Введён неверный текущий пароль или произошла ошибка');
+        console.error('Ошибка обновления данных:', error);
+      }
+    }
   };
 
-  const inputFields = [
+  const inputFieldsName = [
     {
       id: 'lastName',
       name: 'lastName',
       type: 'text',
       placeholder: data.newLastName,
-      autoCapitalize: 'words',
+      // autoCapitalize: 'words',
       autoComplete: 'off',
       htmlFor: 'lastName',
       title: 'Фамилия',
@@ -107,7 +180,7 @@ const ProfileManager: FC = () => {
       name: 'firstName',
       type: 'text',
       placeholder: data.newFirstName,
-      autoCapitalize: 'words',
+      //  autoCapitalize: 'words',
       autoComplete: 'off',
       htmlFor: 'firstName',
       title: 'Имя',
@@ -121,7 +194,7 @@ const ProfileManager: FC = () => {
       name: 'middleName',
       type: 'text',
       placeholder: data.newMiddleName,
-      autoCapitalize: 'words',
+      //   autoCapitalize: 'words',
       autoComplete: 'off',
       htmlFor: 'middleName',
       title: 'Отчество',
@@ -130,13 +203,15 @@ const ProfileManager: FC = () => {
         handleFieldChangeProfileManager('newMiddleName', value),
       required: true,
     },
+  ];
+
+  const inputFieldsPassword = [
     {
       id: 'oldPassword',
-      //!
       name: 'oldPassword',
       type: showPassword ? 'text' : 'password',
-      placeholder: data.oldPassword,
-      autoCapitalize: 'none',
+      placeholder: '',
+      //   autoCapitalize: 'none',
       autoComplete: 'off',
       htmlFor: 'password',
       title: 'Старый пароль',
@@ -150,14 +225,18 @@ const ProfileManager: FC = () => {
           toggleShowPassword={toggleShowPassword}
         />
       ),
+      error: (
+        <span className="text-sm text-rose-400">
+          {errorMessages.oldPassword && errorMessages.oldPassword}
+        </span>
+      ),
     },
     {
       id: 'newPassword',
-      //!
-      name: 'newPassword',
+      name: 'password',
       type: showNewPassword ? 'text' : 'password',
-      placeholder: data.newPassword,
-      autoCapitalize: 'none',
+      placeholder: '',
+      //  autoCapitalize: 'none',
       autoComplete: 'off',
       htmlFor: 'newPassword',
       title: 'Новый пароль',
@@ -171,14 +250,18 @@ const ProfileManager: FC = () => {
           toggleShowPassword={toggleShowNewPassword}
         />
       ),
+      error: (
+        <span className="text-sm text-rose-400">
+          {errorMessages.newPassword && errorMessages.newPassword}
+        </span>
+      ),
     },
     {
       id: 'confirmPassword',
-      //!
       name: 'confirmPassword',
       type: showConfirmPassword ? 'text' : 'password',
-      placeholder: data.confirmPassword,
-      autoCapitalize: 'none',
+      placeholder: '',
+      //  autoCapitalize: 'none',
       autoComplete: 'off',
       htmlFor: 'confirmPassword',
       title: 'Повторите пароль',
@@ -191,6 +274,11 @@ const ProfileManager: FC = () => {
           showPassword={showConfirmPassword}
           toggleShowPassword={toggleShowConfirmPassword}
         />
+      ),
+      error: (
+        <span className="text-sm text-rose-400">
+          {errorMessages.confirmPassword && errorMessages.confirmPassword}
+        </span>
       ),
     },
   ];
@@ -206,21 +294,25 @@ const ProfileManager: FC = () => {
             <p className="mt-2 text-center text-slate-500">
               Здесь вы можете обновить свои данные
             </p>
-            {/* <button className="-2 mt-8 flex items-center justify-center rounded-md border px-4 py-1 outline-none ring-gray-400 ring-offset-2 transition focus:ring-2 hover:border-transparent hover:bg-black hover:text-white">
-            <img
-              className="mr-2 h-5"
-              src="https://static.cdnlogo.com/logos/g/35/google-icon.svg"
-            />
-            Log in with Google
-          </button> */}
-            {/* <div className="relative mt-8 flex h-px place-items-center bg-gray-200">
-            <div className="absolute left-1/2 h-6 w-14 -translate-x-1/2 bg-white text-center text-sm text-gray-500">
-              or
-            </div>
-          </div> */}
-            <form className="flex flex-col">
+            <form
+              onSubmit={handleSubmitProfileManager}
+              className="flex flex-col"
+            >
+              <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+                <Field inputFields={inputFieldsName} />
+
+                <div className="relative flex justify-center">
+                  <Button type="submit" title="Сохранить" />
+                </div>
+              </div>
+            </form>
+            <p className="mt-2 text-center text-slate-500">Обновление пароля</p>
+            <form
+              onSubmit={handleSubmitProfileManagerPassword}
+              className="flex flex-col"
+            >
               <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                <Field inputFields={inputFields} />
+                <Field inputFields={inputFieldsPassword} />
 
                 <div className="relative flex justify-center">
                   <Button type="submit" title="Сохранить" />

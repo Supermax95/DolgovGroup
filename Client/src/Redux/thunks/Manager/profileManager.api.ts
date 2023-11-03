@@ -4,43 +4,41 @@ import axios from 'axios';
 import { VITE_URL } from '../../../VITE_URL';
 
 interface RequestDate {
+  newLastName: string;
+  newFirstName: string;
+  newMiddleName: string;
   managerId: number;
 }
 
 interface ResponseData {
-  manager: {
-    id: number;
-    lastName: string;
-    firstName: string;
-    middleName: string;
-    birthDate: Date | null | string;
-    email: string;
-    isAdmin: boolean;
-  };
+  lastName: string;
+  firstName: string;
+  middleName: string;
   message: string;
 }
-const getProfileManager = createAsyncThunk<
-  ResponseData,
-  RequestDate,
-  {
-    rejectValue: {
-      lastName: string;
-      firstName: string;
-      middleName: string;
-      birthDate: Date | null | string;
-      email: string;
-    };
-  }
->('api/profileManager', async ({ managerId }) => {
-  try {
-    const response: AxiosResponse = await axios.get(
-      `${VITE_URL}/profileManager/info/${managerId}`
+
+const editProfileManager = createAsyncThunk<ResponseData, RequestDate>(
+  'api/profileManager',
+  async ({ managerId, newLastName, newFirstName, newMiddleName }) => {
+    console.log(
+      'newLastName, newFirstName, newMiddleName',
+      newLastName,
+      newFirstName,
+      newMiddleName
     );
 
-    return response.data;
-  } catch (error) {
-    console.error('Ошибка при получении данных', error);
-  }
-});
+    try {
+      const response: AxiosResponse = await axios.put(
+        `${VITE_URL}/profileManager/info/`,
+        { managerId, newLastName, newFirstName, newMiddleName }
+      );
+      console.log('response.dataresponse.data', response.data);
 
-export default getProfileManager;
+      return response.data;
+    } catch (error) {
+      console.error('Ошибка при получении данных', error);
+    }
+  }
+);
+
+export default editProfileManager;

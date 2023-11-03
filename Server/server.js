@@ -69,7 +69,7 @@ app.use('/', locationRouter);
 app.use('/portal', portalRouter);
 app.use('/', clientsRouter);
 app.use('/', employeeRouter);
-//app.use('/profileManager', profileManager);
+app.use('/profileManager', profileManager);
 
 app.listen(PORT, () => {
   console.log(`Сервер крутится на ${PORT} порту`);

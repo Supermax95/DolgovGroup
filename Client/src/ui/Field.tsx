@@ -97,6 +97,7 @@ interface IField {
   styleCSSLabel?: string[];
   required?: boolean;
   children?: React.ReactNode;
+  error?: React.ReactNode;
 }
 
 const Field: FC<IInput> = ({ inputFields }) => {
@@ -123,6 +124,7 @@ const Field: FC<IInput> = ({ inputFields }) => {
             {field.title}
           </label>
           {field.children}
+          {field.error}
         </div>
       ))}
     </>

@@ -48,7 +48,7 @@ const ChangePassword: FC = () => {
   const handleSubmit = async (): Promise<void> => {
     if (!data.oldPassword || !data.newPassword || !data.confirmPassword) {
       setErrorMessages({
-        oldPassword: !data.oldPassword ? 'Введите старый пароль' : '',
+        oldPassword: !data.oldPassword ? 'Введите текущий пароль' : '',
         newPassword: !data.newPassword ? 'Введите новый пароль' : '',
         confirmPassword: !data.confirmPassword
           ? 'Подтвердите новый пароль'
