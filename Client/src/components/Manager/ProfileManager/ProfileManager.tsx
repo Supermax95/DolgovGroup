@@ -62,7 +62,6 @@ const ProfileManager: FC = () => {
   // ! предзаполняет поля инпутов
   //* из-за него в placeholder={data.newLastName} требуется такая запись, а если бы было из локального стора,
   //* то placeholder=''
-
   useEffect(() => {
     setData(() => ({
       newLastName: managerProfile.lastName || '',
@@ -83,6 +82,7 @@ const ProfileManager: FC = () => {
     setErrorMessages((prevErr) => ({ ...prevErr, [field]: '' }));
   };
 
+  //! нужна регулярка, проверяющая верность кириллицы на введение ФИО  её прокинуть в native
   const handleSubmitProfileManager = async (
     e: React.FormEvent
   ): Promise<void> => {
@@ -99,7 +99,7 @@ const ProfileManager: FC = () => {
       );
 
       if (editProfileManager.fulfilled.match(resultEdit)) {
-        alert('Super');
+        alert('Данные успешно обновлены');
       }
 
       if (editProfileManager.rejected.match(resultEdit)) {
@@ -120,6 +120,7 @@ const ProfileManager: FC = () => {
     setShowConfirmPassword(!showConfirmPassword);
   };
 
+  //! нужна регулярка, проверяющая пароль по условиям надёжности и её прокинуть в native
   const handleSubmitProfileManagerPassword = async (
     e: React.FormEvent
   ): Promise<void> => {
@@ -148,7 +149,7 @@ const ProfileManager: FC = () => {
           })
         );
         if (changePassword.rejected.match(resultEdit)) {
-          alert('Не удалось обновить данные. Попробуйте ещё раз.');
+          alert('Не удалось обновить данные. Попробуйте ещё раз');
         } else if (changePassword.fulfilled.match(resultEdit)) {
           alert('Пароль успешно изменён');
         }
@@ -209,7 +210,7 @@ const ProfileManager: FC = () => {
       id: 'oldPassword',
       name: 'oldPassword',
       type: showPassword ? 'text' : 'password',
-      placeholder: data.oldPassword,
+      placeholder: '',
       //   autoCapitalize: 'none',
       autoComplete: 'off',
       htmlFor: 'password',
@@ -234,7 +235,7 @@ const ProfileManager: FC = () => {
       id: 'newPassword',
       name: 'password',
       type: showNewPassword ? 'text' : 'password',
-      placeholder: data.newPassword,
+      placeholder: '',
       //  autoCapitalize: 'none',
       autoComplete: 'off',
       htmlFor: 'newPassword',
@@ -259,7 +260,7 @@ const ProfileManager: FC = () => {
       id: 'confirmPassword',
       name: 'confirmPassword',
       type: showConfirmPassword ? 'text' : 'password',
-      placeholder: data.confirmPassword,
+      placeholder: '',
       //  autoCapitalize: 'none',
       autoComplete: 'off',
       htmlFor: 'confirmPassword',
