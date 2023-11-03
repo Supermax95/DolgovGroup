@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import ToggleShowPassword from '../../../ui/ToggleShowPassword';
 import Button from '../../../ui/Button';
+import editProfileManager from '../../../Redux/thunks/Manager/profileManager.api';
 
 interface IDate {
   newLastName: string;
@@ -26,6 +27,10 @@ const ProfileManager: FC = () => {
     email?: string;
     password?: string;
   }>((state) => state.managerSlice.manager);
+
+  const managerId = useAppSelector<number>(
+    (state) => state.managerSlice.manager.id
+  );
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
@@ -59,8 +64,10 @@ const ProfileManager: FC = () => {
   // }, [managerProfile]);
 
   useEffect(() => {
+    console.log('managerProfilemanagerProfile', managerProfile);
+
     setData(() => ({
-      newLastName: managerProfile.lastName || '',
+      newLastName: managerProfile.lastName || '666',
       newFirstName: managerProfile.firstName || '',
       newMiddleName: managerProfile.middleName || '',
       newEmail: managerProfile.email || '',
@@ -87,13 +94,60 @@ const ProfileManager: FC = () => {
     setData((prevDate) => ({ ...prevDate, [field]: value }));
   };
 
+  const handleSubmitProfileManager = async (
+    e: React.FormEvent
+  ): Promise<void> => {
+    e.preventDefault();
+
+    try {
+      const resultEdit = await dispatch(
+        editProfileManager({
+          managerId,
+          newLastName: data.newLastName,
+          newFirstName: data.newFirstName,
+          newMiddleName: data.newMiddleName,
+        })
+      );
+
+      console.log('resultEdit', resultEdit);
+
+      // if (editProfileManager.fulfilled.match(resultEdit)) {
+      //   // alert('Super');
+      // }
+
+      if (editProfileManager.rejected.match(resultEdit)) {
+        alert('Не удалось обновить данные. Попробуйте ещё раз.');
+      }
+    } catch (error) {
+      console.error('Ошибка обновления данных:', error);
+    }
+    console.log('======>Submit', managerProfile);
+  };
+
+  // useEffect(() => {
+  //   console.log('managerProfilemanagerProfile', managerProfile);
+  //   (async () => {
+  //     if (managerProfile) {
+  //       setData(() => ({
+  //         newLastName: managerProfile.lastName || '13',
+  //         newFirstName: managerProfile.firstName || '',
+  //         newMiddleName: managerProfile.middleName || '',
+  //         newEmail: managerProfile.email || '',
+  //         oldPassword: '',
+  //         newPassword: '',
+  //         confirmPassword: '',
+  //       }));
+  //     }
+  //   })();
+  // }, [managerProfile]);
+
   const inputFields = [
     {
       id: 'lastName',
       name: 'lastName',
       type: 'text',
       placeholder: data.newLastName,
-      autoCapitalize: 'words',
+      // autoCapitalize: 'words',
       autoComplete: 'off',
       htmlFor: 'lastName',
       title: 'Фамилия',
@@ -107,7 +161,7 @@ const ProfileManager: FC = () => {
       name: 'firstName',
       type: 'text',
       placeholder: data.newFirstName,
-      autoCapitalize: 'words',
+      //  autoCapitalize: 'words',
       autoComplete: 'off',
       htmlFor: 'firstName',
       title: 'Имя',
@@ -121,7 +175,7 @@ const ProfileManager: FC = () => {
       name: 'middleName',
       type: 'text',
       placeholder: data.newMiddleName,
-      autoCapitalize: 'words',
+      //   autoCapitalize: 'words',
       autoComplete: 'off',
       htmlFor: 'middleName',
       title: 'Отчество',
@@ -136,7 +190,7 @@ const ProfileManager: FC = () => {
       name: 'oldPassword',
       type: showPassword ? 'text' : 'password',
       placeholder: data.oldPassword,
-      autoCapitalize: 'none',
+      //   autoCapitalize: 'none',
       autoComplete: 'off',
       htmlFor: 'password',
       title: 'Старый пароль',
@@ -157,7 +211,7 @@ const ProfileManager: FC = () => {
       name: 'newPassword',
       type: showNewPassword ? 'text' : 'password',
       placeholder: data.newPassword,
-      autoCapitalize: 'none',
+      //  autoCapitalize: 'none',
       autoComplete: 'off',
       htmlFor: 'newPassword',
       title: 'Новый пароль',
@@ -178,7 +232,7 @@ const ProfileManager: FC = () => {
       name: 'confirmPassword',
       type: showConfirmPassword ? 'text' : 'password',
       placeholder: data.confirmPassword,
-      autoCapitalize: 'none',
+      //  autoCapitalize: 'none',
       autoComplete: 'off',
       htmlFor: 'confirmPassword',
       title: 'Повторите пароль',
@@ -218,7 +272,10 @@ const ProfileManager: FC = () => {
               or
             </div>
           </div> */}
-            <form className="flex flex-col">
+            <form
+              onSubmit={handleSubmitProfileManager}
+              className="flex flex-col"
+            >
               <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
                 <Field inputFields={inputFields} />
 

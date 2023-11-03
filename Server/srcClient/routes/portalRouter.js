@@ -4,8 +4,9 @@ const { Manager } = require('../../db/models');
 
 module.exports = router
   .get('/check', async (req, res) => {
+    console.log(req.session.email);
     if (!req.session || !req.session.email) {
-      return res.status(401).json({ message: 'Пользователь не авторизован' });
+      res.status(401).json({ message: 'Пользователь не авторизован' });
     }
 
     try {

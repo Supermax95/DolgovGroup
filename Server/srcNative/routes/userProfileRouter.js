@@ -51,7 +51,7 @@ module.exports = router
         lastName: newLastName,
         firstName: newFirstName,
         middleName: newMiddleName,
-        message: 'Фамилия имя отчество успешно изменено',
+        message: 'Фамилия, имя и отчество успешно изменены',
       });
     } catch (error) {
       console.error(error);
