@@ -3,6 +3,7 @@ import portalLogin from './thunks/PortalLogin/portalLogin.api';
 import portalLogout from './thunks/PortalLogin/portalLogout.api';
 import portalCheck from './thunks/PortalLogin/portalCheck';
 import editProfileManager from './thunks/Manager/profileManager.api';
+import changePassword from './thunks/Manager/changePassword.api';
 
 export interface IManager {
   id: number;
@@ -65,7 +66,6 @@ const managerSlice = createSlice({
         state.isLoading = false;
         state.isAuth = false;
         state.manager = action.payload.manager;
-        console.log('Норм======>', state.manager);
       })
       .addCase(portalCheck.rejected, (state, action) => {
         state.isLoading = false;
@@ -109,6 +109,23 @@ const managerSlice = createSlice({
       .addCase(editProfileManager.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
+      })
+      //* password
+      .addCase(changePassword.pending, (state) => {
+        state.isLoading = true;
+        state.isAuth = false;
+      })
+      .addCase(changePassword.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isAuth = true;
+        state.message = action.payload.message;
+        console.log(state.message);
+      })
+      .addCase(changePassword.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+        console.log(state.error);
+        console.log('Норм======>', action.error);
       });
   },
 });
