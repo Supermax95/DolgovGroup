@@ -6,8 +6,7 @@ import Pagination from '../../../ui/Paggination';
 import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import getClients from '../../../Redux/thunks/Users/getClients.api';
 import editClients from '../../../Redux/thunks/Users/editClients.api';
-
-// import UsersModal from './UsersModal';
+import Search from '../../../ui/Search';
 
 interface User {
   id: number;
@@ -39,10 +38,11 @@ const Clients: FC = () => {
 
   const users = useAppSelector<User[]>((state) => state.usersSlice.data);
   const [currentPage, setCurrentPage] = useState(1);
-  // const [isModalOpen, setModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [editedUser, setEditedUser] = useState<User | null | undefined>(null);
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
+  const [searchText, setSearchText] = useState('');
+
   const columnsDefaultName: IColumnsDefaultName[] = [
     { name: 'Фамилия' },
     { name: 'Имя' },
@@ -72,25 +72,56 @@ const Clients: FC = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
-  const filteredUsers =
+
+    const filteredUsers =
     selectedStatus === null
       ? users
       : users.filter((user) =>
           selectedStatus === 'Активные' ? user.isActivated : !user.isActivated
         );
 
-  const displayedUsers = filteredUsers.slice(startIndex, endIndex);
+
+
+  const filterUsers = () => {
+    let filtered = users;
+
+    if (selectedStatus !== null) {
+      filtered = filtered.filter((user) =>
+        selectedStatus === 'Активные' ? user.isActivated : !user.isActivated
+      );
+    }
+
+    if (searchText !== '') {
+      filtered = filtered.filter((user) => {
+        const fullName = `${user.lastName} ${user.firstName} ${user.middleName}`;
+        const reversedFullName = `${user.firstName} ${user.lastName} ${user.middleName}`;
+        const reversedFullName1 = `${user.middleName} ${user.lastName} ${user.firstName}`;
+        const reversedFullName2 = `${user.middleName} ${user.firstName} ${user.lastName}`;
+
+        return (
+          fullName.toLowerCase().includes(searchText.toLowerCase()) ||
+          reversedFullName.toLowerCase().includes(searchText.toLowerCase()) ||
+          reversedFullName1.toLowerCase().includes(searchText.toLowerCase()) ||
+          reversedFullName2.toLowerCase().includes(searchText.toLowerCase())
+        );
+      });
+    }
+
+    return filtered;
+  };
+
+  const displayedUsers = filterUsers().slice(startIndex, endIndex);
 
   const openEditModal = (user: User) => {
     setSelectedUser(user);
     setEditedUser({ ...user });
-    setModalOpen(true);
+    setModalOpen(true); // Assuming you have a modal component to open.
   };
 
   const closeEditModal = () => {
     setSelectedUser(null);
     setEditedUser(null);
-    setModalOpen(false);
+    setModalOpen(false); // Close the modal.
   };
 
   const handleSave = async (editedUser: User) => {
@@ -109,8 +140,9 @@ const Clients: FC = () => {
     }
   };
 
-  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+  const totalPages = Math.ceil(filterUsers().length / itemsPerPage);
   const uniqueStatus = ['Активные', 'Неактивные'];
+
   return (
     <Wrapper>
       <div>
@@ -123,6 +155,7 @@ const Clients: FC = () => {
             displayKey={(status) => status}
           />
           <div className="p-4">
+          <Search onFilter={setSearchText} />
             <Table
               title="Список клиентов"
               columnsDefaultName={columnsDefaultName}
@@ -140,17 +173,7 @@ const Clients: FC = () => {
               totalPages={totalPages}
               onPageChange={setCurrentPage}
             />
-            {/* {isModalOpen && selectedUser && (
-              // <UsersModal
-              <UsersModal
-                isOpen={isModalOpen}
-                user={selectedUser}
-                onSave={handleSave}
-                onClose={closeEditModal}
-                editedUser={editedUser}
-                setEditedUser={setEditedUser}
-              /> */}
-            {/* )} */}
+            {/* Modal component */}
           </div>
         </div>
       </div>

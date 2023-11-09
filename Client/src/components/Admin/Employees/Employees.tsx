@@ -1,3 +1,4 @@
+
 import { FC, useEffect, useState } from 'react';
 import Wrapper from '../../../ui/Wrapper';
 import Sidebar from '../../../ui/Sidebar';
@@ -5,6 +6,7 @@ import Pagination from '../../../ui/Paggination';
 import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import getEmployees from '../../../Redux/thunks/Users/getEmployee.api';
 import Table from '../../../ui/Table';
+import Search from '../../../ui/Search';
 
 interface User {
   id: number;
@@ -37,9 +39,8 @@ const Employees: FC = () => {
   const users = useAppSelector<User[]>((state) => state.usersSlice.data);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
-  const [selectedActivated, setSelectedActivated] = useState<boolean | null>(
-    null
-  );
+  const [searchText, setSearchText] = useState('');
+
   const columnsDefaultName: IColumnsDefaultName[] = [
     { name: 'Фамилия' },
     { name: 'Имя' },
@@ -69,28 +70,45 @@ const Employees: FC = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
-  const filteredUsers = selectedStatus
-    ? users.filter((user) => user.userStatus === selectedStatus)
-    : users;
 
-    const filteredActive = selectedActivated === null
-    ? users
-    : users.filter((user) => {
-        if (selectedStatus === 'Активные') {
-          return user.isActivated === selectedActivated;
-        } else {
-          return !user.isActivated === selectedActivated;
-        }
+  const filterUsers = () => {
+    let filtered = users;
+  
+    if (selectedStatus !== null) {
+      filtered = filtered.filter((user) =>
+        selectedStatus === 'Новый сотрудник' ? user.userStatus === selectedStatus : user.isActivated
+      );
+    }
+  
+    if (searchText !== '') {
+      filtered = filtered.filter((user) => {
+        const fullName = `${user.lastName} ${user.firstName} ${user.middleName}`;
+        const reversedFullName = `${user.firstName} ${user.lastName} ${user.middleName}`;
+        const reversedFullName1 = `${user.middleName} ${user.lastName} ${user.firstName}`;
+        const reversedFullName2 = `${user.middleName} ${user.firstName} ${user.lastName}`;
+  
+        return (
+          fullName.toLowerCase().includes(searchText.toLowerCase()) ||
+          reversedFullName.toLowerCase().includes(searchText.toLowerCase()) ||
+          reversedFullName1.toLowerCase().includes(searchText.toLowerCase()) ||
+          reversedFullName2.toLowerCase().includes(searchText.toLowerCase())
+        );
       });
+    }
+  
+    return filtered;
+  };
+  
 
+  const displayedUsers = filterUsers().slice(startIndex, endIndex);
 
-  const displayedUsers = filteredUsers.slice(startIndex, endIndex);
-
-  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
   const uniqueEmployeeStatuses = [
     ...new Set(users.map((user) => user.userStatus)),
   ];
-  // const uniqueActivationStatuses = [true, false];
+
+  const totalPages = Math.ceil(filterUsers.length / itemsPerPage);
+
+
 
   return (
     <Wrapper>
@@ -104,6 +122,7 @@ const Employees: FC = () => {
             displayKey={(status) => status}
           />
           <div className="p-4">
+          <Search onFilter={setSearchText} />
             <Table
               title="Список сотрудников"
               columnsDefaultName={columnsDefaultName}
@@ -111,7 +130,7 @@ const Employees: FC = () => {
               currentPage={currentPage}
               itemsPerPage={itemsPerPage}
               columnsListDb={columnsListDb}
-              // filtredExtra={filteredActive}
+         
             />
             <Pagination
               currentPage={currentPage}
