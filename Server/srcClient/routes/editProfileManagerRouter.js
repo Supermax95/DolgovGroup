@@ -56,7 +56,7 @@ module.exports = router
 
       await manager.update({ email: newEmail });
 
-     // console.log(req.session.email);
+      // console.log(req.session.email);
 
       req.session.email = newEmail;
 

@@ -4,19 +4,18 @@ const { Manager } = require('../../db/models');
 
 module.exports = router
   .get('/check', async (req, res) => {
-    //console.log(req.session.email);
-    if (!req.session || !req.session.email) {
-      res.status(401).json({ message: 'Пользователь не авторизован' });
-    }
-
     try {
-      const manager = await Manager.findOne({
-        where: { email: req.session.email },
-      });
-      res.json({ message: 'Вы залогинены!', manager });
+      if (!req.session || !req.session.email) {
+        res.status(401).json({ message: 'Пользователь не авторизован' });
+      } else {
+        const manager = await Manager.findOne({
+          where: { email: req.session.email },
+        });
+        res.json({ message: 'Вы залогинены!', manager });
+      }
     } catch (error) {
-      console.log(error, 'Произошла ошибка на сервере');
-      res.status(500);
+      console.log(error);
+      res.status(500).json({ message: 'Произошла ошибка на сервере' });
     }
   })
 
