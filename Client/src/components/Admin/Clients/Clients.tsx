@@ -6,6 +6,7 @@ import Pagination from '../../../ui/Paggination';
 import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import getClients from '../../../Redux/thunks/Users/getClients.api';
 import editClients from '../../../Redux/thunks/Users/editClients.api';
+import Search from '../../../ui/Search';
 
 interface User {
   id: number;
@@ -154,13 +155,7 @@ const Clients: FC = () => {
             displayKey={(status) => status}
           />
           <div className="p-4">
-            <input
-              type="text"
-              className="rounded-lg text-sm px-2 py-1.5 w-full mb-4"
-              placeholder="Поиск по фамилии, имени или отчеству"
-              value={searchText}
-              onChange={(event) => setSearchText(event.target.value)}
-            />
+          <Search onFilter={setSearchText} />
             <Table
               title="Список клиентов"
               columnsDefaultName={columnsDefaultName}
