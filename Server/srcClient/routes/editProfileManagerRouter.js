@@ -36,36 +36,32 @@ module.exports = router
 
   .put('/email/', async (req, res) => {
     const { managerId, newEmail } = req.body;
+    //! проблема, что в куки вообще не видит на ручке пут email или id
+    // console.log('req.session PUT', req.session.idUser);
 
     try {
       const manager = await Manager.findOne({ where: { id: managerId } });
 
       if (!manager) {
-        return res.status(401).json({ message: 'Пользователь не найден' });
-      }
-
-      const searchEmail = await Manager.findOne({
-        where: { email: newEmail },
-      });
-
-      if (searchEmail) {
-        return res.status(409).json({
-          message: 'Пользователь с такой электронной почтой уже существует',
+        res.status(401).json({ message: 'Пользователь не найден' });
+      } else {
+        const searchEmail = await Manager.findOne({
+          where: { email: newEmail },
         });
+
+        if (searchEmail) {
+          res.status(409).json({
+            message: 'Пользователь с такой электронной почтой уже существует',
+          });
+        } else {
+          await manager.update({ email: newEmail });
+
+          res.status(200).json({
+            email: newEmail,
+            message: 'Email успешно изменен',
+          });
+        }
       }
-
-      await manager.update({ email: newEmail });
-
-      // console.log(req.session.email);
-
-      req.session.email = newEmail;
-
-      console.log('req.session.email req.session.email ', req.session.email);
-
-      res.status(200).json({
-        email: newEmail,
-        message: 'Email успешно изменен',
-      });
     } catch (error) {
       console.error('Ошибка при получении данных из базы данных', error);
       return res.status(500).json({ message: 'Произошла ошибка' });

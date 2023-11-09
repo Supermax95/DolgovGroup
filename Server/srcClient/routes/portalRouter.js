@@ -5,11 +5,11 @@ const { Manager } = require('../../db/models');
 module.exports = router
   .get('/check', async (req, res) => {
     try {
-      if (!req.session || !req.session.email) {
+      if (!req.session || !req.session.idManager) {
         res.status(401).json({ message: 'Пользователь не авторизован' });
       } else {
         const manager = await Manager.findOne({
-          where: { email: req.session.email },
+          where: { id: req.session.idManager },
         });
         res.json({ message: 'Вы залогинены!', manager });
       }
@@ -23,7 +23,6 @@ module.exports = router
     const { email, password } = req.body;
     try {
       const manager = await Manager.findOne({ where: { email } });
-
       if (!manager) {
         res.status(401).json({ message: 'Пользователь не найден' });
       } else {
@@ -35,7 +34,7 @@ module.exports = router
         if (!isPasswordValid) {
           res.status(401).json({ message: 'Неверный пароль' });
         } else {
-          req.session.email = manager.email;
+          req.session.idManager = manager.id;
           req.session.save(() => {
             res.json({ message: 'Вы успешно авторизованы!', manager });
           });
