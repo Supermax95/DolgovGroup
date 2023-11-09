@@ -73,13 +73,12 @@ const Employees: FC = () => {
 
   const filterUsers = () => {
     let filtered = users;
-  
+
     if (selectedStatus !== null) {
       filtered = filtered.filter((user) =>
-        selectedStatus === 'Новый сотрудник' ? user.userStatus === selectedStatus : user.isActivated
+        user.userStatus === selectedStatus
       );
     }
-  
     if (searchText !== '') {
       filtered = filtered.filter((user) => {
         const fullName = `${user.lastName} ${user.firstName} ${user.middleName}`;
