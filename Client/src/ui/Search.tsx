@@ -12,16 +12,16 @@ const Search: FC<SearchProps> = ({ onFilter }) => {
   }, [searchText, onFilter]);
 
   return (
-    <div className='w-full'>
-      <form className="relative mx-auto flex w-full max-w-2xl items-center justify-between rounded-md border shadow-lg ">
+    <div className="w-full mr-4">
+      <form className="relative flex w-full items-center justify-between rounded-md border shadow-md">
         <svg
-          className="absolute left-2 block h-5 w-5 text-gray-400"
+          className="absolute left-2 block h-5 w-5 text-slate-400"
           xmlns="http://www.w3.org/2000/svg"
           width="24"
           height="24"
           viewBox="0 0 24 24"
           fill="none"
-          stroke="currentColor"
+          stroke="#94a3b8"
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -32,7 +32,7 @@ const Search: FC<SearchProps> = ({ onFilter }) => {
         <input
           type="name"
           name="search"
-          className="h-10 w-full rounded-md py-4 pr-4 pl-12 outline-none focus:ring-2"
+          className="h-10 w-full rounded-md py-4 pr-4 pl-12 outline-none focus:ring-2 focus:ring-orange-300"
           placeholder="Поиск"
           value={searchText}
           onChange={(event) => setSearchText(event.target.value)}
