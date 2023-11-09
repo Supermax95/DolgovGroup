@@ -121,9 +121,9 @@ const Employees: FC = () => {
             displayKey={(status) => status}
           />
           <div className="p-4">
-          <Search onFilter={setSearchText} />
             <Table
               title="Список сотрудников"
+              childrenSearch={<Search onFilter={setSearchText} />}
               columnsDefaultName={columnsDefaultName}
               data={displayedUsers}
               currentPage={currentPage}

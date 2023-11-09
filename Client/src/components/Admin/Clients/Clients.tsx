@@ -145,9 +145,9 @@ const Clients: FC = () => {
             displayKey={(status) => status}
           />
           <div className="p-4">
-            <Search onFilter={setSearchText} />
             <Table
               title="Список клиентов"
+              childrenSearch={<Search onFilter={setSearchText} />}
               columnsDefaultName={columnsDefaultName}
               data={displayedUsers}
               currentPage={currentPage}

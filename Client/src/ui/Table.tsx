@@ -9,6 +9,7 @@ interface ITable {
   columnsListDb: string[];
   currentPage: number;
   itemsPerPage: number;
+  childrenSearch: React.ReactNode
   // filtredExtra?: any[];
   onAddClick: () => void;
   onEditClick: (item: any) => void;
@@ -23,14 +24,16 @@ const Table: FC<ITable> = ({
   currentPage,
   itemsPerPage,
   // filtredExtra,
+  childrenSearch,
   onAddClick,
   onEditClick,
   renderCell,
 }) => {
   return (
     <div>
-      <div className="flex justify-between">
         <h1 className="text-xl text-lime-600 font-medium mb-4">{title}</h1>
+        <div className="flex justify-between">
+        {childrenSearch}
         <Button
           type="button"
           onClick={onAddClick}
