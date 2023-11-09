@@ -4,7 +4,7 @@ const { Manager } = require('../../db/models');
 
 module.exports = router
   .get('/check', async (req, res) => {
-    console.log(req.session.email);
+    //console.log(req.session.email);
     if (!req.session || !req.session.email) {
       res.status(401).json({ message: 'Пользователь не авторизован' });
     }
@@ -15,8 +15,8 @@ module.exports = router
       });
       res.json({ message: 'Вы залогинены!', manager });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Произошла ошибка на сервере' });
+      console.log(error, 'Произошла ошибка на сервере');
+      res.status(500);
     }
   })
 
