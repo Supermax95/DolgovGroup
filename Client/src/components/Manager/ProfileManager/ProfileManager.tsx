@@ -83,6 +83,7 @@ const ProfileManager: FC = () => {
   };
 
   //! нужна регулярка, проверяющая верность кириллицы на введение ФИО  её прокинуть в native
+  //! сделать регистр первой буквы заглавной для ФИО
   const handleSubmitProfileManager = async (
     e: React.FormEvent
   ): Promise<void> => {
@@ -160,13 +161,13 @@ const ProfileManager: FC = () => {
     }
   };
 
+  //! сделать регистр первой буквы заглавной для ФИО
   const inputFieldsName = [
     {
       id: 'lastName',
       name: 'lastName',
       type: 'text',
       placeholder: data.newLastName,
-      // autoCapitalize: 'words',
       autoComplete: 'off',
       htmlFor: 'lastName',
       title: 'Фамилия',
@@ -180,7 +181,6 @@ const ProfileManager: FC = () => {
       name: 'firstName',
       type: 'text',
       placeholder: data.newFirstName,
-      //  autoCapitalize: 'words',
       autoComplete: 'off',
       htmlFor: 'firstName',
       title: 'Имя',
@@ -194,7 +194,6 @@ const ProfileManager: FC = () => {
       name: 'middleName',
       type: 'text',
       placeholder: data.newMiddleName,
-      //   autoCapitalize: 'words',
       autoComplete: 'off',
       htmlFor: 'middleName',
       title: 'Отчество',
@@ -211,7 +210,6 @@ const ProfileManager: FC = () => {
       name: 'oldPassword',
       type: showPassword ? 'text' : 'password',
       placeholder: '',
-      //   autoCapitalize: 'none',
       autoComplete: 'off',
       htmlFor: 'password',
       title: 'Старый пароль',
@@ -236,7 +234,6 @@ const ProfileManager: FC = () => {
       name: 'password',
       type: showNewPassword ? 'text' : 'password',
       placeholder: '',
-      //  autoCapitalize: 'none',
       autoComplete: 'off',
       htmlFor: 'newPassword',
       title: 'Новый пароль',
@@ -261,7 +258,6 @@ const ProfileManager: FC = () => {
       name: 'confirmPassword',
       type: showConfirmPassword ? 'text' : 'password',
       placeholder: '',
-      //  autoCapitalize: 'none',
       autoComplete: 'off',
       htmlFor: 'confirmPassword',
       title: 'Повторите пароль',

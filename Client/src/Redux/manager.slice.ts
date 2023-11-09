@@ -4,6 +4,7 @@ import portalLogout from './thunks/PortalLogin/portalLogout.api';
 import portalCheck from './thunks/PortalLogin/portalCheck';
 import editProfileManager from './thunks/Manager/profileManager.api';
 import changePassword from './thunks/Manager/changePassword.api';
+import changeEmailAdmin from './thunks/Manager/changeEmailAdmin.api';
 
 export interface IManager {
   id: number;
@@ -105,6 +106,7 @@ const managerSlice = createSlice({
         state.manager.lastName = lastName;
         state.manager.firstName = firstName;
         state.manager.middleName = middleName;
+        state.message = action.payload.message;
       })
       .addCase(editProfileManager.rejected, (state, action) => {
         state.isLoading = false;
@@ -126,6 +128,23 @@ const managerSlice = createSlice({
         state.error = action.error.message;
         console.log(state.error);
         console.log('Норм======>', action.error);
+      })
+      //* email
+      .addCase(changeEmailAdmin.pending, (state) => {
+        state.isLoading = true;
+        state.isAuth = false;
+      })
+      .addCase(changeEmailAdmin.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isAuth = true;
+        state.manager.email = action.payload.email;
+        state.message = action.payload.message;
+        console.log('Норм======>', action);
+      })
+      .addCase(changeEmailAdmin.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+        console.log(state.error);
       });
   },
 });
