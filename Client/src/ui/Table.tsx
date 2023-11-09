@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
 import Button from './Button';
+import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/20/solid';
 
 interface ITable {
   title: string;
@@ -11,6 +12,7 @@ interface ITable {
   // filtredExtra?: any[];
   onAddClick: () => void;
   onEditClick: (item: any) => void;
+  renderCell?: () => void;
 }
 
 const Table: FC<ITable> = ({
@@ -23,16 +25,8 @@ const Table: FC<ITable> = ({
   // filtredExtra,
   onAddClick,
   onEditClick,
+  renderCell,
 }) => {
-  // const [showActive, setShowActive] = useState(true);
-
-  // const handleShowActiveChange = () => {
-  //   setShowActive(!showActive);
-  // };
-  
-  // const filteredData = showActive
-  // ? filtredExtra.filter((item) => item.isActivated)
-  // : filtredExtra.filter((item) => !item.isActivated);
   return (
     <div>
       <div className="flex justify-between">
@@ -47,17 +41,7 @@ const Table: FC<ITable> = ({
         />
       </div>
 
-            {/* <div>
-              <input
-                type="checkbox"
-                checked={showActive}
-                onChange={handleShowActiveChange}
-                className="mr-2"
-              />
-              Показать активных
-            </div> */}
       <div className="my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 pr-10 lg:px-4">
-        
         <div className="align-middle inline-block min-w-full shadow overflow-hidden bg-white shadow-dashboard rounded-bl-lg rounded-br-lg">
           <table className="min-w-full">
             <thead>
@@ -73,16 +57,7 @@ const Table: FC<ITable> = ({
                     {columnDefaultName.name}
                   </th>
                 ))}
-                <th className="w-36 border-b-2 border-orange-300">
-                  {/* <Button
-                    type="button"
-                    onClick={onAddClick}
-                    styleCSSSpan={
-                      'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
-                    }
-                    title="Добавить"
-                  /> */}
-                </th>
+                <th className="w-36 border-b-2 border-orange-300"></th>
               </tr>
             </thead>
 
@@ -97,7 +72,25 @@ const Table: FC<ITable> = ({
                       key={columnName}
                       className="px-6 py-3  text-center  whitespace-no-wrap border-b-2 border-slate-300 text-slate-600 text-sm font-normal"
                     >
-                      {item[columnName]}
+                      {columnName === 'isActivated' ? (
+                        item[columnName] ? (
+                          <span className="flex justify-center">
+                            <CheckCircleIcon
+                              className="h-8 w-8 text-lime-600"
+                              aria-hidden="true"
+                            />
+                          </span>
+                        ) : (
+                          <span className="flex justify-center">
+                            <XCircleIcon
+                              className="h-8 w-8 text-orange-400"
+                              aria-hidden="true"
+                            />
+                          </span>
+                        )
+                      ) : (
+                        item[columnName]
+                      )}
                     </td>
                   ))}
                   <td className="px-6 py-3 whitespace-no-wrap text-right border-b-2 border-slate-300">

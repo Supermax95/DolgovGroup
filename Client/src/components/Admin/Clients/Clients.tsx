@@ -72,16 +72,6 @@ const Clients: FC = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
-
-    const filteredUsers =
-    selectedStatus === null
-      ? users
-      : users.filter((user) =>
-          selectedStatus === 'Активные' ? user.isActivated : !user.isActivated
-        );
-
-
-
   const filterUsers = () => {
     let filtered = users;
 
@@ -155,7 +145,7 @@ const Clients: FC = () => {
             displayKey={(status) => status}
           />
           <div className="p-4">
-          <Search onFilter={setSearchText} />
+            <Search onFilter={setSearchText} />
             <Table
               title="Список клиентов"
               columnsDefaultName={columnsDefaultName}
