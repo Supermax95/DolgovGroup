@@ -101,6 +101,11 @@ const Location: FC = () => {
 
   const displayedLocations = filterLocations().slice(startIndex, endIndex);
 
+  const totalPages = Math.ceil(filteredLocations.length / itemsPerPage);
+
+  // Извлекаем уникальные города
+  const uniqueCities = [...new Set(locations.map((location) => location.city))];
+
   const openEditModal = (location: ILocation) => {
     setSelectedLocation(location);
     setEditedLocation({ ...location });
@@ -142,11 +147,6 @@ const Location: FC = () => {
       console.error('Произошла ошибка при редактировании:', error);
     }
   };
-
-  const totalPages = Math.ceil(filteredLocations.length / itemsPerPage);
-
-  // Извлекаем уникальные города
-  const uniqueCities = [...new Set(locations.map((location) => location.city))];
 
   return (
     <Wrapper>

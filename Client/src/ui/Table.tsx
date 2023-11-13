@@ -11,7 +11,7 @@ interface ITable {
   itemsPerPage: number;
   childrenSearch: React.ReactNode;
   // filtredExtra?: any[];
-  onAddClick: () => void;
+  onAddClick?: () => void;
   onEditClick: (item: any) => void;
   renderCell?: () => void;
 }
@@ -27,7 +27,6 @@ const Table: FC<ITable> = ({
   childrenSearch,
   onAddClick,
   onEditClick,
-  renderCell,
 }) => {
   return (
     <div>

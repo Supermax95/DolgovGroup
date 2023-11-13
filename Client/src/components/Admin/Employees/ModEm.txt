@@ -1,14 +1,10 @@
-import { FC, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useAppDispatch } from '../../../Redux/hooks';
 import Wrapper from '../../../ui/Wrapper';
-import Sidebar from '../../../ui/Sidebar';
-import Pagination from '../../../ui/Paggination';
-import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
-import getEmployees from '../../../Redux/thunks/Users/getEmployee.api';
-import Table from '../../../ui/Table';
-import Search from '../../../ui/Search';
-import EmployeesModal from './EmployeesModal';
-import editEmployees from '../../../Redux/thunks/Users/editEmployee.api';
+import InputModal, { InputField } from '../../../ui/InputModal';
+import Modal from '../../../ui/Modal';
 import { UserGroupIcon } from '@heroicons/react/24/outline';
+import ModalUser from '../../../ui/ModalUser';
 
 interface User {
   id: number;
@@ -18,167 +14,216 @@ interface User {
   email: string;
   barcode: string;
   userStatus: string;
+  birthDate?: Date | null | string;
+  bonusProgram: string;
+  balance: number;
   isActivated: boolean;
 }
 
-interface IColumnsDefaultName {
-  name: string;
+interface UsersModalProps {
+  isOpen: boolean;
+  user: User | null;
+  onSave: (editedUser: User) => void;
+  onClose: () => void;
+  editedUser: User | null | undefined;
+  setEditedUser: React.Dispatch<React.SetStateAction<User | null | undefined>>;
 }
 
-type IColumnsListDb =
-  | 'id'
-  | 'lastName'
-  | 'firstName'
-  | 'middleName'
-  | 'email'
-  | 'barcode'
-  | 'userStatus'
-  | 'isActivated';
-
-const Employees: FC = () => {
+const EmployeesModal: React.FC<UsersModalProps> = ({
+  isOpen,
+  user,
+  onSave,
+  onClose,
+  editedUser,
+  setEditedUser,
+}) => {
   const dispatch = useAppDispatch();
 
-  const users = useAppSelector<User[]>((state) => state.usersSlice.data);
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const [editedUser, setEditedUser] = useState<User | null | undefined>(null);
-  const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
-  const [searchText, setSearchText] = useState('');
-  const [isModalOpen, setModalOpen] = useState(false);
-
-  const columnsDefaultName: IColumnsDefaultName[] = [
-    { name: 'Фамилия' },
-    { name: 'Имя' },
-    { name: 'Отчество' },
-    { name: 'Email' },
-    { name: 'Номер карты' },
-    { name: 'Статус' },
-    { name: 'Активен' },
-  ];
-
-  const columnsListDb: IColumnsListDb[] = [
-    'id',
-    'lastName',
-    'firstName',
-    'middleName',
-    'email',
-    'barcode',
-    'userStatus',
-    'isActivated',
-  ];
-
   useEffect(() => {
-    dispatch(getEmployees());
-  }, [dispatch]);
-
-  const itemsPerPage = 50;
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-
-  const filterUsers = () => {
-    let filtered = users;
-
-    if (selectedStatus !== null) {
-      filtered = filtered.filter((user) => user.userStatus === selectedStatus);
+    if (user) {
+      setEditedUser({ ...user });
     }
-    if (searchText !== '') {
-      filtered = filtered.filter((user) => {
-        const fullName = `${user.lastName} ${user.firstName} ${user.middleName}`;
-        const reversedFullName = `${user.firstName} ${user.lastName} ${user.middleName}`;
-        const reversedFullName1 = `${user.middleName} ${user.lastName} ${user.firstName}`;
-        const reversedFullName2 = `${user.middleName} ${user.firstName} ${user.lastName}`;
+  }, [user, setEditedUser]);
 
-        return (
-          fullName.toLowerCase().includes(searchText.toLowerCase()) ||
-          reversedFullName.toLowerCase().includes(searchText.toLowerCase()) ||
-          reversedFullName1.toLowerCase().includes(searchText.toLowerCase()) ||
-          reversedFullName2.toLowerCase().includes(searchText.toLowerCase())
-        );
-      });
-    }
+  const modalTitle = 'Редактирование анкеты клиента';
 
-    return filtered;
+  const handleCancel = () => {
+    setEditedUser(undefined);
+    onClose();
   };
 
-  const displayedUsers = filterUsers().slice(startIndex, endIndex);
+  const handleSave = () => {
+    if (editedUser) {
+      onSave(editedUser);
+      onClose();
+    }
+  };
 
-  const uniqueEmployeeStatuses = [
-    ...new Set(users.map((user) => user.userStatus)),
+  if (!isOpen || !editedUser) {
+    return null;
+  }
+
+  const inputFields: InputField[] = [
+    {
+      id: 'lastName',
+      type: 'text',
+      value: editedUser.lastName,
+      placeholder: '',
+      autoCapitalize: 'words',
+      autoComplete: 'off',
+      title: 'Фамилия',
+      htmlFor: 'lastName',
+      onChange: (value: string) =>
+        setEditedUser({
+          ...editedUser,
+          lastName: value,
+        }),
+    },
+    {
+      id: 'firstName',
+      type: 'text',
+      value: editedUser.firstName,
+      placeholder: '',
+      autoCapitalize: 'words',
+      autoComplete: 'off',
+      title: 'Имя',
+      htmlFor: 'firstName',
+      onChange: (value: string) =>
+        setEditedUser({
+          ...editedUser,
+          firstName: value,
+        }),
+    },
+    {
+      id: 'middleName',
+      type: 'text',
+      value: editedUser.middleName,
+      placeholder: '',
+      autoCapitalize: 'words',
+      autoComplete: 'off',
+      title: 'Отчество',
+      htmlFor: 'middleName',
+      onChange: (value: string) =>
+        setEditedUser({
+          ...editedUser,
+          middleName: value,
+        }),
+    },
+    {
+      id: 'email',
+      type: 'email',
+      value: editedUser.email,
+      placeholder: '',
+      autoComplete: 'off',
+      title: 'Email',
+      htmlFor: 'email',
+      onChange: (value: string) =>
+        setEditedUser({
+          ...editedUser,
+          email: value,
+        }),
+    },
+    {
+      id: 'barcode',
+      type: 'text',
+      value: editedUser.barcode,
+      placeholder: '',
+      autoComplete: 'off',
+      title: 'Штрих-код',
+      htmlFor: 'barcode',
+      onChange: (value: string) =>
+        setEditedUser({
+          ...editedUser,
+          barcode: value,
+        }),
+    },
+    {
+      id: 'userStatus',
+      type: 'text',
+      value: editedUser.userStatus,
+      placeholder: '',
+      autoCapitalize: 'words',
+      autoComplete: 'off',
+      title: 'Статус пользователя',
+      htmlFor: 'userStatus',
+      onChange: (value: string) =>
+        setEditedUser({
+          ...editedUser,
+          userStatus: value,
+        }),
+    },
+    {
+      id: 'isActivated',
+      type: 'checkbox',
+      checked: editedUser.isActivated,
+      title: 'Активирован',
+      htmlFor: 'isActivated',
+      onChange: (value: boolean) =>
+        setEditedUser({
+          ...editedUser,
+          isActivated: value,
+        }),
+    },
+    {
+      id: 'birthdate',
+      type: 'date',
+      value: editedUser.birthDate,
+      placeholder: '',
+      autoComplete: 'off',
+      title: 'Дата рождения',
+      htmlFor: 'birthdate',
+      onChange: (value: string | null | Date) =>
+        setEditedUser({
+          ...editedUser,
+          birthDate: new Date(value),
+        }),
+    },
+    // {
+    //   id: 'bonusProgram',
+    //   type: 'text',
+    //   value: editedUser.bonusProgram,
+    //   placeholder: '',
+    //   autoCapitalize: 'words',
+    //   autoComplete: 'off',
+    //   title: 'Бонусная программа',
+    //   htmlFor: 'bonusProgram',
+    //   onChange: (value: string) =>
+    //     setEditedUser({
+    //       ...editedUser,
+    //       bonusProgram: value,
+    //     }),
+    // },
+    {
+      id: 'balance',
+      type: 'number',
+      value: editedUser.balance.toString(),
+      placeholder: '',
+      autoComplete: 'off',
+      title: 'Баланс',
+      htmlFor: 'balance',
+      onChange: (value: string) =>
+        setEditedUser({
+          ...editedUser,
+          balance: parseFloat(value),
+        }),
+    },
   ];
-
-  const totalPages = Math.ceil(filterUsers.length / itemsPerPage);
-
-  const openEditModal = (user: User) => {
-    setSelectedUser(user);
-    setEditedUser({ ...user });
-    setModalOpen(true); // Assuming you have a modal component to open.
-  };
-
-  const closeEditModal = () => {
-    setSelectedUser(null);
-    setEditedUser(null);
-    setModalOpen(false); // Close the modal.
-  };
-
-  const handleSave = async (editedUser: User) => {
-    try {
-      if (selectedUser) {
-        await dispatch(
-          editEmployees({
-            employeeId: selectedUser.id,
-            newInfo: editedUser,
-          })
-        );
-        closeEditModal();
-      }
-    } catch (error) {
-      console.error('Произошла ошибка при редактировании:', error);
-    }
-  };
 
   return (
     <>
       <Wrapper>
-        <div>
-          <div className="flex">
-            <Sidebar
-              items={uniqueEmployeeStatuses}
-              onItemSelect={setSelectedStatus}
-              title="Сотрудники"
-              setCurrentPage={setCurrentPage}
-              displayKey={(status) => status}
-            />
-            <div className="p-4">
-              <Table
-                title="Список сотрудников"
-                childrenSearch={<Search onFilter={setSearchText} />}
-                columnsDefaultName={columnsDefaultName}
-                data={displayedUsers}
-                currentPage={currentPage}
-                itemsPerPage={itemsPerPage}
-                columnsListDb={columnsListDb}
-                onEditClick={openEditModal}
-              />
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={setCurrentPage}
-              />
-            </div>
-          </div>
-
-          {isModalOpen && selectedUser && (
-            <EmployeesModal
-              isOpen={isModalOpen}
-              user={selectedUser}
-              onSave={handleSave}
-              onClose={closeEditModal}
-              editedUser={editedUser}
-              setEditedUser={setEditedUser}
-            />
-          )}
-        </div>
+        <ModalUser
+          modalTitle={modalTitle}
+          onCancellick={handleCancel}
+          onSaveClick={handleSave}
+        >
+          <InputModal
+            containerClassName={
+              'py-8 grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'
+            }
+            inputFields={inputFields}
+          />
+        </ModalUser>
       </Wrapper>
       {/* <div
         className="py-20 bg-slate-700 bg-opacity-70 fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center"
@@ -375,7 +420,43 @@ const Employees: FC = () => {
                 </button>
               </div>
             </form> */}
-      {/* </section> */}
+
+      {/* <form>
+              <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+                <div className="relative">
+                  <input
+                    id="lastName"
+                    type="text"
+                    value={editedUser.lastName}
+                    placeholder=""
+                    autoComplete="off"
+                    className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
+                  />
+                  <label
+                    htmlFor="lastName"
+                    className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm"
+                  >
+                    Фамилия
+                  </label>
+                </div>
+                <div className="relative">
+                  <input
+                    id="lastName"
+                    type="text"
+                    value={editedUser.lastName}
+                    placeholder=""
+                    autoComplete="off"
+                    className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
+                  />
+                  <label
+                    htmlFor="lastName"
+                    className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm"
+                  >
+                    Фамилия
+                  </label>
+                </div>
+              </div>
+            </form> */}
       {/* </div>
         </div>
       </div> */}
@@ -383,4 +464,4 @@ const Employees: FC = () => {
   );
 };
 
-export default Employees;
+export default EmployeesModal;

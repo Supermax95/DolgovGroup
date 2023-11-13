@@ -2,6 +2,7 @@ import { FC } from 'react';
 
 interface IInputModal {
   inputFields: InputField[];
+  containerClassName?: string; // Добавил новый prop для класса
 }
 
 export interface InputField {
@@ -15,11 +16,15 @@ export interface InputField {
   htmlFor: string;
   required?: boolean;
   onChange: (value: string) => void;
+  divFielsCss?: string[];
 }
 
-const InputModal: FC<IInputModal> = ({ inputFields }) => {
+const InputModal: FC<IInputModal> = ({
+  inputFields,
+  containerClassName = 'py-8 text-base leading-6 space-y-4 text-slate-700 sm:text-lg sm:leading-7',
+}) => {
   return (
-    <div className="py-8 text-base leading-6 space-y-4 text-slate-700 sm:text-lg sm:leading-7">
+    <div className={`${containerClassName}`}>
       {inputFields.map((field) => (
         <div key={field.id} className="relative">
           <input

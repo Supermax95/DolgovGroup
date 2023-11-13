@@ -1,6 +1,6 @@
 const router = require('express').Router();
-const { DiscountCard } = require('../../db/models');
 const { Op } = require('sequelize');
+const { DiscountCard } = require('../../db/models');
 
 router.get('/admin/employees', async (req, res) => {
   try {
