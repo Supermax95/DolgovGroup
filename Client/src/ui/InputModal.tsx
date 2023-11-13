@@ -7,7 +7,7 @@ interface IInputModal {
 export interface InputField {
   id: string;
   type: string;
-  value?: string;
+  value?: string ;
   placeholder: string;
   autoCapitalize?: string;
   autoComplete: string;
