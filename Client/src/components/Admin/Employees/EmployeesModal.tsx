@@ -14,7 +14,7 @@ interface User {
   email: string;
   barcode: string;
   userStatus: string;
-  birthDate?: Date | null | string;
+  birthDate?: string;
   bonusProgram: string;
   balance: number;
   isActivated: boolean;
@@ -63,7 +63,7 @@ const EmployeesModal: React.FC<UsersModalProps> = ({
     return null;
   }
 
-  const inputFields: InputField[] = [
+  const inputFieldsDate: InputField[] = [
     {
       id: 'lastName',
       type: 'text',
@@ -80,11 +80,25 @@ const EmployeesModal: React.FC<UsersModalProps> = ({
         }),
     },
     {
+      id: 'barcode',
+      type: 'text',
+      value: editedUser.barcode,
+      placeholder: '',
+      autoComplete: 'off',
+      title: 'Номер карты',
+      htmlFor: 'barcode',
+      onChange: (value: string) =>
+        setEditedUser({
+          ...editedUser,
+          barcode: value,
+        }),
+      disabled: true,
+    },
+    {
       id: 'firstName',
       type: 'text',
       value: editedUser.firstName,
       placeholder: '',
-      autoCapitalize: 'words',
       autoComplete: 'off',
       title: 'Имя',
       htmlFor: 'firstName',
@@ -95,11 +109,25 @@ const EmployeesModal: React.FC<UsersModalProps> = ({
         }),
     },
     {
+      id: 'balance',
+      type: 'number',
+      value: editedUser.balance.toString(),
+      placeholder: '',
+      autoComplete: 'off',
+      title: 'Баланс',
+      htmlFor: 'balance',
+      onChange: (value: string) =>
+        setEditedUser({
+          ...editedUser,
+          balance: parseFloat(value),
+        }),
+      disabled: true,
+    },
+    {
       id: 'middleName',
       type: 'text',
       value: editedUser.middleName,
       placeholder: '',
-      autoCapitalize: 'words',
       autoComplete: 'off',
       title: 'Отчество',
       htmlFor: 'middleName',
@@ -108,6 +136,21 @@ const EmployeesModal: React.FC<UsersModalProps> = ({
           ...editedUser,
           middleName: value,
         }),
+    },
+    {
+      id: 'birthdate',
+      type: 'date',
+      value: editedUser.birthDate,
+      placeholder: '',
+      autoComplete: 'off',
+      title: 'Дата рождения',
+      htmlFor: 'birthdate',
+      onChange: (value: string) =>
+        setEditedUser({
+          ...editedUser,
+          birthDate: new Date(value),
+        }),
+      disabled: true,
     },
     {
       id: 'email',
@@ -123,26 +166,53 @@ const EmployeesModal: React.FC<UsersModalProps> = ({
           email: value,
         }),
     },
+
     {
-      id: 'barcode',
+      id: 'bonusProgram',
       type: 'text',
-      value: editedUser.barcode,
+      value: editedUser.bonusProgram,
       placeholder: '',
       autoComplete: 'off',
-      title: 'Штрих-код',
-      htmlFor: 'barcode',
+      title: 'Бонусная программа',
+      htmlFor: 'bonusProgram',
       onChange: (value: string) =>
         setEditedUser({
           ...editedUser,
-          barcode: value,
+          bonusProgram: value,
         }),
     },
+    // {
+    //   id: 'balance',
+    //   type: 'number',
+    //   value: editedUser.balance.toString(),
+    //   placeholder: '',
+    //   autoComplete: 'off',
+    //   title: 'Баланс',
+    //   htmlFor: 'balance',
+    //   onChange: (value: string) =>
+    //     setEditedUser({
+    //       ...editedUser,
+    //       balance: parseFloat(value),
+    //     }),
+    //   disabled: true,
+    // },
+
+    // {
+    //   id: '',
+    //   type: 'checkbox',
+    //   value: 'что-то',
+    //   htmlFor: '',
+    //   // onChange: (value: boolean) =>
+    //   //   setEditedUser({
+    //   //     ...editedUser,
+    //   //     isActivated: value,
+    //   //   }),
+    // },
     {
       id: 'userStatus',
       type: 'text',
       value: editedUser.userStatus,
       placeholder: '',
-      autoCapitalize: 'words',
       autoComplete: 'off',
       title: 'Статус пользователя',
       htmlFor: 'userStatus',
@@ -150,60 +220,6 @@ const EmployeesModal: React.FC<UsersModalProps> = ({
         setEditedUser({
           ...editedUser,
           userStatus: value,
-        }),
-    },
-    // {
-    //   id: 'isActivated',
-    //   type: 'checkbox',
-    //   value: editedUser.isActivated,
-    //   htmlFor: 'isActivated',
-    //   onChange: (value: boolean) =>
-    //     setEditedUser({
-    //       ...editedUser,
-    //       isActivated: value,
-    //     }),
-    // },
-    {
-      id: 'birthdate',
-      type: 'date',
-      value: editedUser.birthDate,
-      placeholder: '',
-      autoComplete: 'off',
-      title: 'Дата рождения',
-      htmlFor: 'birthdate',
-      onChange: (value: string | null | Date) =>
-        setEditedUser({
-          ...editedUser,
-          birthDate: new Date(value),
-        }),
-    },
-    // {
-    //   id: 'bonusProgram',
-    //   type: 'text',
-    //   value: editedUser.bonusProgram,
-    //   placeholder: '',
-    //   autoCapitalize: 'words',
-    //   autoComplete: 'off',
-    //   title: 'Бонусная программа',
-    //   htmlFor: 'bonusProgram',
-    //   onChange: (value: string) =>
-    //     setEditedUser({
-    //       ...editedUser,
-    //       bonusProgram: value,
-    //     }),
-    // },
-    {
-      id: 'balance',
-      type: 'number',
-      value: editedUser.balance.toString(),
-      placeholder: '',
-      autoComplete: 'off',
-      title: 'Баланс',
-      htmlFor: 'balance',
-      onChange: (value: string) =>
-        setEditedUser({
-          ...editedUser,
-          balance: parseFloat(value),
         }),
     },
     {
@@ -219,6 +235,7 @@ const EmployeesModal: React.FC<UsersModalProps> = ({
     },
   ];
 
+  const allInputFields = [...inputFieldsDate];
   return (
     <Wrapper>
       <ModalUser
@@ -228,7 +245,7 @@ const EmployeesModal: React.FC<UsersModalProps> = ({
       >
         <InputModal
           containerClassName={'py-8 grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'}
-          inputFields={inputFields}
+          inputFields={allInputFields}
         />
       </ModalUser>
     </Wrapper>
