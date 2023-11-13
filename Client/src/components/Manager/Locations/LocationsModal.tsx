@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useAppDispatch } from '../../../Redux/hooks';
 import addLocation from '../../../Redux/thunks/Locations/addLocation.api';
 import deleteLocation from '../../../Redux/thunks/Locations/deleteLocation.api';
@@ -27,7 +27,7 @@ interface LocationsModalProps {
   >;
 }
 
-const LocationsModal: React.FC<LocationsModalProps> = ({
+const LocationsModal: FC<LocationsModalProps> = ({
   isOpen,
   location,
   onSave,
@@ -76,6 +76,7 @@ const LocationsModal: React.FC<LocationsModalProps> = ({
     }
     return false;
   };
+  
   const handleAdd = async () => {
     if (areFieldsValid() && editedLocation) {
       try {

@@ -6,6 +6,9 @@ import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import getEmployees from '../../../Redux/thunks/Users/getEmployee.api';
 import Table from '../../../ui/Table';
 import Search from '../../../ui/Search';
+import EmployeesModal from './EmployeesModal';
+import editEmployees from '../../../Redux/thunks/Users/editEmployee.api';
+import { UserGroupIcon } from '@heroicons/react/24/outline';
 
 interface User {
   id: number;
@@ -36,11 +39,14 @@ const Employees: FC = () => {
   const dispatch = useAppDispatch();
 
   const users = useAppSelector<User[]>((state) => state.usersSlice.data);
+
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [editedUser, setEditedUser] = useState<User | null | undefined>(null);
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
   const [searchText, setSearchText] = useState('');
-  const [editedUser, setEditedUser] = useState<User | null | undefined>(null);
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [isModalOpen, setModalOpen] = useState(false);
+
 
   const columnsDefaultName: IColumnsDefaultName[] = [
     { name: 'Фамилия' },
@@ -109,7 +115,7 @@ const Employees: FC = () => {
   const openEditModal = (user: User) => {
     setSelectedUser(user);
     setEditedUser({ ...user });
-    setModalOpen(true);
+    setModalOpen(true); // Assuming you have a modal component to open.
   };
 
   const closeEditModal = (user: User) => {
@@ -122,8 +128,8 @@ const Employees: FC = () => {
     try {
       if (selectedUser) {
         await dispatch(
-          editClients({
-            clientId: selectedUser.id,
+          editEmployees({
+            employeeId: selectedUser.id,
             newInfo: editedUser,
           })
         );
@@ -135,36 +141,48 @@ const Employees: FC = () => {
   };
 
   return (
-    <Wrapper>
-      <div>
-        <div className="flex">
-          <Sidebar
-            items={uniqueEmployeeStatuses}
-            onItemSelect={setSelectedStatus}
-            title="Сотрудники"
-            setCurrentPage={setCurrentPage}
-            displayKey={(status) => status}
-          />
-          <div className="p-4">
-            <Table
-              title="Список сотрудников"
-              childrenSearch={<Search onFilter={setSearchText} />}
-              columnsDefaultName={columnsDefaultName}
-              data={displayedUsers}
-              currentPage={currentPage}
-              itemsPerPage={itemsPerPage}
-              columnsListDb={columnsListDb}
+      <Wrapper>
+        <div>
+          <div className="flex">
+            <Sidebar
+              items={uniqueEmployeeStatuses}
+              onItemSelect={setSelectedStatus}
+              title="Сотрудники"
+              setCurrentPage={setCurrentPage}
+              displayKey={(status) => status}
             />
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={setCurrentPage}
-            />
+            <div className="p-4">
+              <Table
+                title="Список сотрудников"
+                childrenSearch={<Search onFilter={setSearchText} />}
+                columnsDefaultName={columnsDefaultName}
+                data={displayedUsers}
+                currentPage={currentPage}
+                itemsPerPage={itemsPerPage}
+                columnsListDb={columnsListDb}
+                onEditClick={openEditModal}
+              />
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
+            </div>
           </div>
+
+          {isModalOpen && selectedUser && (
+            <EmployeesModal
+              isOpen={isModalOpen}
+              user={selectedUser}
+              onSave={handleSave}
+              onClose={closeEditModal}
+              editedUser={editedUser}
+              setEditedUser={setEditedUser}
+            />
+          )}
         </div>
-      </div>
-    </Wrapper>
-  );
+      </Wrapper>
+      );
 };
 
 export default Employees;
