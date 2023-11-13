@@ -45,7 +45,7 @@ const EmployeesModal: React.FC<UsersModalProps> = ({
     }
   }, [user, setEditedUser]);
 
-  const modalTitle = 'Редактирование анкеты клиента';
+  const modalTitle = 'Редактирование анкеты';
 
   const handleCancel = () => {
     setEditedUser(undefined);
@@ -152,18 +152,17 @@ const EmployeesModal: React.FC<UsersModalProps> = ({
           userStatus: value,
         }),
     },
-    {
-      id: 'isActivated',
-      type: 'checkbox',
-      checked: editedUser.isActivated,
-      title: 'Активирован',
-      htmlFor: 'isActivated',
-      onChange: (value: boolean) =>
-        setEditedUser({
-          ...editedUser,
-          isActivated: value,
-        }),
-    },
+    // {
+    //   id: 'isActivated',
+    //   type: 'checkbox',
+    //   value: editedUser.isActivated,
+    //   htmlFor: 'isActivated',
+    //   onChange: (value: boolean) =>
+    //     setEditedUser({
+    //       ...editedUser,
+    //       isActivated: value,
+    //     }),
+    // },
     {
       id: 'birthdate',
       type: 'date',
@@ -205,6 +204,17 @@ const EmployeesModal: React.FC<UsersModalProps> = ({
         setEditedUser({
           ...editedUser,
           balance: parseFloat(value),
+        }),
+    },
+    {
+      id: 'isActivated',
+      type: 'checkbox',
+      value: editedUser.isActivated,
+      htmlFor: 'isActivated',
+      onChange: (value: boolean) =>
+        setEditedUser({
+          ...editedUser,
+          isActivated: value,
         }),
     },
   ];
