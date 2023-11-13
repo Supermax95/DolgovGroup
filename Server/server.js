@@ -19,7 +19,7 @@ const portalRouter = require('./srcClient/routes/portalRouter');
 const clientsRouter = require('./srcClient/routes/clientsRouter');
 const employeeRouter = require('./srcClient/routes/employeeRouter');
 const profileManager = require('./srcClient/routes/editProfileManagerRouter');
-
+const nodemailerRouterClient = require('./srcClient/routes/nodeMailerRouter');
 // middleware
 const errorMiddleware = require('./srcNative/middlewares/error-middleware');
 
@@ -70,6 +70,7 @@ app.use('/portal', portalRouter);
 app.use('/', clientsRouter);
 app.use('/', employeeRouter);
 app.use('/profileManager', profileManager);
+app.use('/', nodemailerRouterClient);
 
 app.listen(PORT, () => {
   console.log(`Сервер крутится на ${PORT} порту`);

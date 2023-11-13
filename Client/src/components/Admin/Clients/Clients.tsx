@@ -7,6 +7,8 @@ import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import getClients from '../../../Redux/thunks/Users/getClients.api';
 import editClients from '../../../Redux/thunks/Users/editClients.api';
 import Search from '../../../ui/Search';
+import Modal from '../../../ui/Modal';
+import UsersModal from './ClientsModal';
 
 interface User {
   id: number;
@@ -42,6 +44,7 @@ const Clients: FC = () => {
   const [editedUser, setEditedUser] = useState<User | null | undefined>(null);
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
   const [searchText, setSearchText] = useState('');
+  const [isModalOpen, setModalOpen] = useState(false);
 
   const columnsDefaultName: IColumnsDefaultName[] = [
     { name: 'Фамилия' },
@@ -83,16 +86,18 @@ const Clients: FC = () => {
 
     if (searchText !== '') {
       filtered = filtered.filter((user) => {
-        const fullName = `${user.lastName} ${user.firstName} ${user.middleName}`;
-        const reversedFullName = `${user.firstName} ${user.lastName} ${user.middleName}`;
-        const reversedFullName1 = `${user.middleName} ${user.lastName} ${user.firstName}`;
-        const reversedFullName2 = `${user.middleName} ${user.firstName} ${user.lastName}`;
+        const userFields = [
+          user.lastName,
+          user.firstName,
+          user.middleName,
+          user.email,
+          user.barcode,
+        ];
 
-        return (
-          fullName.toLowerCase().includes(searchText.toLowerCase()) ||
-          reversedFullName.toLowerCase().includes(searchText.toLowerCase()) ||
-          reversedFullName1.toLowerCase().includes(searchText.toLowerCase()) ||
-          reversedFullName2.toLowerCase().includes(searchText.toLowerCase())
+        const searchTerms = searchText.toLowerCase().split(' ');
+
+        return searchTerms.every((term) =>
+          userFields.some((field) => field.toLowerCase().includes(term))
         );
       });
     }
@@ -105,13 +110,13 @@ const Clients: FC = () => {
   const openEditModal = (user: User) => {
     setSelectedUser(user);
     setEditedUser({ ...user });
-    setModalOpen(true); // Assuming you have a modal component to open.
+    setModalOpen(true);
   };
 
   const closeEditModal = () => {
     setSelectedUser(null);
     setEditedUser(null);
-    setModalOpen(false); // Close the modal.
+    setModalOpen(false);
   };
 
   const handleSave = async (editedUser: User) => {
@@ -163,7 +168,16 @@ const Clients: FC = () => {
               totalPages={totalPages}
               onPageChange={setCurrentPage}
             />
-            {/* Modal component */}
+            {isModalOpen && selectedUser && (
+              <UsersModal
+                isOpen={isModalOpen}
+                user={selectedUser}
+                onSave={handleSave}
+                onClose={closeEditModal}
+                editedUser={editedUser}
+                setEditedUser={setEditedUser}
+              />
+            )}
           </div>
         </div>
       </div>
