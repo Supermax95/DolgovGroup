@@ -3,6 +3,7 @@ import getClients from './thunks/Users/getClients.api';
 import editClients from './thunks/Users/editClients.api';
 import editEmployees from './thunks/Users/editEmployee.api';
 import getEmployees from './thunks/Users/getEmployee.api';
+import codeSend from './thunks/Nodemailer/nodemailerCode.api';
 
 interface User {
   id: number;
@@ -86,6 +87,18 @@ const usersSlice = createSlice({
         state.isLoading = false;
         state.error =
           action.error.message || 'Произошла ошибка при редактировании';
+      })
+      .addCase(codeSend.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(codeSend.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.message = action.payload.message;
+      })
+      .addCase(codeSend.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error =
+          action.error.message || 'Произошла ошибка при отправке письма';
       });
   },
 });
