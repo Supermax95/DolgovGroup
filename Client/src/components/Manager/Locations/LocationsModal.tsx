@@ -76,7 +76,7 @@ const LocationsModal: FC<LocationsModalProps> = ({
     }
     return false;
   };
-  
+
   const handleAdd = async () => {
     if (areFieldsValid() && editedLocation) {
       try {

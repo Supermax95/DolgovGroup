@@ -5,6 +5,7 @@ import portalCheck from './thunks/PortalLogin/portalCheck';
 import editProfileManager from './thunks/Manager/profileManager.api';
 import changePassword from './thunks/Manager/changePassword.api';
 import changeEmailAdmin from './thunks/Manager/changeEmailAdmin.api';
+import getManager from './thunks/Manager/Management/getManager.api';
 
 export interface IManager {
   id: number;
@@ -18,6 +19,7 @@ export interface IManager {
 
 interface managerState {
   manager: IManager;
+  data: IManager[];
   isAuth: boolean;
   isLoading: boolean;
   message: string;
@@ -34,6 +36,7 @@ const initialState: managerState = {
     email: '',
     isAdmin: false,
   },
+  data: [],
   isAuth: false,
   isLoading: false,
   message: '',
@@ -127,7 +130,6 @@ const managerSlice = createSlice({
         state.isLoading = false;
         state.error = action.error.message;
         console.log(state.error);
-        console.log('Норм======>', action.error);
       })
       //* email
       .addCase(changeEmailAdmin.pending, (state) => {
@@ -139,12 +141,25 @@ const managerSlice = createSlice({
         state.isAuth = true;
         state.manager.email = action.payload.email;
         state.message = action.payload.message;
-        console.log('Норм======>', action);
       })
       .addCase(changeEmailAdmin.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
         console.log(state.error);
+      })
+      //* getManager
+      .addCase(getManager.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(getManager.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.data = action.payload;
+        console.log('YJHV', action.payload);
+      })
+      .addCase(getManager.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
       });
   },
 });

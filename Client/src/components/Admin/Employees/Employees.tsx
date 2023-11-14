@@ -8,7 +8,6 @@ import Table from '../../../ui/Table';
 import Search from '../../../ui/Search';
 import EmployeesModal from './EmployeesModal';
 import editEmployees from '../../../Redux/thunks/Users/editEmployee.api';
-import { UserGroupIcon } from '@heroicons/react/24/outline';
 
 interface User {
   id: number;
@@ -46,7 +45,6 @@ const Employees: FC = () => {
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
   const [searchText, setSearchText] = useState('');
   const [isModalOpen, setModalOpen] = useState(false);
-
 
   const columnsDefaultName: IColumnsDefaultName[] = [
     { name: 'Фамилия' },
@@ -141,48 +139,48 @@ const Employees: FC = () => {
   };
 
   return (
-      <Wrapper>
-        <div>
-          <div className="flex">
-            <Sidebar
-              items={uniqueEmployeeStatuses}
-              onItemSelect={setSelectedStatus}
-              title="Сотрудники"
-              setCurrentPage={setCurrentPage}
-              displayKey={(status) => status}
+    <Wrapper>
+      <div>
+        <div className="flex">
+          <Sidebar
+            items={uniqueEmployeeStatuses}
+            onItemSelect={setSelectedStatus}
+            title="Сотрудники"
+            setCurrentPage={setCurrentPage}
+            displayKey={(status) => status}
+          />
+          <div className="p-4">
+            <Table
+              title="Список сотрудников"
+              childrenSearch={<Search onFilter={setSearchText} />}
+              columnsDefaultName={columnsDefaultName}
+              data={displayedUsers}
+              currentPage={currentPage}
+              itemsPerPage={itemsPerPage}
+              columnsListDb={columnsListDb}
+              onEditClick={openEditModal}
             />
-            <div className="p-4">
-              <Table
-                title="Список сотрудников"
-                childrenSearch={<Search onFilter={setSearchText} />}
-                columnsDefaultName={columnsDefaultName}
-                data={displayedUsers}
-                currentPage={currentPage}
-                itemsPerPage={itemsPerPage}
-                columnsListDb={columnsListDb}
-                onEditClick={openEditModal}
-              />
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={setCurrentPage}
-              />
-            </div>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
           </div>
-
-          {isModalOpen && selectedUser && (
-            <EmployeesModal
-              isOpen={isModalOpen}
-              user={selectedUser}
-              onSave={handleSave}
-              onClose={closeEditModal}
-              editedUser={editedUser}
-              setEditedUser={setEditedUser}
-            />
-          )}
         </div>
-      </Wrapper>
-      );
+
+        {isModalOpen && selectedUser && (
+          <EmployeesModal
+            isOpen={isModalOpen}
+            user={selectedUser}
+            onSave={handleSave}
+            onClose={closeEditModal}
+            editedUser={editedUser}
+            setEditedUser={setEditedUser}
+          />
+        )}
+      </div>
+    </Wrapper>
+  );
 };
 
 export default Employees;
