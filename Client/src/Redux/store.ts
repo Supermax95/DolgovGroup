@@ -15,6 +15,7 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import locationsSlice from './locations.slice';
 import managerSlice from './manager.slice';
 import usersSlice from './user.slice';
+import productsSlice from './products.slice';
 
 // const rootReducer = combineReducers({
 //   locationsSlice,
@@ -34,6 +35,7 @@ const store = configureStore({
     locationsSlice,
     managerSlice,
     usersSlice,
+    productsSlice,
   },
 });
 

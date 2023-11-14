@@ -12,7 +12,7 @@ interface IInputModal {
 export interface InputField {
   id: string;
   type: string;
-  value?: string | boolean;
+  value?: string | boolean | Date;
   placeholder: string;
   autoComplete: string;
   title?: string;
