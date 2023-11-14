@@ -19,7 +19,7 @@ const portalRouter = require('./srcClient/routes/portalRouter');
 const clientsRouter = require('./srcClient/routes/clientsRouter');
 const employeeRouter = require('./srcClient/routes/employeeRouter');
 const profileManager = require('./srcClient/routes/editProfileManagerRouter');
-const nodemailerRouterClient = require('./srcClient/routes/nodeMailerRouter');
+const nodemailerRouterClient = require('./srcClient/routes/nodemailerRouter');
 // middleware
 const errorMiddleware = require('./srcNative/middlewares/error-middleware');
 
