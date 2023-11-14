@@ -2,8 +2,6 @@ import React, { useEffect } from 'react';
 import { useAppDispatch } from '../../../Redux/hooks';
 import Wrapper from '../../../ui/Wrapper';
 import InputModal, { InputField } from '../../../ui/InputModal';
-import Modal from '../../../ui/Modal';
-import { UserGroupIcon } from '@heroicons/react/24/outline';
 import ModalUser from '../../../ui/ModalUser';
 
 interface User {
@@ -69,7 +67,6 @@ const EmployeesModal: React.FC<UsersModalProps> = ({
       type: 'text',
       value: editedUser.lastName,
       placeholder: '',
-      autoCapitalize: 'words',
       autoComplete: 'off',
       title: 'Фамилия',
       htmlFor: 'lastName',

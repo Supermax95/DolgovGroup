@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { useAppDispatch } from '../../../Redux/hooks';
 import Wrapper from '../../../ui/Wrapper';
 import InputModal, { InputField } from '../../../ui/InputModal';
-import Modal from '../../../ui/Modal';
 import codeSend from '../../../Redux/thunks/Nodemailer/nodemailerCode.api';
+import ModalUser from '../../../ui/ModalUser';
 
 interface User {
   id: number;
@@ -28,7 +28,7 @@ interface UsersModalProps {
   setEditedUser: React.Dispatch<React.SetStateAction<User | null | undefined>>;
 }
 
-const UsersModal: React.FC<UsersModalProps> = ({
+const ClientsModal: React.FC<UsersModalProps> = ({
   isOpen,
   user,
   onSave,
@@ -54,16 +54,6 @@ const UsersModal: React.FC<UsersModalProps> = ({
   const handleSave = () => {
     if (editedUser) {
       onSave(editedUser);
-      dispatch(
-        codeSend({
-          userId: editedUser.id,
-          firstName: editedUser.firstName,
-          middleName: editedUser.middleName,
-          email: editedUser.email,
-          userStatus: editedUser.userStatus,
-        })
-      );
-
       onClose();
     }
   };
@@ -72,13 +62,12 @@ const UsersModal: React.FC<UsersModalProps> = ({
     return null;
   }
 
-  const inputFields: InputField[] = [
+  const inputFieldsDate: InputField[] = [
     {
       id: 'lastName',
       type: 'text',
       value: editedUser.lastName,
       placeholder: '',
-      autoCapitalize: 'words',
       autoComplete: 'off',
       title: 'Фамилия',
       htmlFor: 'lastName',
@@ -89,11 +78,25 @@ const UsersModal: React.FC<UsersModalProps> = ({
         }),
     },
     {
+      id: 'barcode',
+      type: 'text',
+      value: editedUser.barcode,
+      placeholder: '',
+      autoComplete: 'off',
+      title: 'Номер карты',
+      htmlFor: 'barcode',
+      onChange: (value: string) =>
+        setEditedUser({
+          ...editedUser,
+          barcode: value,
+        }),
+      disabled: true,
+    },
+    {
       id: 'firstName',
       type: 'text',
       value: editedUser.firstName,
       placeholder: '',
-      autoCapitalize: 'words',
       autoComplete: 'off',
       title: 'Имя',
       htmlFor: 'firstName',
@@ -101,105 +104,6 @@ const UsersModal: React.FC<UsersModalProps> = ({
         setEditedUser({
           ...editedUser,
           firstName: value,
-        }),
-    },
-    {
-      id: 'middleName',
-      type: 'text',
-      value: editedUser.middleName,
-      placeholder: '',
-      autoCapitalize: 'words',
-      autoComplete: 'off',
-      title: 'Отчество',
-      htmlFor: 'middleName',
-      onChange: (value: string) =>
-        setEditedUser({
-          ...editedUser,
-          middleName: value,
-        }),
-    },
-    {
-      id: 'email',
-      type: 'email',
-      value: editedUser.email,
-      placeholder: '',
-      autoComplete: 'off',
-      title: 'Email',
-      htmlFor: 'email',
-      onChange: (value: string) =>
-        setEditedUser({
-          ...editedUser,
-          email: value,
-        }),
-    },
-    {
-      id: 'barcode',
-      type: 'text',
-      value: editedUser.barcode,
-      placeholder: '',
-      autoComplete: 'off',
-      title: 'Штрих-код',
-      htmlFor: 'barcode',
-      onChange: (value: string) =>
-        setEditedUser({
-          ...editedUser,
-          barcode: value,
-        }),
-    },
-    {
-      id: 'userStatus',
-      type: 'text',
-      value: editedUser.userStatus,
-      placeholder: '',
-      autoCapitalize: 'words',
-      autoComplete: 'off',
-      title: 'Статус пользователя',
-      htmlFor: 'userStatus',
-      onChange: (value: string) =>
-        setEditedUser({
-          ...editedUser,
-          userStatus: value,
-        }),
-    },
-    {
-      id: 'isActivated',
-      type: 'checkbox',
-      checked: editedUser.isActivated,
-      title: 'Активирован',
-      htmlFor: 'isActivated',
-      onChange: (value: boolean) =>
-        setEditedUser({
-          ...editedUser,
-          isActivated: value,
-        }),
-    },
-    {
-      id: 'birthdate',
-      type: 'date',
-      value: editedUser.birthdate,
-      placeholder: '',
-      autoComplete: 'off',
-      title: 'Дата рождения',
-      htmlFor: 'birthdate',
-      onChange: (value: string) =>
-        setEditedUser({
-          ...editedUser,
-          birthdate: new Date(value),
-        }),
-    },
-    {
-      id: 'bonusProgram',
-      type: 'text',
-      value: editedUser.bonusProgram,
-      placeholder: '',
-      autoCapitalize: 'words',
-      autoComplete: 'off',
-      title: 'Бонусная программа',
-      htmlFor: 'bonusProgram',
-      onChange: (value: string) =>
-        setEditedUser({
-          ...editedUser,
-          bonusProgram: value,
         }),
     },
     {
@@ -215,20 +119,135 @@ const UsersModal: React.FC<UsersModalProps> = ({
           ...editedUser,
           balance: parseFloat(value),
         }),
+      disabled: true,
+    },
+    {
+      id: 'middleName',
+      type: 'text',
+      value: editedUser.middleName,
+      placeholder: '',
+      autoComplete: 'off',
+      title: 'Отчество',
+      htmlFor: 'middleName',
+      onChange: (value: string) =>
+        setEditedUser({
+          ...editedUser,
+          middleName: value,
+        }),
+    },
+    {
+      id: 'birthdate',
+      type: 'date',
+      value: editedUser.birthDate,
+      placeholder: '',
+      autoComplete: 'off',
+      title: 'Дата рождения',
+      htmlFor: 'birthdate',
+      onChange: (value: string) =>
+        setEditedUser({
+          ...editedUser,
+          birthDate: new Date(value),
+        }),
+      disabled: true,
+    },
+    {
+      id: 'email',
+      type: 'email',
+      value: editedUser.email,
+      placeholder: '',
+      autoComplete: 'off',
+      title: 'Email',
+      htmlFor: 'email',
+      onChange: (value: string) =>
+        setEditedUser({
+          ...editedUser,
+          email: value,
+        }),
+    },
+
+    {
+      id: 'bonusProgram',
+      type: 'text',
+      value: editedUser.bonusProgram,
+      placeholder: '',
+      autoComplete: 'off',
+      title: 'Бонусная программа',
+      htmlFor: 'bonusProgram',
+      onChange: (value: string) =>
+        setEditedUser({
+          ...editedUser,
+          bonusProgram: value,
+        }),
+    },
+    // {
+    //   id: 'balance',
+    //   type: 'number',
+    //   value: editedUser.balance.toString(),
+    //   placeholder: '',
+    //   autoComplete: 'off',
+    //   title: 'Баланс',
+    //   htmlFor: 'balance',
+    //   onChange: (value: string) =>
+    //     setEditedUser({
+    //       ...editedUser,
+    //       balance: parseFloat(value),
+    //     }),
+    //   disabled: true,
+    // },
+
+    // {
+    //   id: '',
+    //   type: 'checkbox',
+    //   value: 'что-то',
+    //   htmlFor: '',
+    //   // onChange: (value: boolean) =>
+    //   //   setEditedUser({
+    //   //     ...editedUser,
+    //   //     isActivated: value,
+    //   //   }),
+    // },
+    {
+      id: 'userStatus',
+      type: 'text',
+      value: editedUser.userStatus,
+      placeholder: '',
+      autoComplete: 'off',
+      title: 'Статус пользователя',
+      htmlFor: 'userStatus',
+      onChange: (value: string) =>
+        setEditedUser({
+          ...editedUser,
+          userStatus: value,
+        }),
+    },
+    {
+      id: 'isActivated',
+      type: 'checkbox',
+      value: editedUser.isActivated,
+      htmlFor: 'isActivated',
+      onChange: (value: boolean) =>
+        setEditedUser({
+          ...editedUser,
+          isActivated: value,
+        }),
     },
   ];
 
+  const allInputFields = [...inputFieldsDate];
   return (
     <Wrapper>
-      <Modal
+      <ModalUser
         modalTitle={modalTitle}
         onCancellick={handleCancel}
         onSaveClick={handleSave}
       >
-        <InputModal inputFields={inputFields} />
-      </Modal>
+        <InputModal
+          containerClassName={'py-8 grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'}
+          inputFields={allInputFields}
+        />
+      </ModalUser>
     </Wrapper>
   );
 };
 
-export default UsersModal;
+export default ClientsModal;

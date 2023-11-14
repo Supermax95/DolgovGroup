@@ -11,9 +11,17 @@ const Search: FC<SearchProps> = ({ onFilter }) => {
     onFilter(searchText);
   }, [searchText, onFilter]);
 
+  const handleSearch = (event: React.FormEvent) => {
+    event.preventDefault();
+    onFilter(searchText);
+  };
+
   return (
     <div className="w-full mr-4">
-      <form className="relative flex w-full items-center justify-between rounded-md border shadow-md">
+      <form
+        onSubmit={handleSearch}
+        className="relative flex w-full items-center justify-between rounded-md border shadow-md"
+      >
         <svg
           className="absolute left-2 block h-5 w-5 text-slate-400"
           xmlns="http://www.w3.org/2000/svg"
