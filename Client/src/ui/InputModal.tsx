@@ -24,15 +24,14 @@ export interface InputField {
   options?: { value: string; label: string }[];
 }
 
-
 const InputModal: FC<IInputModal> = ({
   inputFields,
-  containerClassName,
+  containerClassName = 'py-8 text-base leading-6 space-y-4 text-slate-700 sm:text-lg sm:leading-7',
   codeSend,
   activationSend,
 }) => {
   return (
-    <div className="py-8 grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+    <div className={`${containerClassName}`}>
       {inputFields.map((field) => (
         <div key={field.id} className="relative">
           {field.id === 'isActivated' ? (
@@ -80,7 +79,6 @@ const InputModal: FC<IInputModal> = ({
                       'relative inline-flex items-center justify-center p-0.5 mb-0 mr-0 overflow-hidden text-sm font-medium text-slate-700 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 hover:text-white'
                     }
                     onClick={activationSend}
-
                     styleCSSSpan={
                       'w-44 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
                     }
