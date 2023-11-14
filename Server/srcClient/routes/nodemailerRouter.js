@@ -1,8 +1,9 @@
 const express = require('express');
-// const { DiscountCard } = require('../../db/models');
+const { DiscountCard } = require('../../db/models');
 
 const nodemailerRouterClient = express.Router();
 const nodemailer = require('nodemailer');
+const uuid = require('uuid');
 
 const transporter = nodemailer.createTransport({
   port: 465,
@@ -61,6 +62,45 @@ nodemailerRouterClient.post('/nodemailer/:id', async (req, res) => {
     }
     res.status(200).json({ message: 'Код пользователю отправлен' });
   });
+  console.log('Код для сотрудника отправлен по почте');
+});
+
+nodemailerRouterClient.post('/nodemailer/:id', async (req, res) => {
+  const userId = req.params.id;
+
+  try {
+    const user = await DiscountCard.findOne({ where: { id: userId } });
+
+    if (!user) {
+      return res.status(404).json({ message: 'Пользователь не найден' });
+    }
+
+    const activationLink = uuid.v4();
+
+    await user.update({ activationLink });
+
+    const mailData = {
+      from: process.env.EMAIL,
+      to: user.email,
+      subject: 'Подтверждение почты',
+      text: '',
+      html: `
+        <div style="font-family: 'Arial', sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+          <h2 style="color: #333; text-align: center;">Для активации перейдите по ссылке</h2>
+          <a href="${activationLink}">Активировать аккаунт</a>
+        </div>
+      `,
+    };
+
+    res
+      .status(200)
+      .json({ message: 'Письмо с новым activationLink отправлено' });
+  } catch (error) {
+    console.error('Ошибка при генерации и обновлении activationLink:', error);
+    res.status(500).json({
+      message: 'Произошла ошибка при генерации и обновлении activationLink',
+    });
+  }
 });
 
 module.exports = nodemailerRouterClient;

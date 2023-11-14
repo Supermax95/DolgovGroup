@@ -79,13 +79,16 @@ class MailService {
         from: process.env.EMAIL,
         to,
         subject: 'Изменение пароля',
-        text: `Ваш новый временный пароль: ${newPassword}`,
+        text: '',
         html: `
-          <div style="font-family: 'Arial', sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
-            <h2 style="color: #333; text-align: center;">Ваш новый временный пароль</h2>
-            <p style="font-size: 16px; color: #555; text-align: center;">Ваш временный пароль: <strong>${newPassword}</strong></p>
-          </div>
-        `,
+        <div style="font-family: 'Arial', sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+        <p style="font-size: 18px; color: #333; text-align: center;">Ваш новый временный пароль</p>
+        <div style="text-align: center; background-color: #f5f5f5; padding: 10px; border-radius: 5px;">
+          <span style="font-size: 2em; font-weight: bold; display: block;">${newPassword}</span>
+        </div>
+        <p style="font-size: 16px; color: #555; text-align: center; margin-top: 20px;">С уважением, DolgovGroup!</p>
+      </div>
+      `,
       });
       console.log('Письмо успешно отправлено');
     } catch (error) {
