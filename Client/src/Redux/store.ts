@@ -35,7 +35,7 @@ const store = configureStore({
     locationsSlice,
     managerSlice,
     usersSlice,
-    productsSlice
+    productsSlice,
   },
 });
 
