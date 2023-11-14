@@ -227,7 +227,7 @@ const EmployeesModal: React.FC<UsersModalProps> = ({
     },
     {
       id: 'isActivated',
-      type: 'checkbox',
+      type: 'text',
       value: editedUser.isActivated,
       htmlFor: 'isActivated',
       onChange: (value: boolean) =>
