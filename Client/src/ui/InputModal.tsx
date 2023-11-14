@@ -4,7 +4,9 @@ import Button from './Button';
 
 interface IInputModal {
   inputFields: InputField[];
-  containerClassName?: string; // Добавил новый prop для класса
+  containerClassName?: string;
+  codeSend?: () => void;
+  activationSend?: () => void;
 }
 
 export interface InputField {
@@ -22,7 +24,13 @@ export interface InputField {
   options?: { value: string; label: string }[];
 }
 
-const InputModal: FC<IInputModal> = ({ inputFields, containerClassName }) => {
+
+const InputModal: FC<IInputModal> = ({
+  inputFields,
+  containerClassName,
+  codeSend,
+  activationSend,
+}) => {
   return (
     <div className="py-8 grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
       {inputFields.map((field) => (
@@ -46,6 +54,7 @@ const InputModal: FC<IInputModal> = ({ inputFields, containerClassName }) => {
                     styleCSSButton={
                       'relative inline-flex items-center justify-center p-0.5 mb-0 mr-0 overflow-hidden text-sm font-medium text-slate-700 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 hover:text-white'
                     }
+                    onClick={codeSend}
                     styleCSSSpan={
                       'w-44 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
                     }
@@ -70,6 +79,8 @@ const InputModal: FC<IInputModal> = ({ inputFields, containerClassName }) => {
                     styleCSSButton={
                       'relative inline-flex items-center justify-center p-0.5 mb-0 mr-0 overflow-hidden text-sm font-medium text-slate-700 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 hover:text-white'
                     }
+                    onClick={activationSend}
+
                     styleCSSSpan={
                       'w-44 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
                     }

@@ -3,7 +3,8 @@ import getClients from './thunks/Users/getClients.api';
 import editClients from './thunks/Users/editClients.api';
 import editEmployees from './thunks/Users/editEmployee.api';
 import getEmployees from './thunks/Users/getEmployee.api';
-import codeSend from './thunks/Nodemailer/nodemailerCode.api';
+import  nodemailerCodeSend from './thunks/Nodemailer/nodemailerCodeSend.api';
+import nodemailerActivationSend from './thunks/Nodemailer/nodemailerActivation.api';
 
 interface User {
   id: number;
@@ -23,6 +24,7 @@ interface UserState {
   status: number | null;
   message: string | null;
 }
+
 
 const initialState: UserState = {
   data: [],
@@ -88,14 +90,26 @@ const usersSlice = createSlice({
         state.error =
           action.error.message || 'Произошла ошибка при редактировании';
       })
-      .addCase(codeSend.pending, (state) => {
+      .addCase(nodemailerCodeSend.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(codeSend.fulfilled, (state, action) => {
+      .addCase(nodemailerCodeSend.fulfilled, (state, action) => {
         state.isLoading = false;
         state.message = action.payload.message;
       })
-      .addCase(codeSend.rejected, (state, action) => {
+      .addCase(nodemailerCodeSend.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error =
+          action.error.message || 'Произошла ошибка при отправке письма';
+      })
+      .addCase(nodemailerActivationSend.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(nodemailerActivationSend.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.message = action.payload.message;
+      })
+      .addCase(nodemailerActivationSend.rejected, (state, action) => {
         state.isLoading = false;
         state.error =
           action.error.message || 'Произошла ошибка при отправке письма';
