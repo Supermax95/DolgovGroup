@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import { useAppDispatch } from '../../../Redux/hooks';
 import Wrapper from '../../../ui/Wrapper';
 import InputModal, { InputField } from '../../../ui/InputModal';
-import codeSend from '../../../Redux/thunks/Nodemailer/nodemailerCode.api';
 import ModalUser from '../../../ui/ModalUser';
-
+import nodemailerActivationSend from '../../../Redux/thunks/Nodemailer/nodemailerActivation.api';
+import nodemailerCodeSend from '../../../Redux/thunks/Nodemailer/nodemailerCodeSend.api';
 interface User {
   id: number;
   lastName: string;
@@ -219,10 +219,11 @@ const ClientsModal: React.FC<UsersModalProps> = ({
           ...editedUser,
           userStatus: value,
         }),
+    
     },
     {
       id: 'isActivated',
-      type: 'checkbox',
+      type: 'text',
       value: editedUser.isActivated,
       htmlFor: 'isActivated',
       onChange: (value: boolean) =>
@@ -230,6 +231,7 @@ const ClientsModal: React.FC<UsersModalProps> = ({
           ...editedUser,
           isActivated: value,
         }),
+  
     },
   ];
 
@@ -244,6 +246,8 @@ const ClientsModal: React.FC<UsersModalProps> = ({
         <InputModal
           containerClassName={'py-8 grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'}
           inputFields={allInputFields}
+          codeSend={() => editedUser && dispatch(nodemailerCodeSend(editedUser))}
+          activationSend={() => editedUser && dispatch(nodemailerActivationSend(editedUser))}
         />
       </ModalUser>
     </Wrapper>

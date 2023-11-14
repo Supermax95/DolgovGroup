@@ -3,7 +3,7 @@ import axios, { AxiosResponse } from 'axios';
 import { VITE_URL } from '../../../VITE_URL';
 
 interface RequestData {
-  userId: number;
+  id: number;
   firstName: string;
   middleName: string;
   email: string;
@@ -14,13 +14,13 @@ interface ResponseData {
   message: string;
 }
 
-const codeSend = createAsyncThunk<ResponseData, RequestData>(
-  'admin/nodemailer',
+const nodemailerCodeSend = createAsyncThunk<ResponseData, RequestData>(
+  'admin/nodemailerCode',
 
-  async ({ userId, firstName, middleName, email, userStatus }) => {
+  async ({ id, firstName, middleName, email, userStatus }) => {
     try {
       const response: AxiosResponse = await axios.post(
-        `${VITE_URL}/nodemailer/${userId}`,
+        `${VITE_URL}/nodemailerCodeSend/${id}`,
         { firstName, middleName, email, userStatus }
       );
       return response.data;
@@ -31,5 +31,5 @@ const codeSend = createAsyncThunk<ResponseData, RequestData>(
   }
 );
 
-export default codeSend;
+export default nodemailerCodeSend;
 

@@ -15,7 +15,7 @@ const transporter = nodemailer.createTransport({
   secure: true,
 });
 
-nodemailerRouterClient.post('/nodemailer/:id', async (req, res) => {
+nodemailerRouterClient.post('/nodemailerCodeSend/:id', async (req, res) => {
   const userId = req.params.id;
   const { firstName, middleName, email, userStatus } = req.body;
 
@@ -65,9 +65,9 @@ nodemailerRouterClient.post('/nodemailer/:id', async (req, res) => {
   console.log('Код для сотрудника отправлен по почте');
 });
 
-nodemailerRouterClient.post('/nodemailer/:id', async (req, res) => {
+nodemailerRouterClient.post('/nodemailerActivation/:id', async (req, res) => {
   const userId = req.params.id;
-
+  const { firstName, middleName } = req.body;
   try {
     const user = await DiscountCard.findOne({ where: { id: userId } });
 
@@ -86,11 +86,13 @@ nodemailerRouterClient.post('/nodemailer/:id', async (req, res) => {
       text: '',
       html: `
         <div style="font-family: 'Arial', sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+        <h2 style="color: #333; text-align: center;">Уважаемый(ая), ${firstName} ${middleName}!</h2>
           <h2 style="color: #333; text-align: center;">Для активации перейдите по ссылке</h2>
           <a href="${activationLink}">Активировать аккаунт</a>
         </div>
       `,
     };
+    transporter.sendMail(mailData);
 
     res
       .status(200)
