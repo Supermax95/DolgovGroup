@@ -219,7 +219,11 @@ const ClientsModal: React.FC<UsersModalProps> = ({
           ...editedUser,
           userStatus: value,
         }),
-    
+      options: [
+        { value: 'Сотрудник', label: 'Сотрудник' },
+        { value: 'Новый сотрудник', label: 'Новый сотрудник' },
+        { value: 'Клиент', label: 'Клиент' },
+      ],
     },
     {
       id: 'isActivated',
@@ -231,7 +235,6 @@ const ClientsModal: React.FC<UsersModalProps> = ({
           ...editedUser,
           isActivated: value,
         }),
-  
     },
   ];
 
@@ -246,8 +249,12 @@ const ClientsModal: React.FC<UsersModalProps> = ({
         <InputModal
           containerClassName={'py-8 grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'}
           inputFields={allInputFields}
-          codeSend={() => editedUser && dispatch(nodemailerCodeSend(editedUser))}
-          activationSend={() => editedUser && dispatch(nodemailerActivationSend(editedUser))}
+          codeSend={() =>
+            editedUser && dispatch(nodemailerCodeSend(editedUser))
+          }
+          activationSend={() =>
+            editedUser && dispatch(nodemailerActivationSend(editedUser))
+          }
         />
       </ModalUser>
     </Wrapper>

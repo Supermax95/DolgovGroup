@@ -3,6 +3,8 @@ import { useAppDispatch } from '../../../Redux/hooks';
 import Wrapper from '../../../ui/Wrapper';
 import InputModal, { InputField } from '../../../ui/InputModal';
 import ModalUser from '../../../ui/ModalUser';
+import nodemailerActivationSend from '../../../Redux/thunks/Nodemailer/nodemailerActivation.api';
+import nodemailerCodeSend from '../../../Redux/thunks/Nodemailer/nodemailerCodeSend.api';
 
 interface User {
   id: number;
@@ -249,6 +251,12 @@ const EmployeesModal: React.FC<UsersModalProps> = ({
         <InputModal
           containerClassName={'py-8 grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'}
           inputFields={allInputFields}
+          codeSend={() =>
+            editedUser && dispatch(nodemailerCodeSend(editedUser))
+          }
+          activationSend={() =>
+            editedUser && dispatch(nodemailerActivationSend(editedUser))
+          }
         />
       </ModalUser>
     </Wrapper>
