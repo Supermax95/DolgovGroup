@@ -1,4 +1,6 @@
 const express = require('express');
+
+const { PORT, IP } = process.env;
 const { DiscountCard } = require('../../db/models');
 
 const nodemailerRouterClient = express.Router();
@@ -85,12 +87,16 @@ nodemailerRouterClient.post('/nodemailerActivation/:id', async (req, res) => {
       subject: 'Подтверждение почты',
       text: '',
       html: `
-        <div style="font-family: 'Arial', sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
-        <h2 style="color: #333; text-align: center;">Уважаемый(ая), ${firstName} ${middleName}!</h2>
-          <h2 style="color: #333; text-align: center;">Для активации перейдите по ссылке</h2>
-          <a href="${activationLink}">Активировать аккаунт</a>
-        </div>
-      `,
+      <div style="font-family: 'Arial', sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background-color: #f9f9f9;">
+      <h2 style="color: #333; text-align: center; margin-bottom: 20px;">Уважаемый(ая), ${firstName} ${middleName}!</h2>
+      <p style="font-size: 16px; color: #555; text-align: center; margin-bottom: 20px;">
+        Для активации вашего аккаунта, пожалуйста, перейдите по следующей ссылке:
+      </p>
+      <div style="text-align: center; margin-bottom: 20px;">
+        <a href="http://${IP}:${PORT}/api/activate/${activationLink}" style="display: inline-block; padding: 15px 30px; background-color: #4caf50; color: #fff; text-decoration: none; border-radius: 5px; font-size: 16px;">
+          Активировать аккаунт
+        </a>
+      </div>`
     };
     transporter.sendMail(mailData);
 
