@@ -13,7 +13,7 @@ interface User {
   email: string;
   barcode: string;
   userStatus: string;
-  birthdate: Date;
+  birthDate?: Date;
   bonusProgram: string;
   balance: number;
   isActivated: boolean;
