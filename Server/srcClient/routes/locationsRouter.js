@@ -21,7 +21,7 @@ router.post('/admin/locations', async (req, res) => {
   const { newLocation } = req.body;
 
   try {
-    const createdLocation = await Location.create({
+    await Location.create({
       city: newLocation.city,
       address: newLocation.address,
       latitude: newLocation.latitude,
