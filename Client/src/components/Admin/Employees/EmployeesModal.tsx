@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useAppDispatch } from '../../../Redux/hooks';
 import Wrapper from '../../../ui/Wrapper';
 import InputModal, { InputField } from '../../../ui/InputModal';
@@ -29,7 +29,7 @@ interface UsersModalProps {
   setEditedUser: React.Dispatch<React.SetStateAction<User | null | undefined>>;
 }
 
-const EmployeesModal: React.FC<UsersModalProps> = ({
+const EmployeesModal: FC<UsersModalProps> = ({
   isOpen,
   user,
   onSave,

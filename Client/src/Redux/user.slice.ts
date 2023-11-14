@@ -3,7 +3,7 @@ import getClients from './thunks/Users/getClients.api';
 import editClients from './thunks/Users/editClients.api';
 import editEmployees from './thunks/Users/editEmployee.api';
 import getEmployees from './thunks/Users/getEmployee.api';
-import  nodemailerCodeSend from './thunks/Nodemailer/nodemailerCodeSend.api';
+import nodemailerCodeSend from './thunks/Nodemailer/nodemailerCodeSend.api';
 import nodemailerActivationSend from './thunks/Nodemailer/nodemailerActivation.api';
 
 interface User {
@@ -24,7 +24,6 @@ interface UserState {
   status: number | null;
   message: string | null;
 }
-
 
 const initialState: UserState = {
   data: [],

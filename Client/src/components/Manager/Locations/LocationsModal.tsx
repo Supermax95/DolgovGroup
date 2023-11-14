@@ -76,7 +76,7 @@ const LocationsModal: FC<LocationsModalProps> = ({
     }
     return false;
   };
-  
+
   const handleAdd = async () => {
     if (areFieldsValid() && editedLocation) {
       try {
@@ -112,7 +112,6 @@ const LocationsModal: FC<LocationsModalProps> = ({
       type: 'text',
       value: editedLocation.city,
       placeholder: '',
-      autoCapitalize: 'words',
       autoComplete: 'off',
       title: 'Город',
       htmlFor: 'city',
@@ -127,7 +126,6 @@ const LocationsModal: FC<LocationsModalProps> = ({
       type: 'text',
       value: editedLocation.address,
       placeholder: '',
-      autoCapitalize: 'words',
       autoComplete: 'off',
       title: 'Адрес',
       htmlFor: 'address',
