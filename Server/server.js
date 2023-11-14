@@ -20,6 +20,7 @@ const clientsRouter = require('./srcClient/routes/clientsRouter');
 const employeeRouter = require('./srcClient/routes/employeeRouter');
 const profileManager = require('./srcClient/routes/editProfileManagerRouter');
 const nodemailerRouterClient = require('./srcClient/routes/nodemailerRouter');
+const productsRouter = require('./srcClient/routes/productsRouter');
 // middleware
 const errorMiddleware = require('./srcNative/middlewares/error-middleware');
 
@@ -58,6 +59,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 //* Routes ReactNative
+app.use('/uploads/', express.static('uploads'));
 app.use('/api', indexRouter);
 app.use('/', activateRouter);
 app.use('/', userProfileRouter);
@@ -71,6 +73,7 @@ app.use('/', clientsRouter);
 app.use('/', employeeRouter);
 app.use('/profileManager', profileManager);
 app.use('/', nodemailerRouterClient);
+app.use('/', productsRouter);
 
 app.listen(PORT, () => {
   console.log(`Сервер крутится на ${PORT} порту`);

@@ -3,7 +3,7 @@ const express = require('express');
 const { PORT, IP } = process.env;
 const { DiscountCard } = require('../../db/models');
 
-const nodemailerRouterClient = express.Router();
+const router = express.Router();
 const nodemailer = require('nodemailer');
 const uuid = require('uuid');
 
@@ -17,7 +17,7 @@ const transporter = nodemailer.createTransport({
   secure: true,
 });
 
-nodemailerRouterClient.post('/nodemailerCodeSend/:id', async (req, res) => {
+router.post('/nodemailerCodeSend/:id', async (req, res) => {
   const userId = req.params.id;
   const { firstName, middleName, email, userStatus } = req.body;
 
@@ -67,7 +67,7 @@ nodemailerRouterClient.post('/nodemailerCodeSend/:id', async (req, res) => {
   console.log('Код для сотрудника отправлен по почте');
 });
 
-nodemailerRouterClient.post('/nodemailerActivation/:id', async (req, res) => {
+router.post('/nodemailerActivation/:id', async (req, res) => {
   const userId = req.params.id;
   const { firstName, middleName } = req.body;
   try {
@@ -111,4 +111,4 @@ nodemailerRouterClient.post('/nodemailerActivation/:id', async (req, res) => {
   }
 });
 
-module.exports = nodemailerRouterClient;
+module.exports = router;
