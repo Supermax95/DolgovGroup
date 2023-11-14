@@ -177,6 +177,7 @@ const EmployeesModal: React.FC<UsersModalProps> = ({
           ...editedUser,
           bonusProgram: value,
         }),
+      disabled: true,
     },
     // {
     //   id: 'balance',
@@ -218,6 +219,11 @@ const EmployeesModal: React.FC<UsersModalProps> = ({
           ...editedUser,
           userStatus: value,
         }),
+      options: [
+        { value: 'Сотрудник', label: 'Сотрудник' },
+        { value: 'Новый сотрудник', label: 'Новый сотрудник' },
+        { value: 'Клиент', label: 'Клиент' },
+      ],
     },
     {
       id: 'isActivated',
