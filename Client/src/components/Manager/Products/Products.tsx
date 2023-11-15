@@ -93,7 +93,7 @@ const Products: FC = () => {
       isNew: false,
       isDiscounted: false,
       description: '',
-      photo: '',
+      photo:'',
       categoryId: 0,
     });
     setModalOpen(true);
