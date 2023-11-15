@@ -231,7 +231,7 @@ const ProfileManager: FC = () => {
     },
     {
       id: 'newPassword',
-      name: 'password',
+      name: 'newPassword',
       type: showNewPassword ? 'text' : 'password',
       placeholder: '',
       autoComplete: 'off',
