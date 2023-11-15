@@ -60,7 +60,7 @@ const Modal: FC<IModal> = ({
           {children}
 
           <div className="flex items-center justify-center w-full">
-            {modalTitle === 'Редактирование данных менеджера' ? (
+            {/* {modalTitle === 'Редактирование данных менеджера' ? (
               <div className="flex">
                 <Button
                   type="button"
@@ -71,7 +71,7 @@ const Modal: FC<IModal> = ({
                   title="Выслать пароль"
                 />
               </div>
-            ) : null}
+            ) : null} */}
 
             {isAddingMode ? (
               <Button

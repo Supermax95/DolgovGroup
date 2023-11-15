@@ -101,6 +101,7 @@ const Management: FC = () => {
     setModalOpen(false);
   };
 
+  //* добавление менеджера
   const handleSaveAdd = async () => {
     if (editedManager) {
       try {
@@ -118,6 +119,7 @@ const Management: FC = () => {
     }
   };
 
+  //* редактирование менеджера
   const handleSaveEdit = async (editedManager: IManager) => {
     try {
       if (selectedManager) {
@@ -172,11 +174,11 @@ const Management: FC = () => {
             <div className="flex items-center">
               <div className="flex flex-col ml-3">
                 <div className="font-medium leading-none">
-                  Измненрия сохранены
+                  Изменения сохранены
                 </div>
-                <p className="text-sm text-slate-600 leading-none mt-2">
+                {/* <p className="text-sm text-slate-600 leading-none mt-2">
                   Временный пароль выслан на почту ???????
-                </p>
+                </p> */}
               </div>
             </div>
             <button
