@@ -1,11 +1,17 @@
-const express = require('express');
+// const express = require('express');
 
+// const { PORT, IP } = process.env;
+// const { DiscountCard } = require('../../db/models');
+
+// const router = express.Router();
+// const nodemailer = require('nodemailer');
+// const uuid = require('uuid');
+
+const router = require('express').Router();
 const { PORT, IP } = process.env;
-const { DiscountCard } = require('../../db/models');
-
-const router = express.Router();
 const nodemailer = require('nodemailer');
 const uuid = require('uuid');
+const { DiscountCard } = require('../../db/models');
 
 const transporter = nodemailer.createTransport({
   port: 465,
@@ -96,7 +102,7 @@ router.post('/nodemailerActivation/:id', async (req, res) => {
         <a href="http://${IP}:${PORT}/api/activate/${activationLink}" style="display: inline-block; padding: 15px 30px; background-color: #4caf50; color: #fff; text-decoration: none; border-radius: 5px; font-size: 16px;">
           Активировать аккаунт
         </a>
-      </div>`
+      </div>`,
     };
     transporter.sendMail(mailData);
 

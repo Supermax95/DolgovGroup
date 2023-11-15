@@ -6,13 +6,13 @@ import editProfileManager from './thunks/Manager/profileManager.api';
 import changePassword from './thunks/Manager/changePassword.api';
 import changeEmailAdmin from './thunks/Manager/changeEmailAdmin.api';
 import getManager from './thunks/Manager/Management/getManager.api';
+import addManager from './thunks/Manager/Management/addManager.api';
 
 export interface IManager {
   id: number;
   lastName: string;
   firstName: string;
   middleName: string;
-  birthDate: Date | null | string;
   email: string;
   isAdmin: boolean;
 }
@@ -32,7 +32,6 @@ const initialState: managerState = {
     lastName: '',
     firstName: '',
     middleName: '',
-    birthDate: null,
     email: '',
     isAdmin: false,
   },
@@ -87,7 +86,6 @@ const managerSlice = createSlice({
           lastName: '',
           firstName: '',
           middleName: '',
-          birthDate: null,
           email: '',
           isAdmin: false,
         };
@@ -147,7 +145,7 @@ const managerSlice = createSlice({
         state.error = action.error.message;
         console.log(state.error);
       })
-      //* getManager
+      //! getManager
       .addCase(getManager.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -157,6 +155,21 @@ const managerSlice = createSlice({
         state.data = action.payload;
       })
       .addCase(getManager.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      //! addManager
+      .addCase(addManager.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(addManager.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.data = action.payload;
+        console.log(' state.data ', state.data);
+        console.log('action.payload ', action.payload);
+      })
+      .addCase(addManager.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       });

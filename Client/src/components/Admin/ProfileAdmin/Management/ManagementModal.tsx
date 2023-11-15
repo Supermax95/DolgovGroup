@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from '../../../../Redux/hooks';
 import Wrapper from '../../../../ui/Wrapper';
 import InputModal, { InputField } from '../../../../ui/InputModal';
 import Modal from '../../../../ui/Modal';
+import addManager from '../../../../Redux/thunks/Manager/Management/addManager.api';
 
 interface IManager {
   id: number;
@@ -12,18 +13,15 @@ interface IManager {
   email: string;
 }
 
-interface IDate {
-  newLastName: string;
-  newFirstName: string;
-  newMiddleName: string;
-  newEmail: string;
-}
-
 interface ManagersModalProps {
   isOpen: boolean;
   manager: IManager | null;
-  onSave: (editedManager: IManager) => void;
-  onClose: () => void;
+  onSaveEdit: (editedManager: IManager) => void;
+  onSaveAdd: (editedManager: IManager) => void;
+
+  onCloseAddModal: () => void;
+  onCloseEditModal: () => void;
+
   isAddingMode: boolean;
   editedManager: IManager | null | undefined;
   setEditedManager: React.Dispatch<
@@ -34,8 +32,10 @@ interface ManagersModalProps {
 const ManagementModal: FC<ManagersModalProps> = ({
   isOpen,
   manager,
-  onSave,
-  onClose,
+  onSaveEdit,
+  onSaveAdd,
+  onCloseEditModal,
+  onCloseAddModal,
   isAddingMode,
   editedManager,
   setEditedManager,
@@ -57,47 +57,31 @@ const ManagementModal: FC<ManagersModalProps> = ({
   }, [manager, isAddingMode, setEditedManager]);
 
   const modalTitle = isAddingMode
-    ? 'Добавление менеджера'
+    ? 'Регистрация нового менеджера'
     : 'Редактирование данных менеджера';
 
   const handleCancel = () => {
     setEditedManager(undefined);
-    onClose();
+    onCloseEditModal();
   };
 
   const handleSave = () => {
     if (editedManager) {
-      onSave(editedManager);
-      onClose();
+      onSaveEdit(editedManager);
+      onCloseEditModal();
     }
   };
 
-  const handleAdd = async () => {
+  const handleAdd = () => {
     if (editedManager) {
-      try {
-        //await dispatch(
-        // addManager({
-        //   newManager: editedManager,
-        // })
-        onClose();
-      } catch (error) {
-        console.error('Произошла ошибка при добавлении:', error);
-      }
-    } else {
-      alert('Заполните все поля перед добавлением.');
+      onSaveAdd(editedManager);
+      onCloseAddModal();
     }
   };
 
   if (!isOpen || !editedManager) {
     return null;
   }
-
-  // const handleFieldChangeProfileManager = (
-  //   field: keyof IDate,
-  //   value: string
-  // ): void => {
-  //   setData((prevDate) => ({ ...prevDate, [field]: value }));
-  // };
 
   const inputFieldsDate: InputField[] = [
     {
@@ -113,8 +97,8 @@ const ManagementModal: FC<ManagersModalProps> = ({
           ...editedManager,
           lastName: value,
         }),
+      required: true,
     },
-
     {
       id: 'firstName',
       type: 'text',
@@ -128,6 +112,7 @@ const ManagementModal: FC<ManagersModalProps> = ({
           ...editedManager,
           firstName: value,
         }),
+      required: true,
     },
 
     {
@@ -143,6 +128,7 @@ const ManagementModal: FC<ManagersModalProps> = ({
           ...editedManager,
           middleName: value,
         }),
+      required: true,
     },
 
     {
@@ -158,22 +144,26 @@ const ManagementModal: FC<ManagersModalProps> = ({
           ...editedManager,
           email: value,
         }),
+      required: true,
     },
   ];
 
   const allInputFields = [...inputFieldsDate];
+
   return (
-    <Wrapper>
-      <Modal
-        modalTitle={modalTitle}
-        isAddingMode={isAddingMode}
-        onAddClick={handleAdd}
-        onSaveClick={handleSave}
-        onCancellick={handleCancel}
-      >
-        <InputModal inputFields={allInputFields} />
-      </Modal>
-    </Wrapper>
+    <>
+      <Wrapper>
+        <Modal
+          modalTitle={modalTitle}
+          isAddingMode={isAddingMode}
+          onAddClick={handleAdd}
+          onSaveClick={handleSave}
+          onCancellick={handleCancel}
+        >
+          <InputModal inputFields={allInputFields} />
+        </Modal>
+      </Wrapper>
+    </>
   );
 };
 

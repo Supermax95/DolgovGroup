@@ -26,6 +26,7 @@ const Table: FC<ITable> = ({
   onAddClick,
   onEditClick,
 }) => {
+  //console.log(data);
   return (
     <div>
       <h1 className="text-xl text-lime-600 font-medium mb-4">{title}</h1>
