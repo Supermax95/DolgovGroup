@@ -1,19 +1,7 @@
 const router = require('express').Router();
-const multer = require('multer');
-const transliterate = require('transliterate');
 const { Product } = require('../../db/models');
 
-const storageProduct = multer.diskStorage({
-  destination(req, file, cb) {
-    cb(null, './uploads/product');
-  },
-  filename(req, file, cb) {
-    const transliteratedName = transliterate(file.originalname);
-    cb(null, `${transliteratedName}`);
-  },
-});
 
-const uploadsProduct = multer({ storage: storageProduct });
 
 router.get('/admin/products', async (req, res) => {
   try {
@@ -30,7 +18,6 @@ router.get('/admin/products', async (req, res) => {
 
 router.post(
   '/admin/products',
-  uploadsProduct.single('file'),
   async (req, res) => {
     const { newProduct } = req.body;
     const originalname = req.file.filename;
@@ -45,7 +32,7 @@ router.post(
         isNew: newProduct.isNew,
         isDiscounted: newProduct.isDiscounted,
         description: newProduct.description,
-        photo: `/uploads/product/${originalname}`,
+        // photo: `/uploads/product/${originalname}`,
         categoryId: newProduct.categoryId,
       });
 
