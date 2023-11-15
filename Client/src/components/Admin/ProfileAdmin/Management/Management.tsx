@@ -25,7 +25,7 @@ const Management: FC = () => {
     (state) => state.managerSlice.data
   );
 
-  const [isModalOpen, setModalOpen] = useState(false);
+  const [isModalOpen, setModalOpen] = useState(true);
   const [isAddingMode, setAddingMode] = useState(false);
   const [selectedManager, setSelectedManager] = useState<IManager | null>(null);
   const [editedManager, setEditedManager] = useState<
@@ -111,7 +111,9 @@ const Management: FC = () => {
     setEditedManager({ ...manager });
     setAddingMode(false);
     setModalOpen(true);
+    console.log('Кнопка "Редактировать" нажата!');
   };
+  
 
   const closeEditModal = () => {
     setSelectedManager(null);
