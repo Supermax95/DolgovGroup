@@ -77,31 +77,29 @@ const Location: FC = () => {
     ? locations.filter((location) => location.city === selectedCity)
     : locations;
 
-    const filterLocations = () => {
-      let filtered = filteredLocations;
-        
-      if (searchText !== '') {
-        filtered = filtered.filter((location) => {
-          const locationFields = [
-            String(location.city),
-            String(location.address),
-            String(location.latitude),
-            String(location.longitude),
-            String(location.hours)
-          ];
-        
-          const searchTerms = searchText.toLowerCase().split(' ');
-        
-          return searchTerms.every((term) =>
-            locationFields.some((field) =>field.toLowerCase().includes(term)
-            )
-          );
-        });
-      }
-        
-      return filtered;
-    };
-    
+  const filterLocations = () => {
+    let filtered = filteredLocations;
+
+    if (searchText !== '') {
+      filtered = filtered.filter((location) => {
+        const locationFields = [
+          String(location.city),
+          String(location.address),
+          String(location.latitude),
+          String(location.longitude),
+          String(location.hours),
+        ];
+
+        const searchTerms = searchText.toLowerCase().split(' ');
+
+        return searchTerms.every((term) =>
+          locationFields.some((field) => field.toLowerCase().includes(term))
+        );
+      });
+    }
+
+    return filtered;
+  };
 
   const displayedLocations = filterLocations().slice(startIndex, endIndex);
 
@@ -109,13 +107,6 @@ const Location: FC = () => {
 
   // Извлекаем уникальные города
   const uniqueCities = [...new Set(locations.map((location) => location.city))];
-
-  const openEditModal = (location: ILocation) => {
-    setSelectedLocation(location);
-    setEditedLocation({ ...location });
-    setAddingMode(false);
-    setModalOpen(true);
-  };
 
   const openAddModal = () => {
     setAddingMode(true);
@@ -127,6 +118,13 @@ const Location: FC = () => {
       longitude: '',
       hours: '',
     });
+    setModalOpen(true);
+  };
+
+  const openEditModal = (location: ILocation) => {
+    setSelectedLocation(location);
+    setEditedLocation({ ...location });
+    setAddingMode(false);
     setModalOpen(true);
   };
 

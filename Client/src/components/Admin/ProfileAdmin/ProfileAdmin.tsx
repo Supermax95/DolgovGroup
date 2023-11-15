@@ -254,7 +254,7 @@ const ProfileAdmin: FC = () => {
       type: showPassword ? 'text' : 'password',
       placeholder: '',
       autoComplete: 'off',
-      htmlFor: 'password',
+      htmlFor: 'oldPassword',
       title: 'Старый пароль',
       value: data.oldPassword,
       onChange: (value: string) =>
@@ -274,7 +274,7 @@ const ProfileAdmin: FC = () => {
     },
     {
       id: 'newPassword',
-      name: 'password',
+      name: 'newPassword',
       type: showNewPassword ? 'text' : 'password',
       placeholder: '',
       autoComplete: 'off',

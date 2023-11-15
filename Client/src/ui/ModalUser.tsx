@@ -1,14 +1,12 @@
 import React, { FC } from 'react';
 import Button from './Button';
-import {
-  BuildingStorefrontIcon,
-  XMarkIcon,
-  UserGroupIcon,
-} from '@heroicons/react/24/outline';
+import { XMarkIcon, UserGroupIcon } from '@heroicons/react/24/outline';
 
 interface IModalUser {
   children: React.ReactNode;
   modalTitle: string;
+  isAddingMode?: boolean;
+  onAddClick?: () => void;
   onSaveClick: () => void;
   onCancellick: () => void;
 }
@@ -16,7 +14,8 @@ interface IModalUser {
 const ModalUser: FC<IModalUser> = ({
   children,
   modalTitle,
-
+  isAddingMode,
+  onAddClick,
   onSaveClick,
   onCancellick,
 }) => {
@@ -60,14 +59,33 @@ const ModalUser: FC<IModalUser> = ({
           {children}
 
           <div className="flex items-center justify-center w-full">
-            <Button
+            {/* <Button
               type="button"
               onClick={onSaveClick}
               styleCSSSpan={
                 'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
               }
               title="Сохранить"
-            />
+            /> */}
+            {isAddingMode ? (
+              <Button
+                type="button"
+                onClick={onAddClick}
+                styleCSSSpan={
+                  'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-slate-800'
+                }
+                title="Добавить"
+              />
+            ) : (
+              <Button
+                type="button"
+                onClick={onSaveClick}
+                styleCSSSpan={
+                  'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
+                }
+                title="Сохранить"
+              />
+            )}
           </div>
           <button
             className="cursor-pointer absolute top-0 right-0 mt-4 mr-5 text-slate-400 hover:text-slate-400 transition duration-150 ease-in-out rounded focus:ring-2 focus:outline-none focus:ring-slate-400"
