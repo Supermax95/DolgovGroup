@@ -238,7 +238,7 @@ const ProfileAdmin: FC = () => {
       type: 'email',
       placeholder: data.newEmail,
       autoComplete: 'off',
-      htmlFor: 'newEmail',
+      htmlFor: 'email',
       title: 'Email',
       value: data.newEmail,
       onChange: (value: string) =>
