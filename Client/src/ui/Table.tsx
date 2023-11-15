@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import Button from './Button';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/20/solid';
 
@@ -10,7 +10,6 @@ interface ITable {
   currentPage?: number | undefined;
   itemsPerPage?: number | undefined;
   childrenSearch?: React.ReactNode;
-  // filtredExtra?: any[];
   onAddClick?: () => void;
   onEditClick: (item: any) => void;
   renderCell?: () => void;
@@ -23,7 +22,6 @@ const Table: FC<ITable> = ({
   data,
   currentPage,
   itemsPerPage,
-  // filtredExtra,
   childrenSearch,
   onAddClick,
   onEditClick,

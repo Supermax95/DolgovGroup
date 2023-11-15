@@ -35,11 +35,19 @@ const ManagementModal: FC<ManagersModalProps> = ({
 }) => {
   const dispatch = useAppDispatch();
 
+  manager || {
+    id: 0,
+    lastName: '',
+    firstName: '',
+    middleName: '',
+    email: '',
+  };
+
   useEffect(() => {
     if (manager) {
       setEditedManager({ ...manager });
     }
-  }, [manager, setEditedManager]);
+  }, [manager, isAddingMode, setEditedManager]);
 
   const modalTitle = isAddingMode
     ? 'Добавление менеджера'
@@ -54,6 +62,22 @@ const ManagementModal: FC<ManagersModalProps> = ({
     if (editedManager) {
       onSave(editedManager);
       onClose();
+    }
+  };
+
+  const handleAdd = async () => {
+    if (editedManager) {
+      try {
+        //await dispatch(
+        // addManager({
+        //   newManager: editedManager,
+        // })
+        onClose();
+      } catch (error) {
+        console.error('Произошла ошибка при добавлении:', error);
+      }
+    } else {
+      alert('Заполните все поля перед добавлением.');
     }
   };
 
@@ -128,10 +152,10 @@ const ManagementModal: FC<ManagersModalProps> = ({
     <Wrapper>
       <ModalUser
         modalTitle={modalTitle}
-        //isAddingMode={isAddingMode}
-        // onAddClick={handleAdd}
-        onCancellick={handleCancel}
+        isAddingMode={isAddingMode}
+        onAddClick={handleAdd}
         onSaveClick={handleSave}
+        onCancellick={handleCancel}
       >
         <InputModal
           containerClassName={'py-8 grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'}

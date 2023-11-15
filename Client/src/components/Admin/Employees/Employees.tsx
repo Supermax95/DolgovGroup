@@ -39,12 +39,13 @@ const Employees: FC = () => {
 
   const users = useAppSelector<User[]>((state) => state.usersSlice.data);
 
+  const [isModalOpen, setModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const [editedUser, setEditedUser] = useState<User | null | undefined>(null);
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
   const [searchText, setSearchText] = useState('');
-  const [isModalOpen, setModalOpen] = useState(false);
+
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [editedUser, setEditedUser] = useState<User | null | undefined>(null);
 
   const columnsDefaultName: IColumnsDefaultName[] = [
     { name: 'Фамилия' },
@@ -116,9 +117,9 @@ const Employees: FC = () => {
     setModalOpen(true); // Assuming you have a modal component to open.
   };
 
-  const closeEditModal = (user: User) => {
-    setSelectedUser(user);
-    setEditedUser({ ...user });
+  const closeEditModal = () => {
+    setSelectedUser(null);
+    setEditedUser(null);
     setModalOpen(true);
   };
 

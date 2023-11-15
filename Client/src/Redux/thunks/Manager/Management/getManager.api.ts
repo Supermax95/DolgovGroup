@@ -7,7 +7,6 @@ const getManager = createAsyncThunk('api/getManager', async () => {
   const response: AxiosResponse = await axios.get(
     `${VITE_URL}/management/data`
   );
-  console.log('afafaf', response.data);
 
   return response.data;
 });
