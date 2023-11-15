@@ -3,7 +3,6 @@ import { useAppDispatch, useAppSelector } from '../../../../Redux/hooks';
 import Wrapper from '../../../../ui/Wrapper';
 import InputModal, { InputField } from '../../../../ui/InputModal';
 import Modal from '../../../../ui/Modal';
-import addManager from '../../../../Redux/thunks/Manager/Management/addManager.api';
 
 interface IManager {
   id: number;
@@ -16,8 +15,8 @@ interface IManager {
 interface ManagersModalProps {
   isOpen: boolean;
   manager: IManager | null;
-  onSaveEdit: (editedManager: IManager) => void;
   onSaveAdd: (editedManager: IManager) => void;
+  onSaveEdit: (editedManager: IManager) => void;
 
   onCloseAddModal: () => void;
   onCloseEditModal: () => void;
