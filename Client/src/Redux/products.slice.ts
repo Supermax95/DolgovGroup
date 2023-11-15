@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import getProducts from './thunks/Products/getProduct.api';
+import getProducts from './thunks/Products/getProducts.api';
 import editProduct from './thunks/Products/editProduct.api';
 import deleteProduct from './thunks/Products/deleteProduct.api';
 import addProduct from './thunks/Products/addProduct.api';
@@ -36,7 +36,7 @@ const initialState: ProductState = {
   message: null,
 };
 
-const locationsSlice = createSlice({
+const productSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {},
@@ -94,4 +94,4 @@ const locationsSlice = createSlice({
   },
 });
 
-export default locationsSlice.reducer;
+export default productSlice.reducer;
