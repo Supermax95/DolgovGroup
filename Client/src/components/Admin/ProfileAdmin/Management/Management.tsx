@@ -3,6 +3,9 @@ import Table from '../../../../ui/Table';
 import { useAppDispatch, useAppSelector } from '../../../../Redux/hooks';
 import getManager from '../../../../Redux/thunks/Manager/Management/getManager.api';
 import ManagementModal from './ManagementModal';
+import { Toast } from 'flowbite-react';
+import { FaTelegramPlane } from 'react-icons/fa';
+import addManager from '../../../../Redux/thunks/Manager/Management/addManager.api';
 
 interface IManager {
   id: number;
@@ -31,10 +34,8 @@ const Management: FC = () => {
   const [editedManager, setEditedManager] = useState<
     IManager | null | undefined
   >(null);
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
-  const [searchText, setSearchText] = useState('');
+  const [showNotificationAdd, setShowNotificationAdd] = useState(false);
+  const [showNotificationEdit, setShowNotificationEdit] = useState(false);
 
   const columnsDefaultName: IColumnsDefaultName[] = [
     { name: 'Фамилия' },
@@ -57,40 +58,15 @@ const Management: FC = () => {
     dispatch(getManager());
   }, [dispatch]);
 
-  //!
+  // useEffect(() => {
+  //   if (showNotification) {
+  //     const notificationTimeout = setTimeout(() => {
+  //       setShowNotification(false);
+  //     }, 5000);
 
-  // const itemsPerPage = 50;
-  // const startIndex = (currentPage - 1) * itemsPerPage;
-  // const endIndex = startIndex + itemsPerPage;
-
-  // const filterUsers = () => {
-  //   let filtered = managers;
-
-  //   if (searchText !== '') {
-  //     filtered = filtered.filter((user) => {
-  //       const userFields = [
-  //         user.lastName,
-  //         user.firstName,
-  //         user.middleName,
-  //         user.email,
-  //       ];
-
-  //       const searchTerms = searchText.toLowerCase().split(' ');
-
-  //       return searchTerms.every((term) =>
-  //         userFields.some((field) => field.toLowerCase().includes(term))
-  //       );
-  //     });
+  //     return () => clearTimeout(notificationTimeout);
   //   }
-
-  //   return filtered;
-  // };
-
-  // const displayedManagers = filterUsers().slice(startIndex, endIndex);
-
-  // const totalPages = Math.ceil(filterUsers.length / itemsPerPage);
-
-  //!
+  // }, [showNotification]);
 
   const openAddModal = () => {
     console.log('Открываю модальное окно ');
@@ -121,7 +97,32 @@ const Management: FC = () => {
     setModalOpen(false);
   };
 
-  const handleSave = async (editedManager: IManager) => {
+  const closeAddModal = () => {
+    setSelectedManager(null);
+    setEditedManager(null);
+    setModalOpen(false);
+  };
+
+  //* добавление менеджера
+  const handleSaveAdd = async () => {
+    if (editedManager) {
+      try {
+        await dispatch(
+          addManager({
+            newManager: editedManager,
+          })
+        );
+        setShowNotificationAdd(true);
+
+        closeAddModal();
+      } catch (error) {
+        console.error('Произошла ошибка при добавлении:', error);
+      }
+    }
+  };
+
+  //* редактирование менеджера
+  const handleSaveEdit = async (editedManager: IManager) => {
     try {
       if (selectedManager) {
         //await dispatch(
@@ -137,8 +138,60 @@ const Management: FC = () => {
     }
   };
 
+  const removeNotificationAdd = () => {
+    setShowNotificationAdd(false);
+  };
+
+  const removeNotificationEdit = () => {
+    setShowNotificationEdit(false);
+  };
+
   return (
     <div>
+      {showNotificationAdd && (
+        <div className="flex flex-col p-8 bg-slate-100 shadow-md hover:shadow-lg rounded-2xl">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <div className="flex flex-col ml-3">
+                <div className="font-medium leading-none">
+                  Личный кабинет менеджера создан
+                </div>
+                <p className="text-sm text-slate-600 leading-none mt-2">
+                  Временный пароль выслан на почту
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={removeNotificationAdd}
+              className="flex-no-shrink bg-gradient-to-b from-orange-300 to-orange-400 px-5 ml-4 py-2 text-sm shadow-sm hover:shadow-lg font-medium tracking-wider text-white rounded-full"
+            >
+              Скрыть
+            </button>
+          </div>
+        </div>
+      )}
+      {showNotificationEdit && (
+        <div className="flex flex-col p-8 bg-slate-100 shadow-md hover:shadow-lg rounded-2xl">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <div className="flex flex-col ml-3">
+                <div className="font-medium leading-none">
+                  Изменения сохранены
+                </div>
+                {/* <p className="text-sm text-slate-600 leading-none mt-2">
+                  Временный пароль выслан на почту ???????
+                </p> */}
+              </div>
+            </div>
+            <button
+              onClick={removeNotificationEdit}
+              className="flex-no-shrink bg-gradient-to-b from-orange-300 to-orange-400 px-5 ml-4 py-2 text-sm shadow-sm hover:shadow-lg font-medium tracking-wider text-white rounded-full"
+            >
+              Скрыть
+            </button>
+          </div>
+        </div>
+      )}
       <Table
         title="Список менеджеров"
         data={displayedManagers}
@@ -151,8 +204,10 @@ const Management: FC = () => {
         <ManagementModal
           isOpen={isModalOpen}
           manager={selectedManager}
-          onSave={handleSave}
-          onClose={closeEditModal}
+          onSaveEdit={handleSaveEdit}
+          onSaveAdd={handleSaveAdd}
+          onCloseAddModal={closeAddModal}
+          onCloseEditModal={closeEditModal}
           isAddingMode={isAddingMode}
           editedManager={editedManager}
           setEditedManager={setEditedManager}

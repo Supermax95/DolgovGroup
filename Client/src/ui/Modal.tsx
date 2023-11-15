@@ -1,6 +1,10 @@
 import React, { FC } from 'react';
 import Button from './Button';
-import { BuildingStorefrontIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import {
+  BuildingStorefrontIcon,
+  XMarkIcon,
+  UserIcon,
+} from '@heroicons/react/24/outline';
 
 interface IModal {
   children: React.ReactNode;
@@ -8,7 +12,7 @@ interface IModal {
   isAddingMode: boolean;
   onAddClick: () => void;
   onSaveClick: () => void;
-  onDeleteClick: () => void;
+  onDeleteClick?: () => void;
   onMulterClick: () => void;
   onCancellick: () => void;
 }
@@ -30,26 +34,53 @@ const Modal: FC<IModal> = ({
     >
       <div role="alert" className="container mx-auto w-11/12 md:w-2/3 max-w-lg">
         <div className="relative py-8 px-5 md:px-10 bg-white shadow-md rounded-3xl border border-slate-400">
-          {/* <div className="container mx-auto w-full md:w-2/3 lg:w-1/2 xl:w-1/3">
-    <div className="relative py-8 px-5 md:px-10 bg-white shadow-md rounded-3xl border border-gray-400"> */}
           <div className="flex justify-center items-center">
-            <div className="w-8 text-gray-600">
-              <BuildingStorefrontIcon className="w-6 h-6 text-slate-400" />
-            </div>
+            {modalTitle === 'Регистрация нового менеджера' ||
+            modalTitle === 'Редактирование данных менеджера' ? (
+              <>
+                <div className="w-8 text-gray-600">
+                  <UserIcon className="w-6 h-6 text-slate-400" />
+                </div>
+              </>
+            ) : (
+              <div className="w-8 text-gray-600">
+                <BuildingStorefrontIcon className="w-6 h-6 text-slate-400" />
+              </div>
+            )}
             <h1 className="text-lime-600 text-lg font-bold tracking-normal leading-tight">
               {modalTitle}
             </h1>
           </div>
-
+          <div className="text-center">
+            {modalTitle === 'Регистрация нового менеджера' ? (
+              <span className="text-sm text-amber-600 font-normal">
+                Временный пароль будет сформирован автоматически <br /> и
+                отправлен на указанный адрес электронной почты
+              </span>
+            ) : null}
+          </div>
           {children}
 
           <div className="flex items-center justify-center w-full">
+            {/* {modalTitle === 'Редактирование данных менеджера' ? (
+              <div className="flex">
+                <Button
+                  type="button"
+                  onClick={onSaveClick}
+                  styleCSSSpan={
+                    'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
+                  }
+                  title="Выслать пароль"
+                />
+              </div>
+            ) : null} */}
+
             {isAddingMode ? (
               <Button
                 type="button"
                 onClick={onAddClick}
                 styleCSSSpan={
-                  'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-slate-800'
+                  'w-44 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-slate-800'
                 }
                 title="Добавить"
               />
@@ -73,6 +104,7 @@ const Modal: FC<IModal> = ({
                 />
               </>
             )}
+
             {location && !isAddingMode && (
               <Button
                 type="button"

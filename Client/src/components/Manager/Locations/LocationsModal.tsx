@@ -1,12 +1,11 @@
 import React, { FC, useEffect } from 'react';
 import { useAppDispatch } from '../../../Redux/hooks';
-import addLocation from '../../../Redux/thunks/Locations/addLocation.api';
 import deleteLocation from '../../../Redux/thunks/Locations/deleteLocation.api';
 import Wrapper from '../../../ui/Wrapper';
 import InputModal, { InputField } from '../../../ui/InputModal';
 import Modal from '../../../ui/Modal';
 
-interface Location {
+interface ILocation {
   id: number;
   city: string;
   address: string;
@@ -17,21 +16,26 @@ interface Location {
 
 interface LocationsModalProps {
   isOpen: boolean;
-  location: Location | null;
-  onSave: (editedLocation: Location) => void;
-  onClose: () => void;
+  location: ILocation | null;
+  onSaveAdd: (editedLocation: ILocation) => void;
+  onSaveEdit: (editedLocation: ILocation) => void;
+  onCloseAddModal: () => void;
+  onCloseEditModal: () => void;
   isAddingMode: boolean;
-  editedLocation: Location | null | undefined;
+  editedLocation: ILocation | null | undefined;
   setEditedLocation: React.Dispatch<
-    React.SetStateAction<Location | null | undefined>
+    React.SetStateAction<ILocation | null | undefined>
   >;
 }
 
 const LocationsModal: FC<LocationsModalProps> = ({
   isOpen,
   location,
-  onSave,
-  onClose,
+
+  onSaveEdit,
+  onSaveAdd,
+  onCloseEditModal,
+  onCloseAddModal,
   isAddingMode,
   editedLocation,
   setEditedLocation,
@@ -57,48 +61,42 @@ const LocationsModal: FC<LocationsModalProps> = ({
 
   const handleCancel = () => {
     setEditedLocation(undefined);
-    onClose();
+    onCloseEditModal();
+  };
+
+  const handleAdd = () => {
+    if (editedLocation) {
+      onSaveAdd(editedLocation);
+      onCloseAddModal();
+    }
   };
 
   const handleSave = () => {
-    if (areFieldsValid() && editedLocation) {
-      onSave(editedLocation);
-      onClose();
+    if (editedLocation) {
+      onSaveEdit(editedLocation);
+      onCloseEditModal();
     } else {
       alert('Заполните все поля перед сохранением.');
     }
   };
 
-  const areFieldsValid = () => {
-    if (editedLocation) {
-      const { city, address, latitude, longitude, hours } = editedLocation;
-      return city && address && latitude && longitude && hours;
-    }
-    return false;
-  };
+  // const handleFormSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   if (isAddingMode) {
+  //     onSaveAdd(editedLocation);
+  //     onCloseAddModal();
+  //   } else {
+  //     onSaveEdit(editedLocation);
+  //     onCloseEditModal();
+  //   }
+  // };
 
-  const handleAdd = async () => {
-    if (areFieldsValid() && editedLocation) {
-      try {
-        await dispatch(
-          addLocation({
-            newLocation: editedLocation,
-          })
-        );
-        onClose();
-      } catch (error) {
-        console.error('Произошла ошибка при добавлении:', error);
-      }
-    } else {
-      alert('Заполните все поля перед добавлением.');
-    }
-  };
-
+  //!!!!!
   const handleDelete = () => {
     if (editedLocation && editedLocation.id) {
       const locationId = editedLocation.id;
       dispatch(deleteLocation(locationId));
-      onClose();
+      onCloseEditModal();
     }
   };
 
@@ -109,6 +107,7 @@ const LocationsModal: FC<LocationsModalProps> = ({
   const inputFields: InputField[] = [
     {
       id: 'city',
+      name: 'address',
       type: 'text',
       value: editedLocation.city,
       placeholder: '',
@@ -120,9 +119,12 @@ const LocationsModal: FC<LocationsModalProps> = ({
           ...editedLocation,
           city: value,
         }),
+      required: true,
     },
     {
       id: 'address',
+      name: 'address',
+
       type: 'text',
       value: editedLocation.address,
       placeholder: '',
@@ -134,9 +136,12 @@ const LocationsModal: FC<LocationsModalProps> = ({
           ...editedLocation,
           address: value,
         }),
+      required: true,
     },
     {
       id: 'latitude',
+      name: 'latitude',
+
       type: 'text',
       value: editedLocation.latitude.toString().replace(',', '.'),
       placeholder: '',
@@ -157,9 +162,11 @@ const LocationsModal: FC<LocationsModalProps> = ({
           });
         }
       },
+      required: true,
     },
     {
       id: 'longitude',
+      name: 'longitude',
       type: 'text',
       value: editedLocation.longitude.toString().replace(',', '.'),
       placeholder: '',
@@ -180,9 +187,11 @@ const LocationsModal: FC<LocationsModalProps> = ({
           });
         }
       },
+      required: true,
     },
     {
       id: 'hours',
+      name: 'hours',
       type: 'text',
       value: editedLocation.hours,
       placeholder: '',
@@ -195,6 +204,7 @@ const LocationsModal: FC<LocationsModalProps> = ({
           hours: value,
         });
       },
+      required: true,
     },
   ];
 

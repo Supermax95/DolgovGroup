@@ -8,6 +8,7 @@ import Sidebar from '../../../ui/Sidebar';
 import Pagination from '../../../ui/Paggination';
 import Table from '../../../ui/Table';
 import Search from '../../../ui/Search';
+import addLocation from '../../../Redux/thunks/Locations/addLocation.api';
 
 export interface ILocation {
   id: number;
@@ -128,25 +129,63 @@ const Location: FC = () => {
     setModalOpen(true);
   };
 
+  const closeAddModal = () => {
+    setSelectedLocation(null);
+    setEditedLocation(null);
+    setModalOpen(false);
+  };
+
   const closeEditModal = () => {
     setSelectedLocation(null);
     setEditedLocation(null);
     setModalOpen(false);
   };
 
-  const handleSave = async (editedLocation: ILocation) => {
-    try {
-      if (selectedLocation) {
+  const areFieldsValid = () => {
+    if (editedLocation) {
+      const { city, address, latitude, longitude, hours } = editedLocation;
+      return city && address && latitude && longitude && hours;
+    }
+    return false;
+  };
+
+  const handleSaveAdd = async () => {
+    if (areFieldsValid() && editedLocation) {
+      //if (editedLocation) {
+      try {
         await dispatch(
-          editLocation({
-            locationId: selectedLocation.id,
-            newInfo: editedLocation,
+          addLocation({
+            newLocation: editedLocation,
           })
         );
-        closeEditModal();
+        closeAddModal();
+      } catch (error) {
+        console.error('Произошла ошибка при добавлении:', error);
       }
-    } catch (error) {
-      console.error('Произошла ошибка при редактировании:', error);
+    } else {
+      //! исправить алёрт на нормальные error
+      alert('Заполните все поля перед добавлением.');
+    }
+  };
+
+  const handleSaveEdit = async (editedLocation: ILocation) => {
+    if (areFieldsValid() && editedLocation) {
+      try {
+        if (selectedLocation) {
+          await dispatch(
+            editLocation({
+              locationId: selectedLocation.id,
+              newInfo: editedLocation,
+            })
+          );
+          closeEditModal();
+        }
+      } catch (error) {
+        console.error('Произошла ошибка при редактировании:', error);
+      }
+    } else {
+      //! исправить алёрт на нормальные error
+      alert('Заполните все поля перед добавлением.');
     }
   };
 
@@ -183,8 +222,10 @@ const Location: FC = () => {
           <LocationsModal
             isOpen={isModalOpen}
             location={selectedLocation}
-            onSave={handleSave}
-            onClose={closeEditModal}
+            onSaveEdit={handleSaveEdit}
+            onSaveAdd={handleSaveAdd}
+            onCloseAddModal={closeAddModal}
+            onCloseEditModal={closeEditModal}
             isAddingMode={isAddingMode}
             editedLocation={editedLocation}
             setEditedLocation={setEditedLocation}
