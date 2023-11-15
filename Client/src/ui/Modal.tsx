@@ -9,6 +9,7 @@ interface IModal {
   onAddClick: () => void;
   onSaveClick: () => void;
   onDeleteClick: () => void;
+  onMulterClick: () => void;
   onCancellick: () => void;
 }
 
@@ -19,6 +20,7 @@ const Modal: FC<IModal> = ({
   onAddClick,
   onSaveClick,
   onDeleteClick,
+  onMulterClick,
   onCancellick,
 }) => {
   return (
@@ -52,14 +54,24 @@ const Modal: FC<IModal> = ({
                 title="Добавить"
               />
             ) : (
-              <Button
-                type="button"
-                onClick={onSaveClick}
-                styleCSSSpan={
-                  'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
-                }
-                title="Сохранить"
-              />
+              <>
+                <Button
+                  type="button"
+                  onClick={onSaveClick}
+                  styleCSSSpan={
+                    'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
+                  }
+                  title="Сохранить"
+                />
+                <Button
+                  type="button"
+                  onClick={onMulterClick}
+                  styleCSSSpan={
+                    'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
+                  }
+                  title="Подгрузить"
+                />
+              </>
             )}
             {location && !isAddingMode && (
               <Button

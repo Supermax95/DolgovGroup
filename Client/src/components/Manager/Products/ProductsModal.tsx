@@ -5,6 +5,7 @@ import deleteProduct from '../../../Redux/thunks/Products/deleteProduct.api';
 import Wrapper from '../../../ui/Wrapper';
 import InputModal, { InputField } from '../../../ui/InputModal';
 import Modal from '../../../ui/Modal';
+import multerProduct from '../../../Redux/thunks/Multer/multer.api';
 
 interface Product {
   id: number;
@@ -17,7 +18,7 @@ interface Product {
   isNew: boolean;
   isDiscounted: boolean;
   description: string;
-  photo: string;
+  photo: File;
   categoryId: number;
 }
 
@@ -42,12 +43,26 @@ const ProductsModal: FC<ProductsModalProps> = ({
   editedProduct,
   setEditedProduct,
 }) => {
-    console.log('ProductsModal props:', isOpen, product, isAddingMode, editedProduct);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (product) {
       setEditedProduct({ ...product });
+    } else if (isAddingMode) {
+      setEditedProduct({
+        id: 0,
+        productName: '',
+        promoStartDate: '',
+        promoEndDate: '',
+        originalPrice: 0,
+        customerPrice: 0,
+        employeePrice: 0,
+        isNew: false,
+        isDiscounted: false,
+        description: '',
+        photo: new File([], ''),
+        categoryId: 0,
+      });
     }
   }, [product, isAddingMode, setEditedProduct]);
 
@@ -68,11 +83,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
   const handleAdd = async () => {
     if (editedProduct) {
       try {
-        await dispatch(
-          addProduct({
-            newProduct: editedProduct,
-          })
-        );
+        await dispatch(addProduct({ newProduct: editedProduct }));
         onClose();
       } catch (error) {
         console.error('Произошла ошибка при добавлении:', error);
@@ -87,6 +98,36 @@ const ProductsModal: FC<ProductsModalProps> = ({
       const productId = editedProduct.id;
       dispatch(deleteProduct(productId));
       onClose();
+    }
+  };
+
+  const handleUpload = async () => {
+    try {
+      console.log('Starting handleUpload');
+      console.log('Starting handleUpload');
+      console.log('Product:', product);
+      if (product) {
+        console.log('Product exists');
+        if (product.photo instanceof File) {
+          console.log('File is of type File');
+          const file = product.photo;
+
+          console.log('Dispatching multerProduct');
+          const responseData = await dispatch(
+            multerProduct({ id: product.id, file })
+          ).unwrap();
+
+          // Обработка успешного ответа от сервера
+          console.log('Фото успешно загружено:', responseData.message);
+        } else {
+          console.error('File is not of type File');
+        }
+      } else {
+        console.error('Product does not exist');
+      }
+    } catch (error) {
+      // Обработка ошибки загрузки
+      console.error('Произошла ошибка при загрузке фото:', error);
     }
   };
 
@@ -170,9 +211,9 @@ const ProductsModal: FC<ProductsModalProps> = ({
     },
     {
       id: 'isNew',
-      type: 'checkbox',
+      type: 'text',
       checked: editedProduct.isNew,
-      title: 'Новый продукт',
+      htmlFor: 'isNew',
       onChange: (value: boolean) =>
         setEditedProduct({
           ...editedProduct,
@@ -181,9 +222,9 @@ const ProductsModal: FC<ProductsModalProps> = ({
     },
     {
       id: 'isDiscounted',
-      type: 'checkbox',
+      type: 'text',
       checked: editedProduct.isDiscounted,
-      title: 'Продукт со скидкой',
+      htmlFor: 'isDiscounted',
       onChange: (value: boolean) =>
         setEditedProduct({
           ...editedProduct,
@@ -208,18 +249,12 @@ const ProductsModal: FC<ProductsModalProps> = ({
       title: 'Фотография продукта',
       htmlFor: 'photo',
       onChange: (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.files && event.target.files[0]) {
+        if (event.target.files && event.target.files.length > 0) {
           const file = event.target.files[0];
-          const reader = new FileReader();
-
-          reader.onloadend = () => {
-            setEditedProduct({
-              ...editedProduct,
-              photo: reader.result as string,
-            });
-          };
-
-          reader.readAsDataURL(file);
+          setEditedProduct({
+            ...editedProduct,
+            photo: file,
+          });
         }
       },
     },
@@ -246,6 +281,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
         onSaveClick={handleSave}
         onDeleteClick={handleDelete}
         onCancellick={handleCancel}
+        onMulterClick={handleUpload}
       >
         <InputModal inputFields={inputFields} />
       </Modal>
