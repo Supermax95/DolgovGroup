@@ -1,6 +1,10 @@
 import React, { FC } from 'react';
 import Button from './Button';
-import { XMarkIcon, UserGroupIcon } from '@heroicons/react/24/outline';
+import {
+  XMarkIcon,
+  UserGroupIcon,
+  UserIcon,
+} from '@heroicons/react/24/outline';
 
 interface IModalUser {
   children: React.ReactNode;

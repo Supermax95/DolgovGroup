@@ -14,7 +14,7 @@ interface User {
   email: string;
   barcode: string;
   userStatus: string;
-  birthDate?: string;
+  birthDate?: Date;
   bonusProgram: string;
   balance: number;
   isActivated: boolean;
@@ -181,33 +181,7 @@ const EmployeesModal: FC<UsersModalProps> = ({
         }),
       disabled: true,
     },
-    // {
-    //   id: 'balance',
-    //   type: 'number',
-    //   value: editedUser.balance.toString(),
-    //   placeholder: '',
-    //   autoComplete: 'off',
-    //   title: 'Баланс',
-    //   htmlFor: 'balance',
-    //   onChange: (value: string) =>
-    //     setEditedUser({
-    //       ...editedUser,
-    //       balance: parseFloat(value),
-    //     }),
-    //   disabled: true,
-    // },
 
-    // {
-    //   id: '',
-    //   type: 'checkbox',
-    //   value: 'что-то',
-    //   htmlFor: '',
-    //   // onChange: (value: boolean) =>
-    //   //   setEditedUser({
-    //   //     ...editedUser,
-    //   //     isActivated: value,
-    //   //   }),
-    // },
     {
       id: 'userStatus',
       type: 'text',

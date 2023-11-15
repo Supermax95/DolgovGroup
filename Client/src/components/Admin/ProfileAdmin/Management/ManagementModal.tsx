@@ -1,8 +1,8 @@
-import React, { FC, useEffect } from 'react';
-import { useAppDispatch } from '../../../../Redux/hooks';
+import React, { FC, useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../../../Redux/hooks';
 import Wrapper from '../../../../ui/Wrapper';
-import ModalUser from '../../../../ui/ModalUser';
 import InputModal, { InputField } from '../../../../ui/InputModal';
+import Modal from '../../../../ui/Modal';
 
 interface IManager {
   id: number;
@@ -10,6 +10,13 @@ interface IManager {
   firstName: string;
   middleName: string;
   email: string;
+}
+
+interface IDate {
+  newLastName: string;
+  newFirstName: string;
+  newMiddleName: string;
+  newEmail: string;
 }
 
 interface ManagersModalProps {
@@ -85,6 +92,13 @@ const ManagementModal: FC<ManagersModalProps> = ({
     return null;
   }
 
+  // const handleFieldChangeProfileManager = (
+  //   field: keyof IDate,
+  //   value: string
+  // ): void => {
+  //   setData((prevDate) => ({ ...prevDate, [field]: value }));
+  // };
+
   const inputFieldsDate: InputField[] = [
     {
       id: 'lastName',
@@ -150,18 +164,15 @@ const ManagementModal: FC<ManagersModalProps> = ({
   const allInputFields = [...inputFieldsDate];
   return (
     <Wrapper>
-      <ModalUser
+      <Modal
         modalTitle={modalTitle}
         isAddingMode={isAddingMode}
         onAddClick={handleAdd}
         onSaveClick={handleSave}
         onCancellick={handleCancel}
       >
-        <InputModal
-          containerClassName={'py-8 grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'}
-          inputFields={allInputFields}
-        />
-      </ModalUser>
+        <InputModal inputFields={allInputFields} />
+      </Modal>
     </Wrapper>
   );
 };

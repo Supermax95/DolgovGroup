@@ -57,41 +57,6 @@ const Management: FC = () => {
     dispatch(getManager());
   }, [dispatch]);
 
-  //!
-
-  // const itemsPerPage = 50;
-  // const startIndex = (currentPage - 1) * itemsPerPage;
-  // const endIndex = startIndex + itemsPerPage;
-
-  // const filterUsers = () => {
-  //   let filtered = managers;
-
-  //   if (searchText !== '') {
-  //     filtered = filtered.filter((user) => {
-  //       const userFields = [
-  //         user.lastName,
-  //         user.firstName,
-  //         user.middleName,
-  //         user.email,
-  //       ];
-
-  //       const searchTerms = searchText.toLowerCase().split(' ');
-
-  //       return searchTerms.every((term) =>
-  //         userFields.some((field) => field.toLowerCase().includes(term))
-  //       );
-  //     });
-  //   }
-
-  //   return filtered;
-  // };
-
-  // const displayedManagers = filterUsers().slice(startIndex, endIndex);
-
-  // const totalPages = Math.ceil(filterUsers.length / itemsPerPage);
-
-  //!
-
   const openAddModal = () => {
     console.log('Открываю модальное окно ');
     setAddingMode(true);

@@ -11,6 +11,7 @@ interface IInputModal {
 
 export interface InputField {
   id: string;
+  name?: string;
   type: string;
   value?: string | boolean | Date;
   placeholder: string;
@@ -22,6 +23,8 @@ export interface InputField {
   divFielsCss?: string[];
   disabled?: boolean;
   options?: { value: string; label: string }[];
+  children?: React.ReactNode;
+  error?: React.ReactNode;
 }
 
 const InputModal: FC<IInputModal> = ({
@@ -152,6 +155,8 @@ const InputModal: FC<IInputModal> = ({
               >
                 {field.title}
               </label>
+              {field.children}
+              {field.error}
             </div>
           )}
         </div>
