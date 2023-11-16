@@ -93,7 +93,7 @@ const Products: FC = () => {
       isNew: false,
       isDiscounted: false,
       description: '',
-      photo:'',
+      photo: '',
       categoryId: 0,
     });
     setModalOpen(true);
@@ -103,6 +103,7 @@ const Products: FC = () => {
     setSelectedProduct(null);
     setEditedProduct(null);
     setModalOpen(false);
+    dispatch(getProducts());
   };
 
   const handleSave = async (editedProduct: IProduct) => {
@@ -133,7 +134,7 @@ const Products: FC = () => {
             <div className="aspect-square overflow-hidden">
               <img
                 className="h-full w-full object-cover transition-all duration-300 group-hover:scale-125"
-                src={`${import.meta.env.VITE_URL}${product.photo}`}
+                src={`${VITE_URL}${product.photo}`}
                 alt={product.productName}
               />
             </div>
