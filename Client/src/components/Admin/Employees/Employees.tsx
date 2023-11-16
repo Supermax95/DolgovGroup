@@ -116,7 +116,7 @@ const Employees: FC = () => {
   const openEditModal = (user: User) => {
     setSelectedUser(user);
     setEditedUser({ ...user });
-    setModalOpen(true); // Assuming you have a modal component to open.
+    setModalOpen(true);
   };
 
   const closeEditModal = () => {
@@ -125,7 +125,7 @@ const Employees: FC = () => {
     setModalOpen(true);
   };
 
-  const handleSave = async (editedUser: User) => {
+  const handleSaveEdit = async (editedUser: User) => {
     try {
       if (selectedUser) {
         await dispatch(
@@ -161,6 +161,7 @@ const Employees: FC = () => {
               currentPage={currentPage}
               itemsPerPage={itemsPerPage}
               columnsListDb={columnsListDb}
+              onAddClick={undefined}
               onEditClick={openEditModal}
             />
             <Pagination
@@ -175,8 +176,10 @@ const Employees: FC = () => {
           <EmployeesModal
             isOpen={isModalOpen}
             user={selectedUser}
-            onSave={handleSave}
-            onClose={closeEditModal}
+            onSaveEdit={handleSaveEdit}
+            // onSaveAdd={handleSaveAdd}
+            //onCloseAddModal={closeAddModal}
+            onCloseEditModal={closeEditModal}
             editedUser={editedUser}
             setEditedUser={setEditedUser}
           />

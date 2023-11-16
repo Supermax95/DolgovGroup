@@ -19,7 +19,7 @@ interface User {
   barcode: string;
   userStatus: string;
   isActivated: boolean;
-  bonusProgram:string;
+  bonusProgram: string;
   balance: number;
 }
 
@@ -160,10 +160,8 @@ const Clients: FC = () => {
               currentPage={currentPage}
               itemsPerPage={itemsPerPage}
               columnsListDb={columnsListDb}
+              onAddClick={undefined}
               onEditClick={openEditModal}
-              onAddClick={function (): void {
-                throw new Error('Function not implemented.');
-              }}
             />
             <Pagination
               currentPage={currentPage}

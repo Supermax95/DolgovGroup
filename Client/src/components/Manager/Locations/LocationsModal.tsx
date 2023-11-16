@@ -31,7 +31,6 @@ interface LocationsModalProps {
 const LocationsModal: FC<LocationsModalProps> = ({
   isOpen,
   location,
-
   onSaveEdit,
   onSaveAdd,
   onCloseEditModal,
@@ -61,6 +60,7 @@ const LocationsModal: FC<LocationsModalProps> = ({
 
   const handleCancel = () => {
     setEditedLocation(undefined);
+    //! почему работает на обоих клойзах, хотя этот только на эдит, хаха
     onCloseEditModal();
   };
 
