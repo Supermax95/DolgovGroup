@@ -64,20 +64,6 @@ const ManagementModal: FC<ManagersModalProps> = ({
     onCloseEditModal();
   };
 
-  // const handleSave = () => {
-  //   if (editedManager) {
-  //     onSaveEdit(editedManager);
-  //     onCloseEditModal();
-  //   }
-  // };
-
-  // const handleAdd = () => {
-  //   if (editedManager) {
-  //     onSaveAdd(editedManager);
-  //     onCloseAddModal();
-  //   }
-  // };
-
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (isAddingMode) {
@@ -177,8 +163,6 @@ const ManagementModal: FC<ManagersModalProps> = ({
           <Modal
             modalTitle={modalTitle}
             isAddingMode={isAddingMode}
-            // onAddClick={handleAdd}
-            // onSaveClick={handleSave}
             onCancellick={handleCancel}
             onDeleteClick={handleDelete}
           >

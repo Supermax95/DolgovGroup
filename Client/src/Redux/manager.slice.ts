@@ -7,6 +7,8 @@ import changePassword from './thunks/Manager/changePassword.api';
 import changeEmailAdmin from './thunks/Manager/changeEmailAdmin.api';
 import getManager from './thunks/Manager/Management/getManager.api';
 import addManager from './thunks/Manager/Management/addManager.api';
+import editManager from './thunks/Manager/Management/editManager.api';
+import sendOneTimePassword from './thunks/Manager/Management/sendOneTimePassword.api';
 
 export interface IManager {
   id: number;
@@ -166,10 +168,38 @@ const managerSlice = createSlice({
       .addCase(addManager.fulfilled, (state, action) => {
         state.isLoading = false;
         state.data = action.payload;
+      })
+      .addCase(addManager.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      //! editManager
+      .addCase(editManager.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(editManager.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.data = action.payload;
         console.log(' state.data ', state.data);
         console.log('action.payload ', action.payload);
       })
-      .addCase(addManager.rejected, (state, action) => {
+      .addCase(editManager.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      //! sendOneTimePassword
+      .addCase(sendOneTimePassword.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(sendOneTimePassword.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.message = action.payload.message;
+        console.log('   state.message ', state.message);
+        console.log('action.payload ', action.payload);
+      })
+      .addCase(sendOneTimePassword.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       });

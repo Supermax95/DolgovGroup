@@ -2,6 +2,8 @@ import React, { FC } from 'react';
 import Button from './Button';
 import { XMarkIcon, UserGroupIcon } from '@heroicons/react/24/outline';
 
+//* Модальное окно используеются в компонентах Clients и Employees
+
 interface IModalUser {
   children: React.ReactNode;
   modalTitle: string;
@@ -30,39 +32,10 @@ const ModalUser: FC<IModalUser> = ({
               {modalTitle}
             </h1>
           </div>
-          {/* 
-          <form>
-            <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
-              <div className="relative">
-                <input
-                  id="lastName"
-                  type="text"
-                  value={editedUser.lastName}
-                  placeholder=""
-                  autoComplete="off"
-                  className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
-                />
-                <label
-                  htmlFor="lastName"
-                  className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm"
-                >
-                  Фамилия
-                </label>
-              </div>
-            </div>
-          </form> */}
 
           {children}
 
           <div className="flex items-center justify-center w-full">
-            {/* <Button
-              type="button"
-              onClick={onSaveClick}
-              styleCSSSpan={
-                'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
-              }
-              title="Сохранить"
-            /> */}
             {isAddingMode ? (
               <Button
                 type="submit"
@@ -87,7 +60,7 @@ const ModalUser: FC<IModalUser> = ({
             aria-label="close modal"
             role="button"
           >
-            <XMarkIcon className="w-6 h-6 icon icon-tabler icon-tabler-x" />
+            <XMarkIcon className="w-6 h-6" />
           </button>
         </div>
       </div>

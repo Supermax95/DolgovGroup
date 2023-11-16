@@ -1,9 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { VITE_URL } from '../../../../VITE_URL';
 import axios, { AxiosResponse } from 'axios';
+import { VITE_URL } from '../../../../VITE_URL';
 
 interface RequestData {
-  newManager: {
+  managerId: number;
+  updateManager: {
     lastName: string;
     firstName: string;
     middleName: string;
@@ -20,14 +21,16 @@ interface ResponseData {
   isAdmin: boolean;
 }
 
-const addManager = createAsyncThunk<ResponseData[], RequestData>(
-  'api/addManager',
-  async ({ newManager }) => {
+const editManager = createAsyncThunk<ResponseData[], RequestData>(
+  'api/editManager',
+
+  async ({ managerId, updateManager }) => {
     try {
-      const response: AxiosResponse = await axios.post(
-        `${VITE_URL}/management/newManager`,
-        { newManager }
+      const response: AxiosResponse = await axios.put(
+        `${VITE_URL}/management/updateManager`,
+        { managerId, updateManager }
       );
+      console.log('response.data', response.data);
 
       return response.data;
     } catch (error) {
@@ -37,4 +40,4 @@ const addManager = createAsyncThunk<ResponseData[], RequestData>(
   }
 );
 
-export default addManager;
+export default editManager;
