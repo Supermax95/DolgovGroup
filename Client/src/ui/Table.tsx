@@ -10,7 +10,7 @@ interface ITable {
   currentPage?: number | undefined;
   itemsPerPage?: number | undefined;
   childrenSearch?: React.ReactNode;
-  onAddClick?: () => void;
+  onAddClick?: (() => void) | undefined;
   onEditClick: (item: any) => void;
   renderCell?: () => void;
 }
@@ -31,14 +31,16 @@ const Table: FC<ITable> = ({
       <h1 className="text-xl text-lime-600 font-medium mb-4">{title}</h1>
       <div className="flex justify-between">
         {childrenSearch}
-        <Button
-          type="button"
-          onClick={onAddClick}
-          styleCSSSpan={
-            'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
-          }
-          title="Добавить"
-        />
+        {onAddClick ? (
+          <Button
+            type="button"
+            onClick={onAddClick}
+            styleCSSSpan={
+              'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
+            }
+            title="Добавить"
+          />
+        ) : null}
       </div>
 
       <div className="my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 pr-10 lg:px-4">

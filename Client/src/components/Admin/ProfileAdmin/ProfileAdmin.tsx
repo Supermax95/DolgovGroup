@@ -372,7 +372,7 @@ const ProfileAdmin: FC = () => {
             </form>
           </div>
         </div>
-        <div className="pointer-events-none relative hidden h-screen select-none bg-white md:block md:w-1/2">
+        <div className=" bg-white md:w-1/2">
           {/* <div className="absolute bottom-0 z-10 px-8 text-white opacity-100">
             <p className="mb-8 text-3xl font-semibold leading-10">
               We work 10x faster than our compeititors and stay consistant.

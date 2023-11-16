@@ -8,6 +8,7 @@ import Sidebar from '../../../ui/Sidebar';
 import Pagination from '../../../ui/Paggination';
 import Table from '../../../ui/Table';
 import Search from '../../../ui/Search';
+import addLocation from '../../../Redux/thunks/Locations/addLocation.api';
 
 export interface ILocation {
   id: number;
@@ -128,13 +129,34 @@ const Location: FC = () => {
     setModalOpen(true);
   };
 
+  const closeAddModal = () => {
+    setSelectedLocation(null);
+    setEditedLocation(null);
+    setModalOpen(false);
+  };
+
   const closeEditModal = () => {
     setSelectedLocation(null);
     setEditedLocation(null);
     setModalOpen(false);
   };
 
-  const handleSave = async (editedLocation: ILocation) => {
+  const handleSaveAdd = async () => {
+    try {
+      if (editedLocation) {
+        await dispatch(
+          addLocation({
+            newLocation: editedLocation,
+          })
+        );
+        closeAddModal();
+      }
+    } catch (error) {
+      console.error('Произошла ошибка при добавлении:', error);
+    }
+  };
+
+  const handleSaveEdit = async (editedLocation: ILocation) => {
     try {
       if (selectedLocation) {
         await dispatch(
@@ -183,8 +205,10 @@ const Location: FC = () => {
           <LocationsModal
             isOpen={isModalOpen}
             location={selectedLocation}
-            onSave={handleSave}
-            onClose={closeEditModal}
+            onSaveEdit={handleSaveEdit}
+            onSaveAdd={handleSaveAdd}
+            onCloseAddModal={closeAddModal}
+            onCloseEditModal={closeEditModal}
             isAddingMode={isAddingMode}
             editedLocation={editedLocation}
             setEditedLocation={setEditedLocation}

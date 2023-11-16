@@ -3,12 +3,25 @@ import { VITE_URL } from '../../../../VITE_URL';
 import type { AxiosResponse } from 'axios';
 import axios from 'axios';
 
-const getManager = createAsyncThunk('api/getManager', async () => {
-  const response: AxiosResponse = await axios.get(
-    `${VITE_URL}/management/data`
-  );
+interface ResponseData {
+  id: number;
+  lastName: string;
+  firstName: string;
+  middleName: string;
+  birthDate: Date | null | string;
+  email: string;
+  isAdmin: boolean;
+}
 
-  return response.data;
-});
+const getManager = createAsyncThunk<ResponseData[], void>(
+  'api/getManager',
+  async () => {
+    const response: AxiosResponse = await axios.get(
+      `${VITE_URL}/management/data`
+    );
+
+    return response.data;
+  }
+);
 
 export default getManager;
