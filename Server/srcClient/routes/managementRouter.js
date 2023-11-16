@@ -162,6 +162,7 @@ module.exports = router
           ],
           raw: true,
         });
+
         res.json(managers);
       }
     } catch (error) {
@@ -171,7 +172,6 @@ module.exports = router
 
   .post('/oneTimePassword', async (req, res) => {
     const { managerId } = req.body;
-    console.log(managerId);
 
     function generateCode() {
       const charset =
@@ -188,8 +188,6 @@ module.exports = router
       const manager = await Manager.findOne({
         where: { id: managerId },
       });
-
-      console.log('manageremail==========================>', manager.email);
 
       if (!manager) {
         res.status(404).json({ error: 'Пользователь не найден' });
@@ -251,5 +249,31 @@ module.exports = router
       }
     } catch (error) {
       console.log('Ошибка при получении данных из базы данных', error);
+    }
+  })
+
+  .delete('/deleteManager', async (req, res) => {
+    const { managerId } = req.body;
+    console.log(managerId);
+
+    try {
+      await Manager.destroy({
+        where: { id: managerId },
+      });
+      const managers = await Manager.findAll({
+        where: {
+          isAdmin: false,
+        },
+        order: [
+          ['lastName', 'ASC'],
+          ['firstName', 'ASC'],
+          ['middleName', 'ASC'],
+        ],
+        raw: true,
+      });
+      res.json(managers);
+    } catch (error) {
+      console.error('Ошибка при удалении данных', error);
+      res.status(500).json({ error: 'Произошла ошибка на сервере' });
     }
   });

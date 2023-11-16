@@ -3,6 +3,7 @@ import { useAppDispatch } from '../../../../Redux/hooks';
 import Wrapper from '../../../../ui/Wrapper';
 import InputModal, { InputField } from '../../../../ui/InputModal';
 import Modal from '../../../../ui/Modal';
+import deleteManager from '../../../../Redux/thunks/Manager/Management/deleteManager.api';
 
 interface IManager {
   id: number;
@@ -78,7 +79,9 @@ const ManagementModal: FC<ManagersModalProps> = ({
   const handleDelete = () => {
     if (editedManager && editedManager.id) {
       const managerId = editedManager.id;
-      // dispatch(deleteLocation(managerId));
+      console.log('managerId', managerId);
+
+      dispatch(deleteManager({ managerId }));
       onCloseEditModal();
     }
   };
