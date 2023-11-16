@@ -12,7 +12,7 @@ interface ITable {
   childrenSearch?: React.ReactNode;
   onAddClick?: (() => void) | undefined;
   onEditClick: (item: any) => void;
-  onOneTimePassword?: (() => void) | undefined;
+  onOneTimePassword?: (item: number) => Promise<void> | undefined;
   renderCell?: () => void;
 }
 
@@ -119,7 +119,7 @@ const Table: FC<ITable> = ({
                           <div>
                             <Button
                               type="button"
-                              onClick={onOneTimePassword}
+                              onClick={() => onOneTimePassword(item.id)}
                               styleCSSSpan={
                                 'w-44 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
                               }

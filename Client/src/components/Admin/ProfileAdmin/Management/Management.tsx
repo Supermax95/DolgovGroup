@@ -3,9 +3,9 @@ import Table from '../../../../ui/Table';
 import { useAppDispatch, useAppSelector } from '../../../../Redux/hooks';
 import getManager from '../../../../Redux/thunks/Manager/Management/getManager.api';
 import ManagementModal from './ManagementModal';
-import { Toast } from 'flowbite-react';
-import { FaTelegramPlane } from 'react-icons/fa';
 import addManager from '../../../../Redux/thunks/Manager/Management/addManager.api';
+import editManager from '../../../../Redux/thunks/Manager/Management/editManager.api';
+import sendOneTimePassword from '../../../../Redux/thunks/Manager/Management/sendOneTimePassword.api';
 
 interface IManager {
   id: number;
@@ -28,14 +28,18 @@ const Management: FC = () => {
     (state) => state.managerSlice.data
   );
 
+  const managerIdForSend = useAppSelector((state) => state.managerSlice.data);
+  //console.log(managers);
+
   const [isModalOpen, setModalOpen] = useState(true);
   const [isAddingMode, setAddingMode] = useState(false);
   const [selectedManager, setSelectedManager] = useState<IManager | null>(null);
+
   const [editedManager, setEditedManager] = useState<
     IManager | null | undefined
   >(null);
   const [showNotificationAdd, setShowNotificationAdd] = useState(false);
-  const [showNotificationEdit, setShowNotificationEdit] = useState(false);
+  const [showNotificationOnePass, setShowNotificationOnePass] = useState(false);
 
   const columnsDefaultName: IColumnsDefaultName[] = [
     { name: 'Фамилия' },
@@ -69,7 +73,6 @@ const Management: FC = () => {
   // }, [showNotification]);
 
   const openAddModal = () => {
-    console.log('Открываю модальное окно ');
     setAddingMode(true);
     setEditedManager({
       id: 0,
@@ -82,12 +85,10 @@ const Management: FC = () => {
   };
 
   const openEditModal = (manager: IManager) => {
-    console.log('Открываю модальное окно для редактирования');
     setSelectedManager(manager);
     setEditedManager({ ...manager });
     setAddingMode(false);
     setModalOpen(true);
-    console.log('Кнопка "Редактировать" нажата!');
   };
 
   const closeEditModal = () => {
@@ -124,12 +125,12 @@ const Management: FC = () => {
   const handleSaveEdit = async (editedManager: IManager) => {
     try {
       if (selectedManager) {
-        //await dispatch(
-        //   editEmployees({
-        //     employeeId: selectedManager.id,
-        //     newInfo: editedManager,
-        //   })
-        // );
+        await dispatch(
+          editManager({
+            managerId: selectedManager.id,
+            updateManager: editedManager,
+          })
+        );
         closeEditModal();
       }
     } catch (error) {
@@ -137,14 +138,26 @@ const Management: FC = () => {
     }
   };
 
-  const handleOneTimePassword = async () => {};
+  //* отправка временного пароля на почту
+  const handleOneTimePassword = async (managerId: number) => {
+    try {
+      await dispatch(
+        sendOneTimePassword({
+          managerId: managerId,
+        })
+      );
+      setShowNotificationOnePass(true);
+    } catch (error) {
+      console.error('Произошла ошибка при отправке:', error);
+    }
+  };
 
   const removeNotificationAdd = () => {
     setShowNotificationAdd(false);
   };
 
   const removeNotificationEdit = () => {
-    setShowNotificationEdit(false);
+    setShowNotificationOnePass(false);
   };
 
   return (
@@ -154,10 +167,16 @@ const Management: FC = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <div className="flex flex-col ml-3">
-                <div className="font-medium leading-none">
+                <div
+                  //! здесь нужно указать конкретные ФИО
+                  className="font-medium leading-none"
+                >
                   Личный кабинет менеджера создан
                 </div>
-                <p className="text-sm text-slate-600 leading-none mt-2">
+                <p
+                  //! здесь нужно указать конкретный email
+                  className="text-sm text-slate-600 leading-none mt-2"
+                >
                   Временный пароль выслан на почту
                 </p>
               </div>
@@ -171,13 +190,13 @@ const Management: FC = () => {
           </div>
         </div>
       )}
-      {showNotificationEdit && (
+      {showNotificationOnePass && (
         <div className="flex flex-col p-8 bg-slate-100 shadow-md hover:shadow-lg rounded-2xl">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <div className="flex flex-col ml-3">
                 <div className="font-medium leading-none">
-                  Изменения сохранены
+                  Временный пароль выслан на почту
                 </div>
                 {/* <p className="text-sm text-slate-600 leading-none mt-2">
                   Временный пароль выслан на почту ???????
@@ -200,7 +219,7 @@ const Management: FC = () => {
         columnsListDb={columnsListDb}
         onAddClick={openAddModal}
         onEditClick={openEditModal}
-        onOneTimePassword={handleOneTimePassword}
+        onOneTimePassword={(id) => handleOneTimePassword(id)}
       />
       {isModalOpen && (selectedManager || isAddingMode) && (
         <ManagementModal
