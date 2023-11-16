@@ -64,32 +64,16 @@ const LocationsModal: FC<LocationsModalProps> = ({
     onCloseEditModal();
   };
 
-  const handleAdd = () => {
-    if (editedLocation) {
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (isAddingMode) {
       onSaveAdd(editedLocation);
       onCloseAddModal();
-    }
-  };
-
-  const handleSave = () => {
-    if (editedLocation) {
+    } else {
       onSaveEdit(editedLocation);
       onCloseEditModal();
-    } else {
-      alert('Заполните все поля перед сохранением.');
     }
   };
-
-  // const handleFormSubmit = (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   if (isAddingMode) {
-  //     onSaveAdd(editedLocation);
-  //     onCloseAddModal();
-  //   } else {
-  //     onSaveEdit(editedLocation);
-  //     onCloseEditModal();
-  //   }
-  // };
 
   //!!!!!
   const handleDelete = () => {
@@ -210,16 +194,16 @@ const LocationsModal: FC<LocationsModalProps> = ({
 
   return (
     <Wrapper>
-      <Modal
-        modalTitle={modalTitle}
-        isAddingMode={isAddingMode}
-        onAddClick={handleAdd}
-        onSaveClick={handleSave}
-        onDeleteClick={handleDelete}
-        onCancellick={handleCancel}
-      >
-        <InputModal inputFields={inputFields} />
-      </Modal>
+      <form onSubmit={handleFormSubmit}>
+        <Modal
+          modalTitle={modalTitle}
+          isAddingMode={isAddingMode}
+          onDeleteClick={handleDelete}
+          onCancellick={handleCancel}
+        >
+          <InputModal inputFields={inputFields} />
+        </Modal>
+      </form>
     </Wrapper>
   );
 };

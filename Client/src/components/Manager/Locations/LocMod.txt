@@ -377,3 +377,32 @@ const LocationsModal: React.FC<LocationsModalProps> = ({
 };
 
 export default LocationsModal;
+
+
+Эти хендлеры превратились в сабмит форму
+
+  // const handleAdd = () => {
+  //   if (editedLocation) {
+  //     onSaveAdd(editedLocation);
+  //     onCloseAddModal();
+  //   }
+  // };
+
+  // const handleSave = () => {
+  //   if (editedLocation) {
+  //     onSaveEdit(editedLocation);
+  //     onCloseEditModal();
+  //   } else {
+  //     alert('Заполните все поля перед сохранением.');
+  //   }
+  // };
+
+
+// логика на обязательные поля инпутов
+  const areFieldsValid = () => {
+    if (editedLocation) {
+      const { city, address, latitude, longitude, hours } = editedLocation;
+      return city && address && latitude && longitude && hours;
+    }
+    return false;
+  };
