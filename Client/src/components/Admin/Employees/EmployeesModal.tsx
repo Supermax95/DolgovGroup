@@ -32,7 +32,6 @@ interface UsersModalProps {
 const EmployeesModal: FC<UsersModalProps> = ({
   isOpen,
   user,
-
   onSaveEdit,
   onCloseEditModal,
   editedUser,
@@ -215,7 +214,6 @@ const EmployeesModal: FC<UsersModalProps> = ({
       ],
       required: true,
     },
-    //! проверить
     {
       id: 'isActivated',
       value: editedUser.isActivated,
@@ -225,11 +223,7 @@ const EmployeesModal: FC<UsersModalProps> = ({
   return (
     <Wrapper>
       <form onSubmit={handleFormSubmit}>
-        <ModalUser
-          modalTitle={modalTitle}
-          onCancellick={handleCancel}
-          // onSaveClick={handleSave}
-        >
+        <ModalUser modalTitle={modalTitle} onCancellick={handleCancel}>
           <InputModal
             containerClassName={
               'py-8 grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'

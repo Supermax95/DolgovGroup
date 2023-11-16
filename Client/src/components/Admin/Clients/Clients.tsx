@@ -121,7 +121,7 @@ const Clients: FC = () => {
     setModalOpen(false);
   };
 
-  const handleSave = async (editedUser: User) => {
+  const handleSaveEdit = async (editedUser: User) => {
     try {
       if (selectedUser) {
         await dispatch(
@@ -160,7 +160,6 @@ const Clients: FC = () => {
               currentPage={currentPage}
               itemsPerPage={itemsPerPage}
               columnsListDb={columnsListDb}
-              onAddClick={undefined}
               onEditClick={openEditModal}
             />
             <Pagination
@@ -172,8 +171,10 @@ const Clients: FC = () => {
               <UsersModal
                 isOpen={isModalOpen}
                 user={selectedUser}
-                onSave={handleSave}
-                onClose={closeEditModal}
+                // onSave={handleSave}
+                // onClose={closeEditModal}
+                onSaveEdit={handleSaveEdit}
+                onCloseEditModal={closeEditModal}
                 editedUser={editedUser}
                 setEditedUser={setEditedUser}
               />

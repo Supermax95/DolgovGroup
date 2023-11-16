@@ -5,7 +5,8 @@ import InputModal, { InputField } from '../../../ui/InputModal';
 import ModalUser from '../../../ui/ModalUser';
 import nodemailerActivationSend from '../../../Redux/thunks/Nodemailer/nodemailerActivation.api';
 import nodemailerCodeSend from '../../../Redux/thunks/Nodemailer/nodemailerCodeSend.api';
-interface User {
+
+interface IUser {
   id: number;
   lastName: string;
   firstName: string;
@@ -21,18 +22,18 @@ interface User {
 
 interface UsersModalProps {
   isOpen: boolean;
-  user: User | null;
-  onSave: (editedUser: User) => void;
-  onClose: () => void;
-  editedUser: User | null | undefined;
-  setEditedUser: React.Dispatch<React.SetStateAction<User | null | undefined>>;
+  user: IUser | null;
+  onSaveEdit: (editedUser: IUser) => void;
+  onCloseEditModal: () => void;
+  editedUser: IUser | null | undefined;
+  setEditedUser: React.Dispatch<React.SetStateAction<IUser | null | undefined>>;
 }
 
 const ClientsModal: React.FC<UsersModalProps> = ({
   isOpen,
   user,
-  onSave,
-  onClose,
+  onSaveEdit,
+  onCloseEditModal,
   editedUser,
   setEditedUser,
 }) => {
@@ -48,14 +49,13 @@ const ClientsModal: React.FC<UsersModalProps> = ({
 
   const handleCancel = () => {
     setEditedUser(undefined);
-    onClose();
+    onCloseEditModal();
   };
 
-  const handleSave = () => {
-    if (editedUser) {
-      onSave(editedUser);
-      onClose();
-    }
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSaveEdit(editedUser);
+    onCloseEditModal();
   };
 
   if (!isOpen || !editedUser) {
@@ -65,6 +65,7 @@ const ClientsModal: React.FC<UsersModalProps> = ({
   const inputFieldsDate: InputField[] = [
     {
       id: 'lastName',
+      name: 'lastName',
       type: 'text',
       value: editedUser.lastName,
       placeholder: '',
@@ -76,9 +77,11 @@ const ClientsModal: React.FC<UsersModalProps> = ({
           ...editedUser,
           lastName: value,
         }),
+      required: true,
     },
     {
       id: 'barcode',
+      name: 'barcode',
       type: 'text',
       value: editedUser.barcode,
       placeholder: '',
@@ -94,6 +97,7 @@ const ClientsModal: React.FC<UsersModalProps> = ({
     },
     {
       id: 'firstName',
+      name: 'firstName',
       type: 'text',
       value: editedUser.firstName,
       placeholder: '',
@@ -105,9 +109,11 @@ const ClientsModal: React.FC<UsersModalProps> = ({
           ...editedUser,
           firstName: value,
         }),
+      required: true,
     },
     {
       id: 'balance',
+      name: 'balance',
       type: 'number',
       value: editedUser.balance.toString(),
       placeholder: '',
@@ -123,6 +129,7 @@ const ClientsModal: React.FC<UsersModalProps> = ({
     },
     {
       id: 'middleName',
+      name: 'middleName',
       type: 'text',
       value: editedUser.middleName,
       placeholder: '',
@@ -134,9 +141,11 @@ const ClientsModal: React.FC<UsersModalProps> = ({
           ...editedUser,
           middleName: value,
         }),
+      required: true,
     },
     {
       id: 'birthdate',
+      name: 'birthdate',
       type: 'date',
       value: editedUser.birthDate,
       placeholder: '',
@@ -152,6 +161,7 @@ const ClientsModal: React.FC<UsersModalProps> = ({
     },
     {
       id: 'email',
+      name: 'email',
       type: 'email',
       value: editedUser.email,
       placeholder: '',
@@ -163,10 +173,12 @@ const ClientsModal: React.FC<UsersModalProps> = ({
           ...editedUser,
           email: value,
         }),
+      required: true,
     },
 
     {
       id: 'bonusProgram',
+      name: 'bonusProgram',
       type: 'text',
       value: editedUser.bonusProgram,
       placeholder: '',
@@ -178,36 +190,11 @@ const ClientsModal: React.FC<UsersModalProps> = ({
           ...editedUser,
           bonusProgram: value,
         }),
+      disabled: true,
     },
-    // {
-    //   id: 'balance',
-    //   type: 'number',
-    //   value: editedUser.balance.toString(),
-    //   placeholder: '',
-    //   autoComplete: 'off',
-    //   title: 'Баланс',
-    //   htmlFor: 'balance',
-    //   onChange: (value: string) =>
-    //     setEditedUser({
-    //       ...editedUser,
-    //       balance: parseFloat(value),
-    //     }),
-    //   disabled: true,
-    // },
-
-    // {
-    //   id: '',
-    //   type: 'checkbox',
-    //   value: 'что-то',
-    //   htmlFor: '',
-    //   // onChange: (value: boolean) =>
-    //   //   setEditedUser({
-    //   //     ...editedUser,
-    //   //     isActivated: value,
-    //   //   }),
-    // },
     {
       id: 'userStatus',
+      name: 'userStatus',
       type: 'text',
       value: editedUser.userStatus,
       placeholder: '',
@@ -224,39 +211,33 @@ const ClientsModal: React.FC<UsersModalProps> = ({
         { value: 'Новый сотрудник', label: 'Новый сотрудник' },
         { value: 'Клиент', label: 'Клиент' },
       ],
+      required: true,
     },
     {
       id: 'isActivated',
-      type: 'text',
       value: editedUser.isActivated,
-      htmlFor: 'isActivated',
-      onChange: (value: boolean) =>
-        setEditedUser({
-          ...editedUser,
-          isActivated: value,
-        }),
     },
   ];
 
   const allInputFields = [...inputFieldsDate];
   return (
     <Wrapper>
-      <ModalUser
-        modalTitle={modalTitle}
-        onCancellick={handleCancel}
-        onSaveClick={handleSave}
-      >
-        <InputModal
-          containerClassName={'py-8 grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'}
-          inputFields={allInputFields}
-          codeSend={() =>
-            editedUser && dispatch(nodemailerCodeSend(editedUser))
-          }
-          activationSend={() =>
-            editedUser && dispatch(nodemailerActivationSend(editedUser))
-          }
-        />
-      </ModalUser>
+      <form onSubmit={handleFormSubmit}>
+        <ModalUser modalTitle={modalTitle} onCancellick={handleCancel}>
+          <InputModal
+            containerClassName={
+              'py-8 grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'
+            }
+            inputFields={allInputFields}
+            codeSend={() =>
+              editedUser && dispatch(nodemailerCodeSend(editedUser))
+            }
+            activationSend={() =>
+              editedUser && dispatch(nodemailerActivationSend(editedUser))
+            }
+          />
+        </ModalUser>
+      </form>
     </Wrapper>
   );
 };

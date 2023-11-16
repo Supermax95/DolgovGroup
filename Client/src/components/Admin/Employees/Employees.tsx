@@ -17,8 +17,6 @@ interface User {
   email: string;
   barcode: string;
   userStatus: string;
-  // bonusProgram?: string | undefined;
-  // balance?: number | undefined;
   isActivated: boolean;
 }
 
@@ -161,7 +159,6 @@ const Employees: FC = () => {
               currentPage={currentPage}
               itemsPerPage={itemsPerPage}
               columnsListDb={columnsListDb}
-              onAddClick={undefined}
               onEditClick={openEditModal}
             />
             <Pagination
@@ -177,8 +174,6 @@ const Employees: FC = () => {
             isOpen={isModalOpen}
             user={selectedUser}
             onSaveEdit={handleSaveEdit}
-            // onSaveAdd={handleSaveAdd}
-            //onCloseAddModal={closeAddModal}
             onCloseEditModal={closeEditModal}
             editedUser={editedUser}
             setEditedUser={setEditedUser}
