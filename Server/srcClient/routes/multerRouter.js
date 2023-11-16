@@ -10,23 +10,23 @@ const storageProduct = multer.diskStorage({
     cb(null, `${file.originalname}`);
   },
 });
-
 const uploadsProduct = multer({ storage: storageProduct });
 
-router.post(
+router.put(
   '/admin/productsPhoto/:id',
   uploadsProduct.single('file'),
   async (req, res) => {
     const { id } = req.params;
+    console.log('id', req.params);
     const originalname = req.file.filename;
-
+    console.log('originalname', originalname);
     try {
       await Product.update(
         { photo: `/uploads/product/${originalname}` },
         { where: { id } }
       );
 
-      res.json({ message: 'Файл зпгрузился.' });
+      res.json({ message: 'Файл загрузился.' });
     } catch (error) {
       console.log('error', error);
       res.status(500).json({ message: 'Ошибка загрузки' });
