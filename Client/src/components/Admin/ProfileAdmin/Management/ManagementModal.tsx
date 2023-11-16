@@ -1,5 +1,5 @@
-import React, { FC, useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../../Redux/hooks';
+import React, { FC, useEffect } from 'react';
+import { useAppDispatch } from '../../../../Redux/hooks';
 import Wrapper from '../../../../ui/Wrapper';
 import InputModal, { InputField } from '../../../../ui/InputModal';
 import Modal from '../../../../ui/Modal';
@@ -64,17 +64,36 @@ const ManagementModal: FC<ManagersModalProps> = ({
     onCloseEditModal();
   };
 
-  const handleSave = () => {
-    if (editedManager) {
+  // const handleSave = () => {
+  //   if (editedManager) {
+  //     onSaveEdit(editedManager);
+  //     onCloseEditModal();
+  //   }
+  // };
+
+  // const handleAdd = () => {
+  //   if (editedManager) {
+  //     onSaveAdd(editedManager);
+  //     onCloseAddModal();
+  //   }
+  // };
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (isAddingMode) {
+      onSaveAdd(editedManager);
+      onCloseAddModal();
+    } else {
       onSaveEdit(editedManager);
       onCloseEditModal();
     }
   };
 
-  const handleAdd = () => {
-    if (editedManager) {
-      onSaveAdd(editedManager);
-      onCloseAddModal();
+  const handleDelete = () => {
+    if (editedManager && editedManager.id) {
+      const managerId = editedManager.id;
+      // dispatch(deleteLocation(managerId));
+      onCloseEditModal();
     }
   };
 
@@ -85,6 +104,7 @@ const ManagementModal: FC<ManagersModalProps> = ({
   const inputFieldsDate: InputField[] = [
     {
       id: 'lastName',
+      name: 'lastName',
       type: 'text',
       value: editedManager.lastName,
       placeholder: '',
@@ -100,6 +120,7 @@ const ManagementModal: FC<ManagersModalProps> = ({
     },
     {
       id: 'firstName',
+      name: 'firstName',
       type: 'text',
       value: editedManager.firstName,
       placeholder: '',
@@ -116,6 +137,7 @@ const ManagementModal: FC<ManagersModalProps> = ({
 
     {
       id: 'middleName',
+      name: 'middleName',
       type: 'text',
       value: editedManager.middleName,
       placeholder: '',
@@ -132,6 +154,7 @@ const ManagementModal: FC<ManagersModalProps> = ({
 
     {
       id: 'email',
+      name: 'email',
       type: 'email',
       value: editedManager.email,
       placeholder: '',
@@ -147,20 +170,21 @@ const ManagementModal: FC<ManagersModalProps> = ({
     },
   ];
 
-  const allInputFields = [...inputFieldsDate];
-
   return (
     <>
       <Wrapper>
-        <Modal
-          modalTitle={modalTitle}
-          isAddingMode={isAddingMode}
-          onAddClick={handleAdd}
-          onSaveClick={handleSave}
-          onCancellick={handleCancel}
-        >
-          <InputModal inputFields={allInputFields} />
-        </Modal>
+        <form onSubmit={handleFormSubmit}>
+          <Modal
+            modalTitle={modalTitle}
+            isAddingMode={isAddingMode}
+            // onAddClick={handleAdd}
+            // onSaveClick={handleSave}
+            onCancellick={handleCancel}
+            onDeleteClick={handleDelete}
+          >
+            <InputModal inputFields={inputFieldsDate} />
+          </Modal>
+        </form>
       </Wrapper>
     </>
   );

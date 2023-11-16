@@ -19,7 +19,7 @@ interface User {
   barcode: string;
   userStatus: string;
   isActivated: boolean;
-  bonusProgram:string;
+  bonusProgram: string;
   balance: number;
 }
 
@@ -121,7 +121,7 @@ const Clients: FC = () => {
     setModalOpen(false);
   };
 
-  const handleSave = async (editedUser: User) => {
+  const handleSaveEdit = async (editedUser: User) => {
     try {
       if (selectedUser) {
         await dispatch(
@@ -161,9 +161,6 @@ const Clients: FC = () => {
               itemsPerPage={itemsPerPage}
               columnsListDb={columnsListDb}
               onEditClick={openEditModal}
-              onAddClick={function (): void {
-                throw new Error('Function not implemented.');
-              }}
             />
             <Pagination
               currentPage={currentPage}
@@ -174,8 +171,10 @@ const Clients: FC = () => {
               <UsersModal
                 isOpen={isModalOpen}
                 user={selectedUser}
-                onSave={handleSave}
-                onClose={closeEditModal}
+                // onSave={handleSave}
+                // onClose={closeEditModal}
+                onSaveEdit={handleSaveEdit}
+                onCloseEditModal={closeEditModal}
                 editedUser={editedUser}
                 setEditedUser={setEditedUser}
               />

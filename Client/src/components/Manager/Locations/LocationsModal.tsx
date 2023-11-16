@@ -31,7 +31,6 @@ interface LocationsModalProps {
 const LocationsModal: FC<LocationsModalProps> = ({
   isOpen,
   location,
-
   onSaveEdit,
   onSaveAdd,
   onCloseEditModal,
@@ -61,37 +60,21 @@ const LocationsModal: FC<LocationsModalProps> = ({
 
   const handleCancel = () => {
     setEditedLocation(undefined);
+    //! почему работает на обоих клойзах, хотя этот только на эдит, хаха
     onCloseEditModal();
   };
 
-  const handleAdd = () => {
-    if (editedLocation) {
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (isAddingMode) {
       onSaveAdd(editedLocation);
       onCloseAddModal();
-    }
-  };
-
-  const handleSave = () => {
-    if (editedLocation) {
+    } else {
       onSaveEdit(editedLocation);
       onCloseEditModal();
-    } else {
-      alert('Заполните все поля перед сохранением.');
     }
   };
 
-  // const handleFormSubmit = (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   if (isAddingMode) {
-  //     onSaveAdd(editedLocation);
-  //     onCloseAddModal();
-  //   } else {
-  //     onSaveEdit(editedLocation);
-  //     onCloseEditModal();
-  //   }
-  // };
-
-  //!!!!!
   const handleDelete = () => {
     if (editedLocation && editedLocation.id) {
       const locationId = editedLocation.id;
@@ -124,7 +107,6 @@ const LocationsModal: FC<LocationsModalProps> = ({
     {
       id: 'address',
       name: 'address',
-
       type: 'text',
       value: editedLocation.address,
       placeholder: '',
@@ -141,7 +123,6 @@ const LocationsModal: FC<LocationsModalProps> = ({
     {
       id: 'latitude',
       name: 'latitude',
-
       type: 'text',
       value: editedLocation.latitude.toString().replace(',', '.'),
       placeholder: '',
@@ -210,16 +191,16 @@ const LocationsModal: FC<LocationsModalProps> = ({
 
   return (
     <Wrapper>
-      <Modal
-        modalTitle={modalTitle}
-        isAddingMode={isAddingMode}
-        onAddClick={handleAdd}
-        onSaveClick={handleSave}
-        onDeleteClick={handleDelete}
-        onCancellick={handleCancel}
-      >
-        <InputModal inputFields={inputFields} />
-      </Modal>
+      <form onSubmit={handleFormSubmit}>
+        <Modal
+          modalTitle={modalTitle}
+          isAddingMode={isAddingMode}
+          onCancellick={handleCancel}
+          onDeleteClick={handleDelete}
+        >
+          <InputModal inputFields={inputFields} />
+        </Modal>
+      </form>
     </Wrapper>
   );
 };

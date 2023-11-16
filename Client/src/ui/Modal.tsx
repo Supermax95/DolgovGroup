@@ -10,10 +10,10 @@ interface IModal {
   children: React.ReactNode;
   modalTitle: string;
   isAddingMode: boolean;
-  onAddClick: () => void;
-  onSaveClick: () => void;
+  // onAddClick: () => void;
+  // onSaveClick: () => void;
   onDeleteClick?: () => void;
-  onMulterClick: () => void;
+  onMulterClick?: () => void;
   onCancellick: () => void;
 }
 
@@ -21,8 +21,8 @@ const Modal: FC<IModal> = ({
   children,
   modalTitle,
   isAddingMode,
-  onAddClick,
-  onSaveClick,
+  // onAddClick,
+  // onSaveClick,
   onDeleteClick,
   onMulterClick,
   onCancellick,
@@ -77,8 +77,7 @@ const Modal: FC<IModal> = ({
 
             {isAddingMode ? (
               <Button
-                type="button"
-                onClick={onAddClick}
+                type="submit"
                 styleCSSSpan={
                   'w-44 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-slate-800'
                 }
@@ -87,14 +86,14 @@ const Modal: FC<IModal> = ({
             ) : (
               <>
                 <Button
-                  type="button"
-                  onClick={onSaveClick}
+                  type="submit"
                   styleCSSSpan={
                     'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
                   }
                   title="Сохранить"
                 />
                 <Button
+                  //! здесь не исправлено на submit, а значит не обёрнуто в форму
                   type="button"
                   onClick={onMulterClick}
                   styleCSSSpan={

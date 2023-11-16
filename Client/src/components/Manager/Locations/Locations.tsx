@@ -141,51 +141,34 @@ const Location: FC = () => {
     setModalOpen(false);
   };
 
-  const areFieldsValid = () => {
-    if (editedLocation) {
-      const { city, address, latitude, longitude, hours } = editedLocation;
-      return city && address && latitude && longitude && hours;
-    }
-    return false;
-  };
-
   const handleSaveAdd = async () => {
-    if (areFieldsValid() && editedLocation) {
-      //if (editedLocation) {
-      try {
+    try {
+      if (editedLocation) {
         await dispatch(
           addLocation({
             newLocation: editedLocation,
           })
         );
         closeAddModal();
-      } catch (error) {
-        console.error('Произошла ошибка при добавлении:', error);
       }
-    } else {
-      //! исправить алёрт на нормальные error
-      alert('Заполните все поля перед добавлением.');
+    } catch (error) {
+      console.error('Произошла ошибка при добавлении:', error);
     }
   };
 
   const handleSaveEdit = async (editedLocation: ILocation) => {
-    if (areFieldsValid() && editedLocation) {
-      try {
-        if (selectedLocation) {
-          await dispatch(
-            editLocation({
-              locationId: selectedLocation.id,
-              newInfo: editedLocation,
-            })
-          );
-          closeEditModal();
-        }
-      } catch (error) {
-        console.error('Произошла ошибка при редактировании:', error);
+    try {
+      if (selectedLocation) {
+        await dispatch(
+          editLocation({
+            locationId: selectedLocation.id,
+            newInfo: editedLocation,
+          })
+        );
+        closeEditModal();
       }
-    } else {
-      //! исправить алёрт на нормальные error
-      alert('Заполните все поля перед добавлением.');
+    } catch (error) {
+      console.error('Произошла ошибка при редактировании:', error);
     }
   };
 
