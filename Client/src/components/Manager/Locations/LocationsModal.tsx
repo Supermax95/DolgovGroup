@@ -75,7 +75,6 @@ const LocationsModal: FC<LocationsModalProps> = ({
     }
   };
 
-  //!!!!!
   const handleDelete = () => {
     if (editedLocation && editedLocation.id) {
       const locationId = editedLocation.id;
@@ -108,7 +107,6 @@ const LocationsModal: FC<LocationsModalProps> = ({
     {
       id: 'address',
       name: 'address',
-
       type: 'text',
       value: editedLocation.address,
       placeholder: '',
@@ -125,7 +123,6 @@ const LocationsModal: FC<LocationsModalProps> = ({
     {
       id: 'latitude',
       name: 'latitude',
-
       type: 'text',
       value: editedLocation.latitude.toString().replace(',', '.'),
       placeholder: '',
@@ -198,8 +195,8 @@ const LocationsModal: FC<LocationsModalProps> = ({
         <Modal
           modalTitle={modalTitle}
           isAddingMode={isAddingMode}
-          onDeleteClick={handleDelete}
           onCancellick={handleCancel}
+          onDeleteClick={handleDelete}
         >
           <InputModal inputFields={inputFields} />
         </Modal>
