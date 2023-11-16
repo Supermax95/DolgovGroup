@@ -9,6 +9,7 @@ import getManager from './thunks/Manager/Management/getManager.api';
 import addManager from './thunks/Manager/Management/addManager.api';
 import editManager from './thunks/Manager/Management/editManager.api';
 import sendOneTimePassword from './thunks/Manager/Management/sendOneTimePassword.api';
+import deleteManager from './thunks/Manager/Management/deleteManager.api';
 
 export interface IManager {
   id: number;
@@ -196,10 +197,23 @@ const managerSlice = createSlice({
       .addCase(sendOneTimePassword.fulfilled, (state, action) => {
         state.isLoading = false;
         state.message = action.payload.message;
-        console.log('   state.message ', state.message);
-        console.log('action.payload ', action.payload);
       })
       .addCase(sendOneTimePassword.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      //! deleteManager
+      .addCase(deleteManager.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(deleteManager.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.data = action.payload;
+        console.log(' state.data ', state.data);
+        console.log('action.payload ', action.payload);
+      })
+      .addCase(deleteManager.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       });
