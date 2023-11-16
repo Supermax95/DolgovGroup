@@ -89,7 +89,6 @@ const Management: FC = () => {
     setModalOpen(true);
     console.log('Кнопка "Редактировать" нажата!');
   };
-  
 
   const closeEditModal = () => {
     setSelectedManager(null);
@@ -137,6 +136,8 @@ const Management: FC = () => {
       console.error('Произошла ошибка при редактировании:', error);
     }
   };
+
+  const handleOneTimePassword = async () => {};
 
   const removeNotificationAdd = () => {
     setShowNotificationAdd(false);
@@ -199,6 +200,7 @@ const Management: FC = () => {
         columnsListDb={columnsListDb}
         onAddClick={openAddModal}
         onEditClick={openEditModal}
+        onOneTimePassword={handleOneTimePassword}
       />
       {isModalOpen && (selectedManager || isAddingMode) && (
         <ManagementModal
