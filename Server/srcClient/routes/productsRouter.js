@@ -20,7 +20,6 @@ router.post(
   '/admin/products',
   async (req, res) => {
     const { newProduct } = req.body;
-    const originalname = req.file.filename;
     try {
       await Product.create({
         productName: newProduct.productName,
