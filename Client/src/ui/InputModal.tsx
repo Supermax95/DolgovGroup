@@ -2,6 +2,10 @@ import { FC } from 'react';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/20/solid';
 import Button from './Button';
 
+//* Здесь инпуты, которые переиспользуются в модальных окнах
+//* На Location, в профиле админа (создание/редактирование менеджера) - один столбец
+//* На Clients, Employees два столбца
+
 interface IInputModal {
   inputFields: InputField[];
   containerClassName?: string;

@@ -246,7 +246,7 @@ module.exports = router
         }
 
         res.json({
-          message: 'Временный пароль выслан на почту. В БД данные обновлены',
+          message: `Временный пароль выслан на почту ${manager.email}`,
         });
       }
     } catch (error) {

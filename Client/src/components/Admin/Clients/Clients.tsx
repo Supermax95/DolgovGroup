@@ -7,7 +7,6 @@ import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import getClients from '../../../Redux/thunks/Users/getClients.api';
 import editClients from '../../../Redux/thunks/Users/editClients.api';
 import Search from '../../../ui/Search';
-import Modal from '../../../ui/Modal';
 import UsersModal from './ClientsModal';
 
 interface User {

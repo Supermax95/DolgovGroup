@@ -6,12 +6,12 @@ import {
   UserIcon,
 } from '@heroicons/react/24/outline';
 
+//* Модальное окно используеются в компонентах Management и Location
+
 interface IModal {
   children: React.ReactNode;
   modalTitle: string;
   isAddingMode: boolean;
-  // onAddClick: () => void;
-  // onSaveClick: () => void;
   onDeleteClick?: () => void;
   onMulterClick?: () => void;
   onCancellick: () => void;
@@ -21,8 +21,6 @@ const Modal: FC<IModal> = ({
   children,
   modalTitle,
   isAddingMode,
-  // onAddClick,
-  // onSaveClick,
   onDeleteClick,
   onMulterClick,
   onCancellick,
@@ -62,19 +60,6 @@ const Modal: FC<IModal> = ({
           {children}
 
           <div className="flex items-center justify-center w-full">
-            {/* {modalTitle === 'Редактирование данных менеджера' ? (
-              <div className="flex">
-                <Button
-                  type="button"
-                  onClick={onSaveClick}
-                  styleCSSSpan={
-                    'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
-                  }
-                  title="Выслать пароль"
-                />
-              </div>
-            ) : null} */}
-
             {isAddingMode ? (
               <Button
                 type="submit"
@@ -125,7 +110,7 @@ const Modal: FC<IModal> = ({
             aria-label="close modal"
             role="button"
           >
-            <XMarkIcon className="w-6 h-6 icon icon-tabler icon-tabler-x" />
+            <XMarkIcon className="w-6 h-6" />
           </button>
         </div>
       </div>
