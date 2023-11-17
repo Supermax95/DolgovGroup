@@ -4,38 +4,40 @@ import { VITE_URL } from '../../../VITE_URL';
 
 interface RequestData {
   newProduct: {
-    productName:string,
-    promoStartDate: string,
-    promoEndDate: string,
-    originalPrice: number,
-    customerPrice: number,
-    employeePrice: number,
-    isNew: boolean,
-    isDiscounted: boolean,
-    description: string,
-    photo: string,
-    categoryId: number,
+    productName: string;
+    promoStartDate: string;
+    promoEndDate: string;
+    originalPrice: number;
+    customerPrice: number;
+    employeePrice: number;
+    isNew: boolean;
+    isDiscounted: boolean;
+    description: string;
+    categoryId: number;
   };
 }
 
 interface ResponseData {
-    id:number,
-    productName:string,
-    promoStartDate: string,
-    promoEndDate: string,
-    originalPrice: number,
-    customerPrice: number,
-    employeePrice: number,
-    isNew: boolean,
-    isDiscounted: boolean,
-    description: string,
-    photo: string,
-    categoryId: number,
+  id: number;
+  productName: string;
+  promoStartDate: string;
+  promoEndDate: string;
+  originalPrice: number;
+  customerPrice: number;
+  employeePrice: number;
+  isNew: boolean;
+  isDiscounted: boolean;
+  description: string;
+  categoryId: number;
+}
+// type ArrayResponseData = Array<ResponseData>;
+
+interface ResponseDataId {
+  postId: number;
+  products: ResponseData[];
 }
 
-type ArrayResponseData = Array<ResponseData>;
-
-const addProduct = createAsyncThunk<ArrayResponseData, RequestData>(
+const addProduct = createAsyncThunk<ResponseDataId, RequestData>(
   'admin/addproduct',
 
   async ({ newProduct }) => {
@@ -46,6 +48,7 @@ const addProduct = createAsyncThunk<ArrayResponseData, RequestData>(
         `${VITE_URL}/admin/products`,
         { newProduct }
       );
+      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error('Error:', error);
