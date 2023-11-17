@@ -27,6 +27,8 @@ interface ManagersModalProps {
   setEditedManager: React.Dispatch<
     React.SetStateAction<IManager | null | undefined>
   >;
+
+  showError: React.ReactNode;
 }
 
 const ManagementModal: FC<ManagersModalProps> = ({
@@ -39,6 +41,7 @@ const ManagementModal: FC<ManagersModalProps> = ({
   isAddingMode,
   editedManager,
   setEditedManager,
+  showError,
 }) => {
   const dispatch = useAppDispatch();
 
@@ -67,12 +70,21 @@ const ManagementModal: FC<ManagersModalProps> = ({
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (isAddingMode) {
-      onSaveAdd(editedManager);
-      onCloseAddModal();
-    } else {
-      onSaveEdit(editedManager);
-      onCloseEditModal();
+    // if (isAddingMode) {
+    //   onSaveAdd(editedManager);
+    //   onCloseAddModal();
+    // } else {
+    //   onSaveEdit(editedManager);
+    //   onCloseEditModal();
+    // }
+    try {
+      if (isAddingMode) {
+        onSaveAdd(editedManager);
+      } else {
+        onSaveEdit(editedManager);
+      }
+    } catch (error) {
+      console.error('Произошла ошибка при сохранении:', error);
     }
   };
 
@@ -169,6 +181,7 @@ const ManagementModal: FC<ManagersModalProps> = ({
             onCancellick={handleCancel}
             onDeleteClick={handleDelete}
           >
+            {showError}
             <InputModal inputFields={inputFieldsDate} />
           </Modal>
         </form>

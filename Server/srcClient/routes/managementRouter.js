@@ -146,11 +146,41 @@ module.exports = router
       if (!manager) {
         res.status(404).json({ error: 'Пользователь не найден' });
       } else {
-        const updateMan = await Manager.update(updateManager, {
+        //* Обновление ФИО
+        const fieldsToUpdateFIO = {
+          lastName: updateManager.lastName,
+          firstName: updateManager.firstName,
+          middleName: updateManager.middleName,
+        };
+
+        await Manager.update(fieldsToUpdateFIO, {
           where: { id: managerId },
         });
-        console.log('updateManupdateMan', updateMan);
 
+        //* Обновление почты, если она изменилась
+        if (updateManager.email !== manager.email) {
+          const managerWithEmail = await Manager.findOne({
+            where: { email: updateManager.email },
+          });
+
+          if (!managerWithEmail) {
+            await Manager.update(
+              { email: updateManager.email },
+              {
+                where: { id: managerId },
+              }
+            );
+          } else {
+            res
+              .status(409)
+              .json({ error: 'Пользователь с такой почтой уже существует' });
+            return;
+          }
+        }
+
+        console.log('Данные успешно обновлены');
+
+        //* Получение обновленного списка менеджеров
         const managers = await Manager.findAll({
           where: {
             isAdmin: false,
@@ -167,6 +197,7 @@ module.exports = router
       }
     } catch (error) {
       console.log('Ошибка при получении данных из базы данных', error);
+      res.status(500).json({ error: 'Внутренняя ошибка сервера' });
     }
   })
 
