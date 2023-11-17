@@ -1,11 +1,11 @@
 import React, { FC, useEffect } from 'react';
 import { useAppDispatch } from '../../../Redux/hooks';
-import addProduct from '../../../Redux/thunks/Products/addProduct.api';
 import deleteProduct from '../../../Redux/thunks/Products/deleteProduct.api';
 import Wrapper from '../../../ui/Wrapper';
 import InputModal, { InputField } from '../../../ui/InputModal';
 import Modal from '../../../ui/Modal';
 import UploadFile from './UploadsComponent';
+import { IProduct } from './Products';
 
 interface Product {
   id: number;
@@ -18,15 +18,17 @@ interface Product {
   isNew: boolean;
   isDiscounted: boolean;
   description: string;
-  photo: string;
+//   photo: string;
   categoryId: number;
 }
 
 interface ProductsModalProps {
   isOpen: boolean;
   product: Product | null;
-  onSave: (editedProduct: Product) => void;
-  onClose: () => void;
+  onSaveAdd: (editedProduct: IProduct) => void;
+  onSaveEdit: (editedProduct: IProduct) => void;
+  onCloseAddModal: () => void;
+  onCloseEditModal: () => void;
   isAddingMode: boolean;
   editedProduct: Product | null | undefined;
   setEditedProduct: React.Dispatch<
@@ -37,32 +39,33 @@ interface ProductsModalProps {
 const ProductsModal: FC<ProductsModalProps> = ({
   isOpen,
   product,
-  onSave,
-  onClose,
+  onSaveEdit,
+  onSaveAdd,
+  onCloseEditModal,
+  onCloseAddModal,
   isAddingMode,
   editedProduct,
   setEditedProduct,
 }) => {
   const dispatch = useAppDispatch();
 
+  product || {
+    id: 0,
+    productName: '',
+    promoStartDate: '',
+    promoEndDate: '',
+    originalPrice: 0,
+    customerPrice: 0,
+    employeePrice: 0,
+    isNew: false,
+    isDiscounted: false,
+    description: '',
+    // photo: '',
+    categoryId: 0,
+  };
   useEffect(() => {
     if (product) {
       setEditedProduct({ ...product });
-    } else if (isAddingMode) {
-      setEditedProduct({
-        id: 0,
-        productName: '',
-        promoStartDate: '',
-        promoEndDate: '',
-        originalPrice: 0,
-        customerPrice: 0,
-        employeePrice: 0,
-        isNew: false,
-        isDiscounted: false,
-        description: '',
-        photo: '',
-        categoryId: 0,
-      });
     }
   }, [product, isAddingMode, setEditedProduct]);
 
@@ -70,26 +73,18 @@ const ProductsModal: FC<ProductsModalProps> = ({
 
   const handleCancel = () => {
     setEditedProduct(undefined);
-    onClose();
+    onCloseEditModal();
   };
 
-  const handleSave = () => {
-    if (editedProduct) {
-      onSave(editedProduct);
-      onClose();
-    }
-  };
 
-  const handleAdd = async () => {
-    if (editedProduct) {
-      try {
-        await dispatch(addProduct({ newProduct: editedProduct }));
-        onClose();
-      } catch (error) {
-        console.error('Произошла ошибка при добавлении:', error);
-      }
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (isAddingMode) {
+      onSaveAdd(editedProduct);
+      onCloseAddModal();
     } else {
-      alert('Заполните все поля перед добавлением.');
+      onSaveEdit(editedProduct);
+      onCloseEditModal();
     }
   };
 
@@ -97,7 +92,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
     if (editedProduct && editedProduct.id) {
       const productId = editedProduct.id;
       dispatch(deleteProduct(productId));
-      onClose();
+      onCloseEditModal();
     }
   };
 
@@ -226,19 +221,19 @@ const ProductsModal: FC<ProductsModalProps> = ({
           description: value,
         }),
     },
-    {
-      id: 'photo',
-      type: 'text',
-      title: 'Фотография продукта',
-      placeholder: 'Путь',
-      autoComplete: 'off',
-      htmlFor: 'photo',
-      onChange: (value: string) =>
-        setEditedProduct({
-          ...editedProduct,
-          photo: value,
-        }),
-    },
+    // {
+    //   id: 'photo',
+    //   type: 'text',
+    //   title: 'Фотография продукта',
+    //   placeholder: 'Путь',
+    //   autoComplete: 'off',
+    //   htmlFor: 'photo',
+    //   onChange: (value: string) =>
+    //     setEditedProduct({
+    //       ...editedProduct,
+    //       photo: value,
+    //     }),
+    // },
     {
       id: 'categoryId',
       type: 'number',
@@ -257,17 +252,17 @@ const ProductsModal: FC<ProductsModalProps> = ({
 
   return (
     <Wrapper>
+          <form onSubmit={handleFormSubmit}>
       <Modal
         modalTitle={modalTitle}
         isAddingMode={isAddingMode}
-        onAddClick={handleAdd}
-        onSaveClick={handleSave}
         onDeleteClick={handleDelete}
         onCancellick={handleCancel}
       >
         <InputModal inputFields={inputFields} />
-        <UploadFile id={editedProduct.id} />
+        <UploadFile id={editedProduct.id}/>
       </Modal>
+      </form>
     </Wrapper>
   );
 };

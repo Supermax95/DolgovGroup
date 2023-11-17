@@ -3,7 +3,6 @@ import axios, { AxiosResponse } from 'axios';
 import { VITE_URL } from '../../../VITE_URL';
 
 interface RequestData {
-  productId: number;
   newInfo: {
     id:number,
     productName:string,
@@ -15,7 +14,6 @@ interface RequestData {
     isNew: boolean,
     isDiscounted: boolean,
     description: string,
-    photo: File,
     categoryId: number,
   };
 }
@@ -31,7 +29,6 @@ interface ResponseData {
     isNew: boolean,
     isDiscounted: boolean,
     description: string,
-    photo: string,
     categoryId: number,
 }
 
@@ -39,12 +36,12 @@ type ArrayResponseData = Array<ResponseData>;
 
 const editProduct = createAsyncThunk<ArrayResponseData, RequestData>(
   'admin/editProduct',
-  
-  async ({ productId, newInfo }) => {
+
+  async ({  newInfo }) => {
       console.log(newInfo);
     try {
       const response: AxiosResponse = await axios.put(
-        `${VITE_URL}/admin/products/${productId}`,
+        `${VITE_URL}/admin/products`,
         { newInfo }
       );
       return response.data;

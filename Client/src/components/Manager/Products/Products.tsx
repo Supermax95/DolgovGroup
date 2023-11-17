@@ -5,8 +5,10 @@ import Pagination from '../../../ui/Paggination';
 import getProducts from '../../../Redux/thunks/Products/getProducts.api';
 import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import { VITE_URL } from '../../../VITE_URL';
-import editProduct from '../../../Redux/thunks/Products/editProduct.api';
+import editProduct from '../../../Redux/thunks/Products/editProduct.api'; 
 import ProductsModal from './ProductsModal';
+import addProduct from '../../../Redux/thunks/Products/addProduct.api';
+// import uploadFile from '../../../Redux/thunks/Multer/multer.api';
 
 export interface IProduct {
   id: number;
@@ -19,7 +21,7 @@ export interface IProduct {
   isNew: boolean;
   isDiscounted: boolean;
   description: string;
-  photo: string;
+  // photo: string;
   categoryId: number;
 }
 
@@ -72,14 +74,6 @@ const Products: FC = () => {
   const displayedProducts = products.slice(startIndex, endIndex);
   const totalPages = Math.ceil(products.length / itemsPerPage);
 
-  const openEditModal = (product: IProduct) => {
-    console.log('Opening Edit Modal:', product);
-    setSelectedProduct(product);
-    setEditedProduct({ ...product });
-    setAddingMode(false);
-    setModalOpen(true);
-  };
-
   const openAddModal = () => {
     setAddingMode(true);
     setEditedProduct({
@@ -93,9 +87,22 @@ const Products: FC = () => {
       isNew: false,
       isDiscounted: false,
       description: '',
-      photo: '',
+      // photo: '',
       categoryId: 0,
     });
+    setModalOpen(true);
+  };
+
+  const closeAddModal = () => {
+    setSelectedProduct(null);
+    setEditedProduct(null);
+    setModalOpen(false);
+  };
+
+  const openEditModal = (product: IProduct) => {
+    setSelectedProduct(product);
+    setEditedProduct({ ...product });
+    setAddingMode(false);
     setModalOpen(true);
   };
 
@@ -103,16 +110,30 @@ const Products: FC = () => {
     setSelectedProduct(null);
     setEditedProduct(null);
     setModalOpen(false);
-    dispatch(getProducts());
   };
 
-  const handleSave = async (editedProduct: IProduct) => {
+  const handleSaveAdd = async () => {
+    try {
+      if (editedProduct) {
+        await dispatch(
+          addProduct({
+            newProduct: editedProduct,
+          })
+        );
+        closeAddModal();
+      }
+    } catch (error) {
+      console.error('Произошла ошибка при добавлении:', error);
+    }
+  };
+
+  const handleSaveEdit = async (editedProduct: IProduct) => {
     try {
       if (selectedProduct) {
         await dispatch(
           editProduct({
-            productId: selectedProduct.id,
             newInfo: editedProduct,
+    
           })
         );
         closeEditModal();
@@ -121,6 +142,7 @@ const Products: FC = () => {
       console.error('Произошла ошибка при редактировании:', error);
     }
   };
+
   return (
     <Wrapper>
       <div>Products</div>
@@ -175,8 +197,10 @@ const Products: FC = () => {
           <ProductsModal
             isOpen={isModalOpen}
             product={selectedProduct}
-            onSave={handleSave}
-            onClose={closeEditModal}
+            onSaveEdit={handleSaveEdit}
+            onSaveAdd={handleSaveAdd}
+            onCloseAddModal={closeAddModal}
+            onCloseEditModal={closeEditModal}
             isAddingMode={isAddingMode}
             editedProduct={editedProduct}
             setEditedProduct={setEditedProduct}

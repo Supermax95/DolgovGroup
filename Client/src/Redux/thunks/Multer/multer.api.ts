@@ -1,40 +1,74 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios, { AxiosResponse } from 'axios';
-import { VITE_URL } from '../../../VITE_URL';
+// import { createAsyncThunk } from '@reduxjs/toolkit';
+// import axios, { AxiosResponse } from 'axios';
+// import { VITE_URL } from '../../../VITE_URL';
 
-interface RequestData {
-  id: number;
-  file: File;
-}
+// interface RequestData {
+//   productId: number;
+//   newInfo: {
+//     id: number;
+//     productName: string;
+//     promoStartDate: string;
+//     promoEndDate: string;
+//     originalPrice: number;
+//     customerPrice: number;
+//     employeePrice: number;
+//     isNew: boolean;
+//     isDiscounted: boolean;
+//     description: string;
+//     categoryId: number;
+//   };
+//   file: File | null;
+// }
 
-interface ResponseData {
-  message: string;
-}
+// interface ResponseData {
+//   id:number,
+//   productName:string,
+//   promoStartDate: string,
+//   promoEndDate: string,
+//   originalPrice: number,
+//   customerPrice: number,
+//   employeePrice: number,
+//   isNew: boolean,
+//   isDiscounted: boolean,
+//   description: string,
+//   photo: string,
+//   categoryId: number,
+// }
 
-const multerProduct = createAsyncThunk<ResponseData, RequestData>(
-  'admin/multer',
-  async ({ id, file }) => {
-    console.log(file);
-    
-    try {
-      const formData = new FormData();
-      formData.append('file', file);
+// type ArrayResponseData = Array<ResponseData>;
 
-      const response: AxiosResponse<ResponseData> = await axios.post(
-        `${VITE_URL}/admin/productsPhoto/${id}`,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }
-      );
-      return response.data;
-    } catch (error) {
-      console.error('Error:', error);
-      throw error;
-    }
-  }
-);
 
-export default multerProduct;
+// const editProduct = createAsyncThunk<ArrayResponseData, RequestData>(
+//   'admin/uploadsProduct',
+//   async ({ productId, file, newInfo }) => {
+//     try {
+//       if (file) {
+//         const formData = new FormData();
+//         formData.append('file', file);
+//         Object.entries(newInfo).forEach(([key, value]) => {
+//           formData.append(key, String(value));
+//         });
+
+//         const response: AxiosResponse<ArrayResponseData>  = await axios.put(
+//           `${VITE_URL}//admin/products/${productId}`,
+//           formData,
+//           {
+//             headers: {
+//               'Content-Type': 'multipart/form-data',
+//             },
+//             withCredentials: true,
+//           }
+//         );
+
+//         return response.data;
+//       } else {
+//         throw new Error('No file provided');
+//       }
+//     } catch (error) {
+//       console.error('Error uploading file:', error);
+//       throw new Error('Error uploading file');
+//     }
+//   }
+// );
+
+// export default editProduct;
