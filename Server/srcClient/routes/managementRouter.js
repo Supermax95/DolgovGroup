@@ -58,12 +58,15 @@ module.exports = router
           message: 'Пользователь с такой электронной почтой уже существует',
         });
       } else {
-        await Manager.create({
+        const resultAdd = await Manager.create({
           lastName: newManager.lastName,
           firstName: newManager.firstName,
           middleName: newManager.middleName,
           email: newManager.email,
         });
+        const addedManagerData = resultAdd.get();
+        console.log('addedManagerData', addedManagerData);
+        console.log('addedManagerData======>', addedManagerData.id);
 
         const managers = await Manager.findAll({
           where: {
@@ -128,7 +131,9 @@ module.exports = router
           console.log('Код пользователю отправлен');
         }
 
-        res.json(managers);
+        //   console.log('addedManagerData=======Ю', addedManagerData);
+
+        res.json({ managers, addedManagerData });
       }
     } catch (error) {
       console.log('Ошибка при получении данных из базы данных', error);
@@ -146,11 +151,41 @@ module.exports = router
       if (!manager) {
         res.status(404).json({ error: 'Пользователь не найден' });
       } else {
-        const updateMan = await Manager.update(updateManager, {
+        //* Обновление ФИО
+        const fieldsToUpdateFIO = {
+          lastName: updateManager.lastName,
+          firstName: updateManager.firstName,
+          middleName: updateManager.middleName,
+        };
+
+        await Manager.update(fieldsToUpdateFIO, {
           where: { id: managerId },
         });
-        console.log('updateManupdateMan', updateMan);
 
+        //* Обновление почты, если она изменилась
+        if (updateManager.email !== manager.email) {
+          const managerWithEmail = await Manager.findOne({
+            where: { email: updateManager.email },
+          });
+
+          if (!managerWithEmail) {
+            await Manager.update(
+              { email: updateManager.email },
+              {
+                where: { id: managerId },
+              }
+            );
+          } else {
+            res
+              .status(409)
+              .json({ error: 'Пользователь с такой почтой уже существует' });
+            return;
+          }
+        }
+
+        console.log('Данные успешно обновлены');
+
+        //* Получение обновленного списка менеджеров
         const managers = await Manager.findAll({
           where: {
             isAdmin: false,
@@ -167,6 +202,7 @@ module.exports = router
       }
     } catch (error) {
       console.log('Ошибка при получении данных из базы данных', error);
+      res.status(500).json({ error: 'Внутренняя ошибка сервера' });
     }
   })
 
@@ -195,7 +231,8 @@ module.exports = router
         //! если письмо не отослалось, произошла какая-то ошибка, надо сообщать об этом на фронт
         //* генерация пароля
         const code = generateCode();
-        console.log('code', code);
+        console.log('code==================>', code);
+
         const mailData = {
           from: process.env.EMAIL,
           to: manager.email,
@@ -254,7 +291,6 @@ module.exports = router
 
   .delete('/deleteManager', async (req, res) => {
     const { managerId } = req.body;
-    console.log(managerId);
 
     try {
       await Manager.destroy({

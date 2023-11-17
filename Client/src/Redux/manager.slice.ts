@@ -23,10 +23,12 @@ export interface IManager {
 interface managerState {
   manager: IManager;
   data: IManager[];
+  //id: number;
   isAuth: boolean;
   isLoading: boolean;
   message: string;
   error: unknown;
+  addedManagerData: IManager;
 }
 
 const initialState: managerState = {
@@ -38,6 +40,15 @@ const initialState: managerState = {
     email: '',
     isAdmin: false,
   },
+  addedManagerData: {
+    id: 0,
+    lastName: '',
+    firstName: '',
+    middleName: '',
+    email: '',
+    isAdmin: false,
+  },
+  //id: 0,
   data: [],
   isAuth: false,
   isLoading: false,
@@ -168,7 +179,13 @@ const managerSlice = createSlice({
       })
       .addCase(addManager.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.data = action.payload;
+        state.data = action.payload.managers;
+        //!
+        state.addedManagerData = action.payload.addedManagerData;
+
+        console.log(' state.data', state.data);
+        //  state.id = action.payload.managerId;
+        console.log('state.id', state.id);
       })
       .addCase(addManager.rejected, (state, action) => {
         state.isLoading = false;
@@ -182,8 +199,6 @@ const managerSlice = createSlice({
       .addCase(editManager.fulfilled, (state, action) => {
         state.isLoading = false;
         state.data = action.payload;
-        console.log(' state.data ', state.data);
-        console.log('action.payload ', action.payload);
       })
       .addCase(editManager.rejected, (state, action) => {
         state.isLoading = false;

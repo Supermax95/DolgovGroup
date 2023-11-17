@@ -6,6 +6,7 @@ import ManagementModal from './ManagementModal';
 import addManager from '../../../../Redux/thunks/Manager/Management/addManager.api';
 import editManager from '../../../../Redux/thunks/Manager/Management/editManager.api';
 import sendOneTimePassword from '../../../../Redux/thunks/Manager/Management/sendOneTimePassword.api';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 interface IManager {
   id: number;
@@ -27,9 +28,12 @@ const Management: FC = () => {
   const managers = useAppSelector<IManager[]>(
     (state) => state.managerSlice.data
   );
+  console.log('managers', managers);
 
-  const managerIdForSend = useAppSelector((state) => state.managerSlice.data);
-  //console.log(managers);
+  const managerIdForBell = useAppSelector(
+    (state) => state.managerSlice.addedManagerData
+  );
+  console.log(managerIdForBell);
 
   const [isModalOpen, setModalOpen] = useState(true);
   const [isAddingMode, setAddingMode] = useState(false);
@@ -38,8 +42,12 @@ const Management: FC = () => {
   const [editedManager, setEditedManager] = useState<
     IManager | null | undefined
   >(null);
+
   const [showNotificationAdd, setShowNotificationAdd] = useState(false);
+  const [showNotificationEdit, setShowNotificationEdit] = useState(false);
   const [showNotificationOnePass, setShowNotificationOnePass] = useState(false);
+
+  const [modalError, setModalError] = useState<string | null>(null);
 
   const columnsDefaultName: IColumnsDefaultName[] = [
     { name: 'Фамилия' },
@@ -72,7 +80,7 @@ const Management: FC = () => {
   //   }
   // }, [showNotification]);
 
-  const openAddModal = () => {
+  const openAddModal = (): void => {
     setAddingMode(true);
     setEditedManager({
       id: 0,
@@ -84,37 +92,57 @@ const Management: FC = () => {
     setModalOpen(true);
   };
 
-  const openEditModal = (manager: IManager) => {
+  const openEditModal = (manager: IManager): void => {
     setSelectedManager(manager);
     setEditedManager({ ...manager });
     setAddingMode(false);
     setModalOpen(true);
   };
 
-  const closeEditModal = () => {
+  const closeEditModal = (): void => {
     setSelectedManager(null);
     setEditedManager(null);
     setModalOpen(false);
   };
 
-  const closeAddModal = () => {
+  const closeAddModal = (): void => {
     setSelectedManager(null);
     setEditedManager(null);
     setModalOpen(false);
   };
 
   //* добавление менеджера
-  const handleSaveAdd = async () => {
+  const handleSaveAdd = async (): Promise<void> => {
     if (editedManager) {
       try {
-        await dispatch(
+        const resultAdd = await dispatch(
           addManager({
             newManager: editedManager,
           })
         );
-        setShowNotificationAdd(true);
 
-        closeAddModal();
+        if (addManager.fulfilled.match(resultAdd)) {
+          if (managerIdForBell) {
+            console.log('addedManager', managerIdForBell);
+            setShowNotificationAdd(true);
+          } else {
+            console.error('Ошибка. Пользователь не найден.');
+          }
+
+          closeEditModal();
+        }
+
+        if (addManager.rejected.match(resultAdd)) {
+          if (resultAdd.error && resultAdd.error?.message?.includes('409')) {
+            setModalError('Пользователь с такой почтой уже существует');
+            //* пока уведомление об ошибке исчезает через 3 секунды
+            setTimeout(() => {
+              setModalError(null);
+            }, 3000);
+          } else {
+            setModalError('Ошибка. Не удалось обновить данные.');
+          }
+        }
       } catch (error) {
         console.error('Произошла ошибка при добавлении:', error);
       }
@@ -122,16 +150,47 @@ const Management: FC = () => {
   };
 
   //* редактирование менеджера
-  const handleSaveEdit = async (editedManager: IManager) => {
+  const handleSaveEdit = async (editedManager: IManager): Promise<void> => {
     try {
       if (selectedManager) {
-        await dispatch(
+        const resultEdit = await dispatch(
           editManager({
             managerId: selectedManager.id,
             updateManager: editedManager,
           })
         );
-        closeEditModal();
+
+        if (editManager.fulfilled.match(resultEdit)) {
+          setShowNotificationEdit(true);
+          closeEditModal();
+        }
+
+        //   //! так можно сделать перенос, но типизация ломается жёстко
+        //   // setModalError(
+        //   //   <>
+        //   //     Не удалось обновить данные.
+        //   //     <br />
+        //   //     Пользователь с такой почтой уже существует
+        //   //   </> as string
+        //   // );
+
+        //   // setTimeout(() => {
+        //   //   setModalError(null);
+        //   // }, 3000);
+        // }
+        if (editManager.rejected.match(resultEdit)) {
+          if (resultEdit.error && resultEdit.error?.message?.includes('409')) {
+            setModalError('Пользователь с такой почтой уже существует');
+            //* пока уведомление об ошибке исчезает через 3 секунды
+            setTimeout(() => {
+              setModalError(null);
+            }, 3000);
+          } else {
+            // Обработка других ошибок
+            setModalError('Ошибка. Не удалось обновить данные.');
+          }
+        }
+        //
       }
     } catch (error) {
       console.error('Произошла ошибка при редактировании:', error);
@@ -139,7 +198,7 @@ const Management: FC = () => {
   };
 
   //* отправка временного пароля на почту
-  const handleOneTimePassword = async (managerId: number) => {
+  const handleOneTimePassword = async (managerId: number): Promise<void> => {
     try {
       await dispatch(
         sendOneTimePassword({
@@ -152,17 +211,22 @@ const Management: FC = () => {
     }
   };
 
-  const removeNotificationAdd = () => {
+  //* скрытие всплывающего окна
+  const removeNotificationAdd = (): void => {
     setShowNotificationAdd(false);
   };
 
-  const removeNotificationEdit = () => {
+  const removeNotificationEdit = (): void => {
+    setShowNotificationEdit(false);
+  };
+
+  const removeNotificationOnePass = (): void => {
     setShowNotificationOnePass(false);
   };
 
   return (
     <div>
-      {showNotificationAdd && (
+      {showNotificationAdd && managerIdForBell && (
         <div className="flex flex-col p-8 bg-slate-100 shadow-md hover:shadow-lg rounded-2xl">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
@@ -171,18 +235,47 @@ const Management: FC = () => {
                   //! здесь нужно указать конкретные ФИО
                   className="font-medium leading-none"
                 >
-                  Личный кабинет менеджера создан
+                  Личный кабинет менеджера {managerIdForBell.firstName}{' '}
+                  {managerIdForBell.lastName} создан
                 </div>
                 <p
                   //! здесь нужно указать конкретный email
                   className="text-sm text-slate-600 leading-none mt-2"
                 >
-                  Временный пароль выслан на почту
+                  Временный пароль выслан на почту {managerIdForBell.email}
                 </p>
               </div>
             </div>
             <button
               onClick={removeNotificationAdd}
+              className="flex-no-shrink bg-gradient-to-b from-orange-300 to-orange-400 px-5 ml-4 py-2 text-sm shadow-sm hover:shadow-lg font-medium tracking-wider text-white rounded-full"
+            >
+              Скрыть
+            </button>
+          </div>
+        </div>
+      )}
+      {showNotificationEdit && (
+        <div className="flex flex-col p-8 bg-slate-100 shadow-md hover:shadow-lg rounded-2xl">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <div className="flex flex-col ml-3">
+                <div
+                  //! здесь нужно указать конкретные ФИО
+                  className="font-medium leading-none"
+                >
+                  Данные менеджера успешно обновлены
+                </div>
+                <p
+                  //! здесь нужно указать конкретный email
+                  className="text-sm text-slate-600 leading-none mt-2"
+                >
+                  Для обновления пароля менеджера отправьте новый пароль
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={removeNotificationEdit}
               className="flex-no-shrink bg-gradient-to-b from-orange-300 to-orange-400 px-5 ml-4 py-2 text-sm shadow-sm hover:shadow-lg font-medium tracking-wider text-white rounded-full"
             >
               Скрыть
@@ -204,7 +297,7 @@ const Management: FC = () => {
               </div>
             </div>
             <button
-              onClick={removeNotificationEdit}
+              onClick={removeNotificationOnePass}
               className="flex-no-shrink bg-gradient-to-b from-orange-300 to-orange-400 px-5 ml-4 py-2 text-sm shadow-sm hover:shadow-lg font-medium tracking-wider text-white rounded-full"
             >
               Скрыть
@@ -232,6 +325,13 @@ const Management: FC = () => {
           isAddingMode={isAddingMode}
           editedManager={editedManager}
           setEditedManager={setEditedManager}
+          showError={
+            modalError && (
+              <div className="text-sm text-rose-400 text-center mt-2">
+                {modalError}
+              </div>
+            )
+          }
         />
       )}
     </div>
