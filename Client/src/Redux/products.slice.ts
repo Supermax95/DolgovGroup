@@ -3,22 +3,21 @@ import getProducts from './thunks/Products/getProducts.api';
 import editProduct from './thunks/Products/editProduct.api';
 import deleteProduct from './thunks/Products/deleteProduct.api';
 import addProduct from './thunks/Products/addProduct.api';
-import multerProduct from './thunks/Multer/multer.api';
-
+// import uploadFile from './thunks/Multer/multer.api';
 
 interface Product {
-    id:number,
-    productName:string,
-    promoStartDate: string,
-    promoEndDate: string,
-    originalPrice: number,
-    customerPrice: number,
-    employeePrice: number,
-    isNew: boolean,
-    isDiscounted: boolean,
-    description: string,
-    photo: string,
-    categoryId: number,
+  id: number;
+  productName: string;
+  promoStartDate: string;
+  promoEndDate: string;
+  originalPrice: number;
+  customerPrice: number;
+  employeePrice: number;
+  isNew: boolean;
+  isDiscounted: boolean;
+  description: string;
+  photo: string;
+  categoryId: number;
 }
 
 interface ProductState {
@@ -62,6 +61,8 @@ const productSlice = createSlice({
       .addCase(editProduct.fulfilled, (state, action) => {
         state.isLoading = false;
         state.data = action.payload;
+        console.log('state.data ', state.data );
+        
       })
       .addCase(editProduct.rejected, (state, action) => {
         state.isLoading = false;
@@ -91,19 +92,19 @@ const productSlice = createSlice({
       .addCase(addProduct.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message || 'Произошла ошибка при добавлении';
-      })
-      .addCase(multerProduct.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(multerProduct.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.message = action.payload.message;
-      })
-      .addCase(multerProduct.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error =
-          action.error.message || 'Произошла ошибка при отправке письма';
       });
+    //   .addCase(uploadFile.pending, (state) => {
+    //     state.isLoading = true;
+    //   })
+    //   .addCase(uploadFile.fulfilled, (state, action) => {
+    //     state.isLoading = false;
+    //     state.message = action.payload.message;
+    //   })
+    //   .addCase(uploadFile.rejected, (state, action) => {
+    //     state.isLoading = false;
+    //     state.error =
+    //       action.error.message || 'Произошла ошибка при загрузке файла';
+    //   });
   },
 });
 
