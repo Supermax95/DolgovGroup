@@ -226,7 +226,8 @@ module.exports = router
         //! если письмо не отослалось, произошла какая-то ошибка, надо сообщать об этом на фронт
         //* генерация пароля
         const code = generateCode();
-        console.log('code', code);
+        console.log('code==================>', code);
+
         const mailData = {
           from: process.env.EMAIL,
           to: manager.email,
@@ -285,7 +286,6 @@ module.exports = router
 
   .delete('/deleteManager', async (req, res) => {
     const { managerId } = req.body;
-    console.log(managerId);
 
     try {
       await Manager.destroy({

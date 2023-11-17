@@ -65,18 +65,11 @@ const ManagementModal: FC<ManagersModalProps> = ({
 
   const handleCancel = () => {
     setEditedManager(undefined);
-    onCloseEditModal();
+    // onCloseEditModal();
   };
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // if (isAddingMode) {
-    //   onSaveAdd(editedManager);
-    //   onCloseAddModal();
-    // } else {
-    //   onSaveEdit(editedManager);
-    //   onCloseEditModal();
-    // }
     try {
       if (isAddingMode) {
         onSaveAdd(editedManager);
@@ -91,7 +84,6 @@ const ManagementModal: FC<ManagersModalProps> = ({
   const handleDelete = () => {
     if (editedManager && editedManager.id) {
       const managerId = editedManager.id;
-      console.log('managerId', managerId);
 
       dispatch(deleteManager({ managerId }));
       onCloseEditModal();

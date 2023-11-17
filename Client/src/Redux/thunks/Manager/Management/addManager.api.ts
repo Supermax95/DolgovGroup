@@ -18,6 +18,7 @@ interface ResponseData {
   middleName: string;
   email: string;
   isAdmin: boolean;
+  error?: string;
 }
 
 const addManager = createAsyncThunk<ResponseData[], RequestData>(

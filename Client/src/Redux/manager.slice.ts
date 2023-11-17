@@ -182,8 +182,6 @@ const managerSlice = createSlice({
       .addCase(editManager.fulfilled, (state, action) => {
         state.isLoading = false;
         state.data = action.payload;
-        console.log(' state.data ', state.data);
-        console.log('action.payload ', action.payload);
       })
       .addCase(editManager.rejected, (state, action) => {
         state.isLoading = false;

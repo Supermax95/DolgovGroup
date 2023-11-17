@@ -110,14 +110,28 @@ const Management: FC = () => {
   const handleSaveAdd = async (): Promise<void> => {
     if (editedManager) {
       try {
-        await dispatch(
+        const resultAdd = await dispatch(
           addManager({
             newManager: editedManager,
           })
         );
-        setShowNotificationAdd(true);
 
-        closeAddModal();
+        if (addManager.fulfilled.match(resultAdd)) {
+          setShowNotificationAdd(true);
+          closeEditModal();
+        }
+
+        if (addManager.rejected.match(resultAdd)) {
+          if (resultAdd.error && resultAdd.error?.message?.includes('409')) {
+            setModalError('Пользователь с такой почтой уже существует');
+            //* пока уведомление об ошибке исчезает через 3 секунды
+            setTimeout(() => {
+              setModalError(null);
+            }, 3000);
+          } else {
+            setModalError('Ошибка. Не удалось обновить данные.');
+          }
+        }
       } catch (error) {
         console.error('Произошла ошибка при добавлении:', error);
       }
@@ -156,9 +170,10 @@ const Management: FC = () => {
         if (editManager.rejected.match(resultEdit)) {
           if (resultEdit.error && resultEdit.error?.message?.includes('409')) {
             setModalError('Пользователь с такой почтой уже существует');
-            // setTimeout(() => {
-            //   setModalError(null);
-            // }, 3000);
+            //* пока уведомление об ошибке исчезает через 3 секунды
+            setTimeout(() => {
+              setModalError(null);
+            }, 3000);
           } else {
             // Обработка других ошибок
             setModalError('Ошибка. Не удалось обновить данные.');
@@ -300,7 +315,7 @@ const Management: FC = () => {
           setEditedManager={setEditedManager}
           showError={
             modalError && (
-              <div className="text-sm text-rose-400 text-center">
+              <div className="text-sm text-rose-400 text-center mt-2">
                 {modalError}
               </div>
             )
