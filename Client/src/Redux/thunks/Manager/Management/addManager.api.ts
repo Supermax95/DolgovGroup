@@ -21,7 +21,12 @@ interface ResponseData {
   error?: string;
 }
 
-const addManager = createAsyncThunk<ResponseData[], RequestData>(
+interface ServerResponse {
+  managers: ResponseData[];
+  addedManagerData: ResponseData;
+}
+
+const addManager = createAsyncThunk<ServerResponse, RequestData>(
   'api/addManager',
   async ({ newManager }) => {
     try {
@@ -29,6 +34,8 @@ const addManager = createAsyncThunk<ResponseData[], RequestData>(
         `${VITE_URL}/management/newManager`,
         { newManager }
       );
+
+      console.log(response.data);
 
       return response.data;
     } catch (error) {

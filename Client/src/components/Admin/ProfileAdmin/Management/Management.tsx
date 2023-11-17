@@ -6,6 +6,7 @@ import ManagementModal from './ManagementModal';
 import addManager from '../../../../Redux/thunks/Manager/Management/addManager.api';
 import editManager from '../../../../Redux/thunks/Manager/Management/editManager.api';
 import sendOneTimePassword from '../../../../Redux/thunks/Manager/Management/sendOneTimePassword.api';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 interface IManager {
   id: number;
@@ -27,9 +28,12 @@ const Management: FC = () => {
   const managers = useAppSelector<IManager[]>(
     (state) => state.managerSlice.data
   );
+  console.log('managers', managers);
 
-  const managerIdForSend = useAppSelector((state) => state.managerSlice.data);
-  //console.log(managers);
+  const managerIdForBell = useAppSelector(
+    (state) => state.managerSlice.addedManagerData
+  );
+  console.log(managerIdForBell);
 
   const [isModalOpen, setModalOpen] = useState(true);
   const [isAddingMode, setAddingMode] = useState(false);
@@ -38,6 +42,7 @@ const Management: FC = () => {
   const [editedManager, setEditedManager] = useState<
     IManager | null | undefined
   >(null);
+
   const [showNotificationAdd, setShowNotificationAdd] = useState(false);
   const [showNotificationEdit, setShowNotificationEdit] = useState(false);
   const [showNotificationOnePass, setShowNotificationOnePass] = useState(false);
@@ -117,7 +122,13 @@ const Management: FC = () => {
         );
 
         if (addManager.fulfilled.match(resultAdd)) {
-          setShowNotificationAdd(true);
+          if (managerIdForBell) {
+            console.log('addedManager', managerIdForBell);
+            setShowNotificationAdd(true);
+          } else {
+            console.error('Ошибка. Пользователь не найден.');
+          }
+
           closeEditModal();
         }
 
@@ -215,7 +226,7 @@ const Management: FC = () => {
 
   return (
     <div>
-      {showNotificationAdd && (
+      {showNotificationAdd && managerIdForBell && (
         <div className="flex flex-col p-8 bg-slate-100 shadow-md hover:shadow-lg rounded-2xl">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
@@ -224,13 +235,14 @@ const Management: FC = () => {
                   //! здесь нужно указать конкретные ФИО
                   className="font-medium leading-none"
                 >
-                  Личный кабинет менеджера создан
+                  Личный кабинет менеджера {managerIdForBell.firstName}{' '}
+                  {managerIdForBell.lastName} создан
                 </div>
                 <p
                   //! здесь нужно указать конкретный email
                   className="text-sm text-slate-600 leading-none mt-2"
                 >
-                  Временный пароль выслан на почту
+                  Временный пароль выслан на почту {managerIdForBell.email}
                 </p>
               </div>
             </div>

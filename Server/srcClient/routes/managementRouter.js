@@ -58,12 +58,15 @@ module.exports = router
           message: 'Пользователь с такой электронной почтой уже существует',
         });
       } else {
-        await Manager.create({
+        const resultAdd = await Manager.create({
           lastName: newManager.lastName,
           firstName: newManager.firstName,
           middleName: newManager.middleName,
           email: newManager.email,
         });
+        const addedManagerData = resultAdd.get();
+        console.log('addedManagerData', addedManagerData);
+        console.log('addedManagerData======>', addedManagerData.id);
 
         const managers = await Manager.findAll({
           where: {
@@ -128,7 +131,9 @@ module.exports = router
           console.log('Код пользователю отправлен');
         }
 
-        res.json(managers);
+        //   console.log('addedManagerData=======Ю', addedManagerData);
+
+        res.json({ managers, addedManagerData });
       }
     } catch (error) {
       console.log('Ошибка при получении данных из базы данных', error);
