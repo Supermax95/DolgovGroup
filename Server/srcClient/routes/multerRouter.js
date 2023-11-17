@@ -17,9 +17,7 @@ router.put(
   uploadsProduct.single('file'),
   async (req, res) => {
     const { id } = req.params;
-    console.log('id', req.params);
     const originalname = req.file.filename;
-    console.log('originalname', originalname);
     try {
       await Product.update(
         { photo: `/uploads/product/${originalname}` },

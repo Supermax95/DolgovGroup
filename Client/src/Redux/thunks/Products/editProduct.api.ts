@@ -32,9 +32,12 @@ interface ResponseData {
     categoryId: number,
 }
 
-type ArrayResponseData = Array<ResponseData>;
+interface ResponseDataId {
+    postId: number;
+    products: ResponseData[];
+  }
 
-const editProduct = createAsyncThunk<ArrayResponseData, RequestData>(
+const editProduct = createAsyncThunk<ResponseDataId, RequestData>(
   'admin/editProduct',
 
   async ({  newInfo }) => {

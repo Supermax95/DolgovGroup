@@ -16,11 +16,11 @@ interface Product {
   isNew: boolean;
   isDiscounted: boolean;
   description: string;
-  photo: string;
   categoryId: number;
 }
 
 interface ProductState {
+  postId: number | null;
   data: Product[];
   isLoading: boolean;
   error: string | null;
@@ -29,6 +29,7 @@ interface ProductState {
 }
 
 const initialState: ProductState = {
+  postId: null,
   data: [],
   isLoading: false,
   error: null,
@@ -60,9 +61,9 @@ const productSlice = createSlice({
       })
       .addCase(editProduct.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.data = action.payload;
-        console.log('state.data ', state.data );
-        
+        state.data = action.payload.products;
+        state.postId = action.payload.postId;
+        console.log('state.data ', state.data);
       })
       .addCase(editProduct.rejected, (state, action) => {
         state.isLoading = false;
@@ -87,7 +88,9 @@ const productSlice = createSlice({
       })
       .addCase(addProduct.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.data = action.payload;
+        state.data = action.payload.products;
+        state.postId = action.payload.postId;
+        console.log('state.data', state.data);
       })
       .addCase(addProduct.rejected, (state, action) => {
         state.isLoading = false;

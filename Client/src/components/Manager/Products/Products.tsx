@@ -5,9 +5,10 @@ import Pagination from '../../../ui/Paggination';
 import getProducts from '../../../Redux/thunks/Products/getProducts.api';
 import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import { VITE_URL } from '../../../VITE_URL';
-import editProduct from '../../../Redux/thunks/Products/editProduct.api'; 
+import editProduct from '../../../Redux/thunks/Products/editProduct.api';
 import ProductsModal from './ProductsModal';
 import addProduct from '../../../Redux/thunks/Products/addProduct.api';
+import { unwrapResult } from '@reduxjs/toolkit';
 // import uploadFile from '../../../Redux/thunks/Multer/multer.api';
 
 export interface IProduct {
@@ -35,6 +36,7 @@ const Products: FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);
   const [isAddingMode, setAddingMode] = useState(false);
+  const [postId, setPostId] = useState(0);
   const [editedProduct, setEditedProduct] = useState<
     IProduct | null | undefined
   >(null);
@@ -115,11 +117,15 @@ const Products: FC = () => {
   const handleSaveAdd = async () => {
     try {
       if (editedProduct) {
-        await dispatch(
+        const result = await dispatch(
           addProduct({
             newProduct: editedProduct,
           })
         );
+        const unwrapRes = unwrapResult(result);
+        setPostId(unwrapRes.postId)
+        console.log('unwrapRes',unwrapRes);
+        
         closeAddModal();
       }
     } catch (error) {
@@ -130,12 +136,15 @@ const Products: FC = () => {
   const handleSaveEdit = async (editedProduct: IProduct) => {
     try {
       if (selectedProduct) {
-        await dispatch(
+        const result = await dispatch(
           editProduct({
             newInfo: editedProduct,
-    
           })
         );
+        const unwrapRes = unwrapResult(result);
+        setPostId(unwrapRes.postId)
+        console.log('===========>',unwrapRes.postId);
+        
         closeEditModal();
       }
     } catch (error) {
@@ -145,8 +154,13 @@ const Products: FC = () => {
 
   return (
     <Wrapper>
+      <button
+        className="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2 px-4 rounded"
+        onClick={openAddModal}
+      >
+        Добавить
+      </button>
       <div>Products</div>
-
       <div className="mt-10 grid grid-cols-2 gap-6 sm:grid-cols-4 sm:gap-4 lg:mt-16">
         {displayedProducts.map((product) => (
           <article
@@ -204,6 +218,7 @@ const Products: FC = () => {
             isAddingMode={isAddingMode}
             editedProduct={editedProduct}
             setEditedProduct={setEditedProduct}
+            postId={postId}
           />
         )}
       </div>

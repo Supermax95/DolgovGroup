@@ -17,7 +17,7 @@ router.get('/admin/products', async (req, res) => {
 router.post('/admin/products', async (req, res) => {
   const { newProduct } = req.body;
   try {
-    await Product.create({
+    const createdProduct = await Product.create({
       productName: newProduct.productName,
       promoStartDate: newProduct.promoStartDate,
       promoEndDate: newProduct.promoEndDate,
@@ -35,7 +35,7 @@ router.post('/admin/products', async (req, res) => {
       raw: true,
     });
 
-    res.json(products);
+    res.json({ postId: createdProduct.id, products });
   } catch (error) {
     console.error('Ошибка при добавлении данных', error);
     res.status(500).json({ error: 'Произошла ошибка на сервере' });
@@ -61,9 +61,8 @@ router.delete('/admin/products/:id', async (req, res) => {
 
 router.put('/admin/products', async (req, res) => {
   const { newInfo } = req.body;
-
   try {
-    await Product.update(
+    Product.update(
       {
         productName: newInfo.productName,
         promoStartDate: newInfo.promoStartDate,
@@ -78,7 +77,7 @@ router.put('/admin/products', async (req, res) => {
       },
       {
         where: { id: newInfo.id },
-      },
+      }
     );
 
     const products = await Product.findAll({
@@ -86,7 +85,7 @@ router.put('/admin/products', async (req, res) => {
       raw: true,
     });
 
-    res.json(products);
+    res.json({ postId: newInfo.id, products });
   } catch (error) {
     console.error('Ошибка при обновлении данных', error);
     res.status(500).json({ error: 'Произошла ошибка на сервере' });
