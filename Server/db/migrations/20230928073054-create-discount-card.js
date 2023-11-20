@@ -35,6 +35,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       barcode: {
+        defaultValue: '',
         type: Sequelize.STRING,
       },
       bonusProgram: {
@@ -42,6 +43,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       balance: {
+        defaultValue: 0,
         type: Sequelize.INTEGER,
       },
       userStatus: {
@@ -49,8 +51,8 @@ module.exports = {
         type: Sequelize.STRING,
       },
       isActivated: {
-        type: Sequelize.BOOLEAN,
         defaultValue: false,
+        type: Sequelize.BOOLEAN,
       },
       activationLink: {
         type: Sequelize.STRING,

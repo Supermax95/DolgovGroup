@@ -8,6 +8,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      article: {
+        type: Sequelize.STRING,
+      },
       productName: {
         type: Sequelize.STRING,
       },
@@ -38,6 +41,10 @@ module.exports = {
       photo: {
         allowNull: true,
         type: Sequelize.STRING,
+      },
+      visible: {
+        defaultValue: true,
+        type: Sequelize.BOOLEAN,
       },
       categoryId: {
         type: Sequelize.INTEGER,

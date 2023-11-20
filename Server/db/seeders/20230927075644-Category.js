@@ -14,13 +14,13 @@ module.exports = {
         },
         {
           categoryName: 'Колбасные изделия',
-          subcategory: ' Ветчина',
+          subcategory: ' Колбаса',
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         // {
         //   categoryName: 'Колбасные изделия',
-        //   subcategory: ' Колбаса',
+        //   subcategory: ' Ветчина',
         // },
       ],
       {}

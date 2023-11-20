@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Product.init(
     {
+      article: DataTypes.STRING,
       productName: DataTypes.STRING,
       promoStartDate: DataTypes.STRING,
       promoEndDate: DataTypes.STRING,
@@ -18,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       isDiscounted: DataTypes.BOOLEAN,
       description: DataTypes.STRING,
       photo: DataTypes.STRING,
+      visible: DataTypes.BOOLEAN,
       categoryId: DataTypes.INTEGER,
     },
     {

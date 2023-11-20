@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       latitude: DataTypes.FLOAT,
       longitude: DataTypes.FLOAT,
       hours: DataTypes.STRING,
+      visible: DataTypes.BOOLEAN,
     },
     {
       sequelize,
