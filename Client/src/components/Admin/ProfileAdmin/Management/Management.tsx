@@ -35,12 +35,19 @@ const Management: FC = () => {
   const managers = useAppSelector<IManager[]>(
     (state) => state.managerSlice.data
   );
-  console.log('managers', managers);
+  //console.log('managers', managers);
 
-  const managerIdForBell = useAppSelector(
+  //* для уведомления при добавлении
+  const managerIdForBellAdd = useAppSelector(
     (state) => state.managerSlice.addedManagerData
   );
-  console.log(managerIdForBell);
+  //console.log(managerIdForBellAdd);
+
+  //* для уведомления при редактировании
+  const managerIdForBellEdit = useAppSelector(
+    (state) => state.managerSlice.updatedManager
+  );
+  console.log(managerIdForBellEdit);
 
   const [isModalOpen, setModalOpen] = useState(true);
   const [isAddingMode, setAddingMode] = useState(false);
@@ -132,8 +139,8 @@ const Management: FC = () => {
         );
 
         if (addManager.fulfilled.match(resultAdd)) {
-          if (managerIdForBell) {
-            console.log('addedManager', managerIdForBell);
+          if (managerIdForBellAdd) {
+            console.log('addedManager', managerIdForBellAdd);
             setShowNotificationAdd(true);
           } else {
             console.error('Ошибка. Пользователь не найден.');
@@ -171,23 +178,20 @@ const Management: FC = () => {
         );
 
         if (editManager.fulfilled.match(resultEdit)) {
-          setShowNotificationEdit(true);
+          //managerIdForBellEdit
+          if (managerIdForBellEdit) {
+            console.log(
+              'managerIdForBellEditHandl------>',
+              managerIdForBellEdit
+            );
+
+            setShowNotificationEdit(true);
+          } else {
+            console.error('Ошибка. Пользователь не найден.');
+          }
           closeEditModal();
         }
 
-        //   //! так можно сделать перенос, но типизация ломается жёстко
-        //   // setModalError(
-        //   //   <>
-        //   //     Не удалось обновить данные.
-        //   //     <br />
-        //   //     Пользователь с такой почтой уже существует
-        //   //   </> as string
-        //   // );
-
-        //   // setTimeout(() => {
-        //   //   setModalError(null);
-        //   // }, 3000);
-        // }
         if (editManager.rejected.match(resultEdit)) {
           if (resultEdit.error && resultEdit.error?.message?.includes('409')) {
             setModalError('Пользователь с такой почтой уже существует');
@@ -236,23 +240,20 @@ const Management: FC = () => {
 
   return (
     <div>
-      {showNotificationAdd && managerIdForBell && (
+      {showNotificationAdd && managerIdForBellAdd && (
         <div className="flex flex-col p-8 bg-slate-100 shadow-md hover:shadow-lg rounded-2xl">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <div className="flex flex-col ml-3">
                 <div
-                  //! здесь нужно указать конкретные ФИО
                   className="font-medium leading-none"
+                  //! мб, нужно как-то склонять имена
                 >
-                  Личный кабинет менеджера {managerIdForBell.firstName}{' '}
-                  {managerIdForBell.lastName} создан
+                  Личный кабинет менеджера {managerIdForBellAdd.firstName}{' '}
+                  {managerIdForBellAdd.lastName} создан
                 </div>
-                <p
-                  //! здесь нужно указать конкретный email
-                  className="text-sm text-slate-600 leading-none mt-2"
-                >
-                  Временный пароль выслан на почту {managerIdForBell.email}
+                <p className="text-sm text-slate-600 leading-none mt-2">
+                  Временный пароль выслан на почту {managerIdForBellAdd.email}
                 </p>
               </div>
             </div>
@@ -270,17 +271,14 @@ const Management: FC = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <div className="flex flex-col ml-3">
-                <div
-                  //! здесь нужно указать конкретные ФИО
-                  className="font-medium leading-none"
-                >
-                  Данные менеджера успешно обновлены
+                <div className="font-medium leading-none">
+                  Данные менеджера успешно обновлены{' '}
+                  {managerIdForBellEdit.firstName}{' '}
+                  {managerIdForBellEdit.lastName}
                 </div>
-                <p
-                  //! здесь нужно указать конкретный email
-                  className="text-sm text-slate-600 leading-none mt-2"
-                >
-                  Для обновления пароля менеджера отправьте новый пароль
+                <p className="text-sm text-slate-600 leading-none mt-2">
+                  Для обновления пароля менеджера отправьте новый пароль на
+                  почту {managerIdForBellEdit.email}
                 </p>
               </div>
             </div>

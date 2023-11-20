@@ -16,19 +16,20 @@ export interface IManager {
   lastName: string;
   firstName: string;
   middleName: string;
+  phone: string;
   email: string;
   isAdmin: boolean;
 }
 
 interface managerState {
   manager: IManager;
-  data: IManager[];
-  //id: number;
+  data: IManager[]; //* используется массив для таблицы
+  addedManagerData: IManager;
+  updatedManager: IManager;
   isAuth: boolean;
   isLoading: boolean;
   message: string;
   error: unknown;
-  addedManagerData: IManager;
 }
 
 const initialState: managerState = {
@@ -37,6 +38,7 @@ const initialState: managerState = {
     lastName: '',
     firstName: '',
     middleName: '',
+    phone: '',
     email: '',
     isAdmin: false,
   },
@@ -45,10 +47,19 @@ const initialState: managerState = {
     lastName: '',
     firstName: '',
     middleName: '',
+    phone: '',
     email: '',
     isAdmin: false,
   },
-  //id: 0,
+  updatedManager: {
+    id: 0,
+    lastName: '',
+    firstName: '',
+    middleName: '',
+    phone: '',
+    email: '',
+    isAdmin: false,
+  },
   data: [],
   isAuth: false,
   isLoading: false,
@@ -69,6 +80,7 @@ const managerSlice = createSlice({
       .addCase(portalLogin.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isAuth = true;
+        //! добавить типизацию в компоненты
         state.manager = action.payload.manager;
       })
       .addCase(portalLogin.rejected, (state, action) => {
@@ -82,6 +94,7 @@ const managerSlice = createSlice({
       .addCase(portalCheck.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isAuth = false;
+        //! добавить типизацию в компоненты
         state.manager = action.payload.manager;
       })
       .addCase(portalCheck.rejected, (state, action) => {
@@ -100,6 +113,7 @@ const managerSlice = createSlice({
           lastName: '',
           firstName: '',
           middleName: '',
+          phone: '',
           email: '',
           isAdmin: false,
         };
@@ -180,12 +194,7 @@ const managerSlice = createSlice({
       .addCase(addManager.fulfilled, (state, action) => {
         state.isLoading = false;
         state.data = action.payload.managers;
-        //!
         state.addedManagerData = action.payload.addedManagerData;
-
-        console.log(' state.data', state.data);
-        //  state.id = action.payload.managerId;
-        console.log('state.id', state);
       })
       .addCase(addManager.rejected, (state, action) => {
         state.isLoading = false;
@@ -198,7 +207,10 @@ const managerSlice = createSlice({
       })
       .addCase(editManager.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.data = action.payload;
+        state.data = action.payload.managers;
+        state.updatedManager = action.payload.updatedManager;
+        console.log(' state.data', state.data);
+        console.log('state.id', state);
       })
       .addCase(editManager.rejected, (state, action) => {
         state.isLoading = false;
@@ -224,6 +236,7 @@ const managerSlice = createSlice({
       })
       .addCase(deleteManager.fulfilled, (state, action) => {
         state.isLoading = false;
+        //! добавить типизацию в компоненты
         state.data = action.payload;
         console.log(' state.data ', state.data);
         console.log('action.payload ', action.payload);
