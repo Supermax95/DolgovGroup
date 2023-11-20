@@ -17,9 +17,9 @@ module.exports = {
       middleName: {
         type: Sequelize.STRING,
       },
-      // birthDate: {
-      //   type: Sequelize.DATEONLY,
-      // },
+      phone: {
+        type: Sequelize.STRING,
+      },
       email: {
         type: Sequelize.STRING,
       },
