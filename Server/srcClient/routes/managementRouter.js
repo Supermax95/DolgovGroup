@@ -62,6 +62,7 @@ module.exports = router
           lastName: newManager.lastName,
           firstName: newManager.firstName,
           middleName: newManager.middleName,
+          phone: newManager.phone,
           email: newManager.email,
         });
         const addedManagerData = resultAdd.get();
@@ -156,11 +157,33 @@ module.exports = router
           lastName: updateManager.lastName,
           firstName: updateManager.firstName,
           middleName: updateManager.middleName,
+          //  phone: updateManager.phone,
         };
 
         await Manager.update(fieldsToUpdateFIO, {
           where: { id: managerId },
         });
+
+        //* обновление телефона
+        if (updateManager.phone !== manager.phone) {
+          const managerWithPhone = await Manager.findOne({
+            where: { phone: updateManager.phone },
+          });
+
+          if (!managerWithPhone) {
+            await Manager.update(
+              { phone: updateManager.phone },
+              { where: { id: managerId } }
+            );
+          } else {
+            res
+              .status(409)
+              .json({
+                error: 'Пользователь с таким номером телефона уже существует',
+              });
+            return;
+          }
+        }
 
         //* Обновление почты, если она изменилась
         if (updateManager.email !== manager.email) {

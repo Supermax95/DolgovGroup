@@ -185,7 +185,7 @@ const managerSlice = createSlice({
 
         console.log(' state.data', state.data);
         //  state.id = action.payload.managerId;
-        console.log('state.id', state.id);
+        console.log('state.id', state);
       })
       .addCase(addManager.rejected, (state, action) => {
         state.isLoading = false;
