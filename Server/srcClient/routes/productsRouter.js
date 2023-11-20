@@ -62,6 +62,7 @@ router.delete('/admin/products/:id', async (req, res) => {
 router.put('/admin/products', async (req, res) => {
   const { newInfo } = req.body;
   try {
+    console.log('newInfo.id', newInfo.id);
     Product.update(
       {
         productName: newInfo.productName,
