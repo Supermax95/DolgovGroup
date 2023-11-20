@@ -13,6 +13,7 @@ interface IManager {
   lastName: string;
   firstName: string;
   middleName: string;
+  phone: string;
   email: string;
 }
 
@@ -20,7 +21,13 @@ interface IColumnsDefaultName {
   name: string;
 }
 
-type IColumnsListDb = 'id' | 'lastName' | 'firstName' | 'middleName' | 'email';
+type IColumnsListDb =
+  | 'id'
+  | 'lastName'
+  | 'firstName'
+  | 'middleName'
+  | 'phone'
+  | 'email';
 
 const Management: FC = () => {
   const dispatch = useAppDispatch();
@@ -53,6 +60,7 @@ const Management: FC = () => {
     { name: 'Фамилия' },
     { name: 'Имя' },
     { name: 'Отчество' },
+    { name: 'Телефон' },
     { name: 'Email' },
   ];
 
@@ -61,6 +69,7 @@ const Management: FC = () => {
     'lastName',
     'firstName',
     'middleName',
+    'phone',
     'email',
   ];
 
@@ -87,6 +96,7 @@ const Management: FC = () => {
       lastName: '',
       firstName: '',
       middleName: '',
+      phone: '',
       email: '',
     });
     setModalOpen(true);

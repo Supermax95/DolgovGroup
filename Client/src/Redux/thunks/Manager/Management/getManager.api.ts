@@ -8,7 +8,7 @@ interface ResponseData {
   lastName: string;
   firstName: string;
   middleName: string;
-  birthDate: Date | null | string;
+  phone: string;
   email: string;
   isAdmin: boolean;
 }

@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/20/solid';
 import Button from './Button';
+import InputMask from 'react-input-mask';
 
 //* Здесь инпуты, которые переиспользуются в модальных окнах
 //* На Location, в профиле админа (создание/редактирование менеджера) - один столбец
@@ -23,6 +24,7 @@ export interface InputField {
   title?: string;
   htmlFor?: string;
   required?: boolean;
+  pattern?: string | undefined;
   onChange?: (value: string) => void | undefined;
   divFielsCss?: string[];
   disabled?: boolean;
@@ -104,6 +106,8 @@ const InputModal: FC<IInputModal> = ({
                 autoComplete={field.autoComplete}
                 className="block py-2.5 px-0 w-full text-sm text-slate-400 bg-transparent border-0 border-b-2 border-slate-300 "
                 required={field.required}
+                //!
+                pattern={field.pattern}
                 disabled={field.disabled}
               />
               <label
@@ -140,6 +144,29 @@ const InputModal: FC<IInputModal> = ({
                 {field.title}
               </label>
             </div>
+          ) : field.id === 'phone' ? (
+            <>
+              <InputMask
+                mask="+7 (999) 999-99-99"
+                maskChar="_"
+                id={field.id}
+                name={field.name}
+                value={field.value as string}
+                placeholder={field.placeholder}
+                autoComplete={field.autoComplete}
+                className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
+                required={field.required}
+                pattern={field.pattern}
+                onChange={(e) => field.onChange?.(e.target.value)}
+                disabled={field.disabled}
+              />
+              <label
+                htmlFor={field.htmlFor}
+                className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm"
+              >
+                {field.title}
+              </label>
+            </>
           ) : (
             <div>
               <input
@@ -151,6 +178,8 @@ const InputModal: FC<IInputModal> = ({
                 autoComplete={field.autoComplete}
                 className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
                 required={field.required}
+                //!
+                pattern={field.pattern}
                 disabled={field.disabled}
               />
               <label

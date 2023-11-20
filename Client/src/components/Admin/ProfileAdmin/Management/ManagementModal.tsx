@@ -10,6 +10,7 @@ interface IManager {
   lastName: string;
   firstName: string;
   middleName: string;
+  phone: string;
   email: string;
 }
 
@@ -37,7 +38,7 @@ const ManagementModal: FC<ManagersModalProps> = ({
   onSaveEdit,
   onSaveAdd,
   onCloseEditModal,
-  onCloseAddModal,
+  //onCloseAddModal,
   isAddingMode,
   editedManager,
   setEditedManager,
@@ -144,7 +145,47 @@ const ManagementModal: FC<ManagersModalProps> = ({
         }),
       required: true,
     },
+    //! необходимо прописать паттерн или проверку на то, как вносится номер телефона
+    /**
+     * 
+Если вы хотите, чтобы регулярное выражение разрешало только числа, то вот соответствующее изменение:
 
+tsx
+Copy code
+pattern: '\\+7 \\(\\d{3}\\) \\d{3}-\\d{2}-\\d{2}',
+Это означает:
+
+\\+7 - символ "+" и цифра 7
+\\( - открывающая скобка
+\\d{3} - три цифры (для кода города)
+\\) - закрывающая скобка
+\\d{3} - три цифры (первые три цифры номера телефона)
+- - дефис
+\\d{2} - две цифры (следующие две цифры номера телефона)
+- - дефис
+\\d{2} - две цифры (последние две цифры номера телефона)
+Таким образом, паттерн будет соответствовать строке в формате: "+7 (XXX) YYY-YY-YY", где X - цифры кода города, а Y - цифры номера телефона.
+     */
+    {
+      id: 'phone',
+      name: 'phone',
+      type: 'tel',
+      value: editedManager.phone,
+      placeholder: '',
+      //! сейчас регулярна выглядит так
+      // placeholder: '+7 (900) 312-15-63',
+      autoComplete: 'off',
+      title: 'Телефон',
+      htmlFor: 'phone',
+      onChange: (value: string) =>
+        setEditedManager({
+          ...editedManager,
+          phone: value,
+        }),
+      required: true,
+      //pattern: '\\+7[0-9]{3}[0-9]{3}[0-9]{4}',
+      pattern: '\\+7 \\(\\d{3}\\) \\d{3}-\\d{2}-\\d{2}',
+    },
     {
       id: 'email',
       name: 'email',

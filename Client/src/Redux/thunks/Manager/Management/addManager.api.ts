@@ -7,6 +7,7 @@ interface RequestData {
     lastName: string;
     firstName: string;
     middleName: string;
+    phone: string;
     email: string;
   };
 }
@@ -16,6 +17,7 @@ interface ResponseData {
   lastName: string;
   firstName: string;
   middleName: string;
+  phone: string;
   email: string;
   isAdmin: boolean;
   error?: string;
