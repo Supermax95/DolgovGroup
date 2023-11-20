@@ -29,7 +29,7 @@ interface ProductState {
 }
 
 const initialState: ProductState = {
-  postId: null,
+  postId: 0,
   data: [],
   isLoading: false,
   error: null,

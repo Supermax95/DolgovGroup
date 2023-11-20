@@ -9,7 +9,6 @@ import editProduct from '../../../Redux/thunks/Products/editProduct.api';
 import ProductsModal from './ProductsModal';
 import addProduct from '../../../Redux/thunks/Products/addProduct.api';
 import { unwrapResult } from '@reduxjs/toolkit';
-// import uploadFile from '../../../Redux/thunks/Multer/multer.api';
 
 export interface IProduct {
   id: number;
@@ -22,7 +21,7 @@ export interface IProduct {
   isNew: boolean;
   isDiscounted: boolean;
   description: string;
-  // photo: string;
+  photo: string;
   categoryId: number;
 }
 
@@ -36,10 +35,10 @@ const Products: FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);
   const [isAddingMode, setAddingMode] = useState(false);
-  const [postId, setPostId] = useState(0);
   const [editedProduct, setEditedProduct] = useState<
     IProduct | null | undefined
   >(null);
+
   const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
@@ -89,7 +88,7 @@ const Products: FC = () => {
       isNew: false,
       isDiscounted: false,
       description: '',
-      // photo: '',
+      photo: '',
       categoryId: 0,
     });
     setModalOpen(true);
@@ -122,11 +121,6 @@ const Products: FC = () => {
             newProduct: editedProduct,
           })
         );
-        const unwrapRes = unwrapResult(result);
-        setPostId(unwrapRes.postId)
-        console.log('unwrapRes',unwrapRes);
-        
-        closeAddModal();
       }
     } catch (error) {
       console.error('Произошла ошибка при добавлении:', error);
@@ -136,16 +130,13 @@ const Products: FC = () => {
   const handleSaveEdit = async (editedProduct: IProduct) => {
     try {
       if (selectedProduct) {
-        const result = await dispatch(
+        await dispatch(
           editProduct({
             newInfo: editedProduct,
           })
         );
-        const unwrapRes = unwrapResult(result);
-        setPostId(unwrapRes.postId)
-        console.log('===========>',unwrapRes.postId);
-        
-        closeEditModal();
+
+
       }
     } catch (error) {
       console.error('Произошла ошибка при редактировании:', error);
@@ -154,12 +145,14 @@ const Products: FC = () => {
 
   return (
     <Wrapper>
-      <button
-        className="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2 px-4 rounded"
-        onClick={openAddModal}
-      >
-        Добавить
-      </button>
+      <div className="flex flex-col items-center mt-20">
+        <button
+          className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded mb-4"
+          onClick={openAddModal}
+        >
+          Добавить
+        </button>
+      </div>
       <div>Products</div>
       <div className="mt-10 grid grid-cols-2 gap-6 sm:grid-cols-4 sm:gap-4 lg:mt-16">
         {displayedProducts.map((product) => (
@@ -218,7 +211,6 @@ const Products: FC = () => {
             isAddingMode={isAddingMode}
             editedProduct={editedProduct}
             setEditedProduct={setEditedProduct}
-            postId={postId}
           />
         )}
       </div>
