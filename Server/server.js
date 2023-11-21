@@ -23,7 +23,7 @@ const nodemailerRouterClient = require('./srcClient/routes/nodemailerRouter');
 const managementRouter = require('./srcClient/routes/managementRouter');
 const productsRouter = require('./srcClient/routes/productsRouter');
 const multerRouter = require('./srcClient/routes/multerRouter');
-
+const categoryRouter = require('./srcClient/routes/categoryRouter');
 // middleware
 const errorMiddleware = require('./srcNative/middlewares/error-middleware');
 
@@ -79,6 +79,7 @@ app.use('/', nodemailerRouterClient);
 app.use('/management', managementRouter);
 app.use('/', productsRouter);
 app.use('/', multerRouter);
+app.use('/', categoryRouter);
 
 app.listen(PORT, () => {
   console.log(`Сервер крутится на ${PORT} порту`);

@@ -8,6 +8,8 @@ import editProduct from '../../../Redux/thunks/Products/editProduct.api';
 import ProductsModal from './ProductsModal';
 import addProduct from '../../../Redux/thunks/Products/addProduct.api';
 import Pagination from '../../../ui/Paggination';
+import Sidebar from '../../../ui/Sidebar';
+import getCategory from '../../../Redux/thunks/Category/getCategory.api';
 
 export interface IProduct {
   id: number;
@@ -24,12 +26,21 @@ export interface IProduct {
   categoryId: number;
 }
 
+export interface ICategory {
+  id: number;
+  categoryName: string;
+  subcategory: string;
+}
+
 const Products: FC = () => {
   const dispatch = useAppDispatch();
   const products = useAppSelector<IProduct[]>(
     (state) => state.productSlice.data
-  );
-
+    );
+    const category = useAppSelector<ICategory[]>(
+      (state) => state.categorySlice.data
+    );    
+const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [isModalOpen, setModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);
@@ -41,6 +52,10 @@ const Products: FC = () => {
 
   useEffect(() => {
     dispatch(getProducts());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(getCategory());
   }, [dispatch]);
 
   const itemsPerPage = 30;
@@ -142,88 +157,110 @@ const Products: FC = () => {
     }
   };
 
-    return (
-      <Wrapper>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          <div className="col-span-full mb-4">
-            <div className="flex items-center justify-between">
-              <Search onFilter={setSearchText} />
-              <button
-                className="ml-auto bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
-                onClick={openAddModal}
-              >
-                Добавить
-              </button>
-            </div>
-          </div>
-          {displayedProducts.map((product) => (
-            <article
-              key={product.id}
-              className="relative flex flex-col overflow-hidden rounded-lg border"
+  const uniqueCategory = [
+    ...new Set(category.map((category) => category.categoryName)),
+  ];
+
+  return (
+    <Wrapper>
+       <Sidebar
+        items={uniqueCategory}
+        onItemSelect={setSelectedCategory}
+        title="Категории"
+        setCurrentPage={setCurrentPage}
+        displayKey={(categoryName) => categoryName}
+      />
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="col-span-full mb-4">
+          <div className="flex items-center justify-between">
+            <Search onFilter={setSearchText} />
+            <button
+              className="ml-auto bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+              onClick={openAddModal}
             >
-              <div className="aspect-square overflow-hidden">
-                <img
-                  className="h-36 w-full object-cover rounded-t-lg transition-all duration-300 group-hover:scale-125"
-                  src={`${VITE_URL}${product.photo}`}
-                  alt={product.productName}
-                />
-              </div>
-              {product.isDiscounted && (
-                <div className="absolute top-0 m-2 rounded-full bg-white">
-                  <p className="rounded-full bg-emerald-500 p-1 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3">
-                    Скидка
-                  </p>
-                </div>
-              )}
-              <div className="my-4 mx-auto flex w-10/12 flex-col items-start justify-between">
-                <div className="mb-2 flex">
-                  <p className="mr-3 text-sm font-semibold">
-                    ₽{product.customerPrice}
-                  </p>
+              Добавить
+            </button>
+          </div>
+        </div>
+        {displayedProducts.map((product) => (
+          <article
+            key={product.id}
+            className="relative flex flex-col overflow-hidden rounded-lg border"
+          >
+            <div className="aspect-square relative overflow-hidden">
+              <img
+                className="h-36 w-full object-cover rounded-t-lg transition-all duration-300 group-hover:scale-125"
+                src={`${VITE_URL}${product.photo}`}
+                alt={product.productName}
+              />
+
+              {(product.isDiscounted || product.isNew) && (
+                <div className="absolute top-0 right-0 m-2">
                   {product.isDiscounted && (
-                    <del className="text-xs text-gray-400">
-                      {' '}
-                      ₽{product.originalPrice}{' '}
-                    </del>
+                    <p className="rounded-full bg-emerald-500 p-1 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3">
+                      Скидка
+                    </p>
+                  )}
+                  {product.isNew && (
+                    <p className="rounded-full bg-red-500 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3 mt-2">
+                      Новый
+                    </p>
                   )}
                 </div>
-                <h3 className="mb-2 text-sm text-gray-400">
-                  {product.productName}
-                </h3>
+              )}
+            </div>
+
+            <div className="my-4 mx-auto flex w-10/12 flex-col items-start justify-between">
+              <div className="mb-2 flex">
+                <p className="mr-3 text-sm font-semibold">
+                  ₽{product.customerPrice}
+                </p>
+                {product.isDiscounted && (
+                  <del className="text-xs text-gray-400">
+                    {' '}
+                    ₽{product.originalPrice}{' '}
+                  </del>
+                )}
               </div>
-              <button
-                className="group mx-auto mb-2 flex h-10 w-10/12 items-stretch overflow-hidden rounded-md text-gray-600"
-                onClick={() => openEditModal(product)}
-              >
-                <div className="flex w-full items-center justify-center bg-gray-100 text-xs uppercase transition group-hover:bg-emerald-600 group-hover:text-white rounded-b-lg">
-                  Редактировать
-                </div>
-              </button>
-            </article>
-          ))}
-        </div>
-        <div className="mt-4 flex justify-center">
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-          />
-        </div>
-        {isModalOpen && (selectedProduct || isAddingMode) && (
-          <ProductsModal
-            isOpen={isModalOpen}
-            product={selectedProduct}
-            onSaveEdit={handleSaveEdit}
-            onSaveAdd={handleSaveAdd}
-            onCloseAddModal={closeAddModal}
-            onCloseEditModal={closeEditModal}
-            isAddingMode={isAddingMode}
-            editedProduct={editedProduct}
-            setEditedProduct={setEditedProduct}
-          />
-        )}
-      </Wrapper>
-    );
-    
-      }
-  export default Products;
+
+              <h3 className="mb-2 text-sm text-gray-400">
+                {product.productName}
+              </h3>
+            </div>
+
+            <button
+              className="group mx-auto mb-2 flex h-10 w-10/12 items-stretch overflow-hidden rounded-md text-gray-600"
+              onClick={() => openEditModal(product)}
+            >
+              <div className="flex w-full items-center justify-center bg-gray-100 text-xs uppercase transition group-hover:bg-emerald-600 group-hover:text-white rounded-b-lg">
+                Редактировать
+              </div>
+            </button>
+          </article>
+        ))}
+      </div>
+      <div className="mt-4 flex justify-center">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
+      </div>
+      {isModalOpen && (selectedProduct || isAddingMode) && (
+        <ProductsModal
+          isOpen={isModalOpen}
+          product={selectedProduct}
+          onSaveEdit={handleSaveEdit}
+          onSaveAdd={handleSaveAdd}
+          onCloseAddModal={closeAddModal}
+          onCloseEditModal={closeEditModal}
+          isAddingMode={isAddingMode}
+          editedProduct={editedProduct}
+          setEditedProduct={setEditedProduct}
+        />
+      )}
+    </Wrapper>
+  );
+};
+
+export default Products;
