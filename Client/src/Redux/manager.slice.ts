@@ -12,6 +12,7 @@ import sendOneTimePassword from './thunks/Manager/Management/sendOneTimePassword
 import deleteManager from './thunks/Manager/Management/deleteManager.api';
 import changePhone from './thunks/Manager/changePhone.api';
 import getManagerInfo from './thunks/Manager/getManagerInfo.api';
+import resetPassword from './thunks/PortalLogin/portalResetPassword.api';
 
 export interface IManager {
   id: number;
@@ -104,7 +105,7 @@ const managerSlice = createSlice({
       })
       .addCase(portalCheck.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.isAuth = false;
+        state.isAuth = true;
         //* предзаполняет поля в инпутах в ЛК
         state.manager.id = action.payload.id;
         state.manager.isAdmin = action.payload.isAdmin;
@@ -115,6 +116,20 @@ const managerSlice = createSlice({
         state.manager.email = action.payload.email;
       })
       .addCase(portalCheck.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      //* //* resetPassword
+      .addCase(resetPassword.pending, (state) => {
+        state.isLoading = true;
+        state.isAuth = false;
+      })
+      .addCase(resetPassword.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isAuth = false;
+        state.message = action.payload.message;
+      })
+      .addCase(resetPassword.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       })
@@ -141,7 +156,7 @@ const managerSlice = createSlice({
         state.isLoading = false;
         state.error = action.error.message;
       })
-      //! getManagerInfo
+      // ? getManagerInfo
       .addCase(getManagerInfo.pending, (state) => {
         state.isLoading = true;
         state.error = null;

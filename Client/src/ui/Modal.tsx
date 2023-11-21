@@ -5,14 +5,15 @@ import {
   XMarkIcon,
   UserIcon,
 } from '@heroicons/react/24/outline';
+import { ArrowPathIcon } from '@heroicons/react/20/solid';
 
 interface IModal {
   children: React.ReactNode;
   modalTitle: string;
-  isAddingMode: boolean;
-  onDeleteClick: () => void;
-  onCancellick: () => void;
-  isUpload?: boolean; 
+  isAddingMode?: boolean | undefined;
+  onDeleteClick?: () => void | undefined;
+  onCancellick?: () => void | undefined;
+  isUpload?: boolean;
 }
 
 const Modal: FC<IModal> = ({
@@ -38,6 +39,10 @@ const Modal: FC<IModal> = ({
                   <UserIcon className="w-6 h-6 text-slate-400" />
                 </div>
               </>
+            ) : modalTitle === 'Сброс пароля' ? (
+              <div className="w-8 text-gray-600">
+                <ArrowPathIcon className="w-6 h-6 text-slate-400" />
+              </div>
             ) : (
               <div className="w-8 text-gray-600">
                 <BuildingStorefrontIcon className="w-6 h-6 text-slate-400" />
@@ -47,8 +52,9 @@ const Modal: FC<IModal> = ({
               {modalTitle}
             </h1>
           </div>
-          <div className="text-center">
-            {modalTitle === 'Регистрация нового менеджера' ? (
+          <div className="text-center mt-2">
+            {modalTitle === 'Регистрация нового менеджера' ||
+            modalTitle === 'Сброс пароля' ? (
               <span className="text-sm text-amber-600 font-normal">
                 Временный пароль будет сформирован автоматически <br /> и
                 отправлен на указанный адрес электронной почты
@@ -69,6 +75,14 @@ const Modal: FC<IModal> = ({
                     }
                     title="Добавить"
                   />
+                ) : modalTitle === 'Сброс пароля' ? (
+                  <Button
+                    type="submit"
+                    styleCSSSpan={
+                      'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
+                    }
+                    title="Отправить"
+                  />
                 ) : (
                   <Button
                     type="submit"
@@ -79,7 +93,7 @@ const Modal: FC<IModal> = ({
                   />
                 )}
 
-                {location && !isAddingMode && (
+                {onDeleteClick && (
                   <Button
                     type="button"
                     onClick={onDeleteClick}
