@@ -16,6 +16,7 @@ interface Product {
   isNew: boolean;
   isDiscounted: boolean;
   description: string;
+  photo: string;
   categoryId: number;
 }
 
