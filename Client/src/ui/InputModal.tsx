@@ -106,8 +106,6 @@ const InputModal: FC<IInputModal> = ({
                 autoComplete={field.autoComplete}
                 className="block py-2.5 px-0 w-full text-sm text-slate-400 bg-transparent border-0 border-b-2 border-slate-300 "
                 required={field.required}
-                //!
-                pattern={field.pattern}
                 disabled={field.disabled}
               />
               <label
@@ -122,7 +120,7 @@ const InputModal: FC<IInputModal> = ({
               <select
                 id={field.id}
                 value={field.value as string}
-                onChange={(e) => field.onChange(e.target.value)}
+                onChange={(e) => field.onChange?.(e.target.value)}
                 className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
                 required={field.required}
                 disabled={field.disabled}
@@ -170,7 +168,7 @@ const InputModal: FC<IInputModal> = ({
           ) : (
             <div>
               <input
-                onChange={(e) => field.onChange(e.target.value)}
+                onChange={(e) => field.onChange?.(e.target.value)}
                 id={field.id}
                 type={field.type}
                 value={field.value as string}
@@ -178,7 +176,6 @@ const InputModal: FC<IInputModal> = ({
                 autoComplete={field.autoComplete}
                 className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
                 required={field.required}
-                //!
                 pattern={field.pattern}
                 disabled={field.disabled}
               />

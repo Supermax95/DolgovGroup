@@ -47,7 +47,7 @@ const Management: FC = () => {
   const managerIdForBellEdit = useAppSelector(
     (state) => state.managerSlice.updatedManager
   );
-  console.log(managerIdForBellEdit);
+  //console.log(managerIdForBellEdit);
 
   const [isModalOpen, setModalOpen] = useState(true);
   const [isAddingMode, setAddingMode] = useState(false);

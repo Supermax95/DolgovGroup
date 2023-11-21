@@ -3,18 +3,6 @@ import type { AxiosResponse } from 'axios';
 import axios from 'axios';
 import { VITE_URL } from '../../../VITE_URL';
 
-// interface ResponseData {
-//   manager: {
-//     id: number;
-//     lastName: string;
-//     firstName: string;
-//     middleName: string;
-//     email: string;
-//     isAdmin: boolean;
-//   };
-//   message: string;
-// }
-
 interface ResponseData {
   id: number;
   lastName: string;

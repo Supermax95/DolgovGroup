@@ -47,8 +47,13 @@ module.exports = router
           req.session.save(() => {
             res.json({
               message: 'Вы успешно авторизованы!',
-              managerId: manager.id,
+              id: manager.id,
               isAdmin: manager.isAdmin,
+              lastName: manager.lastName,
+              firstName: manager.firstName,
+              middleName: manager.middleName,
+              phone: manager.phone,
+              email: manager.email,
             });
           });
         }

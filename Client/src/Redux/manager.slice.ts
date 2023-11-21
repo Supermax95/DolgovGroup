@@ -10,6 +10,7 @@ import addManager from './thunks/Manager/Management/addManager.api';
 import editManager from './thunks/Manager/Management/editManager.api';
 import sendOneTimePassword from './thunks/Manager/Management/sendOneTimePassword.api';
 import deleteManager from './thunks/Manager/Management/deleteManager.api';
+import changePhone from './thunks/Manager/changePhone.api';
 
 export interface IManager {
   id: number;
@@ -80,13 +81,20 @@ const managerSlice = createSlice({
       .addCase(portalLogin.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isAuth = true;
-        state.manager.id = action.payload.managerId;
+        //* выводит информацию при логине в userMenu
+        state.manager.id = action.payload.id;
         state.manager.isAdmin = action.payload.isAdmin;
+        state.manager.lastName = action.payload.lastName;
+        state.manager.firstName = action.payload.firstName;
+        state.manager.middleName = action.payload.middleName;
+        state.manager.phone = action.payload.phone;
+        state.manager.email = action.payload.email;
       })
       .addCase(portalLogin.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       })
+      //* portalCheck
       .addCase(portalCheck.pending, (state) => {
         state.isLoading = true;
         state.isAuth = false;
@@ -107,6 +115,7 @@ const managerSlice = createSlice({
         state.isLoading = false;
         state.error = action.error.message;
       })
+      //* portalLogout
       .addCase(portalLogout.pending, (state) => {
         state.isLoading = true;
         state.isAuth = false;
@@ -178,6 +187,21 @@ const managerSlice = createSlice({
         state.isLoading = false;
         state.error = action.error.message;
         console.log(state.error);
+      })
+      //* phone
+      .addCase(changePhone.pending, (state) => {
+        state.isLoading = true;
+        state.isAuth = false;
+      })
+      .addCase(changePhone.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isAuth = true;
+        state.manager.phone = action.payload.phone;
+        state.message = action.payload.message;
+      })
+      .addCase(changePhone.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
       })
       //! getManager
       .addCase(getManager.pending, (state) => {

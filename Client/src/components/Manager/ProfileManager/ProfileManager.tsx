@@ -6,11 +6,13 @@ import ToggleShowPassword from '../../../ui/ToggleShowPassword';
 import Button from '../../../ui/Button';
 import editProfileManager from '../../../Redux/thunks/Manager/profileManager.api';
 import changePassword from '../../../Redux/thunks/Manager/changePassword.api';
+import changePhone from '../../../Redux/thunks/Manager/changePhone.api';
 
 interface IDate {
   newLastName: string;
   newFirstName: string;
   newMiddleName: string;
+  newPhone: string;
   newEmail: string;
   oldPassword: string;
   newPassword: string;
@@ -31,6 +33,7 @@ const ProfileManager: FC = () => {
     lastName?: string;
     firstName?: string;
     middleName?: string;
+    phone: string;
     email?: string;
     password?: string;
   }>((state) => state.managerSlice.manager);
@@ -53,6 +56,7 @@ const ProfileManager: FC = () => {
     newLastName: managerProfile.lastName || '',
     newFirstName: managerProfile.firstName || '',
     newMiddleName: managerProfile.middleName || '',
+    newPhone: managerProfile.phone || '',
     newEmail: managerProfile.email || '',
     oldPassword: '',
     newPassword: '',
@@ -67,6 +71,7 @@ const ProfileManager: FC = () => {
       newLastName: managerProfile.lastName || '',
       newFirstName: managerProfile.firstName || '',
       newMiddleName: managerProfile.middleName || '',
+      newPhone: managerProfile.phone || '',
       newEmail: managerProfile.email || '',
       oldPassword: '',
       newPassword: '',
@@ -104,6 +109,32 @@ const ProfileManager: FC = () => {
       }
 
       if (editProfileManager.rejected.match(resultEdit)) {
+        alert('Не удалось обновить данные. Попробуйте ещё раз.');
+      }
+    } catch (error) {
+      console.error('Ошибка обновления данных:', error);
+    }
+  };
+
+  //* изменение номера
+  const handleSubmitProfileManagerPhone = async (
+    e: React.FormEvent
+  ): Promise<void> => {
+    e.preventDefault();
+
+    try {
+      const resultEdit = await dispatch(
+        changePhone({
+          managerId,
+          newPhone: data.newPhone,
+        })
+      );
+
+      if (changePhone.fulfilled.match(resultEdit)) {
+        alert('Данные успешно обновлены');
+      }
+
+      if (changePhone.rejected.match(resultEdit)) {
         alert('Не удалось обновить данные. Попробуйте ещё раз.');
       }
     } catch (error) {
@@ -204,6 +235,23 @@ const ProfileManager: FC = () => {
     },
   ];
 
+  const inputFieldsPhone = [
+    {
+      id: 'phone',
+      name: 'phone',
+      type: 'tel',
+      placeholder: '',
+      autoComplete: 'off',
+      htmlFor: 'phone',
+      title: 'Телефон',
+      value: data.newPhone,
+      onChange: (value: string) =>
+        handleFieldChangeProfileManager('newPhone', value),
+      required: true,
+      pattern: '\\+7 \\(\\d{3}\\) \\d{3}-\\d{2}-\\d{2}',
+    },
+  ];
+
   const inputFieldsPassword = [
     {
       id: 'oldPassword',
@@ -296,6 +344,19 @@ const ProfileManager: FC = () => {
             >
               <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
                 <Field inputFields={inputFieldsName} />
+
+                <div className="relative flex justify-center">
+                  <Button type="submit" title="Сохранить" />
+                </div>
+              </div>
+            </form>
+            <p className="mt-2 text-center text-slate-500">Обновление номера</p>
+            <form
+              onSubmit={handleSubmitProfileManagerPhone}
+              className="flex flex-col"
+            >
+              <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+                <Field inputFields={inputFieldsPhone} />
 
                 <div className="relative flex justify-center">
                   <Button type="submit" title="Сохранить" />
