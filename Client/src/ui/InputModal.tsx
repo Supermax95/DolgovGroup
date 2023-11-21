@@ -16,7 +16,7 @@ interface IInputModal {
 export interface InputField {
   id: string;
   name?: string;
-  type?: string;
+  type?: string | boolean;
   value?: string | boolean | Date;
   placeholder?: string;
   autoComplete?: string;

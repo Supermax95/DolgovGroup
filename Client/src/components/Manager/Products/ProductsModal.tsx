@@ -238,15 +238,19 @@ const ProductsModal: FC<ProductsModalProps> = ({
     },
     {
       id: 'isNew',
-      type: 'text',
-      checked: editedProduct.isNew,
+      type: 'select', 
+      value: String(editedProduct.isNew),
       htmlFor: 'isNew',
-      onChange: (value: boolean) =>
-        setEditedProduct({
-          ...editedProduct,
-          isNew: value,
-        }),
-    },
+      onChange: (value: boolean) => setEditedProduct({
+        ...editedProduct,
+        isNew: value === 'true', 
+      }),
+      options: [
+        { value: 'true', label: 'Новый' },
+        { value: 'false', label: 'Старый' },
+      ],
+      required: true,
+    },    
     {
       id: 'isDiscounted',
       type: 'text',
