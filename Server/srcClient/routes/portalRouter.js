@@ -11,7 +11,12 @@ module.exports = router
         const manager = await Manager.findOne({
           where: { id: req.session.idManager },
         });
-        res.json({ message: 'Вы залогинены!', manager });
+
+        res.json({
+          message: 'Вы залогинены!',
+          managerId: manager.id,
+          isAdmin: manager.isAdmin,
+        });
       }
     } catch (error) {
       console.log(error);

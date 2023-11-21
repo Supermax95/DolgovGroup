@@ -94,8 +94,8 @@ const managerSlice = createSlice({
       .addCase(portalCheck.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isAuth = false;
-        //! добавить типизацию в компоненты
-        state.manager = action.payload.manager;
+        state.manager.id = action.payload.managerId;
+        state.manager.isAdmin = action.payload.isAdmin;
       })
       .addCase(portalCheck.rejected, (state, action) => {
         state.isLoading = false;
@@ -236,7 +236,6 @@ const managerSlice = createSlice({
       })
       .addCase(deleteManager.fulfilled, (state, action) => {
         state.isLoading = false;
-        //! добавить типизацию в компоненты
         state.data = action.payload;
         console.log(' state.data ', state.data);
         console.log('action.payload ', action.payload);
