@@ -7,6 +7,8 @@ import Button from '../../../ui/Button';
 import editProfileManager from '../../../Redux/thunks/Manager/profileManager.api';
 import changePassword from '../../../Redux/thunks/Manager/changePassword.api';
 import changePhone from '../../../Redux/thunks/Manager/changePhone.api';
+import Table from '../../../ui/Table';
+import getManagerInfo from '../../../Redux/thunks/Manager/getManagerInfo.api';
 
 interface IDate {
   newLastName: string;
@@ -25,9 +27,66 @@ interface PasswordChangeData {
   confirmPassword: string;
 }
 
+interface IManager {
+  id: number;
+  lastName: string;
+  firstName: string;
+  middleName: string;
+  phone: string;
+  email: string;
+}
+
+interface IColumnsDefaultName {
+  name: string;
+}
+
+type IColumnsListDb =
+  | 'id'
+  | 'lastName'
+  | 'firstName'
+  | 'middleName'
+  | 'phone'
+  | 'email'
+  | 'isAdmin';
+
 const ProfileManager: FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
+  const currentManagerId = useAppSelector<number>(
+    (state) => state.managerSlice.manager.id
+  );
+  console.log('currentManagerId', currentManagerId);
+
+  const managers = useAppSelector<IManager[]>(
+    (state) => state.managerSlice.info
+  );
+  console.log('managers info', managers);
+
+  const columnsDefaultName: IColumnsDefaultName[] = [
+    { name: 'Фамилия' },
+    { name: 'Имя' },
+    { name: 'Отчество' },
+    { name: 'Телефон' },
+    { name: 'Email' },
+    { name: 'Должность' },
+  ];
+
+  const columnsListDb: IColumnsListDb[] = [
+    'id',
+    'lastName',
+    'firstName',
+    'middleName',
+    'phone',
+    'email',
+    'isAdmin',
+  ];
+
+  const displayedManagers = managers;
+
+  useEffect(() => {
+    dispatch(getManagerInfo());
+  }, [dispatch]);
 
   const managerProfile = useAppSelector<{
     lastName?: string;
@@ -378,20 +437,13 @@ const ProfileManager: FC = () => {
             </form>
           </div>
         </div>
-        <div className="pointer-events-none relative hidden h-screen select-none bg-black md:block md:w-1/2">
-          <div className="absolute bottom-0 z-10 px-8 text-white opacity-100">
-            <p className="mb-8 text-3xl font-semibold leading-10">
-              We work 10x faster than our compeititors and stay consistant.
-              While they're bogged won with techincal debt, we're realeasing new
-              features.
-            </p>
-            <p className="mb-4 text-3xl font-semibold">John Elmond</p>
-            <p className="">Founder, Emogue</p>
-            <p className="mb-7 text-sm opacity-70">Web Design Agency</p>
-          </div>
-          <img
-            className="-z-1 absolute top-0 h-full w-full object-cover opacity-90"
-            src="https://images.unsplash.com/photo-1565301660306-29e08751cc53?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+        <div className=" bg-white md:w-1/2">
+          <Table
+            title="Список контактов"
+            data={displayedManagers}
+            columnsDefaultName={columnsDefaultName}
+            columnsListDb={columnsListDb}
+            currentManagerId={currentManagerId}
           />
         </div>
       </div>

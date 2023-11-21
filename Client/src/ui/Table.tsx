@@ -11,9 +11,10 @@ interface ITable {
   itemsPerPage?: number | undefined;
   childrenSearch?: React.ReactNode;
   onAddClick?: (() => void) | undefined;
-  onEditClick: (item: any) => void;
+  onEditClick?: (item: any) => void | undefined;
   onOneTimePassword?: (item: number) => Promise<void> | undefined;
   renderCell?: () => void;
+  currentManagerId?: number | undefined;
 }
 
 const Table: FC<ITable> = ({
@@ -27,7 +28,13 @@ const Table: FC<ITable> = ({
   onAddClick,
   onEditClick,
   onOneTimePassword,
+  currentManagerId,
 }) => {
+  //* проверяет текущего менеджера, чтобы тот не видел себя в таблице
+  const filteredData = data
+    ? data.filter((item) => item.id !== currentManagerId)
+    : [];
+
   return (
     <div>
       <h1 className="text-xl text-lime-600 font-medium mb-4">{title}</h1>
@@ -66,8 +73,8 @@ const Table: FC<ITable> = ({
             </thead>
 
             <tbody className="bg-white">
-              {data &&
-                data.map((item, index) => (
+              {filteredData &&
+                filteredData.map((item, index) => (
                   <tr key={item.id}>
                     <td className="w-16  text-center   pl-6 py-0 whitespace-no-wrap border-b-2 border-slate-300 text-slate-600 text-sm font-normal">
                       {/* {(currentPage - 1) * itemsPerPage + index + 1} 
@@ -82,7 +89,7 @@ const Table: FC<ITable> = ({
                     {columnsListDb.slice(1).map((columnName) => (
                       <td
                         key={columnName}
-                        className="px-6 py-3  text-center  whitespace-no-wrap border-b-2 border-slate-300 text-slate-600 text-sm font-normal"
+                        className="px-6 py-3 text-center whitespace-no-wrap border-b-2 border-slate-300 text-slate-600 text-sm font-normal"
                       >
                         {columnName === 'isActivated' ? (
                           item[columnName] ? (
@@ -100,6 +107,16 @@ const Table: FC<ITable> = ({
                               />
                             </span>
                           )
+                        ) : columnName === 'isAdmin' ? (
+                          item[columnName] ? (
+                            <span className="flex justify-center">
+                              <p className="text-sky-400"> Администатор</p>
+                            </span>
+                          ) : (
+                            <span className="flex justify-center">
+                              <p className="text-lime-500"> Маркетолог</p>
+                            </span>
+                          )
                         ) : (
                           item[columnName]
                         )}
@@ -107,14 +124,16 @@ const Table: FC<ITable> = ({
                     ))}
                     <td className="px-6 py-3 whitespace-no-wrap text-right border-b-2 border-slate-300">
                       <div className="flex items-center">
-                        <div>
-                          <Button
-                            type="button"
-                            onClick={() => onEditClick(item)}
-                            styleCSSButton={`relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-normal text-slate-600 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 hover:text-white`}
-                            title="Редактировать"
-                          />
-                        </div>
+                        {onEditClick && (
+                          <div>
+                            <Button
+                              type="button"
+                              onClick={() => onEditClick?.(item)}
+                              styleCSSButton={`relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-normal text-slate-600 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 hover:text-white`}
+                              title="Редактировать"
+                            />
+                          </div>
+                        )}
                         {onOneTimePassword ? (
                           <div>
                             <Button

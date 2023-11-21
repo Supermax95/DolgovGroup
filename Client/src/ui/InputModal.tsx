@@ -98,7 +98,7 @@ const InputModal: FC<IInputModal> = ({
           ) : field.disabled === true ? (
             <>
               <input
-                onChange={(e) => field.onChange(e.target.value)}
+                onChange={(e) => field.onChange?.(e.target.value)}
                 id={field.id}
                 type={field.type}
                 value={field.value as string}

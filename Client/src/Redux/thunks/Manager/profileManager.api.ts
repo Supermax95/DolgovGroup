@@ -29,7 +29,7 @@ const editProfileManager = createAsyncThunk<ResponseData, RequestDate>(
 
     try {
       const response: AxiosResponse = await axios.put(
-        `${VITE_URL}/profileManager/info/`,
+        `${VITE_URL}/profileManager/fullName`,
         { managerId, newLastName, newFirstName, newMiddleName }
       );
       console.log('response.dataresponse.data', response.data);

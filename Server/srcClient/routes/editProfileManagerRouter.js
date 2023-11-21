@@ -3,7 +3,24 @@ const bcrypt = require('bcrypt');
 const { Manager } = require('../../db/models');
 
 module.exports = router
-  .put('/info/', async (req, res) => {
+  .get('/info', async (req, res) => {
+    try {
+      const manager = await Manager.findAll({
+        order: [
+          ['lastName', 'ASC'],
+          ['firstName', 'ASC'],
+          ['middleName', 'ASC'],
+        ],
+        raw: true,
+      });
+      res.json(manager);
+    } catch (error) {
+      console.error('Ошибка при получении данных из базы данных', error);
+      res.status(500).json({ error: 'Произошла ошибка на сервере' });
+    }
+  })
+
+  .put('/fullName/', async (req, res) => {
     const { managerId, newLastName, newFirstName, newMiddleName } = req.body;
     try {
       const manager = await Manager.findOne({ where: { id: managerId } });

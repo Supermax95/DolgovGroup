@@ -6,7 +6,6 @@ import ManagementModal from './ManagementModal';
 import addManager from '../../../../Redux/thunks/Manager/Management/addManager.api';
 import editManager from '../../../../Redux/thunks/Manager/Management/editManager.api';
 import sendOneTimePassword from '../../../../Redux/thunks/Manager/Management/sendOneTimePassword.api';
-import { unwrapResult } from '@reduxjs/toolkit';
 
 interface IManager {
   id: number;
@@ -27,7 +26,8 @@ type IColumnsListDb =
   | 'firstName'
   | 'middleName'
   | 'phone'
-  | 'email';
+  | 'email'
+  | 'isAdmin';
 
 const Management: FC = () => {
   const dispatch = useAppDispatch();
@@ -41,13 +41,10 @@ const Management: FC = () => {
   const managerIdForBellAdd = useAppSelector(
     (state) => state.managerSlice.addedManagerData
   );
-  //console.log(managerIdForBellAdd);
-
   //* для уведомления при редактировании
   const managerIdForBellEdit = useAppSelector(
     (state) => state.managerSlice.updatedManager
   );
-  //console.log(managerIdForBellEdit);
 
   const [isModalOpen, setModalOpen] = useState(true);
   const [isAddingMode, setAddingMode] = useState(false);

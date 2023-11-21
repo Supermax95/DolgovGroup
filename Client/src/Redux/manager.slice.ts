@@ -11,6 +11,7 @@ import editManager from './thunks/Manager/Management/editManager.api';
 import sendOneTimePassword from './thunks/Manager/Management/sendOneTimePassword.api';
 import deleteManager from './thunks/Manager/Management/deleteManager.api';
 import changePhone from './thunks/Manager/changePhone.api';
+import getManagerInfo from './thunks/Manager/getManagerInfo.api';
 
 export interface IManager {
   id: number;
@@ -24,7 +25,8 @@ export interface IManager {
 
 interface managerState {
   manager: IManager;
-  data: IManager[]; //* используется массив для таблицы
+  data: IManager[]; //* используется массив для таблицы в кабинете админа
+  info: IManager[]; //* используется массив для таблицы в кабинете маркетолога
   addedManagerData: IManager;
   updatedManager: IManager;
   isAuth: boolean;
@@ -62,6 +64,7 @@ const initialState: managerState = {
     isAdmin: false,
   },
   data: [],
+  info: [],
   isAuth: false,
   isLoading: false,
   message: '',
@@ -138,6 +141,19 @@ const managerSlice = createSlice({
         state.isLoading = false;
         state.error = action.error.message;
       })
+      //! getManagerInfo
+      .addCase(getManagerInfo.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(getManagerInfo.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.info = action.payload;
+      })
+      .addCase(getManagerInfo.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
       //* editMan
       .addCase(editProfileManager.pending, (state) => {
         state.isLoading = true;
@@ -203,7 +219,7 @@ const managerSlice = createSlice({
         state.isLoading = false;
         state.error = action.error.message;
       })
-      //! getManager
+      //! getManagerData
       .addCase(getManager.pending, (state) => {
         state.isLoading = true;
         state.error = null;
