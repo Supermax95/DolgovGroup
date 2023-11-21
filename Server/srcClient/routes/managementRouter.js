@@ -118,11 +118,11 @@ module.exports = router
         // ? хеширует пароль и повторно ищет юзера с почтой
         const hash = await bcrypt.hash(code, 10);
 
-        const searchmanager = await Manager.findOne({
+        const searchManager = await Manager.findOne({
           where: { email: newManager.email },
         });
 
-        if (!searchmanager) {
+        if (!searchManager) {
           res.status(404).json({ error: 'Пользователь не найден' });
         } else {
           await Manager.update(
@@ -292,11 +292,11 @@ module.exports = router
         // ? хеширует пароль и повторно ищет юзера с почтой
         const hash = await bcrypt.hash(code, 10);
 
-        const searchmanager = await Manager.findOne({
+        const searchManager = await Manager.findOne({
           where: { email: manager.email },
         });
 
-        if (!searchmanager) {
+        if (!searchManager) {
           res.status(404).json({ error: 'Пользователь не найден' });
         } else {
           await Manager.update(

@@ -1,6 +1,17 @@
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
+const nodemailer = require('nodemailer');
 const { Manager } = require('../../db/models');
+
+const transporter = nodemailer.createTransport({
+  port: 465,
+  host: 'smtp.gmail.com',
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.PASSWORD,
+  },
+  secure: true,
+});
 
 module.exports = router
   .get('/check', async (req, res) => {
@@ -74,6 +85,82 @@ module.exports = router
           res.status(200).json({ message: 'Пользователь вышёл из профиля' });
         }
       });
+    } catch (error) {
+      console.error('Ошибка при получении данных из базы данных', error);
+      res.status(500).json({ message: 'Произошла ошибка' });
+    }
+  })
+
+  .post('/resetPassword', async (req, res) => {
+    const { email } = req.body;
+
+    function generateCode() {
+      const charset =
+        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      let code = '';
+      for (let i = 0; i < 6; i++) {
+        const randomIndex = Math.floor(Math.random() * charset.length);
+        code += charset[randomIndex];
+      }
+      return code;
+    }
+
+    try {
+      const manager = await Manager.findOne({
+        where: { email },
+      });
+
+      if (!manager) {
+        res.status(404).json({ error: 'Пользователь не найден' });
+      } else {
+        //* генерация пароля
+        const code = generateCode();
+        console.log('code', code);
+
+        const mailData = {
+          from: process.env.EMAIL,
+          to: manager.email,
+          subject: 'Временный пароль DolgovGroup',
+          text: ' ',
+          html: `
+            <div style="font-family: 'Arial', sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+              <h2 style="color: #333; text-align: center;">Уважаемый(ая), ${manager.firstName} ${manager.middleName}!</h2>
+              <p style="font-size: 18px; color: #333; text-align: center;">Ваш временный пароль для входа в личный кабинет:</p>
+              <div style="text-align: center; background-color: #f5f5f5; padding: 10px; border-radius: 5px;">
+                <span style="font-size: 2em; font-weight: bold; display: block;">${code}</span>
+              </div>
+              <p style="font-size: 14px; color: #555; text-align: center;">Используйте код в течение 24 часов</p>
+              <p style="font-size: 16px; color: #555; text-align: center;">Желаем вам хорошего дня!</p>
+            </div>
+          `,
+        };
+
+        transporter.sendMail(mailData, (error) => {
+          if (error) {
+            console.error('Ошибка при отправке электронного письма:', error);
+
+            return res
+              .status(500)
+              .json({ message: 'Ошибка при отправке электронного письма' });
+          }
+          res.status(200).json({ message: 'Код пользователю отправлен' });
+        });
+        console.log('Код для сотрудника отправлен по почте');
+
+        // ? хеширует пароль
+        const hash = await bcrypt.hash(code, 10);
+
+        if (!manager) {
+          res.status(404).json({ error: 'Пользователь не найден' });
+        } else {
+          await Manager.update(
+            { password: hash },
+            { where: { email: manager.email } }
+          );
+          console.log('Код пользователю отправлен');
+        }
+        res.json({ message: 'Пароль отправлен на почту' });
+      }
     } catch (error) {
       console.error('Ошибка при получении данных из базы данных', error);
       res.status(500).json({ message: 'Произошла ошибка' });

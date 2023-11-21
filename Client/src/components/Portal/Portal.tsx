@@ -5,10 +5,16 @@ import ToggleShowPassword from '../../ui/ToggleShowPassword';
 import { useAppDispatch } from '../../Redux/hooks';
 import { useNavigate } from 'react-router-dom';
 import portalLogin from '../../Redux/thunks/PortalLogin/portalLogin.api';
+import PortalModal from './PortalModal';
+import resetPassword from '../../Redux/thunks/PortalLogin/portalResetPassword.api';
 
 interface IDate {
   email: string;
   password: string;
+}
+
+interface IEmail {
+  email: string;
 }
 
 const Portal: FC = () => {
@@ -17,6 +23,24 @@ const Portal: FC = () => {
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [data, setData] = useState<IDate>({ email: '', password: '' });
+
+  const [isModalOpen, setModalOpen] = useState(true);
+  const [enterEmail, setEnterEmail] = useState<IEmail | null | undefined>(null);
+  const [selectedManager, setSelectedManager] = useState<string | null>(null);
+  const [modalError, setModalError] = useState<string | null>(null);
+
+  const openModal = (): void => {
+    setEnterEmail({
+      email: '',
+    });
+    setModalOpen(true);
+  };
+
+  const closeModal = (): void => {
+    setSelectedManager(null);
+    setEnterEmail(null);
+    setModalOpen(false);
+  };
 
   const toggleShowPassword = (): void => {
     setShowPassword(!showPassword);
@@ -39,6 +63,37 @@ const Portal: FC = () => {
       }
     } catch (error) {
       console.error('Ошибка при аутентификации:', error);
+    }
+  };
+
+  //* добавление менеджера
+  const sendOneTimePasswordHandle = async (): Promise<void> => {
+    if (enterEmail) {
+      try {
+        const result = await dispatch(
+          resetPassword({
+            email: enterEmail.email,
+          })
+        );
+
+        if (resetPassword.fulfilled.match(result)) {
+          closeModal();
+        }
+
+        if (resetPassword.rejected.match(result)) {
+          if (result.error && result.error?.message?.includes('404')) {
+            setModalError('Пользователь с такой почтой не существует');
+            //* пока уведомление об ошибке исчезает через 3 секунды
+            setTimeout(() => {
+              setModalError(null);
+            }, 3000);
+          } else {
+            setModalError('Ошибка. Не удалось сделать запрос.');
+          }
+        }
+      } catch (error) {
+        console.error('Произошла ошибка при запросе:', error);
+      }
     }
   };
 
@@ -74,28 +129,53 @@ const Portal: FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-100 py-6 flex flex-col justify-center sm:py-12">
-      <div className="relative py-3 sm:max-w-xl sm:mx-auto">
-        <div className="absolute inset-0 bg-gradient-to-r  from-lime-200 to-green-200 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
-        <div className="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">
-          <div className="max-w-md mx-auto">
-            <div>
-              <h1 className="text-2xl font-nolmal text-slate-600">
-                Портал авторизации. Продуктивной работы 😎
-              </h1>
-            </div>
-            <form onSubmit={authHandler} className="divide-y divide-gray-200">
-              <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                <Field inputFields={inputFields} />
-                <div className="relative flex justify-center">
-                  <Button type="submit" title="Войти" />
-                </div>
+    <>
+      <div className="min-h-screen bg-slate-100 py-6 flex flex-col justify-center sm:py-12">
+        <div className="relative py-3 sm:max-w-xl sm:mx-auto">
+          <div className="absolute inset-0 bg-gradient-to-r  from-lime-200 to-green-200 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
+          <div className="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">
+            <div className="max-w-md mx-auto">
+              <div>
+                <h1 className="text-2xl font-nolmal text-slate-600">
+                  Портал авторизации. Продуктивной работы 😎
+                </h1>
               </div>
-            </form>
+              <form onSubmit={authHandler} className="divide-y divide-gray-200">
+                <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+                  <Field inputFields={inputFields} />
+                  <div className="relative flex justify-center">
+                    <Button type="submit" title="Войти" />
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div className="flex justify-center">
+              <button onClick={openModal}>
+                <span className="text-slate-500 hover:text-green-500 font-normal text-md">
+                  Забыли пароль?
+                </span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      {isModalOpen && (
+        <PortalModal
+          isOpen={isModalOpen}
+          email={selectedManager}
+          sendOneTimePassword={sendOneTimePasswordHandle}
+          enterEmail={enterEmail}
+          setEnterEmail={setEnterEmail}
+          showError={
+            modalError && (
+              <div className="text-sm text-rose-400 text-center mt-2">
+                {modalError}
+              </div>
+            )
+          }
+        />
+      )}
+    </>
   );
 };
 
