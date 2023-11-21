@@ -9,15 +9,8 @@ interface RequestData {
 }
 
 interface ResponseData {
-  manager: {
-    id: number;
-    lastName: string;
-    firstName: string;
-    middleName: string;
-    birthDate: Date | null | string;
-    email: string;
-    isAdmin: boolean;
-  };
+  managerId: number;
+  isAdmin: boolean;
   message: string;
 }
 

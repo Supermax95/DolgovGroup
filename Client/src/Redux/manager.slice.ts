@@ -80,8 +80,8 @@ const managerSlice = createSlice({
       .addCase(portalLogin.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isAuth = true;
-        //! добавить типизацию в компоненты
-        state.manager = action.payload.manager;
+        state.manager.id = action.payload.managerId;
+        state.manager.isAdmin = action.payload.isAdmin;
       })
       .addCase(portalLogin.rejected, (state, action) => {
         state.isLoading = false;
@@ -94,8 +94,14 @@ const managerSlice = createSlice({
       .addCase(portalCheck.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isAuth = false;
-        state.manager.id = action.payload.managerId;
+        //* предзаполняет поля в инпутах в ЛК
+        state.manager.id = action.payload.id;
         state.manager.isAdmin = action.payload.isAdmin;
+        state.manager.lastName = action.payload.lastName;
+        state.manager.firstName = action.payload.firstName;
+        state.manager.middleName = action.payload.middleName;
+        state.manager.phone = action.payload.phone;
+        state.manager.email = action.payload.email;
       })
       .addCase(portalCheck.rejected, (state, action) => {
         state.isLoading = false;
