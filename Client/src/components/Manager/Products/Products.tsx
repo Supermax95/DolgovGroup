@@ -8,7 +8,6 @@ import { VITE_URL } from '../../../VITE_URL';
 import editProduct from '../../../Redux/thunks/Products/editProduct.api';
 import ProductsModal from './ProductsModal';
 import addProduct from '../../../Redux/thunks/Products/addProduct.api';
-import { unwrapResult } from '@reduxjs/toolkit';
 
 export interface IProduct {
   id: number;
@@ -98,6 +97,8 @@ const Products: FC = () => {
     setSelectedProduct(null);
     setEditedProduct(null);
     setModalOpen(false);
+    dispatch(getProducts())
+
   };
 
   const openEditModal = (product: IProduct) => {
@@ -105,18 +106,20 @@ const Products: FC = () => {
     setEditedProduct({ ...product });
     setAddingMode(false);
     setModalOpen(true);
+    dispatch(getProducts())
   };
 
   const closeEditModal = () => {
     setSelectedProduct(null);
     setEditedProduct(null);
     setModalOpen(false);
+    dispatch(getProducts())
   };
 
   const handleSaveAdd = async () => {
     try {
       if (editedProduct) {
-        const result = await dispatch(
+        await dispatch(
           addProduct({
             newProduct: editedProduct,
           })
@@ -135,8 +138,6 @@ const Products: FC = () => {
             newInfo: editedProduct,
           })
         );
-
-
       }
     } catch (error) {
       console.error('Произошла ошибка при редактировании:', error);
