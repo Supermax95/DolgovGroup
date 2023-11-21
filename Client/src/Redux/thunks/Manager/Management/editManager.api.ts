@@ -8,6 +8,7 @@ interface RequestData {
     lastName: string;
     firstName: string;
     middleName: string;
+    phone: string;
     email: string;
   };
 }
@@ -17,12 +18,18 @@ interface ResponseData {
   lastName: string;
   firstName: string;
   middleName: string;
+  phone: string;
   email: string;
   isAdmin: boolean;
   error?: string;
 }
 
-const editManager = createAsyncThunk<ResponseData[], RequestData>(
+interface ServerResponse {
+  managers: ResponseData[];
+  updatedManager: ResponseData;
+}
+
+const editManager = createAsyncThunk<ServerResponse, RequestData>(
   'api/editManager',
 
   async ({ managerId, updateManager }) => {

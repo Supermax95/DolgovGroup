@@ -9,16 +9,13 @@ interface RequestData {
 }
 
 interface ResponseData {
-  manager: {
-    id: number;
-    lastName: string;
-    firstName: string;
-    middleName: string;
-    birthDate: Date | null | string;
-    email: string;
-    isAdmin: boolean;
-  };
-  message: string;
+  id: number;
+  lastName: string;
+  firstName: string;
+  middleName: string;
+  phone: string;
+  email: string;
+  isAdmin: boolean;
 }
 
 const portalLogin = createAsyncThunk<ResponseData, RequestData>(
@@ -34,7 +31,7 @@ const portalLogin = createAsyncThunk<ResponseData, RequestData>(
       }
     );
 
-    console.log('response axios', response.data);
+    console.log('response axios login', response.data);
 
     return response.data;
   }

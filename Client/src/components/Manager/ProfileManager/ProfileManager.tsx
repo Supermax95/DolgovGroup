@@ -6,11 +6,15 @@ import ToggleShowPassword from '../../../ui/ToggleShowPassword';
 import Button from '../../../ui/Button';
 import editProfileManager from '../../../Redux/thunks/Manager/profileManager.api';
 import changePassword from '../../../Redux/thunks/Manager/changePassword.api';
+import changePhone from '../../../Redux/thunks/Manager/changePhone.api';
+import Table from '../../../ui/Table';
+import getManagerInfo from '../../../Redux/thunks/Manager/getManagerInfo.api';
 
 interface IDate {
   newLastName: string;
   newFirstName: string;
   newMiddleName: string;
+  newPhone: string;
   newEmail: string;
   oldPassword: string;
   newPassword: string;
@@ -23,14 +27,72 @@ interface PasswordChangeData {
   confirmPassword: string;
 }
 
+interface IManager {
+  id: number;
+  lastName: string;
+  firstName: string;
+  middleName: string;
+  phone: string;
+  email: string;
+}
+
+interface IColumnsDefaultName {
+  name: string;
+}
+
+type IColumnsListDb =
+  | 'id'
+  | 'lastName'
+  | 'firstName'
+  | 'middleName'
+  | 'phone'
+  | 'email'
+  | 'isAdmin';
+
 const ProfileManager: FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
+  const currentManagerId = useAppSelector<number>(
+    (state) => state.managerSlice.manager.id
+  );
+  console.log('currentManagerId', currentManagerId);
+
+  const managers = useAppSelector<IManager[]>(
+    (state) => state.managerSlice.info
+  );
+  console.log('managers info', managers);
+
+  const columnsDefaultName: IColumnsDefaultName[] = [
+    { name: 'Фамилия' },
+    { name: 'Имя' },
+    { name: 'Отчество' },
+    { name: 'Телефон' },
+    { name: 'Email' },
+    { name: 'Должность' },
+  ];
+
+  const columnsListDb: IColumnsListDb[] = [
+    'id',
+    'lastName',
+    'firstName',
+    'middleName',
+    'phone',
+    'email',
+    'isAdmin',
+  ];
+
+  const displayedManagers = managers;
+
+  useEffect(() => {
+    dispatch(getManagerInfo());
+  }, [dispatch]);
 
   const managerProfile = useAppSelector<{
     lastName?: string;
     firstName?: string;
     middleName?: string;
+    phone: string;
     email?: string;
     password?: string;
   }>((state) => state.managerSlice.manager);
@@ -53,6 +115,7 @@ const ProfileManager: FC = () => {
     newLastName: managerProfile.lastName || '',
     newFirstName: managerProfile.firstName || '',
     newMiddleName: managerProfile.middleName || '',
+    newPhone: managerProfile.phone || '',
     newEmail: managerProfile.email || '',
     oldPassword: '',
     newPassword: '',
@@ -67,6 +130,7 @@ const ProfileManager: FC = () => {
       newLastName: managerProfile.lastName || '',
       newFirstName: managerProfile.firstName || '',
       newMiddleName: managerProfile.middleName || '',
+      newPhone: managerProfile.phone || '',
       newEmail: managerProfile.email || '',
       oldPassword: '',
       newPassword: '',
@@ -104,6 +168,32 @@ const ProfileManager: FC = () => {
       }
 
       if (editProfileManager.rejected.match(resultEdit)) {
+        alert('Не удалось обновить данные. Попробуйте ещё раз.');
+      }
+    } catch (error) {
+      console.error('Ошибка обновления данных:', error);
+    }
+  };
+
+  //* изменение номера
+  const handleSubmitProfileManagerPhone = async (
+    e: React.FormEvent
+  ): Promise<void> => {
+    e.preventDefault();
+
+    try {
+      const resultEdit = await dispatch(
+        changePhone({
+          managerId,
+          newPhone: data.newPhone,
+        })
+      );
+
+      if (changePhone.fulfilled.match(resultEdit)) {
+        alert('Данные успешно обновлены');
+      }
+
+      if (changePhone.rejected.match(resultEdit)) {
         alert('Не удалось обновить данные. Попробуйте ещё раз.');
       }
     } catch (error) {
@@ -201,6 +291,23 @@ const ProfileManager: FC = () => {
       onChange: (value: string) =>
         handleFieldChangeProfileManager('newMiddleName', value),
       required: true,
+    },
+  ];
+
+  const inputFieldsPhone = [
+    {
+      id: 'phone',
+      name: 'phone',
+      type: 'tel',
+      placeholder: '',
+      autoComplete: 'off',
+      htmlFor: 'phone',
+      title: 'Телефон',
+      value: data.newPhone,
+      onChange: (value: string) =>
+        handleFieldChangeProfileManager('newPhone', value),
+      required: true,
+      pattern: '\\+7 \\(\\d{3}\\) \\d{3}-\\d{2}-\\d{2}',
     },
   ];
 
@@ -302,6 +409,19 @@ const ProfileManager: FC = () => {
                 </div>
               </div>
             </form>
+            <p className="mt-2 text-center text-slate-500">Обновление номера</p>
+            <form
+              onSubmit={handleSubmitProfileManagerPhone}
+              className="flex flex-col"
+            >
+              <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+                <Field inputFields={inputFieldsPhone} />
+
+                <div className="relative flex justify-center">
+                  <Button type="submit" title="Сохранить" />
+                </div>
+              </div>
+            </form>
             <p className="mt-2 text-center text-slate-500">Обновление пароля</p>
             <form
               onSubmit={handleSubmitProfileManagerPassword}
@@ -317,20 +437,13 @@ const ProfileManager: FC = () => {
             </form>
           </div>
         </div>
-        <div className="pointer-events-none relative hidden h-screen select-none bg-black md:block md:w-1/2">
-          <div className="absolute bottom-0 z-10 px-8 text-white opacity-100">
-            <p className="mb-8 text-3xl font-semibold leading-10">
-              We work 10x faster than our compeititors and stay consistant.
-              While they're bogged won with techincal debt, we're realeasing new
-              features.
-            </p>
-            <p className="mb-4 text-3xl font-semibold">John Elmond</p>
-            <p className="">Founder, Emogue</p>
-            <p className="mb-7 text-sm opacity-70">Web Design Agency</p>
-          </div>
-          <img
-            className="-z-1 absolute top-0 h-full w-full object-cover opacity-90"
-            src="https://images.unsplash.com/photo-1565301660306-29e08751cc53?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+        <div className=" bg-white md:w-1/2">
+          <Table
+            title="Список контактов"
+            data={displayedManagers}
+            columnsDefaultName={columnsDefaultName}
+            columnsListDb={columnsListDb}
+            currentManagerId={currentManagerId}
           />
         </div>
       </div>

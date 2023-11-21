@@ -10,25 +10,29 @@ import addManager from './thunks/Manager/Management/addManager.api';
 import editManager from './thunks/Manager/Management/editManager.api';
 import sendOneTimePassword from './thunks/Manager/Management/sendOneTimePassword.api';
 import deleteManager from './thunks/Manager/Management/deleteManager.api';
+import changePhone from './thunks/Manager/changePhone.api';
+import getManagerInfo from './thunks/Manager/getManagerInfo.api';
 
 export interface IManager {
   id: number;
   lastName: string;
   firstName: string;
   middleName: string;
+  phone: string;
   email: string;
   isAdmin: boolean;
 }
 
 interface managerState {
   manager: IManager;
-  data: IManager[];
-  //id: number;
+  data: IManager[]; //* используется массив для таблицы в кабинете админа
+  info: IManager[]; //* используется массив для таблицы в кабинете маркетолога
+  addedManagerData: IManager;
+  updatedManager: IManager;
   isAuth: boolean;
   isLoading: boolean;
   message: string;
   error: unknown;
-  addedManagerData: IManager;
 }
 
 const initialState: managerState = {
@@ -37,6 +41,7 @@ const initialState: managerState = {
     lastName: '',
     firstName: '',
     middleName: '',
+    phone: '',
     email: '',
     isAdmin: false,
   },
@@ -45,11 +50,21 @@ const initialState: managerState = {
     lastName: '',
     firstName: '',
     middleName: '',
+    phone: '',
     email: '',
     isAdmin: false,
   },
-  //id: 0,
+  updatedManager: {
+    id: 0,
+    lastName: '',
+    firstName: '',
+    middleName: '',
+    phone: '',
+    email: '',
+    isAdmin: false,
+  },
   data: [],
+  info: [],
   isAuth: false,
   isLoading: false,
   message: '',
@@ -69,12 +84,20 @@ const managerSlice = createSlice({
       .addCase(portalLogin.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isAuth = true;
-        state.manager = action.payload.manager;
+        //* выводит информацию при логине в userMenu
+        state.manager.id = action.payload.id;
+        state.manager.isAdmin = action.payload.isAdmin;
+        state.manager.lastName = action.payload.lastName;
+        state.manager.firstName = action.payload.firstName;
+        state.manager.middleName = action.payload.middleName;
+        state.manager.phone = action.payload.phone;
+        state.manager.email = action.payload.email;
       })
       .addCase(portalLogin.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       })
+      //* portalCheck
       .addCase(portalCheck.pending, (state) => {
         state.isLoading = true;
         state.isAuth = false;
@@ -82,12 +105,20 @@ const managerSlice = createSlice({
       .addCase(portalCheck.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isAuth = false;
-        state.manager = action.payload.manager;
+        //* предзаполняет поля в инпутах в ЛК
+        state.manager.id = action.payload.id;
+        state.manager.isAdmin = action.payload.isAdmin;
+        state.manager.lastName = action.payload.lastName;
+        state.manager.firstName = action.payload.firstName;
+        state.manager.middleName = action.payload.middleName;
+        state.manager.phone = action.payload.phone;
+        state.manager.email = action.payload.email;
       })
       .addCase(portalCheck.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       })
+      //* portalLogout
       .addCase(portalLogout.pending, (state) => {
         state.isLoading = true;
         state.isAuth = false;
@@ -100,12 +131,26 @@ const managerSlice = createSlice({
           lastName: '',
           firstName: '',
           middleName: '',
+          phone: '',
           email: '',
           isAdmin: false,
         };
         state.message = action.payload.message;
       })
       .addCase(portalLogout.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      //! getManagerInfo
+      .addCase(getManagerInfo.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(getManagerInfo.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.info = action.payload;
+      })
+      .addCase(getManagerInfo.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       })
@@ -159,7 +204,22 @@ const managerSlice = createSlice({
         state.error = action.error.message;
         console.log(state.error);
       })
-      //! getManager
+      //* phone
+      .addCase(changePhone.pending, (state) => {
+        state.isLoading = true;
+        state.isAuth = false;
+      })
+      .addCase(changePhone.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isAuth = true;
+        state.manager.phone = action.payload.phone;
+        state.message = action.payload.message;
+      })
+      .addCase(changePhone.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      //! getManagerData
       .addCase(getManager.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -180,12 +240,7 @@ const managerSlice = createSlice({
       .addCase(addManager.fulfilled, (state, action) => {
         state.isLoading = false;
         state.data = action.payload.managers;
-        //!
         state.addedManagerData = action.payload.addedManagerData;
-
-        console.log(' state.data', state.data);
-        //  state.id = action.payload.managerId;
-        console.log('state.id', state);
       })
       .addCase(addManager.rejected, (state, action) => {
         state.isLoading = false;
@@ -198,7 +253,10 @@ const managerSlice = createSlice({
       })
       .addCase(editManager.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.data = action.payload;
+        state.data = action.payload.managers;
+        state.updatedManager = action.payload.updatedManager;
+        console.log(' state.data', state.data);
+        console.log('state.id', state);
       })
       .addCase(editManager.rejected, (state, action) => {
         state.isLoading = false;

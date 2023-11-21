@@ -3,7 +3,24 @@ const bcrypt = require('bcrypt');
 const { Manager } = require('../../db/models');
 
 module.exports = router
-  .put('/info/', async (req, res) => {
+  .get('/info', async (req, res) => {
+    try {
+      const manager = await Manager.findAll({
+        order: [
+          ['lastName', 'ASC'],
+          ['firstName', 'ASC'],
+          ['middleName', 'ASC'],
+        ],
+        raw: true,
+      });
+      res.json(manager);
+    } catch (error) {
+      console.error('Ошибка при получении данных из базы данных', error);
+      res.status(500).json({ error: 'Произошла ошибка на сервере' });
+    }
+  })
+
+  .put('/fullName/', async (req, res) => {
     const { managerId, newLastName, newFirstName, newMiddleName } = req.body;
     try {
       const manager = await Manager.findOne({ where: { id: managerId } });
@@ -36,8 +53,6 @@ module.exports = router
 
   .put('/email/', async (req, res) => {
     const { managerId, newEmail } = req.body;
-    //! проблема, что в куки вообще не видит на ручке пут email или id
-    // console.log('req.session PUT', req.session.idUser);
 
     try {
       const manager = await Manager.findOne({ where: { id: managerId } });
@@ -59,6 +74,38 @@ module.exports = router
           res.status(200).json({
             email: newEmail,
             message: 'Email успешно изменен',
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Ошибка при получении данных из базы данных', error);
+      return res.status(500).json({ message: 'Произошла ошибка' });
+    }
+  })
+
+  .put('/phone/', async (req, res) => {
+    const { managerId, newPhone } = req.body;
+
+    try {
+      const manager = await Manager.findOne({ where: { id: managerId } });
+
+      if (!manager) {
+        res.status(401).json({ message: 'Пользователь не найден' });
+      } else {
+        const searchPhone = await Manager.findOne({
+          where: { phone: newPhone },
+        });
+
+        if (searchPhone) {
+          res.status(409).json({
+            message: 'Пользователь с таким номером телефона уже существует',
+          });
+        } else {
+          await manager.update({ phone: newPhone });
+
+          res.status(200).json({
+            phone: newPhone,
+            message: 'Номер телефона успешно изменен',
           });
         }
       }

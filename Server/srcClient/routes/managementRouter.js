@@ -66,8 +66,8 @@ module.exports = router
           email: newManager.email,
         });
         const addedManagerData = resultAdd.get();
-        console.log('addedManagerData', addedManagerData);
-        console.log('addedManagerData======>', addedManagerData.id);
+        // console.log('addedManagerData', addedManagerData);
+        // console.log('addedManagerData======>', addedManagerData.id);
 
         const managers = await Manager.findAll({
           where: {
@@ -157,7 +157,6 @@ module.exports = router
           lastName: updateManager.lastName,
           firstName: updateManager.firstName,
           middleName: updateManager.middleName,
-          //  phone: updateManager.phone,
         };
 
         await Manager.update(fieldsToUpdateFIO, {
@@ -176,11 +175,9 @@ module.exports = router
               { where: { id: managerId } }
             );
           } else {
-            res
-              .status(409)
-              .json({
-                error: 'Пользователь с таким номером телефона уже существует',
-              });
+            res.status(409).json({
+              error: 'Пользователь с таким номером телефона уже существует',
+            });
             return;
           }
         }
@@ -220,8 +217,14 @@ module.exports = router
           ],
           raw: true,
         });
+        console.log('===============================>', managers);
+        const updatedManagerOne = await Manager.findOne({
+          where: { id: managerId },
+        });
 
-        res.json(managers);
+        const updatedManager = updatedManagerOne.get();
+
+        res.json({ managers, updatedManager });
       }
     } catch (error) {
       console.log('Ошибка при получении данных из базы данных', error);

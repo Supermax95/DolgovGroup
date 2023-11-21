@@ -465,3 +465,20 @@ const EmployeesModal: React.FC<UsersModalProps> = ({
 };
 
 export default EmployeesModal;
+
+
+из компонента Management.tsx 
+
+        //   //! так можно сделать перенос, но типизация ломается жёстко
+        //   // setModalError(
+        //   //   <>
+        //   //     Не удалось обновить данные.
+        //   //     <br />
+        //   //     Пользователь с такой почтой уже существует
+        //   //   </> as string
+        //   // );
+
+        //   // setTimeout(() => {
+        //   //   setModalError(null);
+        //   // }, 3000);
+        // }

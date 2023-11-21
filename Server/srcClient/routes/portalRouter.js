@@ -11,7 +11,16 @@ module.exports = router
         const manager = await Manager.findOne({
           where: { id: req.session.idManager },
         });
-        res.json({ message: 'Вы залогинены!', manager });
+        res.json({
+          message: 'Проверка авторизации прошла успешно!',
+          id: manager.id,
+          isAdmin: manager.isAdmin,
+          lastName: manager.lastName,
+          firstName: manager.firstName,
+          middleName: manager.middleName,
+          phone: manager.phone,
+          email: manager.email,
+        });
       }
     } catch (error) {
       console.log(error);
@@ -36,7 +45,16 @@ module.exports = router
         } else {
           req.session.idManager = manager.id;
           req.session.save(() => {
-            res.json({ message: 'Вы успешно авторизованы!', manager });
+            res.json({
+              message: 'Вы успешно авторизованы!',
+              id: manager.id,
+              isAdmin: manager.isAdmin,
+              lastName: manager.lastName,
+              firstName: manager.firstName,
+              middleName: manager.middleName,
+              phone: manager.phone,
+              email: manager.email,
+            });
           });
         }
       }

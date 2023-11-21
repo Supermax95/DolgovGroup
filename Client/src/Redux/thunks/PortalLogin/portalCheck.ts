@@ -4,16 +4,13 @@ import axios from 'axios';
 import { VITE_URL } from '../../../VITE_URL';
 
 interface ResponseData {
-  manager: {
-    id: number;
-    lastName: string;
-    firstName: string;
-    middleName: string;
-    birthDate: Date | null | string;
-    email: string;
-    isAdmin: boolean;
-  };
-  message: string;
+  id: number;
+  lastName: string;
+  firstName: string;
+  middleName: string;
+  phone: string;
+  email: string;
+  isAdmin: boolean;
 }
 
 const portalCheck = createAsyncThunk<ResponseData, void>(
