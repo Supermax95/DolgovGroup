@@ -305,7 +305,7 @@ const ProfileAdmin: FC = () => {
     },
   ];
 
-  const inputFieldsOldPassword = [
+  const inputFieldsPassword = [
     {
       id: 'oldPassword',
       name: 'oldPassword',
@@ -330,8 +330,6 @@ const ProfileAdmin: FC = () => {
         </span>
       ),
     },
-  ];
-  const inputFieldsNewPassword = [
     {
       id: 'newPassword',
       name: 'newPassword',
@@ -356,9 +354,6 @@ const ProfileAdmin: FC = () => {
         </span>
       ),
     },
-  ];
-
-  const inputFieldsConfirmPassword = [
     {
       id: 'confirmPassword',
       name: 'confirmPassword',
@@ -387,6 +382,7 @@ const ProfileAdmin: FC = () => {
   return (
     <Wrapper>
       {/* <div className="pt-[70px]"> */}
+
       {/* <div className="h-full"> */}
       {/* <div className="flex w-full flex-col md:w-1/2"> */}
       {/* <div className="lg:w-[28rem] mx-auto my-auto flex flex-col justify-center pt-8 md:justify-start md:px-6 md:pt-0"> */}
@@ -477,28 +473,15 @@ const ProfileAdmin: FC = () => {
         </nav>
       </aside>
 
-      <section
-        //! Form
-        className="p-6 bg-slate-50 dark:text-gray-50"
-      >
-        <h1 className="text-center text-xl font-normal text-slate-700">
-          Добро пожаловать, {managerProfile.firstName}
-        </h1>
-        <p className="text-center font-normal text-md text-slate-600 mx-auto mt-2">
-          Здесь вы можете легко управлять своими персональными данными
-        </p>
-
+      <section className="p-6 dark:bg-gray-800 dark:text-gray-50">
         <form
-          //! FIO
-          onSubmit={handleSubmitProfileManager}
+          noValidate=""
+          action=""
           className="container flex flex-col mx-auto space-y-12"
         >
           <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-sm dark:bg-gray-900">
-            <div className="w-44 space-y-2 col-span-full lg:col-span-1">
-              <p className="font-normal text-md text-slate-600 pt-6">
-                {/* Обновление персональных <br /> данных */}
-                Обновление персональных данных
-              </p>
+            <div className="space-y-2 col-span-full lg:col-span-1">
+              <p className="font-medium">Обновление персональных данных</p>
               {/* <p className="text-xs">
                 Lorem ipsum dolor sit, amet consectetur adipisicing elit.
                 Adipisci fuga autem eum!
@@ -523,131 +506,125 @@ const ProfileAdmin: FC = () => {
               </div>
             </div>
             {/* <div> */}
+            <div className="relative flex justify-center">
+              <Button type="submit" title="Сохранить" />
+            </div>
             {/* </div> */}
-            <div className="col-span-full flex justify-center">
-              <Button type="submit" title="Сохранить" />
+
+            {/* <div className="col-span-full sm:col-span-3">
+                <label htmlFor="email" className="text-sm">
+                  Email
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  placeholder="Email"
+                  className="w-full rounded-md focus:ring focus:ri focus:ri dark:border-gray-700 dark:text-gray-900"
+                />
+              </div>
+              <div className="col-span-full">
+                <label htmlFor="address" className="text-sm">
+                  Address
+                </label>
+                <input
+                  id="address"
+                  type="text"
+                  placeholder=""
+                  className="w-full rounded-md focus:ring focus:ri focus:ri dark:border-gray-700 dark:text-gray-900"
+                />
+              </div>
+              <div className="col-span-full sm:col-span-2">
+                <label htmlFor="city" className="text-sm">
+                  City
+                </label>
+                <input
+                  id="city"
+                  type="text"
+                  placeholder=""
+                  className="w-full rounded-md focus:ring focus:ri focus:ri dark:border-gray-700 dark:text-gray-900"
+                />
+              </div>
+              <div className="col-span-full sm:col-span-2">
+                <label htmlFor="state" className="text-sm">
+                  State / Province
+                </label>
+                <input
+                  id="state"
+                  type="text"
+                  placeholder=""
+                  className="w-full rounded-md focus:ring focus:ri focus:ri dark:border-gray-700 dark:text-gray-900"
+                />
+              </div>
+              <div className="col-span-full sm:col-span-2">
+                <label htmlFor="zip" className="text-sm">
+                  ZIP / Postal
+                </label>
+                <input
+                  id="zip"
+                  type="text"
+                  placeholder=""
+                  className="w-full rounded-md focus:ring focus:ri focus:ri dark:border-gray-700 dark:text-gray-900"
+                />
+              </div>
             </div>
           </fieldset>
-        </form>
-
-        <form
-          //! только email
-          onSubmit={handleSubmitProfileManagerEmail}
-          className="container flex flex-col mx-auto space-y-12"
-        >
           <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-sm dark:bg-gray-900">
-            <div className="w-44 space-y-2 col-span-full lg:col-span-1">
-              <p className="font-normal text-md text-slate-600 pt-10">Email</p>
-              {/* <p className="text-xs">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                Adipisci fuga autem eum!
-              </p> */}
+            <div className="space-y-2 col-span-full lg:col-span-1">
+              <p className="font-medium">Profile</p>
+              <p className="text-xs">Adipisci fuga autem eum!</p>
             </div>
             <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
               <div className="col-span-full sm:col-span-3">
-                <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                  <Field inputFields={inputFieldsEmail} />
+                <label htmlFor="username" className="text-sm">
+                  Username
+                </label>
+                <input
+                  id="username"
+                  type="text"
+                  placeholder="Username"
+                  className="w-full rounded-md focus:ring focus:ri focus:ri dark:border-gray-700 dark:text-gray-900"
+                />
+              </div>
+              <div className="col-span-full sm:col-span-3">
+                <label htmlFor="website" className="text-sm">
+                  Website
+                </label>
+                <input
+                  id="website"
+                  type="text"
+                  placeholder="https://"
+                  className="w-full rounded-md focus:ring focus:ri focus:ri dark:border-gray-700 dark:text-gray-900"
+                />
+              </div>
+              <div className="col-span-full">
+                <label htmlFor="bio" className="text-sm">
+                  Bio
+                </label>
+                <textarea
+                  id="bio"
+                  placeholder=""
+                  className="w-full rounded-md focus:ring focus:ri focus:ri dark:border-gray-700 dark:text-gray-900"
+                ></textarea>
+              </div>
+              <div className="col-span-full">
+                <label htmlFor="bio" className="text-sm">
+                  Photo
+                </label>
+                <div className="flex items-center space-x-2">
+                  <img
+                    src="https://source.unsplash.com/30x30/?random"
+                    alt=""
+                    className="w-10 h-10 rounded-full dark:bg-gray-500 dark:bg-gray-700"
+                  />
+                  <button
+                    type="button"
+                    className="px-4 py-2 border rounded-md dark:border-gray-100"
+                  >
+                    Change
+                  </button>
                 </div>
               </div>
-            </div>
-            <div className="col-span-full flex justify-center">
-              <Button type="submit" title="Сохранить" />
-            </div>
-          </fieldset>
-        </form>
-
-        {/* <form 
-        //!здесь email и телефон
-        className="container flex flex-col mx-auto space-y-12">
-          <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-sm dark:bg-gray-900">
-            <div className="w-44 space-y-2 col-span-full lg:col-span-1">
-                           <p className="font-normal text-md text-slate-600 pt-4">
-Email</p>
-            
-            </div>
-            <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
-              <div className="col-span-full sm:col-span-3">
-                <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                  <Field inputFields={inputFieldsEmail} />
-                </div>
-              </div>
-              <div className="">
-                <Button type="submit" title="Сохранить" />
-              </div>
-
-              <div className="col-span-full sm:col-span-3">
-                <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                  <Field inputFields={inputFieldsPhone} />
-                </div>{' '}
-              </div>
-              <div className="">
-                <Button type="submit" title="Сохранить" />
-              </div>
-            </div>
-          </fieldset>
-        </form> */}
-
-        <form
-          //! только телефон
-          onSubmit={handleSubmitProfileManagerPhone}
-          className="container flex flex-col mx-auto space-y-12"
-        >
-          <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-sm dark:bg-gray-900">
-            <div className="w-44 space-y-2 col-span-full lg:col-span-1">
-              <p className="font-normal text-md text-slate-600 pt-10">
-                Телефон
-              </p>
-              {/* <p className="text-xs">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                Adipisci fuga autem eum!
-              </p> */}
-            </div>
-            <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
-              <div className="col-span-full sm:col-span-3">
-                <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                  <Field inputFields={inputFieldsPhone} />
-                </div>{' '}
-              </div>
-            </div>
-            <div className="col-span-full flex justify-center">
-              <Button type="submit" title="Сохранить" />
-            </div>
-          </fieldset>
-        </form>
-
-        <form
-          //! пароль
-          onSubmit={handleSubmitProfileManagerPassword}
-          className="container flex flex-col mx-auto space-y-12"
-        >
-          <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-sm dark:bg-gray-900">
-            <div className="w-44 space-y-2 col-span-full lg:col-span-1">
-              <p className="font-normal text-md text-slate-600 pt-10">
-                Обновление пароля
-              </p>
-            </div>
-            <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
-              <div className="col-span-full sm:col-span-3">
-                <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                  <Field inputFields={inputFieldsOldPassword} />{' '}
-                </div>
-              </div>
-
-              <div className="col-span-full sm:col-span-3">
-                <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                  <Field inputFields={inputFieldsNewPassword} />{' '}
-                </div>{' '}
-              </div>
-
-              <div className="col-span-full sm:col-span-3">
-                <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                  <Field inputFields={inputFieldsConfirmPassword} />
-                </div>{' '}
-              </div>
-            </div>
-            <div className="col-span-full flex justify-center">
-              <Button type="submit" title="Сохранить" />
-            </div>
+            </div> */}
           </fieldset>
         </form>
       </section>
