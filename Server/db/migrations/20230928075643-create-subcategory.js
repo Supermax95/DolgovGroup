@@ -1,15 +1,24 @@
-'use strict';
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Categories', {
+    await queryInterface.createTable('Subcategories', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      categoryName: {
+      categoryId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: 'Categories',
+          },
+          key: 'id',
+        },
+        onDelete: 'CASCADE',
+      },
+      subcategoryName: {
         type: Sequelize.STRING,
       },
       createdAt: {
@@ -23,6 +32,8 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Categories');
+    await queryInterface.dropTable('Subcategories');
   },
 };
+
+

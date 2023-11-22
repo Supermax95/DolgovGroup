@@ -2,8 +2,8 @@ const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Product extends Model {
-    static associate({ Category }) {
-      this.belongsTo(Category, { foreignKey: 'categoryId' });
+    static associate({ Subcategory }) {
+      this.belongsTo(Subcategory, { foreignKey: 'subcategoryId' });
     }
   }
   Product.init(
@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       description: DataTypes.STRING,
       photo: DataTypes.STRING,
       visible: DataTypes.BOOLEAN,
-      categoryId: DataTypes.INTEGER,
+      subcategoryId: DataTypes.INTEGER,
     },
     {
       sequelize,

@@ -59,7 +59,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
     }
   }, [product, isAddingMode, setEditedProduct]);
 
-  const modalTitle = isAddingMode ? 'Новый продукт' : 'Редактирование';
+  const modalTitle = isAddingMode ? 'Новый продукт' : 'Редактирование продукта';
 
   const handleCancel = () => {
     setEditedProduct(undefined);

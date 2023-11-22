@@ -1,18 +1,18 @@
-'use strict';
-
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert(
-      'Categories',
+      'Subcategories',
       [
         {
-          categoryName: 'Молочные продукты',
+          categoryId: 1,
+          subcategoryName: 'Йогурт',
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
-          categoryName: 'Колбасные изделия',
+          categoryId: 2,
+          subcategoryName: 'Колбаса',
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -22,6 +22,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('Categories', null, {});
+    await queryInterface.bulkDelete('Subcategories', null, {});
   },
 };

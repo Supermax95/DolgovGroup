@@ -46,11 +46,11 @@ module.exports = {
         defaultValue: true,
         type: Sequelize.BOOLEAN,
       },
-      categoryId: {
+      subcategoryId: {
         type: Sequelize.INTEGER,
         references: {
           model: {
-            tableName: 'Categories',
+            tableName: 'Subcategories',
           },
           key: 'id',
         },
