@@ -3,29 +3,29 @@ import axios, { AxiosResponse } from 'axios';
 import { VITE_URL } from '../../../VITE_URL';
 
 interface RequestData {
-  categoryId: number;
+  subcategoryId: number;
   newInfo: {
     id: number;
-    categoryName: string;
+    subcategoryName: string;
     // subcategory: string;
   };
 }
 
 interface ResponseData {
   id: number;
-  categoryName: string;
+  subcategoryName: string;
   //   subcategory: string;
 }
 
 type ArrayResponseData = Array<ResponseData>;
 
-const editCategory = createAsyncThunk<ArrayResponseData, RequestData>(
-  'admin/editcategory',
+const editSubcategory = createAsyncThunk<ArrayResponseData, RequestData>(
+  'admin/editsubcategory',
 
-  async ({ categoryId, newInfo }) => {
+  async ({ subcategoryId, newInfo }) => {
     try {
       const response: AxiosResponse = await axios.put(
-        `${VITE_URL}/admin/category/${categoryId}`,
+        `${VITE_URL}/admin/subcategory/${subcategoryId}`,
         { newInfo }
       );
       return response.data;
@@ -36,4 +36,4 @@ const editCategory = createAsyncThunk<ArrayResponseData, RequestData>(
   }
 );
 
-export default editCategory;
+export default editSubcategory;

@@ -4,19 +4,19 @@ import { VITE_URL } from '../../../VITE_URL';
 
 interface ResponseData {
   id: number;
-  categoryName: string;
+  subcategoryName: string;
   // subcategory: string;
 }
 
 type ArrayResponseData = Array<ResponseData>;
 
-const deleteCategory = createAsyncThunk<ArrayResponseData, number>(
-  'admin/deletecategory',
+const deleteSubcategory = createAsyncThunk<ArrayResponseData, number>(
+  'admin/deletesubcategory',
 
-  async (categoryId) => {
+  async (subcategoryId) => {
     try {
       const response: AxiosResponse = await axios.delete(
-        `${VITE_URL}/admin/category/${categoryId}`
+        `${VITE_URL}/admin/subcategory/${subcategoryId}`
       );
       return response.data;
     } catch (error) {
@@ -26,4 +26,4 @@ const deleteCategory = createAsyncThunk<ArrayResponseData, number>(
   }
 );
 
-export default deleteCategory;
+export default deleteSubcategory;

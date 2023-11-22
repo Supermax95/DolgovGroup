@@ -5,28 +5,28 @@ import { VITE_URL } from '../../../VITE_URL';
 interface RequestData {
   newCategory: {
     id: number;
-    categoryName: string;
+    subcategoryName: string;
     // subcategory: string;
   };
 }
 
 interface ResponseData {
     id: number;
-    categoryName: string;
+    subcategoryName: string;
     // subcategory: string;
 }
 
 type ArrayResponseData = Array<ResponseData>;
 
-const addCategory = createAsyncThunk<ArrayResponseData, RequestData>(
-  'admin/addcategory',
+const addSubcategory = createAsyncThunk<ArrayResponseData, RequestData>(
+  'admin/addsubcategory',
 
   async ({ newCategory }) => {
     try {
       console.log('axios', newCategory);
 
       const response: AxiosResponse = await axios.post(
-        `${VITE_URL}/admin/category`,
+        `${VITE_URL}/admin/subcategory`,
         { newCategory }
       );
       return response.data;
@@ -37,4 +37,4 @@ const addCategory = createAsyncThunk<ArrayResponseData, RequestData>(
   }
 );
 
-export default addCategory;
+export default addSubcategory;
