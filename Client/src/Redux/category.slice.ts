@@ -7,7 +7,7 @@ import addCategory from './thunks/Category/addCategory.api';
 interface Category {
   id: number;
   categoryName: string;
-  subcategory: string;
+//   subcategory: string;
 }
 
 interface CategoryState {

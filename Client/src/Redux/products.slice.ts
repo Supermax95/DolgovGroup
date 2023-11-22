@@ -17,7 +17,7 @@ interface Product {
   isDiscounted: boolean;
   description: string;
   photo: string;
-  categoryId: number;
+  subcategoryId: number;
 }
 
 interface ProductState {

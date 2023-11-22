@@ -13,7 +13,7 @@ interface RequestData {
     isNew: boolean;
     isDiscounted: boolean;
     description: string;
-    categoryId: number;
+    subcategoryId: number;
   };
 }
 
@@ -28,7 +28,7 @@ interface ResponseData {
   isNew: boolean;
   isDiscounted: boolean;
   description: string;
-  categoryId: number;
+  subcategoryId: number;
 }
 // type ArrayResponseData = Array<ResponseData>;
 

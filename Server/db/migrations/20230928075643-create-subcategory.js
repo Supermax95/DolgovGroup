@@ -35,5 +35,3 @@ module.exports = {
     await queryInterface.dropTable('Subcategories');
   },
 };
-
-

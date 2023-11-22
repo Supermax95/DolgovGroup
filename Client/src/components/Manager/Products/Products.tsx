@@ -23,24 +23,24 @@ export interface IProduct {
   isDiscounted: boolean;
   description: string;
   photo: string;
-  categoryId: number;
+  subcategoryId: number;
 }
 
 export interface ICategory {
   id: number;
   categoryName: string;
-  subcategory: string;
+  // subcategory: string;
 }
 
 const Products: FC = () => {
   const dispatch = useAppDispatch();
   const products = useAppSelector<IProduct[]>(
     (state) => state.productSlice.data
-    );
-    const category = useAppSelector<ICategory[]>(
-      (state) => state.categorySlice.data
-    );    
-const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  );
+  const category = useAppSelector<ICategory[]>(
+    (state) => state.categorySlice.data
+  );
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [isModalOpen, setModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);
@@ -102,7 +102,7 @@ const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
       isDiscounted: false,
       description: '',
       photo: '',
-      categoryId: 0,
+      subcategoryId: 0,
     });
     setModalOpen(true);
   };
@@ -163,7 +163,7 @@ const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   return (
     <Wrapper>
-       <Sidebar
+      <Sidebar
         items={uniqueCategory}
         onItemSelect={setSelectedCategory}
         title="Категории"

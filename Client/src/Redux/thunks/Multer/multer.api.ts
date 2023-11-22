@@ -15,7 +15,7 @@
 //     isNew: boolean;
 //     isDiscounted: boolean;
 //     description: string;
-//     categoryId: number;
+//     subcategoryId: number;
 //   };
 //   file: File | null;
 // }
@@ -32,11 +32,10 @@
 //   isDiscounted: boolean,
 //   description: string,
 //   photo: string,
-//   categoryId: number,
+//   subcategoryId: number,
 // }
 
 // type ArrayResponseData = Array<ResponseData>;
-
 
 // const editProduct = createAsyncThunk<ArrayResponseData, RequestData>(
 //   'admin/uploadsProduct',

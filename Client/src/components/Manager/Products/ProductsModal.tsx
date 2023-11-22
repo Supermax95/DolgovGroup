@@ -20,7 +20,7 @@ interface Product {
   isDiscounted: boolean;
   description: string;
   photo: string;
-  categoryId: number;
+  subcategoryId: number;
 }
 
 interface ProductsModalProps {
@@ -69,7 +69,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
 
   const uploadFile = async (
     file: File | null,
-    id: number | undefined,
+    id: number | undefined
     // isAddingMode: boolean
   ): Promise<void> => {
     if (file && id) {
@@ -84,14 +84,12 @@ const ProductsModal: FC<ProductsModalProps> = ({
           withCredentials: true,
         });
 
-
         if (isAddingMode) {
           onCloseAddModal();
         } else {
           onCloseEditModal();
         }
-      }
-       catch (error) {
+      } catch (error) {
         console.error('Ошибка при загрузке файла:', error);
       }
     }
@@ -108,7 +106,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
       }
 
       setCurrentStep(2);
-      setUpload(true); 
+      setUpload(true);
     } else if (currentStep === 2) {
       const fileInput = document.getElementById(
         'fileInput'
@@ -139,17 +137,17 @@ const ProductsModal: FC<ProductsModalProps> = ({
 
   const inputFields: InputField[] = [
     {
-      id: 'categoryId',
+      id: 'subcategoryId',
       type: 'number',
-      value: editedProduct.categoryId.toString(),
+      value: editedProduct.subcategoryId.toString(),
       placeholder: '',
       autoComplete: 'off',
       title: 'ID категории продукта',
-      htmlFor: 'categoryId',
+      htmlFor: 'subcategoryId',
       onChange: (value: string) =>
         setEditedProduct({
           ...editedProduct,
-          categoryId: parseInt(value, 10),
+          subcategoryId: parseInt(value, 10),
         }),
     },
     {
@@ -238,19 +236,20 @@ const ProductsModal: FC<ProductsModalProps> = ({
     },
     {
       id: 'isNew',
-      type: 'select', 
+      type: 'select',
       value: String(editedProduct.isNew),
       htmlFor: 'isNew',
-      onChange: (value: boolean) => setEditedProduct({
-        ...editedProduct,
-        isNew: value === 'true', 
-      }),
+      onChange: (value: boolean) =>
+        setEditedProduct({
+          ...editedProduct,
+          isNew: value === 'true',
+        }),
       options: [
         { value: 'true', label: 'Новый' },
         { value: 'false', label: 'Старый' },
       ],
       required: true,
-    },    
+    },
     {
       id: 'isDiscounted',
       type: 'text',
@@ -277,55 +276,52 @@ const ProductsModal: FC<ProductsModalProps> = ({
         }),
     },
   ];
-  
 
+  return (
+    <Wrapper>
+      <form onSubmit={handleFormSubmit}>
+        <Modal
+          modalTitle={modalTitle}
+          isAddingMode={isAddingMode}
+          onDeleteClick={handleDelete}
+          onCancellick={handleCancel}
+          isUpload={isUpload}
+        >
+          {currentStep === 1 && <InputModal inputFields={inputFields} />}
 
-    return (
-      <Wrapper>
-        <form onSubmit={handleFormSubmit}>
-          <Modal
-            modalTitle={modalTitle}
-            isAddingMode={isAddingMode}
-            onDeleteClick={handleDelete}
-            onCancellick={handleCancel}
-            isUpload={isUpload}
-          >
-            {currentStep === 1 && <InputModal inputFields={inputFields} />}
-    
-            {currentStep === 2 && (
-              <div className="container mx-auto mt-8 p-8 max-w-4xl justify-center items-center flex-col block rounded-lg bg-white shadow-md dark:bg-neutral-700">
-                <div className="px-4 sm:px-0 text-center">
-                  <h1 className="text-2xl font-bold mb-4">
-                    Форма загрузки фотографии продукта
-                  </h1>
-                  <div className="mt-6">
-                    <div className="mb-4">
-                      <span className="text-center block mb-1 s text-md font-medium leading-6 text-gray-900 mt-2">
-                        Загрузите фотографию продукта
-                      </span>
-                      <input
-                        type="file"
-                        id="fileInput"
-                        name="productPhoto"
-                        className="hidden"
-                        onChange={handleFileInputChange}
-                      />
-                      <label
-                        htmlFor="fileInput"
-                        className="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-                      >
-                        Выберите файл
-                      </label>
-                    </div>
+          {currentStep === 2 && (
+            <div className="container mx-auto mt-8 p-8 max-w-4xl justify-center items-center flex-col block rounded-lg bg-white shadow-md dark:bg-neutral-700">
+              <div className="px-4 sm:px-0 text-center">
+                <h1 className="text-2xl font-bold mb-4">
+                  Форма загрузки фотографии продукта
+                </h1>
+                <div className="mt-6">
+                  <div className="mb-4">
+                    <span className="text-center block mb-1 s text-md font-medium leading-6 text-gray-900 mt-2">
+                      Загрузите фотографию продукта
+                    </span>
+                    <input
+                      type="file"
+                      id="fileInput"
+                      name="productPhoto"
+                      className="hidden"
+                      onChange={handleFileInputChange}
+                    />
+                    <label
+                      htmlFor="fileInput"
+                      className="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+                    >
+                      Выберите файл
+                    </label>
                   </div>
                 </div>
               </div>
-            )}
-          </Modal>
-        </form>
-      </Wrapper>
-    );
-    
+            </div>
+          )}
+        </Modal>
+      </form>
+    </Wrapper>
+  );
 };
 
 export default ProductsModal;

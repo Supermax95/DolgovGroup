@@ -6,7 +6,7 @@ router.get('/admin/category', async (req, res) => {
     const categories = await Category.findAll({
       order: [
         ['categoryName', 'ASC'],
-        ['subcategory', 'ASC'],
+        // ['subcategory', 'ASC'],
       ],
       raw: true,
     });
@@ -23,13 +23,12 @@ router.post('/admin/category', async (req, res) => {
   try {
     await Category.create({
       categoryName: newCategory.categoryName,
-      subcategory: newCategory.subcategory,
     });
 
     const categories = await Category.findAll({
       order: [
         ['categoryName', 'ASC'],
-        ['subcategory', 'ASC'],
+        // ['subcategory', 'ASC'],
       ],
       raw: true,
     });
@@ -50,7 +49,7 @@ router.delete('/admin/category/:id', async (req, res) => {
     const categories = await Category.findAll({
       order: [
         ['categoryName', 'ASC'],
-        ['subcategory', 'ASC'],
+        // ['subcategory', 'ASC'],
       ],
       raw: true,
     });
@@ -71,7 +70,7 @@ router.put('/admin/category/:id', async (req, res) => {
     const categories = await Category.findAll({
       order: [
         ['categoryName', 'ASC'],
-        ['subcategory', 'ASC'],
+        // ['subcategory', 'ASC'],
       ],
       raw: true,
     });
