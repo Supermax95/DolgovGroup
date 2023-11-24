@@ -36,7 +36,7 @@ type IColumnsListDb =
 const Management: FC = () => {
   const dispatch = useAppDispatch();
 
-  const managerProfile = useAppSelector<{
+  const adminProfile = useAppSelector<{
     lastName?: string;
     firstName?: string;
     middleName?: string;
@@ -265,7 +265,7 @@ const Management: FC = () => {
     setShowNotificationOnePass(false);
   };
 
-  const sidebarProfile = [
+  const sidebarProfileAdmin = [
     {
       id: 1,
       href: '/listOfManagers',
@@ -309,9 +309,9 @@ const Management: FC = () => {
             <span className="font-normal text-2xl text-white">A</span>
           </div>
         }
-        firstName={managerProfile.firstName}
-        lastName={managerProfile.lastName}
-        sidebarProfile={sidebarProfile}
+        firstName={adminProfile.firstName}
+        lastName={adminProfile.lastName}
+        sidebarProfile={sidebarProfileAdmin}
       />
       <div className="p-4">
         <Table
