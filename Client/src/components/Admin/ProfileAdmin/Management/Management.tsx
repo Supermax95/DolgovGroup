@@ -6,6 +6,10 @@ import ManagementModal from './ManagementModal';
 import addManager from '../../../../Redux/thunks/Manager/Management/addManager.api';
 import editManager from '../../../../Redux/thunks/Manager/Management/editManager.api';
 import sendOneTimePassword from '../../../../Redux/thunks/Manager/Management/sendOneTimePassword.api';
+import Wrapper from '../../../../ui/Wrapper';
+import { ListBulletIcon, UserIcon } from '@heroicons/react/24/outline';
+import SidebarProfile from '../../../../ui/SidebarProfile';
+import AccountNotification from '../../../../ui/AccountNotification';
 
 interface IManager {
   id: number;
@@ -32,6 +36,15 @@ type IColumnsListDb =
 const Management: FC = () => {
   const dispatch = useAppDispatch();
 
+  const managerProfile = useAppSelector<{
+    lastName?: string;
+    firstName?: string;
+    middleName?: string;
+    phone: string;
+    email?: string;
+    password?: string;
+  }>((state) => state.managerSlice.manager);
+
   const managers = useAppSelector<IManager[]>(
     (state) => state.managerSlice.data
   );
@@ -44,6 +57,11 @@ const Management: FC = () => {
   //* для уведомления при редактировании
   const managerIdForBellEdit = useAppSelector(
     (state) => state.managerSlice.updatedManager
+  );
+
+  //* для уведомления отправке кода на почту
+  const managerIdForBellOneTimePass = useAppSelector(
+    (state) => state.managerSlice.resultPass
   );
 
   const [isModalOpen, setModalOpen] = useState(true);
@@ -211,12 +229,24 @@ const Management: FC = () => {
   //* отправка временного пароля на почту
   const handleOneTimePassword = async (managerId: number): Promise<void> => {
     try {
-      await dispatch(
+      const result = await dispatch(
         sendOneTimePassword({
           managerId: managerId,
         })
       );
-      setShowNotificationOnePass(true);
+
+      if (sendOneTimePassword.fulfilled.match(result)) {
+        if (managerIdForBellOneTimePass) {
+          console.log(
+            'managerIdForBellOneTimePass------>',
+            managerIdForBellOneTimePass
+          );
+
+          setShowNotificationOnePass(true);
+        } else {
+          console.error('Ошибка. Пользователь не найден.');
+        }
+      }
     } catch (error) {
       console.error('Произошла ошибка при отправке:', error);
     }
@@ -235,81 +265,49 @@ const Management: FC = () => {
     setShowNotificationOnePass(false);
   };
 
+  const sidebarProfile = [
+    {
+      id: 1,
+      href: '/listOfManagers',
+      name: 'Список менеджеров',
+      childrenIcon: <ListBulletIcon className="w-6 h-6 text-slate-600" />,
+    },
+    {
+      id: 2,
+      href: '/profileAdmin',
+      name: 'Персональные данные',
+      childrenIcon: <UserIcon className="w-6 h-6 text-slate-600" />,
+    },
+  ];
+
   return (
-    <div>
-      {showNotificationAdd && managerIdForBellAdd && (
-        <div className="flex flex-col p-8 bg-slate-100 shadow-md hover:shadow-lg rounded-2xl">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <div className="flex flex-col ml-3">
-                <div
-                  className="font-medium leading-none"
-                  //! мб, нужно как-то склонять имена
-                >
-                  Личный кабинет менеджера {managerIdForBellAdd.firstName}{' '}
-                  {managerIdForBellAdd.lastName} создан
-                </div>
-                <p className="text-sm text-slate-600 leading-none mt-2">
-                  Временный пароль выслан на почту {managerIdForBellAdd.email}
-                </p>
-              </div>
-            </div>
-            <button
-              onClick={removeNotificationAdd}
-              className="flex-no-shrink bg-gradient-to-b from-orange-300 to-orange-400 px-5 ml-4 py-2 text-sm shadow-sm hover:shadow-lg font-medium tracking-wider text-white rounded-full"
-            >
-              Скрыть
-            </button>
-          </div>
-        </div>
-      )}
-      {showNotificationEdit && (
-        <div className="flex flex-col p-8 bg-slate-100 shadow-md hover:shadow-lg rounded-2xl">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <div className="flex flex-col ml-3">
-                <div className="font-medium leading-none">
-                  Данные менеджера успешно обновлены{' '}
-                  {managerIdForBellEdit.firstName}{' '}
-                  {managerIdForBellEdit.lastName}
-                </div>
-                <p className="text-sm text-slate-600 leading-none mt-2">
-                  Для обновления пароля менеджера отправьте новый пароль на
-                  почту {managerIdForBellEdit.email}
-                </p>
-              </div>
-            </div>
-            <button
-              onClick={removeNotificationEdit}
-              className="flex-no-shrink bg-gradient-to-b from-orange-300 to-orange-400 px-5 ml-4 py-2 text-sm shadow-sm hover:shadow-lg font-medium tracking-wider text-white rounded-full"
-            >
-              Скрыть
-            </button>
-          </div>
-        </div>
-      )}
-      {showNotificationOnePass && (
-        <div className="flex flex-col p-8 bg-slate-100 shadow-md hover:shadow-lg rounded-2xl">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <div className="flex flex-col ml-3">
-                <div className="font-medium leading-none">
-                  Временный пароль выслан на почту
-                </div>
-                {/* <p className="text-sm text-slate-600 leading-none mt-2">
-                  Временный пароль выслан на почту ???????
-                </p> */}
-              </div>
-            </div>
-            <button
-              onClick={removeNotificationOnePass}
-              className="flex-no-shrink bg-gradient-to-b from-orange-300 to-orange-400 px-5 ml-4 py-2 text-sm shadow-sm hover:shadow-lg font-medium tracking-wider text-white rounded-full"
-            >
-              Скрыть
-            </button>
-          </div>
-        </div>
-      )}
+    <Wrapper>
+      <AccountNotification
+        //! нюанс: если несколько делать действий с разными аккаунтами, то уведомление всегда высвечивает только последнего юзера, а прошлые затираются
+        showNotification={showNotificationAdd}
+        onClickClose={removeNotificationAdd}
+        titleText={`Личный кабинет менеджера создан ${managerIdForBellAdd.firstName} ${managerIdForBellAdd.lastName}`}
+        bodyText={`Временный пароль выслан на почту ${managerIdForBellAdd.email}`}
+      />
+
+      <AccountNotification
+        showNotification={showNotificationEdit}
+        onClickClose={removeNotificationEdit}
+        titleText={` Данные менеджера успешно обновлены ${managerIdForBellEdit.firstName} ${managerIdForBellEdit.lastName}`}
+        bodyText={` Для обновления пароля менеджера отправьте новый пароль на почту ${managerIdForBellEdit.email}`}
+      />
+
+      <AccountNotification
+        showNotification={showNotificationOnePass}
+        onClickClose={removeNotificationOnePass}
+        titleText={`Временный пароль выслан на почту ${managerIdForBellOneTimePass.email}`}
+      />
+
+      <SidebarProfile
+        firstName={managerProfile.firstName}
+        lastName={managerProfile.lastName}
+        sidebarProfile={sidebarProfile}
+      />
       <Table
         title="Список менеджеров"
         data={displayedManagers}
@@ -339,7 +337,7 @@ const Management: FC = () => {
           }
         />
       )}
-    </div>
+    </Wrapper>
   );
 };
 

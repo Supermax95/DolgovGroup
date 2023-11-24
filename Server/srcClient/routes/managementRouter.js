@@ -306,8 +306,17 @@ module.exports = router
           console.log('Код пользователю отправлен');
         }
 
+        // const resultPass = {
+        //   email: searchManager.email,
+        //   firstName: searchManager.firstName,
+        //   lastName: searchManager.lastName,
+        // };
+
+        const resultPass = searchManager.get();
+
         res.json({
           message: `Временный пароль выслан на почту ${manager.email}`,
+          resultPass,
         });
       }
     } catch (error) {

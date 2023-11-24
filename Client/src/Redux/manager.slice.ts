@@ -30,6 +30,7 @@ interface managerState {
   info: IManager[]; //* используется массив для таблицы в кабинете маркетолога
   addedManagerData: IManager;
   updatedManager: IManager;
+  resultPass: IManager;
   isAuth: boolean;
   isLoading: boolean;
   message: string;
@@ -56,6 +57,15 @@ const initialState: managerState = {
     isAdmin: false,
   },
   updatedManager: {
+    id: 0,
+    lastName: '',
+    firstName: '',
+    middleName: '',
+    phone: '',
+    email: '',
+    isAdmin: false,
+  },
+  resultPass: {
     id: 0,
     lastName: '',
     firstName: '',
@@ -285,6 +295,7 @@ const managerSlice = createSlice({
       .addCase(sendOneTimePassword.fulfilled, (state, action) => {
         state.isLoading = false;
         state.message = action.payload.message;
+        state.resultPass = action.payload.resultPass;
       })
       .addCase(sendOneTimePassword.rejected, (state, action) => {
         state.isLoading = false;

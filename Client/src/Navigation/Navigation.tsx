@@ -11,6 +11,7 @@ import ProfileManager from '../components/Manager/ProfileManager/ProfileManager'
 import Stock from '../components/Manager/Stock/Stock';
 import { FC } from 'react';
 import Footer from '../components/Footer/Footer';
+import Management from '../components/Admin/ProfileAdmin/Management/Management';
 
 const Navigation: FC = () => {
   return (
@@ -32,6 +33,8 @@ const Navigation: FC = () => {
           <Route path="/stock" element={<Stock />} />
           <Route path="/profileAdmin" element={<ProfileAdmin />} />
           <Route path="/profileManager" element={<ProfileManager />} />
+          <Route path="/listOfManagers" element={<Management />} />
+
           <Route />
         </Route>
         {/* 
