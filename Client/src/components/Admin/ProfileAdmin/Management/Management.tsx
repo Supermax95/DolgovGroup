@@ -304,19 +304,26 @@ const Management: FC = () => {
       />
 
       <SidebarProfile
+        avatar={
+          <div className="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gradient-to-b from-cyan-500 to-blue-500 rounded-full dark:bg-gray-600">
+            <span className="font-normal text-2xl text-white">A</span>
+          </div>
+        }
         firstName={managerProfile.firstName}
         lastName={managerProfile.lastName}
         sidebarProfile={sidebarProfile}
       />
-      <Table
-        title="Список менеджеров"
-        data={displayedManagers}
-        columnsDefaultName={columnsDefaultName}
-        columnsListDb={columnsListDb}
-        onAddClick={openAddModal}
-        onEditClick={openEditModal}
-        onOneTimePassword={(id) => handleOneTimePassword(id)}
-      />
+      <div className="p-4">
+        <Table
+          title="Список менеджеров"
+          data={displayedManagers}
+          columnsDefaultName={columnsDefaultName}
+          columnsListDb={columnsListDb}
+          onAddClick={openAddModal}
+          onEditClick={openEditModal}
+          onOneTimePassword={(id) => handleOneTimePassword(id)}
+        />
+      </div>
       {isModalOpen && (selectedManager || isAddingMode) && (
         <ManagementModal
           isOpen={isModalOpen}
