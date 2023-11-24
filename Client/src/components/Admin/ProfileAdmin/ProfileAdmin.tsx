@@ -1,6 +1,6 @@
 import React, { useState, useEffect, FC } from 'react';
 import Field from '../../../ui/Field';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import ToggleShowPassword from '../../../ui/ToggleShowPassword';
 import Button from '../../../ui/Button';
@@ -10,7 +10,8 @@ import changeEmailAdmin from '../../../Redux/thunks/Manager/changeEmailAdmin.api
 import Management from './Management/Management';
 import changePhone from '../../../Redux/thunks/Manager/changePhone.api';
 import Wrapper from '../../../ui/Wrapper';
-import Sidebar from '../../../ui/Sidebar';
+import { ListBulletIcon, UserIcon } from '@heroicons/react/24/outline';
+import SidebarProfile from '../../../ui/SidebarProfile';
 
 interface IDate {
   newLastName: string;
@@ -41,6 +42,10 @@ const ProfileAdmin: FC = () => {
     email?: string;
     password?: string;
   }>((state) => state.managerSlice.manager);
+
+  // const manager = useAppSelector(
+  //   (state) => state.managerSlice.manager
+  // );
 
   const managerId = useAppSelector<number>(
     (state) => state.managerSlice.manager.id
@@ -384,6 +389,22 @@ const ProfileAdmin: FC = () => {
       ),
     },
   ];
+
+  const sidebarProfile = [
+    {
+      id: 1,
+      href: '/listOfManagers',
+      name: 'Список менеджеров',
+      childrenIcon: <ListBulletIcon className="w-6 h-6 text-slate-600" />,
+    },
+    {
+      id: 2,
+      href: '/profileAdmin',
+      name: 'Персональные данные',
+      childrenIcon: <UserIcon className="w-6 h-6 text-slate-600" />,
+    },
+  ];
+
   return (
     <Wrapper>
       {/* <div className="pt-[70px]"> */}
@@ -393,89 +414,12 @@ const ProfileAdmin: FC = () => {
       {/* <p className="text-center text-2xl font-bold text-slate-600">
           Добро пожаловать, {managerProfile.firstName}
         </p> */}
-      <aside className="w-full p-6 sm:w-60 dark:bg-gray-900 dark:text-gray-100">
-        <nav className="space-y-8 text-sm">
-          <div className="space-y-2">
-            <h2 className="text-sm font-semibold tracki uppercase dark:text-gray-400">
-              Getting Started
-            </h2>
-            <div className="flex flex-col space-y-1">
-              <a rel="noopener noreferrer" href="#">
-                Installation
-              </a>
-              <a rel="noopener noreferrer" href="#">
-                Plugins
-              </a>
-              <a rel="noopener noreferrer" href="#">
-                Migrations
-              </a>
-              <a rel="noopener noreferrer" href="#">
-                Appearance
-              </a>
-              <a rel="noopener noreferrer" href="#">
-                Mamba UI
-              </a>
-            </div>
-          </div>
-          <div className="space-y-2">
-            <h2 className="text-sm font-semibold tracki uppercase dark:text-gray-400">
-              Dashboard
-            </h2>
-            <div className="flex flex-col space-y-1">
-              <a rel="noopener noreferrer" href="#">
-                Header
-              </a>
-              <a rel="noopener noreferrer" href="#">
-                Drawer
-              </a>
-              <a rel="noopener noreferrer" href="#">
-                Page Title
-              </a>
-              <a rel="noopener noreferrer" href="#">
-                Menus
-              </a>
-              <a rel="noopener noreferrer" href="#">
-                Sidebar
-              </a>
-              <a rel="noopener noreferrer" href="#">
-                Footer
-              </a>
-            </div>
-          </div>
-          <div className="space-y-2">
-            <h2 className="text-sm font-semibold tracki uppercase dark:text-gray-400">
-              Pages
-            </h2>
-            <div className="flex flex-col space-y-1">
-              <a rel="noopener noreferrer" href="#">
-                Homepage
-              </a>
-              <a rel="noopener noreferrer" href="#">
-                Users
-              </a>
-              <a rel="noopener noreferrer" href="#">
-                Tools
-              </a>
-              <a rel="noopener noreferrer" href="#">
-                Settings
-              </a>
-            </div>
-          </div>
-          <div className="space-y-2">
-            <h2 className="text-sm font-semibold tracki uppercase dark:text-gray-400">
-              Misc
-            </h2>
-            <div className="flex flex-col space-y-1">
-              <a rel="noopener noreferrer" href="#">
-                Tutorials
-              </a>
-              <a rel="noopener noreferrer" href="#">
-                Changelog
-              </a>
-            </div>
-          </div>
-        </nav>
-      </aside>
+
+      <SidebarProfile
+        firstName={managerProfile.firstName}
+        lastName={managerProfile.lastName}
+        sidebarProfile={sidebarProfile}
+      />
 
       <section
         //! Form
@@ -485,7 +429,8 @@ const ProfileAdmin: FC = () => {
           Добро пожаловать, {managerProfile.firstName}
         </h1>
         <p className="text-center font-normal text-md text-slate-600 mx-auto mt-2">
-          Здесь вы можете легко управлять своими персональными данными
+          {/* Здесь вы можете легко управлять своими персональными данными */}
+          Здесь вы можете легко управлять своими учетными данными администратора
         </p>
 
         <form
@@ -530,6 +475,105 @@ const ProfileAdmin: FC = () => {
           </fieldset>
         </form>
 
+        {/* <form
+          //!здесь email и телефон
+          className="container flex flex-col mx-auto space-y-12"
+        >
+          <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-sm dark:bg-gray-900">
+            <div className="w-44 space-y-2 col-span-full lg:col-span-1">
+              <p className="font-normal text-md text-slate-600 pt-4">Email</p>
+            </div>
+            <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
+              <div className="col-span-full sm:col-span-3">
+                <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+                  <Field inputFields={inputFieldsEmail} />
+                </div>
+              </div>
+              <div className="">
+                <Button type="submit" title="Сохранить" />
+              </div>
+            </div>
+            <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
+              <div className="col-span-full sm:col-span-3">
+                <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+                  <Field inputFields={inputFieldsPhone} />
+                </div>{' '}
+              </div>
+              <div className="">
+                <Button type="submit" title="Сохранить" />
+              </div>
+            </div>
+          </fieldset>
+        </form> */}
+        {/* 
+        <form className="container flex flex-col mx-auto space-y-12">
+          <div className="grid grid-cols-2 gap-6 p-6 rounded-md shadow-sm dark:bg-gray-900">
+            <div className="col-span-1">
+              <div className="space-y-2">
+                <p className="font-normal text-md text-slate-600 pt-4">Email</p>
+                <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+                  <Field inputFields={inputFieldsEmail} />
+                </div>
+              </div>
+              <div className="pt-4">
+                <Button type="submit" title="Сохранить" />
+              </div>
+            </div>
+
+            <div className="col-span-1">
+              <div className="space-y-2">
+                <p className="font-normal text-md text-slate-600 pt-4">
+                  Телефон
+                </p>
+                <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+                  <Field inputFields={inputFieldsPhone} />
+                </div>
+              </div>
+              <div className="pt-4">
+                <Button type="submit" title="Сохранить" />
+              </div>
+            </div>
+          </div>
+        </form> */}
+
+        <div className="container flex flex-col mx-auto space-y-12">
+          <div className="grid grid-cols-2 gap-6 p-6 rounded-md shadow-sm dark:bg-gray-900">
+            <form className="">
+              {/* <div className="col-span-1 flex items-center"> */}
+              <div className="col-span-1 flex items-center justify-center">
+                <div className="space-y-2">
+                  <p className="font-normal text-md text-slate-600 pt-4">
+                    Email
+                  </p>
+                  <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+                    <Field inputFields={inputFieldsEmail} />
+                  </div>
+                  <div className="mt-4 flex justify-center">
+                    <Button type="submit" title="Сохранить" />
+                  </div>
+                </div>
+              </div>
+            </form>
+
+            <form className="">
+              {/* <div className="col-span-1 flex items-center"> */}
+              <div className="col-span-1 flex items-center justify-center">
+                <div className="space-y-2">
+                  <p className="font-normal text-md text-slate-600 pt-4">
+                    Телефон
+                  </p>
+                  <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+                    <Field inputFields={inputFieldsPhone} />
+                  </div>
+                  <div className="mt-4 flex justify-center">
+                    <Button type="submit" title="Сохранить" />
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
         <form
           //! только email
           onSubmit={handleSubmitProfileManagerEmail}
@@ -538,10 +582,6 @@ const ProfileAdmin: FC = () => {
           <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-sm dark:bg-gray-900">
             <div className="w-44 space-y-2 col-span-full lg:col-span-1">
               <p className="font-normal text-md text-slate-600 pt-10">Email</p>
-              {/* <p className="text-xs">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                Adipisci fuga autem eum!
-              </p> */}
             </div>
             <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
               <div className="col-span-full sm:col-span-3">
@@ -556,37 +596,6 @@ const ProfileAdmin: FC = () => {
           </fieldset>
         </form>
 
-        {/* <form 
-        //!здесь email и телефон
-        className="container flex flex-col mx-auto space-y-12">
-          <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-sm dark:bg-gray-900">
-            <div className="w-44 space-y-2 col-span-full lg:col-span-1">
-                           <p className="font-normal text-md text-slate-600 pt-4">
-Email</p>
-            
-            </div>
-            <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
-              <div className="col-span-full sm:col-span-3">
-                <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                  <Field inputFields={inputFieldsEmail} />
-                </div>
-              </div>
-              <div className="">
-                <Button type="submit" title="Сохранить" />
-              </div>
-
-              <div className="col-span-full sm:col-span-3">
-                <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                  <Field inputFields={inputFieldsPhone} />
-                </div>{' '}
-              </div>
-              <div className="">
-                <Button type="submit" title="Сохранить" />
-              </div>
-            </div>
-          </fieldset>
-        </form> */}
-
         <form
           //! только телефон
           onSubmit={handleSubmitProfileManagerPhone}
@@ -597,10 +606,6 @@ Email</p>
               <p className="font-normal text-md text-slate-600 pt-10">
                 Телефон
               </p>
-              {/* <p className="text-xs">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                Adipisci fuga autem eum!
-              </p> */}
             </div>
             <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
               <div className="col-span-full sm:col-span-3">

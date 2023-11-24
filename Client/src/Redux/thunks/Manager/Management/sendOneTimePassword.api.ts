@@ -8,6 +8,15 @@ interface RequestData {
 
 interface ResponseData {
   message: string;
+  resultPass: {
+    id: number;
+    lastName: string;
+    firstName: string;
+    middleName: string;
+    phone: string;
+    email: string;
+    isAdmin: boolean;
+  };
 }
 
 const sendOneTimePassword = createAsyncThunk<ResponseData, RequestData>(
