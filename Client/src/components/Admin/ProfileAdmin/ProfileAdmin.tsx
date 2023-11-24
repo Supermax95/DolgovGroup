@@ -1,13 +1,12 @@
 import React, { useState, useEffect, FC } from 'react';
 import Field from '../../../ui/Field';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import ToggleShowPassword from '../../../ui/ToggleShowPassword';
 import Button from '../../../ui/Button';
 import editProfileManager from '../../../Redux/thunks/Manager/profileManager.api';
 import changePassword from '../../../Redux/thunks/Manager/changePassword.api';
 import changeEmailAdmin from '../../../Redux/thunks/Manager/changeEmailAdmin.api';
-import Management from './Management/Management';
 import changePhone from '../../../Redux/thunks/Manager/changePhone.api';
 import Wrapper from '../../../ui/Wrapper';
 import { ListBulletIcon, UserIcon } from '@heroicons/react/24/outline';
@@ -34,7 +33,7 @@ const ProfileAdmin: FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const managerProfile = useAppSelector<{
+  const adminProfile = useAppSelector<{
     lastName?: string;
     firstName?: string;
     middleName?: string;
@@ -62,11 +61,11 @@ const ProfileAdmin: FC = () => {
   });
 
   const [data, setData] = useState<IDate>({
-    newLastName: managerProfile.lastName || '',
-    newFirstName: managerProfile.firstName || '',
-    newMiddleName: managerProfile.middleName || '',
-    newPhone: managerProfile.phone || '',
-    newEmail: managerProfile.email || '',
+    newLastName: adminProfile.lastName || '',
+    newFirstName: adminProfile.firstName || '',
+    newMiddleName: adminProfile.middleName || '',
+    newPhone: adminProfile.phone || '',
+    newEmail: adminProfile.email || '',
     oldPassword: '',
     newPassword: '',
     confirmPassword: '',
@@ -77,16 +76,16 @@ const ProfileAdmin: FC = () => {
   //* то placeholder=''
   useEffect(() => {
     setData(() => ({
-      newLastName: managerProfile.lastName || '',
-      newFirstName: managerProfile.firstName || '',
-      newMiddleName: managerProfile.middleName || '',
-      newPhone: managerProfile.phone || '',
-      newEmail: managerProfile.email || '',
+      newLastName: adminProfile.lastName || '',
+      newFirstName: adminProfile.firstName || '',
+      newMiddleName: adminProfile.middleName || '',
+      newPhone: adminProfile.phone || '',
+      newEmail: adminProfile.email || '',
       oldPassword: '',
       newPassword: '',
       confirmPassword: '',
     }));
-  }, [managerProfile]);
+  }, [adminProfile]);
 
   const handleFieldChangeProfileManager = (
     field: keyof IDate,
@@ -336,6 +335,7 @@ const ProfileAdmin: FC = () => {
       ),
     },
   ];
+
   const inputFieldsNewPassword = [
     {
       id: 'newPassword',
@@ -390,7 +390,7 @@ const ProfileAdmin: FC = () => {
     },
   ];
 
-  const sidebarProfile = [
+  const sidebarProfileAdmin = [
     {
       id: 1,
       href: '/listOfManagers',
@@ -407,23 +407,15 @@ const ProfileAdmin: FC = () => {
 
   return (
     <Wrapper>
-      {/* <div className="pt-[70px]"> */}
-      {/* <div className="h-full"> */}
-      {/* <div className="flex w-full flex-col md:w-1/2"> */}
-      {/* <div className="lg:w-[28rem] mx-auto my-auto flex flex-col justify-center pt-8 md:justify-start md:px-6 md:pt-0"> */}
-      {/* <p className="text-center text-2xl font-bold text-slate-600">
-          Добро пожаловать, {managerProfile.firstName}
-        </p> */}
-
       <SidebarProfile
         avatar={
           <div className="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gradient-to-b from-cyan-500 to-blue-500 rounded-full dark:bg-gray-600">
             <span className="font-normal text-2xl text-white">A</span>
           </div>
         }
-        firstName={managerProfile.firstName}
-        lastName={managerProfile.lastName}
-        sidebarProfile={sidebarProfile}
+        firstName={adminProfile.firstName}
+        lastName={adminProfile.lastName}
+        sidebarProfile={sidebarProfileAdmin}
       />
 
       <section
@@ -431,11 +423,11 @@ const ProfileAdmin: FC = () => {
         className="p-6 bg-slate-50 dark:text-gray-50"
       >
         <h1 className="text-center text-xl font-normal text-slate-700">
-          Добро пожаловать, {managerProfile.firstName}
+          Добро пожаловать, {adminProfile.firstName}
         </h1>
         <p className="text-center font-normal text-md text-slate-600 mx-auto mt-2">
           {/* Здесь вы можете легко управлять своими персональными данными */}
-          Здесь вы можете легко управлять своими учетными данными администратора
+          Здесь вы можете легко управлять своими учетными данными
         </p>
 
         <form
@@ -449,10 +441,6 @@ const ProfileAdmin: FC = () => {
                 {/* Обновление персональных <br /> данных */}
                 Обновление персональных данных
               </p>
-              {/* <p className="text-xs">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                Adipisci fuga autem eum!
-              </p> */}
             </div>
             <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
               <div className="col-span-full sm:col-span-3">
@@ -463,17 +451,16 @@ const ProfileAdmin: FC = () => {
               <div className="col-span-full sm:col-span-3">
                 <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
                   <Field inputFields={inputFieldsFirstName} />
-                </div>{' '}
+                </div>
               </div>
 
               <div className="col-span-full sm:col-span-3">
                 <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
                   <Field inputFields={inputFieldsMiddleName} />
-                </div>{' '}
+                </div>
               </div>
             </div>
-            {/* <div> */}
-            {/* </div> */}
+
             <div className="col-span-full flex justify-center">
               <Button type="submit" title="Сохранить" />
             </div>
@@ -616,7 +603,7 @@ const ProfileAdmin: FC = () => {
               <div className="col-span-full sm:col-span-3">
                 <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
                   <Field inputFields={inputFieldsPhone} />
-                </div>{' '}
+                </div>
               </div>
             </div>
             <div className="col-span-full flex justify-center">

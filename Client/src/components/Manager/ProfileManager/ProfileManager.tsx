@@ -7,8 +7,10 @@ import Button from '../../../ui/Button';
 import editProfileManager from '../../../Redux/thunks/Manager/profileManager.api';
 import changePassword from '../../../Redux/thunks/Manager/changePassword.api';
 import changePhone from '../../../Redux/thunks/Manager/changePhone.api';
-import Table from '../../../ui/Table';
 import getManagerInfo from '../../../Redux/thunks/Manager/getManagerInfo.api';
+import Wrapper from '../../../ui/Wrapper';
+import SidebarProfile from '../../../ui/SidebarProfile';
+import { ListBulletIcon, UserIcon } from '@heroicons/react/24/outline';
 
 interface IDate {
   newLastName: string;
@@ -27,62 +29,62 @@ interface PasswordChangeData {
   confirmPassword: string;
 }
 
-interface IManager {
-  id: number;
-  lastName: string;
-  firstName: string;
-  middleName: string;
-  phone: string;
-  email: string;
-}
+// interface IManager {
+//   id: number;
+//   lastName: string;
+//   firstName: string;
+//   middleName: string;
+//   phone: string;
+//   email: string;
+// }
 
-interface IColumnsDefaultName {
-  name: string;
-}
+// interface IColumnsDefaultName {
+//   name: string;
+// }
 
-type IColumnsListDb =
-  | 'id'
-  | 'lastName'
-  | 'firstName'
-  | 'middleName'
-  | 'phone'
-  | 'email'
-  | 'isAdmin';
+// type IColumnsListDb =
+//   | 'id'
+//   | 'lastName'
+//   | 'firstName'
+//   | 'middleName'
+//   | 'phone'
+//   | 'email'
+//   | 'isAdmin';
 
 const ProfileManager: FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const currentManagerId = useAppSelector<number>(
-    (state) => state.managerSlice.manager.id
-  );
-  console.log('currentManagerId', currentManagerId);
+  // const currentManagerId = useAppSelector<number>(
+  //   (state) => state.managerSlice.manager.id
+  // );
+  // console.log('currentManagerId', currentManagerId);
 
-  const managers = useAppSelector<IManager[]>(
-    (state) => state.managerSlice.info
-  );
-  console.log('managers info', managers);
+  // const managers = useAppSelector<IManager[]>(
+  //   (state) => state.managerSlice.info
+  // );
+  // console.log('managers', managers);
 
-  const columnsDefaultName: IColumnsDefaultName[] = [
-    { name: 'Фамилия' },
-    { name: 'Имя' },
-    { name: 'Отчество' },
-    { name: 'Телефон' },
-    { name: 'Email' },
-    { name: 'Должность' },
-  ];
+  // const columnsDefaultName: IColumnsDefaultName[] = [
+  //   { name: 'Фамилия' },
+  //   { name: 'Имя' },
+  //   { name: 'Отчество' },
+  //   { name: 'Телефон' },
+  //   { name: 'Email' },
+  //   { name: 'Должность' },
+  // ];
 
-  const columnsListDb: IColumnsListDb[] = [
-    'id',
-    'lastName',
-    'firstName',
-    'middleName',
-    'phone',
-    'email',
-    'isAdmin',
-  ];
+  // const columnsListDb: IColumnsListDb[] = [
+  //   'id',
+  //   'lastName',
+  //   'firstName',
+  //   'middleName',
+  //   'phone',
+  //   'email',
+  //   'isAdmin',
+  // ];
 
-  const displayedManagers = managers;
+  // const displayedManagers = managers;
 
   useEffect(() => {
     dispatch(getManagerInfo());
@@ -251,8 +253,7 @@ const ProfileManager: FC = () => {
     }
   };
 
-  //! сделать регистр первой буквы заглавной для ФИО
-  const inputFieldsName = [
+  const inputFieldsLastName = [
     {
       id: 'lastName',
       name: 'lastName',
@@ -266,6 +267,9 @@ const ProfileManager: FC = () => {
         handleFieldChangeProfileManager('newLastName', value),
       required: true,
     },
+  ];
+
+  const inputFieldsFirstName = [
     {
       id: 'firstName',
       name: 'firstName',
@@ -279,6 +283,9 @@ const ProfileManager: FC = () => {
         handleFieldChangeProfileManager('newFirstName', value),
       required: true,
     },
+  ];
+
+  const inputFieldsMiddleName = [
     {
       id: 'middleName',
       name: 'middleName',
@@ -311,7 +318,7 @@ const ProfileManager: FC = () => {
     },
   ];
 
-  const inputFieldsPassword = [
+  const inputFieldsOldPassword = [
     {
       id: 'oldPassword',
       name: 'oldPassword',
@@ -336,6 +343,9 @@ const ProfileManager: FC = () => {
         </span>
       ),
     },
+  ];
+
+  const inputFieldsNewPassword = [
     {
       id: 'newPassword',
       name: 'newPassword',
@@ -360,6 +370,9 @@ const ProfileManager: FC = () => {
         </span>
       ),
     },
+  ];
+
+  const inputFieldsConfirmPassword = [
     {
       id: 'confirmPassword',
       name: 'confirmPassword',
@@ -386,68 +399,179 @@ const ProfileManager: FC = () => {
     },
   ];
 
+  const sidebarProfileManager = [
+    {
+      id: 1,
+      href: '/listOfManagersForManager',
+      name: 'Список контактов',
+      childrenIcon: <ListBulletIcon className="w-6 h-6 text-slate-600" />,
+    },
+    {
+      id: 2,
+      href: '/profileManager',
+      name: 'Персональные данные',
+      childrenIcon: <UserIcon className="w-6 h-6 text-slate-600" />,
+    },
+  ];
+
   return (
-    <div className="pt-[70px]">
-      <div className="flex flex-wrap h-full">
-        <div className="flex w-full flex-col md:w-1/2">
-          <div className="lg:w-[28rem] mx-auto my-auto flex flex-col justify-center pt-8 md:justify-start md:px-6 md:pt-0">
-            <p className="text-center text-2xl font-bold text-slate-600">
-              Добро пожаловать, {managerProfile.firstName}
-            </p>
-            <p className="mt-2 text-center text-slate-500">
-              Здесь вы можете обновить свои данные
-            </p>
-            <form
-              onSubmit={handleSubmitProfileManager}
-              className="flex flex-col"
-            >
-              <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                <Field inputFields={inputFieldsName} />
+    <Wrapper>
+      <SidebarProfile
+        avatar={
+          <div className="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gradient-to-b from-orange-300 to-orange-400 rounded-full dark:bg-gray-600">
+            <span className="font-normal text-2xl text-white">M</span>
+          </div>
+        }
+        firstName={managerProfile.firstName}
+        lastName={managerProfile.lastName}
+        sidebarProfile={sidebarProfileManager}
+      />
 
-                <div className="relative flex justify-center">
-                  <Button type="submit" title="Сохранить" />
+      <section
+        //! Form
+        className="p-6 bg-slate-50 dark:text-gray-50"
+      >
+        <h1 className="text-center text-xl font-normal text-slate-700">
+          Добро пожаловать, {managerProfile.firstName}
+        </h1>
+        <p className="text-center font-normal text-md text-slate-600 mx-auto mt-2">
+          {/* Здесь вы можете легко управлять своими персональными данными */}
+          Здесь вы можете легко управлять своими учетными данными
+        </p>
+
+        <form
+          //! FIO
+          onSubmit={handleSubmitProfileManager}
+          className="container flex flex-col mx-auto space-y-12"
+        >
+          <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-sm dark:bg-gray-900">
+            <div className="w-44 space-y-2 col-span-full lg:col-span-1">
+              <p className="font-normal text-md text-slate-600 pt-6">
+                {/* Обновление персональных <br /> данных */}
+                Обновление персональных данных
+              </p>
+            </div>
+            <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
+              <div className="col-span-full sm:col-span-3">
+                <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+                  <Field inputFields={inputFieldsLastName} />
                 </div>
               </div>
-            </form>
-            <p className="mt-2 text-center text-slate-500">Обновление номера</p>
-            <form
-              onSubmit={handleSubmitProfileManagerPhone}
-              className="flex flex-col"
-            >
-              <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                <Field inputFields={inputFieldsPhone} />
-
-                <div className="relative flex justify-center">
-                  <Button type="submit" title="Сохранить" />
+              <div className="col-span-full sm:col-span-3">
+                <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+                  <Field inputFields={inputFieldsFirstName} />
                 </div>
               </div>
-            </form>
-            <p className="mt-2 text-center text-slate-500">Обновление пароля</p>
-            <form
-              onSubmit={handleSubmitProfileManagerPassword}
-              className="flex flex-col"
-            >
-              <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                <Field inputFields={inputFieldsPassword} />
 
-                <div className="relative flex justify-center">
-                  <Button type="submit" title="Сохранить" />
+              <div className="col-span-full sm:col-span-3">
+                <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+                  <Field inputFields={inputFieldsMiddleName} />
                 </div>
               </div>
-            </form>
+            </div>
+
+            <div className="col-span-full flex justify-center">
+              <Button type="submit" title="Сохранить" />
+            </div>
+          </fieldset>
+        </form>
+
+        <form
+          //! только телефон
+          onSubmit={handleSubmitProfileManagerPhone}
+          className="container flex flex-col mx-auto space-y-12"
+        >
+          <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-sm dark:bg-gray-900">
+            <div className="w-44 space-y-2 col-span-full lg:col-span-1">
+              <p className="font-normal text-md text-slate-600 pt-10">
+                Телефон
+              </p>
+            </div>
+            <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
+              <div className="col-span-full sm:col-span-3">
+                <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+                  <Field inputFields={inputFieldsPhone} />
+                </div>
+              </div>
+            </div>
+            <div className="col-span-full flex justify-center">
+              <Button type="submit" title="Сохранить" />
+            </div>
+          </fieldset>
+        </form>
+
+        <form
+          //! пароль
+          onSubmit={handleSubmitProfileManagerPassword}
+          className="container flex flex-col mx-auto space-y-12"
+        >
+          <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-sm dark:bg-gray-900">
+            <div className="w-44 space-y-2 col-span-full lg:col-span-1">
+              <p className="font-normal text-md text-slate-600 pt-10">
+                Обновление пароля
+              </p>
+            </div>
+            <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
+              <div className="col-span-full sm:col-span-3">
+                <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+                  <Field inputFields={inputFieldsOldPassword} />{' '}
+                </div>
+              </div>
+
+              <div className="col-span-full sm:col-span-3">
+                <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+                  <Field inputFields={inputFieldsNewPassword} />{' '}
+                </div>
+              </div>
+
+              <div className="col-span-full sm:col-span-3">
+                <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+                  <Field inputFields={inputFieldsConfirmPassword} />
+                </div>
+              </div>
+            </div>
+            <div className="col-span-full flex justify-center">
+              <Button type="submit" title="Сохранить" />
+            </div>
+          </fieldset>
+        </form>
+      </section>
+      {/* <form onSubmit={handleSubmitProfileManager} className="flex flex-col">
+        <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+          <Field inputFields={inputFieldsName} />
+
+          <div className="relative flex justify-center">
+            <Button type="submit" title="Сохранить" />
           </div>
         </div>
-        <div className=" bg-white md:w-1/2">
-          <Table
-            title="Список контактов"
-            data={displayedManagers}
-            columnsDefaultName={columnsDefaultName}
-            columnsListDb={columnsListDb}
-            currentManagerId={currentManagerId}
-          />
+      </form>
+      <p className="mt-2 text-center text-slate-500">Обновление номера</p>
+      <form
+        onSubmit={handleSubmitProfileManagerPhone}
+        className="flex flex-col"
+      >
+        <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+          <Field inputFields={inputFieldsPhone} />
+
+          <div className="relative flex justify-center">
+            <Button type="submit" title="Сохранить" />
+          </div>
         </div>
-      </div>
-    </div>
+      </form>
+      <p className="mt-2 text-center text-slate-500">Обновление пароля</p>
+      <form
+        onSubmit={handleSubmitProfileManagerPassword}
+        className="flex flex-col"
+      >
+        <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+          <Field inputFields={inputFieldsPassword} />
+
+          <div className="relative flex justify-center">
+            <Button type="submit" title="Сохранить" />
+          </div>
+        </div>
+      </form> */}
+    </Wrapper>
   );
 };
 
