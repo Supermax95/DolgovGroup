@@ -68,7 +68,12 @@ const Table: FC<ITable> = ({
                     {columnDefaultName.name}
                   </th>
                 ))}
-                <th className="w-36 border-b-2 border-orange-300"></th>
+                {onEditClick && (
+                  <th className="w-36 border-b-2 border-orange-300"></th>
+                )}
+                {onOneTimePassword && (
+                  <th className="w-36 border-b-2 border-orange-300"></th>
+                )}
               </tr>
             </thead>
 
@@ -122,32 +127,28 @@ const Table: FC<ITable> = ({
                         )}
                       </td>
                     ))}
-                    <td className="px-6 py-3 whitespace-no-wrap text-right border-b-2 border-slate-300">
-                      <div className="flex items-center">
-                        {onEditClick && (
-                          <div>
-                            <Button
-                              type="button"
-                              onClick={() => onEditClick?.(item)}
-                              styleCSSButton={`relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-normal text-slate-600 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 hover:text-white`}
-                              title="Редактировать"
-                            />
-                          </div>
-                        )}
-                        {onOneTimePassword ? (
-                          <div>
-                            <Button
-                              type="button"
-                              onClick={() => onOneTimePassword(item.id)}
-                              styleCSSSpan={
-                                'w-44 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
-                              }
-                              title="Отправить пароль"
-                            />
-                          </div>
-                        ) : null}
-                      </div>
-                    </td>
+                    {onEditClick && (
+                      <td className="px-2 py-3 whitespace-no-wrap text-right border-b-2 border-slate-300">
+                        <Button
+                          type="button"
+                          onClick={() => onEditClick?.(item)}
+                          styleCSSButton={`relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-normal text-slate-600 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 hover:text-white`}
+                          title="Редактировать"
+                        />
+                      </td>
+                    )}
+                    {onOneTimePassword && (
+                      <td className="px-2 py-3 whitespace-no-wrap text-right border-b-2 border-slate-300">
+                        <Button
+                          type="button"
+                          onClick={() => onOneTimePassword(item.id)}
+                          styleCSSSpan={
+                            'w-44 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
+                          }
+                          title="Отправить пароль"
+                        />
+                      </td>
+                    )}
                   </tr>
                 ))}
             </tbody>
