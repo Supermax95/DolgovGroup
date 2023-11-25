@@ -9,8 +9,7 @@ import changePassword from '../../../Redux/thunks/Manager/changePassword.api';
 import changePhone from '../../../Redux/thunks/Manager/changePhone.api';
 import getManagerInfo from '../../../Redux/thunks/Manager/getManagerInfo.api';
 import Wrapper from '../../../ui/Wrapper';
-import SidebarProfile from '../../../ui/SidebarProfile';
-import { ListBulletIcon, UserIcon } from '@heroicons/react/24/outline';
+import RoleSidebar from '../../RoleSidebar/RoleSidebar';
 
 interface IDate {
   newLastName: string;
@@ -29,62 +28,9 @@ interface PasswordChangeData {
   confirmPassword: string;
 }
 
-// interface IManager {
-//   id: number;
-//   lastName: string;
-//   firstName: string;
-//   middleName: string;
-//   phone: string;
-//   email: string;
-// }
-
-// interface IColumnsDefaultName {
-//   name: string;
-// }
-
-// type IColumnsListDb =
-//   | 'id'
-//   | 'lastName'
-//   | 'firstName'
-//   | 'middleName'
-//   | 'phone'
-//   | 'email'
-//   | 'isAdmin';
-
 const ProfileManager: FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-
-  // const currentManagerId = useAppSelector<number>(
-  //   (state) => state.managerSlice.manager.id
-  // );
-  // console.log('currentManagerId', currentManagerId);
-
-  // const managers = useAppSelector<IManager[]>(
-  //   (state) => state.managerSlice.info
-  // );
-  // console.log('managers', managers);
-
-  // const columnsDefaultName: IColumnsDefaultName[] = [
-  //   { name: 'Фамилия' },
-  //   { name: 'Имя' },
-  //   { name: 'Отчество' },
-  //   { name: 'Телефон' },
-  //   { name: 'Email' },
-  //   { name: 'Должность' },
-  // ];
-
-  // const columnsListDb: IColumnsListDb[] = [
-  //   'id',
-  //   'lastName',
-  //   'firstName',
-  //   'middleName',
-  //   'phone',
-  //   'email',
-  //   'isAdmin',
-  // ];
-
-  // const displayedManagers = managers;
 
   useEffect(() => {
     dispatch(getManagerInfo());
@@ -94,7 +40,7 @@ const ProfileManager: FC = () => {
     lastName?: string;
     firstName?: string;
     middleName?: string;
-    phone: string;
+    phone?: string;
     email?: string;
     password?: string;
   }>((state) => state.managerSlice.manager);
@@ -399,33 +345,9 @@ const ProfileManager: FC = () => {
     },
   ];
 
-  const sidebarProfileManager = [
-    {
-      id: 1,
-      href: '/listOfManagersForManager',
-      name: 'Список контактов',
-      childrenIcon: <ListBulletIcon className="w-6 h-6 text-slate-600" />,
-    },
-    {
-      id: 2,
-      href: '/profileManager',
-      name: 'Персональные данные',
-      childrenIcon: <UserIcon className="w-6 h-6 text-slate-600" />,
-    },
-  ];
-
   return (
     <Wrapper>
-      <SidebarProfile
-        avatar={
-          <div className="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gradient-to-b from-orange-300 to-orange-400 rounded-full dark:bg-gray-600">
-            <span className="font-normal text-2xl text-white">M</span>
-          </div>
-        }
-        firstName={managerProfile.firstName}
-        lastName={managerProfile.lastName}
-        sidebarProfile={sidebarProfileManager}
-      />
+      <RoleSidebar />
 
       <section
         //! Form
@@ -536,41 +458,6 @@ const ProfileManager: FC = () => {
           </fieldset>
         </form>
       </section>
-      {/* <form onSubmit={handleSubmitProfileManager} className="flex flex-col">
-        <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-          <Field inputFields={inputFieldsName} />
-
-          <div className="relative flex justify-center">
-            <Button type="submit" title="Сохранить" />
-          </div>
-        </div>
-      </form>
-      <p className="mt-2 text-center text-slate-500">Обновление номера</p>
-      <form
-        onSubmit={handleSubmitProfileManagerPhone}
-        className="flex flex-col"
-      >
-        <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-          <Field inputFields={inputFieldsPhone} />
-
-          <div className="relative flex justify-center">
-            <Button type="submit" title="Сохранить" />
-          </div>
-        </div>
-      </form>
-      <p className="mt-2 text-center text-slate-500">Обновление пароля</p>
-      <form
-        onSubmit={handleSubmitProfileManagerPassword}
-        className="flex flex-col"
-      >
-        <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-          <Field inputFields={inputFieldsPassword} />
-
-          <div className="relative flex justify-center">
-            <Button type="submit" title="Сохранить" />
-          </div>
-        </div>
-      </form> */}
     </Wrapper>
   );
 };

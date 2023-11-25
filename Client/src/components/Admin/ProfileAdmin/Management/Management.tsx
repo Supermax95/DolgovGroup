@@ -7,9 +7,8 @@ import addManager from '../../../../Redux/thunks/Manager/Management/addManager.a
 import editManager from '../../../../Redux/thunks/Manager/Management/editManager.api';
 import sendOneTimePassword from '../../../../Redux/thunks/Manager/Management/sendOneTimePassword.api';
 import Wrapper from '../../../../ui/Wrapper';
-import { ListBulletIcon, UserIcon } from '@heroicons/react/24/outline';
-import SidebarProfile from '../../../../ui/SidebarProfile';
 import AccountNotification from '../../../../ui/AccountNotification';
+import RoleSidebar from '../../../RoleSidebar/RoleSidebar';
 
 interface IManager {
   id: number;
@@ -35,15 +34,6 @@ type IColumnsListDb =
 
 const Management: FC = () => {
   const dispatch = useAppDispatch();
-
-  const adminProfile = useAppSelector<{
-    lastName?: string;
-    firstName?: string;
-    middleName?: string;
-    phone: string;
-    email?: string;
-    password?: string;
-  }>((state) => state.managerSlice.manager);
 
   const managers = useAppSelector<IManager[]>(
     (state) => state.managerSlice.data
@@ -265,21 +255,6 @@ const Management: FC = () => {
     setShowNotificationOnePass(false);
   };
 
-  const sidebarProfileAdmin = [
-    {
-      id: 1,
-      href: '/listOfManagers',
-      name: 'Список менеджеров',
-      childrenIcon: <ListBulletIcon className="w-6 h-6 text-slate-600" />,
-    },
-    {
-      id: 2,
-      href: '/profileAdmin',
-      name: 'Персональные данные',
-      childrenIcon: <UserIcon className="w-6 h-6 text-slate-600" />,
-    },
-  ];
-
   return (
     <Wrapper>
       <AccountNotification
@@ -303,16 +278,8 @@ const Management: FC = () => {
         titleText={`Временный пароль выслан на почту ${managerIdForBellOneTimePass.email}`}
       />
 
-      <SidebarProfile
-        avatar={
-          <div className="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gradient-to-b from-cyan-500 to-blue-500 rounded-full dark:bg-gray-600">
-            <span className="font-normal text-2xl text-white">A</span>
-          </div>
-        }
-        firstName={adminProfile.firstName}
-        lastName={adminProfile.lastName}
-        sidebarProfile={sidebarProfileAdmin}
-      />
+      <RoleSidebar />
+
       <div className="p-4">
         <Table
           title="Список менеджеров"

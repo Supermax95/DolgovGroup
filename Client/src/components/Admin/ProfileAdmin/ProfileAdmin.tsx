@@ -9,8 +9,7 @@ import changePassword from '../../../Redux/thunks/Manager/changePassword.api';
 import changeEmailAdmin from '../../../Redux/thunks/Manager/changeEmailAdmin.api';
 import changePhone from '../../../Redux/thunks/Manager/changePhone.api';
 import Wrapper from '../../../ui/Wrapper';
-import { ListBulletIcon, UserIcon } from '@heroicons/react/24/outline';
-import SidebarProfile from '../../../ui/SidebarProfile';
+import RoleSidebar from '../../RoleSidebar/RoleSidebar';
 
 interface IDate {
   newLastName: string;
@@ -37,14 +36,10 @@ const ProfileAdmin: FC = () => {
     lastName?: string;
     firstName?: string;
     middleName?: string;
-    phone: string;
+    phone?: string;
     email?: string;
     password?: string;
   }>((state) => state.managerSlice.manager);
-
-  // const manager = useAppSelector(
-  //   (state) => state.managerSlice.manager
-  // );
 
   const managerId = useAppSelector<number>(
     (state) => state.managerSlice.manager.id
@@ -390,33 +385,9 @@ const ProfileAdmin: FC = () => {
     },
   ];
 
-  const sidebarProfileAdmin = [
-    {
-      id: 1,
-      href: '/listOfManagers',
-      name: 'Список менеджеров',
-      childrenIcon: <ListBulletIcon className="w-6 h-6 text-slate-600" />,
-    },
-    {
-      id: 2,
-      href: '/profileAdmin',
-      name: 'Персональные данные',
-      childrenIcon: <UserIcon className="w-6 h-6 text-slate-600" />,
-    },
-  ];
-
   return (
     <Wrapper>
-      <SidebarProfile
-        avatar={
-          <div className="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gradient-to-b from-cyan-500 to-blue-500 rounded-full dark:bg-gray-600">
-            <span className="font-normal text-2xl text-white">A</span>
-          </div>
-        }
-        firstName={adminProfile.firstName}
-        lastName={adminProfile.lastName}
-        sidebarProfile={sidebarProfileAdmin}
-      />
+      <RoleSidebar />
 
       <section
         //! Form
@@ -648,101 +619,6 @@ const ProfileAdmin: FC = () => {
           </fieldset>
         </form>
       </section>
-
-      {/* <div className="p-4">
-        <div className="">
-          <div className="bg-sky-200 py-2 px-2">
-            <p className="text-slate-700">Обновление персональных данных</p>
-          </div>
-          <div className="flex justify-between">
-            <div>
-              <form
-                //! FIO
-                onSubmit={handleSubmitProfileManager}
-                className=""
-              >
-                <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                   <Field inputFields={inputFieldsName} /> 
-
-                  <div className="relative flex justify-center">
-                    <Button type="submit" title="Сохранить" />
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-
-        <div className="">
-          <div className="bg-sky-200 py-2 px-2">
-            <p className="text-slate-700">Контактная информация</p>
-          </div>
-          <div className="flex justify-between">
-            <div>
-              <form
-                //! email
-
-                onSubmit={handleSubmitProfileManagerEmail}
-                className=""
-              >
-                <p className="mt-2 text-center text-slate-500">
-                  Обновление Email
-                </p>
-                <div className="py-8 px-8 text-base leading-6 space-y-4 text-slate-700 sm:text-lg sm:leading-7">
-                  <Field inputFields={inputFieldsEmail} />
-
-                  <div className="relative flex justify-center">
-                    <Button type="submit" title="Сохранить" />
-                  </div>
-                </div>
-              </form>
-            </div>
-            <div>
-              <form
-                //! phone
-                onSubmit={handleSubmitProfileManagerPhone}
-                className="flex flex-col"
-              >
-                <p className="mt-2 text-center text-slate-500">
-                  Обновление номера
-                </p>
-                <div className="py-8 px-8 text-base leading-6 space-y-4 text-slate-700 sm:text-lg sm:leading-7">
-                  <Field inputFields={inputFieldsPhone} />
-
-                  <div className="relative flex justify-center">
-                    <Button type="submit" title="Сохранить" />
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-
-        <div className="">
-          <div className="bg-sky-200 py-2 px-2">
-            <p className=" text-slate-700">Обновление пароля</p>
-          </div>
-          <div className="flex">
-            <div>
-              <form onSubmit={handleSubmitProfileManagerPassword} className="">
-                <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                  <Field inputFields={inputFieldsPassword} />
-
-                  <div className="relative flex justify-center">
-                    <Button type="submit" title="Сохранить" />
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div> */}
-      {/* </div>*/}
-      {/* <div className=" bg-white md:w-1/2">*/}
-      {/* <Management /> */}
-      {/* </div> */}
-      {/* </div> */}
-      {/* </div> */}
     </Wrapper>
   );
 };
