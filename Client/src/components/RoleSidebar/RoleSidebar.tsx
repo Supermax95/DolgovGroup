@@ -1,9 +1,9 @@
-import React from 'react';
+import { FC } from 'react';
 import { ListBulletIcon, UserIcon } from '@heroicons/react/24/outline';
 import SidebarProfile from '../../ui/SidebarProfile';
 import { useAppSelector } from '../../Redux/hooks';
 
-const RoleSidebar = () => {
+const RoleSidebar: FC = () => {
   const managerProfile = useAppSelector<{
     lastName?: string;
     firstName?: string;
