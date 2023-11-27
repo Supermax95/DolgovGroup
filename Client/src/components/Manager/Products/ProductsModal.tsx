@@ -23,6 +23,16 @@ interface Product {
   subcategoryId: number;
 }
 
+interface Category {
+  id: number;
+  categoryName: string;
+}
+
+interface Subcategory {
+  categoryId: number;
+  subcategoryName: string;
+}
+
 interface ProductsModalProps {
   isOpen: boolean;
   product: Product | null;
@@ -48,6 +58,8 @@ const ProductsModal: FC<ProductsModalProps> = ({
   editedProduct,
   setEditedProduct,
 }) => {
+  const subcategory = useAppSelector((state)=> state.subcategorySlice)
+  const category = useAppSelector((state)=>state.categorySlice)
   const id = useAppSelector((state) => state.productSlice.postId);
   const dispatch = useAppDispatch();
   const [isUpload, setUpload] = useState(false);

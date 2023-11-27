@@ -4,20 +4,20 @@ import editSubcategory from './thunks/SubCategory/editSubcategory.api';
 import deleteSubcategory from './thunks/SubCategory/deleteSubcategory.api';
 import addSubcategory from './thunks/SubCategory/addSubcategory.api';
 
-interface Category {
+interface subcategory {
   id: number;
   subcategoryName: string;
 }
 
-interface CategoryState {
-  data: Category[];
+interface subcategoryState {
+  data: subcategory[];
   isLoading: boolean;
   error: string | null;
   status: number | null;
   message: string | null;
 }
 
-const initialState: CategoryState = {
+const initialState: subcategoryState = {
   data: [],
   isLoading: false,
   error: null,
@@ -25,8 +25,8 @@ const initialState: CategoryState = {
   message: null,
 };
 
-const categorySlice = createSlice({
-  name: 'category',
+const subcategorySlice = createSlice({
+  name: 'subcategory',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -83,4 +83,4 @@ const categorySlice = createSlice({
   },
 });
 
-export default categorySlice.reducer;
+export default subcategorySlice.reducer;

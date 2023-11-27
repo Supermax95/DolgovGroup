@@ -17,6 +17,7 @@ import managerSlice from './manager.slice';
 import usersSlice from './user.slice';
 import productSlice from './products.slice';
 import categorySlice from './category.slice';
+import subcategorySlice from './subcategory.slice';
 
 // const rootReducer = combineReducers({
 //   locationsSlice,
@@ -38,6 +39,7 @@ const store = configureStore({
     usersSlice,
     productSlice,
     categorySlice,
+    subcategorySlice,
   },
 });
 
