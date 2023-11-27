@@ -174,6 +174,7 @@ const managerSlice = createSlice({
       .addCase(getManagerInfo.fulfilled, (state, action) => {
         state.isLoading = false;
         state.info = action.payload;
+        console.log('action.payload', action.payload);
       })
       .addCase(getManagerInfo.rejected, (state, action) => {
         state.isLoading = false;
