@@ -6,14 +6,14 @@ interface RequestData {
   newCategory: {
     id: number;
     subcategoryName: string;
-    // subcategory: string;
+    categoryId: number;
   };
 }
 
 interface ResponseData {
-    id: number;
-    subcategoryName: string;
-    // subcategory: string;
+  id: number;
+  subcategoryName: string;
+  categoryId: number;
 }
 
 type ArrayResponseData = Array<ResponseData>;

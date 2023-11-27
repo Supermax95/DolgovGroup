@@ -58,8 +58,8 @@ const ProductsModal: FC<ProductsModalProps> = ({
   editedProduct,
   setEditedProduct,
 }) => {
-  const subcategory = useAppSelector((state)=> state.subcategorySlice)
-  const category = useAppSelector((state)=>state.categorySlice)
+  const subcategory = useAppSelector((state) => state.subcategorySlice);
+  const category = useAppSelector((state) => state.categorySlice);
   const id = useAppSelector((state) => state.productSlice.postId);
   const dispatch = useAppDispatch();
   const [isUpload, setUpload] = useState(false);
@@ -82,7 +82,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
   const uploadFile = async (
     file: File | null,
     id: number | undefined
-    // isAddingMode: boolean
+    // isAddingMode?: boolean
   ): Promise<void> => {
     if (file && id) {
       const formData = new FormData();

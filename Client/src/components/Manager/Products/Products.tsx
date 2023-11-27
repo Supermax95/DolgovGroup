@@ -29,7 +29,6 @@ export interface IProduct {
 export interface ICategory {
   id: number;
   categoryName: string;
-  // subcategory: string;
 }
 
 const Products: FC = () => {
