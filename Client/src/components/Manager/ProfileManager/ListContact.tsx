@@ -1,8 +1,9 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import Wrapper from '../../../ui/Wrapper';
 import Table from '../../../ui/Table';
-import { useAppSelector } from '../../../Redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import RoleSidebar from '../../RoleSidebar/RoleSidebar';
+import getManagerInfo from '../../../Redux/thunks/Manager/getManagerInfo.api';
 
 interface IManager {
   id: number;
@@ -27,6 +28,8 @@ type IColumnsListDb =
   | 'isAdmin';
 
 const ListContact: FC = () => {
+  const dispatch = useAppDispatch();
+
   const currentManagerId = useAppSelector<number>(
     (state) => state.managerSlice.manager.id
   );
@@ -55,6 +58,10 @@ const ListContact: FC = () => {
     'email',
     'isAdmin',
   ];
+
+  useEffect(() => {
+    dispatch(getManagerInfo());
+  }, [dispatch]);
 
   const displayedManagers = managers;
 

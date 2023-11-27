@@ -7,7 +7,6 @@ import Button from '../../../ui/Button';
 import editProfileManager from '../../../Redux/thunks/Manager/profileManager.api';
 import changePassword from '../../../Redux/thunks/Manager/changePassword.api';
 import changePhone from '../../../Redux/thunks/Manager/changePhone.api';
-import getManagerInfo from '../../../Redux/thunks/Manager/getManagerInfo.api';
 import Wrapper from '../../../ui/Wrapper';
 import RoleSidebar from '../../RoleSidebar/RoleSidebar';
 
@@ -31,10 +30,6 @@ interface PasswordChangeData {
 const ProfileManager: FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(getManagerInfo());
-  }, [dispatch]);
 
   const managerProfile = useAppSelector<{
     lastName?: string;
