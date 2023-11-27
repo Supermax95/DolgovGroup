@@ -7,6 +7,7 @@ import addSubcategory from './thunks/SubCategory/addSubcategory.api';
 interface subcategory {
   id: number;
   subcategoryName: string;
+  categoryId: number;
 }
 
 interface subcategoryState {

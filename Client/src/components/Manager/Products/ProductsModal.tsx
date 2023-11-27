@@ -58,8 +58,8 @@ const ProductsModal: FC<ProductsModalProps> = ({
   editedProduct,
   setEditedProduct,
 }) => {
-  const subcategory = useAppSelector((state)=> state.subcategorySlice)
-  const category = useAppSelector((state)=>state.categorySlice)
+  const subcategory = useAppSelector((state) => state.subcategorySlice);
+  const category = useAppSelector((state) => state.categorySlice);
   const id = useAppSelector((state) => state.productSlice.postId);
   const dispatch = useAppDispatch();
   const [isUpload, setUpload] = useState(false);

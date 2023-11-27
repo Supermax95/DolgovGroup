@@ -5,7 +5,7 @@ import { VITE_URL } from '../../../VITE_URL';
 interface ResponseData {
   id: number;
   subcategoryName: string;
-  // subcategory: string;
+  categoryId: number;
 }
 
 type ArrayResponseData = Array<ResponseData>;

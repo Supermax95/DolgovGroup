@@ -7,14 +7,14 @@ interface RequestData {
   newInfo: {
     id: number;
     subcategoryName: string;
-    // subcategory: string;
+    categoryId: number;
   };
 }
 
 interface ResponseData {
   id: number;
   subcategoryName: string;
-  //   subcategory: string;
+  categoryId: number;
 }
 
 type ArrayResponseData = Array<ResponseData>;
