@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { Product } = require('../../db/models');
+const { Product, Subcategory } = require('../../db/models');
 
 router.get('/admin/products', async (req, res) => {
   try {
@@ -16,7 +16,16 @@ router.get('/admin/products', async (req, res) => {
 
 router.post('/admin/products', async (req, res) => {
   const { newProduct } = req.body;
+
   try {
+    const subcategory = await Subcategory.findOne({
+      where: { subcategoryName: newProduct.subcategoryName },
+    });
+
+    if (!subcategory) {
+      return res.status(400).json({ error: 'Подкатегория не найдена' });
+    }
+
     const createdProduct = await Product.create({
       productName: newProduct.productName,
       promoStartDate: newProduct.promoStartDate,
@@ -27,7 +36,7 @@ router.post('/admin/products', async (req, res) => {
       isNew: newProduct.isNew,
       isDiscounted: newProduct.isDiscounted,
       description: newProduct.description,
-      subcategoryId: newProduct.subcategoryId,
+      subcategoryId: subcategory.id,
     });
 
     const products = await Product.findAll({
@@ -62,8 +71,15 @@ router.delete('/admin/products/:id', async (req, res) => {
 router.put('/admin/products', async (req, res) => {
   const { newInfo } = req.body;
   try {
-    console.log('newInfo.id', newInfo.id);
-    Product.update(
+    const subcategory = await Subcategory.findOne({
+      where: { subcategoryName: newInfo.subcategoryName },
+    });
+
+    if (!subcategory) {
+      return res.status(400).json({ error: 'Подкатегория не найдена' });
+    }
+
+    const [updatedRowsCount] = await Product.update(
       {
         productName: newInfo.productName,
         promoStartDate: newInfo.promoStartDate,
@@ -74,12 +90,16 @@ router.put('/admin/products', async (req, res) => {
         isNew: newInfo.isNew,
         isDiscounted: newInfo.isDiscounted,
         description: newInfo.description,
-        subcategoryId: newInfo.subcategoryId,
+        subcategoryId: subcategory.id,
       },
       {
         where: { id: newInfo.id },
       }
     );
+
+    if (updatedRowsCount === 0) {
+      return res.status(404).json({ error: 'Продукт не найден' });
+    }
 
     const products = await Product.findAll({
       order: [['productName', 'ASC']],

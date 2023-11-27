@@ -7,7 +7,7 @@ interface RequestData {
   newInfo: {
     id: number;
     subcategoryName: string;
-    categoryId: number;
+    categoryName: string;
   };
 }
 

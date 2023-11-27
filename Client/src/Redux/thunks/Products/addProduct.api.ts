@@ -13,7 +13,7 @@ interface RequestData {
     isNew: boolean;
     isDiscounted: boolean;
     description: string;
-    subcategoryId: number;
+    subcategoryName: string;
   };
 }
 
