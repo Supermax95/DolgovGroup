@@ -58,8 +58,23 @@ const ProductsModal: FC<ProductsModalProps> = ({
   editedProduct,
   setEditedProduct,
 }) => {
-  const subcategory = useAppSelector((state) => state.subcategorySlice);
-  const category = useAppSelector((state) => state.categorySlice);
+  const subcategory = useAppSelector((state) => state.subcategorySlice.data);
+  console.log('subcategory', subcategory);
+
+  console.log('editedproduct', editedProduct);
+
+  const category = useAppSelector((state) => state.categorySlice.data);
+  console.log('category', category);
+
+  const selectedSubcategory = subcategory.find(
+    (subcategory) => subcategory.id === editedProduct.subcategoryId
+  );
+  const selectedCategory = category.find(
+    (category) => category.id === selectedSubcategory.categoryId
+  );
+  console.log('selectedcategory', selectedCategory?.categoryName);
+  console.log('selectedSubcategory', selectedSubcategory?.subcategoryName);
+
   const id = useAppSelector((state) => state.productSlice.postId);
   const dispatch = useAppDispatch();
   const [isUpload, setUpload] = useState(false);
@@ -149,17 +164,31 @@ const ProductsModal: FC<ProductsModalProps> = ({
 
   const inputFields: InputField[] = [
     {
-      id: 'subcategoryId',
-      type: 'number',
-      value: editedProduct.subcategoryId.toString(),
+      id: 'categoryName',
+      type: 'string',
+      value: selectedCategory ? selectedCategory.categoryName : '',
       placeholder: '',
       autoComplete: 'off',
-      title: 'ID категории продукта',
+      title: 'Категория продукта',
+      htmlFor: 'categoryId',
+      onChange: (value: string) =>
+        setEditedProduct({
+          ...editedProduct,
+          categoryName: value,
+        }),
+    },
+    {
+      id: 'subcategoryName',
+      type: 'string',
+      value: selectedSubcategory ? selectedSubcategory.subcategoryName : '',
+      placeholder: '',
+      autoComplete: 'off',
+      title: 'Подкатегоря продукта',
       htmlFor: 'subcategoryId',
       onChange: (value: string) =>
         setEditedProduct({
           ...editedProduct,
-          subcategoryId: parseInt(value, 10),
+          subcategoryName: value,
         }),
     },
     {

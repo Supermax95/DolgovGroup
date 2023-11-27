@@ -10,6 +10,7 @@ import addProduct from '../../../Redux/thunks/Products/addProduct.api';
 import Pagination from '../../../ui/Paggination';
 import Sidebar from '../../../ui/Sidebar';
 import getCategory from '../../../Redux/thunks/Category/getCategory.api';
+import getSubcategory from '../../../Redux/thunks/SubCategory/getSubcategory.api';
 
 export interface IProduct {
   id: number;
@@ -23,7 +24,7 @@ export interface IProduct {
   isDiscounted: boolean;
   description: string;
   photo: string;
-  subcategoryId: number;
+  subcategoryId?: number;
 }
 
 export interface ICategory {
@@ -55,6 +56,10 @@ const Products: FC = () => {
 
   useEffect(() => {
     dispatch(getCategory());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(getSubcategory());
   }, [dispatch]);
 
   const itemsPerPage = 30;
