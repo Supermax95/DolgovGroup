@@ -82,7 +82,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
   const uploadFile = async (
     file: File | null,
     id: number | undefined
-    // isAddingMode: boolean
+    // isAddingMode?: boolean
   ): Promise<void> => {
     if (file && id) {
       const formData = new FormData();
