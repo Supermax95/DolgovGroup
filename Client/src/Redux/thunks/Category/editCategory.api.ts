@@ -21,8 +21,9 @@ type ArrayResponseData = Array<ResponseData>;
 
 const editCategory = createAsyncThunk<ArrayResponseData, RequestData>(
   'admin/editcategory',
-
+  
   async ({ categoryId, newInfo }) => {
+    console.log('aaaaaxxxxiiooooos', categoryId, newInfo );
     try {
       const response: AxiosResponse = await axios.put(
         `${VITE_URL}/admin/category/${categoryId}`,

@@ -14,7 +14,7 @@ interface RequestData {
     isNew: boolean;
     isDiscounted: boolean;
     description: string;
-    subcategoryName: string;
+    subcategoryId: string;
   };
 }
 
@@ -41,7 +41,7 @@ const editProduct = createAsyncThunk<ResponseDataId, RequestData>(
   'admin/editProduct',
 
   async ({ newInfo }) => {
-    console.log(newInfo);
+    console.log('newInfo=======>', newInfo);
     try {
       const response: AxiosResponse = await axios.put(
         `${VITE_URL}/admin/products`,

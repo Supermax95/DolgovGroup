@@ -24,7 +24,7 @@ export interface IProduct {
   isDiscounted: boolean;
   description: string;
   photo: string;
-  subcategoryId?: number;
+  subcategoryId: number;
 }
 
 export interface ICategory {

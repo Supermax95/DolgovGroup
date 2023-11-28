@@ -115,7 +115,8 @@ const InputModal: FC<IInputModal> = ({
                 {field.title}
               </label>
             </>
-          ) : field.id === 'userStatus' ? (
+          ) : field.id === 'userStatus' ||
+            field.id === 'subcategoryId'|| field.id === 'categoryName'? (
             <div className="relative">
               <select
                 id={field.id}

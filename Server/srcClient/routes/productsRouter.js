@@ -70,16 +70,9 @@ router.delete('/admin/products/:id', async (req, res) => {
 
 router.put('/admin/products', async (req, res) => {
   const { newInfo } = req.body;
+
   try {
-    const subcategory = await Subcategory.findOne({
-      where: { subcategoryName: newInfo.subcategoryName },
-    });
-
-    if (!subcategory) {
-      return res.status(400).json({ error: 'Подкатегория не найдена' });
-    }
-
-    const [updatedRowsCount] = await Product.update(
+    await Product.update(
       {
         productName: newInfo.productName,
         promoStartDate: newInfo.promoStartDate,
@@ -90,16 +83,12 @@ router.put('/admin/products', async (req, res) => {
         isNew: newInfo.isNew,
         isDiscounted: newInfo.isDiscounted,
         description: newInfo.description,
-        subcategoryId: subcategory.id,
+        subcategoryId: newInfo.subcategoryId,
       },
       {
         where: { id: newInfo.id },
       }
     );
-
-    if (updatedRowsCount === 0) {
-      return res.status(404).json({ error: 'Продукт не найден' });
-    }
 
     const products = await Product.findAll({
       order: [['productName', 'ASC']],
