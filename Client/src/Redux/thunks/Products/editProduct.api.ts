@@ -47,6 +47,8 @@ const editProduct = createAsyncThunk<ResponseDataId, RequestData>(
         `${VITE_URL}/admin/products`,
         { newInfo }
       );
+      console.log('response.data put', response.data);
+
       return response.data;
     } catch (error) {
       console.error('Error:', error);

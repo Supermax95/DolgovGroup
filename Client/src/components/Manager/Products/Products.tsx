@@ -11,6 +11,8 @@ import Pagination from '../../../ui/Paggination';
 import Sidebar from '../../../ui/Sidebar';
 import getCategory from '../../../Redux/thunks/Category/getCategory.api';
 import getSubcategory from '../../../Redux/thunks/SubCategory/getSubcategory.api';
+import ProductSidebar from '../../ProductSidebar/ProductSidebar';
+
 
 export interface IProduct {
   id: number;
@@ -161,19 +163,20 @@ const Products: FC = () => {
     }
   };
 
-  const uniqueCategory = [
-    ...new Set(category.map((category) => category.categoryName)),
-  ];
+  // const uniqueCategory = [
+  //   ...new Set(category.map((category) => category.categoryName)),
+  // ];
 
   return (
     <Wrapper>
-      <Sidebar
+      {/* <Sidebar
         items={uniqueCategory}
         onItemSelect={setSelectedCategory}
         title="Категории"
         setCurrentPage={setCurrentPage}
         displayKey={(categoryName) => categoryName}
-      />
+      /> */}
+      <ProductSidebar />
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         <div className="col-span-full mb-4">
           <div className="flex items-center justify-between">

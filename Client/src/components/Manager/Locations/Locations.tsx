@@ -109,7 +109,7 @@ const Location: FC = () => {
   // Извлекаем уникальные города
   const uniqueCities = [...new Set(locations.map((location) => location.city))];
 
-  const openAddModal = () => {
+  const openAddModal = (): void => {
     setAddingMode(true);
     setEditedLocation({
       id: 0,
@@ -122,26 +122,26 @@ const Location: FC = () => {
     setModalOpen(true);
   };
 
-  const openEditModal = (location: ILocation) => {
+  const openEditModal = (location: ILocation): void => {
     setSelectedLocation(location);
     setEditedLocation({ ...location });
     setAddingMode(false);
     setModalOpen(true);
   };
 
-  const closeAddModal = () => {
+  const closeAddModal = (): void => {
     setSelectedLocation(null);
     setEditedLocation(null);
     setModalOpen(false);
   };
 
-  const closeEditModal = () => {
+  const closeEditModal = (): void => {
     setSelectedLocation(null);
     setEditedLocation(null);
     setModalOpen(false);
   };
 
-  const handleSaveAdd = async () => {
+  const handleSaveAdd = async (): Promise<void> => {
     try {
       if (editedLocation) {
         await dispatch(
@@ -156,7 +156,7 @@ const Location: FC = () => {
     }
   };
 
-  const handleSaveEdit = async (editedLocation: ILocation) => {
+  const handleSaveEdit = async (editedLocation: ILocation): Promise<void> => {
     try {
       if (selectedLocation) {
         await dispatch(
