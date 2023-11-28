@@ -38,6 +38,8 @@ const ProductSidebar: FC = () => {
   const [dataEditCategory, setDataEditCategory] = useState<
     ICategory | null | undefined
   >({ id: 0, categoryName: '' });
+  const [editingCategoryData, setEditingCategoryData] = useState<ICategory | null>(null);
+
 
   const menuRef = useRef<HTMLDivElement | null>(null);
   // const [menuPosition, setMenuPosition] = useState<{
@@ -112,24 +114,41 @@ const ProductSidebar: FC = () => {
 
   // ? логика редактирование категории
   //* выбирает нужную категорию товара по id
-  const startEditingCategory = (id: number): void => {
-    setEditingCategory(id);
-  };
+  // const startEditingCategory = (id: number): void => {
+  //   setEditingCategory(id);
+  // };
 
   const stopEditing = (): void => {
     setEditingCategory(null);
   };
 
-  const handleFieldChange = (item: string, value: string): void => {
-    console.log('item', item);
-    console.log('valuevalue', value);
+  // const handleFieldChange = (item: string, value: string): void => {
+  //   console.log('item', item);
+  //   console.log('valuevalue', value);
 
+  //   setDataEditCategory((prev) => ({
+  //     ...prev,
+  //     [item]: value,
+  //   }));
+  // };
+  const handleFieldChange = (item: string, value: string): void => {
     setDataEditCategory((prev) => ({
       ...prev,
       [item]: value,
     }));
+    setEditingCategoryData((prev) => ({
+      ...prev,
+      [item]: value,
+    }));
   };
+  
 
+  const startEditingCategory = (id: number): void => {
+    setEditingCategory(id);
+    const categoryToEdit = allCategory.find((item) => item.id === id);
+    setEditingCategoryData(categoryToEdit || null);
+  };
+  
   const editedCategoryHandleForm = async (
     e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
@@ -225,19 +244,20 @@ const ProductSidebar: FC = () => {
                         type="text"
                         id={item.categoryName}
                         placeholder=""
-                        value={item.categoryName}
+                        value={editingCategoryData?.categoryName || ''}
                         autoComplete="off"
                         required={true}
                         className="block py-2.5 px-0 w-full text-xs text-slate-500 text-normal bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
                         // onChange={(e) =>
                         //   handleFieldChange(item.categoryName, e.target.value)
                         // }
-                        onChange={(e) =>
-                          setDataEditCategory({
-                            ...dataEditCategory,
-                            categoryName: e.target.value,
-                          })
-                        }
+                        // onChange={(e) =>
+                        //   setDataEditCategory({
+                        //     ...dataEditCategory,
+                        //     categoryName: e.target.value,
+                        //   })
+                        // }
+                        onChange={(e) => handleFieldChange('categoryName', e.target.value)}
                       />
                     </form>
                   ) : (
