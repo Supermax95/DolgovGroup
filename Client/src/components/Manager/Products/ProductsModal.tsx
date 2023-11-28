@@ -24,13 +24,14 @@ interface Product {
 }
 
 interface Category {
-  id: number;
-  categoryName: string;
+  id: number | 0;
+  categoryName: string | '';
 }
 
 interface Subcategory {
-  categoryId: number;
-  subcategoryName: string;
+  id: number | null;
+  categoryId: number | 0;
+  subcategoryName: string | '';
 }
 
 interface ProductsModalProps {
@@ -58,21 +59,33 @@ const ProductsModal: FC<ProductsModalProps> = ({
   editedProduct,
   setEditedProduct,
 }) => {
-  const subcategory = useAppSelector((state) => state.subcategorySlice);
-  const category = useAppSelector((state) => state.categorySlice);
+  const subcategory = useAppSelector((state) => state.subcategorySlice.data);
+  const category = useAppSelector((state) => state.categorySlice.data);
+  console.log('category', category);
+
+  const selectedSubcategory = editedProduct?.subcategoryId
+    ? subcategory.find(
+        (subcategory) => subcategory.id === editedProduct.subcategoryId
+      )
+    : null;
+  console.log('selectedSubcategory', selectedSubcategory);
+  const selectedCategory = selectedSubcategory
+    ? category.find(
+        (category) => category.id === selectedSubcategory.categoryId
+      )
+    : null;
+  console.log('selectedCategory', selectedCategory);
+
   const id = useAppSelector((state) => state.productSlice.postId);
   const dispatch = useAppDispatch();
   const [isUpload, setUpload] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
-
   useEffect(() => {
     if (product) {
       setEditedProduct({ ...product });
     }
   }, [product, isAddingMode, setEditedProduct]);
-
   const modalTitle = isAddingMode ? 'Новый продукт' : 'Редактирование продукта';
-
   const handleCancel = () => {
     setEditedProduct(undefined);
     onCloseEditModal();
@@ -107,10 +120,40 @@ const ProductsModal: FC<ProductsModalProps> = ({
     }
   };
 
+  // const handleFormSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+
+  //   if (currentStep === 1) {
+  //     if (isAddingMode) {
+  //       onSaveAdd(editedProduct as IProduct);
+  //     } else {
+  //       onSaveEdit(editedProduct as IProduct);
+  //     }
+
+  //     setCurrentStep(2);
+  //     setUpload(true);
+  //   } else if (currentStep === 2) {
+  //     const fileInput = document.getElementById(
+  //       'fileInput'
+  //     ) as HTMLInputElement;
+  //     const file = fileInput?.files?.[0];
+
+  //     await uploadFile(file, id, isAddingMode);
+  //   }
+  // };
+
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (currentStep === 1) {
+      if (
+        !selectedSubcategory ||
+        selectedSubcategory.subcategoryName === 'Выберите категорию'
+      ) {
+        alert('Пожалуйста, выберите категорию продукта');
+        return;
+      }
+
       if (isAddingMode) {
         onSaveAdd(editedProduct as IProduct);
       } else {
@@ -147,21 +190,96 @@ const ProductsModal: FC<ProductsModalProps> = ({
     return null;
   }
 
+  const uniqueCategories = Array.from(
+    new Set(category.map((cat) => cat.categoryName))
+  );
+  const uniqueSubcategories = Array.from(
+    new Set(
+      subcategory
+        .filter((subcat) => subcat.categoryId === selectedCategory?.id)
+        .map((cat) => cat.subcategoryName)
+    )
+  );
+
   const inputFields: InputField[] = [
     {
-      id: 'subcategoryId',
-      type: 'number',
-      value: editedProduct.subcategoryId.toString(),
+      id: 'categoryName',
+      type: 'text',
+      value: selectedCategory
+        ? selectedCategory.categoryName
+        : 'Выберите категорию',
       placeholder: '',
       autoComplete: 'off',
-      title: 'ID категории продукта',
-      htmlFor: 'subcategoryId',
-      onChange: (value: string) =>
-        setEditedProduct({
-          ...editedProduct,
-          subcategoryId: parseInt(value, 10),
-        }),
+      title: 'Категория продукта',
+      htmlFor: 'categoryName',
+      onChange: (value: string) => {
+        const selectedCategory = category.find(
+          (cat) => cat.categoryName === value
+        );
+        if (selectedCategory) {
+          const filteredSubcategories = subcategory.filter(
+            (subcat) => subcat.categoryId === selectedCategory.id
+          );
+
+          const firstSubcategory = filteredSubcategories[0];
+
+          setEditedProduct({
+            ...editedProduct,
+            subcategoryId: firstSubcategory ? firstSubcategory.id : 1,
+          });
+        }
+      },
+      options: [
+        ...(selectedCategory
+          ? []
+          : [
+              {
+                value: 'Выберите категорию',
+                label: 'Выберите категорию',
+              },
+            ]),
+        ...uniqueCategories.map((cat) => ({
+          value: cat,
+          label: cat,
+        })),
+      ],
+      required: true,
     },
+    {
+      id: 'subcategoryId',
+      type: 'text',
+      value: selectedSubcategory ? selectedSubcategory.subcategoryName : '',
+      placeholder: '',
+      autoComplete: 'off',
+      title: 'Подкатегоря продукта',
+      htmlFor: 'subcategoryId',
+      onChange: (value: string) => {
+        const selectedSubcategory = subcategory.find(
+          (subcat) => subcat.subcategoryName === value
+        );
+        if (selectedSubcategory) {
+          setEditedProduct({
+            ...editedProduct,
+            subcategoryId: selectedSubcategory?.id ?? 1,
+          });
+        }
+      },
+      options: [
+        ...(selectedSubcategory
+          ? []
+          : [
+              {
+                value: 'Выберите подкатегорию',
+                label: 'Выберите подкатегорию',
+              },
+            ]),
+        ...uniqueSubcategories.map((subcat) => ({
+          value: subcat,
+          label: subcat,
+        })),
+      ],
+      required: true,
+    },    
     {
       id: 'productName',
       type: 'text',
@@ -175,6 +293,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
           ...editedProduct,
           productName: value,
         }),
+      required: true,
     },
     {
       id: 'promoStartDate',

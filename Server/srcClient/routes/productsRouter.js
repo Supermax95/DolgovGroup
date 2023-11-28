@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { Product } = require('../../db/models');
+const { Product, Subcategory } = require('../../db/models');
 
 router.get('/admin/products', async (req, res) => {
   try {
@@ -16,6 +16,7 @@ router.get('/admin/products', async (req, res) => {
 
 router.post('/admin/products', async (req, res) => {
   const { newProduct } = req.body;
+
   try {
     const createdProduct = await Product.create({
       productName: newProduct.productName,
@@ -61,9 +62,9 @@ router.delete('/admin/products/:id', async (req, res) => {
 
 router.put('/admin/products', async (req, res) => {
   const { newInfo } = req.body;
+
   try {
-    console.log('newInfo.id', newInfo.id);
-    Product.update(
+    await Product.update(
       {
         productName: newInfo.productName,
         promoStartDate: newInfo.promoStartDate,

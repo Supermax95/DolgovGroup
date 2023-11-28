@@ -98,18 +98,6 @@ const productSlice = createSlice({
         state.isLoading = false;
         state.error = action.error.message || 'Произошла ошибка при добавлении';
       });
-    //   .addCase(uploadFile.pending, (state) => {
-    //     state.isLoading = true;
-    //   })
-    //   .addCase(uploadFile.fulfilled, (state, action) => {
-    //     state.isLoading = false;
-    //     state.message = action.payload.message;
-    //   })
-    //   .addCase(uploadFile.rejected, (state, action) => {
-    //     state.isLoading = false;
-    //     state.error =
-    //       action.error.message || 'Произошла ошибка при загрузке файла';
-    //   });
   },
 });
 

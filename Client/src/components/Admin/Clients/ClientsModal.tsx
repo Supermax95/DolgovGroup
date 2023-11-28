@@ -39,6 +39,7 @@ const ClientsModal: React.FC<UsersModalProps> = ({
 }) => {
   const dispatch = useAppDispatch();
 
+
   useEffect(() => {
     if (user) {
       setEditedUser({ ...user });

@@ -10,7 +10,9 @@ import addProduct from '../../../Redux/thunks/Products/addProduct.api';
 import Pagination from '../../../ui/Paggination';
 import Sidebar from '../../../ui/Sidebar';
 import getCategory from '../../../Redux/thunks/Category/getCategory.api';
+import getSubcategory from '../../../Redux/thunks/SubCategory/getSubcategory.api';
 import ProductSidebar from '../../ProductSidebar/ProductSidebar';
+
 
 export interface IProduct {
   id: number;
@@ -56,6 +58,10 @@ const Products: FC = () => {
 
   useEffect(() => {
     dispatch(getCategory());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(getSubcategory());
   }, [dispatch]);
 
   const itemsPerPage = 30;

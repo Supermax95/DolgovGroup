@@ -3,10 +3,10 @@ import axios, { AxiosResponse } from 'axios';
 import { VITE_URL } from '../../../VITE_URL';
 
 interface RequestData {
-  newCategory: {
+  newSubcategory: {
     id: number;
     subcategoryName: string;
-    categoryId: number;
+    categoryName: string;
   };
 }
 
@@ -21,13 +21,13 @@ type ArrayResponseData = Array<ResponseData>;
 const addSubcategory = createAsyncThunk<ArrayResponseData, RequestData>(
   'admin/addsubcategory',
 
-  async ({ newCategory }) => {
+  async ({ newSubcategory }) => {
     try {
-      console.log('axios', newCategory);
+      console.log('axios', newSubcategory);
 
       const response: AxiosResponse = await axios.post(
         `${VITE_URL}/admin/subcategory`,
-        { newCategory }
+        { newSubcategory }
       );
       return response.data;
     } catch (error) {
