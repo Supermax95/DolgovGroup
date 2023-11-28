@@ -18,14 +18,6 @@ router.post('/admin/products', async (req, res) => {
   const { newProduct } = req.body;
 
   try {
-    const subcategory = await Subcategory.findOne({
-      where: { subcategoryName: newProduct.subcategoryName },
-    });
-
-    if (!subcategory) {
-      return res.status(400).json({ error: 'Подкатегория не найдена' });
-    }
-
     const createdProduct = await Product.create({
       productName: newProduct.productName,
       promoStartDate: newProduct.promoStartDate,
@@ -36,7 +28,7 @@ router.post('/admin/products', async (req, res) => {
       isNew: newProduct.isNew,
       isDiscounted: newProduct.isDiscounted,
       description: newProduct.description,
-      subcategoryId: subcategory.id,
+      subcategoryId: newProduct.subcategoryId,
     });
 
     const products = await Product.findAll({
