@@ -279,7 +279,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
         })),
       ],
       required: true,
-    },    
+    },
     {
       id: 'productName',
       type: 'text',
@@ -297,7 +297,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
     },
     {
       id: 'promoStartDate',
-      type: 'text',
+      type: 'date',
       value: editedProduct.promoStartDate,
       autoComplete: 'off',
       placeholder: '',
@@ -311,7 +311,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
     },
     {
       id: 'promoEndDate',
-      type: 'text',
+      type: 'date',
       value: editedProduct.promoEndDate,
       autoComplete: 'off',
       placeholder: '',
@@ -367,24 +367,21 @@ const ProductsModal: FC<ProductsModalProps> = ({
     },
     {
       id: 'isNew',
-      type: 'select',
-      value: String(editedProduct.isNew),
+      type: 'text',
+      value: editedProduct.isNew,
+      title: 'Новый',
       htmlFor: 'isNew',
       onChange: (value: boolean) =>
         setEditedProduct({
           ...editedProduct,
-          isNew: value === 'true',
+          isNew: value,
         }),
-      options: [
-        { value: 'true', label: 'Новый' },
-        { value: 'false', label: 'Старый' },
-      ],
-      required: true,
     },
     {
       id: 'isDiscounted',
       type: 'text',
-      checked: editedProduct.isDiscounted,
+      value: editedProduct.isDiscounted,
+      title: 'Скидка',
       htmlFor: 'isDiscounted',
       onChange: (value: boolean) =>
         setEditedProduct({

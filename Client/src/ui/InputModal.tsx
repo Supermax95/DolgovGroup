@@ -43,7 +43,18 @@ const InputModal: FC<IInputModal> = ({
     <div className={`${containerClassName}`}>
       {inputFields.map((field) => (
         <div key={field.id} className="relative">
-          {field.id === 'isActivated' ? (
+          
+          {field.id === 'isNew' || field.id === 'isDiscounted' ? (
+            <div className="flex items-center">
+              <span>{field.title}</span>
+              <input
+                type="checkbox"
+                checked={field.value as boolean}
+                onChange={() => field.onChange?.(!field.value as boolean)}
+                className="form-checkbox h-5 w-5 text-green-400 ml-2"
+              />
+            </div>
+          ) : field.id === 'isActivated' ? (
             field.value ? (
               <div className="flex justify-between">
                 <div className="flex justify-start items-center">
@@ -116,7 +127,8 @@ const InputModal: FC<IInputModal> = ({
               </label>
             </>
           ) : field.id === 'userStatus' ||
-            field.id === 'subcategoryId'|| field.id === 'categoryName'? (
+            field.id === 'subcategoryId' ||
+            field.id === 'categoryName' ? (
             <div className="relative">
               <select
                 id={field.id}
