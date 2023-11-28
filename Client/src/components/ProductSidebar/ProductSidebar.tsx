@@ -7,10 +7,11 @@ import {
   XCircleIcon,
 } from '@heroicons/react/24/outline';
 import addCategory from '../../Redux/thunks/Category/addCategory.api';
+import deleteCategory from '../../Redux/thunks/Category/deleteCategory.api';
 
-export interface ICategory {
-  id?: number | undefined;
-  categoryName: string;
+interface ICategory {
+  id?: number;
+  categoryName?: string | undefined;
 }
 
 const ProductSidebar: FC = () => {
@@ -19,18 +20,24 @@ const ProductSidebar: FC = () => {
   const allCategory = useAppSelector<ICategory[]>(
     (state) => state.categorySlice.data
   );
+  console.log('allCategory', allCategory);
 
   const [isMenuOpen, setMenuOpen] = useState<boolean>(false);
-  //! переименовать
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState<ICategory | null>(
+    null
+  );
 
   //* добавление категории
   const [isAddingCategory, setAddingCategory] = useState<boolean>(false);
-  const [editedCategoryName, setEditedCategoryName] = useState<
+  const [dataCategory, setDataCategory] = useState<
     ICategory | null | undefined
   >({ id: 0, categoryName: '' });
 
-  const [isEditing, setEditing] = useState<number | null>(null);
+  // ? редактирование категории
+  const [isEditingCategory, setEditingCategory] = useState<number | null>(null);
+  const [dataEditCategory, setDataEditCategory] = useState<
+    ICategory | null | undefined
+  >({ id: 0, categoryName: '' });
 
   const menuRef = useRef<HTMLDivElement | null>(null);
   // const [menuPosition, setMenuPosition] = useState<{
@@ -74,17 +81,17 @@ const ProductSidebar: FC = () => {
     };
   }, []);
 
-  //* логика добавления категории
+  // ? логика добавления категории
   const startAddingCategory = (): void => {
     setAddingCategory(true);
   };
 
   const cancelAddingCategory = (): void => {
     setAddingCategory(false);
-    setEditedCategoryName(null);
+    setDataCategory(null);
   };
 
-  const handleFormSubmit = async (
+  const addedHandleForm = async (
     e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault();
@@ -92,24 +99,46 @@ const ProductSidebar: FC = () => {
       if (addCategory) {
         await dispatch(
           addCategory({
-            newCategory: editedCategoryName,
+            newCategory: dataCategory,
           })
         );
         setAddingCategory(false);
-        setEditedCategoryName(null);
+        setDataCategory(null);
       }
     } catch (error) {
       console.error('Произошла ошибка при добавлении:', error);
     }
   };
 
-  //* логика редактирования категории
+  // ? логика редактирование категории
+  //* выбирает нужную категорию товара по id
   const startEditingCategory = (id: number): void => {
-    setEditing(id);
+    setEditingCategory(id);
   };
 
   const stopEditing = (): void => {
-    setEditing(null);
+    setEditingCategory(null);
+  };
+
+  const handleFieldChange = (item: string, value: string): void => {
+    console.log('item', item);
+    console.log('valuevalue', value);
+
+    setDataEditCategory((prev) => ({
+      ...prev,
+      [item]: value,
+    }));
+  };
+
+  const editedCategoryHandleForm = async (
+    e: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
+    e.preventDefault();
+  };
+
+  // ? удаление категории
+  const deleteCategoryHandler = (id: number): void => {
+    dispatch(deleteCategory(id));
   };
 
   return (
@@ -121,7 +150,7 @@ const ProductSidebar: FC = () => {
         <ul className="pt-4 pb-2 space-y-1 text-md">
           <li className="h-full">
             {isAddingCategory ? (
-              <form onSubmit={handleFormSubmit}>
+              <form onSubmit={addedHandleForm}>
                 <div className="relative">
                   <input
                     id="newCategory"
@@ -129,20 +158,20 @@ const ProductSidebar: FC = () => {
                     placeholder=""
                     autoComplete="off"
                     required={true}
-                    value={editedCategoryName?.categoryName || ''}
+                    value={dataCategory?.categoryName || ''}
                     //! если будет map
                     // onChange={(value: string) =>
-                    //   setEditedCategoryName({
-                    //     ...editedCategoryName,
+                    //   setDataCategory({
+                    //     ...dataCategory,
                     //     categoryName: value,
                     //   })
                     onChange={(e) =>
-                      setEditedCategoryName({
-                        ...editedCategoryName,
+                      setDataCategory({
+                        ...dataCategory,
                         categoryName: e.target.value,
                       })
                     }
-                    className="cursor-pointer block py-2.5 px-0 w-full text-xs text-slate-500 text-normal bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
+                    className="block py-2.5 px-0 w-full text-xs text-slate-500 text-normal bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
                   />
                   <label
                     htmlFor="newCategory"
@@ -188,11 +217,10 @@ const ProductSidebar: FC = () => {
                 className="flex items-center p-2 justify-between rounded-md hover:bg-slate-100 "
               >
                 <div className="">
-                  {/* <span className="text-slate-600 text-sm font-normal">
-                    {item.categoryName}
-                  </span> */}
-                  {isEditing === item.id ? (
-                    <>
+                  {isEditingCategory === item.id ? (
+                    <form
+                    //onSubmit={editedCategoryHandleForm}
+                    >
                       <input
                         type="text"
                         id={item.categoryName}
@@ -200,24 +228,25 @@ const ProductSidebar: FC = () => {
                         value={item.categoryName}
                         autoComplete="off"
                         required={true}
-                        className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
-                        //   onChange={(e) =>
-                        //     handleRenameCategory(item.id, e.target.value)
-                        //   }
-                        //   onBlur={stopEditing}
-                        //  autoFocus
+                        className="block py-2.5 px-0 w-full text-xs text-slate-500 text-normal bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
+                        // onChange={(e) =>
+                        //   handleFieldChange(item.categoryName, e.target.value)
+                        // }
+                        onChange={(e) =>
+                          setDataEditCategory({
+                            ...dataEditCategory,
+                            categoryName: e.target.value,
+                          })
+                        }
                       />
-                    </>
+                    </form>
                   ) : (
                     <span className="text-slate-600 text-sm font-normal">
                       {item.categoryName}
                     </span>
                   )}
                 </div>
-                <div
-                  //onClick={() => toggleMenu(item.id)}
-                  onClick={(e) => toggleMenu(item.id)}
-                >
+                <div onClick={() => toggleMenu(item.id)}>
                   <Cog8ToothIcon className="cursor-pointer w-5 h-5 text-slate-600" />
                 </div>
                 {selectedCategory === item.id && (
@@ -225,7 +254,7 @@ const ProductSidebar: FC = () => {
                     //! появляться должно при нажатии на конкретную категорию по шестеррёнке
                     ref={menuRef}
                     id={`dropdownRight-${item.id}`}
-                    className={`z-10 absolute ${menuClass} top-12 w-52 left-24  bg-white divide-y divide-gray-100 rounded-lg shadow`}
+                    className={`z-10 absolute ${menuClass} top-32 w-52 left-24  bg-white divide-y divide-gray-100 rounded-lg shadow`}
                     //className={`z-10 absolute ${menuClass} top-${menuPosition.top} left-${menuPosition.left} bg-white divide-y divide-gray-100 rounded-lg shadow`}
                   >
                     <ul
@@ -248,7 +277,10 @@ const ProductSidebar: FC = () => {
                         <span className="block">Переименовать категорию</span>
                       </li>
 
-                      <li className="flex items-center px-4 py-2 space-x-2 hover:bg-slate-100">
+                      <li
+                        onClick={() => deleteCategoryHandler(item.id)}
+                        className="flex items-center px-4 py-2 space-x-2 hover:bg-slate-100"
+                      >
                         <div>
                           <XCircleIcon className="w-4 h-4 text-slate-600" />
                         </div>

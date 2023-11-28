@@ -83,6 +83,8 @@ const ManagementModal: FC<ManagersModalProps> = ({
   };
 
   const handleDelete = () => {
+    //console.log('editedManager', editedManager);
+
     if (editedManager && editedManager.id) {
       const managerId = editedManager.id;
 

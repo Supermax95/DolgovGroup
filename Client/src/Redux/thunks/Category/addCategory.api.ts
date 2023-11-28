@@ -3,18 +3,12 @@ import axios, { AxiosResponse } from 'axios';
 import { VITE_URL } from '../../../VITE_URL';
 
 interface RequestData {
-  // newCategory: {
-  //   //  id: number;
-  //   categoryName: string;
-  //   // subcategory: string;
-  // };
   newCategory: string;
 }
 
 interface ResponseData {
   id: number;
   categoryName: string;
-  // subcategory: string;
 }
 
 type ArrayResponseData = Array<ResponseData>;
