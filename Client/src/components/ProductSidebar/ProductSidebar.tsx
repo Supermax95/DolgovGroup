@@ -5,9 +5,14 @@ import {
   PencilIcon,
   PlusCircleIcon,
   XCircleIcon,
+  CheckCircleIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  Squares2X2Icon,
 } from '@heroicons/react/24/outline';
 import addCategory from '../../Redux/thunks/Category/addCategory.api';
 import deleteCategory from '../../Redux/thunks/Category/deleteCategory.api';
+import editCategory from '../../Redux/thunks/Category/editCategory.api';
 
 interface ICategory {
   id?: number;
@@ -20,7 +25,6 @@ const ProductSidebar: FC = () => {
   const allCategory = useAppSelector<ICategory[]>(
     (state) => state.categorySlice.data
   );
-  console.log('allCategory', allCategory);
 
   const [isMenuOpen, setMenuOpen] = useState<boolean>(false);
   const [selectedCategory, setSelectedCategory] = useState<ICategory | null>(
@@ -35,11 +39,9 @@ const ProductSidebar: FC = () => {
 
   // ? редактирование категории
   const [isEditingCategory, setEditingCategory] = useState<number | null>(null);
-  const [dataEditCategory, setDataEditCategory] = useState<
-    ICategory | null | undefined
-  >({ id: 0, categoryName: '' });
-  const [editingCategoryData, setEditingCategoryData] = useState<ICategory | null>(null);
-
+  const [dataEditCategory, setDataEditCategory] = useState<ICategory | null>(
+    null
+  );
 
   const menuRef = useRef<HTMLDivElement | null>(null);
   // const [menuPosition, setMenuPosition] = useState<{
@@ -51,16 +53,20 @@ const ProductSidebar: FC = () => {
   // });
   //console.log('menuPosition', menuPosition);
 
+  //* дополнительное меню для каждой категории
+  //!  удаётся закрыть по шестерёнке при повторном нажатии, но не по любой области
   const toggleMenu = (id: number): void => {
-    console.log('id', id);
-
-    setSelectedCategory(id);
-    setMenuOpen(!isMenuOpen);
-    // setMenuPosition({ top: 0, left: 0 });
+    if (selectedCategory === id) {
+      setSelectedCategory(null);
+      setMenuOpen(false);
+    } else {
+      setSelectedCategory(id);
+      setMenuOpen(true);
+    }
   };
-
   const menuClass = isMenuOpen ? 'block' : 'hidden';
 
+  // позволяет закрывать при нажатии на любую область
   const handleClickOutside = (e: MouseEvent): void => {
     if (
       menuRef.current &&
@@ -69,10 +75,7 @@ const ProductSidebar: FC = () => {
     ) {
       setMenuOpen(false);
       setSelectedCategory(null);
-      //   setMenuPosition({
-      //     top: menuPosition.top + 12,
-      //     left: menuPosition.top + 24,
-      //   });
+      setEditingCategory(null);
     }
   };
 
@@ -112,47 +115,51 @@ const ProductSidebar: FC = () => {
     }
   };
 
-  // ? логика редактирование категории
+  // ? логика редактирования категории
   //* выбирает нужную категорию товара по id
-  // const startEditingCategory = (id: number): void => {
-  //   setEditingCategory(id);
-  // };
+  const startEditingCategory = (id: number): void => {
+    setEditingCategory(id);
+    //* ищет конкретное поле
+    const categoryToEdit = allCategory.find((item) => item.id === id);
+    //* здесь передаётся...
+    setMenuOpen(false);
+
+    setDataEditCategory(categoryToEdit || null);
+  };
 
   const stopEditing = (): void => {
     setEditingCategory(null);
+    setDataEditCategory(null);
   };
 
-  // const handleFieldChange = (item: string, value: string): void => {
-  //   console.log('item', item);
-  //   console.log('valuevalue', value);
-
-  //   setDataEditCategory((prev) => ({
-  //     ...prev,
-  //     [item]: value,
-  //   }));
-  // };
-  const handleFieldChange = (item: string, value: string): void => {
+  // раскрывает предыдущее и записывает текущее состояние
+  const handleFieldChange = (fild: keyof ICategory, value: string): void => {
     setDataEditCategory((prev) => ({
       ...prev,
-      [item]: value,
-    }));
-    setEditingCategoryData((prev) => ({
-      ...prev,
-      [item]: value,
+      [fild]: value,
     }));
   };
-  
 
-  const startEditingCategory = (id: number): void => {
-    setEditingCategory(id);
-    const categoryToEdit = allCategory.find((item) => item.id === id);
-    setEditingCategoryData(categoryToEdit || null);
-  };
-  
   const editedCategoryHandleForm = async (
     e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault();
+
+    try {
+      if (editCategory) {
+        const result = await dispatch(
+          editCategory({
+            categoryId: dataEditCategory.id,
+            newCategoryName: dataEditCategory?.categoryName,
+          })
+        );
+        if (editCategory.fulfilled.match(result)) {
+          setEditingCategory(null);
+        }
+      }
+    } catch (error) {
+      console.error('Произошла ошибка при добавлении:', error);
+    }
   };
 
   // ? удаление категории
@@ -161,23 +168,24 @@ const ProductSidebar: FC = () => {
   };
 
   return (
-    <div className="flex flex-col w-52 bg-white h-full border-r-2 border-orange-300">
-      <div className="h-16 flex items-center justify-center border-b-2 border-orange-300">
-        <h2 className="text-lg font-normal text-slate-600">Каталог</h2>
+    <div className="flex flex-col w-64 bg-white h-full border-r-2 border-orange-300">
+      <div className="h-12 flex items-center justify-center border-b-2 border-orange-300">
+        <h2 className="text-lg font-bold text-slate-600">Каталог</h2>
       </div>
-      <div className="h-full relative w-48">
+      <div className="h-full relative w-60">
         <ul className="pt-4 pb-2 space-y-1 text-md">
           <li className="h-full">
             {isAddingCategory ? (
               <form onSubmit={addedHandleForm}>
-                <div className="relative">
+                <div className="relative ml-6 p-2">
                   <input
                     id="newCategory"
                     type="text"
-                    placeholder=""
+                    placeholder="Название категории"
                     autoComplete="off"
                     required={true}
                     value={dataCategory?.categoryName || ''}
+                    autoFocus
                     //! если будет map
                     // onChange={(value: string) =>
                     //   setDataCategory({
@@ -190,23 +198,15 @@ const ProductSidebar: FC = () => {
                         categoryName: e.target.value,
                       })
                     }
-                    className="block py-2.5 px-0 w-full text-xs text-slate-500 text-normal bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
+                    className="block pr-8 py-1.5 px-2 w-52 text-sm text-slate-500 text-normal bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
                   />
-                  <label
-                    htmlFor="newCategory"
-                    className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-normal peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm"
-                  >
-                    Название категории
-                  </label>
-                </div>
-                <div className="flex items-center p-2 justify-between  ">
-                  <button
-                    type="submit"
-                    className="text-lime-600 text-sm font-normal"
-                  >
-                    Сохранить
-                  </button>
-                  <div>
+                  <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center space-x-1">
+                    <button
+                      type="submit"
+                      className="text-lime-600 text-sm font-normal"
+                    >
+                      <CheckCircleIcon className="cursor-pointer w-5 h-5 text-lime-600" />
+                    </button>
                     <XCircleIcon
                       onClick={cancelAddingCategory}
                       className="cursor-pointer w-5 h-5 text-amber-600"
@@ -217,12 +217,14 @@ const ProductSidebar: FC = () => {
             ) : (
               <div
                 onClick={startAddingCategory}
-                className="cursor-pointer flex items-center p-2 justify-between rounded-md hover:bg-slate-100 "
+                className="cursor-pointer flex items-center p-2 justify-between rounded-md hover:bg-slate-100"
               >
-                <span className="text-lime-600 text-sm font-normal">
-                  Добавить категорию
-                </span>
-                <div>
+                <div className="flex items-center p-2 justify-center ml-6">
+                  <span className="text-lime-600 text-sm font-bold">
+                    Добавить категорию
+                  </span>
+                </div>
+                <div className="flex items-center ml-auto">
                   <PlusCircleIcon className="cursor-pointer w-5 h-5 text-lime-600" />
                 </div>
               </div>
@@ -231,44 +233,55 @@ const ProductSidebar: FC = () => {
 
           <li className="h-full">
             {allCategory.map((item) => (
-              <div
-                key={item.id}
-                className="flex items-center p-2 justify-between rounded-md hover:bg-slate-100 "
-              >
-                <div className="">
-                  {isEditingCategory === item.id ? (
-                    <form
-                    //onSubmit={editedCategoryHandleForm}
-                    >
+              <div key={item.id}>
+                {/* <div className="flex items-center p-2 justify-between"> */}
+                {isEditingCategory === item.id ? (
+                  <form onSubmit={editedCategoryHandleForm}>
+                    <div className="relative ml-6 p-2">
                       <input
                         type="text"
                         id={item.categoryName}
                         placeholder=""
-                        value={editingCategoryData?.categoryName || ''}
+                        value={dataEditCategory?.categoryName || ''}
                         autoComplete="off"
                         required={true}
-                        className="block py-2.5 px-0 w-full text-xs text-slate-500 text-normal bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
-                        // onChange={(e) =>
-                        //   handleFieldChange(item.categoryName, e.target.value)
-                        // }
-                        // onChange={(e) =>
-                        //   setDataEditCategory({
-                        //     ...dataEditCategory,
-                        //     categoryName: e.target.value,
-                        //   })
-                        // }
-                        onChange={(e) => handleFieldChange('categoryName', e.target.value)}
+                        autoFocus
+                        className="block pr-8 py-1.5 px-2 w-52 text-sm text-slate-500 text-normal bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
+                        onChange={(e) =>
+                          handleFieldChange('categoryName', e.target.value)
+                        }
                       />
-                    </form>
-                  ) : (
-                    <span className="text-slate-600 text-sm font-normal">
-                      {item.categoryName}
-                    </span>
-                  )}
-                </div>
-                <div onClick={() => toggleMenu(item.id)}>
-                  <Cog8ToothIcon className="cursor-pointer w-5 h-5 text-slate-600" />
-                </div>
+                      <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center space-x-1">
+                        <button
+                          type="submit"
+                          className="text-lime-600 text-sm font-normal"
+                        >
+                          <CheckCircleIcon className="cursor-pointer w-5 h-5 text-lime-600" />
+                        </button>
+                        <XCircleIcon
+                          onClick={stopEditing}
+                          className="cursor-pointer w-5 h-5 text-amber-600"
+                        />
+                      </div>
+                    </div>
+                  </form>
+                ) : (
+                  <div className="cursor-pointer flex items-center p-2 justify-between rounded-md hover:bg-slate-100">
+                    <div className="flex items-center p-2 text-slate-600">
+                      <ChevronRightIcon className="cursor-pointer w-3 h-3 text-slate-600 mr-2" />
+                      <span className="text-slate-600 text-sm font-normal">
+                        {item.categoryName}
+                      </span>
+                    </div>
+                    <div
+                      className="ml-auto"
+                      onClick={() => toggleMenu(item.id)}
+                    >
+                      <Cog8ToothIcon className="cursor-pointer w-5 h-5 text-slate-600" />
+                    </div>
+                  </div>
+                )}
+
                 {selectedCategory === item.id && (
                   <div
                     //! появляться должно при нажатии на конкретную категорию по шестеррёнке

@@ -62,11 +62,16 @@ router.delete('/admin/category/:id', async (req, res) => {
 
 router.put('/admin/category/:id', async (req, res) => {
   const categoryId = req.params.id;
-  const { newInfo } = req.body;
+  const { newCategoryName } = req.body;
   try {
-    await Category.update(newInfo, {
-      where: { id: categoryId },
-    });
+    const category = await Category.findOne({ where: { id: categoryId } });
+
+    if (!category) {
+      res.status(401).json({ message: 'Категория не найдена' });
+    } else {
+      await category.update({ categoryName: newCategoryName });
+    }
+
     const categories = await Category.findAll({
       order: [
         ['categoryName', 'ASC'],
