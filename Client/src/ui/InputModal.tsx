@@ -43,7 +43,6 @@ const InputModal: FC<IInputModal> = ({
     <div className={`${containerClassName}`}>
       {inputFields.map((field) => (
         <div key={field.id} className="relative">
-          
           {field.id === 'isNew' || field.id === 'isDiscounted' ? (
             <div className="flex items-center">
               <span>{field.title}</span>
@@ -52,6 +51,21 @@ const InputModal: FC<IInputModal> = ({
                 checked={field.value as boolean}
                 onChange={() => field.onChange?.(!field.value as boolean)}
                 className="form-checkbox h-5 w-5 text-green-400 ml-2"
+              />
+            </div>
+          ) : field.id === 'promoStartDate' || field.id === 'promoEndDate' ? (
+            <div className={`flex items-center `}>
+              <label
+                htmlFor={field.id}
+                className="block text-sm font-medium text-gray-700"
+              >
+                {field.title}
+              </label>
+              <input
+                type="date"
+                value={field.value as string}
+                onChange={(e) => field.onChange?.(e.target.value)}
+                className="block w-full px-4 py-2 rounded-md border-0 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
             </div>
           ) : field.id === 'isActivated' ? (

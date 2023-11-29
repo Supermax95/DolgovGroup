@@ -13,7 +13,6 @@ import getCategory from '../../../Redux/thunks/Category/getCategory.api';
 import getSubcategory from '../../../Redux/thunks/SubCategory/getSubcategory.api';
 import ProductSidebar from '../../ProductSidebar/ProductSidebar';
 
-
 export interface IProduct {
   id: number;
   productName: string;
@@ -163,19 +162,8 @@ const Products: FC = () => {
     }
   };
 
-  // const uniqueCategory = [
-  //   ...new Set(category.map((category) => category.categoryName)),
-  // ];
-
   return (
     <Wrapper>
-      {/* <Sidebar
-        items={uniqueCategory}
-        onItemSelect={setSelectedCategory}
-        title="Категории"
-        setCurrentPage={setCurrentPage}
-        displayKey={(categoryName) => categoryName}
-      /> */}
       <ProductSidebar />
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         <div className="col-span-full mb-4">
@@ -192,11 +180,11 @@ const Products: FC = () => {
         {displayedProducts.map((product) => (
           <article
             key={product.id}
-            className="relative flex flex-col overflow-hidden rounded-lg border"
+            className="relative flex flex-col overflow-hidden rounded-lg border bg-white dark:bg-neutral-700 h-full"
           >
             <div className="aspect-square relative overflow-hidden">
               <img
-                className="h-36 w-full object-cover rounded-t-lg transition-all duration-300 group-hover:scale-125"
+                className="h-36 w-full object-cover rounded-t-lg transition-all duration-300 group-hover:scale-125 flex-shrink-0"
                 src={`${VITE_URL}${product.photo}`}
                 alt={product.productName}
               />
@@ -217,22 +205,47 @@ const Products: FC = () => {
               )}
             </div>
 
-            <div className="my-4 mx-auto flex w-10/12 flex-col items-start justify-between">
-              <div className="mb-2 flex">
-                <p className="mr-3 text-sm font-semibold">
-                  ₽{product.customerPrice}
-                </p>
+            <div className="my-4 mx-auto flex w-10/12 flex-col items-start justify-between h-full">
+              <div className="mb-2">
                 {product.isDiscounted && (
-                  <del className="text-xs text-gray-400">
-                    {' '}
-                    ₽{product.originalPrice}{' '}
-                  </del>
+                  <div className="flex text-xs text-gray-400">
+                    <span className="mr-3">Начальная цена</span>
+                    <del>₽{product.originalPrice}</del>
+                  </div>
+                )}
+                <div className="flex">
+                  <p className="mr-3 text-xs font-semibold text-gray-700">
+                    {product.isDiscounted
+                      ? `Цена для покупателя ₽${product.customerPrice}`
+                      : `Цена ₽${product.originalPrice}`}
+                  </p>
+                </div>
+              </div>
+              <div>
+                {product.employeePrice ? (
+                  <div className="mb-2 text-xs text-green-500">
+                    Цена для сотрудника: ₽{product.employeePrice}
+                  </div>
+                ) : (
+                  <div className="mb-2 text-xs text-red-500">
+                    Цены для сотрудника нет
+                  </div>
                 )}
               </div>
-
               <h3 className="mb-2 text-sm text-gray-400">
-                {product.productName}
+                {product.productName || 'Нет названия'}
               </h3>
+
+              {product.promoStartDate && product.promoEndDate ? (
+                <div className="mb-2 text-xs text-gray-500">
+                  Промо: с {product.promoStartDate} по {product.promoEndDate}
+                </div>
+              ) : (
+                <div className="mb-2 text-xs text-gray-500">Промо нет</div>
+              )}
+                <p className="mb-2 text-sm text-gray-400">
+            {product.description || 'Нет описания'}
+          </p>
             </div>
 
             <button
@@ -245,6 +258,7 @@ const Products: FC = () => {
             </button>
           </article>
         ))}
+        
       </div>
       <div className="mt-4 flex justify-center">
         <Pagination

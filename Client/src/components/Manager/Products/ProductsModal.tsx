@@ -120,27 +120,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
     }
   };
 
-  // const handleFormSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
 
-  //   if (currentStep === 1) {
-  //     if (isAddingMode) {
-  //       onSaveAdd(editedProduct as IProduct);
-  //     } else {
-  //       onSaveEdit(editedProduct as IProduct);
-  //     }
-
-  //     setCurrentStep(2);
-  //     setUpload(true);
-  //   } else if (currentStep === 2) {
-  //     const fileInput = document.getElementById(
-  //       'fileInput'
-  //     ) as HTMLInputElement;
-  //     const file = fileInput?.files?.[0];
-
-  //     await uploadFile(file, id, isAddingMode);
-  //   }
-  // };
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -297,11 +277,11 @@ const ProductsModal: FC<ProductsModalProps> = ({
     },
     {
       id: 'promoStartDate',
-      type: 'date',
+      type: 'text',
       value: editedProduct.promoStartDate,
       autoComplete: 'off',
       placeholder: '',
-      title: 'Дата начала акции',
+      title: 'Начало акции',
       htmlFor: 'promoStartDate',
       onChange: (value: string) =>
         setEditedProduct({
@@ -311,11 +291,11 @@ const ProductsModal: FC<ProductsModalProps> = ({
     },
     {
       id: 'promoEndDate',
-      type: 'date',
+      type: 'text',
       value: editedProduct.promoEndDate,
       autoComplete: 'off',
       placeholder: '',
-      title: 'Дата окончания акции',
+      title: 'Конец акции',
       htmlFor: 'promoEndDate',
       onChange: (value: string) =>
         setEditedProduct({
@@ -420,14 +400,15 @@ const ProductsModal: FC<ProductsModalProps> = ({
           {currentStep === 2 && (
             <div className="container mx-auto mt-8 p-8 max-w-4xl justify-center items-center flex-col block rounded-lg bg-white shadow-md dark:bg-neutral-700">
               <div className="px-4 sm:px-0 text-center">
-                <h1 className="text-2xl font-bold mb-4">
+                <h1 className="text-xl font-bold mb-4">
                   Форма загрузки фотографии продукта
                 </h1>
+                <span className="block mt-2 text-sm text-gray-500">
+                      Если фотографию продукта менять не нужно, вы можете
+                      пропустить этот шаг
+                    </span>
                 <div className="mt-6">
                   <div className="mb-4">
-                    <span className="text-center block mb-1 s text-md font-medium leading-6 text-gray-900 mt-2">
-                      Загрузите фотографию продукта
-                    </span>
                     <input
                       type="file"
                       id="fileInput"
