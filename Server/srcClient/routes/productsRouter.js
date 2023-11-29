@@ -1,5 +1,6 @@
 const router = require('express').Router();
-const { Product, Subcategory } = require('../../db/models');
+const { isPast, parseISO, addDays, subDays } = require('date-fns');
+const { Product } = require('../../db/models');
 
 router.get('/admin/products', async (req, res) => {
   try {
@@ -7,18 +8,38 @@ router.get('/admin/products', async (req, res) => {
       order: [['productName', 'ASC']],
       raw: true,
     });
-    res.json(products);
+
+    for (const product of products) {
+      if (
+        product.promoEndDate &&
+        isPast(addDays(parseISO(product.promoEndDate), 1))
+      ) {
+        await Product.update(
+          { isDiscounted: false },
+          { where: { id: product.id } }
+        );
+      }
+    }
+
+    const updatedProducts = await Product.findAll({
+      order: [['productName', 'ASC']],
+      raw: true,
+    });
+
+    res.json(updatedProducts);
   } catch (error) {
     console.error('Ошибка при получении данных из базы данных', error);
-    res.status(500).json({ error: 'Произошла ошибка на сервере' });
+    res.status(500).json({
+      error: 'Произошла ошибка на сервере при получении данных из базы',
+    });
   }
 });
-
 router.post('/admin/products', async (req, res) => {
   const { newProduct } = req.body;
 
   try {
     const createdProduct = await Product.create({
+      article: newProduct.article,
       productName: newProduct.productName,
       promoStartDate: newProduct.promoStartDate,
       promoEndDate: newProduct.promoEndDate,
@@ -39,7 +60,9 @@ router.post('/admin/products', async (req, res) => {
     res.json({ postId: createdProduct.id, products });
   } catch (error) {
     console.error('Ошибка при добавлении данных', error);
-    res.status(500).json({ error: 'Произошла ошибка на сервере' });
+    res.status(500).json({
+      error: 'Произошла ошибка на сервере при добавлении данных в базу',
+    });
   }
 });
 
@@ -49,14 +72,18 @@ router.delete('/admin/products/:id', async (req, res) => {
     await Product.destroy({
       where: { id: productId },
     });
+
     const products = await Product.findAll({
       order: [['productName', 'ASC']],
       raw: true,
     });
+
     res.json(products);
   } catch (error) {
     console.error('Ошибка при удалении данных', error);
-    res.status(500).json({ error: 'Произошла ошибка на сервере' });
+    res.status(500).json({
+      error: 'Произошла ошибка на сервере при удалении данных из базы',
+    });
   }
 });
 
@@ -64,8 +91,19 @@ router.put('/admin/products', async (req, res) => {
   const { newInfo } = req.body;
 
   try {
+    if (
+      newInfo.promoEndDate &&
+      isPast(subDays(parseISO(newInfo.promoEndDate), 1))
+    ) {
+      await Product.update(
+        { isDiscounted: false },
+        { where: { id: newInfo.id } }
+      );
+    }
+
     await Product.update(
       {
+        article: newInfo.article,
         productName: newInfo.productName,
         promoStartDate: newInfo.promoStartDate,
         promoEndDate: newInfo.promoEndDate,
@@ -90,7 +128,9 @@ router.put('/admin/products', async (req, res) => {
     res.json({ postId: newInfo.id, products });
   } catch (error) {
     console.error('Ошибка при обновлении данных', error);
-    res.status(500).json({ error: 'Произошла ошибка на сервере' });
+    res.status(500).json({
+      error: 'Произошла ошибка на сервере при обновлении данных в базе',
+    });
   }
 });
 

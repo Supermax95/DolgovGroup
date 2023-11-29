@@ -4,6 +4,7 @@ import { VITE_URL } from '../../../VITE_URL';
 
 interface ResponseData {
   id: number;
+  article: string;
   productName: string;
   promoStartDate: string;
   promoEndDate: string;

@@ -7,6 +7,7 @@ import addProduct from './thunks/Products/addProduct.api';
 
 interface Product {
   id: number;
+  article: string;
   productName: string;
   promoStartDate: string;
   promoEndDate: string;

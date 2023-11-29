@@ -4,6 +4,7 @@ import { VITE_URL } from '../../../VITE_URL';
 
 interface RequestData {
   newProduct: {
+    article: string;
     productName: string;
     promoStartDate: string;
     promoEndDate: string;
@@ -19,6 +20,7 @@ interface RequestData {
 
 interface ResponseData {
   id: number;
+  article: string;
   productName: string;
   promoStartDate: string;
   promoEndDate: string;

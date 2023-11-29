@@ -10,6 +10,7 @@ import axios from 'axios';
 
 interface Product {
   id: number;
+  article: string;
   productName: string;
   promoStartDate: string;
   promoEndDate: string;
@@ -258,6 +259,21 @@ const ProductsModal: FC<ProductsModalProps> = ({
           label: subcat,
         })),
       ],
+      required: true,
+    },
+    {
+      id: 'article',
+      type: 'text',
+      value: editedProduct.article,
+      autoComplete: 'off',
+      placeholder: '',
+      title: 'Артикул',
+      htmlFor: 'productName',
+      onChange: (value: string) =>
+        setEditedProduct({
+          ...editedProduct,
+          article: value,
+        }),
       required: true,
     },
     {

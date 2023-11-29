@@ -12,9 +12,11 @@ import Sidebar from '../../../ui/Sidebar';
 import getCategory from '../../../Redux/thunks/Category/getCategory.api';
 import getSubcategory from '../../../Redux/thunks/SubCategory/getSubcategory.api';
 import ProductSidebar from '../../ProductSidebar/ProductSidebar';
+import { isToday, parseISO, isPast } from 'date-fns';
 
 export interface IProduct {
   id: number;
+  article: string;
   productName: string;
   promoStartDate: string;
   promoEndDate: string;
@@ -77,6 +79,7 @@ const Products: FC = () => {
           String(product.promoStartDate),
           String(product.promoEndDate),
           String(product.description),
+          String(product.article),
         ];
 
         const searchTerms = searchText.toLowerCase().split(' ');
@@ -97,6 +100,7 @@ const Products: FC = () => {
     setAddingMode(true);
     setEditedProduct({
       id: 0,
+      article:'',
       productName: '',
       promoStartDate: '',
       promoEndDate: '',
@@ -160,6 +164,11 @@ const Products: FC = () => {
     } catch (error) {
       console.error('Произошла ошибка при редактировании:', error);
     }
+  };
+
+  const reverseDate = (dateString) => {
+    const [year, month, day] = dateString.split('-');
+    return `${day}-${month}-${year}`;
   };
 
   return (
@@ -238,14 +247,30 @@ const Products: FC = () => {
 
               {product.promoStartDate && product.promoEndDate ? (
                 <div className="mb-2 text-xs text-gray-500">
-                  Промо: с {product.promoStartDate} по {product.promoEndDate}
+                  Промо:
+                  {isToday(parseISO(product.promoEndDate)) ? (
+                    <span className="text-red-500">
+                      {' '}
+                      Акция истекает сегодня
+                    </span>
+                  ) : isPast(parseISO(product.promoEndDate)) ? (
+                    <span className="text-red-500"> Акция закончилась</span>
+                  ) : (
+                    ` с ${reverseDate(product.promoStartDate)} по ${reverseDate(
+                      product.promoEndDate
+                    )}`
+                  )}
                 </div>
               ) : (
                 <div className="mb-2 text-xs text-gray-500">Промо нет</div>
               )}
-                <p className="mb-2 text-sm text-gray-400">
-            {product.description || 'Нет описания'}
-          </p>
+
+              <p className="mb-2 text-sm text-gray-400">
+                {product.description || 'Нет описания'}
+              </p>
+              <h3 className="mb-2 text-sm text-black-400">
+                {`Артикул: ${product.article || 'нет '}`}
+              </h3>
             </div>
 
             <button
@@ -258,7 +283,6 @@ const Products: FC = () => {
             </button>
           </article>
         ))}
-        
       </div>
       <div className="mt-4 flex justify-center">
         <Pagination
