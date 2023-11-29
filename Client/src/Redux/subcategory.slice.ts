@@ -39,6 +39,7 @@ const subcategorySlice = createSlice({
       .addCase(getSubcategory.fulfilled, (state, action) => {
         state.isLoading = false;
         state.data = action.payload;
+        console.log('state.data', state.data);
       })
       .addCase(getSubcategory.rejected, (state, action) => {
         state.isLoading = false;

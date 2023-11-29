@@ -121,8 +121,6 @@ const ProductsModal: FC<ProductsModalProps> = ({
     }
   };
 
-
-
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -197,6 +195,8 @@ const ProductsModal: FC<ProductsModalProps> = ({
         const selectedCategory = category.find(
           (cat) => cat.categoryName === value
         );
+        //console.log('selectedCategory============>', selectedCategory);
+
         if (selectedCategory) {
           const filteredSubcategories = subcategory.filter(
             (subcat) => subcat.categoryId === selectedCategory.id
@@ -420,9 +420,9 @@ const ProductsModal: FC<ProductsModalProps> = ({
                   Форма загрузки фотографии продукта
                 </h1>
                 <span className="block mt-2 text-sm text-gray-500">
-                      Если фотографию продукта менять не нужно, вы можете
-                      пропустить этот шаг
-                    </span>
+                  Если фотографию продукта менять не нужно, вы можете пропустить
+                  этот шаг
+                </span>
                 <div className="mt-6">
                   <div className="mb-4">
                     <input

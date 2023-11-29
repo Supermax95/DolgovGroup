@@ -6,9 +6,9 @@ import axios from 'axios';
 const getSubcategory = createAsyncThunk('admin/subcategory', async () => {
   const response: AxiosResponse = await axios.get(
     `${VITE_URL}/admin/subcategory`
-  );  
-  return response.data;
+  );
 
+  return response.data;
 });
 
 export default getSubcategory;
