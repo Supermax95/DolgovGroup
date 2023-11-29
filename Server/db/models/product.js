@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       employeePrice: DataTypes.INTEGER,
       isNew: DataTypes.BOOLEAN,
       isDiscounted: DataTypes.BOOLEAN,
-      description: DataTypes.STRING,
+      description: DataTypes.TEXT,
       photo: DataTypes.STRING,
       visible: DataTypes.BOOLEAN,
       subcategoryId: DataTypes.INTEGER,

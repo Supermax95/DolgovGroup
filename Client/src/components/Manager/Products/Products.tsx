@@ -100,7 +100,7 @@ const Products: FC = () => {
     setAddingMode(true);
     setEditedProduct({
       id: 0,
-      article:'',
+      article: '',
       productName: '',
       promoStartDate: '',
       promoEndDate: '',
@@ -193,7 +193,7 @@ const Products: FC = () => {
           >
             <div className="aspect-square relative overflow-hidden">
               <img
-                className="h-36 w-full object-cover rounded-t-lg transition-all duration-300 group-hover:scale-125 flex-shrink-0"
+                className="h-full w-full object-cover rounded-t-lg transition-all duration-300 group-hover:scale-125 flex-shrink-0"
                 src={`${VITE_URL}${product.photo}`}
                 alt={product.productName}
               />
@@ -264,10 +264,17 @@ const Products: FC = () => {
               ) : (
                 <div className="mb-2 text-xs text-gray-500">Промо нет</div>
               )}
-
-              <p className="mb-2 text-sm text-gray-400">
+              <div
+                id="exampleFormControlTextarea1"
+                className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 overflow-auto"
+                style={{ whiteSpace: 'pre-wrap', maxHeight: '100px' }}
+              >
                 {product.description || 'Нет описания'}
-              </p>
+              </div>
+
+              {/* <p className="mb-2 text-sm text-gray-400">
+                {product.description || 'Нет описания'}
+              </p> */}
               <h3 className="mb-2 text-sm text-black-400">
                 {`Артикул: ${product.article || 'нет '}`}
               </h3>

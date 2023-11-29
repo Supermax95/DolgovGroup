@@ -36,7 +36,7 @@ module.exports = {
         type: Sequelize.BOOLEAN,
       },
       description: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
       },
       photo: {
         allowNull: true,
