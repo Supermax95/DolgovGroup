@@ -310,11 +310,11 @@ const ProductSidebar: FC = () => {
                     </div>
                   </form>
                 ) : (
-                  <div className="cursor-pointer flex flex-col justify-between">
-                    <div className="cursor-pointer flex justify-between items-center p-2 rounded-md hover:bg-slate-100">
+                  <div className="flex flex-col justify-between">
+                    <div className="flex justify-between items-center p-2 rounded-md hover:bg-slate-100">
                       <div
                         onClick={() => subcategoryOutput(item.id)}
-                        className="w-52 flex items-center text-slate-600"
+                        className="cursor-pointer w-52 flex items-center text-slate-600"
                       >
                         {subcategoryStates[item.id] ? (
                           <ChevronDownIcon className="cursor-pointer w-3 h-3 text-slate-600 mr-2" />
