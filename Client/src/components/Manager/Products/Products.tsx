@@ -11,7 +11,7 @@ import Pagination from '../../../ui/Paggination';
 import Sidebar from '../../../ui/Sidebar';
 import getCategory from '../../../Redux/thunks/Category/getCategory.api';
 import getSubcategory from '../../../Redux/thunks/SubCategory/getSubcategory.api';
-import ProductSidebar from '../../ProductSidebar/ProductSidebar';
+import ProductSidebar from './ProductSidebar/ProductSidebar';
 import { isToday, parseISO, isPast } from 'date-fns';
 
 export interface IProduct {
@@ -35,15 +35,33 @@ export interface ICategory {
   categoryName: string;
 }
 
+export interface ISubcategory {
+  id: number;
+  subcategoryName: string;
+  categoryId: number;
+}
+
 const Products: FC = () => {
   const dispatch = useAppDispatch();
   const products = useAppSelector<IProduct[]>(
     (state) => state.productSlice.data
   );
-  const category = useAppSelector<ICategory[]>(
+
+  //* для сайдбара
+  const categories = useAppSelector<ICategory[]>(
     (state) => state.categorySlice.data
   );
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const subcategories = useAppSelector<ISubcategory[]>(
+    (state) => state.subcategorySlice.data
+  );
+  //* для сайдбара
+  const [currentCategory, setCurrentCategory] = useState<ICategory | null>(
+    null
+  );
+  const [currentSubcategory, setCurrentSubcategory] =
+    useState<ISubcategory | null>(null);
+
+  // остальное
   const [isModalOpen, setModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);
@@ -88,6 +106,68 @@ const Products: FC = () => {
           productFields.some((field) => field.toLowerCase().includes(term))
         );
       });
+    }
+
+    //* для сайдбара
+    // // Фильтрация по текущей категории
+    // if (currentCategory) {
+    //   console.log('currentCategory', currentCategory);
+
+    //   //* Находим все подкатегории, принадлежащие текущей категории
+    //   const subcategory = subcategories.filter(
+    //     (sub) => sub.categoryId === currentCategory.id
+    //   );
+
+    //   console.log('subcategory', subcategory);
+
+    //   //* мне нужно сравнить, что категория совпадает с текущими подкатегориями
+    //   //* далее нужно сравнить продукты, и что они совпадают с текущим значением подкатегорий и выводить их по главной категории
+
+    //   //* Фильтруем продукты таким образом, чтобы остались только те, которые принадлежат текущей категории или ее подкатегориям
+    //   filtered = filtered.filter((product) => {
+    //     console.log('productproduct', product.subcategoryId);
+
+    //     // const productSubcategory = categorySubcategories.find(
+    //     //   (sub) => sub.id === product.subcategoryId
+    //     // );
+    //     // console.log('выводит только одно что-то первое', productSubcategory);
+    //     // return (
+    //     //   // productSubcategory ||
+    //     //   product.subcategoryId === currentCategory.id
+    //     // );
+    //   });
+    //   //console.log('filtered', filtered);
+    // }
+
+    if (currentCategory) {
+      //* выводит массив объектов подкатегорий
+      const subcategoriesOfCurrentCategory = subcategories.filter(
+        (sub) => sub.categoryId === currentCategory.id
+      );
+
+      console.log(
+        'subcategoriesOfCurrentCategory',
+        subcategoriesOfCurrentCategory
+      );
+
+      //* id продукта должен совпадать с id в таблице subcategory
+      //* выводит массив продуктов
+      filtered = filtered.filter((product) => {
+        return subcategoriesOfCurrentCategory.some(
+          (sub) =>
+            // console.log('sub.id', sub.id)
+            sub.id === product.subcategoryId
+        );
+      });
+      console.log('filteredsome', filtered);
+    }
+
+    // Фильтрация по текущей подкатегории
+    if (currentSubcategory) {
+      filtered = filtered.filter(
+        (product) => product.subcategoryId === currentSubcategory.id
+      );
+      console.log('filtered', filtered);
     }
 
     return filtered;
@@ -173,7 +253,10 @@ const Products: FC = () => {
 
   return (
     <Wrapper>
-      <ProductSidebar />
+      <ProductSidebar
+        categories={categories}
+        onCategorySelect={setCurrentCategory}
+      />
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         <div className="col-span-full mb-4">
           <div className="flex items-center justify-between">

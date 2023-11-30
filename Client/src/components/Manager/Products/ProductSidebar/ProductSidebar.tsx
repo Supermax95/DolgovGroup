@@ -1,19 +1,17 @@
 import { FC, useEffect, useRef, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../Redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../../../Redux/hooks';
 import {
   Cog8ToothIcon,
   PencilIcon,
   PlusCircleIcon,
   XCircleIcon,
   CheckCircleIcon,
-  ChevronLeftIcon,
   ChevronRightIcon,
-  Squares2X2Icon,
   ChevronDownIcon,
 } from '@heroicons/react/24/outline';
-import addCategory from '../../Redux/thunks/Category/addCategory.api';
-import deleteCategory from '../../Redux/thunks/Category/deleteCategory.api';
-import editCategory from '../../Redux/thunks/Category/editCategory.api';
+import addCategory from '../../../../Redux/thunks/Category/addCategory.api';
+import deleteCategory from '../../../../Redux/thunks/Category/deleteCategory.api';
+import editCategory from '../../../../Redux/thunks/Category/editCategory.api';
 
 interface ICategory {
   id?: number;
@@ -26,7 +24,15 @@ interface ISubcategory {
   subcategoryName: string;
 }
 
-const ProductSidebar: FC = () => {
+interface ProductSidebarProps {
+  categories: ICategory[];
+  onCategorySelect: (category: ICategory | null) => void;
+}
+
+const ProductSidebar: FC<ProductSidebarProps> = ({
+  categories,
+  onCategorySelect,
+}) => {
   const dispatch = useAppDispatch();
 
   const allCategories = useAppSelector<ICategory[]>(
@@ -59,9 +65,7 @@ const ProductSidebar: FC = () => {
     null
   );
 
-  //*
-  const [arrowIcon, setArrowIcon] = useState<boolean>(false);
-  //!
+  // ? я уже хуй знает, что это
   const [subcategoryStates, setSubcategoryStates] = useState<{
     [key: number]: boolean;
   }>({});
@@ -76,9 +80,11 @@ const ProductSidebar: FC = () => {
   // });
   //console.log('menuPosition', menuPosition);
 
-  //* дополнительное меню для каждой категории
+  //* дополнительное меню для каждой КАТЕГОРИИ
   //!  удаётся закрыть по шестерёнке при повторном нажатии, но не по любой области
   const toggleMenu = (id: number): void => {
+    console.log(id);
+
     if (selectedCategory === id) {
       setSelectedCategory(null);
       setMenuOpen(false);
@@ -87,6 +93,21 @@ const ProductSidebar: FC = () => {
       setMenuOpen(true);
     }
   };
+
+  // //* дополнительное меню для каждой ПОДКАТЕГОРИИ
+  // //!  удаётся закрыть по шестерёнке при повторном нажатии, но не по любой области
+  // const toggleMenuSub = (id: number): void => {
+  //   console.log(id);
+
+  //   if (selectedCategory === id) {
+  //     setSelectedCategory(null);
+  //     setMenuOpen(false);
+  //   } else {
+  //     setSelectedCategory(id);
+  //     setMenuOpen(true);
+  //   }
+  // };
+
   const menuClass = isMenuOpen ? 'block' : 'hidden';
 
   // позволяет закрывать при нажатии на любую область
@@ -108,6 +129,23 @@ const ProductSidebar: FC = () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
+  const handleCategoryClick = (selectedCategoryId: number) => {
+    const selectedCategory = categories.find(
+      (category) => category.id === selectedCategoryId
+    );
+
+    // Добавляем вызов onCategorySelect, чтобы передать выбранную категорию наружу
+    onCategorySelect(selectedCategory || null);
+
+    // Открываем/закрываем меню и выполняем другие необходимые действия
+    if (selectedCategory === selectedCategory) {
+      setMenuOpen(!isMenuOpen);
+    } else {
+      setMenuOpen(true);
+      setEditingCategory(null);
+    }
+  };
 
   // ? логика добавления категории
   const startAddingCategory = (): void => {
@@ -200,7 +238,7 @@ const ProductSidebar: FC = () => {
 
     setSelectedSubcategoryData(subcategory);
 
-    //!
+    //* используется для обновления состояния подкатегории
     setSubcategoryStates((prevState) => ({
       ...prevState,
       [id]: !prevState[id],
@@ -265,7 +303,7 @@ const ProductSidebar: FC = () => {
                 onClick={startAddingCategory}
                 className="cursor-pointer flex items-center p-2 justify-between rounded-md hover:bg-slate-100"
               >
-                <div className="flex items-center p-2 justify-center ml-6">
+                <div className="flex items-center justify-center ml-6">
                   <span className="text-lime-600 text-sm font-bold">
                     Добавить категорию
                   </span>
@@ -280,6 +318,7 @@ const ProductSidebar: FC = () => {
           <li className="h-full">
             {allCategories.map((item) => (
               <div key={item.id}>
+                {/* инпут для редактирования данных категорий */}
                 {/* <div className="flex items-center p-2 justify-between"> */}
                 {isEditingCategory === item.id ? (
                   <form onSubmit={editedCategoryHandleForm}>
@@ -312,12 +351,16 @@ const ProductSidebar: FC = () => {
                     </div>
                   </form>
                 ) : (
-                  <div
-                    onClick={() => subcategoryOutput(item.id)}
-                    className="cursor-pointer flex flex-col p-2 justify-between rounded-md hover:bg-slate-100"
-                  >
-                    <div className="flex items-center">
-                      <div className="flex items-center text-slate-600">
+                  <div className="flex flex-col justify-between">
+                    {/** Вывод категорий  */}
+                    <div className="flex justify-between items-center p-2 rounded-md hover:bg-slate-100">
+                      <div
+                        onClick={() => {
+                          subcategoryOutput(item.id);
+                          handleCategoryClick(item.id); // Добавлено
+                        }}
+                        className="cursor-pointer w-52 flex items-center text-slate-600"
+                      >
                         {subcategoryStates[item.id] ? (
                           <ChevronDownIcon className="cursor-pointer w-3 h-3 text-slate-600 mr-2" />
                         ) : (
@@ -327,14 +370,38 @@ const ProductSidebar: FC = () => {
                           {item.categoryName}
                         </span>
                       </div>
-                      <div
-                        className="ml-auto"
-                        onClick={() => toggleMenu(item.id)}
-                      >
+                      <div onClick={() => toggleMenu(item.id)}>
                         <Cog8ToothIcon className="cursor-pointer w-5 h-5 text-slate-600" />
                       </div>
                     </div>
 
+                    {/* 
+                    <div className="relitive"
+                    //! здесь неудавшийся вариант позиционирования шестерёнки :( )>
+                      <div
+                        className="cursor-pointer flex justify-between items-center p-2 rounded-md hover:bg-slate-100 relative"
+                        onClick={() => subcategoryOutput(item.id)}
+                      >
+                        <div className="flex items-center text-slate-600">
+                          {subcategoryStates[item.id] ? (
+                            <ChevronDownIcon className="cursor-pointer w-3 h-3 text-slate-600 mr-2" />
+                          ) : (
+                            <ChevronRightIcon className="cursor-pointer w-3 h-3 text-slate-600 mr-2" />
+                          )}
+                          <span className="text-slate-600 text-sm font-normal">
+                            {item.categoryName}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="absolute rigth-12">
+                        <Cog8ToothIcon
+                          className="cursor-pointer w-5 h-5 text-slate-600"
+                          onClick={() => toggleMenu(item.id)}
+                        />
+                      </div>
+                    </div> */}
+
+                    {/** Вывод подкатегорий  */}
                     {subcategoryStates[item.id] && (
                       <ul className="ml-6 space-y-1 text-md">
                         {allSubcategories
@@ -342,13 +409,21 @@ const ProductSidebar: FC = () => {
                           .map((subcategory) => (
                             <li key={subcategory.id}>
                               <div className="cursor-pointer flex items-center p-2 justify-between rounded-md hover:bg-slate-100">
-                                <div className="flex items-center text-slate-600">
+                                <div
+                                  //если будут подкатегории подкатегорий onClick={() => subcategoryOutput(item.id)}
+                                  className="cursor-pointer w-52 flex items-center text-slate-600"
+                                >
                                   <ChevronRightIcon className="cursor-pointer w-3 h-3 text-slate-600 mr-2" />
-                                  <span className="text-slate-600 text-sm font-normal">
+                                  <span className="text-lime-600 text-sm font-normal">
                                     {subcategory.subcategoryName}
                                   </span>
                                 </div>
-                                {/* Add any additional actions or icons here if needed */}
+                                <div
+                                  className="ml-auto"
+                                  //изменение onClick={() => toggleMenuSub(subcategory.id)}
+                                >
+                                  <Cog8ToothIcon className="cursor-pointer w-5 h-5 text-lime-600" />
+                                </div>
                               </div>
                             </li>
                           ))}
@@ -357,13 +432,14 @@ const ProductSidebar: FC = () => {
                   </div>
                 )}
 
+                {/** Выпадающий список для внесения изменений данных  */}
                 {selectedCategory === item.id && (
                   <div
                     //! появляться должно при нажатии на конкретную категорию по шестеррёнке
                     ref={menuRef}
                     id={`dropdownRight-${item.id}`}
                     className={`z-10 absolute ${menuClass} top-32 w-52 left-24  bg-white divide-y divide-gray-100 rounded-lg shadow`}
-                    //className={`z-10 absolute ${menuClass} top-${menuPosition.top} left-${menuPosition.left} bg-white divide-y divide-gray-100 rounded-lg shadow`}
+                    // остален для передвижения пока что className={`z-10 absolute ${menuClass} top-${menuPosition.top} left-${menuPosition.left} bg-white divide-y divide-gray-100 rounded-lg shadow`}
                   >
                     <ul
                       className="py-2 text-xs text-slate-700 cursor-pointer"
@@ -402,25 +478,6 @@ const ProductSidebar: FC = () => {
           </li>
         </ul>
       </div>
-
-      {/* {selectedSubcategoryData.length > 0 && (
-        <div className="h-full relative w-60">
-          <ul className="pt-2 pb-2 ml-6 space-y-1 text-md">
-            {selectedSubcategoryData.map((subcategory) => (
-              <li key={subcategory.id}>
-                <div className="cursor-pointer flex items-center p-2 justify-between rounded-md hover:bg-slate-100">
-                  <div className="flex items-center p-2 text-slate-600">
-                    <ChevronRightIcon className="cursor-pointer w-3 h-3 text-slate-600 mr-2" />
-                    <span className="text-slate-600 text-sm font-normal">
-                      {subcategory.subcategoryName}
-                    </span>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )} */}
     </div>
   );
 };
