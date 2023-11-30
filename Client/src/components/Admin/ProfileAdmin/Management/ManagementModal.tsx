@@ -37,8 +37,8 @@ const ManagementModal: FC<ManagersModalProps> = ({
   manager,
   onSaveEdit,
   onSaveAdd,
+  onCloseAddModal, 
   onCloseEditModal,
-  //onCloseAddModal,
   isAddingMode,
   editedManager,
   setEditedManager,
@@ -55,6 +55,7 @@ const ManagementModal: FC<ManagersModalProps> = ({
   };
 
   useEffect(() => {
+    console.log('Данные менеджера:', editedManager);
     if (manager) {
       setEditedManager({ ...manager });
     }
@@ -66,7 +67,7 @@ const ManagementModal: FC<ManagersModalProps> = ({
 
   const handleCancel = () => {
     setEditedManager(undefined);
-    // onCloseEditModal();
+    onCloseEditModal();
   };
 
   const handleFormSubmit = (e: React.FormEvent) => {

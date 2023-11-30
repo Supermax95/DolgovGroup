@@ -120,6 +120,7 @@ const Management: FC = () => {
     setAddingMode(false);
     setModalOpen(true);
   };
+  console.log('selectedManager:', selectedManager);
 
   const closeEditModal = (): void => {
     setSelectedManager(null);
@@ -136,6 +137,7 @@ const Management: FC = () => {
   //* добавление менеджера
   const handleSaveAdd = async (): Promise<void> => {
     if (editedManager) {
+      console.log('editedManager при добавлении:', editedManager);
       try {
         const resultAdd = await dispatch(
           addManager({
