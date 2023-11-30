@@ -60,8 +60,6 @@ const ProductSidebar: FC = () => {
   );
 
   //*
-  const [arrowIcon, setArrowIcon] = useState<boolean>(false);
-  //!
   const [subcategoryStates, setSubcategoryStates] = useState<{
     [key: number]: boolean;
   }>({});
@@ -200,7 +198,7 @@ const ProductSidebar: FC = () => {
 
     setSelectedSubcategoryData(subcategory);
 
-    //!
+    //* используется для обновления состояния подкатегории
     setSubcategoryStates((prevState) => ({
       ...prevState,
       [id]: !prevState[id],
@@ -265,7 +263,7 @@ const ProductSidebar: FC = () => {
                 onClick={startAddingCategory}
                 className="cursor-pointer flex items-center p-2 justify-between rounded-md hover:bg-slate-100"
               >
-                <div className="flex items-center p-2 justify-center ml-6">
+                <div className="flex items-center justify-center ml-6">
                   <span className="text-lime-600 text-sm font-bold">
                     Добавить категорию
                   </span>
@@ -312,12 +310,12 @@ const ProductSidebar: FC = () => {
                     </div>
                   </form>
                 ) : (
-                  <div
-                    onClick={() => subcategoryOutput(item.id)}
-                    className="cursor-pointer flex flex-col p-2 justify-between rounded-md hover:bg-slate-100"
-                  >
-                    <div className="flex items-center">
-                      <div className="flex items-center text-slate-600">
+                  <div className="cursor-pointer flex flex-col justify-between">
+                    <div className="cursor-pointer flex justify-between items-center p-2 rounded-md hover:bg-slate-100">
+                      <div
+                        onClick={() => subcategoryOutput(item.id)}
+                        className="w-52 flex items-center text-slate-600"
+                      >
                         {subcategoryStates[item.id] ? (
                           <ChevronDownIcon className="cursor-pointer w-3 h-3 text-slate-600 mr-2" />
                         ) : (
@@ -327,13 +325,36 @@ const ProductSidebar: FC = () => {
                           {item.categoryName}
                         </span>
                       </div>
-                      <div
-                        className="ml-auto"
-                        onClick={() => toggleMenu(item.id)}
-                      >
+                      <div onClick={() => toggleMenu(item.id)}>
                         <Cog8ToothIcon className="cursor-pointer w-5 h-5 text-slate-600" />
                       </div>
                     </div>
+
+                    {/* 
+                    <div className="relitive"
+                    //! здесь неудавшийся вариант позиционирования шестерёнки :( )>
+                      <div
+                        className="cursor-pointer flex justify-between items-center p-2 rounded-md hover:bg-slate-100 relative"
+                        onClick={() => subcategoryOutput(item.id)}
+                      >
+                        <div className="flex items-center text-slate-600">
+                          {subcategoryStates[item.id] ? (
+                            <ChevronDownIcon className="cursor-pointer w-3 h-3 text-slate-600 mr-2" />
+                          ) : (
+                            <ChevronRightIcon className="cursor-pointer w-3 h-3 text-slate-600 mr-2" />
+                          )}
+                          <span className="text-slate-600 text-sm font-normal">
+                            {item.categoryName}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="absolute rigth-12">
+                        <Cog8ToothIcon
+                          className="cursor-pointer w-5 h-5 text-slate-600"
+                          onClick={() => toggleMenu(item.id)}
+                        />
+                      </div>
+                    </div> */}
 
                     {subcategoryStates[item.id] && (
                       <ul className="ml-6 space-y-1 text-md">
@@ -348,7 +369,12 @@ const ProductSidebar: FC = () => {
                                     {subcategory.subcategoryName}
                                   </span>
                                 </div>
-                                {/* Add any additional actions or icons here if needed */}
+                                <div
+                                  className="ml-auto"
+                                  // onClick={() => toggleMenu(item.id)}
+                                >
+                                  <Cog8ToothIcon className="cursor-pointer w-5 h-5 text-lime-600" />
+                                </div>
                               </div>
                             </li>
                           ))}
@@ -402,25 +428,6 @@ const ProductSidebar: FC = () => {
           </li>
         </ul>
       </div>
-
-      {/* {selectedSubcategoryData.length > 0 && (
-        <div className="h-full relative w-60">
-          <ul className="pt-2 pb-2 ml-6 space-y-1 text-md">
-            {selectedSubcategoryData.map((subcategory) => (
-              <li key={subcategory.id}>
-                <div className="cursor-pointer flex items-center p-2 justify-between rounded-md hover:bg-slate-100">
-                  <div className="flex items-center p-2 text-slate-600">
-                    <ChevronRightIcon className="cursor-pointer w-3 h-3 text-slate-600 mr-2" />
-                    <span className="text-slate-600 text-sm font-normal">
-                      {subcategory.subcategoryName}
-                    </span>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )} */}
     </div>
   );
 };
