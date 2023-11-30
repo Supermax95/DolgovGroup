@@ -6,13 +6,43 @@ module.exports = {
       [
         {
           categoryId: 1,
-          subcategoryName: 'Йогурт',
+          subcategoryName: 'Молоко',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          categoryId: 1,
+          subcategoryName: 'Творожки',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          categoryId: 1,
+          subcategoryName: 'Йогурты',
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           categoryId: 2,
           subcategoryName: 'Колбаса',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          categoryId: 2,
+          subcategoryName: 'Ветчина',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          categoryId: 2,
+          subcategoryName: 'Буженина',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          categoryId: 1,
+          subcategoryName: 'Кефир',
           createdAt: new Date(),
           updatedAt: new Date(),
         },
