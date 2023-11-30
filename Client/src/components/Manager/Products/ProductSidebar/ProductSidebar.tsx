@@ -8,7 +8,6 @@ import {
   CheckCircleIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
-  Squares2X2Icon,
   ChevronDownIcon,
 } from '@heroicons/react/24/outline';
 import addCategory from '../../../../Redux/thunks/Category/addCategory.api';
