@@ -6,7 +6,6 @@ import {
   PlusCircleIcon,
   XCircleIcon,
   CheckCircleIcon,
-  ChevronLeftIcon,
   ChevronRightIcon,
   ChevronDownIcon,
 } from '@heroicons/react/24/outline';
