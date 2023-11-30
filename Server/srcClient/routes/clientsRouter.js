@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const { Op } = require('sequelize');
 const { DiscountCard } = require('../../db/models');
 
 router.get('/admin/clients', async (req, res) => {
@@ -24,6 +25,18 @@ router.put('/admin/clients/:id', async (req, res) => {
   const clientId = req.params.id;
   const { newInfo } = req.body;
   try {
+    const existingClient = await DiscountCard.findOne({
+      where: {
+        email: newInfo.email,
+        id: { [Op.not]: clientId },
+      },
+    });
+    if (existingClient) {
+      return res
+        .status(400)
+        .json({ error: 'Пользователь с таким email уже существует' });
+    }
+
     await DiscountCard.update(newInfo, {
       where: { id: clientId },
     });

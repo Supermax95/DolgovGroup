@@ -26,10 +26,25 @@ router.get('/admin/employees', async (req, res) => {
 router.put('/admin/employees/:id', async (req, res) => {
   const employeeId = req.params.id;
   const { newInfo } = req.body;
+
   try {
+    const existingEmployee = await DiscountCard.findOne({
+      where: {
+        email: newInfo.email,
+        id: { [Op.not]: employeeId },
+      },
+    });
+
+    if (existingEmployee) {
+      return res
+        .status(400)
+        .json({ error: 'Пользователь с таким email уже существует' });
+    }
+
     await DiscountCard.update(newInfo, {
       where: { id: employeeId },
     });
+
     const employees = await DiscountCard.findAll({
       where: {
         userStatus: {
@@ -42,12 +57,12 @@ router.put('/admin/employees/:id', async (req, res) => {
       ],
       raw: true,
     });
+
     res.json(employees);
   } catch (error) {
     console.error('Ошибка при обновлении данных', error);
     res.status(500).json({ error: 'Произошла ошибка на сервере' });
   }
 });
-
 
 module.exports = router;

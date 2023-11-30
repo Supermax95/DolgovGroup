@@ -78,7 +78,7 @@ const Products: FC = () => {
           String(product.productName),
           String(product.promoStartDate),
           String(product.promoEndDate),
-          String(product.description),
+          // String(product.description),
           String(product.article),
         ];
 
@@ -264,17 +264,21 @@ const Products: FC = () => {
               ) : (
                 <div className="mb-2 text-xs text-gray-500">Промо нет</div>
               )}
-              <div
-                id="exampleFormControlTextarea1"
-                className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 overflow-auto"
-                style={{ whiteSpace: 'pre-wrap', maxHeight: '100px' }}
-              >
-                {product.description || 'Нет описания'}
-              </div>
+   <div className="mb-2 text-xs text-gray-500">
+  Описание:
+  {product.description ? (
+    <div
+      id="Description"
+      className="block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 overflow-auto"
+      style={{ whiteSpace: 'pre-wrap', maxHeight: '100px' }}
+    >
+      {product.description}
+    </div>
+  ) : (
+    <span className="text-gray-500">нет</span>
+  )}
+</div>
 
-              {/* <p className="mb-2 text-sm text-gray-400">
-                {product.description || 'Нет описания'}
-              </p> */}
               <h3 className="mb-2 text-sm text-black-400">
                 {`Артикул: ${product.article || 'нет '}`}
               </h3>

@@ -362,30 +362,6 @@ const ProductsModal: FC<ProductsModalProps> = ({
         }),
     },
     {
-      id: 'isNew',
-      type: 'text',
-      value: editedProduct.isNew,
-      title: 'Новый',
-      htmlFor: 'isNew',
-      onChange: (value: boolean) =>
-        setEditedProduct({
-          ...editedProduct,
-          isNew: value,
-        }),
-    },
-    {
-      id: 'isDiscounted',
-      type: 'text',
-      value: editedProduct.isDiscounted,
-      title: 'Скидка',
-      htmlFor: 'isDiscounted',
-      onChange: (value: boolean) =>
-        setEditedProduct({
-          ...editedProduct,
-          isDiscounted: value,
-        }),
-    },
-    {
       id: 'description',
       type: 'text',
       value: editedProduct.description,
@@ -397,6 +373,30 @@ const ProductsModal: FC<ProductsModalProps> = ({
         setEditedProduct({
           ...editedProduct,
           description: value,
+        }),
+    },
+    {
+      id: 'isDiscounted',
+      type: 'text',
+      value: editedProduct.isDiscounted,
+      title: 'Товар со скидкой',
+      htmlFor: 'isDiscounted',
+      onChange: (value: boolean) =>
+        setEditedProduct({
+          ...editedProduct,
+          isDiscounted: value,
+        }),
+    },
+    {
+      id: 'isNew',
+      type: 'text',
+      value: editedProduct.isNew,
+      title: 'Новинка',
+      htmlFor: 'isNew',
+      onChange: (value: boolean) =>
+        setEditedProduct({
+          ...editedProduct,
+          isNew: value,
         }),
     },
   ];
@@ -411,7 +411,14 @@ const ProductsModal: FC<ProductsModalProps> = ({
           onCancellick={handleCancel}
           isUpload={isUpload}
         >
-          {currentStep === 1 && <InputModal inputFields={inputFields} />}
+          {currentStep === 1 && (
+            <InputModal
+              containerClassName={
+                'py-8 grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'
+              }
+              inputFields={inputFields}
+            />
+          )}
 
           {currentStep === 2 && (
             <div className="container mx-auto mt-8 p-8 max-w-4xl justify-center items-center flex-col block rounded-lg bg-white shadow-md dark:bg-neutral-700">
