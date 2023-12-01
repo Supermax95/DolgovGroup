@@ -141,9 +141,9 @@ const ProductsModal: FC<ProductsModalProps> = ({
       let result2 = '';
 
       if (isAddingMode) {
-        result =  onSaveAdd(editedProduct as IProduct);
+        result = await onSaveAdd(editedProduct as IProduct);
       } else {
-        result2 =  onSaveEdit(editedProduct as IProduct);
+        result2 = await onSaveEdit(editedProduct as IProduct);
       }
 
       if (typeof result2 !== 'string') {
