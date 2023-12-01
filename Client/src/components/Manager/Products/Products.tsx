@@ -109,65 +109,44 @@ const Products: FC = () => {
     }
 
     //* для сайдбара
-    // // Фильтрация по текущей категории
-    // if (currentCategory) {
-    //   console.log('currentCategory', currentCategory);
-
-    //   //* Находим все подкатегории, принадлежащие текущей категории
-    //   const subcategory = subcategories.filter(
-    //     (sub) => sub.categoryId === currentCategory.id
-    //   );
-
-    //   console.log('subcategory', subcategory);
-
-    //   //* мне нужно сравнить, что категория совпадает с текущими подкатегориями
-    //   //* далее нужно сравнить продукты, и что они совпадают с текущим значением подкатегорий и выводить их по главной категории
-
-    //   //* Фильтруем продукты таким образом, чтобы остались только те, которые принадлежат текущей категории или ее подкатегориям
-    //   filtered = filtered.filter((product) => {
-    //     console.log('productproduct', product.subcategoryId);
-
-    //     // const productSubcategory = categorySubcategories.find(
-    //     //   (sub) => sub.id === product.subcategoryId
-    //     // );
-    //     // console.log('выводит только одно что-то первое', productSubcategory);
-    //     // return (
-    //     //   // productSubcategory ||
-    //     //   product.subcategoryId === currentCategory.id
-    //     // );
-    //   });
-    //   //console.log('filtered', filtered);
-    // }
-
     if (currentCategory) {
       //* выводит массив объектов подкатегорий
       const subcategoriesOfCurrentCategory = subcategories.filter(
         (sub) => sub.categoryId === currentCategory.id
       );
 
-      console.log(
-        'subcategoriesOfCurrentCategory',
-        subcategoriesOfCurrentCategory
-      );
+      // console.log(
+      //   'subcategoriesOfCurrentCategory',
+      //   subcategoriesOfCurrentCategory
+      // );
 
-      //* id продукта должен совпадать с id в таблице subcategory
-      //* выводит массив продуктов
+      /** если для хотя бы одного элемента product в массиве filtered условие внутри some возвращает true,
+       * то этот product будет включен в результирующий массив filtered. */
       filtered = filtered.filter((product) => {
+        //console.log('product', product.subcategoryId);
         return subcategoriesOfCurrentCategory.some(
-          (sub) =>
-            // console.log('sub.id', sub.id)
-            sub.id === product.subcategoryId
+          (sub) => sub.id === product.subcategoryId
+          // console.log(
+          //   'sub.id',
+          //   sub.subcategoryName,
+          //   sub.id,
+          //   'PRODUCT',
+          //   product.subcategoryId,
+          //   product.productName
+          // )
         );
       });
-      console.log('filteredsome', filtered);
+      // console.log('категория и все подкатегории', filtered);
     }
 
-    // Фильтрация по текущей подкатегории
+    //* Фильтрация по текущей подкатегории
     if (currentSubcategory) {
+      //console.log('currentSubcategoryPRODUCT', currentSubcategory);
+
       filtered = filtered.filter(
         (product) => product.subcategoryId === currentSubcategory.id
       );
-      console.log('filtered', filtered);
+      //   console.log('подкатегория', filtered);
     }
 
     return filtered;
@@ -256,6 +235,7 @@ const Products: FC = () => {
       <ProductSidebar
         categories={categories}
         onCategorySelect={setCurrentCategory}
+        onSubcategorySelect={setCurrentSubcategory}
       />
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         <div className="col-span-full mb-4">
@@ -347,20 +327,20 @@ const Products: FC = () => {
               ) : (
                 <div className="mb-2 text-xs text-gray-500">Промо нет</div>
               )}
-   <div className="mb-2 text-xs text-gray-500">
-  Описание:
-  {product.description ? (
-    <div
-      id="Description"
-      className="block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 overflow-auto"
-      style={{ whiteSpace: 'pre-wrap', maxHeight: '100px' }}
-    >
-      {product.description}
-    </div>
-  ) : (
-    <span className="text-gray-500">нет</span>
-  )}
-</div>
+              <div className="mb-2 text-xs text-gray-500">
+                Описание:
+                {product.description ? (
+                  <div
+                    id="Description"
+                    className="block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 overflow-auto"
+                    style={{ whiteSpace: 'pre-wrap', maxHeight: '100px' }}
+                  >
+                    {product.description}
+                  </div>
+                ) : (
+                  <span className="text-gray-500">нет</span>
+                )}
+              </div>
 
               <h3 className="mb-2 text-sm text-black-400">
                 {`Артикул: ${product.article || 'нет '}`}
