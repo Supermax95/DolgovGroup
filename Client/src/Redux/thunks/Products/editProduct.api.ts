@@ -42,7 +42,7 @@ interface ResponseDataId {
 const editProduct = createAsyncThunk<ResponseDataId, RequestData>(
   'admin/editProduct',
 
-  async ({ newInfo }) => {
+  async ({ newInfo }, { rejectWithValue }) => {
     console.log('newInfo=======>', newInfo);
     try {
       const response: AxiosResponse = await axios.put(
@@ -53,8 +53,12 @@ const editProduct = createAsyncThunk<ResponseDataId, RequestData>(
 
       return response.data;
     } catch (error) {
-      console.error('Error:', error);
-      throw error;
+      if (axios.isAxiosError(error) && error.response) {
+        console.error('Server response data:', error.response.data.error);
+        throw rejectWithValue(error.response.data.error);
+      } else {
+        throw error;
+      }
     }
   }
 );

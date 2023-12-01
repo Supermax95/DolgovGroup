@@ -13,6 +13,7 @@ import getCategory from '../../../Redux/thunks/Category/getCategory.api';
 import getSubcategory from '../../../Redux/thunks/SubCategory/getSubcategory.api';
 import ProductSidebar from './ProductSidebar/ProductSidebar';
 import { isToday, parseISO, isPast } from 'date-fns';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 export interface IProduct {
   id: number;
@@ -69,6 +70,7 @@ const Products: FC = () => {
   const [editedProduct, setEditedProduct] = useState<
     IProduct | null | undefined
   >(null);
+  const [axiosError, setAxiosError] = useState<string | null>(null);
   const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
@@ -219,31 +221,45 @@ const Products: FC = () => {
   };
 
   const handleSaveAdd = async () => {
+    let add = {} as any;
     try {
       if (editedProduct) {
-        await dispatch(
+        const resultAction = await dispatch(
           addProduct({
             newProduct: editedProduct,
           })
         );
+        const result = unwrapResult(resultAction);
+        add = result;
+        setAxiosError(null);
       }
     } catch (error) {
       console.error('Произошла ошибка при добавлении:', error);
+      setAxiosError(error as string | null);
+      add = error;
     }
+    return add;
   };
 
   const handleSaveEdit = async (editedProduct: IProduct) => {
+    let add = {} as any;
     try {
       if (selectedProduct) {
-        await dispatch(
+        const resultAction = await dispatch(
           editProduct({
             newInfo: editedProduct,
           })
         );
+        const result = unwrapResult(resultAction);
+        add = result;
+        setAxiosError(null);
       }
     } catch (error) {
       console.error('Произошла ошибка при редактировании:', error);
+      setAxiosError(error as string | null);
+      add = error;
     }
+    return add;
   };
 
   const reverseDate = (dateString) => {
@@ -347,20 +363,20 @@ const Products: FC = () => {
               ) : (
                 <div className="mb-2 text-xs text-gray-500">Промо нет</div>
               )}
-   <div className="mb-2 text-xs text-gray-500">
-  Описание:
-  {product.description ? (
-    <div
-      id="Description"
-      className="block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 overflow-auto"
-      style={{ whiteSpace: 'pre-wrap', maxHeight: '100px' }}
-    >
-      {product.description}
-    </div>
-  ) : (
-    <span className="text-gray-500">нет</span>
-  )}
-</div>
+              <div className="mb-2 text-xs text-gray-500">
+                Описание:
+                {product.description ? (
+                  <div
+                    id="Description"
+                    className="block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 overflow-auto"
+                    style={{ whiteSpace: 'pre-wrap', maxHeight: '100px' }}
+                  >
+                    {product.description}
+                  </div>
+                ) : (
+                  <span className="text-gray-500">нет</span>
+                )}
+              </div>
 
               <h3 className="mb-2 text-sm text-black-400">
                 {`Артикул: ${product.article || 'нет '}`}
@@ -396,6 +412,7 @@ const Products: FC = () => {
           isAddingMode={isAddingMode}
           editedProduct={editedProduct}
           setEditedProduct={setEditedProduct}
+          axiosError={axiosError}
         />
       )}
     </Wrapper>

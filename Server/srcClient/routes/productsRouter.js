@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const { isPast, parseISO, addDays, subDays } = require('date-fns');
+const { Op } = require('sequelize');
 const { Product } = require('../../db/models');
 
 router.get('/admin/products', async (req, res) => {
@@ -38,6 +39,15 @@ router.post('/admin/products', async (req, res) => {
   const { newProduct } = req.body;
 
   try {
+    const existingProduct = await Product.findOne({
+      where: { article: newProduct.article },
+    });
+    if (existingProduct) {
+      return res.status(400).json({
+        error: 'Продукт с указанным артикулом уже существует',
+      });
+    }
+
     const createdProduct = await Product.create({
       article: newProduct.article,
       productName: newProduct.productName,
@@ -91,6 +101,16 @@ router.put('/admin/products', async (req, res) => {
   const { newInfo } = req.body;
 
   try {
+    const existingProduct = await Product.findOne({
+      where: { article: newInfo.article, id: { [Op.not]: newInfo.id } },
+    });
+
+    if (existingProduct) {
+      return res.status(400).json({
+        error: 'Продукт с указанным артикулом уже существует',
+      });
+    }
+
     if (
       newInfo.promoEndDate &&
       isPast(subDays(parseISO(newInfo.promoEndDate), 1))
@@ -133,5 +153,4 @@ router.put('/admin/products', async (req, res) => {
     });
   }
 });
-
 module.exports = router;
