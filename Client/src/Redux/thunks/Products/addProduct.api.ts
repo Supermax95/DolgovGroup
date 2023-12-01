@@ -42,7 +42,7 @@ interface ResponseDataId {
 const addProduct = createAsyncThunk<ResponseDataId, RequestData>(
   'admin/addproduct',
 
-  async ({ newProduct }) => {
+  async ({ newProduct }, {rejectWithValue}) => {
     try {
       console.log('axios', newProduct);
 
@@ -53,10 +53,15 @@ const addProduct = createAsyncThunk<ResponseDataId, RequestData>(
       console.log(response.data);
       return response.data;
     } catch (error) {
-      console.error('Error:', error);
-      throw error;
+      if (axios.isAxiosError(error) && error.response) {
+        console.error('Server response data:', error.response.data.error);
+        throw rejectWithValue(error.response.data.error);
+      } else {
+        throw error;
+      }
     }
   }
 );
+
 
 export default addProduct;

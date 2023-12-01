@@ -47,6 +47,7 @@ interface ProductsModalProps {
   setEditedProduct: React.Dispatch<
     React.SetStateAction<Product | null | undefined>
   >;
+  axiosError: string | null;
 }
 
 const ProductsModal: FC<ProductsModalProps> = ({
@@ -59,6 +60,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
   isAddingMode,
   editedProduct,
   setEditedProduct,
+  axiosError,
 }) => {
   const subcategory = useAppSelector((state) => state.subcategorySlice.data);
   const category = useAppSelector((state) => state.categorySlice.data);
@@ -81,6 +83,9 @@ const ProductsModal: FC<ProductsModalProps> = ({
   const dispatch = useAppDispatch();
   const [isUpload, setUpload] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
+  console.log('currentStep', currentStep);
+  console.log('axiosError', axiosError);
+
   useEffect(() => {
     if (product) {
       setEditedProduct({ ...product });
@@ -123,7 +128,6 @@ const ProductsModal: FC<ProductsModalProps> = ({
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (currentStep === 1) {
       if (
         !selectedSubcategory ||
@@ -132,15 +136,23 @@ const ProductsModal: FC<ProductsModalProps> = ({
         alert('Пожалуйста, выберите категорию продукта');
         return;
       }
+      let result = '';
+      let result2 = '';
 
       if (isAddingMode) {
-        onSaveAdd(editedProduct as IProduct);
+        result = await onSaveAdd(editedProduct as IProduct);
       } else {
-        onSaveEdit(editedProduct as IProduct);
+        result2 = await onSaveEdit(editedProduct as IProduct);
       }
 
-      setCurrentStep(2);
-      setUpload(true);
+      if (typeof result2 !== 'string') {
+        setCurrentStep(2);
+        setUpload(true);
+      }
+      if (typeof result !== 'string') {
+        setCurrentStep(2);
+        setUpload(true);
+      }
     } else if (currentStep === 2) {
       const fileInput = document.getElementById(
         'fileInput'
@@ -411,6 +423,11 @@ const ProductsModal: FC<ProductsModalProps> = ({
           onCancellick={handleCancel}
           isUpload={isUpload}
         >
+          {axiosError && (
+            <div className="text-sm text-rose-400 text-center mt-2">
+              {axiosError}
+            </div>
+          )}
           {currentStep === 1 && (
             <InputModal
               containerClassName={

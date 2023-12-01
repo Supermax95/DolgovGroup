@@ -13,6 +13,7 @@ import getCategory from '../../../Redux/thunks/Category/getCategory.api';
 import getSubcategory from '../../../Redux/thunks/SubCategory/getSubcategory.api';
 import ProductSidebar from './ProductSidebar/ProductSidebar';
 import { isToday, parseISO, isPast } from 'date-fns';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 export interface IProduct {
   id: number;
@@ -69,6 +70,7 @@ const Products: FC = () => {
   const [editedProduct, setEditedProduct] = useState<
     IProduct | null | undefined
   >(null);
+  const [axiosError, setAxiosError] = useState<string | null>(null);
   const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
@@ -198,31 +200,45 @@ const Products: FC = () => {
   };
 
   const handleSaveAdd = async () => {
+    let add = {} as any;
     try {
       if (editedProduct) {
-        await dispatch(
+        const resultAction = await dispatch(
           addProduct({
             newProduct: editedProduct,
           })
         );
+        const result = unwrapResult(resultAction);
+        add = result;
+        setAxiosError(null);
       }
     } catch (error) {
       console.error('Произошла ошибка при добавлении:', error);
+      setAxiosError(error as string | null);
+      add = error;
     }
+    return add;
   };
 
   const handleSaveEdit = async (editedProduct: IProduct) => {
+    let add = {} as any;
     try {
       if (selectedProduct) {
-        await dispatch(
+        const resultAction = await dispatch(
           editProduct({
             newInfo: editedProduct,
           })
         );
+        const result = unwrapResult(resultAction);
+        add = result;
+        setAxiosError(null);
       }
     } catch (error) {
       console.error('Произошла ошибка при редактировании:', error);
+      setAxiosError(error as string | null);
+      add = error;
     }
+    return add;
   };
 
   const reverseDate = (dateString) => {
@@ -376,6 +392,7 @@ const Products: FC = () => {
           isAddingMode={isAddingMode}
           editedProduct={editedProduct}
           setEditedProduct={setEditedProduct}
+          axiosError={axiosError}
         />
       )}
     </Wrapper>

@@ -20,10 +20,13 @@ const Modal: FC<IModal> = ({
   onCancellick,
   isUpload,
 }) => {
-  const modalWidthClass = modalTitle === 'Новый продукт' || modalTitle === 'Редактирование продукта'
-    ? 'w-11/12 md:w-2/3 max-w-2xl'  
+
+    const modalWidthClass = modalTitle === 'Новый продукт' || modalTitle === 'Редактирование продукта'
+    ? 'w-11/12 md:w-2/3 max-w-2xl'
     : 'w-11/12 md:w-2/3 max-w-lg';
 
+    const isNewTitle = modalTitle.includes('Новый') || modalTitle.includes('нового') ||  modalTitle.includes('Новая');
+  
   return (
     <div
       className="py-20 bg-slate-700 bg-opacity-70 fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center"
@@ -97,7 +100,7 @@ const Modal: FC<IModal> = ({
                   />
                 )}
 
-                {onDeleteClick && (
+                {onDeleteClick && !isNewTitle && (
                   <Button
                     type="button"
                     onClick={onDeleteClick}
