@@ -8,6 +8,7 @@ import getClients from '../../../Redux/thunks/Users/getClients.api';
 import editClients from '../../../Redux/thunks/Users/editClients.api';
 import Search from '../../../ui/Search';
 import UsersModal from './ClientsModal';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 interface User {
   id: number;
@@ -46,6 +47,7 @@ const Clients: FC = () => {
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
   const [searchText, setSearchText] = useState('');
   const [isModalOpen, setModalOpen] = useState(false);
+  const [axiosError, setAxiosError] = useState<string | null>(null);
 
   const columnsDefaultName: IColumnsDefaultName[] = [
     { name: 'Фамилия' },
@@ -120,19 +122,42 @@ const Clients: FC = () => {
     setModalOpen(false);
   };
 
+  //   const handleSaveEdit = async (editedUser: User) => {
+  //     try {
+  //       if (selectedUser) {
+  //         await dispatch(
+  //           editClients({
+  //             clientId: selectedUser.id,
+  //             newInfo: editedUser,
+  //           })
+  //         );
+  //         closeEditModal();
+  //       }
+  //       const result = unwrapResult(resultAction);
+  //       console.log('Результат выполнения диспетчера:', result);
+  //       closeEditModal();
+  //     }
+  //   } catch (error) {
+  //     console.error('Произошла ошибка при редактировании:', error);
+  //   }
+  // };
+
   const handleSaveEdit = async (editedUser: User) => {
     try {
       if (selectedUser) {
-        await dispatch(
+        const resultAction = await dispatch(
           editClients({
             clientId: selectedUser.id,
             newInfo: editedUser,
           })
         );
+        const result = unwrapResult(resultAction);
+        // console.log('Результат выполнения диспетчера:', result);
         closeEditModal();
       }
     } catch (error) {
       console.error('Произошла ошибка при редактировании:', error);
+      setAxiosError(error as string | null);
     }
   };
 
@@ -170,12 +195,11 @@ const Clients: FC = () => {
               <UsersModal
                 isOpen={isModalOpen}
                 user={selectedUser}
-                // onSave={handleSave}
-                // onClose={closeEditModal}
                 onSaveEdit={handleSaveEdit}
                 onCloseEditModal={closeEditModal}
                 editedUser={editedUser}
                 setEditedUser={setEditedUser}
+                axiosError={axiosError}
               />
             )}
           </div>

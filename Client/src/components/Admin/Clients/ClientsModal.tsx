@@ -27,6 +27,7 @@ interface UsersModalProps {
   onCloseEditModal: () => void;
   editedUser: IUser | null | undefined;
   setEditedUser: React.Dispatch<React.SetStateAction<IUser | null | undefined>>;
+  axiosError: string | null;
 }
 
 const ClientsModal: React.FC<UsersModalProps> = ({
@@ -36,6 +37,7 @@ const ClientsModal: React.FC<UsersModalProps> = ({
   onCloseEditModal,
   editedUser,
   setEditedUser,
+  axiosError,
 }) => {
   const dispatch = useAppDispatch();
 
@@ -45,6 +47,7 @@ const ClientsModal: React.FC<UsersModalProps> = ({
       setEditedUser({ ...user });
     }
   }, [user, setEditedUser]);
+console.log('axiosError',axiosError);
 
   const modalTitle = 'Редактирование анкеты клиента';
 
@@ -56,7 +59,7 @@ const ClientsModal: React.FC<UsersModalProps> = ({
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSaveEdit(editedUser);
-    onCloseEditModal();
+    // onCloseEditModal();
   };
 
   if (!isOpen || !editedUser) {
@@ -225,6 +228,11 @@ const ClientsModal: React.FC<UsersModalProps> = ({
     <Wrapper>
       <form onSubmit={handleFormSubmit}>
         <ModalUser modalTitle={modalTitle} onCancellick={handleCancel}>
+        {axiosError && (
+            <div className="text-sm text-rose-400 text-center mt-2">
+              {axiosError}
+            </div>
+              )}
           <InputModal
             containerClassName={
               'py-8 grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'
@@ -244,3 +252,6 @@ const ClientsModal: React.FC<UsersModalProps> = ({
 };
 
 export default ClientsModal;
+function useState<T>(arg0: null): [any, any] {
+  throw new Error('Function not implemented.');
+}
