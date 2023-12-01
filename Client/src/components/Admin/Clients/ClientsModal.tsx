@@ -47,13 +47,14 @@ const ClientsModal: React.FC<UsersModalProps> = ({
       setEditedUser({ ...user });
     }
   }, [user, setEditedUser]);
-console.log('axiosError',axiosError);
+
 
   const modalTitle = 'Редактирование анкеты клиента';
 
   const handleCancel = () => {
     setEditedUser(undefined);
     onCloseEditModal();
+    
   };
 
   const handleFormSubmit = (e: React.FormEvent) => {
@@ -252,6 +253,3 @@ console.log('axiosError',axiosError);
 };
 
 export default ClientsModal;
-function useState<T>(arg0: null): [any, any] {
-  throw new Error('Function not implemented.');
-}
