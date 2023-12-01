@@ -8,6 +8,7 @@ import Table from '../../../ui/Table';
 import Search from '../../../ui/Search';
 import EmployeesModal from './EmployeesModal';
 import editEmployees from '../../../Redux/thunks/Users/editEmployee.api';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 interface User {
   id: number;
@@ -43,9 +44,9 @@ const Employees: FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
   const [searchText, setSearchText] = useState('');
-
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [editedUser, setEditedUser] = useState<User | null | undefined>(null);
+  const [axiosError, setAxiosError] = useState<string | null>(null);
 
   const columnsDefaultName: IColumnsDefaultName[] = [
     { name: 'Фамилия' },
@@ -115,29 +116,36 @@ const Employees: FC = () => {
     setSelectedUser(user);
     setEditedUser({ ...user });
     setModalOpen(true);
+    setAxiosError(null);
   };
 
   const closeEditModal = () => {
     setSelectedUser(null);
     setEditedUser(null);
     setModalOpen(true);
+    setAxiosError(null);
   };
 
   const handleSaveEdit = async (editedUser: User) => {
     try {
       if (selectedUser) {
-        await dispatch(
+        const resultAction = await dispatch(
           editEmployees({
             employeeId: selectedUser.id,
             newInfo: editedUser,
           })
         );
+        const result = unwrapResult(resultAction);
+        setAxiosError(null);
         closeEditModal();
       }
-    } catch (error) {
+    }  catch (error) {
       console.error('Произошла ошибка при редактировании:', error);
+      setAxiosError(error as string | null);
     }
   };
+  console.log(axiosError);
+  
 
   return (
     <Wrapper>
@@ -177,6 +185,7 @@ const Employees: FC = () => {
             onCloseEditModal={closeEditModal}
             editedUser={editedUser}
             setEditedUser={setEditedUser}
+            axiosError={axiosError}
           />
         )}
       </div>

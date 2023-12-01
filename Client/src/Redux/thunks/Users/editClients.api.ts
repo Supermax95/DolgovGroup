@@ -42,7 +42,6 @@ const editClients = createAsyncThunk<ArrayResponseData, RequestData>(
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        console.error('Server response data:', error.response.data.error);
         throw rejectWithValue(error.response.data.error);
       } else {
         throw error;

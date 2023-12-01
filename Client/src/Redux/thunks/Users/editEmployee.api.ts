@@ -3,7 +3,7 @@ import axios, { AxiosResponse } from 'axios';
 import { VITE_URL } from '../../../VITE_URL';
 
 interface RequestData {
-    employeeId: number;
+  employeeId: number;
   newInfo: {
     id: number;
     lastName: string;
@@ -17,14 +17,14 @@ interface RequestData {
 }
 
 interface ResponseData {
-    id: number;
-    lastName: string;
-    firstName: string;
-    middleName: string;
-    email: string;
-    barcode: string;
-    userStatus: string;
-    isActivated: boolean;
+  id: number;
+  lastName: string;
+  firstName: string;
+  middleName: string;
+  email: string;
+  barcode: string;
+  userStatus: string;
+  isActivated: boolean;
 }
 
 type ArrayResponseData = Array<ResponseData>;
@@ -32,7 +32,7 @@ type ArrayResponseData = Array<ResponseData>;
 const editEmployees = createAsyncThunk<ArrayResponseData, RequestData>(
   'admin/editemployee',
 
-  async ({ employeeId, newInfo }) => {
+  async ({ employeeId, newInfo }, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axios.put(
         `${VITE_URL}/admin/employees/${employeeId}`,
@@ -40,8 +40,12 @@ const editEmployees = createAsyncThunk<ArrayResponseData, RequestData>(
       );
       return response.data;
     } catch (error) {
-      console.error('Error:', error);
-      throw error;
+      if (axios.isAxiosError(error) && error.response) {
+        console.error('Server response data:', error.response.data.error);
+        throw rejectWithValue(error.response.data.error);
+      } else {
+        throw error;
+      }
     }
   }
 );

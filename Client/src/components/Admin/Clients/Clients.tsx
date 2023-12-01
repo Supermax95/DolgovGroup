@@ -74,6 +74,10 @@ const Clients: FC = () => {
     dispatch(getClients());
   }, [dispatch]);
 
+  // useEffect(() => {
+  //   setAxiosError(null);
+  // }, [axiosError]);
+
   const itemsPerPage = 50;
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -114,33 +118,15 @@ const Clients: FC = () => {
     setSelectedUser(user);
     setEditedUser({ ...user });
     setModalOpen(true);
+
   };
 
   const closeEditModal = () => {
     setSelectedUser(null);
     setEditedUser(null);
     setModalOpen(false);
-  };
 
-  //   const handleSaveEdit = async (editedUser: User) => {
-  //     try {
-  //       if (selectedUser) {
-  //         await dispatch(
-  //           editClients({
-  //             clientId: selectedUser.id,
-  //             newInfo: editedUser,
-  //           })
-  //         );
-  //         closeEditModal();
-  //       }
-  //       const result = unwrapResult(resultAction);
-  //       console.log('Результат выполнения диспетчера:', result);
-  //       closeEditModal();
-  //     }
-  //   } catch (error) {
-  //     console.error('Произошла ошибка при редактировании:', error);
-  //   }
-  // };
+  };
 
   const handleSaveEdit = async (editedUser: User) => {
     try {
@@ -153,6 +139,7 @@ const Clients: FC = () => {
         );
         const result = unwrapResult(resultAction);
         // console.log('Результат выполнения диспетчера:', result);
+        setAxiosError(null);
         closeEditModal();
       }
     } catch (error) {
