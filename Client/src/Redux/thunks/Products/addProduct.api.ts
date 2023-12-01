@@ -14,7 +14,6 @@ interface RequestData {
     isNew: boolean;
     isDiscounted: boolean;
     description: string;
-    subcategoryName: string;
   };
 }
 

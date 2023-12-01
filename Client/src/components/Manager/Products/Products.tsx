@@ -8,7 +8,6 @@ import editProduct from '../../../Redux/thunks/Products/editProduct.api';
 import ProductsModal from './ProductsModal';
 import addProduct from '../../../Redux/thunks/Products/addProduct.api';
 import Pagination from '../../../ui/Paggination';
-import Sidebar from '../../../ui/Sidebar';
 import getCategory from '../../../Redux/thunks/Category/getCategory.api';
 import getSubcategory from '../../../Redux/thunks/SubCategory/getSubcategory.api';
 import ProductSidebar from './ProductSidebar/ProductSidebar';
@@ -262,7 +261,7 @@ const Products: FC = () => {
     return add;
   };
 
-  const reverseDate = (dateString) => {
+  const reverseDate = (dateString: string): string=> {
     const [year, month, day] = dateString.split('-');
     return `${day}-${month}-${year}`;
   };
