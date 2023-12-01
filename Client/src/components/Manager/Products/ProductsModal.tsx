@@ -24,16 +24,16 @@ interface Product {
   subcategoryId: number;
 }
 
-interface Category {
-  id: number | 0;
-  categoryName: string | '';
-}
+// interface Category {
+//   id: number | 0;
+//   categoryName: string | '';
+// }
 
-interface Subcategory {
-  id: number | null;
-  categoryId: number | 0;
-  subcategoryName: string | '';
-}
+// interface Subcategory {
+//   id: number | null;
+//   categoryId: number | 0;
+//   subcategoryName: string | '';
+// }
 
 interface ProductsModalProps {
   isOpen: boolean;
@@ -99,8 +99,9 @@ const ProductsModal: FC<ProductsModalProps> = ({
   };
 
   const uploadFile = async (
-    file: File | null,
-    id: number | undefined
+    file: File ,
+    id: number | 0,
+    isAddingMode: boolean,
     // isAddingMode?: boolean
   ): Promise<void> => {
     if (file && id) {
@@ -140,9 +141,9 @@ const ProductsModal: FC<ProductsModalProps> = ({
       let result2 = '';
 
       if (isAddingMode) {
-        result = await onSaveAdd(editedProduct as IProduct);
+        result =  onSaveAdd(editedProduct as IProduct);
       } else {
-        result2 = await onSaveEdit(editedProduct as IProduct);
+        result2 =  onSaveEdit(editedProduct as IProduct);
       }
 
       if (typeof result2 !== 'string') {
@@ -163,6 +164,11 @@ const ProductsModal: FC<ProductsModalProps> = ({
     }
   };
 
+  
+  
+
+
+  
   const handleFileInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const file = e.target.files?.[0] || null;
 

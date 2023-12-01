@@ -26,6 +26,7 @@ export interface InputField {
   required?: boolean;
   pattern?: string | undefined;
   onChange?: (value: string) => void | undefined;
+  
   divFielsCss?: string[];
   disabled?: boolean;
   options?: { value: string; label: string }[];
