@@ -4,11 +4,7 @@ import { VITE_URL } from '../../../VITE_URL';
 
 interface RequestData {
   subcategoryId: number;
-  newInfo: {
-    id: number;
-    subcategoryName: string;
-    categoryName: string;
-  };
+  newSubcategoryName: string;
 }
 
 interface ResponseData {
@@ -22,12 +18,11 @@ type ArrayResponseData = Array<ResponseData>;
 const editSubcategory = createAsyncThunk<ArrayResponseData, RequestData>(
   'admin/editsubcategory',
 
-  async ({ subcategoryId, newInfo }) => {
-    console.log('aaaaaxxxxiiooooossubcategoryId', subcategoryId, newInfo );
+  async ({ subcategoryId, newSubcategoryName }) => {
     try {
       const response: AxiosResponse = await axios.put(
         `${VITE_URL}/admin/subcategory/${subcategoryId}`,
-        { newInfo }
+        { newSubcategoryName }
       );
       return response.data;
     } catch (error) {
