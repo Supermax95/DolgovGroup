@@ -225,6 +225,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   const startAddingSubcategory = (id: number): void => {
     setSelectedCategoryIdForSubcategory(id);
     setAddingSubcategory(true);
+    setActionMenuForCategory(false);
   };
 
   const cancelAddingSubcategory = (): void => {
