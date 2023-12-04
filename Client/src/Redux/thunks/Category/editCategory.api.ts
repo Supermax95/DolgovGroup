@@ -10,7 +10,6 @@ interface RequestData {
 interface ResponseData {
   id: number;
   categoryName: string;
-  //   subcategory: string;
 }
 
 type ArrayResponseData = Array<ResponseData>;

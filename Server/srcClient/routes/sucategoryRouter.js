@@ -17,27 +17,24 @@ router.get('/admin/subcategory', async (req, res) => {
 router.post('/admin/subcategory', async (req, res) => {
   const { newSubcategory, categoryId } = req.body;
 
-  console.log('newSubcategory', newSubcategory, categoryId);
-
   try {
     const category = await Category.findOne({
       where: { id: categoryId },
     });
 
     if (!category) {
-      return res.status(400).json({ error: 'Категория не найдена' });
+      res.status(400).json({ error: 'Категория не найдена' });
+    } else {
+      await Subcategory.create({
+        subcategoryName: newSubcategory.subcategoryName,
+        categoryId,
+      });
     }
-
-    await Subcategory.create({
-      subcategoryName: newSubcategory.subcategoryName,
-      categoryId,
-    });
 
     const subcategories = await Subcategory.findAll({
       order: [['subcategoryName', 'ASC']],
       raw: true,
     });
-
     res.json(subcategories);
   } catch (error) {
     console.error('Ошибка при добавлении данных', error);
@@ -67,19 +64,20 @@ router.delete('/admin/subcategory/:id', async (req, res) => {
 
 router.put('/admin/subcategory/:id', async (req, res) => {
   const subcategoryId = req.params.id;
-  const { newInfo } = req.body;
+  const { newSubcategoryName } = req.body;
+
   try {
-    const category = await Category.findOne({
-      where: { categoryName: newInfo.categoryName },
-    });
-
-    if (!category) {
-      return res.status(400).json({ error: 'Категория не найдена' });
-    }
-
-    await Subcategory.update(newInfo, {
+    const subcategory = await Subcategory.findOne({
       where: { id: subcategoryId },
     });
+
+    if (!subcategory) {
+      res.status(400).json({ error: 'Подкатегория не найдена' });
+    } else {
+      await subcategory.update({
+        subcategoryName: newSubcategoryName,
+      });
+    }
 
     const subcategories = await Subcategory.findAll({
       order: [['subcategoryName', 'ASC']],

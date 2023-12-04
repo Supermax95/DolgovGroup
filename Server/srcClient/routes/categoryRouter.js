@@ -63,6 +63,7 @@ router.delete('/admin/category/:id', async (req, res) => {
 router.put('/admin/category/:id', async (req, res) => {
   const categoryId = req.params.id;
   const { newCategoryName } = req.body;
+
   try {
     const category = await Category.findOne({ where: { id: categoryId } });
 
@@ -73,10 +74,7 @@ router.put('/admin/category/:id', async (req, res) => {
     }
 
     const categories = await Category.findAll({
-      order: [
-        ['categoryName', 'ASC'],
-        // ['subcategory', 'ASC'],
-      ],
+      order: [['categoryName', 'ASC']],
       raw: true,
     });
     res.json(categories);

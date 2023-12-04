@@ -14,6 +14,8 @@ import addCategory from '../../../../Redux/thunks/Category/addCategory.api';
 import deleteCategory from '../../../../Redux/thunks/Category/deleteCategory.api';
 import editCategory from '../../../../Redux/thunks/Category/editCategory.api';
 import addSubcategory from '../../../../Redux/thunks/SubCategory/addSubcategory.api';
+import editSubcategory from '../../../../Redux/thunks/SubCategory/editSubcategory.api';
+import deleteSubcategory from '../../../../Redux/thunks/SubCategory/deleteSubcategory.api';
 
 interface ICategory {
   id?: number;
@@ -180,6 +182,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   ): Promise<void> => {
     e.preventDefault();
     try {
+      //! мб, добавить скролл или уведомление при добалении категории и подкатегории
       if (addCategory) {
         await dispatch(
           addCategory({
@@ -197,9 +200,8 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   // ? логика редактирования категории
   const startEditingCategory = (id: number): void => {
     setEditingCategory(id);
-    const categoryToEdit = allCategories.find((item) => item.id === id);
+    const categoryToEdit = allCategories.find((cat) => cat.id === id);
     setMenuOpen(false);
-
     setDataEditCategory(categoryToEdit || null);
   };
 
@@ -257,16 +259,8 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   // ? логика добавления ПОДкатегории
   const startAddingSubcategory = (id): void => {
     console.log('id', id);
-    const currentSubcategory = allSubcategories.find(
-      (sub) => sub.categoryId === id
-    );
-
-    if (currentSubcategory) {
-      setSelectedCategoryIdForSubcategory(currentSubcategory.categoryId);
-      setAddingSubcategory(true);
-    } else {
-      console.error('Подкатегория не найдена для ID:', id);
-    }
+    setSelectedCategoryIdForSubcategory(id);
+    setAddingSubcategory(true);
   };
 
   const cancelAddingSubcategory = (): void => {
@@ -279,11 +273,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   ): Promise<void> => {
     e.preventDefault();
     try {
-      console.log(
-        'selectedCategoryIdForSubcategory',
-        selectedCategoryIdForSubcategory
-      );
-
+      //! мб, добавить скролл или уведомление при добалении категории и подкатегории
       if (addSubcategory) {
         await dispatch(
           addSubcategory({
@@ -299,19 +289,58 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     }
   };
 
-  // // ? логика редактирования ПОДкатегории
-  // const startEditingSubcategory = (id: number): void => {
-  //   setEditingSubcategory(id);
-  //   const subcategoryToEdit = allSubcategories.find((item) => item.id === id);
-  //   setMenuOpen(false);
+  // ? логика редактирования ПОДкатегории
+  const startEditingSubcategory = (id: number): void => {
+    setEditingSubcategory(id);
+    const subcategoryToEdit = allSubcategories.find((sub) => sub.id === id);
+    console.log('subcategoryToEdit', subcategoryToEdit);
 
-  //   setDataEditSubcategory(subcategoryToEdit || null);
-  // };
+    setMenuOpenSub(false);
+    setDataEditSubcategory(subcategoryToEdit || null);
+  };
 
-  // const stopEditingSubcategory = (): void => {
-  //   setEditingSubcategory(null);
-  //   setDataEditSubcategory(null);
-  // };
+  const stopEditingSubcategory = (): void => {
+    setEditingSubcategory(null);
+    setDataEditSubcategory(null);
+  };
+
+  // раскрывает предыдущее и записывает текущее состояние
+  const handleFieldChangeSubcategory = (
+    fild: keyof ISubcategory,
+    value: string
+  ): void => {
+    setDataEditSubcategory((prev) => ({
+      ...prev,
+      [fild]: value,
+    }));
+  };
+
+  const editedSubcategoryHandleForm = async (
+    e: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
+    e.preventDefault();
+
+    try {
+      if (editSubcategory) {
+        const result = await dispatch(
+          editSubcategory({
+            subcategoryId: dataEditSubcategory.id,
+            newSubcategoryName: dataEditSubcategory?.subcategoryName,
+          })
+        );
+        if (editSubcategory.fulfilled.match(result)) {
+          setEditingSubcategory(null);
+        }
+      }
+    } catch (error) {
+      console.error('Произошла ошибка при добавлении:', error);
+    }
+  };
+
+  // ? удаление ПОДкатегории
+  const deleteSubcategoryHandler = (id: number): void => {
+    dispatch(deleteSubcategory(id));
+  };
 
   //! рендерит карточки категорий
   const handleCategoryClick = (selectedCategoryId: number) => {
@@ -408,8 +437,8 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                   <form onSubmit={editedCategoryHandleForm}>
                     <div className="relative ml-5 p-0">
                       <input
-                        type="text"
                         id={item.categoryName}
+                        type="text"
                         placeholder=""
                         value={dataEditCategory?.categoryName || ''}
                         autoComplete="off"
@@ -459,6 +488,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                       </div>
                     </div>
 
+                    {/** добавление ПОДкатегории */}
                     {isAddingSubcategory &&
                       selectedCategoryIdForSubcategory === item.id && (
                         <form onSubmit={addedHandleFormSubcategory}>
@@ -502,25 +532,65 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                           .filter((sub) => sub.categoryId === item.id)
                           .map((subcategory) => (
                             <li key={subcategory.id}>
-                              <div className="cursor-pointer flex items-center p-2 justify-between rounded-md hover:bg-slate-100">
-                                <div
-                                  onClick={() =>
-                                    handleSubcategoryClick(subcategory.id)
-                                  }
-                                  className="cursor-pointer w-52 flex items-center text-slate-600"
-                                >
-                                  <ChevronRightIcon className="cursor-pointer w-3 h-3 text-slate-600 mr-2" />
-                                  <span className="text-lime-600 text-sm font-normal">
-                                    {subcategory.subcategoryName}
-                                  </span>
+                              {isEditingSubcategory === subcategory.id ? (
+                                <form onSubmit={editedSubcategoryHandleForm}>
+                                  <div className="relative ml-5 p-0">
+                                    <input
+                                      id={subcategory.subcategoryName}
+                                      type="text"
+                                      placeholder=""
+                                      value={
+                                        dataEditSubcategory?.subcategoryName ||
+                                        ''
+                                      }
+                                      autoComplete="off"
+                                      required={true}
+                                      autoFocus
+                                      className="block pr-12 py-1.5 px-2 w-[186px] text-sm text-slate-500 text-normal bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-orange-300 peer focus:text-lime-600"
+                                      onChange={(e) =>
+                                        handleFieldChangeSubcategory(
+                                          'subcategoryName',
+                                          e.target.value
+                                        )
+                                      }
+                                    />
+                                    <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center space-x-1">
+                                      <button
+                                        type="submit"
+                                        className="text-lime-600 text-sm font-normal"
+                                      >
+                                        <CheckCircleIcon className="cursor-pointer w-5 h-5 text-lime-600" />
+                                      </button>
+                                      <XCircleIcon
+                                        onClick={stopEditingSubcategory}
+                                        className="cursor-pointer w-5 h-5 text-amber-600"
+                                      />
+                                    </div>
+                                  </div>
+                                </form>
+                              ) : (
+                                <div className="cursor-pointer flex items-center p-2 justify-between rounded-md hover:bg-slate-100">
+                                  <div
+                                    onClick={() =>
+                                      handleSubcategoryClick(subcategory.id)
+                                    }
+                                    className="cursor-pointer w-52 flex items-center text-slate-600"
+                                  >
+                                    <ChevronRightIcon className="cursor-pointer w-3 h-3 text-slate-600 mr-2" />
+                                    <span className="text-lime-600 text-sm font-normal">
+                                      {subcategory.subcategoryName}
+                                    </span>
+                                  </div>
+                                  <div
+                                    className="ml-auto"
+                                    onClick={() =>
+                                      toggleMenuSub(subcategory.id)
+                                    }
+                                  >
+                                    <Cog8ToothIcon className="cursor-pointer w-5 h-5 text-lime-600" />
+                                  </div>
                                 </div>
-                                <div
-                                  className="ml-auto"
-                                  onClick={() => toggleMenuSub(subcategory.id)}
-                                >
-                                  <Cog8ToothIcon className="cursor-pointer w-5 h-5 text-lime-600" />
-                                </div>
-                              </div>
+                              )}
 
                               {/** Выпадающий список для внесения изменений данных в ПОДкатегории */}
                               {selectedSubcategoryId === subcategory.id &&
@@ -537,9 +607,11 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                                       aria-labelledby="dropdownRightButton"
                                     >
                                       <li
-                                        // onClick={() =>
-                                        //  startEditingCategory(subcategory.id)
-                                        // }
+                                        onClick={() =>
+                                          startEditingSubcategory(
+                                            subcategory.id
+                                          )
+                                        }
                                         className="flex items-center px-4 py-2 space-x-2 hover:bg-slate-100"
                                       >
                                         <div>
@@ -551,9 +623,11 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                                       </li>
 
                                       <li
-                                        // onClick={() =>
-                                        //   deleteCategoryHandler(subcategory.id)
-                                        // }
+                                        onClick={() =>
+                                          deleteSubcategoryHandler(
+                                            subcategory.id
+                                          )
+                                        }
                                         className="flex items-center px-4 py-2 space-x-2 hover:bg-slate-100"
                                       >
                                         <div>
