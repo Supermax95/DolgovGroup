@@ -4,10 +4,7 @@ const { Subcategory, Category } = require('../../db/models');
 router.get('/admin/subcategory', async (req, res) => {
   try {
     const subcategories = await Subcategory.findAll({
-      order: [
-        ['subcategoryName', 'ASC'],
-        // ['subcategory', 'ASC'],
-      ],
+      order: [['subcategoryName', 'ASC']],
       raw: true,
     });
     res.json(subcategories);
@@ -18,11 +15,13 @@ router.get('/admin/subcategory', async (req, res) => {
 });
 
 router.post('/admin/subcategory', async (req, res) => {
-  const { newSubcategory } = req.body;
+  const { newSubcategory, categoryId } = req.body;
+
+  console.log('newSubcategory', newSubcategory, categoryId);
 
   try {
     const category = await Category.findOne({
-      where: { categoryName: newSubcategory.categoryName },
+      where: { id: categoryId },
     });
 
     if (!category) {
@@ -30,9 +29,10 @@ router.post('/admin/subcategory', async (req, res) => {
     }
 
     await Subcategory.create({
-      subCategoryName: newSubcategory.subCategoryName,
-      categoryId: category.id,
+      subcategoryName: newSubcategory.subcategoryName,
+      categoryId,
     });
+
     const subcategories = await Subcategory.findAll({
       order: [['subcategoryName', 'ASC']],
       raw: true,

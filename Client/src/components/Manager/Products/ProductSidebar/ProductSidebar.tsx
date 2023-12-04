@@ -13,6 +13,7 @@ import {
 import addCategory from '../../../../Redux/thunks/Category/addCategory.api';
 import deleteCategory from '../../../../Redux/thunks/Category/deleteCategory.api';
 import editCategory from '../../../../Redux/thunks/Category/editCategory.api';
+import addSubcategory from '../../../../Redux/thunks/SubCategory/addSubcategory.api';
 
 interface ICategory {
   id?: number;
@@ -56,9 +57,12 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   );
 
   const [isAddingSubcategory, setAddingSubcategory] = useState<boolean>(false);
-  const [dataSubcategory, setDataSubcategory] = useState<
-    ISubcategory | null | undefined
-  >({ id: 0, categoryId: 0, subcategoryName: '' });
+  const [dataSubcategory, setDataSubcategory] = useState<string>('');
+  // Новое состояние для отслеживания ID текущей выбранной категории для добавления подкатегории
+  const [
+    selectedCategoryIdForSubcategory,
+    setSelectedCategoryIdForSubcategory,
+  ] = useState<number | null>(null);
 
   const [isEditingSubcategory, setEditingSubcategory] = useState<number | null>(
     null
@@ -250,6 +254,65 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     }));
   };
 
+  // ? логика добавления ПОДкатегории
+  const startAddingSubcategory = (id): void => {
+    console.log('id', id);
+    const currentSubcategory = allSubcategories.find(
+      (sub) => sub.categoryId === id
+    );
+
+    if (currentSubcategory) {
+      setSelectedCategoryIdForSubcategory(currentSubcategory.categoryId);
+      setAddingSubcategory(true);
+    } else {
+      console.error('Подкатегория не найдена для ID:', id);
+    }
+  };
+
+  const cancelAddingSubcategory = (): void => {
+    setAddingSubcategory(false);
+    setDataSubcategory('');
+  };
+
+  const addedHandleFormSubcategory = async (
+    e: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
+    e.preventDefault();
+    try {
+      console.log(
+        'selectedCategoryIdForSubcategory',
+        selectedCategoryIdForSubcategory
+      );
+
+      if (addSubcategory) {
+        await dispatch(
+          addSubcategory({
+            newSubcategory: dataSubcategory,
+            categoryId: selectedCategoryIdForSubcategory,
+          })
+        );
+        setAddingSubcategory(false);
+        setDataSubcategory('');
+      }
+    } catch (error) {
+      console.error('Произошла ошибка при добавлении:', error);
+    }
+  };
+
+  // // ? логика редактирования ПОДкатегории
+  // const startEditingSubcategory = (id: number): void => {
+  //   setEditingSubcategory(id);
+  //   const subcategoryToEdit = allSubcategories.find((item) => item.id === id);
+  //   setMenuOpen(false);
+
+  //   setDataEditSubcategory(subcategoryToEdit || null);
+  // };
+
+  // const stopEditingSubcategory = (): void => {
+  //   setEditingSubcategory(null);
+  //   setDataEditSubcategory(null);
+  // };
+
   //! рендерит карточки категорий
   const handleCategoryClick = (selectedCategoryId: number) => {
     const currentCategory = categories.find(
@@ -396,6 +459,42 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                       </div>
                     </div>
 
+                    {isAddingSubcategory &&
+                      selectedCategoryIdForSubcategory === item.id && (
+                        <form onSubmit={addedHandleFormSubcategory}>
+                          <div className="relative ml-3 p-0">
+                            <input
+                              id="newSubcategory"
+                              type="text"
+                              placeholder="Название подкатегории"
+                              autoComplete="off"
+                              required={true}
+                              value={dataSubcategory?.subcategoryName || ''}
+                              autoFocus
+                              onChange={(e) =>
+                                setDataSubcategory({
+                                  ...dataSubcategory,
+                                  subcategoryName: e.target.value,
+                                })
+                              }
+                              className="block pr-14 py-1.5 px-2 w-56 text-sm text-slate-500 text-normal bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-orange-300 peer focus:text-lime-600"
+                            />
+                            <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center space-x-1">
+                              <button
+                                type="submit"
+                                className="text-lime-600 text-sm font-normal"
+                              >
+                                <CheckCircleIcon className="cursor-pointer w-5 h-5 text-lime-600" />
+                              </button>
+                              <XCircleIcon
+                                onClick={cancelAddingSubcategory}
+                                className="cursor-pointer w-5 h-5 text-amber-600"
+                              />
+                            </div>
+                          </div>
+                        </form>
+                      )}
+
                     {/** Вывод подкатегорий  */}
                     {subcategoryStates[item.id] && (
                       <ul className="ml-6 space-y-1 text-md">
@@ -487,7 +586,10 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                       className="py-2 text-xs text-slate-700 cursor-pointer"
                       aria-labelledby="dropdownRightButton"
                     >
-                      <li className="flex items-center px-4 py-2 space-x-2 hover:bg-slate-100 border-b-2 border-b-lime-500">
+                      <li
+                        onClick={() => startAddingSubcategory(item.id)}
+                        className="flex items-center px-4 py-2 space-x-2 hover:bg-slate-100 border-b-2 border-b-lime-500"
+                      >
                         <div>
                           <PlusCircleIcon className="w-4 h-4 text-slate-600" />
                         </div>
