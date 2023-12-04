@@ -48,6 +48,7 @@ interface ProductsModalProps {
     React.SetStateAction<Product | null | undefined>
   >;
   axiosError: string | null;
+  resetAxiosError: () => void; 
 }
 
 const ProductsModal: FC<ProductsModalProps> = ({
@@ -61,6 +62,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
   editedProduct,
   setEditedProduct,
   axiosError,
+  resetAxiosError,
 }) => {
   const subcategory = useAppSelector((state) => state.subcategorySlice.data);
   const category = useAppSelector((state) => state.categorySlice.data);
@@ -83,8 +85,6 @@ const ProductsModal: FC<ProductsModalProps> = ({
   const dispatch = useAppDispatch();
   const [isUpload, setUpload] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
-  console.log('currentStep', currentStep);
-  console.log('axiosError', axiosError);
 
   useEffect(() => {
     if (product) {
@@ -94,14 +94,15 @@ const ProductsModal: FC<ProductsModalProps> = ({
   const modalTitle = isAddingMode ? 'Новый продукт' : 'Редактирование продукта';
   const handleCancel = () => {
     setEditedProduct(undefined);
+    resetAxiosError();
     onCloseEditModal();
     onCloseAddModal();
   };
 
   const uploadFile = async (
-    file: File ,
+    file: File,
     id: number | 0,
-    isAddingMode: boolean,
+    isAddingMode: boolean
     // isAddingMode?: boolean
   ): Promise<void> => {
     if (file && id) {
@@ -164,11 +165,6 @@ const ProductsModal: FC<ProductsModalProps> = ({
     }
   };
 
-  
-  
-
-
-  
   const handleFileInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const file = e.target.files?.[0] || null;
 

@@ -25,6 +25,7 @@ const productsRouter = require('./srcClient/routes/productsRouter');
 const multerRouter = require('./srcClient/routes/multerRouter');
 const categoryRouter = require('./srcClient/routes/categoryRouter');
 const subcategoryRouter = require('./srcClient/routes/sucategoryRouter');
+const promotionRouter = require('./srcClient/routes/promotionsRouter');
 // middleware
 const errorMiddleware = require('./srcNative/middlewares/error-middleware');
 
@@ -82,6 +83,7 @@ app.use('/', productsRouter);
 app.use('/', multerRouter);
 app.use('/', categoryRouter);
 app.use('/', subcategoryRouter);
+app.use('/', promotionRouter);
 
 app.listen(PORT, () => {
   console.log(`Сервер крутится на ${PORT} порту`);

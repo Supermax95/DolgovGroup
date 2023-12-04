@@ -198,6 +198,11 @@ const Products: FC = () => {
     dispatch(getProducts());
   };
 
+  const resetAxiosError = () => {
+    setAxiosError(null);
+  };
+
+
   const handleSaveAdd = async () => {
     let add = {} as any;
     try {
@@ -392,6 +397,7 @@ const Products: FC = () => {
           editedProduct={editedProduct}
           setEditedProduct={setEditedProduct}
           axiosError={axiosError}
+          resetAxiosError={resetAxiosError}
         />
       )}
     </Wrapper>
