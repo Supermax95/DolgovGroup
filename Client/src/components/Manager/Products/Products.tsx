@@ -204,7 +204,6 @@ const Products: FC = () => {
     setAxiosError(null);
   };
 
-
   const handleSaveAdd = async () => {
     let add = {} as any;
     try {
@@ -247,7 +246,7 @@ const Products: FC = () => {
     return add;
   };
 
-  const reverseDate = (dateString: string): string=> {
+  const reverseDate = (dateString: string): string => {
     const [year, month, day] = dateString.split('-');
     return `${day}-${month}-${year}`;
   };
@@ -356,9 +355,8 @@ const Products: FC = () => {
                     id="Description"
                     className="block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 overflow-auto"
                     style={{ whiteSpace: 'pre-wrap', maxHeight: '100px' }}
-                  >
-                    {product.description}
-                  </div>
+                    dangerouslySetInnerHTML={{ __html: product.description }}
+                  ></div>
                 ) : (
                   <span className="text-gray-500">нет</span>
                 )}
