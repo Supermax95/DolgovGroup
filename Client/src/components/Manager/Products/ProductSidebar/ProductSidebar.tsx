@@ -51,21 +51,19 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   //* добавление категории
   const [isAddingCategory, setAddingCategory] = useState<boolean>(false);
   const [dataCategory, setDataCategory] = useState<string>('');
-
   // ? редактирование категории
   const [isEditingCategory, setEditingCategory] = useState<number | null>(null);
   const [dataEditCategory, setDataEditCategory] = useState<ICategory | null>(
     null
   );
-
+  //* добавление подкатегории
   const [isAddingSubcategory, setAddingSubcategory] = useState<boolean>(false);
   const [dataSubcategory, setDataSubcategory] = useState<string>('');
-  // Новое состояние для отслеживания ID текущей выбранной категории для добавления подкатегории
   const [
     selectedCategoryIdForSubcategory,
     setSelectedCategoryIdForSubcategory,
-  ] = useState<number | null>(null);
-
+  ] = useState<number | null>(null); // отслеживает ID текущей выбранной категории для добавления подкатегории
+  // ? редактирование подкатегории
   const [isEditingSubcategory, setEditingSubcategory] = useState<number | null>(
     null
   );
@@ -165,6 +163,11 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     };
   }, []);
 
+  ///////////////////
+  const { id: selectedSubcategoryId, subcategory: selectedSubcategory } =
+    selectedSubcategoryData;
+  ////////////////////
+
   //////////////////////////////////////////////////////////////////////////////////////////////
 
   // ? логика добавления категории
@@ -257,8 +260,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   };
 
   // ? логика добавления ПОДкатегории
-  const startAddingSubcategory = (id): void => {
-    console.log('id', id);
+  const startAddingSubcategory = (id: number): void => {
     setSelectedCategoryIdForSubcategory(id);
     setAddingSubcategory(true);
   };
@@ -342,6 +344,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     dispatch(deleteSubcategory(id));
   };
 
+  /** Рендер карточек на странице */
   //! рендерит карточки категорий
   const handleCategoryClick = (selectedCategoryId: number) => {
     const currentCategory = categories.find(
@@ -360,14 +363,9 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     );
     //* сбрасывает категории и позволяет переключаться между ПОДкатегориями
     onCategorySelect(null);
-    // Добавляем вызов selectedSubcategory, чтобы передать выбранную категорию наружу
+    // Добавляем вызов onSubcategorySelect, чтобы передать выбранную подкатегорию наружу
     onSubcategorySelect(currentSubcategory || null);
   };
-
-  ///////////////////
-  const { id: selectedSubcategoryId, subcategory: selectedSubcategory } =
-    selectedSubcategoryData;
-  ////////////////////
 
   return (
     <div className="flex flex-col w-64 bg-white h-full border-r-2 border-orange-300">
@@ -444,10 +442,10 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                         autoComplete="off"
                         required={true}
                         autoFocus
-                        className="block pr-12 py-1.5 px-2 w-[216px] text-sm text-slate-500 text-normal bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-orange-300 peer focus:text-lime-600"
                         onChange={(e) =>
                           handleFieldChange('categoryName', e.target.value)
                         }
+                        className="block pr-12 py-1.5 px-2 w-[216px] text-sm text-slate-500 text-normal bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-orange-300 peer focus:text-lime-600"
                       />
                       <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center space-x-1">
                         <button
@@ -492,7 +490,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                     {isAddingSubcategory &&
                       selectedCategoryIdForSubcategory === item.id && (
                         <form onSubmit={addedHandleFormSubcategory}>
-                          <div className="relative ml-3 p-0">
+                          <div className="relative ml-5 p-0">
                             <input
                               id="newSubcategory"
                               type="text"
@@ -507,7 +505,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                                   subcategoryName: e.target.value,
                                 })
                               }
-                              className="block pr-14 py-1.5 px-2 w-56 text-sm text-slate-500 text-normal bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-orange-300 peer focus:text-lime-600"
+                              className="block pr-12 py-1.5 px-2 w-[216px] text-sm text-slate-500 text-normal bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-orange-300 peer focus:text-lime-600"
                             />
                             <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center space-x-1">
                               <button
@@ -546,13 +544,13 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                                       autoComplete="off"
                                       required={true}
                                       autoFocus
-                                      className="block pr-12 py-1.5 px-2 w-[186px] text-sm text-slate-500 text-normal bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-orange-300 peer focus:text-lime-600"
                                       onChange={(e) =>
                                         handleFieldChangeSubcategory(
                                           'subcategoryName',
                                           e.target.value
                                         )
                                       }
+                                      className="block pr-12 py-1.5 px-2 w-[186px] text-sm text-slate-500 text-normal bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-orange-300 peer focus:text-lime-600"
                                     />
                                     <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center space-x-1">
                                       <button
