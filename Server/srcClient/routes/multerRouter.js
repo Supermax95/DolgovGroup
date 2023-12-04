@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const multer = require('multer');
-const { Product } = require('../../db/models');
+const { Product, Promotion } = require('../../db/models');
 
 const storageProduct = multer.diskStorage({
   destination(req, file, cb) {
@@ -12,6 +12,15 @@ const storageProduct = multer.diskStorage({
 });
 const uploadsProduct = multer({ storage: storageProduct });
 
+const storagePromotion = multer.diskStorage({
+  destination(req, file, cb) {
+    cb(null, './uploads/promotion');
+  },
+  filename(req, file, cb) {
+    cb(null, `${file.originalname}`);
+  },
+});
+const uploadsPromotion = multer({ storage: storagePromotion });
 router.put(
   '/admin/productsPhoto/:id',
   uploadsProduct.single('file'),
@@ -21,6 +30,26 @@ router.put(
     try {
       await Product.update(
         { photo: `/uploads/product/${originalname}` },
+        { where: { id } }
+      );
+
+      res.json({ message: 'Файл загрузился.' });
+    } catch (error) {
+      console.log('error', error);
+      res.status(500).json({ message: 'Ошибка загрузки' });
+    }
+  }
+);
+
+router.put(
+  '/admin/promotionsPhoto/:id',
+  uploadsPromotion.single('file'),
+  async (req, res) => {
+    const { id } = req.params;
+    const originalname = req.file.filename;
+    try {
+      await Promotion.update(
+        { photo: `/uploads/promotion/${originalname}` },
         { where: { id } }
       );
 

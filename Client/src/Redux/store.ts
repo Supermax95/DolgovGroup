@@ -18,6 +18,7 @@ import usersSlice from './user.slice';
 import productSlice from './products.slice';
 import categorySlice from './category.slice';
 import subcategorySlice from './subcategory.slice';
+import promotionSlice from './promotions.slice';
 
 // const rootReducer = combineReducers({
 //   locationsSlice,
@@ -40,6 +41,7 @@ const store = configureStore({
     productSlice,
     categorySlice,
     subcategorySlice,
+    promotionSlice,
   },
 });
 

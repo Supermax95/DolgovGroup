@@ -8,7 +8,7 @@ import ProfileAdmin from '../components/Admin/ProfileAdmin/ProfileAdmin';
 import Locations from '../components/Manager/Locations/Locations';
 import Products from '../components/Manager/Products/Products';
 import ProfileManager from '../components/Manager/ProfileManager/ProfileManager';
-import Stock from '../components/Manager/Stock/Stock';
+import Promotions from '../components/Manager/Promotion/Promotions';
 import { FC } from 'react';
 import Footer from '../components/Footer/Footer';
 import Management from '../components/Admin/ProfileAdmin/Management/Management';
@@ -31,7 +31,7 @@ const Navigation: FC = () => {
             }
           />
           <Route path="/locations" element={<Locations />} />
-          <Route path="/stock" element={<Stock />} />
+          <Route path="/promotions" element={<Promotions />} />
           <Route path="/profileAdmin" element={<ProfileAdmin />} />
           <Route path="/profileManager" element={<ProfileManager />} />
           <Route path="/listOfManagers" element={<Management />} />

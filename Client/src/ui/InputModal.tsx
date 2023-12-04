@@ -26,7 +26,7 @@ export interface InputField {
   required?: boolean;
   pattern?: string | undefined;
   onChange?: (value: string) => void | undefined;
-  
+
   divFielsCss?: string[];
   disabled?: boolean;
   options?: { value: string; label: string }[];
@@ -44,7 +44,9 @@ const InputModal: FC<IInputModal> = ({
     <div className={`${containerClassName}`}>
       {inputFields.map((field) => (
         <div key={field.id} className="relative">
-          {field.id === 'isNew' || field.id === 'isDiscounted' ? (
+          {field.id === 'isNew' ||
+          field.id === 'isDiscounted' ||
+          field.id === 'carousel' ||  field.id === 'visible' ? (
             <div className="flex items-center">
               <span>{field.title}</span>
               <input
@@ -54,7 +56,10 @@ const InputModal: FC<IInputModal> = ({
                 className="form-checkbox h-5 w-5 text-green-400 ml-2"
               />
             </div>
-          ) : field.id === 'promoStartDate' || field.id === 'promoEndDate' ? (
+          ) : field.id === 'promoStartDate' ||
+            field.id === 'promoEndDate' ||
+            field.id === 'dateStart' ||
+            field.id === 'dateEnd' ? (
             <div className={`flex items-center `}>
               <label
                 htmlFor={field.id}
@@ -71,7 +76,7 @@ const InputModal: FC<IInputModal> = ({
             </div>
           ) : field.id === 'description' ? (
             <div
-            //  className="relative mb-3" 
+            //  className="relative mb-3"
             // data-te-input-wrapper-init
             >
               <textarea
