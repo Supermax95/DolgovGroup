@@ -70,14 +70,9 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   const [dataEditSubcategory, setDataEditSubcategory] =
     useState<ISubcategory | null>(null);
 
-  ///////////////////////////////////////////////////////////////////////////////////////////////////
-
-  //! я уже хуй знает, что это, but work
-  const [isMenuOpen, setMenuOpen] = useState<boolean>(false); //* меню для редактирования категории
-  const [isMenuOpenSub, setMenuOpenSub] = useState<boolean>(false); //* меню для редактирования подкатегории
-
-  const [selectedCategoryData, setSelectedCategoryData] =
-    useState<ICategory | null>(null);
+  //* рендерит  выпадающий список для категорий
+  const [selectedCategoryDataId, setSelectedCategoryDataId] =
+    useState<number>(0);
 
   const [selectedSubcategoryData, setSelectedSubcategoryData] = useState<{
     id: number | null;
@@ -86,75 +81,34 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
 
   const [subcategoryStates, setSubcategoryStates] = useState<{
     [key: number]: boolean;
-  }>({});
+  }>({}); //! вывод подкатегории в сайдбаре
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////
+
+  const [actionMenuForCategory, setActionMenuForCategory] =
+    useState<boolean>(false); //* меню для редактирования категории
+
+  const [isMenuOpenSub, setMenuOpenSub] = useState<boolean>(false); //* меню для редактирования подкатегории
 
   const menuRef = useRef<HTMLDivElement | null>(null);
 
-  //* дополнительное меню для каждой КАТЕГОРИИ
-  //!  удаётся закрыть по шестерёнке при повторном нажатии, но не по любой области
-  const toggleMenu = (id: number): void => {
-    //  console.log(id);
-    //! почему-то первый selectedCategoryData при нажатии null впервые всплывающего окна, но выбирает правильно
-    console.log('selectedCategoryData', selectedCategoryData);
-
-    if (selectedCategoryData === id) {
-      setSelectedCategoryData(null);
-      setMenuOpen(false);
-    } else {
-      setSelectedCategoryData(id);
-      setMenuOpen(true);
+  //* всплывающее меню для каждой КАТЕГОРИИ
+  //! по шестерёнке не закрывается
+  const toggleMenuCategory = (id: number): void => {
+    if (id) {
+      setActionMenuForCategory(!actionMenuForCategory);
+      setSelectedCategoryDataId(id);
+      calculateMenuPosition(id);
     }
   };
-
-  //* дополнительное меню для каждой ПОДКАТЕГОРИИ
-  //!  удаётся закрыть по шестерёнке при повторном нажатии, но не по любой области
-
-  const toggleMenuSub = (id: number): void => {
-    const subcategory = allSubcategories.find((sub) => sub.id === id);
-    if (subcategory) {
-      setSelectedSubcategoryData((prev) => ({
-        id: prev.id === id ? null : id,
-        subcategory: prev.id === id ? null : subcategory,
-      }));
-
-      if (isMenuOpen) {
-        setMenuOpen(false); // Закрываем всплывающее окно главной категории
-        setSelectedCategoryData(null); // Сбрасываем выбранную главную категорию
-      }
-
-      setMenuOpenSub((prev) => !prev);
-    }
-  };
-
-  useEffect(() => {
-    // Устанавливаем значение только если состояние действительно изменилось
-    if (
-      selectedSubcategoryData.id !== null ||
-      selectedSubcategoryData.subcategory !== null
-    ) {
-      setMenuOpenSub(true);
-    }
-  }, [selectedSubcategoryData]);
-
-  const menuClass = isMenuOpen ? 'block' : 'hidden';
-  const menuClassSub = isMenuOpenSub ? 'block' : 'hidden';
 
   const handleClickOutside = (e: MouseEvent): void => {
-    if (
-      menuRef.current &&
-      !menuRef.current.contains(e.target as Node) &&
-      selectedCategoryData !== null
-    ) {
-      // setMenuOpen(false);
-      // setSelectedCategoryData(null);
-      // setEditingCategory(null);
-      setMenuOpen(false);
-      setSelectedCategoryData(null);
-      setSelectedSubcategoryData([]);
-      setEditingCategory(null);
-      setEditingSubcategory(null);
+    if (menuRef.current && !menuRef.current.contains(e.target)) {
+      setActionMenuForCategory(false);
     }
   };
+
+  const menuClass = actionMenuForCategory ? 'block' : 'hidden';
 
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
@@ -163,10 +117,18 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     };
   }, []);
 
-  ///////////////////
-  const { id: selectedSubcategoryId, subcategory: selectedSubcategory } =
-    selectedSubcategoryData;
-  ////////////////////
+  const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
+
+  const calculateMenuPosition = (categoryId: number) => {
+    console.log('categoryId', categoryId);
+
+    const categoryElement = document.getElementById(`category-${categoryId}`);
+    if (categoryElement) {
+      const rect = categoryElement.getBoundingClientRect();
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      setMenuPosition({ top: rect.bottom + scrollTop, left: rect.left });
+    }
+  };
 
   //////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -204,7 +166,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   const startEditingCategory = (id: number): void => {
     setEditingCategory(id);
     const categoryToEdit = allCategories.find((cat) => cat.id === id);
-    setMenuOpen(false);
+    setActionMenuForCategory(false);
     setDataEditCategory(categoryToEdit || null);
   };
 
@@ -481,10 +443,57 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                           {item.categoryName}
                         </span>
                       </div>
-                      <div onClick={() => toggleMenu(item.id)}>
+                      <div onClick={() => toggleMenuCategory(item.id)}>
                         <Cog8ToothIcon className="cursor-pointer w-5 h-5 text-slate-600" />
                       </div>
                     </div>
+
+                    {/** Выпадающий список для внесения изменений данных в Категории  */}
+                    {selectedCategoryDataId === item.id && (
+                      <div
+                        //! появляться должно при нажатии на конкретную категорию по шестеррёнке
+                        ref={menuRef}
+                        id={`dropdownRight-${item.id}`}
+                        className={`z-10 absolute ${menuClass} top-32 w-52 left-24  bg-white divide-y divide-gray-100 rounded-lg shadow`}
+                        //className={`z-10 absolute ${menuClass} top-${menuPosition.top} left-${menuPosition.left} bg-white divide-y divide-gray-100 rounded-lg shadow`}
+                      >
+                        <ul
+                          className="py-2 text-xs text-slate-700 cursor-pointer"
+                          aria-labelledby="dropdownRightButton"
+                        >
+                          <li
+                            onClick={() => startAddingSubcategory(item.id)}
+                            className="flex items-center px-4 py-2 space-x-2 hover:bg-slate-100 border-b-2 border-b-lime-500"
+                          >
+                            <div>
+                              <PlusCircleIcon className="w-4 h-4 text-slate-600" />
+                            </div>
+                            <span className="block ">Создать подкатегорию</span>
+                          </li>
+                          <li
+                            onClick={() => startEditingCategory(item.id)}
+                            className="flex items-center px-4 py-2 space-x-2 hover:bg-slate-100"
+                          >
+                            <div>
+                              <PencilIcon className="w-3 h-3  text-slate-600" />
+                            </div>
+                            <span className="block">
+                              Переименовать категорию
+                            </span>
+                          </li>
+
+                          <li
+                            onClick={() => deleteCategoryHandler(item.id)}
+                            className="flex items-center px-4 py-2 space-x-2 hover:bg-slate-100"
+                          >
+                            <div>
+                              <XCircleIcon className="w-4 h-4 text-slate-600" />
+                            </div>
+                            <span className="block">Удалить категорию</span>
+                          </li>
+                        </ul>
+                      </div>
+                    )}
 
                     {/** добавление ПОДкатегории */}
                     {isAddingSubcategory &&
@@ -646,13 +655,13 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                 )}
 
                 {/** Выпадающий список для внесения изменений данных в Категории  */}
-                {selectedCategoryData === item.id && (
+                {/* {selectedCategoryDataId === item.id && (
                   <div
                     //! появляться должно при нажатии на конкретную категорию по шестеррёнке
                     ref={menuRef}
                     id={`dropdownRight-${item.id}`}
-                    className={`z-10 absolute ${menuClass} top-32 w-52 left-24  bg-white divide-y divide-gray-100 rounded-lg shadow`}
-                    // остален для передвижения пока что className={`z-10 absolute ${menuClass} top-${menuPosition.top} left-${menuPosition.left} bg-white divide-y divide-gray-100 rounded-lg shadow`}
+                    //className={`z-10 absolute ${menuClass} top-32 w-52 left-24  bg-white divide-y divide-gray-100 rounded-lg shadow`}
+                    className={`z-10 absolute ${menuClass} top-${menuPosition.top} left-${menuPosition.left} bg-white divide-y divide-gray-100 rounded-lg shadow`}
                   >
                     <ul
                       className="py-2 text-xs text-slate-700 cursor-pointer"
@@ -688,7 +697,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                       </li>
                     </ul>
                   </div>
-                )}
+                )} */}
               </div>
             ))}
           </li>
