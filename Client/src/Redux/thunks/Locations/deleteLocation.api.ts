@@ -14,6 +14,7 @@ interface ResponseData {
   latitude: string;
   longitude: string;
   hours: string;
+  visible: boolean;
 }
 
 type ArrayResponseData = Array<ResponseData>;

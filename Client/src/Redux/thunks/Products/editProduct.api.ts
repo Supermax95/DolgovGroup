@@ -16,6 +16,7 @@ interface RequestData {
     isDiscounted: boolean;
     description: string;
     subcategoryId: number;
+    visible:boolean;
   };
 }
 
@@ -32,6 +33,7 @@ interface ResponseData {
   isDiscounted: boolean;
   description: string;
   subcategoryId: number;
+  visible:boolean;
 }
 
 interface ResponseDataId {

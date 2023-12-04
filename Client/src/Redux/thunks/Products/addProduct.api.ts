@@ -14,6 +14,7 @@ interface RequestData {
     isNew: boolean;
     isDiscounted: boolean;
     description: string;
+    visible:boolean;
   };
 }
 
@@ -30,6 +31,7 @@ interface ResponseData {
   isDiscounted: boolean;
   description: string;
   subcategoryId: number;
+  visible:boolean;
 }
 // type ArrayResponseData = Array<ResponseData>;
 

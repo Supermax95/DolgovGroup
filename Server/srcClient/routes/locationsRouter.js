@@ -27,6 +27,7 @@ router.post('/admin/locations', async (req, res) => {
       latitude: newLocation.latitude,
       longitude: newLocation.longitude,
       hours: newLocation.hours,
+      visible: newLocation.visible,
     });
 
     const locations = await Location.findAll({

@@ -28,6 +28,7 @@ export interface IProduct {
   description: string;
   photo: string;
   subcategoryId: number;
+  visible: boolean;
 }
 
 export interface ICategory {
@@ -172,6 +173,7 @@ const Products: FC = () => {
       description: '',
       photo: '',
       subcategoryId: 0,
+      visible: false,
     });
     setModalOpen(true);
   };

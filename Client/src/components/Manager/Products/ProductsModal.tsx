@@ -22,6 +22,7 @@ interface Product {
   description: string;
   photo: string;
   subcategoryId: number;
+  visible: boolean;
 }
 
 // interface Category {
@@ -411,6 +412,18 @@ const ProductsModal: FC<ProductsModalProps> = ({
         setEditedProduct({
           ...editedProduct,
           isNew: value,
+        }),
+    },
+    {
+      id: 'visible',
+      type: 'text',
+      value: editedProduct.visible,
+      title: 'Виден покупателям',
+      htmlFor: 'visible',
+      onChange: (value: boolean) =>
+        setEditedProduct({
+          ...editedProduct,
+          visible: value,
         }),
     },
   ];

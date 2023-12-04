@@ -4,7 +4,6 @@ import editPromotion from './thunks/Promotion/editPromotion.api';
 import deletePromotion from './thunks/Promotion/deletePromotion.api';
 import addPromotion from './thunks/Promotion/addPromotion.api';
 
-// import uploadFile from './thunks/Multer/multer.api';
 
 interface Promotion {
     id: number;

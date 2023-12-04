@@ -60,6 +60,7 @@ router.post('/admin/products', async (req, res) => {
       isDiscounted: newProduct.isDiscounted,
       description: newProduct.description,
       subcategoryId: newProduct.subcategoryId,
+      visible: newProduct.visible,
     });
 
     const products = await Product.findAll({
@@ -134,6 +135,7 @@ router.put('/admin/products', async (req, res) => {
         isDiscounted: newInfo.isDiscounted,
         description: newInfo.description,
         subcategoryId: newInfo.subcategoryId,
+        visible: newInfo.visible,
       },
       {
         where: { id: newInfo.id },

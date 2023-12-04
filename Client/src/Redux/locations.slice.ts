@@ -11,6 +11,7 @@ interface Location {
   latitude: string;
   longitude: string;
   hours: string;
+  visible: boolean;
 }
 
 interface LocationsState {

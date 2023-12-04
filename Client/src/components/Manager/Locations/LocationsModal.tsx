@@ -12,6 +12,7 @@ interface ILocation {
   latitude: string;
   longitude: string;
   hours: string;
+  visible: boolean;
 }
 
 interface LocationsModalProps {
@@ -183,6 +184,23 @@ const LocationsModal: FC<LocationsModalProps> = ({
         setEditedLocation({
           ...editedLocation,
           hours: value,
+        });
+      },
+      required: true,
+    },
+    {
+      id: 'visible',
+      name: 'visible',
+      type: 'boolean',
+      value: editedLocation.visible,
+      placeholder: '',
+      autoComplete: 'off',
+      title: 'Виден покупателям',
+      htmlFor: 'visible',
+      onChange: (value: boolean) => {
+        setEditedLocation({
+          ...editedLocation,
+          visible: value,
         });
       },
       required: true,
