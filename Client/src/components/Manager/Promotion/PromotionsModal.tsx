@@ -7,6 +7,8 @@ import { IPromotion } from './Promotions';
 import { VITE_URL } from '../../../VITE_URL';
 import axios from 'axios';
 import deletePromotion from '../../../Redux/thunks/Promotion/deletePromotion.api';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 interface Promotion {
   id: number;
@@ -157,18 +159,30 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
         }),
       required: true,
     },
+    // {
+    //   id: 'description',
+    //   type: 'text',
+    //   value: editedPromotion.description,
+    //   autoComplete: 'off',
+    //   placeholder: '',
+    //   title: 'Описание акции',
+    //   htmlFor: 'description',
+    //   onChange: (value: string) =>
+    //     setEditedPromotion({
+    //       ...editedPromotion,
+    //       description: value,
+    //     }),
+    // },
     {
-      id: 'description',
+      id: 'visible',
       type: 'text',
-      value: editedPromotion.description,
-      autoComplete: 'off',
-      placeholder: '',
-      title: 'Описание акции',
-      htmlFor: 'description',
-      onChange: (value: string) =>
+      value: editedPromotion.visible,
+      title: 'Акция видна',
+      htmlFor: 'isDiscounted',
+      onChange: (value: boolean) =>
         setEditedPromotion({
           ...editedPromotion,
-          description: value,
+          visible: value,
         }),
     },
     {
@@ -187,6 +201,18 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
       required: true,
     },
     {
+      id: 'carousel',
+      type: 'text',
+      value: editedPromotion.carousel,
+      title: 'Карусель',
+      htmlFor: 'carousel',
+      onChange: (value: boolean) =>
+        setEditedPromotion({
+          ...editedPromotion,
+          carousel: value,
+        }),
+    },
+    {
       id: 'dateEnd',
       type: 'text',
       value: editedPromotion.dateEnd,
@@ -201,30 +227,6 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
         }),
       required: true,
     },
-    {
-      id: 'visible',
-      type: 'text',
-      value: editedPromotion.visible,
-      title: 'Акция видна',
-      htmlFor: 'isDiscounted',
-      onChange: (value: boolean) =>
-        setEditedPromotion({
-          ...editedPromotion,
-          visible: value,
-        }),
-    },
-    {
-      id: 'carousel',
-      type: 'text',
-      value: editedPromotion.carousel,
-      title: 'Карусель',
-      htmlFor: 'carousel',
-      onChange: (value: boolean) =>
-        setEditedPromotion({
-          ...editedPromotion,
-          carousel: value,
-        }),
-    },
   ];
 
   return (
@@ -237,19 +239,40 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
           onCancellick={handleCancel}
           isUpload={isUpload}
         >
-          {axiosError && (
-            <div className="text-sm text-rose-400 text-center mt-2">
-              {axiosError}
-            </div>
-          )}
-          {currentStep === 1 && (
-            <InputModal
-              containerClassName={
-                'py-8 grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'
-              }
-              inputFields={inputFields}
-            />
-          )}
+          <div className="input-modal-container">
+            {axiosError && (
+              <div className="text-sm text-rose-400 text-center mt-2">
+                {axiosError}
+              </div>
+            )}
+            {currentStep === 1 && (
+              <InputModal
+                containerClassName={
+                  'py-8 grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'
+                }
+                inputFields={inputFields}
+              />
+            )}
+            {currentStep === 1 && (
+              <div className="description-container resize-y overflow-auto min-h-50">
+                <label htmlFor="description" className="text-slate-400 text-sm">
+                  Описание промо
+                </label>
+                <ReactQuill
+                  theme="snow"
+                  value={editedPromotion.description}
+                  onChange={(value) =>
+                    setEditedPromotion({
+                      ...editedPromotion,
+                      description: value,
+                    })
+                  }
+                  // placeholder=""
+                  className="w-full"
+                />
+              </div>
+            )}
+          </div>
 
           {currentStep === 2 && (
             <div className="container mx-auto mt-8 p-8 max-w-4xl justify-center items-center flex-col block rounded-lg bg-white shadow-md dark:bg-neutral-700">
