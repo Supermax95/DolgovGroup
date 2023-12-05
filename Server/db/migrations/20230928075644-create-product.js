@@ -21,13 +21,13 @@ module.exports = {
         type: Sequelize.STRING,
       },
       originalPrice: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.FLOAT,
       },
       customerPrice: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.FLOAT,
       },
       employeePrice: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.FLOAT,
       },
       isNew: {
         type: Sequelize.BOOLEAN,
@@ -42,7 +42,7 @@ module.exports = {
         allowNull: true,
         type: Sequelize.STRING,
       },
-      visible: {
+      invisible: {
         defaultValue: true,
         type: Sequelize.BOOLEAN,
       },

@@ -22,7 +22,7 @@ export interface IPromotion {
   dateStart: string;
   dateEnd: string;
   carousel: boolean;
-  visible: boolean;
+  invisible: boolean;
   photo?: string;
 }
 
@@ -92,7 +92,7 @@ const Promotions: FC = () => {
       dateStart: '',
       dateEnd: '',
       carousel: false,
-      visible: true,
+      invisible: true,
     });
     setModalOpen(true);
   };
@@ -270,18 +270,20 @@ const Promotions: FC = () => {
                       )}
                     </div>
                     <div className="mb-2 text-xs text-gray-500">
-                Описание:
-                {promotion.description ? (
-                  <div
-                    id="Description"
-                    className="block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 overflow-auto resize-y"
-                    style={{ whiteSpace: 'pre-wrap', maxHeight: '100px' }}
-                    dangerouslySetInnerHTML={{ __html: promotion.description }}
-                  ></div>
-                ) : (
-                  <span className="text-gray-500">нет</span>
-                )}
-              </div>
+                      Описание:
+                      {promotion.description ? (
+                        <div
+                          id="Description"
+                          className="block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 overflow-auto resize-y"
+                          style={{ whiteSpace: 'pre-wrap', maxHeight: '100px' }}
+                          dangerouslySetInnerHTML={{
+                            __html: promotion.description,
+                          }}
+                        ></div>
+                      ) : (
+                        <span className="text-gray-500">нет</span>
+                      )}
+                    </div>
                     <h3 className="mb-2 text-sm text-black-400">
                       {`Карусель: ${promotion.carousel ? 'Да' : 'Нет'}`}
                     </h3>

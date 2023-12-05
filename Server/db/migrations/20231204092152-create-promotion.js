@@ -26,7 +26,7 @@ module.exports = {
       carousel: {
         type: Sequelize.BOOLEAN,
       },
-      visible: {
+      invisible: {
         type: Sequelize.BOOLEAN,
       },
       createdAt: {

@@ -23,7 +23,7 @@ module.exports = {
       hours: {
         type: Sequelize.STRING,
       },
-      visible: {
+      invisible: {
         defaultValue: true,
         type: Sequelize.BOOLEAN,
       },

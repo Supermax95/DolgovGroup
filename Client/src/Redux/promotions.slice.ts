@@ -4,16 +4,15 @@ import editPromotion from './thunks/Promotion/editPromotion.api';
 import deletePromotion from './thunks/Promotion/deletePromotion.api';
 import addPromotion from './thunks/Promotion/addPromotion.api';
 
-
 interface Promotion {
-    id: number;
-    title: string;
-    description: string;
-    dateStart: string;
-    dateEnd: string;
-    carousel: boolean;
-    visible: boolean;
-  };
+  id: number;
+  title: string;
+  description: string;
+  dateStart: string;
+  dateEnd: string;
+  carousel: boolean;
+  invisible: boolean;
+}
 
 interface PromotionState {
   postId: number | null;

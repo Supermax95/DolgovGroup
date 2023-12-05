@@ -174,15 +174,15 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
     //     }),
     // },
     {
-      id: 'visible',
+      id: 'invisible',
       type: 'text',
-      value: editedPromotion.visible,
-      title: 'Акция видна',
+      value: editedPromotion.invisible,
+      title: 'Акция скрыта',
       htmlFor: 'isDiscounted',
       onChange: (value: boolean) =>
         setEditedPromotion({
           ...editedPromotion,
-          visible: value,
+          invisible: value,
         }),
     },
     {

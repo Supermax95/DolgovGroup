@@ -19,7 +19,7 @@ interface Product {
   description: string;
   photo: string;
   subcategoryId: number;
-  visible: boolean;
+  invisible: boolean;
 }
 
 interface ProductState {

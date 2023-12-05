@@ -3,7 +3,7 @@ import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/20/solid';
 import Button from './Button';
 import InputMask from 'react-input-mask';
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css'; 
+import 'react-quill/dist/quill.snow.css';
 
 //* Здесь инпуты, которые переиспользуются в модальных окнах
 //* На Location, в профиле админа (создание/редактирование менеджера) - один столбец
@@ -48,7 +48,8 @@ const InputModal: FC<IInputModal> = ({
         <div key={field.id} className="relative">
           {field.id === 'isNew' ||
           field.id === 'isDiscounted' ||
-          field.id === 'carousel' ||  field.id === 'visible' ? (
+          field.id === 'carousel' ||
+          field.id === 'invisible' ? (
             <div className="flex items-center">
               <span>{field.title}</span>
               <input
@@ -76,18 +77,17 @@ const InputModal: FC<IInputModal> = ({
                 className="block w-full px-4 py-2 rounded-md border-0 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
             </div>
-          ) : 
-          //  field.id === 'description' ? (
+          ) : //  field.id === 'description' ? (
           //   <div
           //   //  className="relative mb-3"
           //   // data-te-input-wrapper-init
           //   >
-              // <textarea
-              //   className="h-[42.5px] block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
-              //   id={field.id}
-              //   placeholder={field.placeholder}
-              //   value={field.value}
-              //   onChange={(e) => field.onChange(e.target.value)}
+          // <textarea
+          //   className="h-[42.5px] block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
+          //   id={field.id}
+          //   placeholder={field.placeholder}
+          //   value={field.value}
+          //   onChange={(e) => field.onChange(e.target.value)}
           //     ></textarea>
           //     <label
           //       htmlFor={field.htmlFor}
@@ -96,12 +96,12 @@ const InputModal: FC<IInputModal> = ({
           //       {field.title}
           //     </label>
           //   </div>
-          // ) 
+          // )
           //Надо как-то это стилизовать!!!
           // field.id === 'description' ? (
           //   <div>
           //     <ReactQuill
-          //       theme="snow" 
+          //       theme="snow"
           //       value={field.value}
           //       onChange={(value) => field.onChange(value)}
           //       placeholder={field.placeholder}
@@ -111,7 +111,7 @@ const InputModal: FC<IInputModal> = ({
           //     </label>
           //   </div>
           // )
-           field.id === 'isActivated' ? (
+          field.id === 'isActivated' ? (
             field.value ? (
               <div className="flex justify-between">
                 <div className="flex justify-start items-center">

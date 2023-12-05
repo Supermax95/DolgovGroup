@@ -16,7 +16,7 @@ router.get('/admin/promotions', async (req, res) => {
         isPast(addDays(parseISO(promotion.dateEnd), 1))
       ) {
         await Promotion.update(
-          { visible: false, carousel: false },
+          { invisible: false, carousel: false },
           { where: { id: promotion.id } }
         );
       }
@@ -55,7 +55,7 @@ router.post('/admin/promotions', async (req, res) => {
       dateStart: newPromotion.dateStart,
       dateEnd: newPromotion.dateEnd,
       carousel: newPromotion.carousel,
-      visible: newPromotion.visible,
+      invisible: newPromotion.invisible,
     });
 
     const promotions = await Promotion.findAll({
@@ -108,7 +108,10 @@ router.put('/admin/promotions', async (req, res) => {
     }
 
     if (newInfo.dateEnd && isPast(subDays(parseISO(newInfo.promoEndDate), 1))) {
-      await Promotion.update({ visible: false }, { where: { id: newInfo.id } });
+      await Promotion.update(
+        { invisible: false },
+        { where: { id: newInfo.id } }
+      );
     }
 
     await Promotion.update(
@@ -118,7 +121,7 @@ router.put('/admin/promotions', async (req, res) => {
         dateStart: newInfo.dateStart,
         dateEnd: newInfo.dateEnd,
         carousel: newInfo.carousel,
-        visible: newInfo.visible,
+        invisible: newInfo.invisible,
       },
       {
         where: { id: newInfo.id },
