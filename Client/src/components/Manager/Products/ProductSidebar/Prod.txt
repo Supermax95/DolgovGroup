@@ -19,21 +19,6 @@
 
   const menuRef = useRef<HTMLDivElement | null>(null);
 
-  //* дополнительное меню для каждой КАТЕГОРИИ
-  //!  удаётся закрыть по шестерёнке при повторном нажатии, но не по любой области
-  const toggleMenu = (id: number): void => {
-    //  console.log(id);
-    //! почему-то первый selectedCategoryData при нажатии null впервые всплывающего окна, но выбирает правильно
-    console.log('selectedCategoryData', selectedCategoryData);
-
-    if (selectedCategoryData === id) {
-      setSelectedCategoryData(null);
-      setMenuOpen(false);
-    } else {
-      setSelectedCategoryData(id);
-      setMenuOpen(true);
-    }
-  };
 
   //* дополнительное меню для каждой ПОДКАТЕГОРИИ
   //!  удаётся закрыть по шестерёнке при повторном нажатии, но не по любой области
@@ -65,32 +50,8 @@
     }
   }, [selectedSubcategoryData]);
 
-  const menuClass = isMenuOpen ? 'block' : 'hidden';
-  const menuClassSub = isMenuOpenSub ? 'block' : 'hidden';
 
-  const handleClickOutside = (e: MouseEvent): void => {
-    if (
-      menuRef.current &&
-      !menuRef.current.contains(e.target as Node) &&
-      selectedCategoryData !== null
-    ) {
-      // setMenuOpen(false);
-      // setSelectedCategoryData(null);
-      // setEditingCategory(null);
-      setMenuOpen(false);
-      setSelectedCategoryData(null);
-      setSelectedSubcategoryData([]);
-      setEditingCategory(null);
-      setEditingSubcategory(null);
-    }
-  };
 
-  useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
 
   ///////////////////
   const { id: selectedSubcategoryId, subcategory: selectedSubcategory } =
