@@ -200,6 +200,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
   const inputFields: InputField[] = [
     {
       id: 'categoryName',
+      name: 'categoryName',
       type: 'text',
       value: selectedCategory
         ? selectedCategory.categoryName
@@ -245,6 +246,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
     },
     {
       id: 'subcategoryId',
+      name: 'subcategoryId',
       type: 'text',
       value: selectedSubcategory ? selectedSubcategory.subcategoryName : '',
       placeholder: '',
@@ -280,6 +282,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
     },
     {
       id: 'article',
+      name: 'article',
       type: 'text',
       value: editedProduct.article,
       autoComplete: 'off',
@@ -295,6 +298,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
     },
     {
       id: 'productName',
+      name: 'productName',
       type: 'text',
       value: editedProduct.productName,
       autoComplete: 'off',
@@ -310,6 +314,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
     },
     {
       id: 'promoStartDate',
+      name: 'promoStartDate',
       type: 'text',
       value: editedProduct.promoStartDate,
       autoComplete: 'off',
@@ -324,6 +329,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
     },
     {
       id: 'promoEndDate',
+      name: 'promoEndDate',
       type: 'text',
       value: editedProduct.promoEndDate,
       autoComplete: 'off',
@@ -338,6 +344,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
     },
     {
       id: 'originalPrice',
+      name: 'originalPrice',
       type: 'number',
       value: editedProduct.originalPrice.toString(),
       autoComplete: 'off',
@@ -352,6 +359,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
     },
     {
       id: 'customerPrice',
+      name: 'customerPrice',
       type: 'number',
       value: editedProduct.customerPrice.toString(),
       autoComplete: 'off',
@@ -366,6 +374,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
     },
     {
       id: 'employeePrice',
+      name: 'employeePrice',
       type: 'number',
       value: editedProduct.employeePrice.toString(),
       autoComplete: 'off',
@@ -394,6 +403,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
     // },
     {
       id: 'isDiscounted',
+      name: 'isDiscounted',
       type: 'text',
       value: editedProduct.isDiscounted,
       title: 'Товар со скидкой',
@@ -406,6 +416,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
     },
     {
       id: 'isNew',
+      name: 'isNew',
       type: 'text',
       value: editedProduct.isNew,
       title: 'Новинка',
@@ -417,7 +428,8 @@ const ProductsModal: FC<ProductsModalProps> = ({
         }),
     },
     {
-      id: 'invisible',
+      id: 'visible',
+      name: 'visible',
       type: 'text',
       value: editedProduct.invisible,
       title: 'Скрыт для покупателей',
@@ -452,8 +464,56 @@ const ProductsModal: FC<ProductsModalProps> = ({
                   'py-8 grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'
                 }
                 inputFields={inputFields}
+
+                // inputFields={inputField}
               />
             )}
+
+            {/* {currentStep === 1 && (
+              <div className="w-72 flex items-center justify-between">
+                <div className="relative">
+                  <input
+                    id="promoStartDate"
+                    type="date"
+                    value={editedProduct.promoStartDate}
+                    onChange={(e) =>
+                      setEditedProduct({
+                        ...editedProduct,
+                        promoStartDate: e.target.value,
+                      })
+                    }
+                    className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
+                  />
+                  <label
+                    htmlFor="promoStartDate"
+                    className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm"
+                  >
+                    Начало акции
+                  </label>
+                </div>
+
+                <div className="relative">
+                  <input
+                    id="promoEndDate"
+                    type="date"
+                    value={editedProduct.promoEndDate}
+                    onChange={(e) =>
+                      setEditedProduct({
+                        ...editedProduct,
+                        promoEndDate: e.target.value,
+                      })
+                    }
+                    className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
+                  />
+                  <label
+                    htmlFor="promoEndDate"
+                    className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm"
+                  >
+                    Конец акции
+                  </label>
+                </div>
+              </div>
+            )} */}
 
             {currentStep === 1 && (
               <div className="description-container resize-y overflow-auto min-h-50">
