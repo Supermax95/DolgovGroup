@@ -3,7 +3,7 @@ import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/20/solid';
 import Button from './Button';
 import InputMask from 'react-input-mask';
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css'; 
+import 'react-quill/dist/quill.snow.css';
 
 //* Здесь инпуты, которые переиспользуются в модальных окнах
 //* На Location, в профиле админа (создание/редактирование менеджера) - один столбец
@@ -48,46 +48,49 @@ const InputModal: FC<IInputModal> = ({
         <div key={field.id} className="relative">
           {field.id === 'isNew' ||
           field.id === 'isDiscounted' ||
-          field.id === 'carousel' ||  field.id === 'visible' ? (
-            <div className="flex items-center">
-              <span>{field.title}</span>
+          field.id === 'carousel' ||
+          field.id === 'visible' ? (
+            <div className="flex space-x-2">
+              <h1 className="text-slate-600 text-sm tracking-normal leading-tight">
+                {field.title}
+              </h1>
               <input
                 type="checkbox"
                 checked={field.value as boolean}
                 onChange={() => field.onChange?.(!field.value as boolean)}
-                className="form-checkbox h-5 w-5 text-green-400 ml-2"
+                className="w-4 h-4 text-lime-600 bg-slate-100 border-slate-300 rounded focus:ring-lime-500"
               />
             </div>
-          ) : field.id === 'promoStartDate' ||
-            field.id === 'promoEndDate' ||
-            field.id === 'dateStart' ||
-            field.id === 'dateEnd' ? (
-            <div className={`flex items-center `}>
-              <label
-                htmlFor={field.id}
-                className="block text-sm font-medium text-gray-700"
-              >
-                {field.title}
-              </label>
+          ) : // field.id === 'promoStartDate' ||
+          //   field.id === 'promoEndDate' ||
+          field.id === 'dateStart' || field.id === 'dateEnd' ? (
+            <>
               <input
+                id={field.id}
                 type="date"
                 value={field.value as string}
                 onChange={(e) => field.onChange?.(e.target.value)}
-                className="block w-full px-4 py-2 rounded-md border-0 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
               />
-            </div>
-          ) : 
+              <label
+                htmlFor={field.htmlFor}
+                className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm"
+              >
+                {field.title}
+              </label>
+            </>
+          ) : // </div>
           //  field.id === 'description' ? (
           //   <div
           //   //  className="relative mb-3"
           //   // data-te-input-wrapper-init
           //   >
-              // <textarea
-              //   className="h-[42.5px] block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
-              //   id={field.id}
-              //   placeholder={field.placeholder}
-              //   value={field.value}
-              //   onChange={(e) => field.onChange(e.target.value)}
+          // <textarea
+          //   className="h-[42.5px] block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
+          //   id={field.id}
+          //   placeholder={field.placeholder}
+          //   value={field.value}
+          //   onChange={(e) => field.onChange(e.target.value)}
           //     ></textarea>
           //     <label
           //       htmlFor={field.htmlFor}
@@ -96,12 +99,12 @@ const InputModal: FC<IInputModal> = ({
           //       {field.title}
           //     </label>
           //   </div>
-          // ) 
+          // )
           //Надо как-то это стилизовать!!!
           // field.id === 'description' ? (
           //   <div>
           //     <ReactQuill
-          //       theme="snow" 
+          //       theme="snow"
           //       value={field.value}
           //       onChange={(value) => field.onChange(value)}
           //       placeholder={field.placeholder}
@@ -111,7 +114,7 @@ const InputModal: FC<IInputModal> = ({
           //     </label>
           //   </div>
           // )
-           field.id === 'isActivated' ? (
+          field.id === 'isActivated' ? (
             field.value ? (
               <div className="flex justify-between">
                 <div className="flex justify-start items-center">

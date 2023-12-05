@@ -1,6 +1,10 @@
 import React, { FC } from 'react';
 import Button from './Button';
-import { BuildingStorefrontIcon, XMarkIcon, UserIcon } from '@heroicons/react/24/outline';
+import {
+  BuildingStorefrontIcon,
+  XMarkIcon,
+  UserIcon,
+} from '@heroicons/react/24/outline';
 import { ArrowPathIcon, ReceiptPercentIcon } from '@heroicons/react/20/solid';
 
 interface IModal {
@@ -20,20 +24,26 @@ const Modal: FC<IModal> = ({
   onCancellick,
   isUpload,
 }) => {
+  const modalWidthClass =
+    modalTitle === 'Новый продукт' || modalTitle === 'Редактирование продукта'
+      ? 'w-11/12 md:w-2/3 max-w-2xl'
+      : 'w-11/12 md:w-2/3 max-w-lg';
 
-    const modalWidthClass = modalTitle === 'Новый продукт' || modalTitle === 'Редактирование продукта'
-    ? 'w-11/12 md:w-2/3 max-w-2xl'
-    : 'w-11/12 md:w-2/3 max-w-lg';
+  const isNewTitle =
+    modalTitle.includes('Новый') ||
+    modalTitle.includes('нового') ||
+    modalTitle.includes('Новая');
 
-    const isNewTitle = modalTitle.includes('Новый') || modalTitle.includes('нового') ||  modalTitle.includes('Новая');
-  
   return (
     <div
       className="py-20 bg-slate-700 bg-opacity-70 fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center"
       id="modal"
     >
-      <div role="alert" className={`container mx-auto ${modalWidthClass}`}>
-        <div className="relative py-8 px-5 md:px-10 bg-white shadow-md rounded-3xl border border-slate-400">
+      <div
+        role="alert"
+        className={`container mx-auto max-w-4xl ${modalWidthClass}`}
+      >
+        <div className="relative py-8 px-5 md:px-10 bg-white shadow-md rounded-3xl border border-slate-400 modal-container max-h-[75vh] overflow-y-auto">
           <div className="flex justify-center items-center">
             {modalTitle === 'Регистрация нового менеджера' ||
             modalTitle === 'Редактирование данных менеджера' ? (
@@ -46,11 +56,12 @@ const Modal: FC<IModal> = ({
               <div className="w-8 text-gray-600">
                 <ArrowPathIcon className="w-6 h-6 text-slate-400" />
               </div>
-            ) : modalTitle === 'Новый продукт'  || modalTitle === 'Редактирование продукта' ? (
+            ) : modalTitle === 'Новый продукт' ||
+              modalTitle === 'Редактирование продукта' ? (
               <div className="w-8 text-gray-600">
                 <ReceiptPercentIcon className="w-6 h-6 text-slate-400" />
               </div>
-            )  : (
+            ) : (
               <div className="w-8 text-gray-600">
                 <BuildingStorefrontIcon className="w-6 h-6 text-slate-400" />
               </div>
@@ -72,7 +83,7 @@ const Modal: FC<IModal> = ({
           {children}
 
           <div className="flex items-center justify-center w-full">
-            {!isUpload && ( 
+            {!isUpload && (
               <>
                 {isAddingMode ? (
                   <Button
