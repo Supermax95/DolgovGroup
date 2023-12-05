@@ -69,48 +69,63 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   );
   const [dataEditSubcategory, setDataEditSubcategory] =
     useState<ISubcategory | null>(null);
+  //? выводит подкатегории в сайдбаре
+  const [selectedSubcategoryData, setSelectedSubcategoryData] = useState<
+    ISubcategory[] | null
+  >(null);
 
   //* рендерит  выпадающий список для категорий
   const [selectedCategoryDataId, setSelectedCategoryDataId] =
     useState<number>(0);
+  //* рендерит  выпадающий список для ПОДкатегорий
+  const [selectedSubcategoryDataId, setSelectedSubcategoryDataId] =
+    useState<number>(0);
 
-  const [selectedSubcategoryData, setSelectedSubcategoryData] = useState<{
-    id: number | null;
-    subcategory: ISubcategory | null;
-  }>({ id: null, subcategory: null });
-
+  //! вывод подкатегории в сайдбаре - запоминает id и булевое - открыто/закрыто
   const [subcategoryStates, setSubcategoryStates] = useState<{
     [key: number]: boolean;
-  }>({}); //! вывод подкатегории в сайдбаре
+  }>({});
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////
 
   const [actionMenuForCategory, setActionMenuForCategory] =
     useState<boolean>(false); //* меню для редактирования категории
+  const [actionMenuForSub, setActionMenuForSub] = useState<boolean>(false); //* меню для редактирования подкатегории
 
-  const [isMenuOpenSub, setMenuOpenSub] = useState<boolean>(false); //* меню для редактирования подкатегории
+  const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
 
   const menuRef = useRef<HTMLDivElement | null>(null);
 
-  const categoryRef = useRef<HTMLDivElement>(null);
+  const menuClass = actionMenuForCategory ? 'block' : 'hidden';
+  const menuClassSub = actionMenuForSub ? 'block' : 'hidden';
 
   //* всплывающее меню для каждой КАТЕГОРИИ
-  //! по шестерёнке не закрывается
+  //! при повторном нажатии на шестерёнку - не закрывается
   const toggleMenuCategory = (e: React.MouseEvent, id: number): void => {
+    console.log('id', id);
+
     e.stopPropagation(); // Это предотвратит всплытие события и отменит срабатывание обработчика событий на родительском элементе
 
     setActionMenuForCategory(!actionMenuForCategory);
+    setSelectedSubcategoryDataId(null);
     setSelectedCategoryDataId(id);
+    console.log('selectedCategoryDataId=========>', selectedCategoryDataId);
+
     calculateMenuPosition(e);
+    /**
+     * какоя-то хуйня выводится 
+     * id 2
+      ProductSidebar.tsx:109 selectedCategoryDataId=========> 4
+    а работает верно
+     */
   };
 
   const handleClickOutside = (e: MouseEvent): void => {
     if (menuRef.current && !menuRef.current.contains(e.target)) {
       setActionMenuForCategory(false);
+      setActionMenuForSub(false);
     }
   };
-
-  const menuClass = actionMenuForCategory ? 'block' : 'hidden';
 
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
@@ -119,31 +134,41 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     };
   }, []);
 
-  const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
-
   const calculateMenuPosition = (e: React.MouseEvent) => {
-    // const target = e.currentTarget as HTMLElement;
+    const target = e.currentTarget as HTMLElement;
     // console.log('target', target);
 
-    // const rect = target.getBoundingClientRect();
+    const rect = target.getBoundingClientRect();
     // console.log('recrectrectrectt', rect);
 
-    // const scrollTop = window.scrollY || document.documentElement.scrollTop;
-    // setMenuPosition({ top: rect.bottom + scrollTop, left: rect.left });
-    const target = e.currentTarget as HTMLElement;
-    const rect = target.getBoundingClientRect();
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    setMenuPosition({ top: rect.bottom + scrollTop, left: rect.left });
+    // const target = e.currentTarget as HTMLElement;
+    // const rect = target.getBoundingClientRect();
+    // const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    // //! не работает
+    // const offsetLeft = 10; // Регулируйте величину отступа влево
+    // const offsetTop = 10; // Регулируйте величину отступа вниз
 
-    const offsetLeft = 10; // Регулируйте величину отступа влево
-    const offsetTop = 10; // Регулируйте величину отступа вниз
-
-    setMenuPosition({
-      top: rect.bottom + scrollTop + offsetTop,
-      left: rect.left - offsetLeft,
-    });
+    // setMenuPosition({
+    //   top: rect.bottom + scrollTop + offsetTop,
+    //   left: rect.left - offsetLeft,
+    // });
   };
 
-  
+  //* всплывающее меню для каждой ПОДкатегории
+  //! при повторном нажатии на шестерёнку - не закрывается
+  const toggleMenuSub = (e: React.MouseEvent, id: number): void => {
+    console.log('id', id);
+    e.stopPropagation(); // Это предотвратит всплытие события и отменит срабатывание обработчика событий на родительском элементе
+
+    setActionMenuForSub(!actionMenuForSub);
+    setSelectedCategoryDataId(null);
+    setSelectedSubcategoryDataId(id);
+    console.log('selectedSubcategoryDataId', selectedSubcategoryDataId);
+
+    calculateMenuPosition(e);
+  };
 
   //////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -275,7 +300,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     const subcategoryToEdit = allSubcategories.find((sub) => sub.id === id);
     console.log('subcategoryToEdit', subcategoryToEdit);
 
-    setMenuOpenSub(false);
+    setActionMenuForSub(false);
     setDataEditSubcategory(subcategoryToEdit || null);
   };
 
@@ -598,7 +623,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                                   </div>
                                 </form>
                               ) : (
-                                <div className="cursor-pointer flex items-center p-2 justify-between rounded-md hover:bg-slate-100">
+                                <div className="flex items-center p-2 justify-between rounded-md hover:bg-slate-100">
                                   <div
                                     onClick={() =>
                                       handleSubcategoryClick(subcategory.id)
@@ -612,8 +637,8 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                                   </div>
                                   <div
                                     className="ml-auto"
-                                    onClick={() =>
-                                      toggleMenuSub(subcategory.id)
+                                    onClick={(e) =>
+                                      toggleMenuSub(e, subcategory.id)
                                     }
                                   >
                                     <Cog8ToothIcon className="cursor-pointer w-5 h-5 text-lime-600" />
@@ -622,14 +647,14 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                               )}
 
                               {/** Выпадающий список для внесения изменений данных в ПОДкатегории */}
-                              {selectedSubcategoryId === subcategory.id &&
-                                isMenuOpenSub && (
+                              {selectedSubcategoryDataId === subcategory.id &&
+                                actionMenuForSub && (
                                   <div
                                     //! появляться должно при нажатии на конкретную категорию по шестеррёнке
                                     ref={menuRef}
                                     id={`dropdownRight-${subcategory.id}`}
-                                    className={`z-10 absolute ${menuClassSub} top-32 w-52 left-24  bg-white divide-y divide-gray-100 rounded-lg shadow`}
-                                    // остален для передвижения пока что className={`z-10 absolute ${menuClass} top-${menuPosition.top} left-${menuPosition.left} bg-white divide-y divide-gray-100 rounded-lg shadow`}
+                                    //  className={`z-10 absolute ${menuClassSub} top-32 w-52 left-24  bg-white divide-y divide-gray-100 rounded-lg shadow`}
+                                    className={`z-10 absolute ${menuClassSub} top-${menuPosition.top} left-${menuPosition.left} bg-white divide-y divide-gray-100 rounded-lg shadow`}
                                   >
                                     <ul
                                       className="py-2 text-xs text-slate-700 cursor-pointer"
