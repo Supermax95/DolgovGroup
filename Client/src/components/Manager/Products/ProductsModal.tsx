@@ -7,6 +7,8 @@ import Modal from '../../../ui/Modal';
 import { IProduct } from './Products';
 import { VITE_URL } from '../../../VITE_URL';
 import axios from 'axios';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 interface Product {
   id: number;
@@ -49,7 +51,7 @@ interface ProductsModalProps {
     React.SetStateAction<Product | null | undefined>
   >;
   axiosError: string | null;
-  resetAxiosError: () => void; 
+  resetAxiosError: () => void;
 }
 
 const ProductsModal: FC<ProductsModalProps> = ({
@@ -376,20 +378,20 @@ const ProductsModal: FC<ProductsModalProps> = ({
           employeePrice: parseFloat(value),
         }),
     },
-    {
-      id: 'description',
-      type: 'text',
-      value: editedProduct.description,
-      autoComplete: 'off',
-      placeholder: '',
-      title: 'Описание продукта',
-      htmlFor: 'description',
-      onChange: (value: string) =>
-        setEditedProduct({
-          ...editedProduct,
-          description: value,
-        }),
-    },
+    // {
+    //   id: 'description',
+    //   type: 'text',
+    //   value: editedProduct.description,
+    //   autoComplete: 'off',
+    //   placeholder: '',
+    //   title: 'Описание продукта',
+    //   htmlFor: 'description',
+    //   onChange: (value: string) =>
+    //     setEditedProduct({
+    //       ...editedProduct,
+    //       description: value,
+    //     }),
+    // },
     {
       id: 'isDiscounted',
       type: 'text',
@@ -438,19 +440,38 @@ const ProductsModal: FC<ProductsModalProps> = ({
           onCancellick={handleCancel}
           isUpload={isUpload}
         >
-          {axiosError && (
-            <div className="text-sm text-rose-400 text-center mt-2">
-              {axiosError}
-            </div>
-          )}
-          {currentStep === 1 && (
-            <InputModal
-              containerClassName={
-                'py-8 grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'
-              }
-              inputFields={inputFields}
-            />
-          )}
+          <div className="input-modal-container">
+            {axiosError && (
+              <div className="text-sm text-rose-400 text-center mt-2">
+                {axiosError}
+              </div>
+            )}
+            {currentStep === 1 && (
+              <InputModal
+                containerClassName={
+                  'py-8 grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'
+                }
+                inputFields={inputFields}
+              />
+            )}
+
+            {currentStep === 1 && (
+              <div className="description-container resize-y overflow-auto min-h-50">
+                <label htmlFor="description" className="text-slate-400 text-sm">
+                  Описание продукта
+                </label>
+                <ReactQuill
+                  theme="snow"
+                  value={editedProduct.description}
+                  onChange={(value) =>
+                    setEditedProduct({ ...editedProduct, description: value })
+                  }
+                  // placeholder="Описание продукта"
+                  className="w-full" /* Чтобы растягиваться по ширине контейнера */
+                />
+              </div>
+            )}
+          </div>
 
           {currentStep === 2 && (
             <div className="container mx-auto mt-8 p-8 max-w-4xl justify-center items-center flex-col block rounded-lg bg-white shadow-md dark:bg-neutral-700">

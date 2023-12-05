@@ -76,18 +76,18 @@ const InputModal: FC<IInputModal> = ({
                 className="block w-full px-4 py-2 rounded-md border-0 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
             </div>
-          ) :
+          ) : 
           //  field.id === 'description' ? (
           //   <div
           //   //  className="relative mb-3"
           //   // data-te-input-wrapper-init
           //   >
-          //     <textarea
-          //       className="h-[42.5px] block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
-          //       id={field.id}
-          //       placeholder={field.placeholder}
-          //       value={field.value}
-          //       onChange={(e) => field.onChange(e.target.value)}
+              // <textarea
+              //   className="h-[42.5px] block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
+              //   id={field.id}
+              //   placeholder={field.placeholder}
+              //   value={field.value}
+              //   onChange={(e) => field.onChange(e.target.value)}
           //     ></textarea>
           //     <label
           //       htmlFor={field.htmlFor}
@@ -98,20 +98,20 @@ const InputModal: FC<IInputModal> = ({
           //   </div>
           // ) 
           //Надо как-то это стилизовать!!!
-          field.id === 'description' ? (
-            <div>
-              <ReactQuill
-                theme="snow" 
-                value={field.value}
-                onChange={(value) => field.onChange(value)}
-                placeholder={field.placeholder}
-              />
-              <label htmlFor={field.htmlFor} className="text-slate-400 text-sm">
-                {field.title}
-              </label>
-            </div>
-          )
-          : field.id === 'isActivated' ? (
+          // field.id === 'description' ? (
+          //   <div>
+          //     <ReactQuill
+          //       theme="snow" 
+          //       value={field.value}
+          //       onChange={(value) => field.onChange(value)}
+          //       placeholder={field.placeholder}
+          //     />
+          //     <label htmlFor={field.htmlFor} className="text-slate-400 text-sm">
+          //       {field.title}
+          //     </label>
+          //   </div>
+          // )
+           field.id === 'isActivated' ? (
             field.value ? (
               <div className="flex justify-between">
                 <div className="flex justify-start items-center">
