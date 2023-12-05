@@ -10,7 +10,7 @@ interface RequestData {
     dateStart: string;
     dateEnd: string;
     carousel: boolean;
-    visible: boolean;
+    invisible: boolean;
   };
 }
 
@@ -21,7 +21,7 @@ interface ResponseData {
   dateStart: string;
   dateEnd: string;
   carousel: boolean;
-  visible: boolean;
+  invisible: boolean;
 }
 
 interface ResponseDataId {

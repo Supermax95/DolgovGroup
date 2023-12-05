@@ -10,18 +10,18 @@ interface RequestData {
     dateStart: string;
     dateEnd: string;
     carousel: boolean;
-    visible: boolean;
+    invisible: boolean;
   };
 }
 
 interface ResponseData {
-    id: number;
-    title: string;
-    description: string;
-    dateStart: string;
-    dateEnd: string;
-    carousel: boolean;
-    visible: boolean;
+  id: number;
+  title: string;
+  description: string;
+  dateStart: string;
+  dateEnd: string;
+  carousel: boolean;
+  invisible: boolean;
 }
 
 interface ResponseDataId {
@@ -37,7 +37,7 @@ const editPromotion = createAsyncThunk<ResponseDataId, RequestData>(
       const response: AxiosResponse = await axios.put(
         `${VITE_URL}/admin/promotions`,
         { newInfo }
-      );  
+      );
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {

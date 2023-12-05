@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       dateStart: DataTypes.STRING,
       dateEnd: DataTypes.STRING,
       carousel: DataTypes.BOOLEAN,
-      visible: DataTypes.BOOLEAN,
+      invisible: DataTypes.BOOLEAN,
     },
     {
       sequelize,

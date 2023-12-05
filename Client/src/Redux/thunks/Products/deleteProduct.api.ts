@@ -16,7 +16,7 @@ interface ResponseData {
   description: string;
   photo: string;
   subcategoryId: number;
-  visible:boolean;
+  invisible: boolean;
 }
 
 type ArrayResponseData = Array<ResponseData>;

@@ -17,7 +17,7 @@ export interface ILocation {
   latitude: string;
   longitude: string;
   hours: string;
-  visible: boolean;
+  invisible: boolean;
 }
 
 interface IColumnsDefaultName {

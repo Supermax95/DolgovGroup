@@ -49,7 +49,7 @@ const InputModal: FC<IInputModal> = ({
           {field.id === 'isNew' ||
           field.id === 'isDiscounted' ||
           field.id === 'carousel' ||
-          field.id === 'visible' ? (
+           field.id === 'invisible' ? (
             <div className="flex space-x-2">
               <h1 className="text-slate-600 text-sm tracking-normal leading-tight">
                 {field.title}
@@ -79,8 +79,7 @@ const InputModal: FC<IInputModal> = ({
                 {field.title}
               </label>
             </>
-          ) : // </div>
-          //  field.id === 'description' ? (
+          ) : 
           //   <div
           //   //  className="relative mb-3"
           //   // data-te-input-wrapper-init

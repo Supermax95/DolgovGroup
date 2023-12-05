@@ -14,7 +14,7 @@ interface RequestData {
     isNew: boolean;
     isDiscounted: boolean;
     description: string;
-    visible:boolean;
+    invisible: boolean;
   };
 }
 
@@ -31,7 +31,7 @@ interface ResponseData {
   isDiscounted: boolean;
   description: string;
   subcategoryId: number;
-  visible:boolean;
+  invisible: boolean;
 }
 // type ArrayResponseData = Array<ResponseData>;
 
@@ -43,7 +43,7 @@ interface ResponseDataId {
 const addProduct = createAsyncThunk<ResponseDataId, RequestData>(
   'admin/addproduct',
 
-  async ({ newProduct }, {rejectWithValue}) => {
+  async ({ newProduct }, { rejectWithValue }) => {
     try {
       console.log('axios', newProduct);
 
@@ -63,6 +63,5 @@ const addProduct = createAsyncThunk<ResponseDataId, RequestData>(
     }
   }
 );
-
 
 export default addProduct;
