@@ -92,14 +92,16 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
 
   const menuRef = useRef<HTMLDivElement | null>(null);
 
+  const categoryRef = useRef<HTMLDivElement>(null);
+
   //* всплывающее меню для каждой КАТЕГОРИИ
   //! по шестерёнке не закрывается
-  const toggleMenuCategory = (id: number): void => {
-    if (id) {
-      setActionMenuForCategory(!actionMenuForCategory);
-      setSelectedCategoryDataId(id);
-      calculateMenuPosition(id);
-    }
+  const toggleMenuCategory = (e: React.MouseEvent, id: number): void => {
+    e.stopPropagation(); // Это предотвратит всплытие события и отменит срабатывание обработчика событий на родительском элементе
+
+    setActionMenuForCategory(!actionMenuForCategory);
+    setSelectedCategoryDataId(id);
+    calculateMenuPosition(e);
   };
 
   const handleClickOutside = (e: MouseEvent): void => {
@@ -119,16 +121,29 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
 
   const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
 
-  const calculateMenuPosition = (categoryId: number) => {
-    console.log('categoryId', categoryId);
+  const calculateMenuPosition = (e: React.MouseEvent) => {
+    // const target = e.currentTarget as HTMLElement;
+    // console.log('target', target);
 
-    const categoryElement = document.getElementById(`category-${categoryId}`);
-    if (categoryElement) {
-      const rect = categoryElement.getBoundingClientRect();
-      const scrollTop = window.scrollY || document.documentElement.scrollTop;
-      setMenuPosition({ top: rect.bottom + scrollTop, left: rect.left });
-    }
+    // const rect = target.getBoundingClientRect();
+    // console.log('recrectrectrectt', rect);
+
+    // const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    // setMenuPosition({ top: rect.bottom + scrollTop, left: rect.left });
+    const target = e.currentTarget as HTMLElement;
+    const rect = target.getBoundingClientRect();
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+    const offsetLeft = 10; // Регулируйте величину отступа влево
+    const offsetTop = 10; // Регулируйте величину отступа вниз
+
+    setMenuPosition({
+      top: rect.bottom + scrollTop + offsetTop,
+      left: rect.left - offsetLeft,
+    });
   };
+
+  
 
   //////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -427,7 +442,10 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                 ) : (
                   <div className="flex flex-col justify-between">
                     {/** Вывод категорий  */}
-                    <div className="flex justify-between items-center p-2 rounded-md hover:bg-slate-100">
+                    <div
+                      id={`category-${item.id}`}
+                      className="flex justify-between items-center p-2 rounded-md hover:bg-slate-100"
+                    >
                       <div
                         onClick={() => {
                           subcategoryOutput(item.id);
@@ -444,7 +462,10 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                           {item.categoryName}
                         </span>
                       </div>
-                      <div onClick={() => toggleMenuCategory(item.id)}>
+                      <div
+                        // onClick={() => toggleMenuCategory(item.id)}
+                        onClick={(e) => toggleMenuCategory(e, item.id)}
+                      >
                         <Cog8ToothIcon className="cursor-pointer w-5 h-5 text-slate-600" />
                       </div>
                     </div>
@@ -455,8 +476,8 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                         //! появляться должно при нажатии на конкретную категорию по шестеррёнке
                         ref={menuRef}
                         id={`dropdownRight-${item.id}`}
-                        className={`z-10 absolute ${menuClass} top-32 w-52 left-24  bg-white divide-y divide-gray-100 rounded-lg shadow`}
-                        //className={`z-10 absolute ${menuClass} top-${menuPosition.top} left-${menuPosition.left} bg-white divide-y divide-gray-100 rounded-lg shadow`}
+                        //className={`z-10 absolute ${menuClass} top-32 w-52 left-24  bg-white divide-y divide-gray-100 rounded-lg shadow`}
+                        className={`z-10 absolute ${menuClass} top-${menuPosition.top} left-${menuPosition.left} bg-white divide-y divide-gray-100 rounded-lg shadow`}
                       >
                         <ul
                           className="py-2 text-xs text-slate-700 cursor-pointer"
