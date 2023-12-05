@@ -428,8 +428,8 @@ const ProductsModal: FC<ProductsModalProps> = ({
         }),
     },
     {
-      id: 'visible',
-      name: 'visible',
+      id: 'invisible',
+      name: 'invisible',
       type: 'text',
       value: editedProduct.invisible,
       title: 'Скрыт для покупателей',
