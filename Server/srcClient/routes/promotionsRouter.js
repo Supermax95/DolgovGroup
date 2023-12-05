@@ -16,7 +16,7 @@ router.get('/admin/promotions', async (req, res) => {
         isPast(addDays(parseISO(promotion.dateEnd), 1))
       ) {
         await Promotion.update(
-          { invisible: false, carousel: false },
+          { invisible: true, carousel: false },
           { where: { id: promotion.id } }
         );
       }
@@ -109,7 +109,7 @@ router.put('/admin/promotions', async (req, res) => {
 
     if (newInfo.dateEnd && isPast(subDays(parseISO(newInfo.promoEndDate), 1))) {
       await Promotion.update(
-        { invisible: false },
+        { invisible: true },
         { where: { id: newInfo.id } }
       );
     }

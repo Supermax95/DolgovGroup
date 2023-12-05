@@ -98,14 +98,19 @@ const Products: FC = () => {
           String(product.productName),
           String(product.promoStartDate),
           String(product.promoEndDate),
-          // String(product.description),
           String(product.article),
         ];
 
         const searchTerms = searchText.toLowerCase().split(' ');
 
-        return searchTerms.every((term) =>
-          productFields.some((field) => field.toLowerCase().includes(term))
+        const isPromoEnded =
+          product.promoEndDate && isPast(parseISO(product.promoEndDate));
+
+        return (
+          searchTerms.every((term) =>
+            productFields.some((field) => field.toLowerCase().includes(term))
+          ) ||
+          (isPromoEnded && searchText.toLowerCase().includes('закончилась'))
         );
       });
     }

@@ -15,8 +15,9 @@ interface Promotion {
   title: string;
   dateStart: string;
   dateEnd: string;
-  discount: number;
+  invisible: boolean;
   description: string;
+  carousel: boolean;
 }
 
 interface PromotionsModalProps {
