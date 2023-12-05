@@ -55,7 +55,7 @@ const Promotions: FC = () => {
 
   const filterPromotions = () => {
     let filtered = promotions;
-
+  
     if (searchText !== '') {
       filtered = filtered.filter((promotion) => {
         const promotionFields = [
@@ -64,17 +64,24 @@ const Promotions: FC = () => {
           String(promotion.dateStart),
           String(promotion.dateEnd),
         ];
-
+  
         const searchTerms = searchText.toLowerCase().split(' ');
-
-        return searchTerms.every((term) =>
-          promotionFields.some((field) => field.toLowerCase().includes(term))
+  
+        const isPromoEnded =
+          promotion.dateEnd && isPast(parseISO(promotion.dateEnd));
+  
+        return (
+          searchTerms.every((term) =>
+            promotionFields.some((field) => field.toLowerCase().includes(term))
+          ) ||
+          (isPromoEnded && searchText.toLowerCase().includes('закончилась'))
         );
       });
     }
-
+  
     return filtered;
   };
+  
 
   const displayedPromotions = filterPromotions().slice(startIndex, endIndex);
   const totalPages = Math.ceil(filterPromotions().length / itemsPerPage);
@@ -250,12 +257,12 @@ const Promotions: FC = () => {
                           {isToday(parseISO(promotion.dateEnd)) ? (
                             <span className="text-red-500">
                               {' '}
-                              Промо истекает сегодня
+                              Акция заканчивается сегодня
                             </span>
                           ) : isPast(parseISO(promotion.dateEnd)) ? (
                             <span className="text-red-500">
                               {' '}
-                              Промо закончилось
+                             Акция закончилась
                             </span>
                           ) : (
                             ` с ${reverseDate(
