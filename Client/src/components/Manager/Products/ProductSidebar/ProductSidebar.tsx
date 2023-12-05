@@ -92,7 +92,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     useState<boolean>(false); //* меню для редактирования категории
   const [actionMenuForSub, setActionMenuForSub] = useState<boolean>(false); //* меню для редактирования подкатегории
 
-  const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
+  const [menuPosition, setMenuPosition] = useState(0);
 
   const menuRef = useRef<HTMLDivElement | null>(null);
 
@@ -136,24 +136,20 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
 
   const calculateMenuPosition = (e: React.MouseEvent) => {
     const target = e.currentTarget as HTMLElement;
-    // console.log('target', target);
+    console.log('target', target);
 
     const rect = target.getBoundingClientRect();
-    // console.log('recrectrectrectt', rect);
+    console.log('recrectrectrectt', rect);
 
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
-    setMenuPosition({ top: rect.bottom + scrollTop, left: rect.left });
-    // const target = e.currentTarget as HTMLElement;
-    // const rect = target.getBoundingClientRect();
-    // const scrollTop = window.scrollY || document.documentElement.scrollTop;
-    // //! не работает
-    // const offsetLeft = 10; // Регулируйте величину отступа влево
-    // const offsetTop = 10; // Регулируйте величину отступа вниз
+    console.log('scrollTop', scrollTop);
 
-    // setMenuPosition({
-    //   top: rect.bottom + scrollTop + offsetTop,
-    //   left: rect.left - offsetLeft,
-    // });
+    console.log('rect.bottom + scrollTop', rect.top + scrollTop + 500);
+    const newTop = rect.top + scrollTop + 500;
+
+    setMenuPosition(newTop);
+
+    console.log('menuPosition====>', menuPosition);
   };
 
   //* всплывающее меню для каждой ПОДкатегории
@@ -487,11 +483,13 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                           {item.categoryName}
                         </span>
                       </div>
-                      <div
-                        // onClick={() => toggleMenuCategory(item.id)}
-                        onClick={(e) => toggleMenuCategory(e, item.id)}
-                      >
-                        <Cog8ToothIcon className="cursor-pointer w-5 h-5 text-slate-600" />
+                      <div onClick={(e) => toggleMenuCategory(e, item.id)}>
+                        <Cog8ToothIcon
+                          onClick={() =>
+                            console.log('=================>ПИЗДА', menuPosition)
+                          }
+                          className="cursor-pointer w-5 h-5 text-slate-600"
+                        />
                       </div>
                     </div>
 
@@ -501,8 +499,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                         //! появляться должно при нажатии на конкретную категорию по шестеррёнке
                         ref={menuRef}
                         id={`dropdownRight-${item.id}`}
-                        //className={`z-10 absolute ${menuClass} top-32 w-52 left-24  bg-white divide-y divide-gray-100 rounded-lg shadow`}
-                        className={`z-10 absolute ${menuClass} top-${menuPosition.top} left-${menuPosition.left} bg-white divide-y divide-gray-100 rounded-lg shadow`}
+                        className={`z-10 absolute w-52 ${menuClass} top-${menuPosition} left-24 bg-white divide-y divide-gray-100 rounded-lg shadow`}
                       >
                         <ul
                           className="py-2 text-xs text-slate-700 cursor-pointer"
@@ -653,8 +650,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                                     //! появляться должно при нажатии на конкретную категорию по шестеррёнке
                                     ref={menuRef}
                                     id={`dropdownRight-${subcategory.id}`}
-                                    //  className={`z-10 absolute ${menuClassSub} top-32 w-52 left-24  bg-white divide-y divide-gray-100 rounded-lg shadow`}
-                                    className={`z-10 absolute ${menuClassSub} top-${menuPosition.top} left-${menuPosition.left} bg-white divide-y divide-gray-100 rounded-lg shadow`}
+                                    className={`z-10 absolute w-52 ${menuClassSub} top-${menuPosition.top} left-24 bg-white divide-y divide-gray-100 rounded-lg shadow`}
                                   >
                                     <ul
                                       className="py-2 text-xs text-slate-700 cursor-pointer"
@@ -700,51 +696,6 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                     )}
                   </div>
                 )}
-
-                {/** Выпадающий список для внесения изменений данных в Категории  */}
-                {/* {selectedCategoryDataId === item.id && (
-                  <div
-                    //! появляться должно при нажатии на конкретную категорию по шестеррёнке
-                    ref={menuRef}
-                    id={`dropdownRight-${item.id}`}
-                    //className={`z-10 absolute ${menuClass} top-32 w-52 left-24  bg-white divide-y divide-gray-100 rounded-lg shadow`}
-                    className={`z-10 absolute ${menuClass} top-${menuPosition.top} left-${menuPosition.left} bg-white divide-y divide-gray-100 rounded-lg shadow`}
-                  >
-                    <ul
-                      className="py-2 text-xs text-slate-700 cursor-pointer"
-                      aria-labelledby="dropdownRightButton"
-                    >
-                      <li
-                        onClick={() => startAddingSubcategory(item.id)}
-                        className="flex items-center px-4 py-2 space-x-2 hover:bg-slate-100 border-b-2 border-b-lime-500"
-                      >
-                        <div>
-                          <PlusCircleIcon className="w-4 h-4 text-slate-600" />
-                        </div>
-                        <span className="block ">Создать подкатегорию</span>
-                      </li>
-                      <li
-                        onClick={() => startEditingCategory(item.id)}
-                        className="flex items-center px-4 py-2 space-x-2 hover:bg-slate-100"
-                      >
-                        <div>
-                          <PencilIcon className="w-3 h-3  text-slate-600" />
-                        </div>
-                        <span className="block">Переименовать категорию</span>
-                      </li>
-
-                      <li
-                        onClick={() => deleteCategoryHandler(item.id)}
-                        className="flex items-center px-4 py-2 space-x-2 hover:bg-slate-100"
-                      >
-                        <div>
-                          <XCircleIcon className="w-4 h-4 text-slate-600" />
-                        </div>
-                        <span className="block">Удалить категорию</span>
-                      </li>
-                    </ul>
-                  </div>
-                )} */}
               </div>
             ))}
           </li>

@@ -401,45 +401,46 @@ const ProductsModal: FC<ProductsModalProps> = ({
     //       description: value,
     //     }),
     // },
-    {
-      id: 'isDiscounted',
-      name: 'isDiscounted',
-      type: 'text',
-      value: editedProduct.isDiscounted,
-      title: 'Товар со скидкой',
-      htmlFor: 'isDiscounted',
-      onChange: (value: boolean) =>
-        setEditedProduct({
-          ...editedProduct,
-          isDiscounted: value,
-        }),
-    },
-    {
-      id: 'isNew',
-      name: 'isNew',
-      type: 'text',
-      value: editedProduct.isNew,
-      title: 'Новинка',
-      htmlFor: 'isNew',
-      onChange: (value: boolean) =>
-        setEditedProduct({
-          ...editedProduct,
-          isNew: value,
-        }),
-    },
-    {
-      id: 'invisible',
-      name: 'invisible',
-      type: 'text',
-      value: editedProduct.invisible,
-      title: 'Скрыт для покупателей',
-      htmlFor: 'invisible',
-      onChange: (value: boolean) =>
-        setEditedProduct({
-          ...editedProduct,
-          invisible: value,
-        }),
-    },
+
+    // {
+    //   id: 'isDiscounted',
+    //   name: 'isDiscounted',
+    //   type: 'text',
+    //   value: editedProduct.isDiscounted,
+    //   title: 'Товар со скидкой',
+    //   htmlFor: 'isDiscounted',
+    //   onChange: (value: boolean) =>
+    //     setEditedProduct({
+    //       ...editedProduct,
+    //       isDiscounted: value,
+    //     }),Новинка
+    // },
+    // {
+    //   id: 'isNew',
+    //   name: 'isNew',
+    //   type: 'text',
+    //   value: editedProduct.isNew,
+    //   title: '',
+    //   htmlFor: 'isNew',
+    //   onChange: (value: boolean) =>
+    //     setEditedProduct({
+    //       ...editedProduct,
+    //       isNew: value,
+    //     }),
+    // },
+    // {
+    //   id: 'invisible',
+    //   name: 'invisible',
+    //   type: 'text',
+    //   value: editedProduct.invisible,
+    //   title: 'Скрыт для покупателей',
+    //   htmlFor: 'invisible',
+    //   onChange: (value: boolean) =>
+    //     setEditedProduct({
+    //       ...editedProduct,
+    //       invisible: value,
+    //     }),
+    // },
   ];
 
   return (
@@ -516,6 +517,65 @@ const ProductsModal: FC<ProductsModalProps> = ({
             )} */}
 
             {currentStep === 1 && (
+              <div className="flex space-x-2 items-center justify-between pb-4">
+                <div className="flex space-x-2">
+                  <h1 className="text-slate-600 text-sm tracking-normal leading-tight">
+                    Новый продукт
+                  </h1>
+                  <input
+                    id="isNew"
+                    name="isNew"
+                    checked={editedProduct.isNew}
+                    type="checkbox"
+                    onChange={(e) =>
+                      setEditedProduct({
+                        ...editedProduct,
+                        isNew: e.target.checked,
+                      })
+                    }
+                    className="w-4 h-4 text-lime-600 bg-slate-100 border-slate-300 rounded focus:ring-lime-500"
+                  />
+                </div>
+                <div className="flex space-x-2">
+                  <h1 className="text-slate-600 text-sm tracking-normal leading-tight">
+                    Товар со скидкой
+                  </h1>
+                  <input
+                    id="isDiscounted"
+                    name="isDiscounted"
+                    checked={editedProduct.isDiscounted}
+                    type="checkbox"
+                    onChange={(e) =>
+                      setEditedProduct({
+                        ...editedProduct,
+                        isDiscounted: e.target.checked,
+                      })
+                    }
+                    className="w-4 h-4 text-rose-600 bg-slate-100 border-slate-300 rounded focus:ring-rose-500"
+                  />
+                </div>
+                <div className="flex space-x-2">
+                  <h1 className="text-slate-600 text-sm tracking-normal leading-tight">
+                    Скрыть товар
+                  </h1>
+                  <input
+                    id="invisible"
+                    name="invisible"
+                    checked={editedProduct.invisible}
+                    type="checkbox"
+                    onChange={(e) =>
+                      setEditedProduct({
+                        ...editedProduct,
+                        invisible: e.target.checked,
+                      })
+                    }
+                    className="w-4 h-4 text-slate-500 bg-slate-100 border-slate-300 rounded focus:ring-slate-500"
+                  />
+                </div>
+              </div>
+            )}
+
+            {currentStep === 1 && (
               <div className="description-container resize-y overflow-auto min-h-50">
                 <label htmlFor="description" className="text-slate-400 text-sm">
                   Описание продукта
@@ -534,7 +594,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
           </div>
 
           {currentStep === 2 && (
-            <div className="container mx-auto mt-8 p-8 max-w-4xl justify-center items-center flex-col block rounded-lg bg-white shadow-md dark:bg-neutral-700">
+            <div className="container mx-auto mt-8 p-8 max-w-4xl justify-center items-center flex-col block rounded-lg bg-white shadow-m">
               <div className="px-4 sm:px-0 text-center">
                 <h1 className="text-xl font-bold mb-4">
                   Форма загрузки фотографии продукта
