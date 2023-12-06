@@ -343,91 +343,74 @@ const ProductsModal: FC<ProductsModalProps> = ({
     //       promoEndDate: value,
     //     }),
     // },
+
     {
       id: 'originalPrice',
       name: 'originalPrice',
-      type: 'number',
-      value: editedProduct.originalPrice.toString(),
+      type: 'text',
+      value: editedProduct.originalPrice.toString().replace(',', '.'),
       autoComplete: 'off',
       placeholder: '',
       title: 'Начальная цена',
       htmlFor: 'originalPrice',
-      onChange: (value: string) =>
-        setEditedProduct({
-          ...editedProduct,
-          originalPrice: parseFloat(value),
-        }),
+      onChange: (value: string) => {
+        const trimmedValue = value.replace(/\s/g, '');
+        const sanitizedValue = trimmedValue.replace(/,/g, '');
+
+        if (sanitizedValue === '' || /^\d+(\.\d{0,2})?$/.test(sanitizedValue)) {
+          setEditedProduct({
+            ...editedProduct,
+            originalPrice: sanitizedValue,
+          });
+        }
+      },
+      required: true,
     },
     {
       id: 'customerPrice',
       name: 'customerPrice',
-      type: 'number',
-      value: editedProduct.customerPrice.toString(),
+      type: 'text',
+      value: editedProduct.customerPrice.toString().replace(',', '.'),
       autoComplete: 'off',
       placeholder: '',
       title: 'Цена для покупателя',
       htmlFor: 'customerPrice',
-      onChange: (value: string) =>
-        setEditedProduct({
-          ...editedProduct,
-          customerPrice: parseFloat(value),
-        }),
+      onChange: (value: string) => {
+        const trimmedValue = value.replace(/\s/g, '');
+        const sanitizedValue = trimmedValue.replace(/,/g, '');
+
+        if (sanitizedValue === '' || /^\d+(\.\d{0,2})?$/.test(sanitizedValue)) {
+          setEditedProduct({
+            ...editedProduct,
+            customerPrice: sanitizedValue,
+          });
+        }
+      },
+      required: true,
     },
     {
       id: 'employeePrice',
       name: 'employeePrice',
-      type: 'number',
-      value: editedProduct.employeePrice.toString(),
+      type: 'text',
+      value: editedProduct.employeePrice.toString().replace(',', '.'),
       autoComplete: 'off',
       placeholder: '',
       title: 'Цена для сотрудника',
       htmlFor: 'employeePrice',
-      onChange: (value: string) =>
-        setEditedProduct({
-          ...editedProduct,
-          employeePrice: parseFloat(value),
-        }),
-    },
 
-    // {
-    //   id: 'isDiscounted',
-    //   name: 'isDiscounted',
-    //   type: 'text',
-    //   value: editedProduct.isDiscounted,
-    //   title: 'Товар со скидкой',
-    //   htmlFor: 'isDiscounted',
-    //   onChange: (value: boolean) =>
-    //     setEditedProduct({
-    //       ...editedProduct,
-    //       isDiscounted: value,
-    //     }),Новинка
-    // },
-    // {
-    //   id: 'isNew',
-    //   name: 'isNew',
-    //   type: 'text',
-    //   value: editedProduct.isNew,
-    //   title: '',
-    //   htmlFor: 'isNew',
-    //   onChange: (value: boolean) =>
-    //     setEditedProduct({
-    //       ...editedProduct,
-    //       isNew: value,
-    //     }),
-    // },
-    // {
-    //   id: 'invisible',
-    //   name: 'invisible',
-    //   type: 'text',
-    //   value: editedProduct.invisible,
-    //   title: 'Скрыт для покупателей',
-    //   htmlFor: 'invisible',
-    //   onChange: (value: boolean) =>
-    //     setEditedProduct({
-    //       ...editedProduct,
-    //       invisible: value,
-    //     }),
-    // },
+      onChange: (value: string) => {
+        const trimmedValue = value.replace(/\s/g, '');
+        const sanitizedValue = trimmedValue.replace(/,/g, '');
+
+        if (sanitizedValue === '' || /^\d+(\.\d{0,2})?$/.test(sanitizedValue)) {
+          setEditedProduct({
+            ...editedProduct,
+            employeePrice: sanitizedValue,
+          });
+        }
+      },
+      required: true,
+    },
   ];
 
   return (
@@ -458,8 +441,8 @@ const ProductsModal: FC<ProductsModalProps> = ({
             <div>
               <div className="text-center">
                 <span className="text-xs text-orange-500 font-normal">
-                  Если акция не применяется к данному товару,
-                  оставьте поля начала и окончания акции пустыми
+                  Если акция не применяется к данному товару, оставьте поля
+                  начала и окончания акции пустыми
                 </span>
               </div>
               <div className="pt-4 pb-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
