@@ -457,9 +457,9 @@ const ProductsModal: FC<ProductsModalProps> = ({
           {currentStep === 1 && (
             <div>
               <div className="text-center">
-                <span className="text-sm text-orange-500 font-normal">
-                  Если на товар не распространяется акция, <br /> то вы можете
-                  оставить поля с началом и концом акции незаполненными
+                <span className="text-xs text-orange-500 font-normal">
+                  Если акция не применяется к данному товару,
+                  оставьте поля начала и окончания акции пустыми
                 </span>
               </div>
               <div className="pt-4 pb-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
