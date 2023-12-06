@@ -312,36 +312,37 @@ const ProductsModal: FC<ProductsModalProps> = ({
         }),
       required: true,
     },
-    {
-      id: 'promoStartDate',
-      name: 'promoStartDate',
-      type: 'text',
-      value: editedProduct.promoStartDate,
-      autoComplete: 'off',
-      placeholder: '',
-      title: 'Начало акции',
-      htmlFor: 'promoStartDate',
-      onChange: (value: string) =>
-        setEditedProduct({
-          ...editedProduct,
-          promoStartDate: value,
-        }),
-    },
-    {
-      id: 'promoEndDate',
-      name: 'promoEndDate',
-      type: 'text',
-      value: editedProduct.promoEndDate,
-      autoComplete: 'off',
-      placeholder: '',
-      title: 'Конец акции',
-      htmlFor: 'promoEndDate',
-      onChange: (value: string) =>
-        setEditedProduct({
-          ...editedProduct,
-          promoEndDate: value,
-        }),
-    },
+    //!
+    // {
+    //   id: 'promoStartDate',
+    //   name: 'promoStartDate',
+    //   type: 'text',
+    //   value: editedProduct.promoStartDate,
+    //   autoComplete: 'off',
+    //   placeholder: '',
+    //   title: 'Начало акции',
+    //   htmlFor: 'promoStartDate',
+    //   onChange: (value: string) =>
+    //     setEditedProduct({
+    //       ...editedProduct,
+    //       promoStartDate: value,
+    //     }),
+    // },
+    // {
+    //   id: 'promoEndDate',
+    //   name: 'promoEndDate',
+    //   type: 'text',
+    //   value: editedProduct.promoEndDate,
+    //   autoComplete: 'off',
+    //   placeholder: '',
+    //   title: 'Конец акции',
+    //   htmlFor: 'promoEndDate',
+    //   onChange: (value: string) =>
+    //     setEditedProduct({
+    //       ...editedProduct,
+    //       promoEndDate: value,
+    //     }),
+    // },
     {
       id: 'originalPrice',
       name: 'originalPrice',
@@ -387,20 +388,6 @@ const ProductsModal: FC<ProductsModalProps> = ({
           employeePrice: parseFloat(value),
         }),
     },
-    // {
-    //   id: 'description',
-    //   type: 'text',
-    //   value: editedProduct.description,
-    //   autoComplete: 'off',
-    //   placeholder: '',
-    //   title: 'Описание продукта',
-    //   htmlFor: 'description',
-    //   onChange: (value: string) =>
-    //     setEditedProduct({
-    //       ...editedProduct,
-    //       description: value,
-    //     }),
-    // },
 
     // {
     //   id: 'isDiscounted',
@@ -453,25 +440,29 @@ const ProductsModal: FC<ProductsModalProps> = ({
           onCancellick={handleCancel}
           isUpload={isUpload}
         >
-          <div className="input-modal-container">
-            {axiosError && (
-              <div className="text-sm text-rose-400 text-center mt-2">
-                {axiosError}
+          {axiosError && (
+            <div className="text-sm text-rose-400 text-center mt-2">
+              {axiosError}
+            </div>
+          )}
+          {currentStep === 1 && (
+            <InputModal
+              containerClassName={
+                'py-8 grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'
+              }
+              inputFields={inputFields}
+            />
+          )}
+
+          {currentStep === 1 && (
+            <div>
+              <div className="text-center">
+                <span className="text-sm text-orange-500 font-normal">
+                  Если на товар не распространяется акция, <br /> то вы можете
+                  оставить поля с началом и концом акции незаполненными
+                </span>
               </div>
-            )}
-            {currentStep === 1 && (
-              <InputModal
-                containerClassName={
-                  'py-8 grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'
-                }
-                inputFields={inputFields}
-
-                // inputFields={inputField}
-              />
-            )}
-
-            {/* {currentStep === 1 && (
-              <div className="w-72 flex items-center justify-between">
+              <div className="pt-4 pb-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <div className="relative">
                   <input
                     id="promoStartDate"
@@ -514,114 +505,118 @@ const ProductsModal: FC<ProductsModalProps> = ({
                   </label>
                 </div>
               </div>
-            )} */}
+            </div>
+          )}
 
-            {currentStep === 1 && (
-              <div className="flex space-x-2 items-center justify-between pb-4">
-                <div className="flex space-x-2">
-                  <h1 className="text-slate-600 text-sm tracking-normal leading-tight">
-                    Новый продукт
-                  </h1>
-                  <input
-                    id="isNew"
-                    name="isNew"
-                    checked={editedProduct.isNew}
-                    type="checkbox"
-                    onChange={(e) =>
-                      setEditedProduct({
-                        ...editedProduct,
-                        isNew: e.target.checked,
-                      })
-                    }
-                    className="w-4 h-4 text-lime-600 bg-slate-100 border-slate-300 rounded focus:ring-lime-500"
-                  />
-                </div>
-                <div className="flex space-x-2">
-                  <h1 className="text-slate-600 text-sm tracking-normal leading-tight">
-                    Товар со скидкой
-                  </h1>
-                  <input
-                    id="isDiscounted"
-                    name="isDiscounted"
-                    checked={editedProduct.isDiscounted}
-                    type="checkbox"
-                    onChange={(e) =>
-                      setEditedProduct({
-                        ...editedProduct,
-                        isDiscounted: e.target.checked,
-                      })
-                    }
-                    className="w-4 h-4 text-rose-600 bg-slate-100 border-slate-300 rounded focus:ring-rose-500"
-                  />
-                </div>
-                <div className="flex space-x-2">
-                  <h1 className="text-slate-600 text-sm tracking-normal leading-tight">
-                    Скрыть товар
-                  </h1>
-                  <input
-                    id="invisible"
-                    name="invisible"
-                    checked={editedProduct.invisible}
-                    type="checkbox"
-                    onChange={(e) =>
-                      setEditedProduct({
-                        ...editedProduct,
-                        invisible: e.target.checked,
-                      })
-                    }
-                    className="w-4 h-4 text-slate-500 bg-slate-100 border-slate-300 rounded focus:ring-slate-500"
-                  />
-                </div>
-              </div>
-            )}
-
-            {currentStep === 1 && (
-              <div className="description-container resize-y overflow-auto min-h-50">
-                <label htmlFor="description" className="text-slate-400 text-sm">
-                  Описание продукта
-                </label>
-                <ReactQuill
-                  theme="snow"
-                  value={editedProduct.description}
-                  onChange={(value) =>
-                    setEditedProduct({ ...editedProduct, description: value })
+          {currentStep === 1 && (
+            <div className="flex space-x-2 items-center justify-between pb-4">
+              <div className="flex space-x-2">
+                <h1 className="text-slate-600 text-sm tracking-normal leading-tight">
+                  Новый
+                </h1>
+                <input
+                  id="isNew"
+                  name="isNew"
+                  checked={editedProduct.isNew}
+                  type="checkbox"
+                  onChange={(e) =>
+                    setEditedProduct({
+                      ...editedProduct,
+                      isNew: e.target.checked,
+                    })
                   }
-                  // placeholder="Описание продукта"
-                  className="w-full" /* Чтобы растягиваться по ширине контейнера */
+                  className="w-4 h-4 text-lime-600 bg-slate-100 border-slate-300 rounded focus:ring-lime-500"
                 />
               </div>
-            )}
-          </div>
+              <div className="flex space-x-2">
+                <h1 className="text-slate-600 text-sm tracking-normal leading-tight">
+                  Действует скидка
+                </h1>
+                <input
+                  id="isDiscounted"
+                  name="isDiscounted"
+                  checked={editedProduct.isDiscounted}
+                  type="checkbox"
+                  onChange={(e) =>
+                    setEditedProduct({
+                      ...editedProduct,
+                      isDiscounted: e.target.checked,
+                    })
+                  }
+                  className="w-4 h-4 text-rose-600 bg-slate-100 border-slate-300 rounded focus:ring-rose-500"
+                />
+              </div>
+              <div className="flex space-x-2">
+                <h1 className="text-slate-600 text-sm tracking-normal leading-tight">
+                  Скрыть для покупателей
+                </h1>
+                <input
+                  id="invisible"
+                  name="invisible"
+                  checked={editedProduct.invisible}
+                  type="checkbox"
+                  onChange={(e) =>
+                    setEditedProduct({
+                      ...editedProduct,
+                      invisible: e.target.checked,
+                    })
+                  }
+                  className="w-4 h-4 text-slate-500 bg-slate-100 border-slate-300 rounded focus:ring-slate-500"
+                />
+              </div>
+            </div>
+          )}
+
+          {currentStep === 1 && (
+            <div className="description-container resize-y overflow-auto min-h-50">
+              <label htmlFor="description" className="text-slate-600 text-sm">
+                Описание продукта
+              </label>
+              <ReactQuill
+                id="description"
+                theme="snow"
+                value={editedProduct.description}
+                onChange={(value) =>
+                  setEditedProduct({ ...editedProduct, description: value })
+                }
+                // placeholder="Описание продукта"
+                className="w-full" /* Чтобы растягиваться по ширине контейнера */
+              />
+            </div>
+          )}
+          <div className="mt-4"></div>
 
           {currentStep === 2 && (
-            <div className="container mx-auto mt-8 p-8 max-w-4xl justify-center items-center flex-col block rounded-lg bg-white shadow-m">
-              <div className="px-4 sm:px-0 text-center">
-                <h1 className="text-xl font-bold mb-4">
-                  Форма загрузки фотографии продукта
-                </h1>
-                <span className="block mt-2 text-sm text-gray-500">
-                  Если фотографию продукта менять не нужно, вы можете пропустить
-                  этот шаг
-                </span>
-                <div className="mt-6">
-                  <div className="mb-4">
-                    <input
-                      type="file"
-                      id="fileInput"
-                      name="productPhoto"
-                      className="hidden"
-                      onChange={handleFileInputChange}
-                    />
-                    <label
-                      htmlFor="fileInput"
-                      className="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-                    >
-                      Выберите файл
-                    </label>
+            <>
+              <div className="container mx-auto mt-8 p-8 max-w-4xl justify-center items-center flex-col block rounded-lg bg-white shadow-m">
+                <div className="px-4 sm:px-0 text-center">
+                  <h1 className="text-xl font-bold mb-4">
+                    Форма загрузки фотографии продукта
+                  </h1>
+                  <span className="block mt-2 text-sm text-gray-500">
+                    Если фотографию продукта менять не нужно, вы можете
+                    пропустить этот шаг
+                  </span>
+                  <div className="mt-6">
+                    <div className="mb-4">
+                      <input
+                        type="file"
+                        id="fileInput"
+                        name="productPhoto"
+                        className="hidden"
+                        onChange={handleFileInputChange}
+                      />
+                      <label
+                        htmlFor="fileInput"
+                        className="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+                      >
+                        Выберите файл
+                      </label>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </>
           )}
         </Modal>
       </form>

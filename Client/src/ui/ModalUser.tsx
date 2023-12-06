@@ -35,7 +35,7 @@ const ModalUser: FC<IModalUser> = ({
 
           {children}
 
-          <div className="flex items-center justify-center w-full">
+          <div className="flex items-center justify-center w-full mt-4">
             {isAddingMode ? (
               <Button
                 type="submit"
