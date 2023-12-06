@@ -41,7 +41,7 @@ const Modal: FC<IModal> = ({
     >
       <div
         role="alert"
-        className={`container mx-auto max-w-4xl ${modalWidthClass}`}
+        className={`container mx-auto max-w-2xl ${modalWidthClass}`}
       >
         <div className="relative py-8 px-5 md:px-10 bg-white shadow-md rounded-3xl border border-slate-400 modal-container max-h-[75vh] overflow-y-auto">
           <div className="flex justify-center items-center">
