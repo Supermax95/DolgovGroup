@@ -351,7 +351,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
       value: editedProduct.originalPrice.toString().replace(',', '.'),
       autoComplete: 'off',
       placeholder: '',
-      title: 'Начальная цена',
+      title: 'Оригинальная стоимость',
       htmlFor: 'originalPrice',
       onChange: (value: string) => {
         const trimmedValue = value.replace(/\s/g, '');
@@ -373,7 +373,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
       value: editedProduct.customerPrice.toString().replace(',', '.'),
       autoComplete: 'off',
       placeholder: '',
-      title: 'Цена для покупателя',
+      title: 'Цена со скидкой для клиента',
       htmlFor: 'customerPrice',
       onChange: (value: string) => {
         const trimmedValue = value.replace(/\s/g, '');

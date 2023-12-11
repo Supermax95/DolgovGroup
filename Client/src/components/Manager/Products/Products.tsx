@@ -322,14 +322,19 @@ const Products: FC = () => {
         {/** новая карточка */}
         <div className="mx-auto grid max-w-screen-lg justify-center px-4 sm:grid-cols-2 sm:gap-4 sm:px-8 md:grid-cols-3">
           {displayedProducts.map((product) => (
-            <article className="mx-auto my-4 flex w-full flex-col overflow-hidden rounded-2xl border border-gray-300 bg-white text-gray-900 transition hover:translate-y-2 hover:shadow-lg">
+            <article
+              key={product.id}
+              className="mx-auto my-4 flex w-full flex-col overflow-hidden rounded-2xl border border-gray-300 bg-white text-gray-900 transition hover:translate-y-2 hover:shadow-lg"
+            >
               <div className="relative">
                 <img
                   className="h-56 w-full object-cover"
                   src={`${VITE_URL}${product.photo}`}
                   alt={product.productName}
                 />
-                {(product.isDiscounted || product.isNew) && (
+                {(product.isDiscounted ||
+                  product.isNew ||
+                  product.invisible) && (
                   <div className="absolute top-0 right-0 m-2">
                     {product.isDiscounted && (
                       <p className="rounded-full bg-emerald-500 p-1 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3">
@@ -339,6 +344,11 @@ const Products: FC = () => {
                     {product.isNew && (
                       <p className="rounded-full bg-rose-500 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3 mt-2">
                         Новый
+                      </p>
+                    )}
+                    {product.invisible && (
+                      <p className="rounded-full border-2 border-red-700 text-[8px] font-bold uppercase tracking-wide text-slate-600 sm:py-1 sm:px-3 mt-2">
+                        Скрыт
                       </p>
                     )}
                   </div>
