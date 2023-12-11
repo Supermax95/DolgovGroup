@@ -45,11 +45,8 @@ const InputModal: FC<IInputModal> = ({
     <div className={`${containerClassName}`}>
       {inputFields.map((field) => (
         <div key={field.id} className="relative">
-          {field.id === 'isNew' ||
-          field.id === 'isDiscounted' ||
-          field.id === 'carousel' ||
-          field.id === 'invisible' ? (
-            <div className="flex space-x-2">
+          {field.id === 'carousel' ? (
+            <div className="flex space-x-2 justify-end">
               <h1 className="text-slate-600 text-sm tracking-normal leading-tight">
                 {field.title}
               </h1>
@@ -57,7 +54,19 @@ const InputModal: FC<IInputModal> = ({
                 type="checkbox"
                 checked={field.value as boolean}
                 onChange={() => field.onChange?.(!field.value as boolean)}
-                className="w-4 h-4 text-lime-600 bg-slate-100 border-slate-300 rounded focus:ring-lime-500"
+                className="w-4 h-4 text-slate-600 text-sm font-normal bg-slate-100 border-slate-300 rounded focus:ring-slate-500"
+              />
+            </div>
+          ) : field.id === 'invisible' ? (
+            <div className="flex space-x-2 justify-end">
+              <h1 className="text-slate-600 text-sm tracking-normal leading-tight">
+                {field.title}
+              </h1>
+              <input
+                type="checkbox"
+                checked={field.value as boolean}
+                onChange={() => field.onChange?.(!field.value as boolean)}
+                className="w-4 h-4 text-slate-600 text-sm font-normal bg-slate-100 border-slate-300 rounded focus:ring-slate-500"
               />
             </div>
           ) : field.id === 'dateStart' || field.id === 'dateEnd' ? (

@@ -193,8 +193,6 @@ const LocationsModal: FC<LocationsModalProps> = ({
       name: 'invisible',
       type: 'boolean',
       value: editedLocation.invisible,
-      placeholder: '',
-      autoComplete: 'off',
       title: 'Скрыт для покупателей',
       htmlFor: 'invisible',
       onChange: (value: boolean) => {
@@ -203,7 +201,6 @@ const LocationsModal: FC<LocationsModalProps> = ({
           invisible: value,
         });
       },
-      required: true,
     },
   ];
 
