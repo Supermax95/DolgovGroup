@@ -337,7 +337,7 @@ const Products: FC = () => {
                       </p>
                     )}
                     {product.isNew && (
-                      <p className="rounded-full bg-red-500 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3 mt-2">
+                      <p className="rounded-full bg-rose-500 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3 mt-2">
                         Новый
                       </p>
                     )}
@@ -347,7 +347,8 @@ const Products: FC = () => {
 
               <div className="flex-auto px-6 py-5">
                 <span className="mb-2 flex items-center text-sm font-semibold text-slate-500">
-                  {/* //! Было бы хорошо добавить копирование артикула по клику на иконку*/}
+                  {/* <span className="mb-2 flex items-center justify-end text-sm font-semibold text-slate-500"> */}
+
                   <ClipboardDocumentCheckIcon
                     className="mr-1 h-5 w-5 cursor-pointer hover:text-amber-600"
                     onClick={() => handleCopyToClipboard(product.article)}
@@ -357,9 +358,17 @@ const Products: FC = () => {
                   <span className="text-slate-700 font-medium">
                     {product.article || 'нет'}
                   </span>
+                  {/* <ClipboardDocumentCheckIcon
+                    className="ml-1 h-5 w-5 cursor-pointer hover:text-amber-600"
+                    onClick={() => handleCopyToClipboard(product.article)}
+                  /> */}
                   {/* </p> */}
                 </span>
-                <h3 className="mt-4 mb-3 text-sm text-slate-700 font-semibold xl:text-lg lg:text-lg">
+
+                <h3
+                  // className="truncate hover:text-clip mt-4 mb-3 text-xs text-slate-700 text-center font-semibold xl:text-sm lg:text-sm "
+                  className="mt-4 mb-3 text-xs text-slate-700 text-center font-semibold xl:text-sm lg:text-sm "
+                >
                   {product.productName || 'Нет названия'}
                 </h3>
 
@@ -404,38 +413,47 @@ const Products: FC = () => {
                   </p>
                 )}
 
-                {/* //! надо исправить период акции */}
                 {product.promoStartDate && product.promoEndDate ? (
-                  <div className="mb-2">
+                  <div className="mb-2 mt-4 text-center">
                     {isToday(parseISO(product.promoEndDate)) ? (
-                      <span className="text-red-500 text-sm font-medium">
-                        Период акции: Акция истекает сегодня
+                      <span className="text-rose-600 text-sm font-medium">
+                        Акция истекает сегодня
                       </span>
                     ) : isPast(parseISO(product.promoEndDate)) ? (
-                      <span className="text-red-500 text-sm font-medium">
+                      <span className="text-amber-600 text-sm font-medium">
                         Акция завершена
                       </span>
                     ) : (
-                      `Период акции: с ${reverseDate(
-                        product.promoStartDate
-                      )} по ${reverseDate(product.promoEndDate)}`
+                      <p className="mb-2 text-slate-600 text-sm font-normal text-center">
+                        Период акции:
+                        <p className="text-center">
+                          с{' '}
+                          <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
+                            {reverseDate(product.promoStartDate)}
+                          </span>{' '}
+                          по{' '}
+                          <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
+                            {reverseDate(product.promoEndDate)}
+                          </span>
+                        </p>
+                      </p>
                     )}
                   </div>
                 ) : (
-                  <div className="mb-2 text-lime-600 text-sm font-medium">
+                  <div className="mb-2 mt-4 text-lime-600 text-sm font-medium text-center">
                     Не участвует в акции
                   </div>
                 )}
 
                 {/* //! даже если описания нет, инпут остаётся, тернарка не работает, т.к. теги почему-то хранятся в бд */}
                 {product.description ? (
-                  <div className="mb-2 w-full">
-                    <span className="text-slate-600 text-sm font-normal">
+                  <div className="mb-2 mt-4 w-full">
+                    <p className="text-slate-600 text-sm font-normal text-center">
                       Описание:
-                    </span>
+                    </p>
                     <div
                       id="description"
-                      className="block p-2.5 h-full w-full text-sm text-slate-700 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 overflow-auto resize-y"
+                      className="block p-2.5 h-full w-full text-justify text-sm text-slate-700 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 overflow-auto resize-y"
                       style={{ whiteSpace: 'pre-wrap', maxHeight: '100px' }}
                       dangerouslySetInnerHTML={{
                         __html: product.description,
@@ -443,7 +461,7 @@ const Products: FC = () => {
                     />
                   </div>
                 ) : (
-                  <div className="mb-2 text-slate-600 text-sm font-medium">
+                  <div className="mb-2 mt-4 text-slate-600 text-sm font-medium text-center">
                     Описание отсутствует
                   </div>
                 )}
@@ -457,151 +475,13 @@ const Products: FC = () => {
               </div>
             </article>
           ))}
-
-          {/* карточки с товаром старые */}
-          {displayedProducts.map((product) => (
-            <article
-              key={product.id}
-              className="relative flex flex-col overflow-hidden rounded-lg border bg-white "
-            >
-              <div className="aspect-square relative overflow-hidden ">
-                <img
-                  className="h-full w-full object-cover rounded-t-lg transition-all duration-300 group-hover:scale-125 flex-shrink-0"
-                  src={`${VITE_URL}${product.photo}`}
-                  alt={product.productName}
-                />
-
-                {(product.isDiscounted || product.isNew) && (
-                  <div className="absolute top-0 right-0 m-2">
-                    {product.isDiscounted && (
-                      <p className="rounded-full bg-emerald-500 p-1 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3">
-                        Скидка
-                      </p>
-                    )}
-                    {product.isNew && (
-                      <p className="rounded-full bg-red-500 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3 mt-2">
-                        Новый
-                      </p>
-                    )}
-                  </div>
-                )}
-              </div>
-
-              {/* //! h-3/6 h-full влияют на отображение карточки (именно картинки) */}
-              <div className="my-4 mx-auto flex h-3/6 w-10/12 flex-col items-start">
-                {/* //! выделить имя как-то */}
-                <p className="mb-2 text-lg font-medium text-slate-700">
-                  {product.productName || 'Нет названия'}
-                </p>
-
-                <p className="mb-2 text-slate-600 text-sm font-normal">
-                  Артикул:{' '}
-                  <span className="text-slate-600 font-medium">
-                    {product.article || 'нет'}
-                  </span>
-                </p>
-
-                <div className="mb-2">
-                  {product.isDiscounted && (
-                    <p className="mb-2 text-slate-600 text-sm font-normal">
-                      Оригинальная стоимость:{' '}
-                      <del className="text-slate-600 font-medium">
-                        {product.originalPrice} ₽
-                      </del>
-                    </p>
-                  )}
-
-                  {product.isDiscounted ? (
-                    <p className="mb-2 text-slate-600 text-sm font-normal">
-                      Цена со скидкой для клиента:{' '}
-                      <span className="text-rose-600 font-medium">
-                        {product.customerPrice} ₽
-                      </span>
-                    </p>
-                  ) : (
-                    <p className="mb-2 text-slate-600 text-sm font-normal">
-                      Оригинальная стоимость:{' '}
-                      <span className="text-lime-600 font-medium">
-                        {product.originalPrice} ₽
-                      </span>
-                    </p>
-                  )}
-
-                  {product.employeePrice ? (
-                    <p className="mb-2 text-slate-600 text-sm font-normal">
-                      Цена для сотрудников:{' '}
-                      <span className="text-amber-600 font-medium">
-                        {product.employeePrice} ₽
-                      </span>
-                    </p>
-                  ) : (
-                    <p className="mb-2 text-slate-600 text-sm font-normal">
-                      Цена для сотрудников:{' '}
-                      <span className="text-amber-600 font-medium">
-                        не указана
-                      </span>
-                    </p>
-                  )}
-
-                  {product.promoStartDate && product.promoEndDate ? (
-                    <div className="mb-2 text-slate-600 text-sm font-normal">
-                      Период акции:{' '}
-                      {isToday(parseISO(product.promoEndDate)) ? (
-                        <span className="text-red-500 font-medium">
-                          Акция истекает сегодня
-                        </span>
-                      ) : isPast(parseISO(product.promoEndDate)) ? (
-                        <span className="text-red-500 font-medium">
-                          Акция завершена
-                        </span>
-                      ) : (
-                        ` с ${reverseDate(
-                          product.promoStartDate
-                        )} по ${reverseDate(product.promoEndDate)}`
-                      )}
-                    </div>
-                  ) : (
-                    <div className="mb-2 text-slate-600 text-sm font-normal">
-                      Не участвует в акции
-                    </div>
-                  )}
-                </div>
-
-                <div className="mb-2 text-slate-600 text-sm font-normal w-full">
-                  Описание:
-                  {product.description ? (
-                    <div
-                      id="Description"
-                      className="block p-2.5 h-full w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 overflow-auto resize-y"
-                      style={{ whiteSpace: 'pre-wrap', maxHeight: '100px' }}
-                      dangerouslySetInnerHTML={{
-                        __html: product.description,
-                      }}
-                    ></div>
-                  ) : (
-                    <span className="text-gray-500">нет</span>
-                  )}
-                </div>
-              </div>
-              <button
-                className="group mx-auto mb-2 flex h-10 w-10/12 items-stretch overflow-hidden rounded-md text-gray-600"
-                onClick={() => openEditModal(product)}
-              >
-                <div className="flex w-full items-center justify-center bg-gray-100 text-xs uppercase transition group-hover:bg-emerald-600 group-hover:text-white rounded-b-lg">
-                  Редактировать
-                </div>
-              </button>
-            </article>
-          ))}
         </div>
 
-        {/* <div className="mt-4 flex justify-center"> */}
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={setCurrentPage}
         />
-        {/* </div> */}
 
         {isModalOpen && (selectedProduct || isAddingMode) && (
           <ProductsModal

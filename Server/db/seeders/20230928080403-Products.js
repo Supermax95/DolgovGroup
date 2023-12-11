@@ -4,7 +4,7 @@ module.exports = {
     await queryInterface.bulkInsert('Products', [
       {
         article: '123456',
-        productName: 'Молоко',
+        productName: 'Молоко питьевое пастеризованное 2.5% Молочный Знак, 900г',
         promoStartDate: '2023-01-01',
         promoEndDate: '2023-01-15',
         originalPrice: 100,
@@ -12,7 +12,8 @@ module.exports = {
         employeePrice: 50,
         isNew: true,
         isDiscounted: false,
-        description: 'Вкууусное молоко',
+        description: '',
+        photo: '/uploads/product/Молоко питьевое пастеризованное.webp',
         invisible: true,
         subcategoryId: 1,
         createdAt: new Date(),
@@ -20,7 +21,8 @@ module.exports = {
       },
       {
         article: '123654',
-        productName: 'Творожки',
+        productName:
+          'Продукт творожный Даниссимо с хрустящими шоколадными шариками 7.2%, 130г',
         promoStartDate: '2023-01-01',
         promoEndDate: '2023-01-15',
         originalPrice: 80,
@@ -28,7 +30,9 @@ module.exports = {
         employeePrice: 50,
         isNew: true,
         isDiscounted: false,
-        description: 'Легкие Творожки',
+        description:
+          'Удивительному нужно время. Поэтому мы готовим Даниссимо творожный 20 часов. Нежная текстура сливочного творожка и хрустящие шарики, покрытые изысканным шоколадом, подарят момент истинного удовольствия от каждой ложечки.',
+        photo: '/uploads/product/Продукт творожный Даниссимо.webp',
         invisible: true,
         subcategoryId: 2,
         createdAt: new Date(),
@@ -36,7 +40,7 @@ module.exports = {
       },
       {
         article: '654123',
-        productName: 'Йогурты',
+        productName: 'Йогурт Teos Греческий 2%, 140г',
         promoStartDate: '2023-01-01',
         promoEndDate: '2023-01-15',
         originalPrice: 45,
@@ -44,7 +48,9 @@ module.exports = {
         employeePrice: 25,
         isNew: true,
         isDiscounted: true,
-        description: 'Отличные Йогурты',
+        description:
+          'Греческий йогурт производится традиционным способом из натуральных компонентов без использования стабилизаторов, искусственных красителей и ароматизаторов и сухого молока. Начните день со здорового завтрака и зарядитесь пользой на весь день!',
+        photo: '/uploads/product/Йогурт Teos Греческий.webp',
         invisible: true,
         subcategoryId: 3,
         createdAt: new Date(),
@@ -52,7 +58,8 @@ module.exports = {
       },
       {
         article: '789456',
-        productName: 'Колбаса',
+        productName:
+          'Колбаса сырокопчёная Ремит Trio mio в нарезке ассорти, 100г',
         promoStartDate: '2023-02-01',
         promoEndDate: '2023-02-15',
         originalPrice: 200,
@@ -61,6 +68,7 @@ module.exports = {
         isNew: false,
         isDiscounted: false,
         description: 'Вкусная колбаса',
+        photo: '/uploads/product/Колбаса сырокопчёная Ремит Trio mio.webp',
         invisible: true,
         subcategoryId: 4,
         createdAt: new Date(),
