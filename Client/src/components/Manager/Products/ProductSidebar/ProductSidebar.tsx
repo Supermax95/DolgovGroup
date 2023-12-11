@@ -351,6 +351,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     );
     //* сбрасывает подкатегории и позволяет переключаться между Категориями
     onSubcategorySelect(null);
+
     // Добавляем вызов onCategorySelect, чтобы передать выбранную категорию наружу
     onCategorySelect(currentCategory || null);
   };
@@ -486,7 +487,10 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                       <div onClick={(e) => toggleMenuCategory(e, item.id)}>
                         <Cog8ToothIcon
                           onClick={() =>
-                            console.log('=================>ПИЗДА', menuPosition)
+                            console.log(
+                              '=================>фывапролд',
+                              menuPosition
+                            )
                           }
                           className="cursor-pointer w-5 h-5 text-slate-600"
                         />

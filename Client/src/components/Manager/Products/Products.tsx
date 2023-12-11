@@ -13,6 +13,11 @@ import getSubcategory from '../../../Redux/thunks/SubCategory/getSubcategory.api
 import ProductSidebar from './ProductSidebar/ProductSidebar';
 import { isToday, parseISO, isPast } from 'date-fns';
 import { unwrapResult } from '@reduxjs/toolkit';
+import {
+  CheckIcon,
+  ClipboardDocumentCheckIcon,
+} from '@heroicons/react/24/outline';
+import Button from '../../../ui/Button';
 
 export interface IProduct {
   id: number;
@@ -72,6 +77,8 @@ const Products: FC = () => {
   >(null);
   const [axiosError, setAxiosError] = useState<string | null>(null);
   const [searchText, setSearchText] = useState('');
+
+  const [showNotification, setShowNotification] = useState(false);
 
   useEffect(() => {
     dispatch(getProducts());
@@ -253,8 +260,30 @@ const Products: FC = () => {
 
   const reverseDate = (dateString: string): string => {
     const [year, month, day] = dateString.split('-');
-    return `${day}-${month}-${year}`;
+    return `${day}.${month}.${year}`;
   };
+
+  const handleCopyToClipboard = (text: string) => {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        console.log('Текст скопирован в буфер обмена:', text);
+        setShowNotification(true);
+      })
+      .catch((error) => {
+        console.error('Не удалось скопировать текст:', error);
+      });
+  };
+
+  useEffect(() => {
+    if (showNotification) {
+      const notificationTimeout = setTimeout(() => {
+        setShowNotification(false);
+      }, 3000);
+
+      return () => clearTimeout(notificationTimeout);
+    }
+  }, [showNotification]);
 
   return (
     <Wrapper>
@@ -263,7 +292,21 @@ const Products: FC = () => {
         onCategorySelect={setCurrentCategory}
         onSubcategorySelect={setCurrentSubcategory}
       />
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+
+      <div className="p-4">
+        {showNotification && (
+          <div className="fixed top-24 left-1/2 transform -translate-x-1/2 bg-opacity-75 animate-pulse h-10 w-56 z-10 bg-slate-600 p-4 rounded-md">
+            <span
+              className="text-slate-100 font-medium flex items-center"
+              style={{ marginTop: '-0.5rem' }}
+            >
+              <CheckIcon className="mr-1 h-5 w-5" />
+              Артикул скопирован
+            </span>
+          </div>
+        )}
+
+        {/* //!поиск */}
         <div className="col-span-full mb-4">
           <div className="flex items-center justify-between">
             <Search onFilter={setSearchText} />
@@ -275,136 +318,187 @@ const Products: FC = () => {
             </button>
           </div>
         </div>
-        {displayedProducts.map((product) => (
-          <article
-            key={product.id}
-            className="relative flex flex-col overflow-hidden rounded-lg border bg-white dark:bg-neutral-700 h-full"
-          >
-            <div className="aspect-square relative overflow-hidden">
-              <img
-                className="h-full w-full object-cover rounded-t-lg transition-all duration-300 group-hover:scale-125 flex-shrink-0"
-                src={`${VITE_URL}${product.photo}`}
-                alt={product.productName}
-              />
 
-              {(product.isDiscounted || product.isNew) && (
-                <div className="absolute top-0 right-0 m-2">
-                  {product.isDiscounted && (
-                    <p className="rounded-full bg-emerald-500 p-1 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3">
-                      Скидка
-                    </p>
-                  )}
-                  {product.isNew && (
-                    <p className="rounded-full bg-red-500 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3 mt-2">
-                      Новый
-                    </p>
-                  )}
-                </div>
-              )}
-            </div>
+        {/** новая карточка */}
+        <div className="mx-auto grid max-w-screen-lg justify-center px-4 sm:grid-cols-2 sm:gap-4 sm:px-8 md:grid-cols-3">
+          {displayedProducts.map((product) => (
+            <article className="mx-auto my-4 flex w-full flex-col overflow-hidden rounded-2xl border border-gray-300 bg-white text-gray-900 transition hover:translate-y-2 hover:shadow-lg">
+              <div className="relative">
+                <img
+                  className="h-56 w-full object-cover"
+                  src={`${VITE_URL}${product.photo}`}
+                  alt={product.productName}
+                />
+                {(product.isDiscounted || product.isNew) && (
+                  <div className="absolute top-0 right-0 m-2">
+                    {product.isDiscounted && (
+                      <p className="rounded-full bg-emerald-500 p-1 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3">
+                        Скидка
+                      </p>
+                    )}
+                    {product.isNew && (
+                      <p className="rounded-full bg-rose-500 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3 mt-2">
+                        Новый
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
 
-            <div className="my-4 mx-auto flex w-10/12 flex-col items-start justify-between h-full">
-              <div className="mb-2">
+              <div className="flex-auto px-6 py-5">
+                <span className="mb-2 flex items-center text-sm font-semibold text-slate-500">
+                  {/* <span className="mb-2 flex items-center justify-end text-sm font-semibold text-slate-500"> */}
+
+                  <ClipboardDocumentCheckIcon
+                    className="mr-1 h-5 w-5 cursor-pointer hover:text-amber-600"
+                    onClick={() => handleCopyToClipboard(product.article)}
+                  />
+                  {/* <p className="mb-2 text-slate-600 text-sm font-normal">
+                    Артикул:{' '} */}
+                  <span className="text-slate-700 font-medium">
+                    {product.article || 'нет'}
+                  </span>
+                  {/* <ClipboardDocumentCheckIcon
+                    className="ml-1 h-5 w-5 cursor-pointer hover:text-amber-600"
+                    onClick={() => handleCopyToClipboard(product.article)}
+                  /> */}
+                  {/* </p> */}
+                </span>
+
+                <h3
+                  // className="truncate hover:text-clip mt-4 mb-3 text-xs text-slate-700 text-center font-semibold xl:text-sm lg:text-sm "
+                  className="mt-4 mb-3 text-xs text-slate-700 text-center font-semibold xl:text-sm lg:text-sm "
+                >
+                  {product.productName || 'Нет названия'}
+                </h3>
+
                 {product.isDiscounted && (
-                  <div className="flex text-xs text-gray-400">
-                    <span className="mr-3">Начальная цена</span>
-                    <del>₽{product.originalPrice}</del>
-                  </div>
-                )}
-                <div className="flex">
-                  <p className="mr-3 text-xs font-semibold text-gray-700">
-                    {product.isDiscounted
-                      ? `Цена для покупателя ₽${product.customerPrice}`
-                      : `Цена ₽${product.originalPrice}`}
+                  <p className="mb-2 text-slate-600 text-sm font-normal">
+                    Оригинальная стоимость:{' '}
+                    <del className="text-slate-600 font-medium">
+                      {product.originalPrice} ₽
+                    </del>
                   </p>
-                </div>
-              </div>
-              <div>
-                {product.employeePrice ? (
-                  <div className="mb-2 text-xs text-green-500">
-                    Цена для сотрудника: ₽{product.employeePrice}
-                  </div>
-                ) : (
-                  <div className="mb-2 text-xs text-red-500">
-                    Цены для сотрудника нет
-                  </div>
                 )}
-              </div>
-              <h3 className="mb-2 text-sm text-gray-400">
-                {product.productName || 'Нет названия'}
-              </h3>
 
-              {product.promoStartDate && product.promoEndDate ? (
-                <div className="mb-2 text-xs text-gray-500">
-                  Промо:
-                  {isToday(parseISO(product.promoEndDate)) ? (
-                    <span className="text-red-500">
-                      {' '}
-                      Акция истекает сегодня
+                {product.isDiscounted ? (
+                  <p className="mb-2 text-slate-600 text-sm font-normal">
+                    Цена со скидкой для клиента:{' '}
+                    <span className="text-rose-600 font-medium">
+                      {product.customerPrice} ₽
                     </span>
-                  ) : isPast(parseISO(product.promoEndDate)) ? (
-                    <span className="text-red-500"> Акция закончилась</span>
-                  ) : (
-                    ` с ${reverseDate(product.promoStartDate)} по ${reverseDate(
-                      product.promoEndDate
-                    )}`
-                  )}
-                </div>
-              ) : (
-                <div className="mb-2 text-xs text-gray-500">Промо нет</div>
-              )}
-              <div className="mb-2 text-xs text-gray-500">
-                Описание:
-                {product.description ? (
-                  <div
-                    id="Description"
-                    className="block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 overflow-auto resize-y"
-                    style={{ whiteSpace: 'pre-wrap', maxHeight: '100px' }}
-                    dangerouslySetInnerHTML={{ __html: product.description }}
-                  ></div>
+                  </p>
                 ) : (
-                  <span className="text-gray-500">нет</span>
+                  <p className="mb-2 text-slate-600 text-sm font-normal">
+                    Оригинальная стоимость:{' '}
+                    <span className="text-lime-600 font-medium">
+                      {product.originalPrice} ₽
+                    </span>
+                  </p>
+                )}
+
+                {product.employeePrice ? (
+                  <p className="mb-2 text-slate-600 text-sm font-normal">
+                    Цена для сотрудников:{' '}
+                    <span className="text-amber-600 font-medium">
+                      {product.employeePrice} ₽
+                    </span>
+                  </p>
+                ) : (
+                  <p className="mb-2 text-slate-600 text-sm font-normal">
+                    Цена для сотрудников:{' '}
+                    <span className="text-amber-600 font-medium">
+                      не указана
+                    </span>
+                  </p>
+                )}
+
+                {product.promoStartDate && product.promoEndDate ? (
+                  <div className="mb-2 mt-4 text-center">
+                    {isToday(parseISO(product.promoEndDate)) ? (
+                      <span className="text-rose-600 text-sm font-medium">
+                        Акция истекает сегодня
+                      </span>
+                    ) : isPast(parseISO(product.promoEndDate)) ? (
+                      <span className="text-amber-600 text-sm font-medium">
+                        Акция завершена
+                      </span>
+                    ) : (
+                      <p className="mb-2 text-slate-600 text-sm font-normal text-center">
+                        Период акции:
+                        <p className="text-center">
+                          с{' '}
+                          <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
+                            {reverseDate(product.promoStartDate)}
+                          </span>{' '}
+                          по{' '}
+                          <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
+                            {reverseDate(product.promoEndDate)}
+                          </span>
+                        </p>
+                      </p>
+                    )}
+                  </div>
+                ) : (
+                  <div className="mb-2 mt-4 text-lime-600 text-sm font-medium text-center">
+                    Не участвует в акции
+                  </div>
+                )}
+
+                {/* //! даже если описания нет, инпут остаётся, тернарка не работает, т.к. теги почему-то хранятся в бд */}
+                {product.description ? (
+                  <div className="mb-2 mt-4 w-full">
+                    <p className="text-slate-600 text-sm font-normal text-center">
+                      Описание:
+                    </p>
+                    <div
+                      id="description"
+                      className="block p-2.5 h-full w-full text-justify text-sm text-slate-700 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 overflow-auto resize-y"
+                      style={{ whiteSpace: 'pre-wrap', maxHeight: '100px' }}
+                      dangerouslySetInnerHTML={{
+                        __html: product.description,
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <div className="mb-2 mt-4 text-slate-600 text-sm font-medium text-center">
+                    Описание отсутствует
+                  </div>
                 )}
               </div>
-
-              <h3 className="mb-2 text-sm text-black-400">
-                {`Артикул: ${product.article || 'нет '}`}
-              </h3>
-            </div>
-
-            <button
-              className="group mx-auto mb-2 flex h-10 w-10/12 items-stretch overflow-hidden rounded-md text-gray-600"
-              onClick={() => openEditModal(product)}
-            >
-              <div className="flex w-full items-center justify-center bg-gray-100 text-xs uppercase transition group-hover:bg-emerald-600 group-hover:text-white rounded-b-lg">
-                Редактировать
+              <div className="flex items-end justify-center py-2">
+                <Button
+                  type="button"
+                  title="Редактировать"
+                  onClick={() => openEditModal(product)}
+                />
               </div>
-            </button>
-          </article>
-        ))}
-      </div>
-      <div className="mt-4 flex justify-center">
+            </article>
+          ))}
+        </div>
+
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={setCurrentPage}
         />
+
+        {isModalOpen && (selectedProduct || isAddingMode) && (
+          <ProductsModal
+            isOpen={isModalOpen}
+            product={selectedProduct}
+            onSaveEdit={handleSaveEdit}
+            onSaveAdd={handleSaveAdd}
+            onCloseAddModal={closeAddModal}
+            onCloseEditModal={closeEditModal}
+            isAddingMode={isAddingMode}
+            editedProduct={editedProduct}
+            setEditedProduct={setEditedProduct}
+            axiosError={axiosError}
+            resetAxiosError={resetAxiosError}
+          />
+        )}
       </div>
-      {isModalOpen && (selectedProduct || isAddingMode) && (
-        <ProductsModal
-          isOpen={isModalOpen}
-          product={selectedProduct}
-          onSaveEdit={handleSaveEdit}
-          onSaveAdd={handleSaveAdd}
-          onCloseAddModal={closeAddModal}
-          onCloseEditModal={closeEditModal}
-          isAddingMode={isAddingMode}
-          editedProduct={editedProduct}
-          setEditedProduct={setEditedProduct}
-          axiosError={axiosError}
-          resetAxiosError={resetAxiosError}
-        />
-      )}
     </Wrapper>
   );
 };

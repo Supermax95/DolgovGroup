@@ -1,170 +1,199 @@
- ///////////////////////////////////////////////////////////////////////////////////////////////////
+  
+  ЧАТ Скрытие подкатегорий при повторном выборе
+  
+  
+  const handleCategoryClick = (selectedCategoryId: number) => {
+    const isSameCategory = selectedCategoryDataId === selectedCategoryId;
 
-  //! я уже хуй знает, что это, but work
-  const [isMenuOpen, setMenuOpen] = useState<boolean>(false); //* меню для редактирования категории
-  const [isMenuOpenSub, setMenuOpenSub] = useState<boolean>(false); //* меню для редактирования подкатегории
+    if (isSameCategory) {
+      // Если кликнули на ту же самую категорию, скрываем подкатегории
+      setSubcategoryStates({
+        ...subcategoryStates,
+        [selectedCategoryId]: !subcategoryStates[selectedCategoryId],
+      });
+    } else {
+      const currentCategory = categories.find(
+        (category) => category.id === selectedCategoryId
+      );
+      onSubcategorySelect(null);
+      onCategorySelect(currentCategory || null);
 
-  //* рендерит  выпадающий список для категорий
-  const [selectedCategoryData, setSelectedCategoryData] =
-    useState<ICategory | null>(null);
+      // При выборе новой категории отображаем подкатегории
+      setSubcategoryStates({
+        ...subcategoryStates,
+        [selectedCategoryDataId]: false, // Скрываем подкатегории текущей категории
+        [selectedCategoryId]: true, // Отображаем подкатегории новой категории
+      });
 
-  const [selectedSubcategoryData, setSelectedSubcategoryData] = useState<{
-    id: number | null;
-    subcategory: ISubcategory | null;
-  }>({ id: null, subcategory: null });
-
-  const [subcategoryStates, setSubcategoryStates] = useState<{
-    [key: number]: boolean;
-  }>({});
-
-  const menuRef = useRef<HTMLDivElement | null>(null);
-
-
-  //* дополнительное меню для каждой ПОДКАТЕГОРИИ
-  //!  удаётся закрыть по шестерёнке при повторном нажатии, но не по любой области
-
-  const toggleMenuSub = (id: number): void => {
-    const subcategory = allSubcategories.find((sub) => sub.id === id);
-    if (subcategory) {
-      setSelectedSubcategoryData((prev) => ({
-        id: prev.id === id ? null : id,
-        subcategory: prev.id === id ? null : subcategory,
-      }));
-
-      if (isMenuOpen) {
-        setMenuOpen(false); // Закрываем всплывающее окно главной категории
-        setSelectedCategoryData(null); // Сбрасываем выбранную главную категорию
-      }
-
-      setMenuOpenSub((prev) => !prev);
+      setSelectedCategoryDataId(selectedCategoryId);
+      setSelectedSubcategoryDataId(0);
     }
   };
 
-  useEffect(() => {
-    // Устанавливаем значение только если состояние действительно изменилось
-    if (
-      selectedSubcategoryData.id !== null ||
-      selectedSubcategoryData.subcategory !== null
-    ) {
-      setMenuOpenSub(true);
-    }
-  }, [selectedSubcategoryData]);
+  const handleSubcategoryClick = (selectedSubcategory: number) => {
+    const isSameSubcategory = selectedSubcategoryDataId === selectedSubcategory;
 
+    if (isSameSubcategory) {
+      // Если кликнули на ту же самую подкатегорию, скрываем подкатегории
+      setSubcategoryStates({
+        ...subcategoryStates,
+        [selectedSubcategory]: !subcategoryStates[selectedSubcategory],
+      });
+    } else {
+      const currentSubcategory = allSubcategories.find(
+        (sub) => sub.id === selectedSubcategory
+      );
+      onCategorySelect(null);
+      onSubcategorySelect(currentSubcategory || null);
 
+      // При выборе новой подкатегории отображаем подкатегории
+      setSubcategoryStates({
+        ...subcategoryStates,
+        [selectedCategoryDataId]: false, // Скрываем подкатегории текущей категории
+        [selectedSubcategory]: true, // Отображаем подкатегории новой подкатегории
+      });
 
-
-  ///////////////////
-  const { id: selectedSubcategoryId, subcategory: selectedSubcategory } =
-    selectedSubcategoryData;
-  ////////////////////
-
-  //////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-  //////// здесь только подкатегория 
-
-    // //* дополнительное меню для каждой ПОДКАТЕГОРИИ
-  // //!  удаётся закрыть по шестерёнке при повторном нажатии, но не по любой области
-  // const toggleMenuSub = (id: number): void => {
-  //   const subcategory = allSubcategories.find((sub) => sub.id === id);
-  //   if (subcategory) {
-  //     setSelectedSubcategoryData((prev) => ({
-  //       id: prev.id === id ? null : id,
-  //       subcategory: prev.id === id ? null : subcategory,
-  //     }));
-
-  //     if (isMenuOpen) {
-  //       setMenuOpen(false); // Закрываем всплывающее окно главной категории
-  //       setSelectedCategoryData(null); // Сбрасываем выбранную главную категорию
-  //     }
-
-  //     setMenuOpenSub((prev) => !prev);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   // Устанавливаем значение только если состояние действительно изменилось
-  //   if (
-  //     selectedSubcategoryData.id !== null ||
-  //     selectedSubcategoryData.subcategory !== null
-  //   ) {
-  //     setMenuOpenSub(true);
-  //   }
-  // }, [selectedSubcategoryData]);
-
-    // const menuClassSub = isMenuOpenSub ? 'block' : 'hidden';
-
-  // const { id: selectedSubcategoryId, subcategory: selectedSubcategory } =
-  // selectedSubcategoryData;
-
-
-
-  const handleClickOutside = (e: MouseEvent): void => {
-    if (
-      menuRef.current &&
-      !menuRef.current.contains(e.target as Node) &&
-      selectedCategoryData !== null
-    ) {
-      // setMenuOpen(false);
-      // setSelectedCategoryData(null);
-      // setEditingCategory(null);
-      setMenuOpen(false);
-      setSelectedCategoryData(null);
-      setSelectedSubcategoryData([]);
-      setEditingCategory(null);
-      setEditingSubcategory(null);
+      setSelectedCategoryDataId(0);
+      setSelectedSubcategoryDataId(selectedSubcategory);
     }
   };
 
-из продукт модал
-        {/* {currentStep === 1 && (
-            <div className="w-72 flex items-center justify-between my-6">
-              <div className="pr-6">
-                <div className="relative">
-                  <input
-                    id="promoStartDate"
-                    type="date"
-                    value={editedProduct.promoStartDate}
-                    onChange={(e) =>
-                      setEditedProduct({
-                        ...editedProduct,
-                        promoStartDate: e.target.value,
-                      })
-                    }
-                    className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
-                  />
-                  <label
-                    htmlFor="promoStartDate"
-                    className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm"
-                  >
-                    Начало акции
-                  </label>
-                </div>
+
+  //////////////////////////////////////!!!!!!!!!!!!!
+
+
+    {/* карточки с товаром старые */}
+          {displayedProducts.map((product) => (
+            <article
+              key={product.id}
+              className="relative flex flex-col overflow-hidden rounded-lg border bg-white "
+            >
+              <div className="aspect-square relative overflow-hidden ">
+                <img
+                  className="h-full w-full object-cover rounded-t-lg transition-all duration-300 group-hover:scale-125 flex-shrink-0"
+                  src={`${VITE_URL}${product.photo}`}
+                  alt={product.productName}
+                />
+
+                {(product.isDiscounted || product.isNew) && (
+                  <div className="absolute top-0 right-0 m-2">
+                    {product.isDiscounted && (
+                      <p className="rounded-full bg-emerald-500 p-1 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3">
+                        Скидка
+                      </p>
+                    )}
+                    {product.isNew && (
+                      <p className="rounded-full bg-rose-500 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3 mt-2">
+                        Новый
+                      </p>
+                    )}
+                  </div>
+                )}
               </div>
 
-              <div className="pr-6">
-                <div className="relative">
-                  <input
-                    id="promoEndDate"
-                    type="date"
-                    value={editedProduct.promoEndDate}
-                    onChange={(e) =>
-                      setEditedProduct({
-                        ...editedProduct,
-                        promoEndDate: e.target.value,
-                      })
-                    }
-                    className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
-                  />
-                  <label
-                    htmlFor="promoEndDate"
-                    className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm"
-                  >
-                    Конец акции
-                  </label>
+              {/* //! h-3/6 h-full влияют на отображение карточки (именно картинки) */}
+              <div className="my-4 mx-auto flex h-3/6 w-10/12 flex-col items-start">
+                {/* //! выделить имя как-то */}
+                <p className="mb-2 text-lg font-medium text-slate-700">
+                  {product.productName || 'Нет названия'}
+                </p>
+
+                <p className="mb-2 text-slate-600 text-sm font-normal">
+                  Артикул:{' '}
+                  <span className="text-slate-600 font-medium">
+                    {product.article || 'нет'}
+                  </span>
+                </p>
+
+                <div className="mb-2">
+                  {product.isDiscounted && (
+                    <p className="mb-2 text-slate-600 text-sm font-normal">
+                      Оригинальная стоимость:{' '}
+                      <del className="text-slate-600 font-medium">
+                        {product.originalPrice} ₽
+                      </del>
+                    </p>
+                  )}
+
+                  {product.isDiscounted ? (
+                    <p className="mb-2 text-slate-600 text-sm font-normal">
+                      Цена со скидкой для клиента:{' '}
+                      <span className="text-rose-600 font-medium">
+                        {product.customerPrice} ₽
+                      </span>
+                    </p>
+                  ) : (
+                    <p className="mb-2 text-slate-600 text-sm font-normal">
+                      Оригинальная стоимость:{' '}
+                      <span className="text-lime-600 font-medium">
+                        {product.originalPrice} ₽
+                      </span>
+                    </p>
+                  )}
+
+                  {product.employeePrice ? (
+                    <p className="mb-2 text-slate-600 text-sm font-normal">
+                      Цена для сотрудников:{' '}
+                      <span className="text-amber-600 font-medium">
+                        {product.employeePrice} ₽
+                      </span>
+                    </p>
+                  ) : (
+                    <p className="mb-2 text-slate-600 text-sm font-normal">
+                      Цена для сотрудников:{' '}
+                      <span className="text-amber-600 font-medium">
+                        не указана
+                      </span>
+                    </p>
+                  )}
+
+                  {product.promoStartDate && product.promoEndDate ? (
+                    <div className="mb-2 text-slate-600 text-sm font-normal">
+                      Период акции:{' '}
+                      {isToday(parseISO(product.promoEndDate)) ? (
+                        <span className="text-rose-500 font-medium">
+                          Акция истекает сегодня
+                        </span>
+                      ) : isPast(parseISO(product.promoEndDate)) ? (
+                        <span className="text-rose-500 font-medium">
+                          Акция завершена
+                        </span>
+                      ) : (
+                        ` с ${reverseDate(
+                          product.promoStartDate
+                        )} по ${reverseDate(product.promoEndDate)}`
+                      )}
+                    </div>
+                  ) : (
+                    <div className="mb-2 text-slate-600 text-sm font-normal">
+                      Не участвует в акции
+                    </div>
+                  )}
+                </div>
+
+                <div className="mb-2 text-slate-600 text-sm font-normal w-full">
+                  Описание:
+                  {product.description ? (
+                    <div
+                      id="Description"
+                      className="block p-2.5 h-full w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 overflow-auto resize-y"
+                      style={{ whiteSpace: 'pre-wrap', maxHeight: '100px' }}
+                      dangerouslySetInnerHTML={{
+                        __html: product.description,
+                      }}
+                    ></div>
+                  ) : (
+                    <span className="text-gray-500">нет</span>
+                  )}
                 </div>
               </div>
-            </div>
-          )} */}
+              <button
+                className="group mx-auto mb-2 flex h-10 w-10/12 items-stretch overflow-hidden rounded-md text-gray-600"
+                onClick={() => openEditModal(product)}
+              >
+                <div className="flex w-full items-center justify-center bg-gray-100 text-xs uppercase transition group-hover:bg-emerald-600 group-hover:text-white rounded-b-lg">
+                  Редактировать
+                </div>
+              </button>
+            </article>
+          ))}
