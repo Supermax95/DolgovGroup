@@ -13,7 +13,10 @@ import getSubcategory from '../../../Redux/thunks/SubCategory/getSubcategory.api
 import ProductSidebar from './ProductSidebar/ProductSidebar';
 import { isToday, parseISO, isPast } from 'date-fns';
 import { unwrapResult } from '@reduxjs/toolkit';
-import { ClipboardDocumentCheckIcon } from '@heroicons/react/24/outline';
+import {
+  CheckIcon,
+  ClipboardDocumentCheckIcon,
+} from '@heroicons/react/24/outline';
 import Button from '../../../ui/Button';
 
 export interface IProduct {
@@ -74,6 +77,8 @@ const Products: FC = () => {
   >(null);
   const [axiosError, setAxiosError] = useState<string | null>(null);
   const [searchText, setSearchText] = useState('');
+
+  const [showNotification, setShowNotification] = useState(false);
 
   useEffect(() => {
     dispatch(getProducts());
@@ -258,6 +263,28 @@ const Products: FC = () => {
     return `${day}.${month}.${year}`;
   };
 
+  const handleCopyToClipboard = (text: string) => {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        console.log('Текст скопирован в буфер обмена:', text);
+        setShowNotification(true);
+      })
+      .catch((error) => {
+        console.error('Не удалось скопировать текст:', error);
+      });
+  };
+
+  useEffect(() => {
+    if (showNotification) {
+      const notificationTimeout = setTimeout(() => {
+        setShowNotification(false);
+      }, 3000);
+
+      return () => clearTimeout(notificationTimeout);
+    }
+  }, [showNotification]);
+
   return (
     <Wrapper>
       <ProductSidebar
@@ -267,6 +294,18 @@ const Products: FC = () => {
       />
 
       <div className="p-4">
+        {showNotification && (
+          <div className="fixed top-24 left-1/2 transform -translate-x-1/2 bg-opacity-75 animate-pulse h-10 w-56 z-10 bg-slate-600 p-4 rounded-md">
+            <span
+              className="text-slate-100 font-medium flex items-center"
+              style={{ marginTop: '-0.5rem' }}
+            >
+              <CheckIcon className="mr-1 h-5 w-5" />
+              Артикул скопирован
+            </span>
+          </div>
+        )}
+
         {/* //!поиск */}
         <div className="col-span-full mb-4">
           <div className="flex items-center justify-between">
@@ -309,7 +348,10 @@ const Products: FC = () => {
               <div className="flex-auto px-6 py-5">
                 <span className="mb-2 flex items-center text-sm font-semibold text-slate-500">
                   {/* //! Было бы хорошо добавить копирование артикула по клику на иконку*/}
-                  <ClipboardDocumentCheckIcon className="mr-1 h-5 w-5" />
+                  <ClipboardDocumentCheckIcon
+                    className="mr-1 h-5 w-5 cursor-pointer hover:text-amber-600"
+                    onClick={() => handleCopyToClipboard(product.article)}
+                  />
                   {/* <p className="mb-2 text-slate-600 text-sm font-normal">
                     Артикул:{' '} */}
                   <span className="text-slate-700 font-medium">

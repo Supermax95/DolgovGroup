@@ -351,6 +351,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     );
     //* сбрасывает подкатегории и позволяет переключаться между Категориями
     onSubcategorySelect(null);
+
     // Добавляем вызов onCategorySelect, чтобы передать выбранную категорию наружу
     onCategorySelect(currentCategory || null);
   };
