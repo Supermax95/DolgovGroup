@@ -486,7 +486,10 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                       <div onClick={(e) => toggleMenuCategory(e, item.id)}>
                         <Cog8ToothIcon
                           onClick={() =>
-                            console.log('=================>ПИЗДА', menuPosition)
+                            console.log(
+                              '=================>фывапролд',
+                              menuPosition
+                            )
                           }
                           className="cursor-pointer w-5 h-5 text-slate-600"
                         />
