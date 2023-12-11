@@ -456,7 +456,7 @@ const Products: FC = () => {
                 )}
 
                 {/* //! даже если описания нет, инпут остаётся, тернарка не работает, т.к. теги почему-то хранятся в бд */}
-                {product.description ? (
+                {/* {product.description ? (
                   <div className="mb-2 mt-4 w-full">
                     <p className="text-slate-600 text-sm font-normal text-center">
                       Описание:
@@ -474,7 +474,7 @@ const Products: FC = () => {
                   <div className="mb-2 mt-4 text-slate-600 text-sm font-medium text-center">
                     Описание отсутствует
                   </div>
-                )}
+                )} */}
               </div>
               <div className="flex items-end justify-center py-2">
                 <Button

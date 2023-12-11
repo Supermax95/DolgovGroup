@@ -508,7 +508,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
                       isNew: e.target.checked,
                     })
                   }
-                  className="w-4 h-4 text-lime-600 bg-slate-100 border-slate-300 rounded focus:ring-lime-500"
+                  className="w-4 h-4 text-rose-600 bg-slate-100 border-slate-300 rounded focus:ring-lime-500"
                 />
               </div>
               <div className="flex space-x-2">
@@ -526,7 +526,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
                       isDiscounted: e.target.checked,
                     })
                   }
-                  className="w-4 h-4 text-rose-600 bg-slate-100 border-slate-300 rounded focus:ring-rose-500"
+                  className="w-4 h-4 text-lime-600 bg-slate-100 border-slate-300 rounded focus:ring-rose-500"
                 />
               </div>
               <div className="flex space-x-2">
