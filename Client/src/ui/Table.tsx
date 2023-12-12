@@ -112,6 +112,23 @@ const Table: FC<ITable> = ({
                               />
                             </span>
                           )
+                        ) : columnName === 'invisible' ? (
+                          item[columnName] ? (
+                            //  (
+                            <span className="flex justify-center">
+                              <XCircleIcon
+                                className="h-8 w-8 text-slate-400"
+                                aria-hidden="true"
+                              />
+                            </span>
+                          ) : (
+                            <span className="flex justify-center">
+                              <CheckCircleIcon
+                                className="h-8 w-8 text-lime-600"
+                                aria-hidden="true"
+                              />
+                            </span>
+                          )
                         ) : columnName === 'isAdmin' ? (
                           item[columnName] ? (
                             <span className="flex justify-center">
