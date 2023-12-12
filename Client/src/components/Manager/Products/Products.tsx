@@ -310,12 +310,20 @@ const Products: FC = () => {
         <div className="col-span-full mb-4">
           <div className="flex items-center justify-between">
             <Search onFilter={setSearchText} />
-            <button
-              className="ml-auto bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
-              onClick={openAddModal}
-            >
-              Добавить
-            </button>
+
+            <div className="flex items-end justify-center py-2">
+              <Button
+                type="button"
+                title="Добавить"
+                onClick={openAddModal}
+                styleCSSButton={
+                  'relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-slate-700 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 hover:text-white'
+                }
+                styleCSSSpan={
+                  'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
+                }
+              />
+            </div>
           </div>
         </div>
 
@@ -476,11 +484,15 @@ const Products: FC = () => {
                   </div>
                 )} */}
               </div>
-              <div className="flex items-end justify-center py-2">
+              <div className="flex items-end justify-center mb-4">
                 <Button
                   type="button"
                   title="Редактировать"
                   onClick={() => openEditModal(product)}
+                  styleCSSButton={`relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-normal text-slate-600 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 hover:text-white`}
+                  styleCSSSpan={
+                    'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
+                  }
                 />
               </div>
             </article>
