@@ -74,7 +74,7 @@ const Promotions: FC = () => {
           searchTerms.every((term) =>
             promotionFields.some((field) => field.toLowerCase().includes(term))
           ) ||
-          (isPromoEnded && searchText.toLowerCase().includes('закончилась'))
+          (isPromoEnded && searchText.toLowerCase().includes('завершена'))
         );
       });
     }
@@ -262,7 +262,7 @@ const Promotions: FC = () => {
                           ) : isPast(parseISO(promotion.dateEnd)) ? (
                             <span className="text-red-500">
                               {' '}
-                             Акция закончилась
+                             Акция завершена
                             </span>
                           ) : (
                             ` с ${reverseDate(
