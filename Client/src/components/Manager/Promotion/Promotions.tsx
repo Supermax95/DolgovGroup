@@ -74,7 +74,7 @@ const Promotions: FC = () => {
           searchTerms.every((term) =>
             promotionFields.some((field) => field.toLowerCase().includes(term))
           ) ||
-          (isPromoEnded && searchText.toLowerCase().includes('закончилась'))
+          (isPromoEnded && searchText.toLowerCase().includes('завершена'))
         );
       });
     }

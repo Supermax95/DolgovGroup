@@ -117,7 +117,7 @@ const Products: FC = () => {
           searchTerms.every((term) =>
             productFields.some((field) => field.toLowerCase().includes(term))
           ) ||
-          (isPromoEnded && searchText.toLowerCase().includes('закончилась'))
+          (isPromoEnded && searchText.toLowerCase().includes('завершена'))
         );
       });
     }
