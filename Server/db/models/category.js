@@ -8,7 +8,13 @@ module.exports = (sequelize, DataTypes) => {
   }
   Category.init(
     {
-      categoryName: DataTypes.STRING,
+      categoryName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        set(value) {
+          this.setDataValue('categoryName', value.trim());
+        },
+      },
     },
     {
       sequelize,

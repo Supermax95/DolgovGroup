@@ -1,6 +1,6 @@
-const { Model } = require('sequelize');
+const { Model, DataTypes } = require('sequelize');
 
-module.exports = (sequelize, DataTypes) => {
+module.exports = (sequelize) => {
   class Promotion extends Model {
     /**
      * Helper method for defining associations.
@@ -11,11 +11,23 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
+
   Promotion.init(
     {
-      title: DataTypes.STRING,
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        set(value) {
+          this.setDataValue('title', value.trim());
+        },
+      },
       description: DataTypes.TEXT,
-      photo: DataTypes.STRING,
+      photo: {
+        type: DataTypes.STRING,
+        set(value) {
+          this.setDataValue('photo', value.trim());
+        },
+      },
       dateStart: DataTypes.STRING,
       dateEnd: DataTypes.STRING,
       carousel: DataTypes.BOOLEAN,
@@ -24,7 +36,19 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: 'Promotion',
+      // Хук перед созданием и обновлением
+      hooks: {
+        beforeCreate: (promotion) => {
+          promotion.setDataValue('title', promotion.title.trim());
+          promotion.setDataValue('photo', promotion.photo.trim());
+        },
+        beforeUpdate: (promotion) => {
+          promotion.setDataValue('title', promotion.title.trim());
+          promotion.setDataValue('photo', promotion.photo.trim());
+        },
+      },
     }
   );
+
   return Promotion;
 };
