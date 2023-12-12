@@ -52,6 +52,9 @@ const Products: FC = () => {
   const products = useAppSelector<IProduct[]>(
     (state) => state.productSlice.data
   );
+  const [selectedVisibility, setSelectedVisibility] = useState<
+  'all' | 'visible' | 'invisible '
+>('all');
 
   //* для сайдбара
   const categories = useAppSelector<ICategory[]>(
@@ -99,6 +102,12 @@ const Products: FC = () => {
   const filterProducts = () => {
     let filtered = products;
 
+    if (selectedVisibility !== 'all') {
+      filtered = filtered.filter(
+        (product) =>
+        product.invisible === (selectedVisibility === 'invisible')
+      );
+    }
     if (searchText !== '') {
       filtered = filtered.filter((product) => {
         const productFields = [
@@ -310,7 +319,6 @@ const Products: FC = () => {
         <div className="col-span-full mb-4">
           <div className="flex items-center justify-between">
             <Search onFilter={setSearchText} />
-
             <div className="flex items-end justify-center py-2">
               <Button
                 type="button"
@@ -326,7 +334,35 @@ const Products: FC = () => {
             </div>
           </div>
         </div>
-
+        <div>
+          <label>
+            <input
+              type="radio"
+              value="all"
+              checked={selectedVisibility === 'all'}
+              onChange={() => setSelectedVisibility('all')}
+            />
+            Все товары
+          </label>
+          <label>
+            <input
+              type="radio"
+              value="visible"
+              checked={selectedVisibility === 'visible'}
+              onChange={() => setSelectedVisibility('visible')}
+            />
+            Видимые для клиентов
+          </label>
+          <label>
+            <input
+              type="radio"
+              value="invisible"
+              checked={selectedVisibility === 'invisible'}
+              onChange={() => setSelectedVisibility('invisible')}
+            />
+            Скрытые от клиентов
+          </label>
+        </div>
         {/** новая карточка */}
         <div className="mx-auto grid max-w-screen-lg justify-center px-4 sm:grid-cols-2 sm:gap-4 sm:px-8 md:grid-cols-3">
           {displayedProducts.map((product) => (

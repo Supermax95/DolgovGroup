@@ -38,7 +38,9 @@ const Location: FC = () => {
   const locations = useAppSelector<ILocation[]>(
     (state) => state.locationsSlice.data
   );
-
+  const [selectedVisibility, setSelectedVisibility] = useState<
+    'all' | 'visible' | 'invisible'
+  >('all');
   const [isModalOpen, setModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedLocation, setSelectedLocation] = useState<ILocation | null>(
@@ -82,8 +84,40 @@ const Location: FC = () => {
     ? locations.filter((location) => location.city === selectedCity)
     : locations;
 
+  // const filterLocations = () => {
+  //   let filtered = filteredLocations;
+
+  //   if (searchText !== '') {
+  //     filtered = filtered.filter((location) => {
+  //       const locationFields = [
+  //         String(location.city),
+  //         String(location.address),
+  //         String(location.latitude),
+  //         String(location.longitude),
+  //         String(location.hours),
+  //       ];
+
+  //       const searchTerms = searchText.toLowerCase().split(' ');
+
+  //       return searchTerms.every((term) =>
+  //         locationFields.some((field) => field.toLowerCase().includes(term))
+  //       );
+  //     });
+  //   }
+
+  //   return filtered;
+  // };
+
   const filterLocations = () => {
     let filtered = filteredLocations;
+
+    // Фильтрация по видимости
+    if (selectedVisibility !== 'all') {
+      filtered = filtered.filter(
+        (location) =>
+          location.invisible === (selectedVisibility === 'invisible')
+      );
+    }
 
     if (searchText !== '') {
       filtered = filtered.filter((location) => {
@@ -186,9 +220,39 @@ const Location: FC = () => {
         displayKey={(city) => city}
       />
       <div className="p-4">
+      <div>
+          <label>
+            <input
+              type="radio"
+              value="all"
+              checked={selectedVisibility === 'all'}
+              onChange={() => setSelectedVisibility('all')}
+            />
+            Все магазины
+          </label>
+          <label>
+            <input
+              type="radio"
+              value="visible"
+              checked={selectedVisibility === 'visible'}
+              onChange={() => setSelectedVisibility('visible')}
+            />
+            Видимые для клиентов
+          </label>
+          <label>
+            <input
+              type="radio"
+              value="invisible"
+              checked={selectedVisibility === 'invisible'}
+              onChange={() => setSelectedVisibility('invisible')}
+            />
+            Скрытые от клиентов
+          </label>
+        </div>
         <Table
           title="Список магазинов"
-          childrenSearch={<Search onFilter={setSearchText} />}
+          childrenSearch={<Search onFilter={setSearchText} 
+          />}
           columnsDefaultName={columnsDefaultName}
           data={displayedLocations}
           currentPage={currentPage}
@@ -197,7 +261,6 @@ const Location: FC = () => {
           onAddClick={openAddModal}
           onEditClick={openEditModal}
         />
-
         {/* Используем компонент Pagination */}
         <Pagination
           currentPage={currentPage}
