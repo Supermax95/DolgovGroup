@@ -30,7 +30,7 @@ interface ServerResponse {
 
 const addManager = createAsyncThunk<ServerResponse, RequestData>(
   'api/addManager',
-  async ({ newManager }) => {
+  async ({ newManager }, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axios.post(
         `${VITE_URL}/management/newManager`,
@@ -41,8 +41,12 @@ const addManager = createAsyncThunk<ServerResponse, RequestData>(
 
       return response.data;
     } catch (error) {
-      console.error('Error:', error);
-      throw error;
+      if (axios.isAxiosError(error) && error.response) {
+        console.error('Server response data:', error.response.data.error);
+        throw rejectWithValue(error.response.data.error);
+      } else {
+        throw error;
+      }
     }
   }
 );
