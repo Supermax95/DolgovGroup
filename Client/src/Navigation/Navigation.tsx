@@ -16,7 +16,7 @@ import ListContact from '../components/Manager/ProfileManager/ListContact';
 
 const Navigation: FC = () => {
   return (
-<div className="wrapperCss min-h-screen flex flex-col">
+<div className="wrapperCss">
       <Routes>
         <Route path="/" element={<Navbar />}>
           <Route path="/portal" element={<Portal />} />
@@ -48,6 +48,7 @@ const Navigation: FC = () => {
 
       {/* <Route path="/footer" element={<Footer />} /> */}
     </div>
+
   );
 };
 
