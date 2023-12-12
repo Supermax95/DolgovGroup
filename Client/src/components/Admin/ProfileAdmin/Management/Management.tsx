@@ -9,6 +9,7 @@ import sendOneTimePassword from '../../../../Redux/thunks/Manager/Management/sen
 import Wrapper from '../../../../ui/Wrapper';
 import AccountNotification from '../../../../ui/AccountNotification';
 import RoleSidebar from '../../../RoleSidebar/RoleSidebar';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 interface IManager {
   id: number;
@@ -120,7 +121,13 @@ const Management: FC = () => {
     setAddingMode(false);
     setModalOpen(true);
   };
-  console.log('selectedManager:', selectedManager);
+
+  const closeAddModal = (): void => {
+    setSelectedManager(null);
+    setEditedManager(null);
+    setModalOpen(false);
+    setModalError(null);
+  };
 
   const closeEditModal = (): void => {
     setSelectedManager(null);
@@ -128,48 +135,26 @@ const Management: FC = () => {
     setModalOpen(false);
   };
 
-  const closeAddModal = (): void => {
-    setSelectedManager(null);
-    setEditedManager(null);
-    setModalOpen(false);
-  };
-
   //* добавление менеджера
   const handleSaveAdd = async (): Promise<void> => {
-    if (editedManager) {
-      console.log('editedManager при добавлении:', editedManager);
-      try {
+    console.log('editedManager при добавлении:', editedManager);
+    try {
+      if (editedManager) {
         const resultAdd = await dispatch(
           addManager({
             newManager: editedManager,
           })
         );
-
-        if (addManager.fulfilled.match(resultAdd)) {
-          if (managerIdForBellAdd) {
-            console.log('addedManager', managerIdForBellAdd);
-            setShowNotificationAdd(true);
-          } else {
-            console.error('Ошибка. Пользователь не найден.');
-          }
-
-          closeEditModal();
-        }
-
-        if (addManager.rejected.match(resultAdd)) {
-          if (resultAdd.error && resultAdd.error?.message?.includes('409')) {
-            setModalError('Пользователь с такой почтой уже существует');
-            //* пока уведомление об ошибке исчезает через 3 секунды
-            setTimeout(() => {
-              setModalError(null);
-            }, 3000);
-          } else {
-            setModalError('Ошибка. Не удалось обновить данные.');
-          }
-        }
-      } catch (error) {
-        console.error('Произошла ошибка при добавлении:', error);
+        unwrapResult(resultAdd);
+        setModalError(null);
+        closeAddModal();
       }
+    } catch (error) {
+      console.error('Произошла ошибка при добавлении:', error);
+      setModalError(error as string | null);
+      setTimeout(() => {
+        setModalError(null);
+      }, 3000);
     }
   };
 
@@ -184,37 +169,16 @@ const Management: FC = () => {
           })
         );
 
-        if (editManager.fulfilled.match(resultEdit)) {
-          //managerIdForBellEdit
-          if (managerIdForBellEdit) {
-            console.log(
-              'managerIdForBellEditHandl------>',
-              managerIdForBellEdit
-            );
-
-            setShowNotificationEdit(true);
-          } else {
-            console.error('Ошибка. Пользователь не найден.');
-          }
-          closeEditModal();
-        }
-
-        if (editManager.rejected.match(resultEdit)) {
-          if (resultEdit.error && resultEdit.error?.message?.includes('409')) {
-            setModalError('Пользователь с такой почтой уже существует');
-            //* пока уведомление об ошибке исчезает через 3 секунды
-            setTimeout(() => {
-              setModalError(null);
-            }, 3000);
-          } else {
-            // Обработка других ошибок
-            setModalError('Ошибка. Не удалось обновить данные.');
-          }
-        }
-        //
+        unwrapResult(resultEdit);
+        setModalError(null);
+        closeEditModal();
       }
     } catch (error) {
       console.error('Произошла ошибка при редактировании:', error);
+      setModalError(error as string | null);
+      setTimeout(() => {
+        setModalError(null);
+      }, 3000);
     }
   };
 
@@ -304,13 +268,7 @@ const Management: FC = () => {
           isAddingMode={isAddingMode}
           editedManager={editedManager}
           setEditedManager={setEditedManager}
-          showError={
-            modalError && (
-              <div className="text-sm text-rose-400 text-center mt-2">
-                {modalError}
-              </div>
-            )
-          }
+          showError={modalError}
         />
       )}
     </Wrapper>

@@ -37,7 +37,7 @@ const ManagementModal: FC<ManagersModalProps> = ({
   manager,
   onSaveEdit,
   onSaveAdd,
-  onCloseAddModal, 
+  onCloseAddModal,
   onCloseEditModal,
   isAddingMode,
   editedManager,
@@ -148,7 +148,6 @@ const ManagementModal: FC<ManagersModalProps> = ({
         }),
       required: true,
     },
-    //! необходимо прописать паттерн или проверку на то, как вносится номер телефона
     {
       id: 'phone',
       name: 'phone',
@@ -209,7 +208,11 @@ const ManagementModal: FC<ManagersModalProps> = ({
             onCancellick={handleCancel}
             onDeleteClick={handleDelete}
           >
-            {showError}
+            {showError && (
+              <div className="text-sm text-rose-400 text-center mt-2">
+                {showError}
+              </div>
+            )}
             <InputModal inputFields={inputFieldsDate} />
           </Modal>
         </form>

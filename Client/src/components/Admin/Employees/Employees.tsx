@@ -112,21 +112,23 @@ const Employees: FC = () => {
 
   const totalPages = Math.ceil(filterUsers.length / itemsPerPage);
 
-  const openEditModal = (user: User) => {
+  const openEditModal = (user: User): void => {
     setSelectedUser(user);
     setEditedUser({ ...user });
     setModalOpen(true);
+    //!
     setAxiosError(null);
   };
 
-  const closeEditModal = () => {
+  const closeEditModal = (): void => {
     setSelectedUser(null);
     setEditedUser(null);
     setModalOpen(true);
+    //!
     setAxiosError(null);
   };
 
-  const handleSaveEdit = async (editedUser: User) => {
+  const handleSaveEdit = async (editedUser: User): Promise<void> => {
     try {
       if (selectedUser) {
         const resultAction = await dispatch(
@@ -135,17 +137,15 @@ const Employees: FC = () => {
             newInfo: editedUser,
           })
         );
-        const result = unwrapResult(resultAction);
+        unwrapResult(resultAction);
         setAxiosError(null);
         closeEditModal();
       }
-    }  catch (error) {
+    } catch (error) {
       console.error('Произошла ошибка при редактировании:', error);
       setAxiosError(error as string | null);
     }
   };
-  console.log(axiosError);
-  
 
   return (
     <Wrapper>

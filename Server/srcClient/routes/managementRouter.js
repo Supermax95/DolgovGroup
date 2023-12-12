@@ -49,13 +49,21 @@ module.exports = router
     }
 
     try {
-      const manager = await Manager.findOne({
+      const managerEmail = await Manager.findOne({
         where: { email: newManager.email },
       });
 
-      if (manager) {
-        res.status(409).json({
-          message: 'Пользователь с такой электронной почтой уже существует',
+      const managerPhone = await Manager.findOne({
+        where: { phone: newManager.phone },
+      });
+
+      if (managerEmail) {
+        res.status(400).json({
+          error: 'Пользователь с такой электронной почтой уже существует',
+        });
+      } else if (managerPhone) {
+        res.status(400).json({
+          error: 'Пользователь с таким номером телефона уже существует',
         });
       } else {
         const resultAdd = await Manager.create({

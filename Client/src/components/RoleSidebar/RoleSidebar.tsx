@@ -14,7 +14,7 @@ const RoleSidebar: FC = () => {
     isAdmin?: boolean;
   }>((state) => state.managerSlice.manager);
 
-  console.log('managerProfile', managerProfile);
+  //console.log('managerProfile', managerProfile);
 
   const roleSidebar = {
     admin: {
