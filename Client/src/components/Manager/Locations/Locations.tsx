@@ -30,7 +30,8 @@ type IColumnsListDb =
   | 'address'
   | 'latitude'
   | 'longitude'
-  | 'hours';
+  | 'hours'
+  | 'invisible';
 
 const Location: FC = () => {
   const dispatch = useAppDispatch();
@@ -56,6 +57,7 @@ const Location: FC = () => {
     { name: 'Широта' },
     { name: 'Долгота' },
     { name: 'Часы работы' },
+    { name: 'Видимость для клиентов' },
   ];
 
   const columnsListDb: IColumnsListDb[] = [
@@ -65,6 +67,7 @@ const Location: FC = () => {
     'latitude',
     'longitude',
     'hours',
+    'invisible',
   ];
 
   useEffect(() => {

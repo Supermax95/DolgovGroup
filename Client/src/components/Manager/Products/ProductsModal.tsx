@@ -544,7 +544,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
                       invisible: e.target.checked,
                     })
                   }
-                  className="w-4 h-4 text-slate-600 text-sm font-normal bg-slate-100 border-slate-300 rounded focus:ring-slate-500"
+                  className="w-4 h-4 text-slate-400 text-sm font-normal bg-slate-100 border-slate-300 rounded focus:ring-slate-500"
                 />
               </div>
             </div>
