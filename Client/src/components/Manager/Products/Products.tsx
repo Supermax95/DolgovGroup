@@ -54,7 +54,7 @@ const Products: FC = () => {
     (state) => state.productSlice.data
   );
   const [selectedVisibility, setSelectedVisibility] = useState<
-    'all' | 'visible' | 'invisible '
+    'all' | 'visible' | 'invisible'
   >('all');
 
   //* для сайдбара
@@ -334,35 +334,50 @@ const Products: FC = () => {
             </div>
           </div>
         </div>
-        <div>
-          <label>
-            <input
-              type="radio"
-              value="all"
-              checked={selectedVisibility === 'all'}
-              onChange={() => setSelectedVisibility('all')}
-            />
-            Все товары
-          </label>
-          <label>
+        <div className="flex items-center gap-4">
+          <label className="flex items-center space-x-2 text-slate-600">
             <input
               type="radio"
               value="visible"
               checked={selectedVisibility === 'visible'}
               onChange={() => setSelectedVisibility('visible')}
+              className="form-radio text-lime-600"
             />
-            Видимые для клиентов
+            <span className="ml-1">Видимые для покупателей</span>
           </label>
-          <label>
+          <label className="flex items-center space-x-2 text-slate-600">
             <input
               type="radio"
               value="invisible"
               checked={selectedVisibility === 'invisible'}
               onChange={() => setSelectedVisibility('invisible')}
+              className="form-radio text-lime-600"
             />
-            Скрытые от клиентов
+            <span className="ml-1">Скрытые от покупателей</span>
+          </label>
+          <label className="flex items-center space-x-2 text-slate-600">
+            <input
+              type="radio"
+              value="all"
+              checked={selectedVisibility === 'all'}
+              onChange={() => setSelectedVisibility('all')}
+              className="form-radio text-lime-600"
+            />
+            <span className="ml-1">Сброс фильтра</span>
+          </label>
+          <label className="flex items-center space-x-2 text-slate-600">
+            <input
+              type="checkbox"
+              onChange={(e) => {
+                setCurrentPage(1);
+                setSearchText(e.target.checked ? 'завершена' : '');
+              }}
+              className="form-checkbox text-lime-600"
+            />
+            <span className="ml-1">Показать завершенные акции</span>
           </label>
         </div>
+
         {/** новая карточка */}
         <div className="mx-auto grid max-w-screen-lg justify-center px-4 sm:grid-cols-2 sm:gap-4 sm:px-8 md:grid-cols-3">
           {displayedProducts.map((product) => (
