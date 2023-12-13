@@ -148,6 +148,7 @@ const Management: FC = () => {
         unwrapResult(resultAdd);
         setModalError(null);
         closeAddModal();
+        setShowNotificationAdd(true);
       }
     } catch (error) {
       console.error('Произошла ошибка при добавлении:', error);
@@ -172,6 +173,7 @@ const Management: FC = () => {
         unwrapResult(resultEdit);
         setModalError(null);
         closeEditModal();
+        setShowNotificationEdit(true);
       }
     } catch (error) {
       console.error('Произошла ошибка при редактировании:', error);
