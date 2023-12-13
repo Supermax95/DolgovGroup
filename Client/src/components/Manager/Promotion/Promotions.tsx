@@ -2,7 +2,6 @@ import { FC, useEffect, useState } from 'react';
 import Wrapper from '../../../ui/Wrapper';
 import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import { VITE_URL } from '../../../VITE_URL';
-// import PromotionsModal from './PromotionsModal';
 import Pagination from '../../../ui/Paggination';
 import { isToday, parseISO, isPast } from 'date-fns';
 import { unwrapResult } from '@reduxjs/toolkit';
@@ -34,6 +33,9 @@ const Promotions: FC = () => {
   );
 
   // остальное
+  const [selectedVisibility, setSelectedVisibility] = useState<
+    'all' | 'visible' | 'invisible'
+  >('all');
   const [isModalOpen, setModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedPromotion, setSelectedPromotion] = useState<IPromotion | null>(
@@ -56,7 +58,11 @@ const Promotions: FC = () => {
 
   const filterPromotions = () => {
     let filtered = promotions;
-
+    if (selectedVisibility !== 'all') {
+      filtered = filtered.filter(
+        (product) => product.invisible === (selectedVisibility === 'invisible')
+      );
+    }
     if (searchText !== '') {
       filtered = filtered.filter((promotion) => {
         const promotionFields = [
@@ -180,7 +186,6 @@ const Promotions: FC = () => {
     slidesToShow: 3,
     slidesToScroll: 1,
   };
-
   return (
     <Wrapper>
       <div className="p-4">
@@ -195,7 +200,49 @@ const Promotions: FC = () => {
             </button>
           </div>
         </div>
-
+        <div className="flex items-center gap-4">
+          <label className="flex items-center space-x-2 text-slate-600">
+            <input
+              type="radio"
+              value="visible"
+              checked={selectedVisibility === 'visible'}
+              onChange={() => setSelectedVisibility('visible')}
+              className="form-radio text-lime-600"
+            />
+            <span className="ml-1">Видимые для покупателей</span>
+          </label>
+          <label className="flex items-center space-x-2 text-slate-600">
+            <input
+              type="radio"
+              value="invisible"
+              checked={selectedVisibility === 'invisible'}
+              onChange={() => setSelectedVisibility('invisible')}
+              className="form-radio text-lime-600"
+            />
+            <span className="ml-1">Скрытые от покупателей</span>
+          </label>
+          <label className="flex items-center space-x-2 text-slate-600">
+            <input
+              type="radio"
+              value="all"
+              checked={selectedVisibility === 'all'}
+              onChange={() => setSelectedVisibility('all')}
+              className="form-radio text-lime-600"
+            />
+            <span className="ml-1">Сброс фильтра</span>
+          </label>
+          <label className="flex items-center space-x-2 text-slate-600">
+            <input
+              type="checkbox"
+              onChange={(e) => {
+                setCurrentPage(1);
+                setSearchText(e.target.checked ? 'завершена' : ''); 
+              }}
+              className="form-checkbox text-lime-600"
+            />
+            <span className="ml-1">Показать завершенные акции</span>
+          </label>
+        </div>
         {/* Карусель */}
         {displayedPromotions.some((promotion) => promotion.carousel) && (
           <div className="col-span-full">

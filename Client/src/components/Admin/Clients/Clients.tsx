@@ -164,7 +164,7 @@ const Clients: FC = () => {
           />
           <div className="p-4">
             <Table
-              title="Список клиентов"
+              title="Список покупателей"
               childrenSearch={<Search onFilter={setSearchText} />}
               columnsDefaultName={columnsDefaultName}
               data={displayedUsers}

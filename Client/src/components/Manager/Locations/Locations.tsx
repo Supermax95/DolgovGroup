@@ -59,7 +59,7 @@ const Location: FC = () => {
     { name: 'Широта' },
     { name: 'Долгота' },
     { name: 'Часы работы' },
-    { name: 'Видимость для клиентов' },
+    { name: 'Видимость для покупателей' },
   ];
 
   const columnsListDb: IColumnsListDb[] = [
@@ -220,35 +220,40 @@ const Location: FC = () => {
         displayKey={(city) => city}
       />
       <div className="p-4">
-      <div>
-          <label>
-            <input
-              type="radio"
-              value="all"
-              checked={selectedVisibility === 'all'}
-              onChange={() => setSelectedVisibility('all')}
-            />
-            Все магазины
-          </label>
-          <label>
-            <input
-              type="radio"
-              value="visible"
-              checked={selectedVisibility === 'visible'}
-              onChange={() => setSelectedVisibility('visible')}
-            />
-            Видимые для клиентов
-          </label>
-          <label>
-            <input
-              type="radio"
-              value="invisible"
-              checked={selectedVisibility === 'invisible'}
-              onChange={() => setSelectedVisibility('invisible')}
-            />
-            Скрытые от клиентов
-          </label>
-        </div>
+      <div className="flex items-center gap-4">
+  <label className="flex items-center space-x-2 text-slate-600">
+    <input
+      type="radio"
+      value="visible"
+      checked={selectedVisibility === 'visible'}
+      onChange={() => setSelectedVisibility('visible')}
+      className="form-radio text-lime-600"
+    />
+     <span className="ml-1">Видимые для покупателей</span>
+ 
+  </label>
+  <label className="flex items-center space-x-2 text-slate-600">
+    <input
+      type="radio"
+      value="invisible"
+      checked={selectedVisibility === 'invisible'}
+      onChange={() => setSelectedVisibility('invisible')}
+      className="form-radio text-lime-600"
+    />
+       <span className="ml-1">Скрытые от покупателей</span>
+  </label>
+  <label className="flex items-center space-x-2 text-slate-600">
+    <input
+      type="radio"
+      value="all"
+      checked={selectedVisibility === 'all'}
+      onChange={() => setSelectedVisibility('all')}
+      className="form-radio text-lime-600"
+    />
+        <span className="ml-1">Сброс фильтра</span>
+  </label>
+</div>
+
         <Table
           title="Список магазинов"
           childrenSearch={<Search onFilter={setSearchText} 
@@ -287,3 +292,91 @@ const Location: FC = () => {
 };
 
 export default Location;
+
+
+
+
+// return (
+//   <Wrapper>
+//     <Sidebar
+//       items={uniqueCities}
+//       onItemSelect={setSelectedCity}
+//       title="Города"
+//       setCurrentPage={setCurrentPage}
+//       displayKey={(city) => city}
+//     />
+//     <div className="p-4">
+//         {/* Инпут для поиска */}
+//         <div className="mb-3">
+//         <Search onFilter={setSearchText} />
+//       </div>
+
+//       {/* Радиокнопки под инпутом для поиска */}
+//       <div className="mt-3">
+//         <label>
+//           <input
+//             type="radio"
+//             value="visible"
+//             checked={selectedVisibility === 'visible'}
+//             onChange={() => setSelectedVisibility('visible')}
+//           />
+//           Видимые для покупателей
+//         </label>
+//         <label>
+//           <input
+//             type="radio"
+//             value="invisible"
+//             checked={selectedVisibility === 'invisible'}
+//             onChange={() => setSelectedVisibility('invisible')}
+//           />
+//           Скрытые от покупателей
+//         </label>
+//         <label>
+//           <input
+//             type="radio"
+//             value="all"
+//             checked={selectedVisibility === 'all'}
+//             onChange={() => setSelectedVisibility('all')}
+//           />
+//           Сброс фильтра
+//         </label>
+//       </div>
+//       <div className="mb-3">
+//         <Table
+//           title="Список магазинов"
+//           // childrenSearch={<Search onFilter={setSearchText} />}
+//           columnsDefaultName={columnsDefaultName}
+//           data={displayedLocations}
+//           currentPage={currentPage}
+//           itemsPerPage={itemsPerPage}
+//           columnsListDb={columnsListDb}
+//           onAddClick={openAddModal}
+//           onEditClick={openEditModal}
+//         />
+//       </div>
+
+    
+//       {/* Используем компонент Pagination */}
+//       <Pagination
+//         currentPage={currentPage}
+//         totalPages={totalPages}
+//         onPageChange={setCurrentPage}
+//       />
+
+//       {isModalOpen && (selectedLocation || isAddingMode) && (
+//         <LocationsModal
+//           isOpen={isModalOpen}
+//           location={selectedLocation}
+//           onSaveEdit={handleSaveEdit}
+//           onSaveAdd={handleSaveAdd}
+//           onCloseAddModal={closeAddModal}
+//           onCloseEditModal={closeEditModal}
+//           isAddingMode={isAddingMode}
+//           editedLocation={editedLocation}
+//           setEditedLocation={setEditedLocation}
+//         />
+//       )}
+//     </div>
+//   </Wrapper>
+// );
+// };
