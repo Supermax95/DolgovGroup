@@ -220,44 +220,42 @@ const Location: FC = () => {
         displayKey={(city) => city}
       />
       <div className="p-4">
-      <div className="flex items-center gap-4">
-  <label className="flex items-center space-x-2 text-slate-600">
-    <input
-      type="radio"
-      value="visible"
-      checked={selectedVisibility === 'visible'}
-      onChange={() => setSelectedVisibility('visible')}
-      className="form-radio text-lime-600"
-    />
-     <span className="ml-1">Видимые для покупателей</span>
- 
-  </label>
-  <label className="flex items-center space-x-2 text-slate-600">
-    <input
-      type="radio"
-      value="invisible"
-      checked={selectedVisibility === 'invisible'}
-      onChange={() => setSelectedVisibility('invisible')}
-      className="form-radio text-lime-600"
-    />
-       <span className="ml-1">Скрытые от покупателей</span>
-  </label>
-  <label className="flex items-center space-x-2 text-slate-600">
-    <input
-      type="radio"
-      value="all"
-      checked={selectedVisibility === 'all'}
-      onChange={() => setSelectedVisibility('all')}
-      className="form-radio text-lime-600"
-    />
-        <span className="ml-1">Сброс фильтра</span>
-  </label>
-</div>
+        <div className="flex items-center gap-4">
+          <label className="flex items-center space-x-2 text-slate-600">
+            <input
+              type="radio"
+              value="visible"
+              checked={selectedVisibility === 'visible'}
+              onChange={() => setSelectedVisibility('visible')}
+              className="form-radio text-lime-600"
+            />
+            <span className="ml-1">Видимые для покупателей</span>
+          </label>
+          <label className="flex items-center space-x-2 text-slate-600">
+            <input
+              type="radio"
+              value="invisible"
+              checked={selectedVisibility === 'invisible'}
+              onChange={() => setSelectedVisibility('invisible')}
+              className="form-radio text-lime-600"
+            />
+            <span className="ml-1">Скрытые от покупателей</span>
+          </label>
+          <label className="flex items-center space-x-2 text-slate-600">
+            <input
+              type="radio"
+              value="all"
+              checked={selectedVisibility === 'all'}
+              onChange={() => setSelectedVisibility('all')}
+              className="form-radio text-lime-600"
+            />
+            <span className="ml-1">Сброс фильтра</span>
+          </label>
+        </div>
 
         <Table
           title="Список магазинов"
-          childrenSearch={<Search onFilter={setSearchText} 
-          />}
+          childrenSearch={<Search onFilter={setSearchText} />}
           columnsDefaultName={columnsDefaultName}
           data={displayedLocations}
           currentPage={currentPage}
@@ -292,9 +290,6 @@ const Location: FC = () => {
 };
 
 export default Location;
-
-
-
 
 // return (
 //   <Wrapper>
@@ -355,7 +350,6 @@ export default Location;
 //         />
 //       </div>
 
-    
 //       {/* Используем компонент Pagination */}
 //       <Pagination
 //         currentPage={currentPage}
