@@ -240,40 +240,44 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
           onCancellick={handleCancel}
           isUpload={isUpload}
         >
-          <div className="input-modal-container">
-            {axiosError && (
-              <div className="text-sm text-rose-400 text-center mt-2">
-                {axiosError}
-              </div>
-            )}
-            {currentStep === 1 && (
-              <InputModal
-                containerClassName={
-                  'py-8 grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'
+          {axiosError && (
+            <div className="text-sm text-rose-400 text-center mt-2">
+              {axiosError}
+            </div>
+          )}
+
+          {currentStep === 1 && (
+            <InputModal
+              containerClassName={
+                'py-8 grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'
+              }
+              inputFields={inputFields}
+            />
+          )}
+
+          {currentStep === 1 && (
+            <div className="description-container resize-y overflow-auto min-h-50 text-center">
+              <label
+                htmlFor="description"
+                className="text-slate-600 text-sm font-normal"
+              >
+                Описание промо-акции
+              </label>
+              <ReactQuill
+                theme="snow"
+                value={editedPromotion.description}
+                onChange={(value) =>
+                  setEditedPromotion({
+                    ...editedPromotion,
+                    description: value,
+                  })
                 }
-                inputFields={inputFields}
+                // placeholder=""
+                className="w-full"
               />
-            )}
-            {currentStep === 1 && (
-              <div className="description-container resize-y overflow-auto min-h-50">
-                <label htmlFor="description" className="text-slate-400 text-sm">
-                  Описание промо
-                </label>
-                <ReactQuill
-                  theme="snow"
-                  value={editedPromotion.description}
-                  onChange={(value) =>
-                    setEditedPromotion({
-                      ...editedPromotion,
-                      description: value,
-                    })
-                  }
-                  // placeholder=""
-                  className="w-full"
-                />
-              </div>
-            )}
-          </div>
+            </div>
+          )}
+          <div className="mt-4"></div>
 
           {currentStep === 2 && (
             <div className="container mx-auto mt-8 p-8 max-w-4xl justify-center items-center flex-col block rounded-lg bg-white shadow-md dark:bg-neutral-700">

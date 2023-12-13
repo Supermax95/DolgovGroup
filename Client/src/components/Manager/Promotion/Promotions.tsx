@@ -183,7 +183,7 @@ const Promotions: FC = () => {
 
   return (
     <Wrapper>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="p-4">
         <div className="col-span-full mb-4">
           <div className="flex items-center justify-between">
             <Search onFilter={setSearchText} />
@@ -227,7 +227,7 @@ const Promotions: FC = () => {
         )}
 
         {/* Карточки */}
-        <div className="col-span-full  mt-8">
+        <div className="col-span-full mt-8">
           <div className="mx-auto grid max-w-screen-lg justify-center px-4 sm:grid-cols-2 sm:gap-4 sm:px-8 md:grid-cols-3">
             {displayedPromotions
               .filter((promotion) => !promotion.carousel)
@@ -322,13 +322,13 @@ const Promotions: FC = () => {
           </div>
         </div>
       </div>
-      <div className="mt-4 flex justify-center">
-        {/* <Pagination
+
+      {/* <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={setCurrentPage}
         /> */}
-      </div>
+
       {isModalOpen && (selectedPromotion || isAddingMode) && (
         <PromotionsModal
           isOpen={isModalOpen}
