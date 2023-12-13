@@ -8,6 +8,7 @@ interface IEmail {
 
 interface EmailModalProps {
   isOpen: boolean;
+  email: string | null;
   sendOneTimePassword: (enterEmail: IEmail) => void;
   enterEmail: IEmail | null | undefined;
   setEnterEmail: React.Dispatch<
@@ -25,10 +26,14 @@ const PortalModal: FC<EmailModalProps> = ({
 }) => {
   const modalTitle = 'Сброс пароля';
 
+  const enterEmailForm = enterEmail || {
+    email: '',
+  };
+
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      sendOneTimePassword(enterEmail);
+      sendOneTimePassword(enterEmailForm);
     } catch (error) {
       console.error('Произошла ошибка при сохранении:', error);
     }
@@ -48,11 +53,14 @@ const PortalModal: FC<EmailModalProps> = ({
       autoComplete: 'off',
       title: 'Email',
       htmlFor: 'email',
-      onChange: (value: string) =>
-        setEnterEmail({
-          ...enterEmail,
-          email: value,
-        }),
+      onChange: (value: string | boolean | number | Date) => {
+        if (typeof value === 'string') {
+          setEnterEmail({
+            ...enterEmail,
+            email: value,
+          });
+        }
+      },
       required: true,
     },
   ];

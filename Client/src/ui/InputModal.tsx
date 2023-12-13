@@ -26,8 +26,8 @@ export interface InputField {
   htmlFor?: string;
   required?: boolean;
   pattern?: string | undefined;
-  onChange?: (value: string) => void | undefined;
-
+  // onChange?: (value: string) => void | undefined;
+  onChange?: (value: string | boolean | number | Date ) => void | false | 0 | undefined;
   divFielsCss?: string[];
   disabled?: boolean;
   options?: { value: string; label: string }[];

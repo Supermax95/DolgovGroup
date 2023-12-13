@@ -104,8 +104,12 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
       let result2 = '';
 
       if (isAddingMode) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         result = await onSaveAdd(editedPromotion as IPromotion);
       } else {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         result2 = await onSaveEdit(editedPromotion as IPromotion);
       }
 
@@ -123,13 +127,25 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
       ) as HTMLInputElement;
       const file = fileInput?.files?.[0];
 
-      await uploadFile(file, id, isAddingMode);
+      await uploadFile(
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        file,
+        id,
+        isAddingMode
+      );
     }
   };
 
   const handleFileInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const file = e.target.files?.[0] || null;
-    uploadFile(file, id, isAddingMode);
+    uploadFile(
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      file,
+      id,
+      isAddingMode
+    );
   };
 
   const handleDelete = () => {
@@ -153,11 +169,80 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
       placeholder: '',
       title: 'Название акции',
       htmlFor: 'promotionName',
-      onChange: (value: string) =>
-        setEditedPromotion({
-          ...editedPromotion,
-          title: value,
-        }),
+      onChange: (value: string | boolean | number | Date) => {
+        if (typeof value === 'string') {
+          setEditedPromotion({
+            ...editedPromotion,
+            title: value,
+          });
+        }
+      },
+      required: true,
+    },
+    {
+      id: 'invisible',
+      type: 'text',
+      value: editedPromotion.invisible,
+      title: 'Акция скрыта',
+      htmlFor: 'invisible',
+      onChange: (value: string | boolean | number | Date) => {
+        if (typeof value === 'boolean') {
+          setEditedPromotion({
+            ...editedPromotion,
+            invisible: value,
+          });
+        }
+      },
+    },
+    {
+      id: 'dateStart',
+      type: 'text',
+      value: editedPromotion.dateStart,
+      autoComplete: 'off',
+      placeholder: '',
+      title: 'Начало акции',
+      htmlFor: 'dateStart',
+      onChange: (value: string | boolean | number | Date) => {
+        if (typeof value === 'string') {
+          setEditedPromotion({
+            ...editedPromotion,
+            dateStart: value,
+          });
+        }
+      },
+      required: true,
+    },
+    {
+      id: 'carousel',
+      type: 'text',
+      value: editedPromotion.carousel,
+      title: 'Карусель',
+      htmlFor: 'carousel',
+      onChange: (value: string | boolean | number | Date) => {
+        if (typeof value === 'boolean') {
+          setEditedPromotion({
+            ...editedPromotion,
+            carousel: value,
+          });
+        }
+      },
+    },
+    {
+      id: 'dateEnd',
+      type: 'text',
+      value: editedPromotion.dateEnd,
+      autoComplete: 'off',
+      placeholder: '',
+      title: 'Конец акции',
+      htmlFor: 'dateEnd',
+      onChange: (value: string | boolean | number | Date) => {
+        if (typeof value === 'string') {
+          setEditedPromotion({
+            ...editedPromotion,
+            dateEnd: value,
+          });
+        }
+      },
       required: true,
     },
   ];

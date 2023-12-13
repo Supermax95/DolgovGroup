@@ -18,6 +18,7 @@ import editSubcategory from '../../../../Redux/thunks/SubCategory/editSubcategor
 import deleteSubcategory from '../../../../Redux/thunks/SubCategory/deleteSubcategory.api';
 
 interface ICategory {
+  //Продукты.tsx ругаются на эти вопросы
   id?: number;
   categoryName?: string;
 }

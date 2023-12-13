@@ -41,6 +41,19 @@ const ClientsModal: React.FC<UsersModalProps> = ({
 }) => {
   const dispatch = useAppDispatch();
 
+  const userToSave = editedUser || {
+    id: 0,
+    lastName: '',
+    firstName: '',
+    middleName: '',
+    email: '',
+    barcode: '',
+    userStatus: '',
+    birthDate: undefined,
+    bonusProgram: '',
+    balance: 0,
+    isActivated: false,
+  };
 
   useEffect(() => {
     if (user) {
@@ -48,18 +61,16 @@ const ClientsModal: React.FC<UsersModalProps> = ({
     }
   }, [user, setEditedUser]);
 
-
   const modalTitle = 'Редактирование анкеты клиента';
 
   const handleCancel = () => {
     setEditedUser(undefined);
     onCloseEditModal();
-    
   };
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSaveEdit(editedUser);
+    onSaveEdit(userToSave);
     // onCloseEditModal();
   };
 
@@ -77,11 +88,14 @@ const ClientsModal: React.FC<UsersModalProps> = ({
       autoComplete: 'off',
       title: 'Фамилия',
       htmlFor: 'lastName',
-      onChange: (value: string) =>
-        setEditedUser({
-          ...editedUser,
-          lastName: value,
-        }),
+      onChange: (value: string | boolean | number | Date) => {
+        if (typeof value === 'string') {
+          setEditedUser({
+            ...editedUser,
+            lastName: value,
+          });
+        }
+      },
       required: true,
     },
     {
@@ -93,12 +107,15 @@ const ClientsModal: React.FC<UsersModalProps> = ({
       autoComplete: 'off',
       title: 'Номер карты',
       htmlFor: 'barcode',
-      onChange: (value: string) =>
-        setEditedUser({
-          ...editedUser,
-          barcode: value,
-        }),
-      disabled: true,
+      onChange: (value: string | boolean | number | Date) => {
+        if (typeof value === 'string') {
+          setEditedUser({
+            ...editedUser,
+            barcode: value,
+          });
+        }
+      },
+      required: true,
     },
     {
       id: 'firstName',
@@ -109,11 +126,14 @@ const ClientsModal: React.FC<UsersModalProps> = ({
       autoComplete: 'off',
       title: 'Имя',
       htmlFor: 'firstName',
-      onChange: (value: string) =>
-        setEditedUser({
-          ...editedUser,
-          firstName: value,
-        }),
+      onChange: (value: string | boolean | number | Date) => {
+        if (typeof value === 'string') {
+          setEditedUser({
+            ...editedUser,
+            firstName: value,
+          });
+        }
+      },
       required: true,
     },
     {
@@ -125,11 +145,14 @@ const ClientsModal: React.FC<UsersModalProps> = ({
       autoComplete: 'off',
       title: 'Баланс',
       htmlFor: 'balance',
-      onChange: (value: string) =>
-        setEditedUser({
-          ...editedUser,
-          balance: parseFloat(value),
-        }),
+      onChange: (value: string | boolean | number | Date) => {
+        if (typeof value === 'string') {
+          setEditedUser({
+            ...editedUser,
+            balance: parseFloat(value),
+          });
+        }
+      },
       disabled: true,
     },
     {
@@ -141,11 +164,14 @@ const ClientsModal: React.FC<UsersModalProps> = ({
       autoComplete: 'off',
       title: 'Отчество',
       htmlFor: 'middleName',
-      onChange: (value: string) =>
-        setEditedUser({
-          ...editedUser,
-          middleName: value,
-        }),
+      onChange: (value: string | boolean | number | Date) => {
+        if (typeof value === 'string') {
+          setEditedUser({
+            ...editedUser,
+            middleName: value,
+          });
+        }
+      },
       required: true,
     },
     {
@@ -157,11 +183,14 @@ const ClientsModal: React.FC<UsersModalProps> = ({
       autoComplete: 'off',
       title: 'Дата рождения',
       htmlFor: 'birthdate',
-      onChange: (value: string) =>
-        setEditedUser({
-          ...editedUser,
-          birthDate: new Date(value),
-        }),
+      onChange: (value: string | boolean | number | Date) => {
+        if (value instanceof Date) {
+          setEditedUser({
+            ...editedUser,
+            birthDate: value,
+          });
+        }
+      },
       disabled: true,
     },
     {
@@ -173,11 +202,14 @@ const ClientsModal: React.FC<UsersModalProps> = ({
       autoComplete: 'off',
       title: 'Email',
       htmlFor: 'email',
-      onChange: (value: string) =>
-        setEditedUser({
-          ...editedUser,
-          email: value,
-        }),
+      onChange: (value: string | boolean | number | Date) => {
+        if (typeof value === 'string') {
+          setEditedUser({
+            ...editedUser,
+            email: value,
+          });
+        }
+      },
       required: true,
     },
 
@@ -190,11 +222,14 @@ const ClientsModal: React.FC<UsersModalProps> = ({
       autoComplete: 'off',
       title: 'Бонусная программа',
       htmlFor: 'bonusProgram',
-      onChange: (value: string) =>
-        setEditedUser({
-          ...editedUser,
-          bonusProgram: value,
-        }),
+      onChange: (value: string | boolean | number | Date) => {
+        if (typeof value === 'string') {
+          setEditedUser({
+            ...editedUser,
+            bonusProgram: value,
+          });
+        }
+      },
       disabled: true,
     },
     {
@@ -206,11 +241,14 @@ const ClientsModal: React.FC<UsersModalProps> = ({
       autoComplete: 'off',
       title: 'Статус пользователя',
       htmlFor: 'userStatus',
-      onChange: (value: string) =>
-        setEditedUser({
-          ...editedUser,
-          userStatus: value,
-        }),
+      onChange: (value: string | boolean | number | Date) => {
+        if (typeof value === 'string') {
+          setEditedUser({
+            ...editedUser,
+            userStatus: value,
+          });
+        }
+      },
       options: [
         { value: 'Сотрудник', label: 'Сотрудник' },
         { value: 'Новый сотрудник', label: 'Новый сотрудник' },
@@ -229,11 +267,11 @@ const ClientsModal: React.FC<UsersModalProps> = ({
     <Wrapper>
       <form onSubmit={handleFormSubmit}>
         <ModalUser modalTitle={modalTitle} onCancellick={handleCancel}>
-        {axiosError && (
+          {axiosError && (
             <div className="text-sm text-rose-400 text-center mt-2">
               {axiosError}
             </div>
-              )}
+          )}
           <InputModal
             containerClassName={
               'py-8 grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'

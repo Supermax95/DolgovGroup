@@ -42,13 +42,14 @@ const LocationsModal: FC<LocationsModalProps> = ({
 }) => {
   const dispatch = useAppDispatch();
 
-  location || {
+  const locationToSave = editedLocation || {
     id: 0,
     city: '',
     address: '',
     latitude: '',
     longitude: '',
     hours: '',
+    invisible: false,
   };
 
   useEffect(() => {
@@ -68,10 +69,10 @@ const LocationsModal: FC<LocationsModalProps> = ({
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (isAddingMode) {
-      onSaveAdd(editedLocation);
+      onSaveAdd(locationToSave);
       onCloseAddModal();
     } else {
-      onSaveEdit(editedLocation);
+      onSaveEdit(locationToSave);
       onCloseEditModal();
     }
   };
@@ -98,11 +99,14 @@ const LocationsModal: FC<LocationsModalProps> = ({
       autoComplete: 'off',
       title: 'Город',
       htmlFor: 'city',
-      onChange: (value: string) =>
-        setEditedLocation({
-          ...editedLocation,
-          city: value,
-        }),
+      onChange: (value: string | boolean | number | Date ) => {
+        if (typeof value === 'string') {
+          setEditedLocation({
+            ...editedLocation,
+            city: value,
+          });
+        }
+      },
       required: true,
     },
     {
@@ -114,11 +118,14 @@ const LocationsModal: FC<LocationsModalProps> = ({
       autoComplete: 'off',
       title: 'Адрес',
       htmlFor: 'address',
-      onChange: (value: string) =>
-        setEditedLocation({
-          ...editedLocation,
-          address: value,
-        }),
+      onChange: (value:string | boolean | number | Date ) => {
+        if (typeof value === 'string') {
+          setEditedLocation({
+            ...editedLocation,
+            address: value,
+          });
+        }
+      },
       required: true,
     },
     {
@@ -130,18 +137,20 @@ const LocationsModal: FC<LocationsModalProps> = ({
       autoComplete: 'off',
       title: 'Широта',
       htmlFor: 'latitude',
-      onChange: (value: string) => {
-        const newValue = value.replace(/,/g, '.');
-        if (
-          !newValue.includes(' ') &&
-          !isNaN(+newValue) &&
-          +newValue >= 0 &&
-          +newValue <= 90
-        ) {
-          setEditedLocation({
-            ...editedLocation,
-            latitude: newValue,
-          });
+      onChange: (value:string | boolean | number | Date ) => {
+        if (typeof value === 'string') {
+          const newValue = value.replace(/,/g, '.');
+          if (
+            !newValue.includes(' ') &&
+            !isNaN(+newValue) &&
+            +newValue >= 0 &&
+            +newValue <= 90
+          ) {
+            setEditedLocation({
+              ...editedLocation,
+              latitude: newValue,
+            });
+          }
         }
       },
       required: true,
@@ -155,18 +164,20 @@ const LocationsModal: FC<LocationsModalProps> = ({
       autoComplete: 'off',
       title: 'Долгота',
       htmlFor: 'longitude',
-      onChange: (value: string) => {
-        const newValue = value.replace(/,/g, '.');
-        if (
-          !newValue.includes(' ') &&
-          !isNaN(+newValue) &&
-          +newValue >= 0 &&
-          +newValue <= 180
-        ) {
-          setEditedLocation({
-            ...editedLocation,
-            longitude: newValue,
-          });
+      onChange: (value:string | boolean | number | Date ) => {
+        if (typeof value === 'string') {
+          const newValue = value.replace(/,/g, '.');
+          if (
+            !newValue.includes(' ') &&
+            !isNaN(+newValue) &&
+            +newValue >= 0 &&
+            +newValue <= 180
+          ) {
+            setEditedLocation({
+              ...editedLocation,
+              longitude: newValue,
+            });
+          }
         }
       },
       required: true,
@@ -180,11 +191,13 @@ const LocationsModal: FC<LocationsModalProps> = ({
       autoComplete: 'off',
       title: 'Часы работы',
       htmlFor: 'hours',
-      onChange: (value: string) => {
-        setEditedLocation({
-          ...editedLocation,
-          hours: value,
-        });
+      onChange: (value:string | boolean | number | Date ) => {
+        if (typeof value === 'string') {
+          setEditedLocation({
+            ...editedLocation,
+            hours: value,
+          });
+        }
       },
       required: true,
     },
@@ -195,11 +208,13 @@ const LocationsModal: FC<LocationsModalProps> = ({
       value: editedLocation.invisible,
       title: 'Скрыть для покупателей',
       htmlFor: 'invisible',
-      onChange: (value: boolean) => {
-        setEditedLocation({
-          ...editedLocation,
-          invisible: value,
-        });
+      onChange: (value: string | boolean | number | Date ) => {
+        if (typeof value === 'boolean') {
+          setEditedLocation({
+            ...editedLocation,
+            invisible: value,
+          });
+        }
       },
     },
   ];
