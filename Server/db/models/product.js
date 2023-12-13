@@ -61,36 +61,44 @@ module.exports = (sequelize) => {
       // Хук перед созданием и обновлением
       hooks: {
         beforeCreate: (product) => {
-          product.setDataValues({
-            article: product.article.trim(),
-            productName: product.productName.trim(),
-            promoStartDate: product.promoStartDate
-              ? product.promoStartDate.trim()
-              : null,
-            promoEndDate: product.promoEndDate
-              ? product.promoEndDate.trim()
-              : null,
-            description: product.description
-              ? product.description.trim()
-              : null,
-            photo: product.photo ? product.photo.trim() : null,
-          });
+          product.setDataValue('article', product.article.trim());
+          product.setDataValue('productName', product.productName.trim());
+          product.setDataValue(
+            'promoStartDate',
+            product.promoStartDate ? product.promoStartDate.trim() : null
+          );
+          product.setDataValue(
+            'promoEndDate',
+            product.promoEndDate ? product.promoEndDate.trim() : null
+          );
+          product.setDataValue(
+            'description',
+            product.description ? product.description.trim() : null
+          );
+          product.setDataValue(
+            'photo',
+            product.photo ? product.photo.trim() : null
+          );
         },
         beforeUpdate: (product) => {
-          product.setDataValues({
-            article: product.article.trim(),
-            productName: product.productName.trim(),
-            promoStartDate: product.promoStartDate
-              ? product.promoStartDate.trim()
-              : null,
-            promoEndDate: product.promoEndDate
-              ? product.promoEndDate.trim()
-              : null,
-            description: product.description
-              ? product.description.trim()
-              : null,
-            photo: product.photo ? product.photo.trim() : null,
-          });
+          product.setDataValue('article', product.article.trim());
+          product.setDataValue('productName', product.productName.trim());
+          product.setDataValue(
+            'promoStartDate',
+            product.promoStartDate ? product.promoStartDate.trim() : null
+          );
+          product.setDataValue(
+            'promoEndDate',
+            product.promoEndDate ? product.promoEndDate.trim() : null
+          );
+          product.setDataValue(
+            'description',
+            product.description ? product.description.trim() : null
+          );
+          product.setDataValue(
+            'photo',
+            product.photo ? product.photo.trim() : null
+          );
         },
       },
     }
