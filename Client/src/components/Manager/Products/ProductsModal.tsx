@@ -312,37 +312,6 @@ const ProductsModal: FC<ProductsModalProps> = ({
         }),
       required: true,
     },
-    //!
-    // {
-    //   id: 'promoStartDate',
-    //   name: 'promoStartDate',
-    //   type: 'text',
-    //   value: editedProduct.promoStartDate,
-    //   autoComplete: 'off',
-    //   placeholder: '',
-    //   title: 'Начало акции',
-    //   htmlFor: 'promoStartDate',
-    //   onChange: (value: string) =>
-    //     setEditedProduct({
-    //       ...editedProduct,
-    //       promoStartDate: value,
-    //     }),
-    // },
-    // {
-    //   id: 'promoEndDate',
-    //   name: 'promoEndDate',
-    //   type: 'text',
-    //   value: editedProduct.promoEndDate,
-    //   autoComplete: 'off',
-    //   placeholder: '',
-    //   title: 'Конец акции',
-    //   htmlFor: 'promoEndDate',
-    //   onChange: (value: string) =>
-    //     setEditedProduct({
-    //       ...editedProduct,
-    //       promoEndDate: value,
-    //     }),
-    // },
 
     {
       id: 'originalPrice',
@@ -428,6 +397,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
               {axiosError}
             </div>
           )}
+          
           {currentStep === 1 && (
             <InputModal
               containerClassName={
@@ -438,11 +408,70 @@ const ProductsModal: FC<ProductsModalProps> = ({
           )}
 
           {currentStep === 1 && (
+            <div className="flex space-x-2 items-center justify-between pb-4">
+              <div className="flex space-x-2">
+                <h1 className="text-slate-600 text-sm tracking-normal leading-tight">
+                  Новый
+                </h1>
+                <input
+                  id="isNew"
+                  name="isNew"
+                  checked={editedProduct.isNew}
+                  type="checkbox"
+                  onChange={(e) =>
+                    setEditedProduct({
+                      ...editedProduct,
+                      isNew: e.target.checked,
+                    })
+                  }
+                  className="w-4 h-4 text-rose-600 text-sm font-normal bg-slate-100 border-slate-300 rounded focus:ring-rose-500"
+                />
+              </div>
+              <div className="flex space-x-2">
+                <h1 className="text-slate-600 text-sm tracking-normal leading-tight">
+                  Действует акция (скидка)
+                </h1>
+                <input
+                  id="isDiscounted"
+                  name="isDiscounted"
+                  checked={editedProduct.isDiscounted}
+                  type="checkbox"
+                  onChange={(e) =>
+                    setEditedProduct({
+                      ...editedProduct,
+                      isDiscounted: e.target.checked,
+                    })
+                  }
+                  className="w-4 h-4 text-lime-600 text-sm font-normal bg-slate-100 border-slate-300 rounded focus:ring-lime-500"
+                />
+              </div>
+              <div className="flex space-x-2">
+                <h1 className="text-slate-600 text-sm tracking-normal leading-tight">
+                  Скрыть для покупателей
+                </h1>
+                <input
+                  id="invisible"
+                  name="invisible"
+                  checked={editedProduct.invisible}
+                  type="checkbox"
+                  onChange={(e) =>
+                    setEditedProduct({
+                      ...editedProduct,
+                      invisible: e.target.checked,
+                    })
+                  }
+                  className="w-4 h-4 text-slate-400 text-sm font-normal bg-slate-100 border-slate-300 rounded focus:ring-slate-500"
+                />
+              </div>
+            </div>
+          )}
+
+          {currentStep === 1 && editedProduct.isDiscounted && (
             <div>
               <div className="text-center">
                 <span className="text-xs text-orange-500 font-normal">
-                  Если акция не применяется к данному товару, оставьте поля
-                  начала и окончания акции пустыми
+                  Если скидка не имеет конкретного срока действия, оставьте
+                  пустыми поля "Начало" и "Окончание".
                 </span>
               </div>
               <div className="pt-4 pb-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -484,7 +513,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
                     htmlFor="promoEndDate"
                     className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm"
                   >
-                    Конец акции
+                    Окончание акции
                   </label>
                 </div>
               </div>
@@ -492,67 +521,8 @@ const ProductsModal: FC<ProductsModalProps> = ({
           )}
 
           {currentStep === 1 && (
-            <div className="flex space-x-2 items-center justify-between pb-4">
-              <div className="flex space-x-2">
-                <h1 className="text-slate-600 text-sm tracking-normal leading-tight">
-                  Новый
-                </h1>
-                <input
-                  id="isNew"
-                  name="isNew"
-                  checked={editedProduct.isNew}
-                  type="checkbox"
-                  onChange={(e) =>
-                    setEditedProduct({
-                      ...editedProduct,
-                      isNew: e.target.checked,
-                    })
-                  }
-                  className="w-4 h-4 text-rose-600 text-sm font-normal bg-slate-100 border-slate-300 rounded focus:ring-rose-500"
-                />
-              </div>
-              <div className="flex space-x-2">
-                <h1 className="text-slate-600 text-sm tracking-normal leading-tight">
-                  Действует скидка
-                </h1>
-                <input
-                  id="isDiscounted"
-                  name="isDiscounted"
-                  checked={editedProduct.isDiscounted}
-                  type="checkbox"
-                  onChange={(e) =>
-                    setEditedProduct({
-                      ...editedProduct,
-                      isDiscounted: e.target.checked,
-                    })
-                  }
-                  className="w-4 h-4 text-lime-600 text-sm font-normal bg-slate-100 border-slate-300 rounded focus:ring-lime-500"
-                />
-              </div>
-              <div className="flex space-x-2">
-                <h1 className="text-slate-600 text-sm tracking-normal leading-tight">
-                  Скрыть для покупателей
-                </h1>
-                <input
-                  id="invisible"
-                  name="invisible"
-                  checked={editedProduct.invisible}
-                  type="checkbox"
-                  onChange={(e) =>
-                    setEditedProduct({
-                      ...editedProduct,
-                      invisible: e.target.checked,
-                    })
-                  }
-                  className="w-4 h-4 text-slate-400 text-sm font-normal bg-slate-100 border-slate-300 rounded focus:ring-slate-500"
-                />
-              </div>
-            </div>
-          )}
-
-          {currentStep === 1 && (
-            <div className="description-container resize-y overflow-auto min-h-50">
-              <label htmlFor="description" className="text-slate-600 text-sm">
+            <div className="description-container resize-y overflow-auto min-h-50 text-center">
+              <label htmlFor="description" className="text-slate-600 text-md font-normal">
                 Описание продукта
               </label>
               <ReactQuill

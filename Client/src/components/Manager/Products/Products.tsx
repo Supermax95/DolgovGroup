@@ -401,22 +401,14 @@ const Products: FC = () => {
 
               <div className="flex-auto px-6 py-5">
                 <span className="mb-2 flex items-center text-sm font-semibold text-slate-500">
-                  {/* <span className="mb-2 flex items-center justify-end text-sm font-semibold text-slate-500"> */}
-
                   <ClipboardDocumentCheckIcon
                     className="mr-1 h-5 w-5 cursor-pointer hover:text-amber-600"
                     onClick={() => handleCopyToClipboard(product.article)}
                   />
-                  {/* <p className="mb-2 text-slate-600 text-sm font-normal">
-                    Артикул:{' '} */}
+
                   <span className="text-slate-700 font-medium">
                     {product.article || 'нет'}
                   </span>
-                  {/* <ClipboardDocumentCheckIcon
-                    className="ml-1 h-5 w-5 cursor-pointer hover:text-amber-600"
-                    onClick={() => handleCopyToClipboard(product.article)}
-                  /> */}
-                  {/* </p> */}
                 </span>
 
                 <h3
@@ -494,8 +486,15 @@ const Products: FC = () => {
                     )}
                   </div>
                 ) : (
-                  <div className="mb-2 mt-4 text-lime-600 text-sm font-medium text-center">
-                    Не участвует в акции
+                  <div className="mb-2 mt-4text-center">
+                    <p className="mb-2 text-slate-600 text-sm font-normal text-center">
+                      Период акции:
+                      <p className="text-center">
+                        <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
+                          бессрочная
+                        </span>
+                      </p>
+                    </p>
                   </div>
                 )}
 
