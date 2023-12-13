@@ -99,7 +99,7 @@ const Promotions: FC = () => {
       dateStart: '',
       dateEnd: '',
       carousel: false,
-      invisible: true,
+      invisible: false,
     });
     setModalOpen(true);
   };
