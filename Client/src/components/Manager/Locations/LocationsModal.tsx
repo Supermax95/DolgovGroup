@@ -193,7 +193,7 @@ const LocationsModal: FC<LocationsModalProps> = ({
       name: 'invisible',
       type: 'boolean',
       value: editedLocation.invisible,
-      title: 'Скрыт для покупателей',
+      title: 'Скрыть для покупателей',
       htmlFor: 'invisible',
       onChange: (value: boolean) => {
         setEditedLocation({

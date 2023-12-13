@@ -15,6 +15,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Button from '../../../ui/Button';
+import { PencilSquareIcon } from '@heroicons/react/24/outline';
 
 export interface IPromotion {
   id: number;
@@ -180,6 +181,8 @@ const Promotions: FC = () => {
     slidesToShow: 3,
     slidesToScroll: 1,
   };
+  const backgroundImageUrl =
+    'https://images.unsplash.com/photo-1623479322729-28b25c16b011?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1740&q=80';
 
   return (
     <Wrapper>
@@ -187,27 +190,32 @@ const Promotions: FC = () => {
         <div className="col-span-full mb-4">
           <div className="flex items-center justify-between">
             <Search onFilter={setSearchText} />
-            <button
-              className="ml-auto bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
-              onClick={openAddModal}
-            >
-              Добавить
-            </button>
+
+            <div className="flex items-end justify-center py-2">
+              <Button
+                type="button"
+                title="Добавить"
+                onClick={openAddModal}
+                styleCSSButton={
+                  'relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-slate-700 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 hover:text-white'
+                }
+                styleCSSSpan={
+                  'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
+                }
+              />
+            </div>
           </div>
         </div>
 
-        {/* Карусель */}
-        {displayedPromotions.some((promotion) => promotion.carousel) && (
+        {/* {displayedPromotions.some((promotion) => promotion.carousel) && (
           <div className="col-span-full">
             <Slider {...settings} className="rounded-lg  slick-slider">
               {displayedPromotions
                 .filter((promotion) => promotion.carousel)
                 .map((promotion) => (
                   <article key={promotion.id} className="relative slick-slide">
-                    {/* Здесь размещаете содержимое карусели */}
                     <div className="mb-4 mx-4 ">
                       {' '}
-                      {/* Увеличено расстояние между слайдами с помощью mx-4 */}
                       <img
                         className="w-full max-h-60 object-cover rounded-lg"
                         src={`${VITE_URL}${promotion.photo}`}
@@ -224,20 +232,113 @@ const Promotions: FC = () => {
                 ))}
             </Slider>
           </div>
-        )}
+        )} */}
+
+        <div className="scroll-smooth snap-mandatory snap-x overflow-x-auto">
+          {displayedPromotions.some((promotion) => promotion.carousel) && (
+            <section className="max-w-6xl mx-auto px-4 ">
+              <div className="text-center pb-4">
+                <h1 className="font-bold text-xl lg:text-xl font-heading text-lime-600">
+                  Главные акции
+                </h1>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {displayedPromotions.length &&
+                  displayedPromotions
+                    .filter((promotion) => promotion.carousel)
+                    .map((promotion) => (
+                      <div
+                        key={promotion.id}
+                        className=" mx-auto my-4 flex w-full flex-col overflow-hidden rounded-2xl border border-gray-300 bg-white text-slate-900 hover:shadow-lg"
+                      >
+                        <div className="relative">
+                          <div className="absolute flex h-6 w-6 items-center justify-center rounded-lg bg-slate-400 hover:bg-lime-600 top-2 right-2 ">
+                            <PencilSquareIcon
+                              className="mr-0 h-5 w-5 cursor-pointer text-white "
+                              onClick={() => openEditModal(promotion)}
+                            />
+                          </div>
+                          <img
+                            className="object-center object-cover h-auto w-full"
+                            src={`${VITE_URL}${promotion.photo}`}
+                            alt={promotion.title}
+                          />
+                        </div>
+                        <div className="text-center py-8 sm:py-6">
+                          <p className="text-xl text-gray-700 font-bold mb-2">
+                            {promotion.title}
+                          </p>
+
+                          {promotion.dateStart && promotion.dateEnd ? (
+                            <div className="mb-2 mt-4 text-center">
+                              {isToday(parseISO(promotion.dateEnd)) ? (
+                                <span className="text-rose-600 text-sm font-medium">
+                                  Акция истекает сегодня
+                                </span>
+                              ) : isPast(parseISO(promotion.dateEnd)) ? (
+                                <span className="text-amber-600 text-sm font-medium">
+                                  Акция завершена
+                                </span>
+                              ) : (
+                                <p className="mb-2 text-slate-600 text-sm font-normal text-center">
+                                  Период акции:
+                                  <p className="text-center">
+                                    с{' '}
+                                    <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
+                                      {reverseDate(promotion.dateStart)}
+                                    </span>{' '}
+                                    по{' '}
+                                    <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
+                                      {reverseDate(promotion.dateEnd)}
+                                    </span>
+                                  </p>
+                                </p>
+                              )}
+                            </div>
+                          ) : (
+                            <div className="mb-2 mt-4text-center">
+                              <p className="mb-2 text-slate-600 text-sm font-normal text-center">
+                                Период акции:
+                                <p className="text-center">
+                                  <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
+                                    бессрочная
+                                  </span>
+                                </p>
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+              </div>
+            </section>
+          )}
+        </div>
+
+        <div className="mt-6 pt-0.5 bg-lime-400 rounded-md shadow-sm"></div>
 
         {/* Карточки */}
         <div className="col-span-full mt-8">
+          <div className="text-center pb-4">
+            <h1 className="font-bold text-xl lg:text-xl font-heading text-lime-600">
+              Какие-то другие акции
+            </h1>
+          </div>
           <div className="mx-auto grid max-w-screen-lg justify-center px-4 sm:grid-cols-2 sm:gap-4 sm:px-8 md:grid-cols-3">
             {displayedPromotions
               .filter((promotion) => !promotion.carousel)
               .map((promotion) => (
                 <article
                   key={promotion.id}
-                  className="mx-auto my-4 flex w-full flex-col overflow-hidden rounded-2xl border border-gray-300 bg-white text-gray-900 hover:shadow-lg"
+                  className="mx-auto my-4 flex w-full flex-col overflow-hidden rounded-2xl border border-gray-300 bg-white text-slate-900 hover:shadow-lg"
                 >
-                  {/* Здесь размещаете содержимое карточки */}
                   <div className="relative">
+                    <div className="absolute flex h-6 w-6 items-center justify-center rounded-lg bg-slate-400 hover:bg-lime-600 top-2 right-2 ">
+                      <PencilSquareIcon
+                        className="mr-0 h-5 w-5 cursor-pointer text-white "
+                        onClick={() => openEditModal(promotion)}
+                      />
+                    </div>
                     <img
                       className="h-56 w-full object-cover"
                       src={`${VITE_URL}${promotion.photo}`}
@@ -289,7 +390,8 @@ const Promotions: FC = () => {
                       </div>
                     )}
 
-                    {promotion.carousel ? (
+                    {/* вообще не уверена, что это нужно */}
+                    {/* {promotion.carousel ? (
                       <p
                         //! а это где-то отображается????
                         className="mb-2 text-slate-600 text-sm font-normal text-center"
@@ -304,18 +406,7 @@ const Promotions: FC = () => {
                           Акция вне основной карусели
                         </span>
                       </p>
-                    )}
-                  </div>
-                  <div className="flex items-end justify-center mb-4">
-                    <Button
-                      type="button"
-                      title="Редактировать"
-                      onClick={() => openEditModal(promotion)}
-                      styleCSSButton={`relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-normal text-slate-600 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 hover:text-white`}
-                      styleCSSSpan={
-                        'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
-                      }
-                    />
+                    )} */}
                   </div>
                 </article>
               ))}

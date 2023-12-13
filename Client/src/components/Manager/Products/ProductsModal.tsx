@@ -397,7 +397,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
               {axiosError}
             </div>
           )}
-          
+
           {currentStep === 1 && (
             <InputModal
               containerClassName={
@@ -522,9 +522,14 @@ const ProductsModal: FC<ProductsModalProps> = ({
 
           {currentStep === 1 && (
             <div className="description-container resize-y overflow-auto min-h-50 text-center">
-              <label htmlFor="description" className="text-slate-600 text-md font-normal">
+              <label
+                htmlFor="description"
+                className="text-slate-600 text-sm font-normal"
+              >
                 Описание продукта
               </label>
+              <div className="mb-2"></div>
+
               <ReactQuill
                 id="description"
                 theme="snow"
