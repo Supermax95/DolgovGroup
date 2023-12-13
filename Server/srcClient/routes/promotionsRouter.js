@@ -23,7 +23,10 @@ router.get('/admin/promotions', async (req, res) => {
     }
 
     const updatedPromotions = await Promotion.findAll({
-      order: [['dateStart', 'DESC']],
+      order: [
+        ['dateStart', 'DESC'],
+        ['title', 'ASC'],
+      ],
       raw: true,
     });
 
@@ -59,7 +62,10 @@ router.post('/admin/promotions', async (req, res) => {
     });
 
     const promotions = await Promotion.findAll({
-      order: [['dateStart', 'DESC']],
+      order: [
+        ['dateStart', 'DESC'],
+        ['title', 'ASC'],
+      ],
       raw: true,
     });
     res.json({ postId: createdPromotion.id, promotions });
@@ -129,7 +135,10 @@ router.put('/admin/promotions', async (req, res) => {
     );
 
     const promotions = await Promotion.findAll({
-      order: [['dateStart', 'DESC']],
+      order: [
+        ['dateStart', 'DESC'],
+        ['title', 'ASC'],
+      ],
       raw: true,
     });
     res.json({ postId: newInfo.id, promotions });
