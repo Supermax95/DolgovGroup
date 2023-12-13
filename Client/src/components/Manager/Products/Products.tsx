@@ -16,6 +16,7 @@ import { unwrapResult } from '@reduxjs/toolkit';
 import {
   CheckIcon,
   ClipboardDocumentCheckIcon,
+  PencilSquareIcon,
 } from '@heroicons/react/24/outline';
 import Button from '../../../ui/Button';
 
@@ -390,22 +391,31 @@ const Products: FC = () => {
                   src={`${VITE_URL}${product.photo}`}
                   alt={product.productName}
                 />
+                <div className="absolute flex h-6 w-6 items-center justify-center rounded-lg bg-slate-400 hover:bg-lime-600 top-2 right-2 ">
+                  <PencilSquareIcon
+                    className="mr-0 h-5 w-5 cursor-pointer text-white "
+                    onClick={() => openEditModal(product)}
+                  />
+                </div>
                 {(product.isDiscounted ||
                   product.isNew ||
                   product.invisible) && (
-                  <div className="absolute top-0 right-0 m-2">
+                  <div
+                    className="absolute bottom-0 left-2 p-2 text-center flex space-x-2 items-center"
+                    //className="absolute bottom-0 left-1/2 transform -translate-x-1/2 p-2 text-center flex space-x-2 items-center"
+                  >
                     {product.isDiscounted && (
-                      <p className="rounded-full bg-emerald-500 p-1 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3">
+                      <p className="rounded-full border-2 border-slate-300 bg-emerald-500 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3 mt-2">
                         Скидка
                       </p>
                     )}
                     {product.isNew && (
-                      <p className="rounded-full bg-rose-500 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3 mt-2">
+                      <p className="rounded-full border-2 border-slate-300 bg-rose-500 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3 mt-2">
                         Новый
                       </p>
                     )}
                     {product.invisible && (
-                      <p className="rounded-full border-2 border-red-700 text-[8px] font-bold uppercase tracking-wide text-slate-600 sm:py-1 sm:px-3 mt-2">
+                      <p className="rounded-full border-2 border-slate-300 bg-slate-500 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3 mt-2">
                         Скрыт
                       </p>
                     )}
@@ -533,7 +543,7 @@ const Products: FC = () => {
                   </div>
                 )} */}
               </div>
-              <div className="flex items-end justify-center mb-4">
+              {/* <div className="flex items-end justify-center mb-4">
                 <Button
                   type="button"
                   title="Редактировать"
@@ -543,7 +553,7 @@ const Products: FC = () => {
                     'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
                   }
                 />
-              </div>
+              </div> */}
             </article>
           ))}
         </div>

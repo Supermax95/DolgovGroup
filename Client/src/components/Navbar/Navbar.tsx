@@ -53,7 +53,7 @@ const Navbar: FC = () => {
     },
     {
       id: 5,
-      name: 'Акции',
+      name: 'Маркетинговые акции',
       href: '/promotions',
       isActive: location.pathname === '/stock',
     },
