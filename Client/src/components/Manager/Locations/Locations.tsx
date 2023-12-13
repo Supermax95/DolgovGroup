@@ -156,6 +156,7 @@ const Location: FC = () => {
       latitude: '',
       longitude: '',
       hours: '',
+      invisible: false,
     });
     setModalOpen(true);
   };

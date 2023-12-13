@@ -7,7 +7,6 @@ const getEmployees = createAsyncThunk('admin/getemployees', async () => {
   const response: AxiosResponse = await axios.get(
     `${VITE_URL}/admin/employees`
   );
-  console.log('====>', response.data);
   return response.data;
 });
 

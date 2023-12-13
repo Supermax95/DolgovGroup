@@ -13,6 +13,8 @@ interface RequestData {
     barcode: string;
     userStatus: string;
     isActivated: boolean;
+    bonusProgram: string;
+    balance: number;
   };
 }
 
@@ -25,6 +27,8 @@ interface ResponseData {
   barcode: string;
   userStatus: string;
   isActivated: boolean;
+  bonusProgram: string;
+  balance: number;
 }
 
 

@@ -46,13 +46,16 @@ const ManagementModal: FC<ManagersModalProps> = ({
 }) => {
   const dispatch = useAppDispatch();
 
-  manager || {
-    id: 0,
-    lastName: '',
-    firstName: '',
-    middleName: '',
-    email: '',
-  };
+  const managerToSave: IManager = editedManager
+  ? editedManager
+  : {
+      id: 0,
+      lastName: '',
+      firstName: '',
+      middleName: '',
+      email: '',
+      phone: '',
+    };
 
   useEffect(() => {
     console.log('Данные менеджера:', editedManager);
@@ -74,9 +77,9 @@ const ManagementModal: FC<ManagersModalProps> = ({
     e.preventDefault();
     try {
       if (isAddingMode) {
-        onSaveAdd(editedManager);
+        onSaveAdd(managerToSave);
       } else {
-        onSaveEdit(editedManager);
+        onSaveEdit(managerToSave);
       }
     } catch (error) {
       console.error('Произошла ошибка при сохранении:', error);
@@ -108,11 +111,14 @@ const ManagementModal: FC<ManagersModalProps> = ({
       autoComplete: 'off',
       title: 'Фамилия',
       htmlFor: 'lastName',
-      onChange: (value: string) =>
-        setEditedManager({
-          ...editedManager,
-          lastName: value,
-        }),
+      onChange: (value: string | boolean | number | Date) => {
+        if (typeof value === 'string') {
+          setEditedManager({
+            ...editedManager,
+            lastName: value,
+          });
+        }
+      },
       required: true,
     },
     {
@@ -124,11 +130,14 @@ const ManagementModal: FC<ManagersModalProps> = ({
       autoComplete: 'off',
       title: 'Имя',
       htmlFor: 'firstName',
-      onChange: (value: string) =>
-        setEditedManager({
-          ...editedManager,
-          firstName: value,
-        }),
+      onChange: (value: string | boolean | number | Date) => {
+        if (typeof value === 'string') {
+          setEditedManager({
+            ...editedManager,
+            firstName: value,
+          });
+        }
+      },
       required: true,
     },
 
@@ -141,11 +150,14 @@ const ManagementModal: FC<ManagersModalProps> = ({
       autoComplete: 'off',
       title: 'Отчество',
       htmlFor: 'middleName',
-      onChange: (value: string) =>
-        setEditedManager({
-          ...editedManager,
-          middleName: value,
-        }),
+      onChange: (value: string | boolean | number | Date) => {
+        if (typeof value === 'string') {
+          setEditedManager({
+            ...editedManager,
+            middleName: value,
+          });
+        }
+      },
       required: true,
     },
     {
@@ -157,11 +169,14 @@ const ManagementModal: FC<ManagersModalProps> = ({
       autoComplete: 'off',
       title: 'Телефон',
       htmlFor: 'phone',
-      onChange: (value: string) =>
-        setEditedManager({
-          ...editedManager,
-          phone: value,
-        }),
+      onChange: (value: string | boolean | number | Date) => {
+        if (typeof value === 'string') {
+          setEditedManager({
+            ...editedManager,
+            phone: value,
+          });
+        }
+      },
       required: true,
       pattern: '\\+7 \\(\\d{3}\\) \\d{3}-\\d{2}-\\d{2}',
     },
@@ -189,11 +204,14 @@ const ManagementModal: FC<ManagersModalProps> = ({
       autoComplete: 'off',
       title: 'Email',
       htmlFor: 'email',
-      onChange: (value: string) =>
-        setEditedManager({
-          ...editedManager,
-          email: value,
-        }),
+      onChange: (value: string | boolean | number | Date) => {
+        if (typeof value === 'string') {
+          setEditedManager({
+            ...editedManager,
+            email: value,
+          });
+        }
+      },
       required: true,
     },
   ];

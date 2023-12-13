@@ -19,6 +19,8 @@ interface User {
   barcode: string;
   userStatus: string;
   isActivated: boolean;
+  bonusProgram: string;
+  balance: number;
 }
 
 interface IColumnsDefaultName {
