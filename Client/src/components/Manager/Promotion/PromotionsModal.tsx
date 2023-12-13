@@ -265,11 +265,106 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
 
           {currentStep === 1 && (
             <InputModal
-              containerClassName={
-                'py-8 grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'
-              }
+              // containerClassName={
+              //   'py-8 grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'
+              // }
               inputFields={inputFields}
             />
+          )}
+
+          {currentStep === 1 && (
+            <div className="flex space-x-2 items-center justify-between pb-4">
+              <div className="flex space-x-2">
+                <h1 className="text-slate-600 text-sm tracking-normal leading-tight">
+                  Акция в основной карусели
+                </h1>
+                <input
+                  id="isNew"
+                  name="isNew"
+                  checked={editedPromotion.carousel}
+                  type="checkbox"
+                  onChange={(e) =>
+                    setEditedPromotion({
+                      ...editedPromotion,
+                      carousel: e.target.checked,
+                    })
+                  }
+                  className="w-4 h-4 text-rose-600 text-sm font-normal bg-slate-100 border-slate-300 rounded focus:ring-rose-500"
+                />
+              </div>
+              <div className="flex space-x-2">
+                <h1 className="text-slate-600 text-sm tracking-normal leading-tight">
+                  Скрыть для покупателей
+                </h1>
+                <input
+                  id="isDiscounted"
+                  name="isDiscounted"
+                  checked={editedPromotion.invisible}
+                  type="checkbox"
+                  onChange={(e) =>
+                    setEditedPromotion({
+                      ...editedPromotion,
+                      invisible: e.target.checked,
+                    })
+                  }
+                  className="w-4 h-4 text-slate-400 text-sm font-normal bg-slate-100 border-slate-300 rounded focus:ring-slate-500"
+                />
+              </div>
+            </div>
+          )}
+
+          {currentStep === 1 && (
+            <div>
+              <div className="text-center">
+                <span className="text-xs text-orange-500 font-normal">
+                  Если акция не имеет конкретного срока действия, оставьте
+                  пустыми поля "Начало" и "Окончание".
+                </span>
+              </div>
+              <div className="pt-4 pb-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
+                <div className="relative">
+                  <input
+                    id="promoStartDate"
+                    type="date"
+                    value={editedPromotion.dateStart}
+                    onChange={(e) =>
+                      setEditedPromotion({
+                        ...editedPromotion,
+                        dateStart: e.target.value,
+                      })
+                    }
+                    className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
+                  />
+                  <label
+                    htmlFor="promoStartDate"
+                    className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm"
+                  >
+                    Начало акции
+                  </label>
+                </div>
+
+                <div className="relative">
+                  <input
+                    id="promoEndDate"
+                    type="date"
+                    value={editedPromotion.dateEnd}
+                    onChange={(e) =>
+                      setEditedPromotion({
+                        ...editedPromotion,
+                        dateEnd: e.target.value,
+                      })
+                    }
+                    className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
+                  />
+                  <label
+                    htmlFor="promoEndDate"
+                    className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm"
+                  >
+                    Окончание акции
+                  </label>
+                </div>
+              </div>
+            </div>
           )}
 
           {currentStep === 1 && (
@@ -278,8 +373,10 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
                 htmlFor="description"
                 className="text-slate-600 text-sm font-normal"
               >
-                Описание промо-акции
+                Описание акции
               </label>
+              <div className="mb-2"></div>
+
               <ReactQuill
                 theme="snow"
                 value={editedPromotion.description}

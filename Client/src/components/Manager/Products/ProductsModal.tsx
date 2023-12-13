@@ -559,6 +559,8 @@ const ProductsModal: FC<ProductsModalProps> = ({
               >
                 Описание продукта
               </label>
+              <div className="mb-2"></div>
+
               <ReactQuill
                 id="description"
                 theme="snow"

@@ -16,6 +16,7 @@ import { unwrapResult } from '@reduxjs/toolkit';
 import {
   CheckIcon,
   ClipboardDocumentCheckIcon,
+  PencilSquareIcon,
 } from '@heroicons/react/24/outline';
 import Button from '../../../ui/Button';
 
@@ -332,49 +333,54 @@ const Products: FC = () => {
               />
             </div>
           </div>
-        </div>
-        <div className="flex items-center gap-4">
-          <label className="flex items-center space-x-2 text-slate-600">
-            <input
-              type="radio"
-              value="visible"
-              checked={selectedVisibility === 'visible'}
-              onChange={() => setSelectedVisibility('visible')}
-              className="form-radio text-lime-600"
-            />
-            <span className="ml-1">Видимые для покупателей</span>
-          </label>
-          <label className="flex items-center space-x-2 text-slate-600">
-            <input
-              type="radio"
-              value="invisible"
-              checked={selectedVisibility === 'invisible'}
-              onChange={() => setSelectedVisibility('invisible')}
-              className="form-radio text-lime-600"
-            />
-            <span className="ml-1">Скрытые от покупателей</span>
-          </label>
-          <label className="flex items-center space-x-2 text-slate-600">
-            <input
-              type="radio"
-              value="all"
-              checked={selectedVisibility === 'all'}
-              onChange={() => setSelectedVisibility('all')}
-              className="form-radio text-lime-600"
-            />
-            <span className="ml-1">Сброс фильтра</span>
-          </label>
-          <label className="flex items-center space-x-2 text-slate-600">
-            <input
-              type="checkbox"
-              onChange={(e) => {
-                setCurrentPage(1);
-                setSearchText(e.target.checked ? 'завершена' : '');
-              }}
-              className="form-checkbox text-lime-600"
-            />
-            <span className="ml-1">Показать завершенные акции</span>
-          </label>
+          {/* </div> */}
+          <div className="main flex border rounded-full overflow-hidden select-none space-x-3 py-2 px-2">
+            {/* <div className="title py-2 my-auto px-5 bg-blue-500 text-white text-sm font-semibold mr-3">
+            Gender
+          </div> */}
+
+            <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
+              <input
+                type="radio"
+                value="visible"
+                checked={selectedVisibility === 'visible'}
+                onChange={() => setSelectedVisibility('visible')}
+                className="w-4 h-4 text-slate-400 text-sm font-normal bg-slate-100 border-slate-300 rounded-full focus:ring-slate-500"
+              />
+              <span className="ml-1">Видимые для покупателей</span>
+            </label>
+            <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
+              <input
+                type="radio"
+                value="invisible"
+                checked={selectedVisibility === 'invisible'}
+                onChange={() => setSelectedVisibility('invisible')}
+                className="w-4 h-4 text-slate-400 text-sm font-normal bg-slate-100 border-slate-300 rounded-full focus:ring-slate-500"
+              />
+              <span className="ml-1">Скрытые от покупателей</span>
+            </label>
+            <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
+              <input
+                type="radio"
+                value="all"
+                checked={selectedVisibility === 'all'}
+                onChange={() => setSelectedVisibility('all')}
+                className="w-4 h-4 text-slate-400 text-sm font-normal bg-slate-100 border-slate-300 rounded-full focus:ring-slate-500"
+              />
+              <span className="ml-1">Сброс фильтра</span>
+            </label>
+            <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
+              <input
+                type="checkbox"
+                onChange={(e) => {
+                  setCurrentPage(1);
+                  setSearchText(e.target.checked ? 'завершена' : '');
+                }}
+                className="w-4 h-4 text-amber-600 text-sm font-normal bg-slate-100 border-slate-300 rounded focus:ring-amber-500"
+              />
+              <span className="ml-1">Показать завершенные акции</span>
+            </label>
+          </div>
         </div>
 
         {/** новая карточка */}
@@ -390,22 +396,31 @@ const Products: FC = () => {
                   src={`${VITE_URL}${product.photo}`}
                   alt={product.productName}
                 />
+                <div className="absolute flex h-6 w-6 items-center justify-center rounded-lg bg-slate-400 hover:bg-lime-600 top-2 right-2 ">
+                  <PencilSquareIcon
+                    className="mr-0 h-5 w-5 cursor-pointer text-white "
+                    onClick={() => openEditModal(product)}
+                  />
+                </div>
                 {(product.isDiscounted ||
                   product.isNew ||
                   product.invisible) && (
-                  <div className="absolute top-0 right-0 m-2">
+                  <div
+                    className="absolute bottom-0 left-2 p-2 text-center flex space-x-2 items-center"
+                    //className="absolute bottom-0 left-1/2 transform -translate-x-1/2 p-2 text-center flex space-x-2 items-center"
+                  >
                     {product.isDiscounted && (
-                      <p className="rounded-full bg-emerald-500 p-1 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3">
+                      <p className="rounded-full border-2 border-slate-300 bg-emerald-500 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3 mt-2">
                         Скидка
                       </p>
                     )}
                     {product.isNew && (
-                      <p className="rounded-full bg-rose-500 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3 mt-2">
+                      <p className="rounded-full border-2 border-slate-300 bg-rose-500 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3 mt-2">
                         Новый
                       </p>
                     )}
                     {product.invisible && (
-                      <p className="rounded-full border-2 border-red-700 text-[8px] font-bold uppercase tracking-wide text-slate-600 sm:py-1 sm:px-3 mt-2">
+                      <p className="rounded-full border-2 border-slate-300 bg-slate-500 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3 mt-2">
                         Скрыт
                       </p>
                     )}
@@ -433,23 +448,23 @@ const Products: FC = () => {
                 </h3>
 
                 {product.isDiscounted && (
-                  <p className="mb-2 text-slate-600 text-sm font-normal">
+                  <p className="mb-2 text-slate-600 text-sm font-normal  text-sm font-normal">
                     Оригинальная стоимость:{' '}
-                    <del className="text-slate-600 font-medium">
+                    <del className="text-slate-600 text-sm font-normal  font-medium">
                       {product.originalPrice} ₽
                     </del>
                   </p>
                 )}
 
                 {product.isDiscounted ? (
-                  <p className="mb-2 text-slate-600 text-sm font-normal">
+                  <p className="mb-2 text-slate-600 text-sm font-normal  text-sm font-normal">
                     Цена со скидкой для клиента:{' '}
                     <span className="text-rose-600 font-medium">
                       {product.customerPrice} ₽
                     </span>
                   </p>
                 ) : (
-                  <p className="mb-2 text-slate-600 text-sm font-normal">
+                  <p className="mb-2 text-slate-600 text-sm font-normal  text-sm font-normal">
                     Оригинальная стоимость:{' '}
                     <span className="text-lime-600 font-medium">
                       {product.originalPrice} ₽
@@ -458,14 +473,14 @@ const Products: FC = () => {
                 )}
 
                 {product.employeePrice ? (
-                  <p className="mb-2 text-slate-600 text-sm font-normal">
+                  <p className="mb-2 text-slate-600 text-sm font-normal  text-sm font-normal">
                     Цена для сотрудников:{' '}
                     <span className="text-amber-600 font-medium">
                       {product.employeePrice} ₽
                     </span>
                   </p>
                 ) : (
-                  <p className="mb-2 text-slate-600 text-sm font-normal">
+                  <p className="mb-2 text-slate-600 text-sm font-normal  text-sm font-normal">
                     Цена для сотрудников:{' '}
                     <span className="text-amber-600 font-medium">
                       не указана
@@ -484,7 +499,7 @@ const Products: FC = () => {
                         Акция завершена
                       </span>
                     ) : (
-                      <p className="mb-2 text-slate-600 text-sm font-normal text-center">
+                      <p className="mb-2 text-slate-600 text-sm font-normal  text-sm font-normal text-center">
                         Период акции:
                         <p className="text-center">
                           с{' '}
@@ -501,7 +516,7 @@ const Products: FC = () => {
                   </div>
                 ) : (
                   <div className="mb-2 mt-4text-center">
-                    <p className="mb-2 text-slate-600 text-sm font-normal text-center">
+                    <p className="mb-2 text-slate-600 text-sm font-normal  text-sm font-normal text-center">
                       Период акции:
                       <p className="text-center">
                         <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
@@ -515,7 +530,7 @@ const Products: FC = () => {
                 {/* //! даже если описания нет, инпут остаётся, тернарка не работает, т.к. теги почему-то хранятся в бд */}
                 {/* {product.description ? (
                   <div className="mb-2 mt-4 w-full">
-                    <p className="text-slate-600 text-sm font-normal text-center">
+                    <p className="text-slate-600 text-sm font-normal  text-sm font-normal text-center">
                       Описание:
                     </p>
                     <div
@@ -528,22 +543,22 @@ const Products: FC = () => {
                     />
                   </div>
                 ) : (
-                  <div className="mb-2 mt-4 text-slate-600 text-sm font-medium text-center">
+                  <div className="mb-2 mt-4 text-slate-600 text-sm font-normal  text-sm font-medium text-center">
                     Описание отсутствует
                   </div>
                 )} */}
               </div>
-              <div className="flex items-end justify-center mb-4">
+              {/* <div className="flex items-end justify-center mb-4">
                 <Button
                   type="button"
                   title="Редактировать"
                   onClick={() => openEditModal(product)}
-                  styleCSSButton={`relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-normal text-slate-600 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 hover:text-white`}
+                  styleCSSButton={`relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-normal text-slate-600 text-sm font-normal  rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 hover:text-white`}
                   styleCSSSpan={
                     'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
                   }
                 />
-              </div>
+              </div> */}
             </article>
           ))}
         </div>

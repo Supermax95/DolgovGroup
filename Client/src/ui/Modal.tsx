@@ -27,7 +27,7 @@ const Modal: FC<IModal> = ({
   const modalWidthClass =
     modalTitle === 'Новый продукт' || modalTitle === 'Редактирование продукта'
       ? 'w-11/12 md:w-2/3 max-w-2xl'
-      : 'w-11/12 md:w-2/3 max-w-lg';
+      : 'w-11/12 md:w-2/3 max-w-2xl';
 
   const isNewTitle =
     modalTitle.includes('Новый') ||
@@ -57,7 +57,9 @@ const Modal: FC<IModal> = ({
                 <ArrowPathIcon className="w-6 h-6 text-slate-400" />
               </div>
             ) : modalTitle === 'Новый продукт' ||
-              modalTitle === 'Редактирование продукта' ? (
+              modalTitle === 'Редактирование продукта' ||
+              modalTitle === 'Новая акция' ||
+              modalTitle === 'Редактирование акции' ? (
               <div className="w-8 text-gray-600">
                 <ReceiptPercentIcon className="w-6 h-6 text-slate-400" />
               </div>
