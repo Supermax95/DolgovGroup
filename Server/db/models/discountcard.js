@@ -9,113 +9,48 @@ module.exports = (sequelize) => {
 
   DiscountCard.init(
     {
-      lastName: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        set(value) {
-          this.setDataValue('lastName', value.trim());
-        },
-      },
-      firstName: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        set(value) {
-          this.setDataValue('firstName', value.trim());
-        },
-      },
-      middleName: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        set(value) {
-          this.setDataValue('middleName', value.trim());
-        },
-      },
+      lastName: DataTypes.STRING,
+      firstName: DataTypes.STRING,
+      middleName: DataTypes.STRING,
       birthDate: DataTypes.DATEONLY,
-      email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        set(value) {
-          this.setDataValue('email', value.trim());
-        },
-      },
-      password: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        set(value) {
-          this.setDataValue('password', value.trim());
-        },
-      },
+      email: DataTypes.STRING,
+      password: DataTypes.STRING,
       photo: DataTypes.STRING,
-      cardType: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        set(value) {
-          this.setDataValue('cardType', value.trim());
-        },
-      },
-      barcode: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        set(value) {
-          this.setDataValue('barcode', value.trim());
-        },
-      },
-      bonusProgram: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        set(value) {
-          this.setDataValue('bonusProgram', value.trim());
-        },
-      },
+      cardType: DataTypes.STRING,
+      barcode: DataTypes.STRING,
+      bonusProgram: DataTypes.STRING,
       balance: DataTypes.INTEGER,
-      userStatus: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        set(value) {
-          this.setDataValue('userStatus', value.trim());
-        },
-      },
+      userStatus: DataTypes.STRING,
       isActivated: DataTypes.BOOLEAN,
-      activationLink: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        set(value) {
-          this.setDataValue('activationLink', value.trim());
-        },
-      },
+      activationLink: DataTypes.STRING,
     },
     {
       sequelize,
       modelName: 'DiscountCard',
-      // Хук перед созданием и обновлением
       hooks: {
         beforeCreate: (discountCard) => {
-          discountCard.setDataValues({
-            lastName: discountCard.lastName.trim(),
-            firstName: discountCard.firstName.trim(),
-            middleName: discountCard.middleName.trim(),
-            email: discountCard.email.trim(),
-            password: discountCard.password.trim(),
-            cardType: discountCard.cardType.trim(),
-            barcode: discountCard.barcode.trim(),
-            bonusProgram: discountCard.bonusProgram.trim(),
-            userStatus: discountCard.userStatus.trim(),
-            activationLink: discountCard.activationLink.trim(),
-          });
+          discountCard.lastName = discountCard.lastName?.trim();
+          discountCard.firstName = discountCard.firstName?.trim();
+          discountCard.middleName = discountCard.middleName?.trim();
+          discountCard.email = discountCard.email?.trim();
+          discountCard.password = discountCard.password?.trim();
+          discountCard.cardType = discountCard.cardType?.trim();
+          discountCard.barcode = discountCard.barcode?.trim();
+          discountCard.bonusProgram = discountCard.bonusProgram?.trim();
+          discountCard.userStatus = discountCard.userStatus?.trim();
+          discountCard.activationLink = discountCard.activationLink?.trim();
         },
         beforeUpdate: (discountCard) => {
-          discountCard.setDataValues({
-            lastName: discountCard.lastName.trim(),
-            firstName: discountCard.firstName.trim(),
-            middleName: discountCard.middleName.trim(),
-            email: discountCard.email.trim(),
-            password: discountCard.password.trim(),
-            cardType: discountCard.cardType.trim(),
-            barcode: discountCard.barcode.trim(),
-            bonusProgram: discountCard.bonusProgram.trim(),
-            userStatus: discountCard.userStatus.trim(),
-            activationLink: discountCard.activationLink.trim(),
-          });
+          discountCard.lastName = discountCard.lastName?.trim();
+          discountCard.firstName = discountCard.firstName?.trim();
+          discountCard.middleName = discountCard.middleName?.trim();
+          discountCard.email = discountCard.email?.trim();
+          discountCard.password = discountCard.password?.trim();
+          discountCard.cardType = discountCard.cardType?.trim();
+          discountCard.barcode = discountCard.barcode?.trim();
+          discountCard.bonusProgram = discountCard.bonusProgram?.trim();
+          discountCard.userStatus = discountCard.userStatus?.trim();
+          discountCard.activationLink = discountCard.activationLink?.trim();
         },
       },
     }
