@@ -84,30 +84,6 @@ const Location: FC = () => {
     ? locations.filter((location) => location.city === selectedCity)
     : locations;
 
-  // const filterLocations = () => {
-  //   let filtered = filteredLocations;
-
-  //   if (searchText !== '') {
-  //     filtered = filtered.filter((location) => {
-  //       const locationFields = [
-  //         String(location.city),
-  //         String(location.address),
-  //         String(location.latitude),
-  //         String(location.longitude),
-  //         String(location.hours),
-  //       ];
-
-  //       const searchTerms = searchText.toLowerCase().split(' ');
-
-  //       return searchTerms.every((term) =>
-  //         locationFields.some((field) => field.toLowerCase().includes(term))
-  //       );
-  //     });
-  //   }
-
-  //   return filtered;
-  // };
-
   const filterLocations = () => {
     let filtered = filteredLocations;
 
@@ -211,6 +187,52 @@ const Location: FC = () => {
     }
   };
 
+  const filterRadio = (
+    <div className="main flex flex-col border rounded-full overflow-hidden select-none px-4">
+      <div className="flex space-x-3 py-2 px-2">
+        <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
+          <input
+            type="radio"
+            value="visible"
+            checked={selectedVisibility === 'visible'}
+            onChange={() => {
+              setCurrentPage(1);
+              setSelectedVisibility('visible');
+            }}
+            className="w-4 h-4 text-slate-400 text-sm font-normal bg-slate-100 border-slate-300 rounded-full focus:ring-slate-500"
+          />
+          <span className="ml-1">Видимые для покупателей</span>
+        </label>
+        <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
+          <input
+            type="radio"
+            value="invisible"
+            checked={selectedVisibility === 'invisible'}
+            onChange={() => {
+              setCurrentPage(1);
+              setSelectedVisibility('invisible');
+            }}
+            className="w-4 h-4 text-slate-400 text-sm font-normal bg-slate-100 border-slate-300 rounded-full focus:ring-slate-500"
+          />
+          <span className="ml-1">Скрытые от покупателей</span>
+        </label>
+        <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
+          <input
+            type="radio"
+            value="all"
+            checked={selectedVisibility === 'all'}
+            onChange={() => {
+              setCurrentPage(1);
+              setSelectedVisibility('all');
+            }}
+            className="w-4 h-4 text-slate-400 text-sm font-normal bg-slate-100 border-slate-300 rounded-full focus:ring-slate-500"
+          />
+          <span className="ml-1">Сброс фильтра видимости</span>
+        </label>
+      </div>
+    </div>
+  );
+
   return (
     <Wrapper>
       <Sidebar
@@ -221,42 +243,10 @@ const Location: FC = () => {
         displayKey={(city) => city}
       />
       <div className="p-4">
-        <div className="flex items-center gap-4">
-          <label className="flex items-center space-x-2 text-slate-600">
-            <input
-              type="radio"
-              value="visible"
-              checked={selectedVisibility === 'visible'}
-              onChange={() => setSelectedVisibility('visible')}
-              className="form-radio text-lime-600"
-            />
-            <span className="ml-1">Видимые для покупателей</span>
-          </label>
-          <label className="flex items-center space-x-2 text-slate-600">
-            <input
-              type="radio"
-              value="invisible"
-              checked={selectedVisibility === 'invisible'}
-              onChange={() => setSelectedVisibility('invisible')}
-              className="form-radio text-lime-600"
-            />
-            <span className="ml-1">Скрытые от покупателей</span>
-          </label>
-          <label className="flex items-center space-x-2 text-slate-600">
-            <input
-              type="radio"
-              value="all"
-              checked={selectedVisibility === 'all'}
-              onChange={() => setSelectedVisibility('all')}
-              className="form-radio text-lime-600"
-            />
-            <span className="ml-1">Сброс фильтра</span>
-          </label>
-        </div>
-
         <Table
           title="Список магазинов"
           childrenSearch={<Search onFilter={setSearchText} />}
+          childrenFilter={filterRadio}
           columnsDefaultName={columnsDefaultName}
           data={displayedLocations}
           currentPage={currentPage}
@@ -291,87 +281,3 @@ const Location: FC = () => {
 };
 
 export default Location;
-
-// return (
-//   <Wrapper>
-//     <Sidebar
-//       items={uniqueCities}
-//       onItemSelect={setSelectedCity}
-//       title="Города"
-//       setCurrentPage={setCurrentPage}
-//       displayKey={(city) => city}
-//     />
-//     <div className="p-4">
-//         {/* Инпут для поиска */}
-//         <div className="mb-3">
-//         <Search onFilter={setSearchText} />
-//       </div>
-
-//       {/* Радиокнопки под инпутом для поиска */}
-//       <div className="mt-3">
-//         <label>
-//           <input
-//             type="radio"
-//             value="visible"
-//             checked={selectedVisibility === 'visible'}
-//             onChange={() => setSelectedVisibility('visible')}
-//           />
-//           Видимые для покупателей
-//         </label>
-//         <label>
-//           <input
-//             type="radio"
-//             value="invisible"
-//             checked={selectedVisibility === 'invisible'}
-//             onChange={() => setSelectedVisibility('invisible')}
-//           />
-//           Скрытые от покупателей
-//         </label>
-//         <label>
-//           <input
-//             type="radio"
-//             value="all"
-//             checked={selectedVisibility === 'all'}
-//             onChange={() => setSelectedVisibility('all')}
-//           />
-//           Сброс фильтра
-//         </label>
-//       </div>
-//       <div className="mb-3">
-//         <Table
-//           title="Список магазинов"
-//           // childrenSearch={<Search onFilter={setSearchText} />}
-//           columnsDefaultName={columnsDefaultName}
-//           data={displayedLocations}
-//           currentPage={currentPage}
-//           itemsPerPage={itemsPerPage}
-//           columnsListDb={columnsListDb}
-//           onAddClick={openAddModal}
-//           onEditClick={openEditModal}
-//         />
-//       </div>
-
-//       {/* Используем компонент Pagination */}
-//       <Pagination
-//         currentPage={currentPage}
-//         totalPages={totalPages}
-//         onPageChange={setCurrentPage}
-//       />
-
-//       {isModalOpen && (selectedLocation || isAddingMode) && (
-//         <LocationsModal
-//           isOpen={isModalOpen}
-//           location={selectedLocation}
-//           onSaveEdit={handleSaveEdit}
-//           onSaveAdd={handleSaveAdd}
-//           onCloseAddModal={closeAddModal}
-//           onCloseEditModal={closeEditModal}
-//           isAddingMode={isAddingMode}
-//           editedLocation={editedLocation}
-//           setEditedLocation={setEditedLocation}
-//         />
-//       )}
-//     </div>
-//   </Wrapper>
-// );
-// };

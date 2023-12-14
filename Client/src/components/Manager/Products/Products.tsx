@@ -136,9 +136,9 @@ const Products: FC = () => {
         const searchTerms = searchText.toLowerCase().split(' ');
 
         const isPromoEnded =
-        product.promoEndDate &&
-        isPast(parseISO(product.promoEndDate)) &&
-        !isToday(parseISO(product.promoEndDate));
+          product.promoEndDate &&
+          isPast(parseISO(product.promoEndDate)) &&
+          !isToday(parseISO(product.promoEndDate));
 
         return (
           searchTerms.every((term) =>
@@ -156,38 +156,21 @@ const Products: FC = () => {
         (sub) => sub.categoryId === currentCategory.id
       );
 
-      // console.log(
-      //   'subcategoriesOfCurrentCategory',
-      //   subcategoriesOfCurrentCategory
-      // );
-
       /** если для хотя бы одного элемента product в массиве filtered условие внутри some возвращает true,
        * то этот product будет включен в результирующий массив filtered. */
       filtered = filtered.filter((product) => {
         //console.log('product', product.subcategoryId);
         return subcategoriesOfCurrentCategory.some(
           (sub) => sub.id === product.subcategoryId
-          // console.log(
-          //   'sub.id',
-          //   sub.subcategoryName,
-          //   sub.id,
-          //   'PRODUCT',
-          //   product.subcategoryId,
-          //   product.productName
-          // )
         );
       });
-      // console.log('категория и все подкатегории', filtered);
     }
 
     //* Фильтрация по текущей подкатегории
     if (currentSubcategory) {
-      //console.log('currentSubcategoryPRODUCT', currentSubcategory);
-
       filtered = filtered.filter(
         (product) => product.subcategoryId === currentSubcategory.id
       );
-      //   console.log('подкатегория', filtered);
     }
 
     return filtered;
@@ -334,10 +317,10 @@ const Products: FC = () => {
         )}
 
         {/* //!поиск */}
-        <div className="col-span-full mb-4">
-          <div className="flex items-center justify-between">
+        <div className="col-span-full">
+          <div className="flex items-center justify-between mb-2">
             <Search onFilter={setSearchText} />
-            <div className="flex items-end justify-center py-2">
+            <div className="flex items-end justify-center">
               <Button
                 type="button"
                 title="Добавить"
@@ -353,9 +336,6 @@ const Products: FC = () => {
           </div>
           {/* </div> */}
           <div className="main flex flex-col border rounded-full overflow-hidden select-none px-4">
-            {/* <div className="title py-2 my-auto px-5 bg-blue-500 text-white text-sm font-semibold mr-3">
-            Gender
-          </div> */}
             <div className="flex space-x-3 py-2 px-2">
               <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
                 <input
@@ -379,7 +359,7 @@ const Products: FC = () => {
                   }}
                   className="w-4 h-4 text-amber-600 text-sm font-normal bg-slate-100 border-slate-300 rounded focus:ring-amber-500"
                 />
-                <span className="ml-1">Показать текущие акциии</span>
+                <span className="ml-1">Текущие акциии</span>
               </label>
               <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
                 <input
@@ -390,7 +370,7 @@ const Products: FC = () => {
                   }}
                   className="w-4 h-4 text-amber-600 text-sm font-normal bg-slate-100 border-slate-300 rounded focus:ring-amber-500"
                 />
-                <span className="ml-1">Показать завершенные акции</span>
+                <span className="ml-1">Завершенные акции</span>
               </label>
               <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
                 <input
@@ -413,7 +393,10 @@ const Products: FC = () => {
                   type="radio"
                   value="visible"
                   checked={selectedVisibility === 'visible'}
-                  onChange={() => setSelectedVisibility('visible')}
+                  onChange={() => {
+                    setCurrentPage(1);
+                    setSelectedVisibility('visible');
+                  }}
                   className="w-4 h-4 text-slate-400 text-sm font-normal bg-slate-100 border-slate-300 rounded-full focus:ring-slate-500"
                 />
                 <span className="ml-1">Видимые для покупателей</span>
@@ -423,7 +406,10 @@ const Products: FC = () => {
                   type="radio"
                   value="invisible"
                   checked={selectedVisibility === 'invisible'}
-                  onChange={() => setSelectedVisibility('invisible')}
+                  onChange={() => {
+                    setCurrentPage(1);
+                    setSelectedVisibility('invisible');
+                  }}
                   className="w-4 h-4 text-slate-400 text-sm font-normal bg-slate-100 border-slate-300 rounded-full focus:ring-slate-500"
                 />
                 <span className="ml-1">Скрытые от покупателей</span>
@@ -433,7 +419,10 @@ const Products: FC = () => {
                   type="radio"
                   value="all"
                   checked={selectedVisibility === 'all'}
-                  onChange={() => setSelectedVisibility('all')}
+                  onChange={() => {
+                    setCurrentPage(1);
+                    setSelectedVisibility('all');
+                  }}
                   className="w-4 h-4 text-slate-400 text-sm font-normal bg-slate-100 border-slate-300 rounded-full focus:ring-slate-500"
                 />
                 <span className="ml-1">Сброс фильтра видимости</span>
@@ -622,17 +611,6 @@ const Products: FC = () => {
                   </div>
                 )} */}
               </div>
-              {/* <div className="flex items-end justify-center mb-4">
-                <Button
-                  type="button"
-                  title="Редактировать"
-                  onClick={() => openEditModal(product)}
-                  styleCSSButton={`relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-normal text-slate-600 text-sm font-normal  rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 hover:text-white`}
-                  styleCSSSpan={
-                    'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
-                  }
-                />
-              </div> */}
             </article>
           ))}
         </div>
