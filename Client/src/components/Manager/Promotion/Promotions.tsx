@@ -2,7 +2,6 @@ import { FC, useEffect, useState } from 'react';
 import Wrapper from '../../../ui/Wrapper';
 import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import { VITE_URL } from '../../../VITE_URL';
-// import PromotionsModal from './PromotionsModal';
 import Pagination from '../../../ui/Paggination';
 import { isToday, parseISO, isPast } from 'date-fns';
 import { unwrapResult } from '@reduxjs/toolkit';
@@ -11,7 +10,6 @@ import editPromotion from '../../../Redux/thunks/Promotion/editPromotion.api';
 import addPromotion from '../../../Redux/thunks/Promotion/addPromotion.api';
 import Search from '../../../ui/Search';
 import PromotionsModal from './PromotionsModal';
-import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Button from '../../../ui/Button';
@@ -174,16 +172,6 @@ const Promotions: FC = () => {
     return `${day}-${month}-${year}`;
   };
 
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-  };
-  const backgroundImageUrl =
-    'https://images.unsplash.com/photo-1623479322729-28b25c16b011?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1740&q=80';
-
   return (
     <Wrapper>
       <div className="p-4">
@@ -206,33 +194,6 @@ const Promotions: FC = () => {
             </div>
           </div>
         </div>
-
-        {/* {displayedPromotions.some((promotion) => promotion.carousel) && (
-          <div className="col-span-full">
-            <Slider {...settings} className="rounded-lg  slick-slider">
-              {displayedPromotions
-                .filter((promotion) => promotion.carousel)
-                .map((promotion) => (
-                  <article key={promotion.id} className="relative slick-slide">
-                    <div className="mb-4 mx-4 ">
-                      {' '}
-                      <img
-                        className="w-full max-h-60 object-cover rounded-lg"
-                        src={`${VITE_URL}${promotion.photo}`}
-                        alt={promotion.title}
-                      />
-                    </div>
-                    <button
-                      className="absolute top-2 right-2 bg-gray-800 text-white px-2 py-1 rounded"
-                      onClick={() => openEditModal(promotion)}
-                    >
-                      Редактировать
-                    </button>
-                  </article>
-                ))}
-            </Slider>
-          </div>
-        )} */}
 
         {/* <div className="scroll-smooth snap-mandatory snap-x overflow-x-auto"> */}
         {displayedPromotions.some((promotion) => promotion.carousel) && (
@@ -292,7 +253,8 @@ const Promotions: FC = () => {
                             ) : (
                               <p className="mb-2 text-slate-600 text-sm font-normal text-center">
                                 Период акции:
-                                <p className="text-center">
+                                <br />
+                                <span className="text-center">
                                   с{' '}
                                   <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
                                     {reverseDate(promotion.dateStart)}
@@ -301,19 +263,19 @@ const Promotions: FC = () => {
                                   <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
                                     {reverseDate(promotion.dateEnd)}
                                   </span>
-                                </p>
+                                </span>
                               </p>
                             )}
                           </div>
                         ) : (
                           <div className="mb-2 mt-4text-center">
                             <p className="mb-2 text-slate-600 text-sm font-normal text-center">
-                              Период акции:
-                              <p className="text-center">
+                              Период акции: <br />
+                              <span className="text-center">
                                 <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
                                   бессрочная
                                 </span>
-                              </p>
+                              </span>
                             </p>
                           </div>
                         )}
@@ -383,7 +345,8 @@ const Promotions: FC = () => {
                         ) : (
                           <p className="mb-2 text-slate-600 text-sm font-normal text-center">
                             Период акции:
-                            <p className="text-center">
+                            <br />
+                            <span className="text-center">
                               с{' '}
                               <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
                                 {reverseDate(promotion.dateStart)}
@@ -392,19 +355,19 @@ const Promotions: FC = () => {
                               <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
                                 {reverseDate(promotion.dateEnd)}
                               </span>
-                            </p>
+                            </span>
                           </p>
                         )}
                       </div>
                     ) : (
                       <div className="mb-2 mt-4text-center">
                         <p className="mb-2 text-slate-600 text-sm font-normal text-center">
-                          Период акции:
-                          <p className="text-center">
+                          Период акции: <br />
+                          <span className="text-center">
                             <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
                               бессрочная
                             </span>
-                          </p>
+                          </span>
                         </p>
                       </div>
                     )}
