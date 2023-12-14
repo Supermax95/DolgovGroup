@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import Wrapper from '../../../ui/Wrapper';
 import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import { VITE_URL } from '../../../VITE_URL';
@@ -13,7 +13,12 @@ import PromotionsModal from './PromotionsModal';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Button from '../../../ui/Button';
-import { PencilSquareIcon } from '@heroicons/react/24/outline';
+import {
+  ChevronDoubleLeftIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  PencilSquareIcon,
+} from '@heroicons/react/24/outline';
 
 export interface IPromotion {
   id: number;
@@ -172,6 +177,27 @@ const Promotions: FC = () => {
     return `${day}-${month}-${year}`;
   };
 
+  const carouselRef = useRef(null);
+  const [scrollPosition, setScrollPosition] = useState(0);
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const handleNextClick = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex < displayedPromotions.length - 1 ? prevIndex + 1 : 0
+    );
+    console.log('currentIndex', currentIndex);
+  };
+
+  const handlePrevClick = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex > 0 ? prevIndex - 1 : displayedPromotions.length - 1
+    );
+  };
+  // useEffect(() => {
+  //   console.log('currentIndex', currentIndex);
+  // }, [currentIndex]);
+
   return (
     <Wrapper>
       <div className="p-4">
@@ -195,7 +221,6 @@ const Promotions: FC = () => {
           </div>
         </div>
 
-        {/* <div className="scroll-smooth snap-mandatory snap-x overflow-x-auto"> */}
         {displayedPromotions.some((promotion) => promotion.carousel) && (
           <section className="max-w-6xl mx-auto px-4 ">
             <div className="text-center pb-4">
@@ -203,89 +228,133 @@ const Promotions: FC = () => {
                 Главные акции
               </h1>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {displayedPromotions.length &&
-                displayedPromotions
-                  .filter((promotion) => promotion.carousel)
-                  .map((promotion) => (
-                    <div
-                      key={promotion.id}
-                      className=" mx-auto my-4 flex w-full flex-col overflow-hidden rounded-2xl border border-gray-300 bg-white text-slate-900 hover:shadow-lg"
-                    >
-                      <div className="relative">
-                        <div className="absolute flex h-6 w-6 items-center justify-center rounded-lg bg-slate-400 hover:bg-lime-600 top-2 right-2 ">
-                          <PencilSquareIcon
-                            className="mr-0 h-5 w-5 cursor-pointer text-white "
-                            onClick={() => openEditModal(promotion)}
-                          />
-                        </div>
-                        <img
-                          className="object-center object-cover h-auto w-full"
-                          src={`${VITE_URL}${promotion.photo}`}
-                          alt={promotion.title}
-                        />
-                        {promotion.invisible && (
-                          <div className="absolute flex h-6 w-6 p-2 items-center justify-center rounded-lg bg-slate-400 bottom-2 left-8 ">
-                            {promotion.invisible && (
-                              <p className="rounded-full border-2 border-slate-300 bg-slate-500 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3 mt-2">
-                                Скрыта
-                              </p>
-                            )}
-                          </div>
-                        )}
-                      </div>
 
-                      <div className="text-center py-8 sm:py-6">
-                        <p className="text-xl text-gray-700 font-bold mb-2">
-                          {promotion.title}
-                        </p>
+            <div
+              className="relative w-full overflow-hidden" // Обновлен класс для скрытия карточек, а не всего блока
+            >
+              <div
+                id="default-carousel"
+                // className="relative w-full "
+                className="flex transition-transform ease-in-out duration-300" /////
+                data-carousel="slide"
+                ref={carouselRef}
+                style={{
+                  transform: `translateX(-${
+                    currentIndex * (100 / displayedPromotions.length)
+                  }%)`,
+                }}
+              >
+                {' '}
+                <div className="relative h-56 overflow-hidden rounded-lg md:h-96">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {displayedPromotions.length &&
+                      displayedPromotions
+                        .filter((promotion) => promotion.carousel)
+                        .map((promotion, index) => (
+                          <div
+                            key={promotion.id}
+                            className=" mx-auto my-4 flex w-full flex-col overflow-hidden rounded-2xl border border-gray-300 bg-white text-slate-900 hover:shadow-lg"
+                            // style={{ transform: `translateX(${index * 100}%)` }}
+                          >
+                            <div className="relative">
+                              <div className="absolute flex h-6 w-6 items-center justify-center rounded-lg bg-slate-400 hover:bg-lime-600 top-2 right-2 ">
+                                <PencilSquareIcon
+                                  className="mr-0 h-5 w-5 cursor-pointer text-white "
+                                  onClick={() => openEditModal(promotion)}
+                                />
+                              </div>
+                              <img
+                                className="object-center object-cover h-auto w-full"
+                                src={`${VITE_URL}${promotion.photo}`}
+                                alt={promotion.title}
+                              />
+                              {promotion.invisible && (
+                                <div className="absolute flex h-6 w-6 p-2 items-center justify-center rounded-lg bg-slate-400 bottom-2 left-8 ">
+                                  {promotion.invisible && (
+                                    <p className="rounded-full border-2 border-slate-300 bg-slate-500 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3 mt-2">
+                                      Скрыта
+                                    </p>
+                                  )}
+                                </div>
+                              )}
+                            </div>
 
-                        {promotion.dateStart && promotion.dateEnd ? (
-                          <div className="mb-2 mt-4 text-center">
-                            {isToday(parseISO(promotion.dateEnd)) ? (
-                              <span className="text-rose-600 text-sm font-medium">
-                                Акция истекает сегодня
-                              </span>
-                            ) : isPast(parseISO(promotion.dateEnd)) ? (
-                              <span className="text-amber-600 text-sm font-medium">
-                                Акция завершена
-                              </span>
-                            ) : (
-                              <p className="mb-2 text-slate-600 text-sm font-normal text-center">
-                                Период акции:
-                                <br />
-                                <span className="text-center">
-                                  с{' '}
-                                  <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
-                                    {reverseDate(promotion.dateStart)}
-                                  </span>{' '}
-                                  по{' '}
-                                  <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
-                                    {reverseDate(promotion.dateEnd)}
-                                  </span>
-                                </span>
+                            <div className="text-center py-8 sm:py-6">
+                              <p className="text-xl text-gray-700 font-bold mb-2">
+                                {promotion.title}
                               </p>
-                            )}
+
+                              {promotion.dateStart && promotion.dateEnd ? (
+                                <div className="mb-2 mt-4 text-center">
+                                  {isToday(parseISO(promotion.dateEnd)) ? (
+                                    <span className="text-rose-600 text-sm font-medium">
+                                      Акция истекает сегодня
+                                    </span>
+                                  ) : isPast(parseISO(promotion.dateEnd)) ? (
+                                    <span className="text-amber-600 text-sm font-medium">
+                                      Акция завершена
+                                    </span>
+                                  ) : (
+                                    <p className="mb-2 text-slate-600 text-sm font-normal text-center">
+                                      Период акции:
+                                      <br />
+                                      <span className="text-center">
+                                        с{' '}
+                                        <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
+                                          {reverseDate(promotion.dateStart)}
+                                        </span>{' '}
+                                        по{' '}
+                                        <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
+                                          {reverseDate(promotion.dateEnd)}
+                                        </span>
+                                      </span>
+                                    </p>
+                                  )}
+                                </div>
+                              ) : (
+                                <div className="mb-2 mt-4text-center">
+                                  <p className="mb-2 text-slate-600 text-sm font-normal text-center">
+                                    Период акции: <br />
+                                    <span className="text-center">
+                                      <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
+                                        бессрочная
+                                      </span>
+                                    </span>
+                                  </p>
+                                </div>
+                              )}
+                            </div>
                           </div>
-                        ) : (
-                          <div className="mb-2 mt-4text-center">
-                            <p className="mb-2 text-slate-600 text-sm font-normal text-center">
-                              Период акции: <br />
-                              <span className="text-center">
-                                <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
-                                  бессрочная
-                                </span>
-                              </span>
-                            </p>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  ))}
+                        ))}
+                  </div>{' '}
+                </div>
+              </div>{' '}
+              {/* //////////////////// */}
+              <button
+                type="button"
+                className="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+                data-carousel-prev
+                onClick={handlePrevClick}
+              >
+                <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-black/30 dark:bg-gray-800/30 group-hover:bg-black/50 dark:group-hover:bg-gray-800/60 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                  <ChevronLeftIcon className="h-6 w-6 text-white" />
+                  <span className="sr-only">Previous</span>
+                </span>
+              </button>
+              <button
+                type="button"
+                className="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+                data-carousel-next
+                onClick={handleNextClick}
+              >
+                <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-black/30 dark:bg-gray-800/30 group-hover:bg-black/50 dark:group-hover:bg-gray-800/60 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                  <ChevronRightIcon className="h-6 w-6 text-white" />
+                  <span className="sr-only">Next</span>
+                </span>
+              </button>
             </div>
           </section>
         )}
-        {/* </div> */}
 
         <div className="mt-6 pt-0.5 bg-lime-400 rounded-md shadow-sm"></div>
 
