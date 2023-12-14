@@ -5,7 +5,11 @@ import {
   XMarkIcon,
   UserIcon,
 } from '@heroicons/react/24/outline';
-import { ArrowPathIcon, ReceiptPercentIcon } from '@heroicons/react/20/solid';
+import {
+  ArrowPathIcon,
+  ReceiptPercentIcon,
+  ShoppingCartIcon,
+} from '@heroicons/react/20/solid';
 
 interface IModal {
   children: React.ReactNode;
@@ -57,8 +61,11 @@ const Modal: FC<IModal> = ({
                 <ArrowPathIcon className="w-6 h-6 text-slate-400" />
               </div>
             ) : modalTitle === 'Новый продукт' ||
-              modalTitle === 'Редактирование продукта' ||
-              modalTitle === 'Новая акция' ||
+              modalTitle === 'Редактирование продукта' ? (
+              <div className="w-8 text-gray-600">
+                <ShoppingCartIcon className="w-6 h-6 text-slate-400" />
+              </div>
+            ) : modalTitle === 'Новая акция' ||
               modalTitle === 'Редактирование акции' ? (
               <div className="w-8 text-gray-600">
                 <ReceiptPercentIcon className="w-6 h-6 text-slate-400" />
