@@ -8,11 +8,13 @@ import ProfileAdmin from '../components/Admin/ProfileAdmin/ProfileAdmin';
 import Locations from '../components/Manager/Locations/Locations';
 import Products from '../components/Manager/Products/Products';
 import ProfileManager from '../components/Manager/ProfileManager/ProfileManager';
-import Promotions from '../components/Manager/Promotion/Promotions';
+// import Promotions from '../components/Manager/Promotion/Promotions';
 import { FC } from 'react';
 import Footer from '../components/Footer/Footer';
 import Management from '../components/Admin/ProfileAdmin/Management/Management';
 import ListContact from '../components/Manager/ProfileManager/ListContact';
+import Nocarousel from '../components/Manager/Promotion/Nocarousel';
+import Carousel from '../components/Manager/Promotion/Carousel';
 
 const Navigation: FC = () => {
   return (
@@ -31,11 +33,13 @@ const Navigation: FC = () => {
             }
           />
           <Route path="/locations" element={<Locations />} />
-          <Route path="/promotions" element={<Promotions />} />
+          {/* <Route path="/promotions" element={<Promotions />} /> */}
           <Route path="/profileAdmin" element={<ProfileAdmin />} />
           <Route path="/profileManager" element={<ProfileManager />} />
           <Route path="/listOfManagers" element={<Management />} />
           <Route path="/listOfManagersForManager" element={<ListContact />} />
+          <Route path="/promotions/carousel" element={<Carousel/>} />
+          <Route path="/promotions/nocarousel" element={<Nocarousel/>} />
           <Route />
         </Route>
         {/* 

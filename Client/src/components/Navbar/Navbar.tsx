@@ -54,7 +54,7 @@ const Navbar: FC = () => {
     {
       id: 5,
       name: 'Маркетинговые акции',
-      href: '/promotions',
+      href: '/promotions/carousel',
       isActive: location.pathname === '/stock',
     },
   ];

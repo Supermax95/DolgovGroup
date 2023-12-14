@@ -1,40 +1,26 @@
 import  { FC } from 'react';
-import { ListBulletIcon, UserIcon } from '@heroicons/react/24/outline';
 import PromotionSidebarUI from '../../../ui/SidebarPromotionUI';
 
-
 const PromotionSidebar: FC = () => {
-  const promoSidebar = {
+  const promoSidebar = { 
+    title: 'Акции',
     links: [
       {
         id: 1,
-        href: '/carousel',
+        href: '/promotions/carousel',
         name: 'Акции в карусели',
-        childrenIcon: <ListBulletIcon className="w-6 h-6 text-slate-600" />,
       },
       {
         id: 2,
-        href: '/nocarousel',
+        href: '/promotions/nocarousel',
         name: 'Акции вне карусели',
-        childrenIcon: <UserIcon className="w-6 h-6 text-slate-600" />,
       },
     ],
   };
 
   return (
     <div>
-      {promoSidebar.links.map((link) => (
-        <a
-          key={link.id}
-          href={link.href}
-          className="flex items-center space-x-2"
-        >
-          {link.childrenIcon}
-          <span className="text-slate-600">{link.name}</span>
-        </a>
-      ))}
-
-      <PromotionSidebarUI/>
+      <PromotionSidebarUI links={promoSidebar.links} title={promoSidebar.title} />
     </div>
   );
 };
