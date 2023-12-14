@@ -27,12 +27,15 @@ export interface IPromotion {
   photo?: string;
 }
 
-const Promotions: FC = () => {
+const Nocarousel: FC = () => {
   const dispatch = useAppDispatch();
-  const promotions = useAppSelector<IPromotion[]>(
+  const noCarouselPromotions = useAppSelector<IPromotion[]>(
     (state) => state.promotionSlice.data
   );
 
+  const promotions = noCarouselPromotions.filter(
+    (promotion) => promotion.carousel !== true
+  );
   // остальное
   const [isModalOpen, setModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -175,7 +178,7 @@ const Promotions: FC = () => {
 
   return (
     <Wrapper>
-              <PromotionSidebar/>
+      <PromotionSidebar />
       <div className="p-4">
         <div className="col-span-full mb-4">
           <div className="flex items-center justify-between">
@@ -198,17 +201,17 @@ const Promotions: FC = () => {
         </div>
 
         {/* <div className="scroll-smooth snap-mandatory snap-x overflow-x-auto"> */}
-        {displayedPromotions.some((promotion) => promotion.carousel) && (
+        {displayedPromotions.some((promotion) => promotion) && (
           <section className="max-w-6xl mx-auto px-4 ">
             <div className="text-center pb-4">
               <h1 className="font-bold text-xl lg:text-xl font-heading text-lime-600">
-                Главные акции
+                Карточки вне карусели
               </h1>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {displayedPromotions.length &&
                 displayedPromotions
-                  .filter((promotion) => promotion.carousel)
+                .filter((promotion) => !promotion.invisible)
                   .map((promotion) => (
                     <div
                       key={promotion.id}
@@ -295,12 +298,12 @@ const Promotions: FC = () => {
         <div className="col-span-full mt-8">
           <div className="text-center pb-4">
             <h1 className="font-bold text-xl lg:text-xl font-heading text-lime-600">
-              Какие-то другие акции
+              Акции скрыты
             </h1>
           </div>
           <div className="mx-auto grid max-w-screen-lg justify-center px-4 sm:grid-cols-2 sm:gap-4 sm:px-8 md:grid-cols-3">
             {displayedPromotions
-              .filter((promotion) => !promotion.carousel)
+             .filter((promotion) => promotion.invisible)
               .map((promotion) => (
                 <article
                   key={promotion.id}
@@ -423,4 +426,4 @@ const Promotions: FC = () => {
   );
 };
 
-export default Promotions;
+export default Nocarousel;
