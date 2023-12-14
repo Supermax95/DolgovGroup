@@ -136,7 +136,9 @@ const Products: FC = () => {
         const searchTerms = searchText.toLowerCase().split(' ');
 
         const isPromoEnded =
-          product.promoEndDate && isPast(parseISO(product.promoEndDate));
+        product.promoEndDate &&
+        isPast(parseISO(product.promoEndDate)) &&
+        !isToday(parseISO(product.promoEndDate));
 
         return (
           searchTerms.every((term) =>
