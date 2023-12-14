@@ -81,6 +81,9 @@ const Products: FC = () => {
   >(null);
   const [axiosError, setAxiosError] = useState<string | null>(null);
   const [searchText, setSearchText] = useState('');
+  const [showNew, setShowNew] = useState('');
+  const [showDiscounted, setshowDiscounted] = useState('');
+  const [withoutIsDiscounted, setwWthoutIsDiscounted] = useState('');
 
   const [showNotification, setShowNotification] = useState(false);
 
@@ -103,11 +106,24 @@ const Products: FC = () => {
   const filterProducts = () => {
     let filtered = products;
 
+    if (showNew) {
+      filtered = filtered.filter((product) => product.isNew === true);
+    }
+
+    if (showDiscounted) {
+      filtered = filtered.filter((product) => product.isDiscounted === true);
+    }
+
+    if (withoutIsDiscounted) {
+      filtered = filtered.filter((product) => product.isDiscounted === false);
+    }
+
     if (selectedVisibility !== 'all') {
       filtered = filtered.filter(
         (product) => product.invisible === (selectedVisibility === 'invisible')
       );
     }
+
     if (searchText !== '') {
       filtered = filtered.filter((product) => {
         const productFields = [
@@ -334,52 +350,93 @@ const Products: FC = () => {
             </div>
           </div>
           {/* </div> */}
-          <div className="main flex border rounded-full overflow-hidden select-none space-x-3 py-2 px-2">
+          <div className="main flex flex-col border rounded-full overflow-hidden select-none px-4">
             {/* <div className="title py-2 my-auto px-5 bg-blue-500 text-white text-sm font-semibold mr-3">
             Gender
           </div> */}
-
-            <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
-              <input
-                type="radio"
-                value="visible"
-                checked={selectedVisibility === 'visible'}
-                onChange={() => setSelectedVisibility('visible')}
-                className="w-4 h-4 text-slate-400 text-sm font-normal bg-slate-100 border-slate-300 rounded-full focus:ring-slate-500"
-              />
-              <span className="ml-1">Видимые для покупателей</span>
-            </label>
-            <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
-              <input
-                type="radio"
-                value="invisible"
-                checked={selectedVisibility === 'invisible'}
-                onChange={() => setSelectedVisibility('invisible')}
-                className="w-4 h-4 text-slate-400 text-sm font-normal bg-slate-100 border-slate-300 rounded-full focus:ring-slate-500"
-              />
-              <span className="ml-1">Скрытые от покупателей</span>
-            </label>
-            <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
-              <input
-                type="radio"
-                value="all"
-                checked={selectedVisibility === 'all'}
-                onChange={() => setSelectedVisibility('all')}
-                className="w-4 h-4 text-slate-400 text-sm font-normal bg-slate-100 border-slate-300 rounded-full focus:ring-slate-500"
-              />
-              <span className="ml-1">Сброс фильтра</span>
-            </label>
-            <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
-              <input
-                type="checkbox"
-                onChange={(e) => {
-                  setCurrentPage(1);
-                  setSearchText(e.target.checked ? 'завершена' : '');
-                }}
-                className="w-4 h-4 text-amber-600 text-sm font-normal bg-slate-100 border-slate-300 rounded focus:ring-amber-500"
-              />
-              <span className="ml-1">Показать завершенные акции</span>
-            </label>
+            <div className="flex space-x-3 py-2 px-2">
+              <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
+                <input
+                  type="checkbox"
+                  value="isNew"
+                  onChange={(e) => {
+                    setCurrentPage(1);
+                    setShowNew(e.target.checked ? 'isNew' : '');
+                  }}
+                  className="w-4 h-4 text-amber-600 text-sm font-normal bg-slate-100 border-slate-300 rounded focus:ring-amber-500"
+                />
+                <span className="ml-1">Новый товар</span>
+              </label>
+              <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
+                <input
+                  type="checkbox"
+                  onChange={(e) => {
+                    setCurrentPage(1);
+                    setshowDiscounted(e.target.checked ? 'isDiscounted' : '');
+                    console.log(e.target.checked);
+                  }}
+                  className="w-4 h-4 text-amber-600 text-sm font-normal bg-slate-100 border-slate-300 rounded focus:ring-amber-500"
+                />
+                <span className="ml-1">Показать текущие акциии</span>
+              </label>
+              <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
+                <input
+                  type="checkbox"
+                  onChange={(e) => {
+                    setCurrentPage(1);
+                    setSearchText(e.target.checked ? 'завершена' : '');
+                  }}
+                  className="w-4 h-4 text-amber-600 text-sm font-normal bg-slate-100 border-slate-300 rounded focus:ring-amber-500"
+                />
+                <span className="ml-1">Показать завершенные акции</span>
+              </label>
+              <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
+                <input
+                  type="checkbox"
+                  onChange={(e) => {
+                    setCurrentPage(1);
+                    setwWthoutIsDiscounted(
+                      e.target.checked ? 'withoutIsDiscounted' : ''
+                    );
+                    console.log(e.target.checked);
+                  }}
+                  className="w-4 h-4 text-amber-600 text-sm font-normal bg-slate-100 border-slate-300 rounded focus:ring-amber-500"
+                />
+                <span className="ml-1">Товары без акции</span>
+              </label>
+            </div>
+            <div className="flex space-x-3 py-2 px-2">
+              <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
+                <input
+                  type="radio"
+                  value="visible"
+                  checked={selectedVisibility === 'visible'}
+                  onChange={() => setSelectedVisibility('visible')}
+                  className="w-4 h-4 text-slate-400 text-sm font-normal bg-slate-100 border-slate-300 rounded-full focus:ring-slate-500"
+                />
+                <span className="ml-1">Видимые для покупателей</span>
+              </label>
+              <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
+                <input
+                  type="radio"
+                  value="invisible"
+                  checked={selectedVisibility === 'invisible'}
+                  onChange={() => setSelectedVisibility('invisible')}
+                  className="w-4 h-4 text-slate-400 text-sm font-normal bg-slate-100 border-slate-300 rounded-full focus:ring-slate-500"
+                />
+                <span className="ml-1">Скрытые от покупателей</span>
+              </label>
+              <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
+                <input
+                  type="radio"
+                  value="all"
+                  checked={selectedVisibility === 'all'}
+                  onChange={() => setSelectedVisibility('all')}
+                  className="w-4 h-4 text-slate-400 text-sm font-normal bg-slate-100 border-slate-300 rounded-full focus:ring-slate-500"
+                />
+                <span className="ml-1">Сброс фильтра видимости</span>
+              </label>
+            </div>
           </div>
         </div>
 
@@ -448,23 +505,23 @@ const Products: FC = () => {
                 </h3>
 
                 {product.isDiscounted && (
-                  <p className="mb-2 text-slate-600 text-sm font-normal  text-sm font-normal">
+                  <p className="mb-2 text-slate-600 text-sm font-normal">
                     Оригинальная стоимость:{' '}
-                    <del className="text-slate-600 text-sm font-normal  font-medium">
+                    <del className="text-slate-600 text-sm font-medium">
                       {product.originalPrice} ₽
                     </del>
                   </p>
                 )}
 
                 {product.isDiscounted ? (
-                  <p className="mb-2 text-slate-600 text-sm font-normal  text-sm font-normal">
+                  <p className="mb-2 text-slate-600 text-sm font-normal">
                     Цена со скидкой для клиента:{' '}
                     <span className="text-rose-600 font-medium">
                       {product.customerPrice} ₽
                     </span>
                   </p>
                 ) : (
-                  <p className="mb-2 text-slate-600 text-sm font-normal  text-sm font-normal">
+                  <p className="mb-2 text-slate-600 text-sm font-normal">
                     Оригинальная стоимость:{' '}
                     <span className="text-lime-600 font-medium">
                       {product.originalPrice} ₽
@@ -473,14 +530,14 @@ const Products: FC = () => {
                 )}
 
                 {product.employeePrice ? (
-                  <p className="mb-2 text-slate-600 text-sm font-normal  text-sm font-normal">
+                  <p className="mb-2 text-slate-600 text-sm font-normal">
                     Цена для сотрудников:{' '}
                     <span className="text-amber-600 font-medium">
                       {product.employeePrice} ₽
                     </span>
                   </p>
                 ) : (
-                  <p className="mb-2 text-slate-600 text-sm font-normal  text-sm font-normal">
+                  <p className="mb-2 text-slate-600 text-sm font-normal">
                     Цена для сотрудников:{' '}
                     <span className="text-amber-600 font-medium">
                       не указана
@@ -488,43 +545,58 @@ const Products: FC = () => {
                   </p>
                 )}
 
-                {product.promoStartDate && product.promoEndDate ? (
-                  <div className="mb-2 mt-4 text-center">
-                    {isToday(parseISO(product.promoEndDate)) ? (
-                      <span className="text-rose-600 text-sm font-medium">
-                        Акция истекает сегодня
-                      </span>
-                    ) : isPast(parseISO(product.promoEndDate)) ? (
+                {!product.isDiscounted && (
+                  <div className="text-center">
+                    <span className="text-lime-600 text-sm font-medium">
+                      Акции нет
+                    </span>
+                  </div>
+                )}
+
+                {product.isDiscounted ? (
+                  product.promoStartDate && product.promoEndDate ? (
+                    <div className="mb-2 mt-4 text-center">
+                      {isToday(parseISO(product.promoEndDate)) ? (
+                        <span className="text-rose-600 text-sm font-medium">
+                          Акция истекает сегодня
+                        </span>
+                      ) : (
+                        <p className="mb-2 text-slate-600 text-sm font-normal text-center">
+                          Период акции:
+                          <br />
+                          <span className="text-center">
+                            с{' '}
+                            <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
+                              {reverseDate(product.promoStartDate)}
+                            </span>{' '}
+                            по{' '}
+                            <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
+                              {reverseDate(product.promoEndDate)}
+                            </span>
+                          </span>
+                        </p>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="mb-2 mt-4 text-center">
+                      <p className="mb-2 text-slate-600 text-sm font-normal text-center">
+                        Период акции: <br />
+                        <span className="text-center">
+                          <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
+                            бессрочная
+                          </span>
+                        </span>
+                      </p>
+                    </div>
+                  )
+                ) : (
+                  isPast(parseISO(product.promoEndDate)) && (
+                    <div className="mb-2 mt-0 text-center">
                       <span className="text-amber-600 text-sm font-medium">
                         Акция завершена
                       </span>
-                    ) : (
-                      <p className="mb-2 text-slate-600 text-sm font-normal  text-sm font-normal text-center">
-                        Период акции:
-                        <p className="text-center">
-                          с{' '}
-                          <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
-                            {reverseDate(product.promoStartDate)}
-                          </span>{' '}
-                          по{' '}
-                          <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
-                            {reverseDate(product.promoEndDate)}
-                          </span>
-                        </p>
-                      </p>
-                    )}
-                  </div>
-                ) : (
-                  <div className="mb-2 mt-4text-center">
-                    <p className="mb-2 text-slate-600 text-sm font-normal  text-sm font-normal text-center">
-                      Период акции:
-                      <p className="text-center">
-                        <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
-                          бессрочная
-                        </span>
-                      </p>
-                    </p>
-                  </div>
+                    </div>
+                  )
                 )}
 
                 {/* //! даже если описания нет, инпут остаётся, тернарка не работает, т.к. теги почему-то хранятся в бд */}
