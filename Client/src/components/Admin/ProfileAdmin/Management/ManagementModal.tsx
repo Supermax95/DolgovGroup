@@ -47,15 +47,15 @@ const ManagementModal: FC<ManagersModalProps> = ({
   const dispatch = useAppDispatch();
 
   const managerToSave: IManager = editedManager
-    ? editedManager
-    : {
-        id: 0,
-        lastName: '',
-        firstName: '',
-        middleName: '',
-        email: '',
-        phone: '',
-      };
+  ? editedManager
+  : {
+      id: 0,
+      lastName: '',
+      firstName: '',
+      middleName: '',
+      email: '',
+      phone: '',
+    };
 
   useEffect(() => {
     console.log('Данные менеджера:', editedManager);
@@ -73,6 +73,29 @@ const ManagementModal: FC<ManagersModalProps> = ({
     onCloseEditModal();
   };
 
+  // const handleFormSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   try {
+  //     if (isAddingMode) {
+  //       onSaveAdd(managerToSave);
+  //     } else {
+  //       onSaveEdit(managerToSave);
+  //     }
+  //   } catch (error) {
+  //     console.error('Произошла ошибка при сохранении:', error);
+  //   }
+  // };
+
+  // const handleDelete = () => {
+  //   //console.log('editedManager', editedManager);
+
+  //   if (editedManager && editedManager.id) {
+  //     const managerId = editedManager.id;
+
+  //     dispatch(deleteManager({ managerId }));
+  //     onCloseEditModal();
+  //   }
+  // };
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const isConfirmed = window.confirm(
