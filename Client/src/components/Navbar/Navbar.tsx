@@ -55,7 +55,7 @@ const Navbar: FC = () => {
       id: 5,
       name: 'Маркетинговые акции',
       href: '/promotions/carousel',
-      isActive: location.pathname === '/stock',
+      isActive: location.pathname === '/promotions/carousel',
     },
   ];
 
@@ -81,7 +81,7 @@ const Navbar: FC = () => {
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <Link to="/" className="flex items-center">
             <img
-              src="./src/assets/DGCompany.png"
+              src="/src/assets/DGCompany.png"
               className="h-8 mr-3"
               alt="Flowbite Logo"
             />
