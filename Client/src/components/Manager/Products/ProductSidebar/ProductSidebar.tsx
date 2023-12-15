@@ -16,6 +16,7 @@ import editCategory from '../../../../Redux/thunks/Category/editCategory.api';
 import addSubcategory from '../../../../Redux/thunks/SubCategory/addSubcategory.api';
 import editSubcategory from '../../../../Redux/thunks/SubCategory/editSubcategory.api';
 import deleteSubcategory from '../../../../Redux/thunks/SubCategory/deleteSubcategory.api';
+import { XMarkIcon } from '@heroicons/react/20/solid';
 
 interface ICategory {
   //Продукты.tsx ругаются на эти вопросы
@@ -101,24 +102,16 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   const menuClassSub = actionMenuForSub ? 'block' : 'hidden';
 
   //* всплывающее меню для каждой КАТЕГОРИИ
-  //! при повторном нажатии на шестерёнку - не закрывается
   const toggleMenuCategory = (e: React.MouseEvent, id: number): void => {
-    console.log('id', id);
-
     e.stopPropagation(); // Это предотвратит всплытие события и отменит срабатывание обработчика событий на родительском элементе
-
     setActionMenuForCategory(!actionMenuForCategory);
     setSelectedSubcategoryDataId(null);
     setSelectedCategoryDataId(id);
-    console.log('selectedCategoryDataId=========>', selectedCategoryDataId);
-
     calculateMenuPosition(e);
-    /**
-     * какоя-то хуйня выводится 
-     * id 2
-      ProductSidebar.tsx:109 selectedCategoryDataId=========> 4
-    а работает верно
-     */
+  };
+
+  const cancelToggleMenuCategory = (): void => {
+    setActionMenuForCategory(false);
   };
 
   const handleClickOutside = (e: MouseEvent): void => {
@@ -135,38 +128,25 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     };
   }, []);
 
-  const calculateMenuPosition = (e: React.MouseEvent) => {
+  const calculateMenuPosition = (e: React.MouseEvent): void => {
     const target = e.currentTarget as HTMLElement;
-    console.log('target', target);
-
     const rect = target.getBoundingClientRect();
-    console.log('recrectrectrectt', rect);
-
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
-    console.log('window.scrollY ', document.documentElement.scrollTop);
-
-    console.log('scrollTop', scrollTop);
-
-    console.log('rect.bottom + scrollTop', rect.top + scrollTop + 500);
-    const newTop = rect.bottom + scrollTop -110;
-
+    const newTop = rect.bottom + scrollTop - 110;
     setMenuPosition(newTop);
-
-    console.log('menuPosition====>', menuPosition);
   };
 
   //* всплывающее меню для каждой ПОДкатегории
-  //! при повторном нажатии на шестерёнку - не закрывается
   const toggleMenuSub = (e: React.MouseEvent, id: number): void => {
-    console.log('id', id);
     e.stopPropagation(); // Это предотвратит всплытие события и отменит срабатывание обработчика событий на родительском элементе
-
     setActionMenuForSub(!actionMenuForSub);
     setSelectedCategoryDataId(null);
     setSelectedSubcategoryDataId(id);
-    console.log('selectedSubcategoryDataId', selectedSubcategoryDataId);
-
     calculateMenuPosition(e);
+  };
+
+  const cancelToggleMenuSub = (): void => {
+    setActionMenuForSub(false);
   };
 
   //////////////////////////////////////////////////////////////////////////////////////////////
@@ -249,8 +229,8 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     dispatch(deleteCategory(id));
   };
 
-  //! вывод подкатегории в сайдбаре
-  const subcategoryOutput = (id: number) => {
+  // ? вывод подкатегорий в сайдбаре и их скрытие
+  const subcategoryOutput = (id: number): void => {
     const subcategory = allSubcategories.filter((sub) => sub.categoryId === id);
     setSelectedSubcategoryData(subcategory);
     //* используется для обновления состояния подкатегории
@@ -348,7 +328,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
 
   /** Рендер карточек на странице */
   //! рендерит карточки категорий
-  const handleCategoryClick = (selectedCategoryId: number) => {
+  const handleCategoryClick = (selectedCategoryId: number): void => {
     const currentCategory = categories.find(
       (category) => category.id === selectedCategoryId
     );
@@ -360,7 +340,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   };
 
   //! рендерит карточки подкатегорий
-  const handleSubcategoryClick = (selectedSubcategory: number) => {
+  const handleSubcategoryClick = (selectedSubcategory: number): void => {
     const currentSubcategory = allSubcategories.find(
       (sub) => sub.id === selectedSubcategory
     );
@@ -471,39 +451,44 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                       id={`category-${item.id}`}
                       className="flex justify-between items-center p-2 rounded-md hover:bg-slate-100"
                     >
-                      <div
-                        onClick={() => {
-                          subcategoryOutput(item.id);
-                          handleCategoryClick(item.id); // Добавлено
-                        }}
-                        className="cursor-pointer w-52 flex items-center text-slate-600"
-                      >
+                      <div className="cursor-pointer w-52 flex items-center space-x-1 text-slate-600">
                         {subcategoryStates[item.id] ? (
-                          <ChevronUpIcon className="cursor-pointer w-3 h-3 text-slate-600 mr-2" />
+                          <div
+                            className="rounded-full hover:bg-slate-200 py-1 "
+                            onClick={() => {
+                              subcategoryOutput(item.id);
+                            }}
+                          >
+                            <ChevronUpIcon className="cursor-pointer w-3 h-3 text-slate-600 mx-1" />
+                          </div>
                         ) : (
-                          <ChevronDownIcon className="cursor-pointer w-3 h-3 text-slate-600 mr-2" />
+                          <div
+                            onClick={() => {
+                              subcategoryOutput(item.id);
+                            }}
+                            className="rounded-full hover:bg-slate-200 py-1 "
+                          >
+                            <ChevronDownIcon className="cursor-pointer w-3 h-3 text-slate-600 mx-1" />
+                          </div>
                         )}
-                        <span className="text-slate-600 text-sm font-normal">
+                        <span
+                          onClick={() => {
+                            // subcategoryOutput(item.id);
+                            handleCategoryClick(item.id);
+                          }}
+                          className="text-slate-600 text-sm font-normal"
+                        >
                           {item.categoryName}
                         </span>
                       </div>
                       <div onClick={(e) => toggleMenuCategory(e, item.id)}>
-                        <Cog8ToothIcon
-                          onClick={() =>
-                            console.log(
-                              '=================>фывапролд',
-                              menuPosition
-                            )
-                          }
-                          className="cursor-pointer w-5 h-5 text-slate-600"
-                        />
+                        <Cog8ToothIcon className="cursor-pointer w-5 h-5 text-slate-600" />
                       </div>
                     </div>
 
                     {/** Выпадающий список для внесения изменений данных в Категории  */}
                     {selectedCategoryDataId === item.id && (
                       <div
-                        //! появляться должно при нажатии на конкретную категорию по шестеррёнке
                         ref={menuRef}
                         id={`dropdownRight-${item.id}`}
                         style={{ top: `${menuPosition}px` }}
@@ -513,6 +498,12 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                           className="py-2 text-xs text-slate-700 cursor-pointer"
                           aria-labelledby="dropdownRightButton"
                         >
+                          <div
+                            className="absolute rounded-full hover:bg-slate-200 py-1 right-1"
+                            onClick={cancelToggleMenuCategory}
+                          >
+                            <XMarkIcon className="cursor-pointer w-3 h-3 text-slate-600 mx-1" />
+                          </div>
                           <li
                             onClick={() => startAddingSubcategory(item.id)}
                             className="flex items-center px-4 py-2 space-x-2 hover:bg-slate-100 border-b-2 border-b-lime-500"
@@ -655,7 +646,6 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                               {selectedSubcategoryDataId === subcategory.id &&
                                 actionMenuForSub && (
                                   <div
-                                    //! появляться должно при нажатии на конкретную категорию по шестеррёнке
                                     ref={menuRef}
                                     id={`dropdownRight-${subcategory.id}`}
                                     className={`z-10 absolute w-52 ${menuClassSub} top-${menuPosition.top} left-24 bg-white divide-y divide-gray-100 rounded-lg shadow`}
@@ -664,6 +654,12 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                                       className="py-2 text-xs text-slate-700 cursor-pointer"
                                       aria-labelledby="dropdownRightButton"
                                     >
+                                      <div
+                                        className="absolute rounded-full hover:bg-slate-200 py-1 right-1"
+                                        onClick={cancelToggleMenuSub}
+                                      >
+                                        <XMarkIcon className="cursor-pointer w-3 h-3 text-slate-600 mx-1" />
+                                      </div>
                                       <li
                                         onClick={() =>
                                           startEditingSubcategory(
