@@ -1,8 +1,8 @@
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import Wrapper from '../../../ui/Wrapper';
 import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import { VITE_URL } from '../../../VITE_URL';
-// import Pagination from '../../../ui/Paggination';
+import Pagination from '../../../ui/Paggination';
 import { isToday, parseISO, isPast } from 'date-fns';
 import { unwrapResult } from '@reduxjs/toolkit';
 import getPromotions from '../../../Redux/thunks/Promotion/getPromotion.api';
@@ -12,25 +12,10 @@ import Search from '../../../ui/Search';
 import PromotionsModal from './PromotionsModal';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import Button from '../../../ui/Button'
+import Button from '../../../ui/Button';
+import { PencilSquareIcon } from '@heroicons/react/24/outline';
 import PromotionSidebar from './PromotionSidebar';
-import {
-  ArrowLeftIcon,
-  ChevronDoubleLeftIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  PencilSquareIcon,
-} from '@heroicons/react/24/outline';
 
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { FreeMode, Navigation, Pagination } from 'swiper/modules';
-import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
-
-// Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/scrollbar';
 
 export interface IPromotion {
   id: number;
@@ -43,11 +28,13 @@ export interface IPromotion {
   photo?: string;
 }
 
-const Promotions: FC = () => {
+const Carousel: FC = () => {
   const dispatch = useAppDispatch();
-  const promotions = useAppSelector<IPromotion[]>(
+  const carouselPromotions = useAppSelector<IPromotion[]>(
     (state) => state.promotionSlice.data
   );
+  
+  const promotions = carouselPromotions.filter((promotion) => promotion.carousel === true);
 
   // остальное
   const [isModalOpen, setModalOpen] = useState(false);
@@ -189,26 +176,6 @@ const Promotions: FC = () => {
     return `${day}-${month}-${year}`;
   };
 
-  const swiperButtonStyles: React.CSSProperties = {
-    position: 'absolute',
-    top: '50%',
-    transform: 'translateY(-50%)',
-    zIndex: 10,
-    color: 'white', // Цвет стрелок
-    fontSize: '24px', // Размер шрифта стрелок
-    cursor: 'pointer',
-  };
-
-  const swiperButtonNextStyles: React.CSSProperties = {
-    ...swiperButtonStyles,
-    right: '10px', // Расстояние от правого края
-  };
-
-  const swiperButtonPrevStyles: React.CSSProperties = {
-    ...swiperButtonStyles,
-    left: '10px', // Расстояние от левого края
-  };
-
   return (
     <Wrapper>
               <PromotionSidebar/>
@@ -232,42 +199,24 @@ const Promotions: FC = () => {
             </div>
           </div>
         </div>
-        {displayedPromotions.some((promotion) => promotion.carousel) && (
+
+        {/* <div className="scroll-smooth snap-mandatory snap-x overflow-x-auto"> */}
+        {displayedPromotions.some((promotion) => promotion) && (
           <section className="max-w-6xl mx-auto px-4 ">
             <div className="text-center pb-4">
               <h1 className="font-bold text-xl lg:text-xl font-heading text-lime-600">
-                Главные акции
+              Акции в карусели
               </h1>
             </div>
-
-            <Swiper
-              modules={[FreeMode, Navigation, Pagination]}
-              breakpoints={{
-                340: {
-                  slidesPerView: 2,
-                  spaceBetween: 15,
-                },
-                700: {
-                  slidesPerView: 3,
-                  spaceBetween: 15,
-                },
-              }}
-              freeMode={true}
-              pagination={{
-                clickable: true,
-              }}
-              navigation={{
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-              }}
-              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6"
-            >
-              {displayedPromotions
-                .filter((promotion) => promotion.carousel)
-                .map((promotion, index) => (
-                  <SwiperSlide key={promotion.id}>
-                    <div className=" mx-auto my-4 flex w-full flex-col overflow-hidden rounded-2xl border border-gray-300 bg-white text-slate-900 hover:shadow-lg">
-                      {/* Your existing promotion content here */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {displayedPromotions.length &&
+                displayedPromotions
+                  .filter((promotion) => !promotion.invisible)
+                  .map((promotion) => (
+                    <div
+                      key={promotion.id}
+                      className=" mx-auto my-4 flex w-full flex-col overflow-hidden rounded-2xl border border-gray-300 bg-white text-slate-900 hover:shadow-lg"
+                    >
                       <div className="relative">
                         <div className="absolute flex h-6 w-6 items-center justify-center rounded-lg bg-slate-400 hover:bg-lime-600 top-2 right-2 ">
                           <PencilSquareIcon
@@ -337,23 +286,24 @@ const Promotions: FC = () => {
                         )}
                       </div>
                     </div>
-                  </SwiperSlide>
-                ))}
-            </Swiper>
+                  ))}
+            </div>
           </section>
         )}
+        {/* </div> */}
 
         <div className="mt-6 pt-0.5 bg-lime-400 rounded-md shadow-sm"></div>
+
         {/* Карточки */}
         <div className="col-span-full mt-8">
           <div className="text-center pb-4">
             <h1 className="font-bold text-xl lg:text-xl font-heading text-lime-600">
-              Какие-то другие акции
+             Акции скрыты
             </h1>
           </div>
           <div className="mx-auto grid max-w-screen-lg justify-center px-4 sm:grid-cols-2 sm:gap-4 sm:px-8 md:grid-cols-3">
             {displayedPromotions
-              .filter((promotion) => !promotion.carousel)
+              .filter((promotion) => promotion.invisible)
               .map((promotion) => (
                 <article
                   key={promotion.id}
@@ -476,4 +426,4 @@ const Promotions: FC = () => {
   );
 };
 
-export default Promotions;
+export default Carousel;
