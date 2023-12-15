@@ -66,7 +66,7 @@ const LocationsModal: FC<LocationsModalProps> = ({
     onCloseEditModal();
   };
 
-  //для упрощения 
+  //для упрощения
   // const handleFormSubmit = (e: React.FormEvent) => {
   //   e.preventDefault();
   //   if (isAddingMode) {
@@ -86,10 +86,11 @@ const LocationsModal: FC<LocationsModalProps> = ({
   //   }
   // };
 
-
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const isConfirmed = window.confirm('Вы уверены, что хотите внести изменения?');
+    const isConfirmed = window.confirm(
+      'Вы уверены, что хотите внести изменения?'
+    );
     if (isConfirmed) {
       if (isAddingMode) {
         onSaveAdd(locationToSave);
@@ -102,7 +103,9 @@ const LocationsModal: FC<LocationsModalProps> = ({
   };
 
   const handleDelete = () => {
-    const isConfirmed = window.confirm('Вы уверены, что хотите удалить эту локацию?');
+    const isConfirmed = window.confirm(
+      'Вы уверены, что хотите удалить эту локацию?'
+    );
     if (isConfirmed && editedLocation && editedLocation.id) {
       const locationId = editedLocation.id;
       dispatch(deleteLocation(locationId));
@@ -124,7 +127,7 @@ const LocationsModal: FC<LocationsModalProps> = ({
       autoComplete: 'off',
       title: 'Город',
       htmlFor: 'city',
-      onChange: (value: string | boolean | number | Date ) => {
+      onChange: (value: string | boolean | number | Date) => {
         if (typeof value === 'string') {
           setEditedLocation({
             ...editedLocation,
@@ -143,7 +146,7 @@ const LocationsModal: FC<LocationsModalProps> = ({
       autoComplete: 'off',
       title: 'Адрес',
       htmlFor: 'address',
-      onChange: (value:string | boolean | number | Date ) => {
+      onChange: (value: string | boolean | number | Date) => {
         if (typeof value === 'string') {
           setEditedLocation({
             ...editedLocation,
@@ -162,7 +165,7 @@ const LocationsModal: FC<LocationsModalProps> = ({
       autoComplete: 'off',
       title: 'Широта',
       htmlFor: 'latitude',
-      onChange: (value:string | boolean | number | Date ) => {
+      onChange: (value: string | boolean | number | Date) => {
         if (typeof value === 'string') {
           const newValue = value.replace(/,/g, '.');
           if (
@@ -189,7 +192,7 @@ const LocationsModal: FC<LocationsModalProps> = ({
       autoComplete: 'off',
       title: 'Долгота',
       htmlFor: 'longitude',
-      onChange: (value:string | boolean | number | Date ) => {
+      onChange: (value: string | boolean | number | Date) => {
         if (typeof value === 'string') {
           const newValue = value.replace(/,/g, '.');
           if (
@@ -216,7 +219,7 @@ const LocationsModal: FC<LocationsModalProps> = ({
       autoComplete: 'off',
       title: 'Часы работы',
       htmlFor: 'hours',
-      onChange: (value:string | boolean | number | Date ) => {
+      onChange: (value: string | boolean | number | Date) => {
         if (typeof value === 'string') {
           setEditedLocation({
             ...editedLocation,
@@ -233,7 +236,7 @@ const LocationsModal: FC<LocationsModalProps> = ({
       value: editedLocation.invisible,
       title: 'Скрыть для покупателей',
       htmlFor: 'invisible',
-      onChange: (value: string | boolean | number | Date ) => {
+      onChange: (value: string | boolean | number | Date) => {
         if (typeof value === 'boolean') {
           setEditedLocation({
             ...editedLocation,
@@ -250,7 +253,7 @@ const LocationsModal: FC<LocationsModalProps> = ({
         <Modal
           modalTitle={modalTitle}
           isAddingMode={isAddingMode}
-          onCancellick={handleCancel}
+          onCancelСlick={handleCancel}
           onDeleteClick={handleDelete}
         >
           <InputModal inputFields={inputFields} />

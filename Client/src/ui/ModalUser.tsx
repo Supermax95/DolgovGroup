@@ -8,14 +8,14 @@ interface IModalUser {
   children: React.ReactNode;
   modalTitle: string;
   isAddingMode?: boolean;
-  onCancellick: () => void;
+  onCancelСlick: () => void;
 }
 
 const ModalUser: FC<IModalUser> = ({
   children,
   modalTitle,
   isAddingMode,
-  onCancellick,
+  onCancelСlick,
 }) => {
   return (
     <div
@@ -56,7 +56,7 @@ const ModalUser: FC<IModalUser> = ({
           </div>
           <button
             className="cursor-pointer absolute top-0 right-0 mt-4 mr-5 text-slate-400 hover:text-slate-400 transition duration-150 ease-in-out rounded focus:ring-2 focus:outline-none focus:ring-slate-400"
-            onClick={onCancellick}
+            onClick={onCancelСlick}
             aria-label="close modal"
             role="button"
           >

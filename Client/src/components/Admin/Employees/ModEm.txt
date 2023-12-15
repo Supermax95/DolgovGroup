@@ -214,7 +214,7 @@ const EmployeesModal: React.FC<UsersModalProps> = ({
       <Wrapper>
         <ModalUser
           modalTitle={modalTitle}
-          onCancellick={handleCancel}
+          onCancelСlick={handleCancel}
           onSaveClick={handleSave}
         >
           <InputModal

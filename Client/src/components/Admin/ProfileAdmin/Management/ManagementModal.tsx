@@ -47,15 +47,15 @@ const ManagementModal: FC<ManagersModalProps> = ({
   const dispatch = useAppDispatch();
 
   const managerToSave: IManager = editedManager
-  ? editedManager
-  : {
-      id: 0,
-      lastName: '',
-      firstName: '',
-      middleName: '',
-      email: '',
-      phone: '',
-    };
+    ? editedManager
+    : {
+        id: 0,
+        lastName: '',
+        firstName: '',
+        middleName: '',
+        email: '',
+        phone: '',
+      };
 
   useEffect(() => {
     console.log('Данные менеджера:', editedManager);
@@ -257,7 +257,7 @@ const ManagementModal: FC<ManagersModalProps> = ({
           <Modal
             modalTitle={modalTitle}
             isAddingMode={isAddingMode}
-            onCancellick={handleCancel}
+            onCancelСlick={handleCancel}
             onDeleteClick={handleDelete}
           >
             {showError && (

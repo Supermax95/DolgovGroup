@@ -145,12 +145,12 @@ const ProductsModal: FC<ProductsModalProps> = ({
       let result2 = '';
 
       if (isAddingMode) {
-           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         result = await onSaveAdd(editedProduct as IProduct);
       } else {
-           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         result2 = await onSaveEdit(editedProduct as IProduct);
       }
 
@@ -168,19 +168,26 @@ const ProductsModal: FC<ProductsModalProps> = ({
       ) as HTMLInputElement;
       const file = fileInput?.files?.[0];
 
-      await uploadFile( 
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-        file, id, isAddingMode);
+      await uploadFile(
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        file,
+        id,
+        isAddingMode
+      );
     }
   };
 
   const handleFileInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const file = e.target.files?.[0] || null;
 
-    uploadFile(   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-      file, id, isAddingMode);
+    uploadFile(
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      file,
+      id,
+      isAddingMode
+    );
   };
 
   const handleDelete = () => {
@@ -348,10 +355,9 @@ const ProductsModal: FC<ProductsModalProps> = ({
           ) {
             setEditedProduct({
               ...editedProduct,
-                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
               originalPrice: sanitizedValue,
-
             });
           }
         }
@@ -371,19 +377,22 @@ const ProductsModal: FC<ProductsModalProps> = ({
         if (typeof value === 'string') {
           const trimmedValue = value.replace(/\s/g, '');
           const sanitizedValue = trimmedValue.replace(/,/g, '');
-          
-          if (sanitizedValue === '' || /^\d+(\.\d{0,2})?$/.test(sanitizedValue)) {
+
+          if (
+            sanitizedValue === '' ||
+            /^\d+(\.\d{0,2})?$/.test(sanitizedValue)
+          ) {
             setEditedProduct({
               ...editedProduct,
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
-            customerPrice: sanitizedValue,
-          });
+              customerPrice: sanitizedValue,
+            });
+          }
         }
-      }
+      },
+      required: true,
     },
-    required: true,
-  },
     {
       id: 'employeePrice',
       name: 'employeePrice',
@@ -396,21 +405,24 @@ const ProductsModal: FC<ProductsModalProps> = ({
 
       onChange: (value: string | boolean | number | Date) => {
         if (typeof value === 'string') {
-        const trimmedValue = value.replace(/\s/g, '');
-        const sanitizedValue = trimmedValue.replace(/,/g, '');
+          const trimmedValue = value.replace(/\s/g, '');
+          const sanitizedValue = trimmedValue.replace(/,/g, '');
 
-        if (sanitizedValue === '' || /^\d+(\.\d{0,2})?$/.test(sanitizedValue)) {
-          setEditedProduct({
-            ...editedProduct,
-               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          if (
+            sanitizedValue === '' ||
+            /^\d+(\.\d{0,2})?$/.test(sanitizedValue)
+          ) {
+            setEditedProduct({
+              ...editedProduct,
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
-            employeePrice: sanitizedValue,
-          });
+              employeePrice: sanitizedValue,
+            });
+          }
         }
-      }
+      },
+      required: true,
     },
-    required: true,
-  }
   ];
 
   return (
@@ -420,7 +432,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
           modalTitle={modalTitle}
           isAddingMode={isAddingMode}
           onDeleteClick={handleDelete}
-          onCancellick={handleCancel}
+          onCancelСlick={handleCancel}
           isUpload={isUpload}
         >
           {axiosError && (

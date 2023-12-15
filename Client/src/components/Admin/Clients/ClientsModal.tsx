@@ -266,7 +266,7 @@ const ClientsModal: React.FC<UsersModalProps> = ({
   return (
     <Wrapper>
       <form onSubmit={handleFormSubmit}>
-        <ModalUser modalTitle={modalTitle} onCancellick={handleCancel}>
+        <ModalUser modalTitle={modalTitle} onCancelСlick={handleCancel}>
           {axiosError && (
             <div className="text-sm text-rose-400 text-center mt-2">
               {axiosError}

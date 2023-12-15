@@ -72,7 +72,7 @@ const PortalModal: FC<EmailModalProps> = ({
   return (
     <>
       <form onSubmit={handleFormSubmit}>
-        <Modal modalTitle={modalTitle} onCancellick={handleCancel}>
+        <Modal modalTitle={modalTitle} onCancelСlick={handleCancel}>
           {showError}
           <InputModal inputFields={inputFieldsDate} />
         </Modal>

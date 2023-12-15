@@ -16,7 +16,7 @@ interface IModal {
   modalTitle: string;
   isAddingMode?: boolean | undefined;
   onDeleteClick?: () => void | undefined;
-  onCancellick?: () => void | undefined;
+  onCancelСlick?: () => void | undefined;
   isUpload?: boolean;
 }
 
@@ -25,7 +25,7 @@ const Modal: FC<IModal> = ({
   modalTitle,
   isAddingMode,
   onDeleteClick,
-  onCancellick,
+  onCancelСlick,
   isUpload,
 }) => {
   const modalWidthClass =
@@ -139,7 +139,7 @@ const Modal: FC<IModal> = ({
 
           <button
             className="cursor-pointer absolute top-0 right-0 mt-4 mr-5 text-slate-400 hover:text-slate-400 transition duration-150 ease-in-out rounded focus:ring-2 focus:outline-none focus:ring-slate-400"
-            onClick={onCancellick}
+            onClick={onCancelСlick}
             aria-label="close modal"
             role="button"
           >
