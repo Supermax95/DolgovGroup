@@ -499,11 +499,11 @@ const ProfileAdmin: FC = () => {
           </div>
         </form> */}
 
-        <div className="container flex flex-col mx-auto space-y-12">
+        {/* <div className="container flex flex-col mx-auto space-y-12">
           <div className="grid grid-cols-2 gap-6 p-6 rounded-md shadow-sm dark:bg-gray-900">
-            <form className="">
+            <form className=""> */}
               {/* <div className="col-span-1 flex items-center"> */}
-              <div className="col-span-1 flex items-center justify-center">
+              {/* <div className="col-span-1 flex items-center justify-center">
                 <div className="space-y-2">
                   <p className="font-normal text-md text-slate-600 pt-4">
                     Email
@@ -516,11 +516,11 @@ const ProfileAdmin: FC = () => {
                   </div>
                 </div>
               </div>
-            </form>
+            </form> */}
 
-            <form className="">
+            {/* <form className=""> */}
               {/* <div className="col-span-1 flex items-center"> */}
-              <div className="col-span-1 flex items-center justify-center">
+              {/* <div className="col-span-1 flex items-center justify-center">
                 <div className="space-y-2">
                   <p className="font-normal text-md text-slate-600 pt-4">
                     Телефон
@@ -535,7 +535,7 @@ const ProfileAdmin: FC = () => {
               </div>
             </form>
           </div>
-        </div>
+        </div> */}
 
         <form
           //! только email
