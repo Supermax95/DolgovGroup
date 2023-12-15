@@ -99,6 +99,7 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
     if (currentStep === 1) {
       let result = '';
       let result2 = '';

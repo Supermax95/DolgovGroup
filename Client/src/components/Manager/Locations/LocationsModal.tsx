@@ -66,19 +66,44 @@ const LocationsModal: FC<LocationsModalProps> = ({
     onCloseEditModal();
   };
 
+  //для упрощения 
+  // const handleFormSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   if (isAddingMode) {
+  //     onSaveAdd(locationToSave);
+  //     onCloseAddModal();
+  //   } else {
+  //     onSaveEdit(locationToSave);
+  //     onCloseEditModal();
+  //   }
+  // };
+
+  // const handleDelete = () => {
+  //   if (editedLocation && editedLocation.id) {
+  //     const locationId = editedLocation.id;
+  //     dispatch(deleteLocation(locationId));
+  //     onCloseEditModal();
+  //   }
+  // };
+
+
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (isAddingMode) {
-      onSaveAdd(locationToSave);
-      onCloseAddModal();
-    } else {
-      onSaveEdit(locationToSave);
-      onCloseEditModal();
+    const isConfirmed = window.confirm('Вы уверены, что хотите внести изменения?');
+    if (isConfirmed) {
+      if (isAddingMode) {
+        onSaveAdd(locationToSave);
+        onCloseAddModal();
+      } else {
+        onSaveEdit(locationToSave);
+        onCloseEditModal();
+      }
     }
   };
 
   const handleDelete = () => {
-    if (editedLocation && editedLocation.id) {
+    const isConfirmed = window.confirm('Вы уверены, что хотите удалить эту локацию?');
+    if (isConfirmed && editedLocation && editedLocation.id) {
       const locationId = editedLocation.id;
       dispatch(deleteLocation(locationId));
       onCloseEditModal();
