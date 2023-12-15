@@ -438,7 +438,7 @@ const Carousel: FC = () => {
           <section className="max-w-6xl mx-auto px-4 ">
             <div className="text-center pb-4">
               <h1 className="font-bold text-xl lg:text-xl font-heading text-lime-600">
-                Акции в карусели
+                Скрытые акции в карусели
               </h1>
             </div>
 
