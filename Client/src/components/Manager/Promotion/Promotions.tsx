@@ -12,7 +12,7 @@ import Search from '../../../ui/Search';
 import PromotionsModal from './PromotionsModal';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import Button from '../../../ui/Button'
+import Button from '../../../ui/Button';
 import PromotionSidebar from './PromotionSidebar';
 import {
   ArrowLeftIcon,
@@ -24,7 +24,6 @@ import {
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { FreeMode, Navigation, Pagination } from 'swiper/modules';
-import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -189,29 +188,9 @@ const Promotions: FC = () => {
     return `${day}-${month}-${year}`;
   };
 
-  const swiperButtonStyles: React.CSSProperties = {
-    position: 'absolute',
-    top: '50%',
-    transform: 'translateY(-50%)',
-    zIndex: 10,
-    color: 'white', // Цвет стрелок
-    fontSize: '24px', // Размер шрифта стрелок
-    cursor: 'pointer',
-  };
-
-  const swiperButtonNextStyles: React.CSSProperties = {
-    ...swiperButtonStyles,
-    right: '10px', // Расстояние от правого края
-  };
-
-  const swiperButtonPrevStyles: React.CSSProperties = {
-    ...swiperButtonStyles,
-    left: '10px', // Расстояние от левого края
-  };
-
   return (
     <Wrapper>
-              <PromotionSidebar/>
+      <PromotionSidebar />
       <div className="p-4">
         <div className="col-span-full mb-4">
           <div className="flex items-center justify-between">
