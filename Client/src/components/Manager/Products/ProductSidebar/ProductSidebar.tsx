@@ -143,10 +143,12 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     console.log('recrectrectrectt', rect);
 
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    console.log('window.scrollY ', document.documentElement.scrollTop);
+
     console.log('scrollTop', scrollTop);
 
     console.log('rect.bottom + scrollTop', rect.top + scrollTop + 500);
-    const newTop = rect.top + scrollTop + 500;
+    const newTop = rect.bottom + scrollTop -110;
 
     setMenuPosition(newTop);
 
@@ -504,7 +506,8 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                         //! появляться должно при нажатии на конкретную категорию по шестеррёнке
                         ref={menuRef}
                         id={`dropdownRight-${item.id}`}
-                        className={`z-10 absolute w-52 ${menuClass} top-${menuPosition} left-24 bg-white divide-y divide-gray-100 rounded-lg shadow`}
+                        style={{ top: `${menuPosition}px` }}
+                        className={`z-10 absolute w-52 ${menuClass} left-24 bg-white divide-y divide-gray-100 rounded-lg shadow`}
                       >
                         <ul
                           className="py-2 text-xs text-slate-700 cursor-pointer"
