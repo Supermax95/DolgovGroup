@@ -15,6 +15,7 @@ import { isToday, parseISO, isPast } from 'date-fns';
 import { unwrapResult } from '@reduxjs/toolkit';
 import {
   CheckIcon,
+  ChevronRightIcon,
   ClipboardDocumentCheckIcon,
   PencilSquareIcon,
 } from '@heroicons/react/24/outline';
@@ -68,8 +69,14 @@ const Products: FC = () => {
   const [currentCategory, setCurrentCategory] = useState<ICategory | null>(
     null
   );
+
   const [currentSubcategory, setCurrentSubcategory] =
     useState<ISubcategory | null>(null);
+  // // для плашки Вы сейчас здесь
+  // const [activeCategory, setActiveCategory] = useState<ICategory | null>(null);
+
+  // const [activeSubcategory, setActiveSubcategory] =
+  //   useState<ISubcategory | null>(null);
 
   // остальное
   const [isModalOpen, setModalOpen] = useState(false);
@@ -171,7 +178,33 @@ const Products: FC = () => {
       filtered = filtered.filter(
         (product) => product.subcategoryId === currentSubcategory.id
       );
+      // console.log('filtered', filtered);
     }
+
+    // //! для плашки Вы сейчас здесь
+    // if (activeCategory) {
+    //   //* выводит массив объектов подкатегорий
+    //   const subcategoriesOfCurrentCategory = subcategories.filter(
+    //     (sub) => sub.categoryId === activeCategory.id
+    //   );
+
+    //   /** если для хотя бы одного элемента product в массиве filtered условие внутри some возвращает true,
+    //    * то этот product будет включен в результирующий массив filtered. */
+    //   filtered = filtered.filter((product) => {
+    //     //console.log('product', product.subcategoryId);
+    //     return subcategoriesOfCurrentCategory.some(
+    //       (sub) => sub.id === product.subcategoryId
+    //     );
+    //   });
+    // }
+
+    // //* Фильтрация по текущей подкатегории
+    // if (activeSubcategory) {
+    //   filtered = filtered.filter(
+    //     (product) => product.subcategoryId === activeSubcategory.id
+    //   );
+    //   console.log('filtered', filtered);
+    // }
 
     return filtered;
   };
@@ -316,7 +349,8 @@ const Products: FC = () => {
           </div>
         )}
 
-        {/* //!поиск */}
+        <h1 className="text-xl text-lime-600 font-medium mb-2">Продукты</h1>
+
         <div className="col-span-full">
           <div className="flex items-center justify-between mb-2">
             <Search onFilter={setSearchText} />
@@ -334,7 +368,7 @@ const Products: FC = () => {
               />
             </div>
           </div>
-          {/* </div> */}
+
           <div className="main flex flex-col border rounded-full overflow-hidden select-none px-4">
             <div className="flex space-x-3 py-2 px-2">
               <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
@@ -431,167 +465,199 @@ const Products: FC = () => {
           </div>
         </div>
 
-        {/** новая карточка */}
-        <div className="mx-auto grid max-w-screen-lg justify-center px-4 sm:grid-cols-2 sm:gap-4 sm:px-8 md:grid-cols-3">
-          {displayedProducts.map((product) => (
-            <article
-              key={product.id}
-              className="mx-auto my-4 flex w-full flex-col overflow-hidden rounded-2xl border border-gray-300 bg-white text-gray-900 transition hover:translate-y-2 hover:shadow-lg"
-            >
-              <div className="relative">
-                <img
-                  className="h-56 w-full object-cover"
-                  src={`${VITE_URL}${product.photo}`}
-                  alt={product.productName}
-                />
-                <div className="absolute flex h-6 w-6 items-center justify-center rounded-lg bg-slate-400 hover:bg-lime-600 top-2 right-2 ">
-                  <PencilSquareIcon
-                    className="mr-0 h-5 w-5 cursor-pointer text-white "
-                    onClick={() => openEditModal(product)}
+        <section className="max-w-6xl mx-auto px-4 ">
+          {/* <div className="flex items-center ml-6">
+            <span className="text-slate-600 text-sm font-normal mx-2 my-2">
+              Вы сейчас здесь
+            </span>
+            {(activeCategory || activeSubcategory) && (
+              <>
+                {activeCategory && (
+                  <>
+                    <div>
+                      <ChevronRightIcon className="cursor-pointer w-3 h-3 text-slate-600 mx-1" />
+                    </div>
+                    <span className="text-slate-600 text-sm font-normal mx-2 my-2">
+                      {activeCategory.categoryName}
+                    </span>
+                  </>
+                )}
+
+                {activeSubcategory && (
+                  <>
+                    <div>
+                      <ChevronRightIcon className="cursor-pointer w-3 h-3 text-slate-600 mx-1" />
+                    </div>
+                    <span className="text-slate-600 text-sm font-normal mx-2 my-2">
+                      {activeSubcategory.subcategoryName}
+                    </span>
+                  </>
+                )}
+              </>
+            )}
+          </div> */}
+
+          {/** новая карточка */}
+          <div className="mx-auto grid max-w-screen-lg justify-center px-4 sm:grid-cols-2 sm:gap-4 sm:px-8 md:grid-cols-3">
+            {displayedProducts.map((product) => (
+              <article
+                key={product.id}
+                className="mx-auto my-4 flex w-full flex-col overflow-hidden rounded-2xl border border-gray-300 bg-white text-gray-900 transition hover:translate-y-2 hover:shadow-lg"
+              >
+                <div className="relative">
+                  <img
+                    className="h-56 w-full object-cover"
+                    src={`${VITE_URL}${product.photo}`}
+                    alt={product.productName}
                   />
-                </div>
-                {(product.isDiscounted ||
-                  product.isNew ||
-                  product.invisible) && (
-                  <div
-                    className="absolute bottom-0 left-2 p-2 text-center flex space-x-2 items-center"
-                    //className="absolute bottom-0 left-1/2 transform -translate-x-1/2 p-2 text-center flex space-x-2 items-center"
-                  >
-                    {product.isDiscounted && (
-                      <p className="rounded-full border-2 border-slate-300 bg-emerald-500 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3 mt-2">
-                        Скидка
-                      </p>
-                    )}
-                    {product.isNew && (
-                      <p className="rounded-full border-2 border-slate-300 bg-rose-500 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3 mt-2">
-                        Новый
-                      </p>
-                    )}
-                    {product.invisible && (
-                      <p className="rounded-full border-2 border-slate-300 bg-slate-500 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3 mt-2">
-                        Скрыт
-                      </p>
-                    )}
+                  <div className="absolute flex h-6 w-6 items-center justify-center rounded-lg bg-slate-400 hover:bg-lime-600 top-2 right-2 ">
+                    <PencilSquareIcon
+                      className="mr-0 h-5 w-5 cursor-pointer text-white "
+                      onClick={() => openEditModal(product)}
+                    />
                   </div>
-                )}
-              </div>
-
-              <div className="flex-auto px-6 py-5">
-                <span className="mb-2 flex items-center text-sm font-semibold text-slate-500">
-                  <ClipboardDocumentCheckIcon
-                    className="mr-1 h-5 w-5 cursor-pointer hover:text-amber-600"
-                    onClick={() => handleCopyToClipboard(product.article)}
-                  />
-
-                  <span className="text-slate-700 font-medium">
-                    {product.article || 'нет'}
-                  </span>
-                </span>
-
-                <h3
-                  // className="truncate hover:text-clip mt-4 mb-3 text-xs text-slate-700 text-center font-semibold xl:text-sm lg:text-sm "
-                  className="mt-4 mb-3 text-xs text-slate-700 text-center font-semibold xl:text-sm lg:text-sm "
-                >
-                  {product.productName || 'Нет названия'}
-                </h3>
-
-                {product.isDiscounted && (
-                  <p className="mb-2 text-slate-600 text-sm font-normal">
-                    Оригинальная стоимость:{' '}
-                    <del className="text-slate-600 text-sm font-medium">
-                      {product.originalPrice} ₽
-                    </del>
-                  </p>
-                )}
-
-                {product.isDiscounted ? (
-                  <p className="mb-2 text-slate-600 text-sm font-normal">
-                    Цена со скидкой для клиента:{' '}
-                    <span className="text-rose-600 font-medium">
-                      {product.customerPrice} ₽
-                    </span>
-                  </p>
-                ) : (
-                  <p className="mb-2 text-slate-600 text-sm font-normal">
-                    Оригинальная стоимость:{' '}
-                    <span className="text-lime-600 font-medium">
-                      {product.originalPrice} ₽
-                    </span>
-                  </p>
-                )}
-
-                {product.employeePrice ? (
-                  <p className="mb-2 text-slate-600 text-sm font-normal">
-                    Цена для сотрудников:{' '}
-                    <span className="text-amber-600 font-medium">
-                      {product.employeePrice} ₽
-                    </span>
-                  </p>
-                ) : (
-                  <p className="mb-2 text-slate-600 text-sm font-normal">
-                    Цена для сотрудников:{' '}
-                    <span className="text-amber-600 font-medium">
-                      не указана
-                    </span>
-                  </p>
-                )}
-
-                {!product.isDiscounted && (
-                  <div className="text-center">
-                    <span className="text-lime-600 text-sm font-medium">
-                      Акции нет
-                    </span>
-                  </div>
-                )}
-
-                {product.isDiscounted ? (
-                  product.promoStartDate && product.promoEndDate ? (
-                    <div className="mb-2 mt-4 text-center">
-                      {isToday(parseISO(product.promoEndDate)) ? (
-                        <span className="text-rose-600 text-sm font-medium">
-                          Акция истекает сегодня
-                        </span>
-                      ) : (
-                        <p className="mb-2 text-slate-600 text-sm font-normal text-center">
-                          Период акции:
-                          <br />
-                          <span className="text-center">
-                            с{' '}
-                            <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
-                              {reverseDate(product.promoStartDate)}
-                            </span>{' '}
-                            по{' '}
-                            <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
-                              {reverseDate(product.promoEndDate)}
-                            </span>
-                          </span>
+                  {(product.isDiscounted ||
+                    product.isNew ||
+                    product.invisible) && (
+                    <div
+                      className="absolute bottom-0 left-2 p-2 text-center flex space-x-2 items-center"
+                      //className="absolute bottom-0 left-1/2 transform -translate-x-1/2 p-2 text-center flex space-x-2 items-center"
+                    >
+                      {product.isDiscounted && (
+                        <p className="rounded-full border-2 border-slate-300 bg-emerald-500 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3 mt-2">
+                          Скидка
+                        </p>
+                      )}
+                      {product.isNew && (
+                        <p className="rounded-full border-2 border-slate-300 bg-rose-500 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3 mt-2">
+                          Новый
+                        </p>
+                      )}
+                      {product.invisible && (
+                        <p className="rounded-full border-2 border-slate-300 bg-slate-500 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3 mt-2">
+                          Скрыт
                         </p>
                       )}
                     </div>
+                  )}
+                </div>
+
+                <div className="flex-auto px-6 py-5">
+                  <span className="mb-2 flex items-center text-sm font-semibold text-slate-500">
+                    <ClipboardDocumentCheckIcon
+                      className="mr-1 h-5 w-5 cursor-pointer hover:text-amber-600"
+                      onClick={() => handleCopyToClipboard(product.article)}
+                    />
+
+                    <span className="text-slate-700 font-medium">
+                      {product.article || 'нет'}
+                    </span>
+                  </span>
+
+                  <h3
+                    // className="truncate hover:text-clip mt-4 mb-3 text-xs text-slate-700 text-center font-semibold xl:text-sm lg:text-sm "
+                    className="mt-4 mb-3 text-xs text-slate-700 text-center font-semibold xl:text-sm lg:text-sm "
+                  >
+                    {product.productName || 'Нет названия'}
+                  </h3>
+
+                  {product.isDiscounted && (
+                    <p className="mb-2 text-slate-600 text-sm font-normal">
+                      Оригинальная стоимость:{' '}
+                      <del className="text-slate-600 text-sm font-medium">
+                        {product.originalPrice} ₽
+                      </del>
+                    </p>
+                  )}
+
+                  {product.isDiscounted ? (
+                    <p className="mb-2 text-slate-600 text-sm font-normal">
+                      Цена со скидкой для клиента:{' '}
+                      <span className="text-rose-600 font-medium">
+                        {product.customerPrice} ₽
+                      </span>
+                    </p>
                   ) : (
-                    <div className="mb-2 mt-4 text-center">
-                      <p className="mb-2 text-slate-600 text-sm font-normal text-center">
-                        Период акции: <br />
-                        <span className="text-center">
-                          <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
-                            бессрочная
-                          </span>
-                        </span>
-                      </p>
-                    </div>
-                  )
-                ) : (
-                  isPast(parseISO(product.promoEndDate)) && (
-                    <div className="mb-2 mt-0 text-center">
-                      <span className="text-amber-600 text-sm font-medium">
-                        Акция завершена
+                    <p className="mb-2 text-slate-600 text-sm font-normal">
+                      Оригинальная стоимость:{' '}
+                      <span className="text-lime-600 font-medium">
+                        {product.originalPrice} ₽
+                      </span>
+                    </p>
+                  )}
+
+                  {product.employeePrice ? (
+                    <p className="mb-2 text-slate-600 text-sm font-normal">
+                      Цена для сотрудников:{' '}
+                      <span className="text-amber-600 font-medium">
+                        {product.employeePrice} ₽
+                      </span>
+                    </p>
+                  ) : (
+                    <p className="mb-2 text-slate-600 text-sm font-normal">
+                      Цена для сотрудников:{' '}
+                      <span className="text-amber-600 font-medium">
+                        не указана
+                      </span>
+                    </p>
+                  )}
+
+                  {!product.isDiscounted && (
+                    <div className="text-center">
+                      <span className="text-lime-600 text-sm font-medium">
+                        Акции нет
                       </span>
                     </div>
-                  )
-                )}
+                  )}
 
-                {/* //! даже если описания нет, инпут остаётся, тернарка не работает, т.к. теги почему-то хранятся в бд */}
-                {/* {product.description ? (
+                  {product.isDiscounted ? (
+                    product.promoStartDate && product.promoEndDate ? (
+                      <div className="mb-2 mt-4 text-center">
+                        {isToday(parseISO(product.promoEndDate)) ? (
+                          <span className="text-rose-600 text-sm font-medium">
+                            Акция истекает сегодня
+                          </span>
+                        ) : (
+                          <p className="mb-2 text-slate-600 text-sm font-normal text-center">
+                            Период акции:
+                            <br />
+                            <span className="text-center">
+                              с{' '}
+                              <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
+                                {reverseDate(product.promoStartDate)}
+                              </span>{' '}
+                              по{' '}
+                              <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
+                                {reverseDate(product.promoEndDate)}
+                              </span>
+                            </span>
+                          </p>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="mb-2 mt-4 text-center">
+                        <p className="mb-2 text-slate-600 text-sm font-normal text-center">
+                          Период акции: <br />
+                          <span className="text-center">
+                            <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
+                              бессрочная
+                            </span>
+                          </span>
+                        </p>
+                      </div>
+                    )
+                  ) : (
+                    isPast(parseISO(product.promoEndDate)) && (
+                      <div className="mb-2 mt-0 text-center">
+                        <span className="text-amber-600 text-sm font-medium">
+                          Акция завершена
+                        </span>
+                      </div>
+                    )
+                  )}
+
+                  {/* //! даже если описания нет, инпут остаётся, тернарка не работает, т.к. теги почему-то хранятся в бд */}
+                  {/* {product.description ? (
                   <div className="mb-2 mt-4 w-full">
                     <p className="text-slate-600 text-sm font-normal  text-sm font-normal text-center">
                       Описание:
@@ -610,10 +676,11 @@ const Products: FC = () => {
                     Описание отсутствует
                   </div>
                 )} */}
-              </div>
-            </article>
-          ))}
-        </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
 
         <Pagination
           currentPage={currentPage}
