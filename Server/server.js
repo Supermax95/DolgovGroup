@@ -50,6 +50,7 @@ app.use(
   cors({
     origin: [
       `http://${IP}:8081`,
+      `http://${IP}:5173`,
       'http://localhost:5173',
       'http://localhost:5174',
     ],
