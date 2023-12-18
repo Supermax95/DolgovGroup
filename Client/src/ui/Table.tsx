@@ -180,6 +180,14 @@ const Table: FC<ITable> = ({
             </tbody>
           </table>
         </div>
+        {columnsListDb.length === 0 ||
+          (filteredData.length === 0 && (
+            <div className="flex items-center justify-center mt-4">
+              <span className="text-slate-600 text-sm font-normal">
+                Данные в таблице отсутствуют
+              </span>
+            </div>
+          ))}
       </div>
     </div>
   );

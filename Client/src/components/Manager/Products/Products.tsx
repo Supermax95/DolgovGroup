@@ -184,31 +184,6 @@ const Products: FC = () => {
       // console.log('filtered', filtered);
     }
 
-    // //! для плашки Вы сейчас здесь
-    // if (activeCategory) {
-    //   //* выводит массив объектов подкатегорий
-    //   const subcategoriesOfCurrentCategory = subcategories.filter(
-    //     (sub) => sub.categoryId === activeCategory.id
-    //   );
-
-    //   /** если для хотя бы одного элемента product в массиве filtered условие внутри some возвращает true,
-    //    * то этот product будет включен в результирующий массив filtered. */
-    //   filtered = filtered.filter((product) => {
-    //     //console.log('product', product.subcategoryId);
-    //     return subcategoriesOfCurrentCategory.some(
-    //       (sub) => sub.id === product.subcategoryId
-    //     );
-    //   });
-    // }
-
-    // //* Фильтрация по текущей подкатегории
-    // if (activeSubcategory) {
-    //   filtered = filtered.filter(
-    //     (product) => product.subcategoryId === activeSubcategory.id
-    //   );
-    //   console.log('filtered', filtered);
-    // }
-
     return filtered;
   };
 

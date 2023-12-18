@@ -179,6 +179,7 @@ const Nocarousel: FC = () => {
   return (
     <Wrapper>
       <PromotionSidebar />
+      {/* <div className="p-4 w-[100vh]">  вроде и задаёт ширину, но не максимальную */}
       <div className="p-4">
         <div className="col-span-full mb-4">
           <div className="flex items-center justify-between">
@@ -285,9 +286,17 @@ const Nocarousel: FC = () => {
                 </div>
               ))}
           </div>
+          {displayedPromotions.filter((promotion) => !promotion.invisible)
+            .length === 0 && (
+            <div className="flex items-center justify-center">
+              <span className="text-slate-600 text-sm font-normal">
+                Актуальные акции отсутствуют{' '}
+              </span>
+            </div>
+          )}
         </div>
 
-        <div className="mt-6 pt-0.5 bg-lime-400 rounded-md shadow-sm"></div>
+        <div className="my-6 rounded-md shadow-sm border-b-2 border-orange-300"></div>
 
         {/* Карточки */}
         <div className="col-span-full mt-8">
@@ -375,6 +384,14 @@ const Nocarousel: FC = () => {
                 </div>
               ))}
           </div>
+          {displayedPromotions.filter((promotion) => promotion.invisible)
+            .length === 0 && (
+            <div className="flex items-center justify-center">
+              <span className="text-slate-600 text-sm font-normal">
+                Скрытые акции отсутствуют{' '}
+              </span>
+            </div>
+          )}
         </div>
       </div>
 

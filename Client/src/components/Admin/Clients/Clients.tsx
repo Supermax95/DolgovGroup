@@ -74,9 +74,6 @@ const Clients: FC = () => {
     dispatch(getClients());
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   setAxiosError(null);
-  // }, [axiosError]);
 
   const itemsPerPage = 50;
   const startIndex = (currentPage - 1) * itemsPerPage;
