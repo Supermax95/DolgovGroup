@@ -76,6 +76,10 @@ const Location: FC = () => {
     dispatch(getLocations());
   }, [dispatch]);
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchText]);
+
   const itemsPerPage = 10;
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -86,6 +90,7 @@ const Location: FC = () => {
 
   const filterLocations = () => {
     let filtered = filteredLocations;
+
 
     // Фильтрация по видимости
     if (selectedVisibility !== 'all') {
@@ -119,7 +124,7 @@ const Location: FC = () => {
 
   const filteredLocationsPag = filterLocations()
 
-  const totalMatches = filteredLocationsPag.length;
+  const totalMatches = filteredLocationsPag.length;  
   const totalPages = Math.ceil(totalMatches / itemsPerPage);
   const displayedLocations = filterLocations().slice(startIndex, endIndex);
 
@@ -264,6 +269,7 @@ const Location: FC = () => {
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={setCurrentPage}
+
         />
 
         {isModalOpen && (selectedLocation || isAddingMode) && (
