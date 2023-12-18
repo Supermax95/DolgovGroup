@@ -15,6 +15,7 @@ import Management from '../components/Admin/ProfileAdmin/Management/Management';
 import ListContact from '../components/Manager/ProfileManager/ListContact';
 import Nocarousel from '../components/Manager/Promotion/Nocarousel';
 import Carousel from '../components/Manager/Promotion/Carousel';
+import Success from '../components/Success/Success'
 
 const Navigation: FC = () => {
   return (
@@ -40,6 +41,7 @@ const Navigation: FC = () => {
           <Route path="/listOfManagersForManager" element={<ListContact />} />
           <Route path="/promotions/carousel" element={<Carousel/>} />
           <Route path="/promotions/nocarousel" element={<Nocarousel/>} />
+          <Route path="/registration/success" element={<Success/>} />
           <Route />
         </Route>
         {/* 

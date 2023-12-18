@@ -2,6 +2,7 @@
 require('dotenv').config();
 const userService = require('../services/user-service');
 
+const { FRONTPORT, IP } = process.env;
 class UserController {
   async registration(req, res, next) {
     try {
@@ -30,7 +31,9 @@ class UserController {
     try {
       const activationLink = req.params.link;
       await userService.activate(activationLink);
-      return res.redirect('https://ya.ru');
+      // Когда будет деплой должно работать
+      return res.redirect(`http://${IP}:${FRONTPORT}/registration/success`);
+      // return res.redirect('https://ya.ru');
     } catch (e) {
       console.log(e);
     }
