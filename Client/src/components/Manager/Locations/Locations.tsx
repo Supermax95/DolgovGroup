@@ -96,6 +96,7 @@ const Location: FC = () => {
     }
 
     if (searchText !== '') {
+
       filtered = filtered.filter((location) => {
         const locationFields = [
           String(location.city),
@@ -116,9 +117,12 @@ const Location: FC = () => {
     return filtered;
   };
 
+  const filteredLocationsPag = filterLocations()
+
+  const totalMatches = filteredLocationsPag.length;
+  const totalPages = Math.ceil(totalMatches / itemsPerPage);
   const displayedLocations = filterLocations().slice(startIndex, endIndex);
 
-  const totalPages = Math.ceil(filteredLocations.length / itemsPerPage);
 
   // Извлекаем уникальные города
   const uniqueCities = [...new Set(locations.map((location) => location.city))];

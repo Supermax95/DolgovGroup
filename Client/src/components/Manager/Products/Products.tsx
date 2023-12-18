@@ -211,9 +211,11 @@ const Products: FC = () => {
 
     return filtered;
   };
-
+  const filteredProdPag = filterProducts()
+  const totalMatches = filteredProdPag.length;
   const displayedProducts = filterProducts().slice(startIndex, endIndex);
-  const totalPages = Math.ceil(filterProducts().length / itemsPerPage);
+  const totalPages = Math.ceil(totalMatches/ itemsPerPage);
+  // const totalPages = Math.ceil(filterProducts().length / itemsPerPage);
 
   const openAddModal = () => {
     setAddingMode(true);
@@ -321,6 +323,20 @@ const Products: FC = () => {
       });
   };
 
+// //устаревший метод
+//   const handleCopyToClipboard = (text: string) => {
+//     const textarea = document.createElement('textarea');
+//     textarea.value = text;
+//     document.body.appendChild(textarea);
+//     textarea.select();
+//     document.execCommand('copy');
+//     document.body.removeChild(textarea);
+  
+//     console.log('Текст скопирован в буфер обмена:', text);
+//     setShowNotification(true);
+//   };
+
+  
   useEffect(() => {
     if (showNotification) {
       const notificationTimeout = setTimeout(() => {

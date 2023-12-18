@@ -112,6 +112,8 @@ const Clients: FC = () => {
     return filtered;
   };
 
+  const filteredUsersPag = filterUsers()
+  const totalMatches = filteredUsersPag.length;
   const displayedUsers = filterUsers().slice(startIndex, endIndex);
 
   const openEditModal = (user: User) => {
@@ -148,7 +150,7 @@ const Clients: FC = () => {
     }
   };
 
-  const totalPages = Math.ceil(filterUsers().length / itemsPerPage);
+  const totalPages = Math.ceil(totalMatches/ itemsPerPage);
   const uniqueStatus = ['Активные', 'Неактивные'];
 
   return (
