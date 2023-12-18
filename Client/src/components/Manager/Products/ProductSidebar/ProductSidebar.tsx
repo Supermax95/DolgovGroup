@@ -34,18 +34,23 @@ interface ProductSidebarProps {
   categories: ICategory[];
   onCategorySelect: (category: ICategory | null) => void;
   onSubcategorySelect: (subcategory: ISubcategory | null) => void;
+  onActiveCategory: (category: ICategory | null) => void;
+  onActiveSubcategory: (subcategory: ISubcategory | null) => void;
 }
 
 const ProductSidebar: FC<ProductSidebarProps> = ({
   categories,
   onCategorySelect,
   onSubcategorySelect,
+  onActiveCategory,
+  onActiveSubcategory,
 }) => {
   const dispatch = useAppDispatch();
 
   const allCategories = useAppSelector<ICategory[]>(
     (state) => state.categorySlice.data
   );
+
   const allSubcategories = useAppSelector(
     (state) => state.subcategorySlice.data
   );
@@ -87,6 +92,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   const [subcategoryStates, setSubcategoryStates] = useState<{
     [key: number]: boolean;
   }>({});
+  console.log('subcategoryStates', subcategoryStates);
 
   const [actionMenuForCategory, setActionMenuForCategory] =
     useState<boolean>(false); //* меню для редактирования категории
@@ -328,11 +334,11 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     const currentCategory = categories.find(
       (category) => category.id === selectedCategoryId
     );
-    //* сбрасывает подкатегории и позволяет переключаться между Категориями
-    onSubcategorySelect(null);
 
-    // Добавляем вызов onCategorySelect, чтобы передать выбранную категорию наружу
     onCategorySelect(currentCategory || null);
+    onActiveCategory(currentCategory || null);
+    onSubcategorySelect(null); // Сбрасываем выбранную подкатегорию
+    onActiveSubcategory(null); // Сбрасываем активную подкатегорию
   };
 
   //! рендерит карточки подкатегорий
@@ -340,10 +346,19 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     const currentSubcategory = allSubcategories.find(
       (sub) => sub.id === selectedSubcategory
     );
-    //* сбрасывает категории и позволяет переключаться между ПОДкатегориями
-    onCategorySelect(null);
+
+    // Находим соответствующую категорию
+    const currentCategory = categories.find(
+      (category) => category.id === currentSubcategory?.categoryId
+    );
+
+    // Добавляем вызов onCategorySelect, чтобы передать выбранную категорию наружу
+    onCategorySelect(currentCategory || null);
+    onActiveCategory(currentCategory || null);
+
     // Добавляем вызов onSubcategorySelect, чтобы передать выбранную подкатегорию наружу
     onSubcategorySelect(currentSubcategory || null);
+    onActiveSubcategory(currentSubcategory || null);
   };
 
   return (
@@ -403,302 +418,318 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
             </div>
           )}
 
-          {/* <li className="h-full"> */}
-          {allCategories.map((item) => (
-            <div key={item.id}>
-              {/* инпут для редактирования данных категорий */}
+          {allCategories.length ? (
+            allCategories.map((item) => (
+              <div key={item.id}>
+                {/* инпут для редактирования данных категорий */}
 
-              {isEditingCategory === item.id ? (
-                <form onSubmit={editedCategoryHandleForm}>
-                  <div className="relative ml-5 p-0">
-                    <input
-                      id={item.categoryName}
-                      type="text"
-                      placeholder=""
-                      value={dataEditCategory?.categoryName || ''}
-                      autoComplete="off"
-                      required={true}
-                      autoFocus
-                      onChange={(e) =>
-                        handleFieldChange('categoryName', e.target.value)
-                      }
-                      className="block pr-12 py-1.5 px-2 w-[216px] text-sm text-slate-500 text-normal bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-orange-300 peer focus:text-lime-600"
-                    />
-                    <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center space-x-1">
-                      <button
-                        type="submit"
-                        className="text-lime-600 text-sm font-normal"
-                      >
-                        <CheckCircleIcon className="cursor-pointer w-5 h-5 text-lime-600" />
-                      </button>
-                      <XCircleIcon
-                        onClick={stopEditing}
-                        className="cursor-pointer w-5 h-5 text-amber-600"
+                {isEditingCategory === item.id ? (
+                  <form onSubmit={editedCategoryHandleForm}>
+                    <div className="relative ml-5 p-0">
+                      <input
+                        id={item.categoryName}
+                        type="text"
+                        placeholder=""
+                        value={dataEditCategory?.categoryName || ''}
+                        autoComplete="off"
+                        required={true}
+                        autoFocus
+                        onChange={(e) =>
+                          handleFieldChange('categoryName', e.target.value)
+                        }
+                        className="block pr-12 py-1.5 px-2 w-[216px] text-sm text-slate-500 text-normal bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-orange-300 peer focus:text-lime-600"
                       />
-                    </div>
-                  </div>
-                </form>
-              ) : (
-                <li 
-                className="flex flex-col justify-between"
-                >
-                  {/** Вывод категорий  */}
-                  <div
-                    id={`category-${item.id}`}
-                    className="flex justify-between items-center p-2 rounded-md hover:bg-slate-100"
-                  >
-                    <div className="cursor-pointer w-52 flex items-center space-x-1 text-slate-600">
-                      {subcategoryStates[item.id] ? (
-                        <div
-                          className="rounded-full hover:bg-slate-200 py-1 "
-                          onClick={() => {
-                            subcategoryOutput(item.id);
-                          }}
+                      <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center space-x-1">
+                        <button
+                          type="submit"
+                          className="text-lime-600 text-sm font-normal"
                         >
-                          <ChevronUpIcon className="cursor-pointer w-3 h-3 text-slate-600 mx-1" />
-                        </div>
-                      ) : (
-                        <div
-                          onClick={() => {
-                            subcategoryOutput(item.id);
-                          }}
-                          className="rounded-full hover:bg-slate-200 py-1 "
-                        >
-                          <ChevronDownIcon className="cursor-pointer w-3 h-3 text-slate-600 mx-1" />
-                        </div>
-                      )}
-                      <span
-                        onClick={() => {
-                          // subcategoryOutput(item.id);
-                          handleCategoryClick(item.id);
-                        }}
-                        className="text-slate-600 text-sm font-normal"
-                      >
-                        {item.categoryName}
-                      </span>
+                          <CheckCircleIcon className="cursor-pointer w-5 h-5 text-lime-600" />
+                        </button>
+                        <XCircleIcon
+                          onClick={stopEditing}
+                          className="cursor-pointer w-5 h-5 text-amber-600"
+                        />
+                      </div>
                     </div>
-                    <div onClick={(e) => toggleMenuCategory(e, item.id)}>
-                      <Cog8ToothIcon className="cursor-pointer w-5 h-5 text-slate-600" />
-                    </div>
-                  </div>
-
-                  {/** Выпадающий список для внесения изменений данных в Категории  */}
-                  {selectedCategoryDataId === item.id && (
+                  </form>
+                ) : (
+                  <li className="flex flex-col justify-between">
+                    {/** Вывод категорий  */}
                     <div
-                      ref={menuRef}
-                      id={`dropdownRight-${item.id}`}
-                      style={{ top: `${menuPosition}px` }}
-                      className={`z-10 absolute w-52 ${menuClass} left-24 bg-white divide-y divide-gray-100 rounded-lg shadow`}
+                      id={`category-${item.id}`}
+                      className="flex justify-between items-center p-2 rounded-md hover:bg-slate-100"
                     >
-                      <ul
-                        className="py-2 text-xs text-slate-700 cursor-pointer"
-                        aria-labelledby="dropdownRightButton"
-                      >
-                        <div
-                          className="absolute rounded-full hover:bg-slate-200 py-1 right-1"
-                          onClick={cancelToggleMenuCategory}
-                        >
-                          <XMarkIcon className="cursor-pointer w-3 h-3 text-slate-600 mx-1" />
-                        </div>
-                        <li
-                          onClick={() => startAddingSubcategory(item.id)}
-                          className="flex items-center px-4 py-2 space-x-2 hover:bg-slate-100 border-b-2 border-b-lime-500"
-                        >
-                          <div>
-                            <PlusCircleIcon className="w-4 h-4 text-slate-600" />
+                      <div className="cursor-pointer w-52 flex items-center space-x-1 text-slate-600">
+                        {subcategoryStates[item.id] ? (
+                          <div
+                            className="rounded-full hover:bg-slate-200 py-1 "
+                            onClick={() => {
+                              subcategoryOutput(item.id);
+                            }}
+                          >
+                            <ChevronUpIcon className="cursor-pointer w-3 h-3 text-slate-600 mx-1" />
                           </div>
-                          <span className="text-slate-600 text-xs font-normal">
-                            Создать подкатегорию
-                          </span>
-                        </li>
-                        <li
-                          onClick={() => startEditingCategory(item.id)}
-                          className="flex items-center px-4 py-2 space-x-2 hover:bg-slate-100"
-                        >
-                          <div>
-                            <PencilIcon className="w-3 h-3  text-slate-600" />
+                        ) : (
+                          <div
+                            onClick={() => {
+                              subcategoryOutput(item.id);
+                            }}
+                            className="rounded-full hover:bg-slate-200 py-1 "
+                          >
+                            <ChevronDownIcon className="cursor-pointer w-3 h-3 text-slate-600 mx-1" />
                           </div>
-                          <span className="text-slate-600 text-xs font-normal">
-                            Переименовать категорию
-                          </span>
-                        </li>
-
-                        <li
-                          onClick={() => deleteCategoryHandler(item.id)}
-                          className="flex items-center px-4 py-2 space-x-2 hover:bg-slate-100"
+                        )}
+                        <span
+                          onClick={() => {
+                            // subcategoryOutput(item.id);
+                            handleCategoryClick(item.id);
+                          }}
+                          className="text-slate-600 text-sm font-normal"
                         >
-                          <div>
-                            <XCircleIcon className="w-4 h-4 text-slate-600" />
-                          </div>
-                          <span className="text-slate-600 text-xs font-normal">
-                            Удалить категорию
-                          </span>
-                        </li>
-                      </ul>
+                          {item.categoryName}
+                        </span>
+                      </div>
+                      <div onClick={(e) => toggleMenuCategory(e, item.id)}>
+                        <Cog8ToothIcon className="cursor-pointer w-5 h-5 text-slate-600" />
+                      </div>
                     </div>
-                  )}
 
-                  {/** добавление ПОДкатегории */}
-                  {isAddingSubcategory &&
-                    selectedCategoryIdForSubcategory === item.id && (
-                      <form onSubmit={addedHandleFormSubcategory}>
-                        <div className="relative ml-5 p-0">
-                          <input
-                            id="newSubcategory"
-                            type="text"
-                            placeholder="Название подкатегории"
-                            autoComplete="off"
-                            required={true}
-                            value={dataSubcategory?.subcategoryName || ''}
-                            autoFocus
-                            onChange={(e) =>
-                              setDataSubcategory({
-                                ...dataSubcategory,
-                                subcategoryName: e.target.value,
-                              })
-                            }
-                            className="block pr-12 py-1.5 px-2 w-[216px] text-sm text-slate-500 text-normal bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-orange-300 peer focus:text-lime-600"
-                          />
-                          <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center space-x-1">
-                            <button
-                              type="submit"
-                              className="text-lime-600 text-sm font-normal"
-                            >
-                              <CheckCircleIcon className="cursor-pointer w-5 h-5 text-lime-600" />
-                            </button>
-                            <XCircleIcon
-                              onClick={cancelAddingSubcategory}
-                              className="cursor-pointer w-5 h-5 text-amber-600"
-                            />
+                    {/** Выпадающий список для внесения изменений данных в Категории  */}
+                    {selectedCategoryDataId === item.id && (
+                      <div
+                        ref={menuRef}
+                        id={`dropdownRight-${item.id}`}
+                        style={{ top: `${menuPosition}px` }}
+                        className={`z-10 absolute w-52 ${menuClass} left-24 bg-white divide-y divide-gray-100 rounded-lg shadow`}
+                      >
+                        <ul
+                          className="py-2 text-xs text-slate-700 cursor-pointer"
+                          aria-labelledby="dropdownRightButton"
+                        >
+                          <div
+                            className="absolute rounded-full hover:bg-slate-200 py-1 right-1"
+                            onClick={cancelToggleMenuCategory}
+                          >
+                            <XMarkIcon className="cursor-pointer w-3 h-3 text-slate-600 mx-1" />
                           </div>
-                        </div>
-                      </form>
+                          <li
+                            onClick={() => startAddingSubcategory(item.id)}
+                            className="flex items-center px-4 py-2 space-x-2 hover:bg-slate-100 border-b-2 border-b-lime-500"
+                          >
+                            <div>
+                              <PlusCircleIcon className="w-4 h-4 text-slate-600" />
+                            </div>
+                            <span className="text-slate-600 text-xs font-normal">
+                              Создать подкатегорию
+                            </span>
+                          </li>
+                          <li
+                            onClick={() => startEditingCategory(item.id)}
+                            className="flex items-center px-4 py-2 space-x-2 hover:bg-slate-100"
+                          >
+                            <div>
+                              <PencilIcon className="w-3 h-3  text-slate-600" />
+                            </div>
+                            <span className="text-slate-600 text-xs font-normal">
+                              Переименовать категорию
+                            </span>
+                          </li>
+
+                          <li
+                            onClick={() => deleteCategoryHandler(item.id)}
+                            className="flex items-center px-4 py-2 space-x-2 hover:bg-slate-100"
+                          >
+                            <div>
+                              <XCircleIcon className="w-4 h-4 text-slate-600" />
+                            </div>
+                            <span className="text-slate-600 text-xs font-normal">
+                              Удалить категорию
+                            </span>
+                          </li>
+                        </ul>
+                      </div>
                     )}
 
-                  {/** Вывод подкатегорий  */}
-                  {subcategoryStates[item.id] && (
-                    <ul className="ml-6 space-y-1 text-md">
-                      {allSubcategories
-                        .filter((sub) => sub.categoryId === item.id)
-                        .map((subcategory) => (
-                          <li key={subcategory.id}>
-                            {isEditingSubcategory === subcategory.id ? (
-                              <form onSubmit={editedSubcategoryHandleForm}>
-                                <div className="relative ml-5 p-0">
-                                  <input
-                                    id={subcategory.subcategoryName}
-                                    type="text"
-                                    placeholder=""
-                                    value={
-                                      dataEditSubcategory?.subcategoryName || ''
-                                    }
-                                    autoComplete="off"
-                                    required={true}
-                                    autoFocus
-                                    onChange={(e) =>
-                                      handleFieldChangeSubcategory(
-                                        'subcategoryName',
-                                        e.target.value
-                                      )
-                                    }
-                                    className="block pr-12 py-1.5 px-2 w-[186px] text-sm text-slate-500 text-normal bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-orange-300 peer focus:text-lime-600"
-                                  />
-                                  <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center space-x-1">
-                                    <button
-                                      type="submit"
-                                      className="text-lime-600 text-sm font-normal"
-                                    >
-                                      <CheckCircleIcon className="cursor-pointer w-5 h-5 text-lime-600" />
-                                    </button>
-                                    <XCircleIcon
-                                      onClick={stopEditingSubcategory}
-                                      className="cursor-pointer w-5 h-5 text-amber-600"
+                    {/** добавление ПОДкатегории */}
+                    {isAddingSubcategory &&
+                      selectedCategoryIdForSubcategory === item.id && (
+                        <form onSubmit={addedHandleFormSubcategory}>
+                          <div className="relative ml-5 p-0">
+                            <input
+                              id="newSubcategory"
+                              type="text"
+                              placeholder="Название подкатегории"
+                              autoComplete="off"
+                              required={true}
+                              value={dataSubcategory?.subcategoryName || ''}
+                              autoFocus
+                              onChange={(e) =>
+                                setDataSubcategory({
+                                  ...dataSubcategory,
+                                  subcategoryName: e.target.value,
+                                })
+                              }
+                              className="block pr-12 py-1.5 px-2 w-[216px] text-sm text-slate-500 text-normal bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-orange-300 peer focus:text-lime-600"
+                            />
+                            <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center space-x-1">
+                              <button
+                                type="submit"
+                                className="text-lime-600 text-sm font-normal"
+                              >
+                                <CheckCircleIcon className="cursor-pointer w-5 h-5 text-lime-600" />
+                              </button>
+                              <XCircleIcon
+                                onClick={cancelAddingSubcategory}
+                                className="cursor-pointer w-5 h-5 text-amber-600"
+                              />
+                            </div>
+                          </div>
+                        </form>
+                      )}
+
+                    {/** Вывод подкатегорий  */}
+                    {subcategoryStates[item.id] && (
+                      <ul className="ml-6 space-y-1 text-md">
+                        {allSubcategories
+                          .filter((sub) => sub.categoryId === item.id)
+                          .map((subcategory) => (
+                            <li key={subcategory.id}>
+                              {isEditingSubcategory === subcategory.id ? (
+                                <form onSubmit={editedSubcategoryHandleForm}>
+                                  <div className="relative ml-5 p-0">
+                                    <input
+                                      id={subcategory.subcategoryName}
+                                      type="text"
+                                      placeholder=""
+                                      value={
+                                        dataEditSubcategory?.subcategoryName ||
+                                        ''
+                                      }
+                                      autoComplete="off"
+                                      required={true}
+                                      autoFocus
+                                      onChange={(e) =>
+                                        handleFieldChangeSubcategory(
+                                          'subcategoryName',
+                                          e.target.value
+                                        )
+                                      }
+                                      className="block pr-12 py-1.5 px-2 w-[186px] text-sm text-slate-500 text-normal bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-orange-300 peer focus:text-lime-600"
                                     />
+                                    <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center space-x-1">
+                                      <button
+                                        type="submit"
+                                        className="text-lime-600 text-sm font-normal"
+                                      >
+                                        <CheckCircleIcon className="cursor-pointer w-5 h-5 text-lime-600" />
+                                      </button>
+                                      <XCircleIcon
+                                        onClick={stopEditingSubcategory}
+                                        className="cursor-pointer w-5 h-5 text-amber-600"
+                                      />
+                                    </div>
+                                  </div>
+                                </form>
+                              ) : (
+                                <div className="flex items-center p-2 justify-between rounded-md hover:bg-slate-100">
+                                  <div
+                                    onClick={() => {
+                                      handleSubcategoryClick(subcategory.id);
+                                    }}
+                                    className="cursor-pointer w-52 flex items-center text-slate-600"
+                                  >
+                                    <ChevronRightIcon className="cursor-pointer w-3 h-3 text-slate-600 mr-2" />
+                                    <span className="text-lime-600 text-sm font-normal">
+                                      {subcategory.subcategoryName}
+                                    </span>
+                                  </div>
+                                  <div
+                                    className="ml-auto"
+                                    onClick={(e) =>
+                                      toggleMenuSub(e, subcategory.id)
+                                    }
+                                  >
+                                    <Cog8ToothIcon className="cursor-pointer w-5 h-5 text-lime-600" />
                                   </div>
                                 </div>
-                              </form>
-                            ) : (
-                              <div className="flex items-center p-2 justify-between rounded-md hover:bg-slate-100">
-                                <div
-                                  onClick={() =>
-                                    handleSubcategoryClick(subcategory.id)
-                                  }
-                                  className="cursor-pointer w-52 flex items-center text-slate-600"
-                                >
-                                  <ChevronRightIcon className="cursor-pointer w-3 h-3 text-slate-600 mr-2" />
-                                  <span className="text-lime-600 text-sm font-normal">
-                                    {subcategory.subcategoryName}
-                                  </span>
-                                </div>
-                                <div
-                                  className="ml-auto"
-                                  onClick={(e) =>
-                                    toggleMenuSub(e, subcategory.id)
-                                  }
-                                >
-                                  <Cog8ToothIcon className="cursor-pointer w-5 h-5 text-lime-600" />
-                                </div>
-                              </div>
-                            )}
-
-                            {/** Выпадающий список для внесения изменений данных в ПОДкатегории */}
-                            {selectedSubcategoryDataId === subcategory.id &&
-                              actionMenuForSub && (
-                                <div
-                                  ref={menuRef}
-                                  id={`dropdownRight-${subcategory.id}`}
-                                  className={`z-10 absolute w-52 ${menuClassSub} top-${menuPosition.top} left-24 bg-white divide-y divide-gray-100 rounded-lg shadow`}
-                                >
-                                  <ul
-                                    className="py-2 text-xs text-slate-700 cursor-pointer"
-                                    aria-labelledby="dropdownRightButton"
-                                  >
-                                    <div
-                                      className="absolute rounded-full hover:bg-slate-200 py-1 right-1"
-                                      onClick={cancelToggleMenuSub}
-                                    >
-                                      <XMarkIcon className="cursor-pointer w-3 h-3 text-slate-600 mx-1" />
-                                    </div>
-                                    <li
-                                      onClick={() =>
-                                        startEditingSubcategory(subcategory.id)
-                                      }
-                                      className="flex items-center px-4 py-2 space-x-2 hover:bg-slate-100"
-                                    >
-                                      <div>
-                                        <PencilIcon className="w-3 h-3  text-slate-600" />
-                                      </div>
-                                      <span className="text-slate-600 text-xs font-normal">
-                                        Переименовать подкатегорию
-                                      </span>
-                                    </li>
-
-                                    <li
-                                      onClick={() =>
-                                        deleteSubcategoryHandler(subcategory.id)
-                                      }
-                                      className="flex items-center px-4 py-2 space-x-2 hover:bg-slate-100"
-                                    >
-                                      <div>
-                                        <XCircleIcon className="w-4 h-4 text-slate-600" />
-                                      </div>
-                                      <span className="text-slate-600 text-xs font-normal">
-                                        Удалить подкатегорию
-                                      </span>
-                                    </li>
-                                  </ul>
-                                </div>
                               )}
-                          </li>
-                        ))}
-                    </ul>
-                  )}
-                  {/* </div> */}
-                </li>
-              )}
+
+                              {/** Выпадающий список для внесения изменений данных в ПОДкатегории */}
+                              {selectedSubcategoryDataId === subcategory.id &&
+                                actionMenuForSub && (
+                                  <div
+                                    ref={menuRef}
+                                    id={`dropdownRight-${subcategory.id}`}
+                                    className={`z-10 absolute w-52 ${menuClassSub} top-${menuPosition.top} left-24 bg-white divide-y divide-gray-100 rounded-lg shadow`}
+                                  >
+                                    <ul
+                                      className="py-2 text-xs text-slate-700 cursor-pointer"
+                                      aria-labelledby="dropdownRightButton"
+                                    >
+                                      <div
+                                        className="absolute rounded-full hover:bg-slate-200 py-1 right-1"
+                                        onClick={cancelToggleMenuSub}
+                                      >
+                                        <XMarkIcon className="cursor-pointer w-3 h-3 text-slate-600 mx-1" />
+                                      </div>
+                                      <li
+                                        onClick={() =>
+                                          startEditingSubcategory(
+                                            subcategory.id
+                                          )
+                                        }
+                                        className="flex items-center px-4 py-2 space-x-2 hover:bg-slate-100"
+                                      >
+                                        <div>
+                                          <PencilIcon className="w-3 h-3  text-slate-600" />
+                                        </div>
+                                        <span className="text-slate-600 text-xs font-normal">
+                                          Переименовать подкатегорию
+                                        </span>
+                                      </li>
+
+                                      <li
+                                        onClick={() =>
+                                          deleteSubcategoryHandler(
+                                            subcategory.id
+                                          )
+                                        }
+                                        className="flex items-center px-4 py-2 space-x-2 hover:bg-slate-100"
+                                      >
+                                        <div>
+                                          <XCircleIcon className="w-4 h-4 text-slate-600" />
+                                        </div>
+                                        <span className="text-slate-600 text-xs font-normal">
+                                          Удалить подкатегорию
+                                        </span>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                )}
+                            </li>
+                          ))}
+                      </ul>
+                    )}
+                  </li>
+                )}
+                {allSubcategories.filter((sub) => sub.categoryId === item.id)
+                  .length === 0 && (
+                  <div className="flex items-center justify-center w-38">
+                    <span className="text-slate-600 text-sm font-normal">
+                      Cписок подкатегорий пуст
+                    </span>
+                  </div>
+                )}
+              </div>
+            ))
+          ) : (
+            <div className="flex items-center justify-center w-38">
+              <span className="text-slate-600 text-sm font-normal">
+                Cписок категорий пуст
+              </span>
             </div>
-          ))}
-          {/* </li> */}
+          )}
         </ul>
       </div>
     </div>
