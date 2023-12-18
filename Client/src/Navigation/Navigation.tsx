@@ -16,6 +16,7 @@ import ListContact from '../components/Manager/ProfileManager/ListContact';
 import Nocarousel from '../components/Manager/Promotion/Nocarousel';
 import Carousel from '../components/Manager/Promotion/Carousel';
 import Success from '../components/Success/Success'
+import NotFound from '../components/404/NotFound';
 
 const Navigation: FC = () => {
   return (
@@ -42,6 +43,7 @@ const Navigation: FC = () => {
           <Route path="/promotions/carousel" element={<Carousel/>} />
           <Route path="/promotions/nocarousel" element={<Nocarousel/>} />
           <Route path="/registration/success" element={<Success/>} />
+          <Route path="*" element={<NotFound />} />
           <Route />
         </Route>
         {/* 
