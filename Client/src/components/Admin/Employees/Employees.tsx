@@ -72,6 +72,11 @@ const Employees: FC = () => {
   ];
 
   useEffect(() => {
+    setCurrentPage(1);
+  }, [searchText]);
+
+
+  useEffect(() => {
     dispatch(getEmployees());
   }, [dispatch]);
 

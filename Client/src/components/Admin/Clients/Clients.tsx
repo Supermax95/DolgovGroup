@@ -75,6 +75,11 @@ const Clients: FC = () => {
   }, [dispatch]);
 
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchText]);
+
+  
   const itemsPerPage = 50;
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;

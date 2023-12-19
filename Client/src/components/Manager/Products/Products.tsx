@@ -96,6 +96,11 @@ const Products: FC = () => {
   const [withoutIsDiscounted, setwWthoutIsDiscounted] = useState('');
 
   const [showNotification, setShowNotification] = useState(false);
+  
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchText]);
+
 
   useEffect(() => {
     dispatch(getProducts());
