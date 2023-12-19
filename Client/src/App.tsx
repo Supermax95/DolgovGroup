@@ -11,8 +11,6 @@ const App: FC = () => {
     dispatch(portalCheck());
   }, [dispatch]);
 
-  
-
   return (
     <>
       <Navigation />
