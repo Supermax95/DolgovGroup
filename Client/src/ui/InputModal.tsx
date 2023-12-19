@@ -191,11 +191,13 @@ const InputModal: FC<IInputModal> = ({
           ) : field.id === 'city' ? (
             <div className="relative">
               <input
+                value={field.value as string}
+                onChange={(e) => field.onChange?.(e.target.value)}
                 id={field.id}
                 className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
                 type="text"
                 list="cityList"
-                onChange={(e) => field.onChange?.(e.target.value)}
+                pattern={field.pattern}
                 required={field.required}
                 disabled={field.disabled}
               />
