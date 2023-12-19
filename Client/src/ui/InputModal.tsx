@@ -200,6 +200,7 @@ const InputModal: FC<IInputModal> = ({
                 pattern={field.pattern}
                 required={field.required}
                 disabled={field.disabled}
+                autoComplete={field.autoComplete}
               />
               <label
                 htmlFor={field.htmlFor}
