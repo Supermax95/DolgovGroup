@@ -1,3 +1,12 @@
+import {
+  BuildingOffice2Icon,
+  CheckCircleIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+  UserGroupIcon,
+  UserPlusIcon,
+  XCircleIcon,
+} from '@heroicons/react/24/outline';
 import { useState } from 'react';
 import { FC } from 'react';
 
@@ -17,6 +26,7 @@ const Sidebar: FC<SidebarProps<any>> = ({
   displayKey,
 }) => {
   const [selectedItem, setSelectedItem] = useState<T | null>(null);
+
   const [isItemListVisible, setItemListVisible] = useState(false);
 
   // console.log('items:', items);
@@ -36,47 +46,89 @@ const Sidebar: FC<SidebarProps<any>> = ({
     }
   };
 
+  const spl = items.map((el) => el.split(' '));
+  console.log('spl', spl);
+  const newEmpArray = spl[1];
+  console.log('newEmpArray', newEmpArray);
+
+  // const fS = items.find((cat) => cat.includes('Сотрудник'));
+  // console.log('fghjsda', fS);
+  // const f = items.find((cat) => cat.includes('Новый сотрудник'));
+  // console.log(f);
+
   return (
-    <div className="flex flex-col w-52 bg-white h-full border-r-2 border-orange-300">
-      <div className="h-16 flex items-center justify-center border-b-2 border-orange-300">
-        <div
-          className="text-xl text-slate-700 font-medium "
-          onClick={() => handleItemChange(null)}
-        >
-          {title}
-        </div>
+    <div className="flex flex-col w-56 bg-white h-full border-r-2 border-orange-300">
+      <div className="h-16 flex items-center justify-center border-b-2 border-orange-300 text-center">
+        <h2 className="text-lg font-bold text-slate-600">{title}</h2>
       </div>
-      <div className="flex-1 overflow-y-auto">
-        <ul className="py-2 space-y-1 ">
-          <li>
-            <button
-              className="flex items-center w-full h-12 px-4 text-slate-700 hover:text-amber-600 focus:outline-none focus:bg-slate-100"
-              onClick={() => handleItemChange(null)}
-            >
-              <span
-                className={`mr-4 ${
-                  isItemListVisible ? 'transform rotate-90' : ''
-                } transition-transform`}
+
+      <div className="h-full relative w-52 flex">
+        <ul className="py-2 ">
+          <li className="flex flex-col justify-between">
+            <div className="flex items-center p-2 rounded-md hover:bg-slate-100">
+              <div
+                className="cursor-pointer w-48 flex items-center space-x-10 text-slate-600"
+                onClick={() => handleItemChange(null)}
               >
-                ▶
-              </span>
-              <span className="text-sm text-slate-700 font-bold">
-                Все {title.toLowerCase()}
-              </span>
-            </button>
+                {isItemListVisible ? (
+                  <div
+                    className="rounded-full hover:bg-slate-200 py-1 "
+                    onClick={() => {
+                      // subcategoryOutput(item.id);
+                    }}
+                  >
+                    <ChevronUpIcon className="cursor-pointer w-3 h-3 text-slate-600 mx-1" />
+                  </div>
+                ) : (
+                  <div
+                    onClick={() => {
+                      // subcategoryOutput(item.id);
+                    }}
+                    className="rounded-full hover:bg-slate-200 py-1 "
+                  >
+                    <ChevronDownIcon className="cursor-pointer w-3 h-3 text-slate-600 mx-1" />
+                  </div>
+                )}
+                <span className="text-slate-600 text-sm font-normal ml-6">
+                  Все {title.toLowerCase()}
+                </span>
+              </div>
+            </div>
           </li>
           {isItemListVisible &&
             items.map((item, index) => (
-              <li key={index}>
-                <button
-                  className={`flex items-center w-full h-12 px-4 text-slate-600 text-sm font-normal hover:text-amber-600 focus:outline-none focus:bg-slate-100 ${
-                    selectedItem === item ? 'bg-slate-100' : ''
-                  }`}
+              <li key={index} className="flex flex-col justify-center">
+                <div
+                  className="flex items-center p-2 rounded-md hover:bg-slate-100"
                   onClick={() => handleItemChange(item)}
                 >
-                  <span className="mr-4"></span>
-                  <span className="text-sm">{displayKey(item)}</span>
-                </button>
+                  <div className="cursor-pointer w-48 flex items-center space-x-9 text-slate-600">
+                    {title === 'Города' ? (
+                      <div className="rounded-full py-1">
+                        <BuildingOffice2Icon className="cursor-pointer w-3 h-3 text-slate-600 mx-1" />
+                      </div>
+                    ) : item === 'Новый сотрудник' ? (
+                      <div className="rounded-full py-1">
+                        <UserPlusIcon className="cursor-pointer w-4 h-4 text-slate-600 mx-1" />
+                      </div>
+                    ) : item === 'Активные' ? (
+                      <div className="rounded-full py-1">
+                        <CheckCircleIcon className="cursor-pointer w-4 h-4 text-slate-600 mx-1" />
+                      </div>
+                    ) : item === 'Неактивные' ? (
+                      <div className="rounded-full py-1">
+                        <XCircleIcon className="cursor-pointer w-4 h-4 text-slate-600 mx-1" />
+                      </div>
+                    ) : (
+                      <div className="rounded-full py-1">
+                        <UserGroupIcon className="cursor-pointer w-4 h-4 text-slate-600 mx-1" />
+                      </div>
+                    )}
+                    <span className="text-slate-600 text-sm font-normal">
+                      {displayKey(item)}
+                    </span>
+                  </div>
+                </div>
               </li>
             ))}
         </ul>
