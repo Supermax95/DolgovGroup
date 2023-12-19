@@ -363,12 +363,12 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
 
   return (
     <div className="flex flex-col w-64 bg-white h-full border-r-2 border-orange-300">
-      <div className="h-12 flex items-center justify-center border-b-2 border-orange-300">
+      <div className="h-16 flex items-center justify-center border-b-2 border-orange-300">
         <h2 className="text-lg font-bold text-slate-600">Каталог</h2>
       </div>
 
       <div className="h-full relative w-60">
-        <ul className="py-2 space-y-1">
+        <ul className="py-2">
           {isAddingCategory ? (
             <form onSubmit={addedHandleForm}>
               <div className="relative ml-3 p-0">

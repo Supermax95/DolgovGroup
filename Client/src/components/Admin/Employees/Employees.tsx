@@ -111,7 +111,7 @@ const Employees: FC = () => {
     return filtered;
   };
 
-  const filteredUsersPag = filterUsers()
+  const filteredUsersPag = filterUsers();
   const totalMatches = filteredUsersPag.length;
   const displayedUsers = filterUsers().slice(startIndex, endIndex);
 
@@ -119,7 +119,7 @@ const Employees: FC = () => {
     ...new Set(users.map((user) => user.userStatus)),
   ];
 
-  const totalPages = Math.ceil(totalMatches/ itemsPerPage);
+  const totalPages = Math.ceil(totalMatches / itemsPerPage);
 
   const openEditModal = (user: User): void => {
     setSelectedUser(user);
