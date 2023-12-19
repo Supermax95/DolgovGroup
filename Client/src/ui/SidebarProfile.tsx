@@ -35,24 +35,29 @@ const SidebarProfile: FC<ISidebarProfile> = ({ userRoles }) => {
             </h2>
           </div>
         </div>
-        <div className="h-full w-60 border-r-2 border-orange-300">
-          <ul className="pt-4 pb-2 space-y-1 text-sm">
-            <li className="h-full w-60 border-r-2 border-orange-300">
-              {links.map((item) => (
-                <Link
-                  key={item.id}
-                  to={item.href}
-                  className="flex items-center p-2 space-x-3 rounded-md hover:bg-slate-100 "
-                >
-                  <div>{item.childrenIcon}</div>
+      </div>
+      <div
+        className="h-full w-56"
+      >
+        <ul className="py-2">
+          <li className="flex flex-col justify-between">
+            {links.map((item) => (
+              <Link
+                key={item.id}
+                to={item.href}
+                className="flex items-center p-2 rounded-md hover:bg-slate-100"
+              >
+                <div className="cursor-pointer w-48 flex items-center space-x-4 text-slate-600">
+                  <div className="rounded-full py-1">{item.childrenIcon}</div>
+
                   <span className="text-slate-600 text-sm font-normal">
                     {item.name}
                   </span>
-                </Link>
-              ))}
-            </li>
-          </ul>
-        </div>
+                </div>
+              </Link>
+            ))}
+          </li>
+        </ul>
       </div>
     </div>
   );

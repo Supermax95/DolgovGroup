@@ -4,6 +4,7 @@ import {
   ChevronDownIcon,
   ChevronUpIcon,
   UserGroupIcon,
+  UserIcon,
   UserPlusIcon,
   XCircleIcon,
 } from '@heroicons/react/24/outline';
@@ -62,7 +63,7 @@ const Sidebar: FC<SidebarProps<any>> = ({
         <h2 className="text-lg font-bold text-slate-600">{title}</h2>
       </div>
 
-      <div className="h-full relative w-52 flex">
+      <div className="h-full w-52 flex">
         <ul className="py-2 ">
           <li className="flex flex-col justify-between">
             <div className="flex items-center p-2 rounded-md hover:bg-slate-100">
@@ -71,21 +72,11 @@ const Sidebar: FC<SidebarProps<any>> = ({
                 onClick={() => handleItemChange(null)}
               >
                 {isItemListVisible ? (
-                  <div
-                    className="rounded-full hover:bg-slate-200 py-1 "
-                    onClick={() => {
-                      // subcategoryOutput(item.id);
-                    }}
-                  >
+                  <div className="rounded-full hover:bg-slate-200 py-1 ">
                     <ChevronUpIcon className="cursor-pointer w-3 h-3 text-slate-600 mx-1" />
                   </div>
                 ) : (
-                  <div
-                    onClick={() => {
-                      // subcategoryOutput(item.id);
-                    }}
-                    className="rounded-full hover:bg-slate-200 py-1 "
-                  >
+                  <div className="rounded-full hover:bg-slate-200 py-1 ">
                     <ChevronDownIcon className="cursor-pointer w-3 h-3 text-slate-600 mx-1" />
                   </div>
                 )}
@@ -105,7 +96,7 @@ const Sidebar: FC<SidebarProps<any>> = ({
                   <div className="cursor-pointer w-48 flex items-center space-x-9 text-slate-600">
                     {title === 'Города' ? (
                       <div className="rounded-full py-1">
-                        <BuildingOffice2Icon className="cursor-pointer w-3 h-3 text-slate-600 mx-1" />
+                        <BuildingOffice2Icon className="cursor-pointer w-4 h-4 text-slate-600 mx-1" />
                       </div>
                     ) : item === 'Новый сотрудник' ? (
                       <div className="rounded-full py-1">
@@ -121,7 +112,7 @@ const Sidebar: FC<SidebarProps<any>> = ({
                       </div>
                     ) : (
                       <div className="rounded-full py-1">
-                        <UserGroupIcon className="cursor-pointer w-4 h-4 text-slate-600 mx-1" />
+                        <UserIcon className="cursor-pointer w-4 h-4 text-slate-600 mx-1" />
                       </div>
                     )}
                     <span className="text-slate-600 text-sm font-normal">
