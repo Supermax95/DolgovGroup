@@ -283,6 +283,7 @@ const Location: FC = () => {
             isAddingMode={isAddingMode}
             editedLocation={editedLocation}
             setEditedLocation={setEditedLocation}
+            
           />
         )}
       </div>

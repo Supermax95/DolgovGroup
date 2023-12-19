@@ -1,5 +1,5 @@
 import React, { FC, useEffect } from 'react';
-import { useAppDispatch } from '../../../Redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import deleteLocation from '../../../Redux/thunks/Locations/deleteLocation.api';
 import Wrapper from '../../../ui/Wrapper';
 import InputModal, { InputField } from '../../../ui/InputModal';
@@ -41,7 +41,9 @@ const LocationsModal: FC<LocationsModalProps> = ({
   setEditedLocation,
 }) => {
   const dispatch = useAppDispatch();
-
+  const locations = useAppSelector<ILocation[]>(
+    (state) => state.locationsSlice.data
+  );
   const locationToSave = editedLocation || {
     id: 0,
     city: '',
@@ -116,11 +118,14 @@ const LocationsModal: FC<LocationsModalProps> = ({
   if (!isOpen || !editedLocation) {
     return null;
   }
+  const uniqueCities = [...new Set(locations.map((location) => location.city))];
+  console.log(uniqueCities);
+  
 
   const inputFields: InputField[] = [
     {
       id: 'city',
-      name: 'address',
+      name: 'city',
       type: 'text',
       value: editedLocation.city,
       placeholder: '',
@@ -136,6 +141,12 @@ const LocationsModal: FC<LocationsModalProps> = ({
         }
       },
       required: true,
+      options: [
+        ...uniqueCities.map((city) => ({
+          value: city,
+          label: city,
+        })),
+      ],
     },
     {
       id: 'address',

@@ -229,8 +229,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
         const selectedCategory = category.find(
           (cat) => cat.categoryName === value
         );
-        //console.log('selectedCategory============>', selectedCategory);
-
+      
         if (selectedCategory) {
           const filteredSubcategories = subcategory.filter(
             (subcat) => subcat.categoryId === selectedCategory.id

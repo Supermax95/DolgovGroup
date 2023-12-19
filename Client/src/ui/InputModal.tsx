@@ -27,7 +27,9 @@ export interface InputField {
   required?: boolean;
   pattern?: string | undefined;
   // onChange?: (value: string) => void | undefined;
-  onChange?: (value: string | boolean | number | Date ) => void | false | 0 | undefined;
+  onChange?: (
+    value: string | boolean | number | Date
+  ) => void | false | 0 | undefined;
   divFielsCss?: string[];
   disabled?: boolean;
   options?: { value: string; label: string }[];
@@ -185,6 +187,29 @@ const InputModal: FC<IInputModal> = ({
               >
                 {field.title}
               </label>
+            </div>
+          ) : field.id === 'city' ? (
+            <div className="relative">
+              <input
+                id={field.id}
+                className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
+                type="text"
+                list="cityList"
+                onChange={(e) => field.onChange?.(e.target.value)}
+                required={field.required}
+                disabled={field.disabled}
+              />
+              <label
+                htmlFor={field.htmlFor}
+                className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm"
+              >
+                {field.title}
+              </label>
+              <datalist id="cityList">
+                {field.options?.map((option) => (
+                  <option key={option.value} value={option.value} />
+                ))}
+              </datalist>
             </div>
           ) : field.id === 'phone' ? (
             <>
