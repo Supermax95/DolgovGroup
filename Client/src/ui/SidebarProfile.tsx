@@ -25,7 +25,7 @@ const SidebarProfile: FC<ISidebarProfile> = ({ userRoles }) => {
   const { avatar, personalData, links } = userRoles;
 
   return (
-    <div className="h-full w-60 border-r-2 border-orange-300">
+    <div className="h-full w-56 border-r-2 border-orange-300">
       <div className="h-16 border-b-2 border-orange-300">
         <div className="flex items-center p-3 space-x-4">
           <div>{avatar}</div>
@@ -36,9 +36,7 @@ const SidebarProfile: FC<ISidebarProfile> = ({ userRoles }) => {
           </div>
         </div>
       </div>
-      <div
-        className="h-full w-56"
-      >
+      <div className="h-full w-52">
         <ul className="py-2">
           <li className="flex flex-col justify-between">
             {links.map((item) => (

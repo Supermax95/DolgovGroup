@@ -1,8 +1,3 @@
-import {
-  BuildingOffice2Icon,
-  CodeBracketIcon,
-  CodeBracketSquareIcon,
-} from '@heroicons/react/24/outline';
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -33,7 +28,6 @@ const PromotionSidebarUI: FC<IPromotionsSidebar> = ({ links, title }) => {
               <div className="cursor-pointer w-48 flex items-center space-x-6 text-slate-600">
                 {item.name === 'Акции в карусели' ? (
                   <div className="rounded-full py-1">
-                    {/* <CodeBracketSquareIcon className="cursor-pointer w-5 h-5 text-slate-600 mx-1" /> */}
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       height="20"

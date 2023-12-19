@@ -47,16 +47,6 @@ const Sidebar: FC<SidebarProps<any>> = ({
     }
   };
 
-  const spl = items.map((el) => el.split(' '));
-  console.log('spl', spl);
-  const newEmpArray = spl[1];
-  console.log('newEmpArray', newEmpArray);
-
-  // const fS = items.find((cat) => cat.includes('Сотрудник'));
-  // console.log('fghjsda', fS);
-  // const f = items.find((cat) => cat.includes('Новый сотрудник'));
-  // console.log(f);
-
   return (
     <div className="flex flex-col w-56 bg-white h-full border-r-2 border-orange-300">
       <div className="h-16 flex items-center justify-center border-b-2 border-orange-300 text-center">

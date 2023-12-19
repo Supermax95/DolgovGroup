@@ -92,7 +92,6 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   const [subcategoryStates, setSubcategoryStates] = useState<{
     [key: number]: boolean;
   }>({});
-  console.log('subcategoryStates', subcategoryStates);
 
   const [actionMenuForCategory, setActionMenuForCategory] =
     useState<boolean>(false); //* меню для редактирования категории
@@ -279,7 +278,6 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   const startEditingSubcategory = (id: number): void => {
     setEditingSubcategory(id);
     const subcategoryToEdit = allSubcategories.find((sub) => sub.id === id);
-    console.log('subcategoryToEdit', subcategoryToEdit);
 
     setActionMenuForSub(false);
     setDataEditSubcategory(subcategoryToEdit || null);
