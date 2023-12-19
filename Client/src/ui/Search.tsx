@@ -43,6 +43,7 @@ const Search: FC<SearchProps> = ({ onFilter }) => {
           className="h-10 w-full rounded-md py-4 pr-4 pl-12 outline-none focus:ring-2 focus:ring-orange-300"
           placeholder="Поиск"
           value={searchText}
+          autoComplete="off"
           onChange={(event) => setSearchText(event.target.value)}
         />
       </form>

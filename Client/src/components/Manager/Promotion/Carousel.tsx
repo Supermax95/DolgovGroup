@@ -190,6 +190,8 @@ const Carousel: FC = () => {
     <Wrapper>
       <PromotionSidebar />
       <div className="p-4">
+        <h1 className="text-xl text-lime-600 font-medium ">Акции в карусели</h1>
+
         <div className="col-span-full mb-4">
           <div className="flex items-center justify-between">
             <Search onFilter={setSearchText} />
@@ -212,12 +214,6 @@ const Carousel: FC = () => {
 
         {displayedPromotions.some((promotion) => promotion) && (
           <section className="max-w-6xl mx-auto px-4 ">
-            <div className="text-center pb-4">
-              <h1 className="font-bold text-xl lg:text-xl font-heading text-lime-600">
-                Акции в карусели
-              </h1>
-            </div>
-
             <Swiper
               modules={[FreeMode, Navigation, Pagination]}
               breakpoints={{
@@ -334,12 +330,6 @@ const Carousel: FC = () => {
 
         {displayedPromotions.some((promotion) => promotion) && (
           <section className="max-w-6xl mx-auto px-4 ">
-            <div className="text-center pb-4">
-              <h1 className="font-bold text-xl lg:text-xl font-heading text-lime-600">
-                Скрытые акции в карусели
-              </h1>
-            </div>
-
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {displayedPromotions.length &&
                 displayedPromotions

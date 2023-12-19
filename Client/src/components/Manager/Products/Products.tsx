@@ -18,6 +18,7 @@ import {
   ChevronRightIcon,
   ClipboardDocumentCheckIcon,
   PencilSquareIcon,
+  Square2StackIcon,
 } from '@heroicons/react/24/outline';
 import Button from '../../../ui/Button';
 
@@ -96,11 +97,10 @@ const Products: FC = () => {
   const [withoutIsDiscounted, setwWthoutIsDiscounted] = useState('');
 
   const [showNotification, setShowNotification] = useState(false);
-  
+
   useEffect(() => {
     setCurrentPage(1);
   }, [searchText]);
-
 
   useEffect(() => {
     dispatch(getProducts());
@@ -191,10 +191,10 @@ const Products: FC = () => {
 
     return filtered;
   };
-  const filteredProdPag = filterProducts()
+  const filteredProdPag = filterProducts();
   const totalMatches = filteredProdPag.length;
   const displayedProducts = filterProducts().slice(startIndex, endIndex);
-  const totalPages = Math.ceil(totalMatches/ itemsPerPage);
+  const totalPages = Math.ceil(totalMatches / itemsPerPage);
   // const totalPages = Math.ceil(filterProducts().length / itemsPerPage);
 
   const openAddModal = () => {
@@ -303,20 +303,19 @@ const Products: FC = () => {
       });
   };
 
-// //устаревший метод
-//   const handleCopyToClipboard = (text: string) => {
-//     const textarea = document.createElement('textarea');
-//     textarea.value = text;
-//     document.body.appendChild(textarea);
-//     textarea.select();
-//     document.execCommand('copy');
-//     document.body.removeChild(textarea);
-  
-//     console.log('Текст скопирован в буфер обмена:', text);
-//     setShowNotification(true);
-//   };
+  // //устаревший метод
+  //   const handleCopyToClipboard = (text: string) => {
+  //     const textarea = document.createElement('textarea');
+  //     textarea.value = text;
+  //     document.body.appendChild(textarea);
+  //     textarea.select();
+  //     document.execCommand('copy');
+  //     document.body.removeChild(textarea);
 
-  
+  //     console.log('Текст скопирован в буфер обмена:', text);
+  //     setShowNotification(true);
+  //   };
+
   useEffect(() => {
     if (showNotification) {
       const notificationTimeout = setTimeout(() => {
@@ -553,7 +552,7 @@ const Products: FC = () => {
 
                     <div className="flex-auto px-6 py-5">
                       <span className="mb-2 flex items-center text-sm font-semibold text-slate-500">
-                        <ClipboardDocumentCheckIcon
+                        <Square2StackIcon
                           className="mr-1 h-5 w-5 cursor-pointer hover:text-amber-600"
                           onClick={() => handleCopyToClipboard(product.article)}
                         />
