@@ -4,8 +4,8 @@ import Wrapper from '../../../ui/Wrapper';
 import { ILaw } from './Laws';
 import { VITE_URL } from '../../../VITE_URL';
 import axios from 'axios';
-import 'react-quill/dist/quill.snow.css';
-import ReactQuill from 'react-quill';
+import 'quill/dist/quill.snow.css';
+import Quill from 'react-quill';
 import deleteLaw from '../../../Redux/thunks/Document/deleteLaw.api';
 
 interface LawEditorProps {
@@ -87,11 +87,11 @@ const Editor: FC<LawEditorProps> = ({
       let result = '';
 
       if (isAddingMode) {
-        //  eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         result = await onSaveAdd(editedLaw as ILaw);
       } else {
-        //  eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         result = await onSaveEdit(editedLaw as ILaw);
       }
@@ -105,16 +105,16 @@ const Editor: FC<LawEditorProps> = ({
         'fileInput'
       ) as HTMLInputElement;
       const file = fileInput?.files?.[0];
-      //  eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
       await uploadFile(file, id, isAddingMode);
     }
   };
 
   const handleFileInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const file = e.target.files?.[0] || null;
-    //  eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
     uploadFile(file, id, isAddingMode);
   };
 
@@ -129,6 +129,23 @@ const Editor: FC<LawEditorProps> = ({
   if (!isOpen || !editedLaw) {
     return null;
   }
+
+  const quillModules = {
+    toolbar: [
+      ['bold', 'italic', 'underline', 'strike'],
+      ['blockquote', 'code-block'],
+      [{ header: 1 }, { header: 2 }],
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      [{ script: 'sub' }, { script: 'super' }],
+      [{ indent: '-1' }, { indent: '+1' }],
+      [{ direction: 'rtl' }],
+      [{ size: ['small', false, 'large', 'huge'] }],
+      [{ color: [] }, { background: [] }],
+      [{ font: [] }],
+      [{ align: [] }],
+      ['clean'],
+    ],
+  };
 
   return (
     <Wrapper>
@@ -146,7 +163,7 @@ const Editor: FC<LawEditorProps> = ({
                   }
                   id="title"
                   type="text"
-                  value={editedLaw.title} 
+                  value={editedLaw.title}
                   placeholder=""
                   className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
                   required={true}
@@ -157,18 +174,19 @@ const Editor: FC<LawEditorProps> = ({
                   }
                   id="dateFrom"
                   type="date"
-                  value={editedLaw.dateFrom} 
+                  value={editedLaw.dateFrom}
                   placeholder=""
                   className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
                   required={true}
                 />
               </div>
-              <ReactQuill
+              <Quill
                 theme="snow"
                 value={editedLaw.description}
                 onChange={(value) =>
                   setEditedLaw({ ...editedLaw, description: value })
                 }
+                modules={quillModules}
                 className="w-full"
               />
             </div>
