@@ -5,6 +5,7 @@ import {
   BuildingStorefrontIcon,
   ClipboardDocumentListIcon,
   ClipboardIcon,
+  DocumentTextIcon,
   PencilSquareIcon,
   UserGroupIcon,
 } from '@heroicons/react/24/outline';
@@ -75,32 +76,38 @@ const Table: FC<ITable> = ({
           <table className="min-w-full">
             <thead>
               <tr>
-                <th className="w-16 pl-6 py-3   text-center   border-b-2 border-orange-300 leading-4 text-slate-700 text-sm font-bold ">
-                  {title === 'Список сотрудников' ||
-                  title === 'Список покупателей' ||
-                  title === 'Список менеджеров' ? (
-                    <div className="flex justify-center items-center rounded-lg">
-                      <UserGroupIcon className="h-5 w-5 text-slate-600" />{' '}
-                    </div>
-                  ) : title === 'Список магазинов' ? (
-                    <div className="flex justify-center items-center rounded-lg">
-                      <BuildingStorefrontIcon className="h-5 w-5 text-slate-600" />{' '}
-                    </div>
-                  ) : (
-                    // <div className="flex justify-center items-center rounded-lg">
-                    //   <UserGroupIcon className="h-5 w-5 text-slate-600" />{' '}
-                    // </div>
-                    <></>
-                  )}
-                </th>
-                <th className="w-16 pl-6 py-3   text-center   border-b-2 border-orange-300 leading-4 text-slate-700 text-sm font-bold ">
+                {title === 'Список контактов' ? (
+                  <></>
+                ) : (
+                  <th className="w-16 pl-6 py-3   text-center   border-b-2 border-orange-300 leading-4 text-slate-700 text-sm font-bold ">
+                    {title === 'Список сотрудников' ||
+                    title === 'Список покупателей' ||
+                    title === 'Список менеджеров' ? (
+                      // title === 'Список контактов'
+                      <div className="flex justify-center items-center rounded-lg">
+                        <UserGroupIcon className="h-5 w-5 text-slate-700 font-medium" />{' '}
+                      </div>
+                    ) : title === 'Список магазинов' ? (
+                      <div className="flex justify-center items-center rounded-lg">
+                        <BuildingStorefrontIcon className="h-5 w-5 text-slate-700" />{' '}
+                      </div>
+                    ) : title === 'Правовые документы' ? (
+                      <div className="flex justify-center items-center rounded-lg">
+                        <DocumentTextIcon className="h-5 w-5 text-slate-700" />{' '}
+                      </div>
+                    ) : (
+                      <></>
+                    )}
+                  </th>
+                )}
+                <th className="w-16 pl-6 py-3   text-center   border-b-2 border-orange-300 leading-4 text-slate-700 text-sm font-medium ">
                   №
                 </th>
 
                 {columnsDefaultName.map((columnDefaultName, index) => (
                   <th
                     key={index + columnDefaultName.name}
-                    className="w-40 px-6 py-3   text-center   border-b-2 border-orange-300 leading-4 text-slate-700 text-sm font-bold tracking-wider"
+                    className="w-40 px-6 py-3 text-center border-b-2 border-orange-300 leading-4 text-slate-700 text-sm font-medium tracking-wider"
                   >
                     {columnDefaultName.name}
                   </th>
@@ -112,16 +119,20 @@ const Table: FC<ITable> = ({
               {filteredData &&
                 filteredData.map((item, index) => (
                   <tr key={item.id}>
-                    <td className="w-16 text-center pl-6 py-0 whitespace-no-wrap border-b-2 border-slate-300 text-slate-600 text-sm font-normal">
-                      {onEditClick && (
-                        <div className="flex justify-center items-center rounded-lg">
-                          <PencilSquareIcon
-                            className="h-5 w-5 cursor-pointer text-slate-600 hover:text-orange-400"
-                            onClick={() => onEditClick?.(item)}
-                          />
-                        </div>
-                      )}
-                    </td>
+                    {title === 'Список контактов' ? (
+                      <></>
+                    ) : (
+                      <td className="w-16 text-center pl-6 py-0 whitespace-no-wrap border-b-2 border-slate-300 text-slate-600 text-sm font-normal">
+                        {onEditClick && (
+                          <div className="flex justify-center items-center rounded-lg">
+                            <PencilSquareIcon
+                              className="h-5 w-5 cursor-pointer text-slate-600 hover:text-orange-400"
+                              onClick={() => onEditClick?.(item)}
+                            />
+                          </div>
+                        )}
+                      </td>
+                    )}
 
                     <td className="w-16 text-center pl-6 py-0 whitespace-no-wrap border-b-2 border-slate-300 text-slate-600 text-sm font-normal">
                       <div>
