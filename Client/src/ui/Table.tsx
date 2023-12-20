@@ -197,16 +197,7 @@ const Table: FC<ITable> = ({
                         )}
                       </td>
                     ))}
-                    {/* {onEditClick && (
-                      <td className=" whitespace-no-wrap text-right border-b-2 border-slate-300">
-                        <div className="flex justify-center items-center rounded-lg">
-                          <PencilSquareIcon
-                            className="h-6 w-6 cursor-pointer text-slate-600 hover:text-orange-400"
-                            onClick={() => onEditClick?.(item)}
-                          />
-                        </div>
-                      </td>
-                    )} */}
+
                     {onOneTimePassword && (
                       <td className="px-2 py-3 whitespace-no-wrap text-right border-b-2 border-slate-300">
                         <Button

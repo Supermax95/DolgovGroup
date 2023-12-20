@@ -75,7 +75,7 @@ const Management: FC = () => {
     { name: 'Отчество' },
     { name: 'Телефон' },
     { name: 'Email' },
-    { name: 'Отправка кода' },
+    { name: 'Новый пароль' },
   ];
 
   const columnsListDb: IColumnsListDb[] = [
