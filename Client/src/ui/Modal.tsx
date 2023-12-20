@@ -51,11 +51,9 @@ const Modal: FC<IModal> = ({
           <div className="flex justify-center items-center">
             {modalTitle === 'Регистрация нового менеджера' ||
             modalTitle === 'Редактирование данных менеджера' ? (
-              <>
-                <div className="w-8 text-gray-600">
-                  <UserIcon className="w-6 h-6 text-slate-400" />
-                </div>
-              </>
+              <div className="w-8 text-gray-600">
+                <UserIcon className="w-6 h-6 text-slate-400" />
+              </div>
             ) : modalTitle === 'Сброс пароля' ? (
               <div className="w-8 text-gray-600">
                 <ArrowPathIcon className="w-6 h-6 text-slate-400" />
