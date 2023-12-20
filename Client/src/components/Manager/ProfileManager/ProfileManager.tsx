@@ -9,6 +9,12 @@ import changePassword from '../../../Redux/thunks/Manager/changePassword.api';
 import changePhone from '../../../Redux/thunks/Manager/changePhone.api';
 import Wrapper from '../../../ui/Wrapper';
 import RoleSidebar from '../../RoleSidebar/RoleSidebar';
+import {
+  AtSymbolIcon,
+  ClipboardDocumentListIcon,
+  DevicePhoneMobileIcon,
+  LockClosedIcon,
+} from '@heroicons/react/24/outline';
 
 interface IDate {
   newLastName: string;
@@ -43,6 +49,11 @@ const ProfileManager: FC = () => {
   const managerId = useAppSelector<number>(
     (state) => state.managerSlice.manager.id
   );
+
+  const [openPersonalData, setOpenPersonalData] = useState<boolean>(false);
+  const [openEmail, setOpenEmail] = useState<boolean>(false);
+  const [openPhone, setOpenPhone] = useState<boolean>(false);
+  const [openPassword, setOpenPassword] = useState<boolean>(false);
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
@@ -80,6 +91,34 @@ const ProfileManager: FC = () => {
       confirmPassword: '',
     }));
   }, [managerProfile]);
+
+  const clickOpenPersonalData = (): void => {
+    setOpenPersonalData(!openPersonalData);
+    setOpenEmail(false);
+    setOpenPhone(false);
+    setOpenPassword(false);
+  };
+
+  const clickOpenEmail = (): void => {
+    setOpenEmail(!openEmail);
+    setOpenPersonalData(false);
+    setOpenPhone(false);
+    setOpenPassword(false);
+  };
+
+  const clickOpenPhone = (): void => {
+    setOpenPhone(!openPhone);
+    setOpenPersonalData(false);
+    setOpenEmail(false);
+    setOpenPassword(false);
+  };
+
+  const clickOpenPassword = (): void => {
+    setOpenPassword(!openPassword);
+    setOpenPersonalData(false);
+    setOpenEmail(false);
+    setOpenPhone(false);
+  };
 
   const handleFieldChangeProfileManager = (
     field: keyof IDate,
@@ -344,114 +383,163 @@ const ProfileManager: FC = () => {
     <Wrapper>
       <RoleSidebar />
 
-      <section
-        //! Form
-        className="p-6 bg-slate-50 dark:text-gray-50"
-      >
+      <section className="p-6 bg-white dark:text-gray-50  w-[1024px]">
         <h1 className="text-center text-xl font-normal text-slate-700">
           Добро пожаловать, {managerProfile.firstName}
         </h1>
-        <p className="text-center font-normal text-md text-slate-600 mx-auto mt-2">
+        <p className="text-center font-normal text-md text-slate-600 mx-auto my-3">
           {/* Здесь вы можете легко управлять своими персональными данными */}
           Здесь вы можете легко управлять своими учетными данными
         </p>
 
-        <form
-          //! FIO
-          onSubmit={handleSubmitProfileManager}
-          className="container flex flex-col mx-auto space-y-12"
+        <div
+          className="w-full bg-slate-100 flex items-center rounded-md hover:bg-slate-100 cursor-pointer my-1"
+          onClick={clickOpenPersonalData}
         >
-          <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-sm dark:bg-gray-900">
-            <div className="w-44 space-y-2 col-span-full lg:col-span-1">
-              <p className="font-normal text-md text-slate-600 pt-6">
-                {/* Обновление персональных <br /> данных */}
-                Обновление персональных данных
-              </p>
+          <div className=" flex items-center space-x-4 bg-slate-100 px-6 py-2">
+            <div className="rounded-full py-1">
+              {' '}
+              <ClipboardDocumentListIcon className="cursor-pointer w-4 h-4 text-slate-600 mx-1" />
             </div>
-            <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
-              <div className="col-span-full sm:col-span-3">
-                <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                  <Field inputFields={inputFieldsLastName} />
-                </div>
+
+            <span className="text-slate-600 text-sm font-normal">
+              Обновление персональных данных
+            </span>
+          </div>
+        </div>
+
+        {openPersonalData && (
+          <form
+            //! FIO
+            onSubmit={handleSubmitProfileManager}
+            className="container flex flex-col mx-auto space-y-12"
+          >
+            <fieldset className="grid grid-cols-4 gap-6 p-2 rounded-md shadow-sm dark:bg-gray-900">
+              <div className="w-44 space-y-2 col-span-full lg:col-span-1 ml-6">
+                <p className="font-normal text-sm text-slate-600 pt-10">
+                  Обновление персональных данных
+                </p>
               </div>
-              <div className="col-span-full sm:col-span-3">
-                <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                  <Field inputFields={inputFieldsFirstName} />
+              <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
+                <div className="col-span-full sm:col-span-3">
+                  <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+                    <Field inputFields={inputFieldsLastName} />
+                  </div>
+                </div>
+                <div className="col-span-full sm:col-span-3">
+                  <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+                    <Field inputFields={inputFieldsFirstName} />
+                  </div>
+                </div>
+
+                <div className="col-span-full sm:col-span-3">
+                  <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+                    <Field inputFields={inputFieldsMiddleName} />
+                  </div>
                 </div>
               </div>
 
-              <div className="col-span-full sm:col-span-3">
-                <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                  <Field inputFields={inputFieldsMiddleName} />
-                </div>
+              <div className="col-span-full flex justify-center">
+                <Button type="submit" title="Сохранить" />
               </div>
-            </div>
+            </fieldset>
+          </form>
+        )}
 
-            <div className="col-span-full flex justify-center">
-              <Button type="submit" title="Сохранить" />
-            </div>
-          </fieldset>
-        </form>
-
-        <form
-          //! только телефон
-          onSubmit={handleSubmitProfileManagerPhone}
-          className="container flex flex-col mx-auto space-y-12"
+        <div
+          className="w-full bg-slate-100 flex items-center rounded-md hover:bg-slate-100 cursor-pointer my-1"
+          onClick={clickOpenPhone}
         >
-          <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-sm dark:bg-gray-900">
-            <div className="w-44 space-y-2 col-span-full lg:col-span-1">
-              <p className="font-normal text-md text-slate-600 pt-10">
-                Телефон
-              </p>
+          <div className=" flex items-center space-x-4 bg-slate-100 px-6 py-2">
+            <div className="rounded-full py-1">
+              <DevicePhoneMobileIcon className="cursor-pointer w-4 h-4 text-slate-600 mx-1" />
             </div>
-            <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
-              <div className="col-span-full sm:col-span-3">
-                <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                  <Field inputFields={inputFieldsPhone} />
+
+            <span className="text-slate-600 text-sm font-normal">
+              Обновление номера телефона
+            </span>
+          </div>
+        </div>
+
+        {openPhone && (
+          <form
+            //! только телефон
+            onSubmit={handleSubmitProfileManagerPhone}
+            className="container flex flex-col mx-auto space-y-12"
+          >
+            <fieldset className="grid grid-cols-4 gap-6 p-2 rounded-md shadow-sm dark:bg-gray-900">
+              <div className="w-44 space-y-2 col-span-full lg:col-span-1 ml-6">
+                <p className="font-normal text-sm text-slate-600 pt-10">
+                  Телефон
+                </p>
+              </div>
+              <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
+                <div className="col-span-full sm:col-span-3">
+                  <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+                    <Field inputFields={inputFieldsPhone} />
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="col-span-full flex justify-center">
-              <Button type="submit" title="Сохранить" />
-            </div>
-          </fieldset>
-        </form>
+              <div className="col-span-full flex justify-center">
+                <Button type="submit" title="Сохранить" />
+              </div>
+            </fieldset>
+          </form>
+        )}
 
-        <form
-          //! пароль
-          onSubmit={handleSubmitProfileManagerPassword}
-          className="container flex flex-col mx-auto space-y-12"
+        <div
+          className="w-full bg-slate-100 flex items-center rounded-md hover:bg-slate-100 cursor-pointer my-1"
+          onClick={clickOpenPassword}
         >
-          <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-sm dark:bg-gray-900">
-            <div className="w-44 space-y-2 col-span-full lg:col-span-1">
-              <p className="font-normal text-md text-slate-600 pt-10">
-                Обновление пароля
-              </p>
+          <div className=" flex items-center space-x-4 cursor-pointer px-6 py-2">
+            <div className="rounded-full py-1">
+              {' '}
+              <LockClosedIcon className="cursor-pointer w-4 h-4 text-slate-600 mx-1" />
             </div>
-            <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
-              <div className="col-span-full sm:col-span-3">
-                <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                  <Field inputFields={inputFieldsOldPassword} />{' '}
-                </div>
-              </div>
 
-              <div className="col-span-full sm:col-span-3">
-                <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                  <Field inputFields={inputFieldsNewPassword} />{' '}
-                </div>
-              </div>
+            <span className="text-slate-600 text-sm font-normal">
+              Обновление пароля
+            </span>
+          </div>
+        </div>
 
-              <div className="col-span-full sm:col-span-3">
-                <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                  <Field inputFields={inputFieldsConfirmPassword} />
+        {openPassword && (
+          <form
+            //! пароль
+            onSubmit={handleSubmitProfileManagerPassword}
+            className="container flex flex-col mx-auto space-y-12"
+          >
+            <fieldset className="grid grid-cols-4 gap-6 p-2 rounded-md shadow-sm dark:bg-gray-900">
+              <div className="w-44 space-y-2 col-span-full lg:col-span-1 ml-6">
+                <p className="font-normal text-sm text-slate-600 pt-10">
+                  Обновление пароля
+                </p>
+              </div>
+              <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
+                <div className="col-span-full sm:col-span-3">
+                  <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+                    <Field inputFields={inputFieldsOldPassword} />{' '}
+                  </div>
+                </div>
+
+                <div className="col-span-full sm:col-span-3">
+                  <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+                    <Field inputFields={inputFieldsNewPassword} />{' '}
+                  </div>{' '}
+                </div>
+
+                <div className="col-span-full sm:col-span-3">
+                  <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+                    <Field inputFields={inputFieldsConfirmPassword} />
+                  </div>{' '}
                 </div>
               </div>
-            </div>
-            <div className="col-span-full flex justify-center">
-              <Button type="submit" title="Сохранить" />
-            </div>
-          </fieldset>
-        </form>
+              <div className="col-span-full flex justify-center">
+                <Button type="submit" title="Сохранить" />
+              </div>
+            </fieldset>
+          </form>
+        )}
       </section>
     </Wrapper>
   );

@@ -12,8 +12,6 @@ import Wrapper from '../../../ui/Wrapper';
 import RoleSidebar from '../../RoleSidebar/RoleSidebar';
 import {
   AtSymbolIcon,
-  BuildingOffice2Icon,
-  ClipboardDocumentCheckIcon,
   ClipboardDocumentListIcon,
   DevicePhoneMobileIcon,
   LockClosedIcon,
@@ -535,11 +533,6 @@ const ProfileAdmin: FC = () => {
           </form>
         )}
 
-        {/* <div  className="bg-slate-100 px-6 py-2 my-1">
-          <p className="font-normal text-sm text-slate-600">
-            Обновление телефона
-          </p>
-        </div> */}
         <div
           className="w-full bg-slate-100 flex items-center rounded-md hover:bg-slate-100 cursor-pointer my-1"
           onClick={clickOpenPhone}
