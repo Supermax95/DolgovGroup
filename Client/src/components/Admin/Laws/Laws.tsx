@@ -159,7 +159,7 @@ const Law: FC = () => {
         /> */}
       <div className="p-4">
         {' '}
-        <h1 className="text-xl text-lime-600 font-medium mb-4">Продукты</h1>
+        <h1 className="text-xl text-lime-600 font-medium mb-4">Документы</h1>
         {isEditorOpen && (selectedLaw || isAddingMode) && (
           <Editor
             isOpen={isEditorOpen}

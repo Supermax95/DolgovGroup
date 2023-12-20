@@ -150,7 +150,7 @@ const Editor: FC<LawEditorProps> = ({
   };
 
   return (
-    <div className="w-[1024px] mx-auto py-8 px-5 bg-white shadow-md rounded-3xl border border-slate-400">
+    <div className="w-[1024px] mx-auto py-8 px-5 bg-white shadow-md rounded-3xl border border-slate-300">
       <form onSubmit={handleFormSubmit}>
         <div className="flex justify-center items-center">
           <div className="w-8 text-gray-600">
@@ -237,7 +237,7 @@ const Editor: FC<LawEditorProps> = ({
                   styleCSSSpan={
                     'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
                   }
-                  title="Далее"
+                  title="Сохранить"
                 />
               </div>
             </>
