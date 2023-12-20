@@ -146,10 +146,9 @@ const Law: FC = () => {
     <Wrapper>
       <div className="p-4">
         <SidebarLaw
+        data={formattedLaws}
         title="Правовые документы"
-        items={lawTitles}
-        onItemSelect={openEditEditor}
-
+        onEditClick={openEditEditor}
         />
         {/* <Table
           title="Правовые документы"
