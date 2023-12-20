@@ -5,6 +5,8 @@ interface SidebarLawProps<T> {
   onEditClick?: (item: any) => void | undefined;
   title: string;
 }
+console.log('ebanina');
+
 const SidebarLaw: FC<SidebarLawProps<T>> = ({ data, onEditClick, title }) => {
   const titles = data?.map((item) => item.title) || [];
   return (
