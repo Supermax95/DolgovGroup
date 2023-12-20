@@ -87,7 +87,7 @@ const Law: FC = () => {
   const resetAxiosError = () => {
     setAxiosError(null);
   };
-  
+
   const handleSaveAdd = async (): Promise<void> => {
     let add = {} as any;
     try {
@@ -130,6 +130,16 @@ const Law: FC = () => {
     return add;
   };
 
+  const formattedLaws = laws.map(law => ({
+    ...law,
+    updatedAt: new Date(law.updatedAt).toLocaleDateString('ru-RU', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    }),
+  }));
+  
+
   return (
     <Wrapper>
       <div className="p-4">
@@ -140,7 +150,7 @@ const Law: FC = () => {
           columnsListDb={columnsListDb}
           onAddClick={openAddEditor}
           onEditClick={openEditEditor}
-          data={laws}
+          data={formattedLaws}
         />
       </div>
       {isEditorOpen && (selectedLaw || isAddingMode) && (
