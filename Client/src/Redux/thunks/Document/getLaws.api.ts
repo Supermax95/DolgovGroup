@@ -7,6 +7,8 @@ const getLaws = createAsyncThunk('admin/getDocument', async () => {
   const response: AxiosResponse = await axios.get(
     `${VITE_URL}/admin/laws`
   );  
+  console.log('response.data', response.data);
+  
   return response.data;
 
 });
