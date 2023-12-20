@@ -14,6 +14,7 @@ import {
   AtSymbolIcon,
   ClipboardDocumentListIcon,
   DevicePhoneMobileIcon,
+  IdentificationIcon,
   LockClosedIcon,
 } from '@heroicons/react/24/outline';
 
@@ -442,9 +443,9 @@ const ProfileAdmin: FC = () => {
           onClick={clickOpenPersonalData}
         >
           <div className=" flex items-center space-x-4 bg-slate-100 px-6 py-2">
-            <div className="rounded-full py-1">
+            <div className="py-1">
               {' '}
-              <ClipboardDocumentListIcon className="cursor-pointer w-4 h-4 text-slate-600 mx-1" />
+              <IdentificationIcon className="cursor-pointer w-4 h-4 text-slate-600 mx-1" />
             </div>
 
             <span className="text-slate-600 text-sm font-normal">
@@ -496,7 +497,7 @@ const ProfileAdmin: FC = () => {
           onClick={clickOpenEmail}
         >
           <div className=" flex items-center space-x-4 bg-slate-100 px-6 py-2">
-            <div className="rounded-full py-1">
+            <div className="py-1">
               {' '}
               <AtSymbolIcon className="cursor-pointer w-4 h-4 text-slate-600 mx-1" />
             </div>
@@ -538,7 +539,7 @@ const ProfileAdmin: FC = () => {
           onClick={clickOpenPhone}
         >
           <div className=" flex items-center space-x-4 bg-slate-100 px-6 py-2">
-            <div className="rounded-full py-1">
+            <div className="py-1">
               <DevicePhoneMobileIcon className="cursor-pointer w-4 h-4 text-slate-600 mx-1" />
             </div>
 
@@ -579,7 +580,7 @@ const ProfileAdmin: FC = () => {
           onClick={clickOpenPassword}
         >
           <div className=" flex items-center space-x-4 cursor-pointer px-6 py-2">
-            <div className="rounded-full py-1">
+            <div className="py-1">
               {' '}
               <LockClosedIcon className="cursor-pointer w-4 h-4 text-slate-600 mx-1" />
             </div>

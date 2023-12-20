@@ -27,7 +27,7 @@ const SidebarProfile: FC<ISidebarProfile> = ({ userRoles }) => {
   return (
     <div className="h-full w-56 border-r-2 border-orange-300">
       <div className="h-16 border-b-2 border-orange-300">
-        <div className="flex items-center p-3 space-x-4">
+        <div className="flex items-center p-3 space-x-6">
           <div>{avatar}</div>
           <div>
             <h2 className="text-sm font-normal text-slate-600">
@@ -45,9 +45,7 @@ const SidebarProfile: FC<ISidebarProfile> = ({ userRoles }) => {
                 to={item.href}
                 className="flex items-center p-2 rounded-md hover:bg-slate-100"
               >
-                <div 
-                className="cursor-pointer w-48 flex items-center space-x-4 text-slate-600"
-                >
+                <div className="cursor-pointer w-48 flex items-center space-x-4 text-slate-600">
                   <div className="rounded-full py-1">{item.childrenIcon}</div>
 
                   <span className="text-slate-600 text-sm font-normal">

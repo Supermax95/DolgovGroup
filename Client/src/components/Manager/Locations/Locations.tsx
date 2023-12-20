@@ -91,7 +91,6 @@ const Location: FC = () => {
   const filterLocations = () => {
     let filtered = filteredLocations;
 
-
     // Фильтрация по видимости
     if (selectedVisibility !== 'all') {
       filtered = filtered.filter(
@@ -101,7 +100,6 @@ const Location: FC = () => {
     }
 
     if (searchText !== '') {
-
       filtered = filtered.filter((location) => {
         const locationFields = [
           String(location.city),
@@ -122,12 +120,11 @@ const Location: FC = () => {
     return filtered;
   };
 
-  const filteredLocationsPag = filterLocations()
+  const filteredLocationsPag = filterLocations();
 
-  const totalMatches = filteredLocationsPag.length;  
+  const totalMatches = filteredLocationsPag.length;
   const totalPages = Math.ceil(totalMatches / itemsPerPage);
   const displayedLocations = filterLocations().slice(startIndex, endIndex);
-
 
   // Извлекаем уникальные города
   const uniqueCities = [...new Set(locations.map((location) => location.city))];
@@ -269,7 +266,6 @@ const Location: FC = () => {
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={setCurrentPage}
-
         />
 
         {isModalOpen && (selectedLocation || isAddingMode) && (
@@ -283,7 +279,6 @@ const Location: FC = () => {
             isAddingMode={isAddingMode}
             editedLocation={editedLocation}
             setEditedLocation={setEditedLocation}
-            
           />
         )}
       </div>

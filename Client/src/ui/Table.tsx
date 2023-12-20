@@ -1,6 +1,13 @@
 import { FC } from 'react';
 import Button from './Button';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/20/solid';
+import {
+  BuildingStorefrontIcon,
+  ClipboardDocumentListIcon,
+  ClipboardIcon,
+  PencilSquareIcon,
+  UserGroupIcon,
+} from '@heroicons/react/24/outline';
 
 interface ITable {
   title: string;
@@ -37,6 +44,8 @@ const Table: FC<ITable> = ({
     ? data.filter((item) => item.id !== currentManagerId)
     : [];
 
+  console.log('title', title);
+
   return (
     <div>
       <h1 className="text-xl text-lime-600 font-medium mb-4">{title}</h1>
@@ -67,8 +76,27 @@ const Table: FC<ITable> = ({
             <thead>
               <tr>
                 <th className="w-16 pl-6 py-3   text-center   border-b-2 border-orange-300 leading-4 text-slate-700 text-sm font-bold ">
+                  {title === 'Список сотрудников' ||
+                  title === 'Список покупателей' ||
+                  title === 'Список менеджеров' ? (
+                    <div className="flex justify-center items-center rounded-lg">
+                      <UserGroupIcon className="h-5 w-5 text-slate-600" />{' '}
+                    </div>
+                  ) : title === 'Список магазинов' ? (
+                    <div className="flex justify-center items-center rounded-lg">
+                      <BuildingStorefrontIcon className="h-5 w-5 text-slate-600" />{' '}
+                    </div>
+                  ) : (
+                    // <div className="flex justify-center items-center rounded-lg">
+                    //   <UserGroupIcon className="h-5 w-5 text-slate-600" />{' '}
+                    // </div>
+                    <></>
+                  )}
+                </th>
+                <th className="w-16 pl-6 py-3   text-center   border-b-2 border-orange-300 leading-4 text-slate-700 text-sm font-bold ">
                   №
                 </th>
+
                 {columnsDefaultName.map((columnDefaultName, index) => (
                   <th
                     key={index + columnDefaultName.name}
@@ -77,12 +105,6 @@ const Table: FC<ITable> = ({
                     {columnDefaultName.name}
                   </th>
                 ))}
-                {onEditClick && (
-                  <th className="w-36 border-b-2 border-orange-300"></th>
-                )}
-                {onOneTimePassword && (
-                  <th className="w-36 border-b-2 border-orange-300"></th>
-                )}
               </tr>
             </thead>
 
@@ -90,16 +112,27 @@ const Table: FC<ITable> = ({
               {filteredData &&
                 filteredData.map((item, index) => (
                   <tr key={item.id}>
-                    <td className="w-16  text-center   pl-6 py-0 whitespace-no-wrap border-b-2 border-slate-300 text-slate-600 text-sm font-normal">
-                      {/* {(currentPage - 1) * itemsPerPage + index + 1} 
-                                            //! этот код надо проверить 
-                                            */}
-                      {(currentPage
-                        ? (currentPage - 1) * (itemsPerPage ?? 1)
-                        : 0) +
-                        index +
-                        1}
+                    <td className="w-16 text-center pl-6 py-0 whitespace-no-wrap border-b-2 border-slate-300 text-slate-600 text-sm font-normal">
+                      {onEditClick && (
+                        <div className="flex justify-center items-center rounded-lg">
+                          <PencilSquareIcon
+                            className="h-5 w-5 cursor-pointer text-slate-600 hover:text-orange-400"
+                            onClick={() => onEditClick?.(item)}
+                          />
+                        </div>
+                      )}
                     </td>
+
+                    <td className="w-16 text-center pl-6 py-0 whitespace-no-wrap border-b-2 border-slate-300 text-slate-600 text-sm font-normal">
+                      <div>
+                        {(currentPage
+                          ? (currentPage - 1) * (itemsPerPage ?? 1)
+                          : 0) +
+                          index +
+                          1}
+                      </div>
+                    </td>
+
                     {columnsListDb.slice(1).map((columnName) => (
                       <td
                         key={columnName}
@@ -153,21 +186,24 @@ const Table: FC<ITable> = ({
                         )}
                       </td>
                     ))}
-                    {onEditClick && (
-                      <td className="px-2 py-3 whitespace-no-wrap text-right border-b-2 border-slate-300">
-                        <Button
-                          type="button"
-                          onClick={() => onEditClick?.(item)}
-                          styleCSSButton={`relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-normal text-slate-600 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 hover:text-white`}
-                          title="Редактировать"
-                        />
+                    {/* {onEditClick && (
+                      <td className=" whitespace-no-wrap text-right border-b-2 border-slate-300">
+                        <div className="flex justify-center items-center rounded-lg">
+                          <PencilSquareIcon
+                            className="h-6 w-6 cursor-pointer text-slate-600 hover:text-orange-400"
+                            onClick={() => onEditClick?.(item)}
+                          />
+                        </div>
                       </td>
-                    )}
+                    )} */}
                     {onOneTimePassword && (
                       <td className="px-2 py-3 whitespace-no-wrap text-right border-b-2 border-slate-300">
                         <Button
                           type="button"
                           onClick={() => onOneTimePassword(item.id)}
+                          styleCSSButton={
+                            'relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-slate-700 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 hover:text-white'
+                          }
                           styleCSSSpan={
                             'w-44 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
                           }
