@@ -27,7 +27,7 @@ const SidebarProfile: FC<ISidebarProfile> = ({ userRoles }) => {
   return (
     <div className="h-full w-56 border-r-2 border-orange-300">
       <div className="h-16 border-b-2 border-orange-300">
-        <div className="flex items-center p-3 space-x-4">
+        <div className="flex items-center p-3 space-x-6">
           <div>{avatar}</div>
           <div>
             <h2 className="text-sm font-normal text-slate-600">

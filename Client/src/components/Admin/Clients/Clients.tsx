@@ -74,12 +74,10 @@ const Clients: FC = () => {
     dispatch(getClients());
   }, [dispatch]);
 
-
   useEffect(() => {
     setCurrentPage(1);
   }, [searchText]);
 
-  
   const itemsPerPage = 50;
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -114,7 +112,7 @@ const Clients: FC = () => {
     return filtered;
   };
 
-  const filteredUsersPag = filterUsers()
+  const filteredUsersPag = filterUsers();
   const totalMatches = filteredUsersPag.length;
   const displayedUsers = filterUsers().slice(startIndex, endIndex);
 
@@ -122,14 +120,12 @@ const Clients: FC = () => {
     setSelectedUser(user);
     setEditedUser({ ...user });
     setModalOpen(true);
-
   };
 
   const closeEditModal = () => {
     setSelectedUser(null);
     setEditedUser(null);
     setModalOpen(false);
-
   };
 
   const handleSaveEdit = async (editedUser: User) => {
@@ -152,7 +148,7 @@ const Clients: FC = () => {
     }
   };
 
-  const totalPages = Math.ceil(totalMatches/ itemsPerPage);
+  const totalPages = Math.ceil(totalMatches / itemsPerPage);
   const uniqueStatus = ['Активные', 'Неактивные'];
 
   return (
