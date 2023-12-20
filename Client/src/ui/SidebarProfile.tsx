@@ -45,7 +45,9 @@ const SidebarProfile: FC<ISidebarProfile> = ({ userRoles }) => {
                 to={item.href}
                 className="flex items-center p-2 rounded-md hover:bg-slate-100"
               >
-                <div className="cursor-pointer w-48 flex items-center space-x-4 text-slate-600">
+                <div 
+                className="cursor-pointer w-48 flex items-center space-x-4 text-slate-600"
+                >
                   <div className="rounded-full py-1">{item.childrenIcon}</div>
 
                   <span className="text-slate-600 text-sm font-normal">
