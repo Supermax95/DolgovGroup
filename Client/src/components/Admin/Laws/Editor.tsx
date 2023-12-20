@@ -7,6 +7,8 @@ import axios from 'axios';
 import 'quill/dist/quill.snow.css';
 import Quill from 'react-quill';
 import deleteLaw from '../../../Redux/thunks/Document/deleteLaw.api';
+import { DocumentTextIcon } from '@heroicons/react/24/outline';
+import Button from '../../../ui/Button';
 
 interface LawEditorProps {
   isOpen: boolean;
@@ -87,11 +89,11 @@ const Editor: FC<LawEditorProps> = ({
       let result = '';
 
       if (isAddingMode) {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         result = await onSaveAdd(editedLaw as ILaw);
       } else {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         result = await onSaveEdit(editedLaw as ILaw);
       }
@@ -105,16 +107,16 @@ const Editor: FC<LawEditorProps> = ({
         'fileInput'
       ) as HTMLInputElement;
       const file = fileInput?.files?.[0];
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       await uploadFile(file, id, isAddingMode);
     }
   };
 
   const handleFileInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const file = e.target.files?.[0] || null;
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     uploadFile(file, id, isAddingMode);
   };
 
@@ -148,37 +150,64 @@ const Editor: FC<LawEditorProps> = ({
   };
 
   return (
-    <Wrapper>
+    <div className="w-[1024px] mx-auto py-8 px-5 bg-white shadow-md rounded-3xl border border-slate-400">
       <form onSubmit={handleFormSubmit}>
-        {currentStep === 1 && (
-          <div className="flex space-x-2 items-center justify-between pb-4">
-            <div className="flex space-x-2">
-              <h1 className="text-slate-600 text-sm tracking-normal leading-tight">
-                {isAddingMode ? 'Новый' : 'Редактирование'}
-              </h1>
-              <div>
-                <input
-                  onChange={(e) =>
-                    setEditedLaw({ ...editedLaw, title: e.target.value })
-                  }
-                  id="title"
-                  type="text"
-                  value={editedLaw.title}
-                  placeholder=""
-                  className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
-                  required={true}
-                />
-                <input
-                  onChange={(e) =>
-                    setEditedLaw({ ...editedLaw, dateFrom: e.target.value })
-                  }
-                  id="dateFrom"
-                  type="date"
-                  value={editedLaw.dateFrom}
-                  placeholder=""
-                  className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
-                  required={true}
-                />
+        <div className="flex justify-center items-center">
+          <div className="w-8 text-gray-600">
+            <DocumentTextIcon className="w-6 h-6 text-slate-400" />
+          </div>
+          <h1 className="text-lime-600 text-lg font-bold tracking-normal leading-tight">
+            {isAddingMode ? 'Новый' : 'Редактирование'}
+          </h1>
+        </div>
+        <div className="py-8 text-base leading-6 space-y-4 text-slate-700 sm:text-lg sm:leading-7">
+          {currentStep === 1 && (
+            <>
+              <div className="pt-4 pb-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
+                <div className="relative">
+                  <input
+                    onChange={(e) =>
+                      setEditedLaw({ ...editedLaw, title: e.target.value })
+                    }
+                    id="title"
+                    name="title"
+                    type="text"
+                    value={editedLaw.title}
+                    placeholder=""
+                    className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
+                    required={true}
+                  />
+                  <label
+                    htmlFor="title"
+                    className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm"
+                  >
+                    Название документа
+                  </label>
+                </div>
+
+                <div className="relative">
+                  <input
+                    onChange={(e) =>
+                      setEditedLaw({
+                        ...editedLaw,
+                        dateFrom: e.target.value,
+                      })
+                    }
+                    id="dateFrom"
+                    type="date"
+                    name="dateFrom"
+                    value={editedLaw.dateFrom}
+                    placeholder=""
+                    className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
+                    required={true}
+                  />
+                  <label
+                    htmlFor="dateFrom"
+                    className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm"
+                  >
+                    Дата начала действия документа
+                  </label>
+                </div>
               </div>
               <Quill
                 theme="snow"
@@ -189,24 +218,31 @@ const Editor: FC<LawEditorProps> = ({
                 modules={quillModules}
                 className="w-full"
               />
-            </div>
-            <div className="flex space-x-2">
-              <button
-                type="button"
-                className="bg-red-500 text-white px-4 py-2 rounded"
-                onClick={handleDelete}
-              >
-                Удалить
-              </button>
-              <button
-                type="submit"
-                className="bg-blue-500 text-white px-4 py-2 rounded"
-              >
-                Далее
-              </button>
-            </div>
-          </div>
-        )}
+              <div className="mt-4"></div>
+              <div className="flex items-center justify-center w-full">
+                <Button
+                  type="button"
+                  onClick={handleDelete}
+                  styleCSSButton={
+                    'relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-slate-700  rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white'
+                  }
+                  styleCSSSpan={
+                    'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
+                  }
+                  title="Удалить"
+                />
+
+                <Button
+                  type="submit"
+                  styleCSSSpan={
+                    'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
+                  }
+                  title="Далее"
+                />
+              </div>
+            </>
+          )}
+        </div>
 
         {currentStep === 2 && (
           <>
@@ -241,7 +277,7 @@ const Editor: FC<LawEditorProps> = ({
           </>
         )}
       </form>
-    </Wrapper>
+    </div>
   );
 };
 

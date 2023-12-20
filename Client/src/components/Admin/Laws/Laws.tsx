@@ -84,7 +84,6 @@ const Law: FC = () => {
     setEditorOpen(false);
   };
 
-
   const resetAxiosError = () => {
     setAxiosError(null);
   };
@@ -131,7 +130,7 @@ const Law: FC = () => {
     return add;
   };
 
-  const formattedLaws = laws.map(law => ({
+  const formattedLaws = laws.map((law) => ({
     ...law,
     updatedAt: new Date(law.updatedAt).toLocaleDateString('ru-RU', {
       day: '2-digit',
@@ -140,17 +139,16 @@ const Law: FC = () => {
     }),
   }));
 
-  const lawTitles = formattedLaws.map(law => law.title);
+  const lawTitles = formattedLaws.map((law) => law.title);
 
   return (
     <Wrapper>
-      <div className="p-4">
-        <SidebarLaw
+      <SidebarLaw
         data={formattedLaws}
         title="Правовые документы"
         onEditClick={openEditEditor}
-        />
-        {/* <Table
+      />
+      {/* <Table
           title="Правовые документы"
           columnsDefaultName={columnsDefaultName}
           itemsPerPage={itemsPerPage}
@@ -159,22 +157,25 @@ const Law: FC = () => {
           onEditClick={openEditEditor}
           data={formattedLaws}
         /> */}
+      <div className="p-4">
+        {' '}
+        <h1 className="text-xl text-lime-600 font-medium mb-4">Продукты</h1>
+        {isEditorOpen && (selectedLaw || isAddingMode) && (
+          <Editor
+            isOpen={isEditorOpen}
+            law={selectedLaw}
+            onSaveEdit={handleSaveEdit}
+            onSaveAdd={handleSaveAdd}
+            onCloseAddEditor={closeAddEditor}
+            onCloseEditEditor={closeEditEditor}
+            isAddingMode={isAddingMode}
+            editedLaw={editedLaw}
+            setEditedLaw={setEditedLaw}
+            axiosError={axiosError}
+            resetAxiosError={resetAxiosError}
+          />
+        )}
       </div>
-      {isEditorOpen && (selectedLaw || isAddingMode) && (
-        <Editor
-          isOpen={isEditorOpen}
-          law={selectedLaw}
-          onSaveEdit={handleSaveEdit}
-          onSaveAdd={handleSaveAdd}
-          onCloseAddEditor={closeAddEditor}
-          onCloseEditEditor={closeEditEditor}
-          isAddingMode={isAddingMode}
-          editedLaw={editedLaw}
-          setEditedLaw={setEditedLaw}
-          axiosError={axiosError}
-          resetAxiosError={resetAxiosError}
-        />
-      )}
     </Wrapper>
   );
 };

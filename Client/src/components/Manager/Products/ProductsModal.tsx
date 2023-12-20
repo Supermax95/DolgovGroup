@@ -229,7 +229,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
         const selectedCategory = category.find(
           (cat) => cat.categoryName === value
         );
-      
+
         if (selectedCategory) {
           const filteredSubcategories = subcategory.filter(
             (subcat) => subcat.categoryId === selectedCategory.id
@@ -579,7 +579,6 @@ const ProductsModal: FC<ProductsModalProps> = ({
                 onChange={(value) =>
                   setEditedProduct({ ...editedProduct, description: value })
                 }
-                // placeholder="Описание продукта"
                 className="w-full" /* Чтобы растягиваться по ширине контейнера */
               />
             </div>
