@@ -80,7 +80,7 @@ router.put(
     const { id } = req.params;
     const originalname = req.file.filename;
     try {
-      await Promotion.update(
+      await Law.update(
         { documentLink: `/uploads/document/${originalname}` },
         { where: { id } }
       );
