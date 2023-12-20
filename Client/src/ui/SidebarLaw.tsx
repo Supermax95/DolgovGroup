@@ -1,25 +1,14 @@
-import { useState } from 'react';
 import { FC } from 'react';
 
 interface SidebarLawProps<T> {
-  items: T[];
-  onItemSelect: (selectedItem: T) => void;
+  data?: any[] | undefined;
+  onEditClick?: (item: any) => void | undefined;
   title: string;
 }
+console.log('ebanina');
 
-const SidebarLaw: FC<SidebarLawProps<T>> = ({
-  items,
-  onItemSelect,
-  title,
-}) => {
-  const [selectedItem, setSelectedItem] = useState<T | null>(null);
-console.log('items',items);
-
-  const handleItemSelect = (item: T) => {
-    setSelectedItem(item);
-    onItemSelect(item);
-  };
-
+const SidebarLaw: FC<SidebarLawProps<T>> = ({ data, onEditClick, title }) => {
+  const titles = data?.map((item) => item.title) || [];
   return (
     <div className="flex flex-col w-56 bg-white h-full border-r-2 border-orange-300">
       <div className="h-16 flex items-center justify-center border-b-2 border-orange-300 text-center">
@@ -30,23 +19,18 @@ console.log('items',items);
         <ul className="py-2 ">
           <li className="flex flex-col justify-between">
             <div className="flex items-center p-2 rounded-md hover:bg-slate-100">
-              <div
-                className="cursor-pointer w-48 flex items-center space-x-10 text-slate-600"
-                onClick={() => handleItemSelect(null)}
-              >
-              </div>
+              <div className="cursor-pointer w-48 flex items-center space-x-10 text-slate-600"></div>
             </div>
           </li>
 
-          {items.map((item, index) => (
+          {titles.map((item, index) => (
             <li key={index} className="flex flex-col justify-between">
               <div
                 className="flex items-center p-2 rounded-md hover:bg-slate-100"
-                onClick={() => handleItemSelect(item)}
+                onClick={() => onEditClick && onEditClick(data[index])}
               >
-              
                 <span className="text-slate-600 text-sm font-normal ml-4">
-                  {item.toString()} {/* Ваш текст или displayKey(item) */}
+                  {item}
                 </span>
               </div>
             </li>
