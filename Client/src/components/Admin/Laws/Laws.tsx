@@ -7,6 +7,7 @@ import editLaw from '../../../Redux/thunks/Document/editLaw.api';
 import { unwrapResult } from '@reduxjs/toolkit';
 import addLaw from '../../../Redux/thunks/Document/addLaw.api';
 import Editor from './Editor';
+import SidebarLaw from '../../../ui/SidebarLaw';
 
 export interface ILaw {
   id: number;
@@ -138,12 +139,19 @@ const Law: FC = () => {
       year: 'numeric',
     }),
   }));
-  
+
+  const lawTitles = formattedLaws.map(law => law.title);
 
   return (
     <Wrapper>
       <div className="p-4">
-        <Table
+        <SidebarLaw
+        title="Правовые документы"
+        items={lawTitles}
+        onItemSelect={openEditEditor}
+
+        />
+        {/* <Table
           title="Правовые документы"
           columnsDefaultName={columnsDefaultName}
           itemsPerPage={itemsPerPage}
@@ -151,7 +159,7 @@ const Law: FC = () => {
           onAddClick={openAddEditor}
           onEditClick={openEditEditor}
           data={formattedLaws}
-        />
+        /> */}
       </div>
       {isEditorOpen && (selectedLaw || isAddingMode) && (
         <Editor
