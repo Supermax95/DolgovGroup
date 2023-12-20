@@ -1,12 +1,12 @@
 import { FC, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
-// import LawsModal from './LawsModal';
 import Wrapper from '../../../ui/Wrapper';
 import Table from '../../../ui/Table';
 import getLaws from '../../../Redux/thunks/Document/getLaws.api';
 import editLaw from '../../../Redux/thunks/Document/editLaw.api';
 import { unwrapResult } from '@reduxjs/toolkit';
 import addLaw from '../../../Redux/thunks/Document/addLaw.api';
+import Editor from './Editor';
 
 export interface ILaw {
   id: number;
@@ -25,7 +25,7 @@ type IColumnsListDb = 'id' | 'title' | 'dateFrom' | 'updatedAt';
 const Law: FC = () => {
   const dispatch = useAppDispatch();
   const laws = useAppSelector<ILaw[]>((state) => state.lawsSlice.data);
-  const [isModalOpen, setModalOpen] = useState(false);
+  const [isEditorOpen, setEditorOpen] = useState(false);
   const [selectedLaw, setSelectedLaw] = useState<ILaw | null>(null);
   const [isAddingMode, setAddingMode] = useState(false);
   const [editedLaw, setEditedLaw] = useState<ILaw | null | undefined>(null);
@@ -50,7 +50,7 @@ const Law: FC = () => {
 
   const itemsPerPage = 10;
 
-  const openAddModal = (): void => {
+  const openAddEditor = (): void => {
     setAddingMode(true);
     setEditedLaw({
       id: 0,
@@ -59,30 +59,35 @@ const Law: FC = () => {
       dateFrom: '',
       updatedAt: new Date(),
     });
-    setModalOpen(true);
+    setEditorOpen(true);
   };
 
-  const openEditModal = (law: ILaw): void => {
+  const openEditEditor = (law: ILaw): void => {
     setSelectedLaw(law);
     setEditedLaw({ ...law });
     setAddingMode(false);
-    setModalOpen(true);
+    setEditorOpen(true);
     dispatch(getLaws());
   };
 
-  const closeAddModal = (): void => {
+  const closeAddEditor = (): void => {
     setSelectedLaw(null);
     setEditedLaw(null);
-    setModalOpen(false);
+    setEditorOpen(false);
     dispatch(getLaws());
   };
 
-  const closeEditModal = (): void => {
+  const closeEditEditor = (): void => {
     setSelectedLaw(null);
     setEditedLaw(null);
-    setModalOpen(false);
+    setEditorOpen(false);
   };
 
+
+  const resetAxiosError = () => {
+    setAxiosError(null);
+  };
+  
   const handleSaveAdd = async (): Promise<void> => {
     let add = {} as any;
     try {
@@ -125,11 +130,6 @@ const Law: FC = () => {
     return add;
   };
 
-  // const reverseDate = (dateString: string): string => {
-  //   const [year, month, day] = dateString.split('-');
-  //   return `${day}.${month}.${year}`;
-  // };
-
   return (
     <Wrapper>
       <div className="p-4">
@@ -138,11 +138,26 @@ const Law: FC = () => {
           columnsDefaultName={columnsDefaultName}
           itemsPerPage={itemsPerPage}
           columnsListDb={columnsListDb}
-          onAddClick={openAddModal}
-          onEditClick={openEditModal}
+          onAddClick={openAddEditor}
+          onEditClick={openEditEditor}
           data={laws}
         />
       </div>
+      {isEditorOpen && (selectedLaw || isAddingMode) && (
+        <Editor
+          isOpen={isEditorOpen}
+          law={selectedLaw}
+          onSaveEdit={handleSaveEdit}
+          onSaveAdd={handleSaveAdd}
+          onCloseAddEditor={closeAddEditor}
+          onCloseEditEditor={closeEditEditor}
+          isAddingMode={isAddingMode}
+          editedLaw={editedLaw}
+          setEditedLaw={setEditedLaw}
+          axiosError={axiosError}
+          resetAxiosError={resetAxiosError}
+        />
+      )}
     </Wrapper>
   );
 };
