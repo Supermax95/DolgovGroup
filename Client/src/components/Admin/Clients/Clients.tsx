@@ -53,7 +53,7 @@ const Clients: FC = () => {
     { name: 'Фамилия' },
     { name: 'Имя' },
     { name: 'Отчество' },
-    { name: 'email' },
+    { name: 'Email' },
     { name: 'Карта' },
     { name: 'Пользователь' },
     { name: 'Активен' },
