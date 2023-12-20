@@ -100,7 +100,6 @@ router.delete('/admin/promotions/:id', async (req, res) => {
 
 router.put('/admin/promotions', async (req, res) => {
   const { newInfo } = req.body;
-  console.log('newInfo', newInfo);
 
   try {
     const existingPromotion = await Promotion.findOne({

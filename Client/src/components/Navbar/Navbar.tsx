@@ -57,6 +57,12 @@ const Navbar: FC = () => {
       href: '/promotions/carousel',
       isActive: location.pathname === '/promotions/carousel',
     },
+    {
+      id: 6,
+      name: 'Правовая информация',
+      href: '/admin/laws',
+      isActive: location.pathname === '/admin/laws',
+    },
   ];
 
   //! не удалять

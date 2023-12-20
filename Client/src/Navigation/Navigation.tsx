@@ -18,58 +18,54 @@ import Carousel from '../components/Manager/Promotion/Carousel';
 import Success from '../components/Success/Success';
 import NotFound from '../components/404/NotFound';
 import { useAppSelector } from '../Redux/hooks';
+import Law from '../components/Admin/Laws/Laws';
 
 const Navigation: FC = () => {
   const manager = useAppSelector((state) => state.managerSlice.manager);
   console.log('manager в навигации', manager);
 
-
-return (
-  <div className="wrapperCss">
-        <Routes>
-          <Route path="/" element={<Navbar />}>
-            <Route path="/portal" element={<Portal />} />
-            <Route path="/clients" element={<Clients />} />
-            <Route path="/employees" element={<Employees />} />
-            <Route
-              path="/products"
-              element={
-                // <div className="contentCss">
-                <Products />
-                // </div>
-              }
-            />
-            <Route path="/locations" element={<Locations />} />
-            {/* <Route path="/promotions" element={<Promotions />} /> */}
-            <Route path="/profileAdmin" element={<ProfileAdmin />} />
-            <Route path="/profileManager" element={<ProfileManager />} />
-            <Route path="/listOfManagers" element={<Management />} />
-            <Route path="/listOfManagersForManager" element={<ListContact />} />
-            <Route path="/promotions/carousel" element={<Carousel/>} />
-            <Route path="/promotions/nocarousel" element={<Nocarousel/>} />
-            <Route path="/registration/success" element={<Success/>} />
-            <Route path="*" element={<NotFound />} />
-            <Route />
-          </Route>
-          {/*
+  return (
+    <div className="wrapperCss">
+      <Routes>
+        <Route path="/" element={<Navbar />}>
+          <Route path="/portal" element={<Portal />} />
+          <Route path="/clients" element={<Clients />} />
+          <Route path="/employees" element={<Employees />} />
+          <Route
+            path="/products"
+            element={
+              // <div className="contentCss">
+              <Products />
+              // </div>
+            }
+          />
+          <Route path="/locations" element={<Locations />} />
+          {/* <Route path="/promotions" element={<Promotions />} /> */}
+          <Route path="/profileAdmin" element={<ProfileAdmin />} />
+          <Route path="/profileManager" element={<ProfileManager />} />
+          <Route path="/listOfManagers" element={<Management />} />
+          <Route path="/listOfManagersForManager" element={<ListContact />} />
+          <Route path="/promotions/carousel" element={<Carousel />} />
+          <Route path="/promotions/nocarousel" element={<Nocarousel />} />
+          <Route path="/registration/success" element={<Success />} />
+          <Route path="/admin/laws" element={<Law />} />
+          <Route path="*" element={<NotFound />} />
+          <Route />
+        </Route>
+        {/*
           //!не трогать
         <Route path="/portal" element={<Portal />} /> */}
-        </Routes>
-        <Footer />
-        {/* <div className="footerCss"> */}
-        {/* </div> */}
+      </Routes>
+      <Footer />
+      {/* <div className="footerCss"> */}
+      {/* </div> */}
 
-        {/* <Route path="/footer" element={<Footer />} /> */}
-      </div>
+      {/* <Route path="/footer" element={<Footer />} /> */}
+    </div>
+  );
+};
 
-    );
-  };
-
-  export default Navigation;
-
-
-
-
+export default Navigation;
 
 //   return (
 //     <div className="wrapperCss">
@@ -128,7 +124,7 @@ return (
 //           <Route path="*" element={<NotFound />} />
 //           <Route />
 //         </Route>
-//         {/* 
+//         {/*
 //         //!не трогать
 //       <Route path="/portal" element={<Portal />} /> */}
 //       </Routes>

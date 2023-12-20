@@ -19,6 +19,7 @@ import productSlice from './products.slice';
 import categorySlice from './category.slice';
 import subcategorySlice from './subcategory.slice';
 import promotionSlice from './promotions.slice';
+import lawsSlice from './laws.slice';
 
 // const rootReducer = combineReducers({
 //   locationsSlice,
@@ -42,6 +43,7 @@ const store = configureStore({
     categorySlice,
     subcategorySlice,
     promotionSlice,
+    lawsSlice,
   },
 });
 
