@@ -17,6 +17,7 @@ interface LawEditorProps {
   onSaveEdit: (editedLaw: ILaw) => void;
   onCloseAddEditor: () => void;
   onCloseEditEditor: () => void;
+  // openAddEditor: () => void;
   isAddingMode: boolean;
   editedLaw: ILaw | null | undefined;
   setEditedLaw: React.Dispatch<React.SetStateAction<ILaw | null | undefined>>;
@@ -31,12 +32,14 @@ const Editor: FC<LawEditorProps> = ({
   onSaveAdd,
   onCloseAddEditor,
   onCloseEditEditor,
+  // openAddEditor,
   isAddingMode,
   editedLaw,
   setEditedLaw,
   axiosError,
   resetAxiosError,
 }) => {
+  const laws = useAppSelector<ILaw[]>((state) => state.lawsSlice.data);
   const id = useAppSelector((state) => state.lawsSlice.postId);
   const dispatch = useAppDispatch();
   const [isUpload, setUpload] = useState(false);
@@ -48,7 +51,20 @@ const Editor: FC<LawEditorProps> = ({
     }
   }, [law, isAddingMode, setEditedLaw]);
 
+  useEffect(() => {
+    if (isAddingMode) {
+      setEditedLaw({
+        id: 0,
+        title: '',
+        description: '',
+        dateFrom: '',
+        updatedAt: new Date(),
+      });
+    }
+  }, [isAddingMode]);
+
   const handleCancel = () => {
+    console.log('handleCancel: resetting editedLaw');
     setEditedLaw(undefined);
     resetAxiosError();
     onCloseEditEditor();
@@ -124,9 +140,30 @@ const Editor: FC<LawEditorProps> = ({
     if (editedLaw && editedLaw.id) {
       const lawId = editedLaw.id;
       await dispatch(deleteLaw(lawId));
-      onCloseEditEditor();
+      if (laws.length > 0) {
+        setEditedLaw(laws[0]);
+      } else {
+        onCloseEditEditor();
+      }
     }
   };
+
+
+  // const handleDelete = async () => {
+  //   if (editedLaw && editedLaw.id) {
+  //     const lawId = editedLaw.id;
+  //     await dispatch(deleteLaw(lawId));
+  //     if (laws.length > 0) {
+  //       setEditedLaw(laws[0]);
+  //     }
+  //     if (laws.length > 0) {
+  //       setEditedLaw(laws[0]);
+  //     } else {
+  //       onCloseEditEditor();
+  //       openAddEditor();
+  //     }
+  //   }
+  // };
 
   if (!isOpen || !editedLaw) {
     return null;
@@ -157,7 +194,7 @@ const Editor: FC<LawEditorProps> = ({
             <DocumentTextIcon className="w-6 h-6 text-slate-400" />
           </div>
           <h1 className="text-lime-600 text-lg font-bold tracking-normal leading-tight">
-            {isAddingMode ? 'Новый' : 'Редактирование'}
+            {isAddingMode ? 'Новый документ' : 'Редактирование документа'}
           </h1>
         </div>
         <div className="py-8 text-base leading-6 space-y-4 text-slate-700 sm:text-lg sm:leading-7">
@@ -251,13 +288,13 @@ const Editor: FC<LawEditorProps> = ({
                   title="Удалить"
                 />
 
-                {/* <Button
+                <Button
                   type="submit"
                   styleCSSSpan={
                     'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
                   }
                   title="Сохранить"
-                /> */}
+                />
               </div>
             </>
           )}
