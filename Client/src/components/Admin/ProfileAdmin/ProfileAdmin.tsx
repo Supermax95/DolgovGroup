@@ -16,6 +16,7 @@ import {
   DevicePhoneMobileIcon,
   IdentificationIcon,
   LockClosedIcon,
+  UserIcon,
 } from '@heroicons/react/24/outline';
 
 interface IDate {
@@ -445,7 +446,7 @@ const ProfileAdmin: FC = () => {
           <div className=" flex items-center space-x-4 bg-slate-100 px-6 py-2">
             <div className="py-1">
               {' '}
-              <IdentificationIcon className="cursor-pointer w-4 h-4 text-slate-600 mx-1" />
+              <UserIcon className="cursor-pointer w-4 h-4 text-slate-600 mx-1" />
             </div>
 
             <span className="text-slate-600 text-sm font-normal">
