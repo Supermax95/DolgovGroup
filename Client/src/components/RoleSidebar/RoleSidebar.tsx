@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { ListBulletIcon, UserIcon } from '@heroicons/react/24/outline';
+import { IdentificationIcon, ListBulletIcon, UserIcon } from '@heroicons/react/24/outline';
 import SidebarProfile from '../../ui/SidebarProfile';
 import { useAppSelector } from '../../Redux/hooks';
 
@@ -38,7 +38,7 @@ const RoleSidebar: FC = () => {
           id: 2,
           href: '/profileAdmin',
           name: 'Персональные данные',
-          childrenIcon: <UserIcon className="w-4 h-4 text-slate-600" />,
+          childrenIcon: <IdentificationIcon className="w-4 h-4 text-slate-600" />,
         },
       ],
     },
