@@ -15,7 +15,7 @@ export interface ILaw {
   title: string;
   description: string;
   dateFrom: string;
-  updatedAt: Date;
+  updatedAt: Date | string;
 }
 
 interface IColumnsDefaultName {
@@ -52,6 +52,18 @@ const Law: FC = () => {
 
   const itemsPerPage = 10;
 
+  // const openAddEditor = (): void => {
+  //   setAddingMode(true);
+  //   setEditedLaw({
+  //     id: 0,
+  //     title: '',
+  //     description: '',
+  //     dateFrom: '',
+  //     updatedAt: new Date(),
+  //   });
+  //   setEditorOpen(true);
+  // };
+
   const openAddEditor = (): void => {
     setAddingMode(true);
     setEditedLaw({
@@ -59,11 +71,14 @@ const Law: FC = () => {
       title: '',
       description: '',
       dateFrom: '',
-      updatedAt: new Date(),
+      updatedAt: new Date().toLocaleDateString('ru-RU', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+      }),
     });
     setEditorOpen(true);
   };
-  
 
   const openEditEditor = (law: ILaw): void => {
     setSelectedLaw(law);
@@ -93,7 +108,6 @@ const Law: FC = () => {
   const handleSaveAdd = async (): Promise<void> => {
     let add = {} as any;
 
-    
     try {
       if (editedLaw) {
         const resultAction = await dispatch(
