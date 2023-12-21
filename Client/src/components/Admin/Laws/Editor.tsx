@@ -148,7 +148,6 @@ const Editor: FC<LawEditorProps> = ({
     }
   };
 
-
   // const handleDelete = async () => {
   //   if (editedLaw && editedLaw.id) {
   //     const lawId = editedLaw.id;
@@ -186,6 +185,8 @@ const Editor: FC<LawEditorProps> = ({
     ],
   };
 
+  console.log('updatedAt', editedLaw.updatedAt);
+
   return (
     <div className="w-[1024px] mx-auto py-8 px-5 bg-white shadow-md rounded-3xl border border-slate-300">
       <form onSubmit={handleFormSubmit}>
@@ -200,28 +201,27 @@ const Editor: FC<LawEditorProps> = ({
         <div className="py-8 text-base leading-6 space-y-4 text-slate-700 sm:text-lg sm:leading-7">
           {currentStep === 1 && (
             <>
+              <div className="relative">
+                <input
+                  onChange={(e) =>
+                    setEditedLaw({ ...editedLaw, title: e.target.value })
+                  }
+                  id="title"
+                  name="title"
+                  type="text"
+                  value={editedLaw.title}
+                  placeholder=""
+                  className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
+                  required={true}
+                />
+                <label
+                  htmlFor="title"
+                  className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm"
+                >
+                  Наименование документа
+                </label>
+              </div>
               <div className="pt-4 pb-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
-                <div className="relative">
-                  <input
-                    onChange={(e) =>
-                      setEditedLaw({ ...editedLaw, title: e.target.value })
-                    }
-                    id="title"
-                    name="title"
-                    type="text"
-                    value={editedLaw.title}
-                    placeholder=""
-                    className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
-                    required={true}
-                  />
-                  <label
-                    htmlFor="title"
-                    className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm"
-                  >
-                    Название документа
-                  </label>
-                </div>
-
                 <div className="relative">
                   <input
                     onChange={(e) =>
@@ -243,6 +243,30 @@ const Editor: FC<LawEditorProps> = ({
                     className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm"
                   >
                     Дата начала действия документа
+                  </label>
+                </div>
+                <div className="relative">
+                  <input
+                    onChange={(e) =>
+                      setEditedLaw({
+                        ...editedLaw,
+                        updatedAt: e.target.value,
+                      })
+                    }
+                    id="updatedAt"
+                    type="text"
+                    name="updatedAt"
+                    value={editedLaw.updatedAt}
+                    placeholder=""
+                    className="block py-2.5 px-0 w-full text-sm text-slate-400 bg-transparent border-0 border-b-2 border-slate-300 "
+                    required={true}
+                    disabled={true}
+                  />
+                  <label
+                    htmlFor="updatedAt"
+                    className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm"
+                  >
+                    Дата внесения изменений
                   </label>
                 </div>
               </div>
