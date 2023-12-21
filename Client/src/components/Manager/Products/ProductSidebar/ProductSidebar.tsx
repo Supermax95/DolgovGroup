@@ -362,7 +362,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   return (
     <div className="flex flex-col w-64 bg-white h-full border-r-2 border-orange-300">
       <div className="h-16 flex items-center justify-center border-b-2 border-orange-300">
-        <h2 className="text-lg font-bold text-slate-600">Каталог</h2>
+        <h2 className="text-xl text-slate-600 font-medium">Каталог</h2>
       </div>
 
       <div className="h-full relative w-60">
