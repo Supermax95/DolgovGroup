@@ -45,25 +45,11 @@ const Table: FC<ITable> = ({
     : [];
 
   return (
-    <div>
-      <h1 className="text-xl text-lime-600 font-medium mb-4">{title}</h1>
+    <div className=''>
+      <h1 className="text-xl text-lime-600 font-medium mb-4 text-center">{title}</h1>
       <div className="mb-2">
         <div className="flex items-center justify-between">
           {childrenSearch}
-
-          {/* {onAddClick ? (
-            <Button
-              type="button"
-              onClick={onAddClick}
-              styleCSSButton={
-                'relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-slate-700 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 hover:text-white'
-              }
-              styleCSSSpan={
-                'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
-              }
-              title="Добавить"
-            />
-          ) : null} */}
         </div>
       </div>
       {childrenFilter}

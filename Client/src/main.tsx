@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import './index.css';
 import store, { persistor } from './Redux/store';
+
 // import { PersistGate } from 'reduxjs-toolkit-persist/integration/react';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
@@ -18,4 +19,4 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   </Provider>
 );
 
-//* чтобы работал локальный стор, раскомменть 7, 11, 17 
+//* чтобы работал локальный стор, раскомменть 7, 11, 17
