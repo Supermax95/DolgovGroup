@@ -18,7 +18,7 @@ const PromotionSidebarUI: FC<IPromotionsSidebar> = ({ links, title }) => {
       <div className="h-16 flex items-center justify-center border-b-2 border-orange-300 text-center">
         <h2 className="text-xl text-slate-600 font-medium">{title}</h2>
       </div>
-      <ul className="pt-2 pb-2 space-y-1">
+      <ul className="py-2">
         {links.map((item) => (
           <li key={item.id} className="flex items-center">
             <Link

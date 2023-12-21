@@ -1,3 +1,4 @@
+import { DocumentTextIcon } from '@heroicons/react/24/outline';
 import { FC, useEffect, useState } from 'react';
 
 interface SidebarLawProps<T> {
@@ -31,9 +32,14 @@ const SidebarLaw: FC<SidebarLawProps<T>> = ({ data, onEditClick, title }) => {
                 className="flex items-center p-2 rounded-md hover:bg-slate-100"
                 onClick={() => onEditClick && onEditClick(item)}
               >
-                <span className="text-slate-600 text-sm font-normal ml-4">
-                  {item.title}
-                </span>
+                <div className="cursor-pointer w-48 flex items-center space-x-4 text-slate-600">
+                  <div className="rounded-full py-1">
+                    <DocumentTextIcon className="cursor-pointer w-4 h-4 text-slate-600 mx-1" />
+                  </div>
+                  <span className="text-slate-600 text-sm font-normal">
+                    {item.title}
+                  </span>
+                </div>
               </div>
             </li>
           ))}
