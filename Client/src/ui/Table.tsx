@@ -5,6 +5,7 @@ import {
   BuildingStorefrontIcon,
   DocumentTextIcon,
   PencilSquareIcon,
+  PlusCircleIcon,
   UserGroupIcon,
 } from '@heroicons/react/24/outline';
 
@@ -50,7 +51,7 @@ const Table: FC<ITable> = ({
         <div className="flex items-center justify-between">
           {childrenSearch}
 
-          {onAddClick ? (
+          {/* {onAddClick ? (
             <Button
               type="button"
               onClick={onAddClick}
@@ -62,7 +63,7 @@ const Table: FC<ITable> = ({
               }
               title="Добавить"
             />
-          ) : null}
+          ) : null} */}
         </div>
       </div>
       {childrenFilter}
@@ -77,19 +78,18 @@ const Table: FC<ITable> = ({
                 ) : (
                   <th className="w-16 pl-6 py-3   text-center   border-b-2 border-orange-300 leading-4 text-slate-700 text-sm font-bold ">
                     {title === 'Список сотрудников' ||
-                    title === 'Список покупателей' ||
-                    title === 'Список менеджеров' ? (
-                      // title === 'Список контактов'
+                    title === 'Список покупателей' ? (
                       <div className="flex justify-center items-center rounded-lg">
-                        <UserGroupIcon className="h-5 w-5 text-slate-700 font-medium" />{' '}
+                        <UserGroupIcon className="h-5 w-5 text-slate-600" />{' '}
                       </div>
-                    ) : title === 'Список магазинов' ? (
+                    ) : title === 'Список магазинов' ||
+                      title === 'Список менеджеров' ||
+                      onAddClick ? (
                       <div className="flex justify-center items-center rounded-lg">
-                        <BuildingStorefrontIcon className="h-5 w-5 text-slate-700" />{' '}
-                      </div>
-                    ) : title === 'Правовые документы' ? (
-                      <div className="flex justify-center items-center rounded-lg">
-                        <DocumentTextIcon className="h-5 w-5 text-slate-700" />{' '}
+                        <PlusCircleIcon
+                          onClick={onAddClick}
+                          className="h-5 w-5 cursor-pointer text-slate-600 hover:text-orange-400"
+                        />
                       </div>
                     ) : (
                       <></>
