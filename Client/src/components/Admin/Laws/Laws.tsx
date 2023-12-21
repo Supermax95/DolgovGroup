@@ -164,6 +164,7 @@ const Law: FC = () => {
       <SidebarLaw
         data={formattedLaws}
         title="Документы"
+        onAddClick={openAddEditor}
         onEditClick={openEditEditor}
       />
       {/* <Table
@@ -176,30 +177,7 @@ const Law: FC = () => {
           data={formattedLaws}
         /> */}
       <div className="p-4">
-        {' '}
         <h1 className="text-xl text-lime-600 font-medium mb-4">Документы</h1>
-        <Button
-          type="button"
-          title="Добавить"
-          onClick={openAddEditor}
-          styleCSSButton={
-            'relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-slate-700 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 hover:text-white'
-          }
-          styleCSSSpan={
-            'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
-          }
-        />
-        {/* <Button
-          type="button"
-          title="Загрузить документ"
-          onClick={openAddEditor}
-          styleCSSButton={
-            'relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-slate-700 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 hover:text-white'
-          }
-          styleCSSSpan={
-            'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
-          }
-        /> */}
         {isEditorOpen && (selectedLaw || isAddingMode) && (
           <Editor
             isOpen={isEditorOpen}
