@@ -209,15 +209,34 @@ const Editor: FC<LawEditorProps> = ({
                   </label>
                 </div>
               </div>
-              <Quill
-                theme="snow"
-                value={editedLaw.description}
-                onChange={(value) =>
-                  setEditedLaw({ ...editedLaw, description: value })
-                }
-                modules={quillModules}
-                className="w-full"
-              />
+
+              <div className="description-container resize-y overflow-auto min-h-50 text-center">
+                <label
+                  htmlFor="description"
+                  className="text-slate-600 text-md font-normal"
+                >
+                  Содержание документа
+                </label>
+                <div className="text-center">
+                  <span className="text-xs text-orange-500 font-normal">
+                    Вы можете внести содержание документа вручную, либо
+                    использовать кнопку "Сохранить", чтобы загрузить документ
+                    ?файлом в формате...?
+                  </span>
+                </div>
+                <div className="mb-2"></div>
+
+                <Quill
+                  theme="snow"
+                  value={editedLaw.description}
+                  onChange={(value) =>
+                    setEditedLaw({ ...editedLaw, description: value })
+                  }
+                  modules={quillModules}
+                  className="w-full"
+                />
+              </div>
+
               <div className="mt-4"></div>
               <div className="flex items-center justify-center w-full">
                 <Button
@@ -232,13 +251,13 @@ const Editor: FC<LawEditorProps> = ({
                   title="Удалить"
                 />
 
-                <Button
+                {/* <Button
                   type="submit"
                   styleCSSSpan={
                     'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
                   }
                   title="Сохранить"
-                />
+                /> */}
               </div>
             </>
           )}
