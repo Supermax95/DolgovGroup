@@ -50,7 +50,7 @@ const Sidebar: FC<SidebarProps<any>> = ({
   return (
     <div className="flex flex-col w-56 bg-white h-full border-r-2 border-orange-300">
       <div className="h-16 flex items-center justify-center border-b-2 border-orange-300 text-center">
-        <h2 className="text-lg font-bold text-slate-600">{title}</h2>
+        <h2 className="text-xl text-slate-600 font-medium">{title}</h2>
       </div>
 
       <div className="h-full w-52 flex">

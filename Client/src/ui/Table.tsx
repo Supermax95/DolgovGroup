@@ -3,8 +3,6 @@ import Button from './Button';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/20/solid';
 import {
   BuildingStorefrontIcon,
-  ClipboardDocumentListIcon,
-  ClipboardIcon,
   DocumentTextIcon,
   PencilSquareIcon,
   UserGroupIcon,
@@ -44,8 +42,6 @@ const Table: FC<ITable> = ({
   const filteredData = data
     ? data.filter((item) => item.id !== currentManagerId)
     : [];
-
-  console.log('title', title);
 
   return (
     <div>
