@@ -7,7 +7,7 @@ import Modal from '../../../ui/Modal';
 import { IProduct } from './Products';
 import { VITE_URL } from '../../../VITE_URL';
 import axios from 'axios';
-import ReactQuill from 'react-quill';
+import Quill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
 interface Product {
@@ -563,7 +563,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
           )}
 
           {currentStep === 1 && (
-            <div className="description-container resize-y overflow-auto min-h-50 text-center">
+            <div className="text-center">
               <label
                 htmlFor="description"
                 className="text-slate-600 text-md font-normal"
@@ -572,18 +572,18 @@ const ProductsModal: FC<ProductsModalProps> = ({
               </label>
               <div className="mb-2"></div>
 
-              <ReactQuill
+              <Quill
                 id="description"
                 theme="snow"
                 value={editedProduct.description}
                 onChange={(value) =>
                   setEditedProduct({ ...editedProduct, description: value })
                 }
-                className="w-full" /* Чтобы растягиваться по ширине контейнера */
+                className="w-full h-[15vh]"
               />
             </div>
           )}
-          <div className="mt-4"></div>
+          <div className="mt-14"></div>
 
           {currentStep === 2 && (
             <>
