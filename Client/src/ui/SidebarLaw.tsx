@@ -17,12 +17,6 @@ const SidebarLaw: FC<SidebarLawProps<T>> = ({ data, onEditClick, title }) => {
 
       <div className="h-full w-52 flex">
         <ul className="py-2 ">
-          <li className="flex flex-col justify-between">
-            <div className="flex items-center p-2 rounded-md hover:bg-slate-100">
-              <div className="cursor-pointer w-48 flex items-center space-x-10 text-slate-600"></div>
-            </div>
-          </li>
-
           {titles.map((item, index) => (
             <li key={index} className="flex flex-col justify-between">
               <div
