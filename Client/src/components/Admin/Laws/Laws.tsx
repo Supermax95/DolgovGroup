@@ -63,6 +63,7 @@ const Law: FC = () => {
     });
     setEditorOpen(true);
   };
+  
 
   const openEditEditor = (law: ILaw): void => {
     setSelectedLaw(law);
@@ -91,6 +92,8 @@ const Law: FC = () => {
 
   const handleSaveAdd = async (): Promise<void> => {
     let add = {} as any;
+
+    
     try {
       if (editedLaw) {
         const resultAction = await dispatch(
@@ -196,6 +199,7 @@ const Law: FC = () => {
             setEditedLaw={setEditedLaw}
             axiosError={axiosError}
             resetAxiosError={resetAxiosError}
+            // openAddEditor = {openAddEditor}
           />
         )}
       </div>
