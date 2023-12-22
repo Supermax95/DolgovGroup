@@ -41,15 +41,15 @@ const Navbar: FC = () => {
     },
     {
       id: 3,
-      name: 'Продукты',
-      href: '/products',
-      isActive: location.pathname === '/products',
-    },
-    {
-      id: 4,
       name: 'Магазины',
       href: '/locations',
       isActive: location.pathname === '/locations',
+    },
+    {
+      id: 4,
+      name: 'Продукты',
+      href: '/products',
+      isActive: location.pathname === '/products',
     },
     {
       id: 5,
@@ -68,15 +68,15 @@ const Navbar: FC = () => {
   //! не удалять
   // const roles: INavigation = {
   // manager: [
-  //   { id: 'manager-products', name: 'Продукты', href: '/products', isActive: location.pathname === '/products',  },
   //   { id: 'manager-locations', name: 'Магазины', href: '/locations', isActive: location.pathname === '/locations', },
+  //   { id: 'manager-products', name: 'Продукты', href: '/products', isActive: location.pathname === '/products',  },
   //   { id: 'manager-stock', name: 'Акции', href: '/stock',  isActive: location.pathname === '/stock', },
   // ],
   // admin: [
   //   { id: 'admin-clients', name: 'Клиенты', href: '/clients', isActive: location.pathname === '/clients', },
   //   { id: 'admin-employees', name: 'Сотрудники', href: '/employees', isActive: location.pathname === '/employees', },
-  //   { id: 'admin-products', name: 'Продукты', href: '/products', isActive: location.pathname === '/products',  },
   //   { id: 'admin-locations', name: 'Магазины', href: '/locations', isActive: location.pathname === '/locations', },
+  //   { id: 'admin-products', name: 'Продукты', href: '/products', isActive: location.pathname === '/products',  },
   //   { id: 'admin-stock', name: 'Акции', href: '/stock', isActive: location.pathname === '/stock', },
   // ]
   // };
