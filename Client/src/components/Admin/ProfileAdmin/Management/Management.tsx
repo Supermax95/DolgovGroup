@@ -249,44 +249,44 @@ const Management: FC = () => {
         titleText={`Временный пароль выслан на почту ${managerIdForBellOneTimePass.email}`}
       />
       <Wrapper>
-        {showNotificationAdd && (
-          <div>
-            <Toaster position="bottom-left" expand={true} />
-            <button
-              onClick={() =>
-                toast.custom(
-                  (t) => (
-                    <div className="flex flex-col p-4 bg-slate-50 shadow-md hover:shadow-lg rounded-lg border border-slate-200 w-full">
-                      <div className="flex flex-col justify-start">
-                        <p className="font-medium text-xs text-slate-800">
-                          Личный кабинет менеджера создан
-                          {/* {managerIdForBellAdd.firstName}
+        {/* {showNotificationAdd && ( */}
+        <div>
+          <Toaster position="bottom-left" expand={true} />
+          <button
+            onClick={() =>
+              toast.custom(
+                (t) => (
+                  <div className="flex flex-col p-4 bg-slate-50 shadow-md hover:shadow-lg rounded-lg border border-slate-200 w-full">
+                    <div className="flex flex-col justify-start">
+                      <p className="font-medium text-xs text-slate-800">
+                        Личный кабинет менеджера создан
+                        {/* {managerIdForBellAdd.firstName}
                         {managerIdForBellAdd.lastName} */}
-                        </p>
-                        <p className="text-xs font-normal text-slate-600 mt-2">
-                          Временный пароль выслан на почту{' '}
-                          <span className="text-slate-800 ext-xs">
-                            ribrbrty0@g,ao.ty
-                            {managerIdForBellAdd.email}
-                          </span>
-                        </p>
-                        <button
-                          className="absolute py-1 right-1 top-2"
-                          onClick={() => toast.dismiss(t)}
-                        >
-                          <XMarkIcon className="cursor-pointer w-4 h-4 text-slate-400 hover:text-slate-600 mx-1" />
-                        </button>
-                      </div>
+                      </p>
+                      <p className="text-xs font-normal text-slate-600 mt-2">
+                        Временный пароль выслан на почту{' '}
+                        <span className="text-slate-800 ext-xs">
+                          ribrbrty0@g,ao.ty
+                          {managerIdForBellAdd.email}
+                        </span>
+                      </p>
+                      <button
+                        className="absolute py-1 right-1 top-2"
+                        onClick={() => toast.dismiss(t)}
+                      >
+                        <XMarkIcon className="cursor-pointer w-4 h-4 text-slate-400 hover:text-slate-600 mx-1" />
+                      </button>
                     </div>
-                  ),
-                  { duration: Infinity }
-                )
-              }
-            >
-              Give me a toast
-            </button>
-          </div>
-        )}
+                  </div>
+                ),
+                { duration: Infinity }
+              )
+            }
+          >
+            Give me a toast
+          </button>
+        </div>
+        {/* )} */}
         <RoleSidebar />
 
         <div className="p-4">

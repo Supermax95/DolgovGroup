@@ -181,7 +181,7 @@ const Nocarousel: FC = () => {
       <PromotionSidebar />
       {/* <div className="max-w-screen-lg	"> */}
         <div className="p-4">
-          <h1 className="text-xl text-lime-600 font-medium text-center">
+          <h1 className="text-xl text-lime-600 font-medium text-center mb-2">
             Акции вне карусели
           </h1>
 

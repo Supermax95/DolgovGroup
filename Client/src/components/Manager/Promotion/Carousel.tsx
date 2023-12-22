@@ -190,7 +190,7 @@ const Carousel: FC = () => {
     <Wrapper>
       <PromotionSidebar />
       <div className="p-4">
-        <h1 className="text-xl text-lime-600 font-medium text-center">Акции в карусели</h1>
+        <h1 className="text-xl text-lime-600 font-medium text-center mb-2">Акции в карусели</h1>
 
         <div className="col-span-full mb-4">
           <div className="flex items-center justify-between">

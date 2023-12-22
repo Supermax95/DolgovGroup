@@ -45,8 +45,10 @@ const Table: FC<ITable> = ({
     : [];
 
   return (
-    <div className=''>
-      <h1 className="text-xl text-lime-600 font-medium mb-4 text-center">{title}</h1>
+    <div className="max-w-screen-lg">
+      <h1 className="text-xl text-lime-600 font-medium mb-4 text-center">
+        {title}
+      </h1>
       <div className="mb-2">
         <div className="flex items-center justify-between">
           {childrenSearch}
