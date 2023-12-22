@@ -189,7 +189,7 @@ const Editor: FC<LawEditorProps> = ({
 
   return (
     <>
-      <div className="max-w-screen-lg relative py-8 px-5 md:px-10 bg-white shadow-md rounded-3xl border border-slate-400 modal-container">
+      <div className="max-w-screen-lg h-fit py-8 px-5 md:px-10 bg-white shadow-md rounded-3xl border border-slate-300 modal-container">
         <form onSubmit={handleFormSubmit}>
           <div className="flex justify-center items-center">
             <div className="w-8 text-gray-600">
@@ -288,44 +288,43 @@ const Editor: FC<LawEditorProps> = ({
                   </div>
                   <div className="mb-2"></div>
 
-                  <div id="editor-container">
-                    <Quill
+                  <div id="editor-container h-[60vh] resize-y overflow-auto">
+                    <ReactQuill
                       theme="snow"
                       value={editedLaw.description}
                       onChange={(value) =>
                         setEditedLaw({ ...editedLaw, description: value })
                       }
                       modules={quillModules}
-                      className="w-full h-[40vh] resize-y overflow-auto"
+                      className="w-full h-[50vh]"
                     />
                   </div>
                 </div>
-
-                <div className="mt-14"></div>
-
-                <div className="flex items-center justify-center w-full">
-                  <Button
-                    type="submit"
-                    styleCSSSpan={
-                      'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
-                    }
-                    title="Сохранить"
-                  />
-
-                  <Button
-                    type="button"
-                    onClick={handleDelete}
-                    styleCSSButton={
-                      'relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-slate-700  rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white'
-                    }
-                    styleCSSSpan={
-                      'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
-                    }
-                    title="Удалить"
-                  />
-                </div>
               </>
             )}
+          </div>
+
+          <div className="mt-8"></div>
+          <div className="flex items-center justify-center w-full">
+            <Button
+              type="submit"
+              styleCSSSpan={
+                'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
+              }
+              title="Сохранить"
+            />
+
+            <Button
+              type="button"
+              onClick={handleDelete}
+              styleCSSButton={
+                'relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-slate-700  rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white'
+              }
+              styleCSSSpan={
+                'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
+              }
+              title="Удалить"
+            />
           </div>
 
           {currentStep === 2 && (

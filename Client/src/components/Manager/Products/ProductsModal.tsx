@@ -9,6 +9,7 @@ import { VITE_URL } from '../../../VITE_URL';
 import axios from 'axios';
 import Quill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import ReactQuill from 'react-quill';
 
 interface Product {
   id: number;
@@ -572,7 +573,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
               </label>
               <div className="mb-2"></div>
 
-              <Quill
+              <ReactQuill
                 id="description"
                 theme="snow"
                 value={editedProduct.description}
