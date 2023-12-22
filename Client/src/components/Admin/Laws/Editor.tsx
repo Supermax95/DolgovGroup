@@ -8,6 +8,7 @@ import 'quill/dist/quill.snow.css';
 import deleteLaw from '../../../Redux/thunks/Document/deleteLaw.api';
 import { DocumentTextIcon } from '@heroicons/react/24/outline';
 import Button from '../../../ui/Button';
+import ReactQuill from 'react-quill';
 
 interface LawEditorProps {
   isOpen: boolean;
