@@ -189,7 +189,7 @@ const Editor: FC<LawEditorProps> = ({
 
   return (
     <>
-      <div className="max-w-screen-lg h-fit py-8 px-5 md:px-10 bg-white shadow-md rounded-3xl border border-slate-300 modal-container">
+      <div className="max-w-screen-lg h-max py-8 px-5 md:px-10 bg-white shadow-md rounded-3xl border border-slate-300">
         <form onSubmit={handleFormSubmit}>
           <div className="flex justify-center items-center">
             <div className="w-8 text-gray-600">

@@ -15,6 +15,7 @@ import { unwrapResult } from '@reduxjs/toolkit';
 
 import { Toaster, toast } from 'sonner';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import PopUpNotification from '../../../../ui/PopUpNotification';
 
 interface IManager {
   id: number;
@@ -47,9 +48,11 @@ const Management: FC = () => {
   //console.log('managers', managers);
 
   //* для уведомления при добавлении
+  // //! ПОЧЕМУ-ТО ТЕПЕРЬ НЕ ЗАЛЕТАЕТ ОТВЕТ С БЭКА
   const managerIdForBellAdd = useAppSelector(
     (state) => state.managerSlice.addedManagerData
   );
+
   //* для уведомления при редактировании
   const managerIdForBellEdit = useAppSelector(
     (state) => state.managerSlice.updatedManager
@@ -73,6 +76,8 @@ const Management: FC = () => {
   const [showNotificationOnePass, setShowNotificationOnePass] = useState(false);
 
   const [modalError, setModalError] = useState<string | null>(null);
+
+  const [show, setShow] = useState(0);
 
   const columnsDefaultName: IColumnsDefaultName[] = [
     { name: 'Фамилия' },
@@ -155,6 +160,7 @@ const Management: FC = () => {
         setModalError(null);
         closeAddModal();
         setShowNotificationAdd(true);
+        // <PopUpNotification email={editedManager.email} />;
       }
     } catch (error) {
       console.error('Произошла ошибка при добавлении:', error);
@@ -216,43 +222,73 @@ const Management: FC = () => {
     }
   };
 
-  //* скрытие всплывающего окна
-  const removeNotificationAdd = (): void => {
-    setShowNotificationAdd(false);
-  };
+  // //* скрытие всплывающего окна
+  // const removeNotificationAdd = (): void => {
+  //   setShowNotificationAdd(false);
+  // };
 
-  const removeNotificationEdit = (): void => {
-    setShowNotificationEdit(false);
-  };
+  // const removeNotificationEdit = (): void => {
+  //   setShowNotificationEdit(false);
+  // };
 
-  const removeNotificationOnePass = (): void => {
-    setShowNotificationOnePass(false);
-  };
+  // const removeNotificationOnePass = (): void => {
+  //   setShowNotificationOnePass(false);
+  // };
 
   return (
     <>
       {/* <AccountNotification
         showNotification={showNotificationAdd}
         onClickClose={removeNotificationAdd}
-        titleText={`Личный кабинет менеджера создан ${managerIdForBellAdd.firstName} ${managerIdForBellAdd.lastName}`}
-        bodyText={`Временный пароль выслан на почту ${managerIdForBellAdd.email}`}
+       titleText={'Личный кабинет менеджера создан'}
+              bodyText={'Временный пароль выслан на почту'}
+              email={managerIdForBellAdd.email}
       /> */}
-      <AccountNotification
+      {/* <AccountNotification
         showNotification={showNotificationEdit}
         onClickClose={removeNotificationEdit}
-        titleText={` Данные менеджера успешно обновлены ${managerIdForBellEdit.firstName} ${managerIdForBellEdit.lastName}`}
-        bodyText={` Для обновления пароля менеджера отправьте новый пароль на почту ${managerIdForBellEdit.email}`}
-      />
-      <AccountNotification
+      titleText={' Данные менеджера успешно обновлены'}
+              bodyText={
+                'Для обновления пароля менеджера отправьте новый пароль на почту'
+              }
+              email={managerIdForBellEdit.email}
+      /> */}
+      {/* <AccountNotification
         showNotification={showNotificationOnePass}
         onClickClose={removeNotificationOnePass}
-        titleText={`Временный пароль выслан на почту ${managerIdForBellOneTimePass.email}`}
-      />
+            titleText={'Временный пароль выслан на почту'}
+       
+              email={managerIdForBellOneTimePass.email}
+      /> */}
       <Wrapper>
-        {/* {showNotificationAdd && ( */}
         <div>
-          <Toaster position="bottom-left" expand={true} />
-          <button
+          {showNotificationAdd && (
+            <PopUpNotification
+              titleText={'Личный кабинет менеджера создан'}
+              bodyText={'Временный пароль выслан на почту'}
+              email={managerIdForBellAdd.email}
+            />
+          )}
+          {showNotificationEdit && (
+            <PopUpNotification
+              titleText={' Данные менеджера успешно обновлены'}
+              bodyText={
+                'Для обновления пароля менеджера отправьте новый пароль на почту'
+              }
+              email={managerIdForBellEdit.email}
+            />
+          )}
+          {showNotificationOnePass && (
+            <PopUpNotification
+              titleText={'Временный пароль выслан на почту'}
+              // bodyText={
+              //   'Для обновления пароля менеджера отправьте новый пароль на почту'
+              // }
+              email={managerIdForBellOneTimePass.email}
+            />
+          )}
+
+          {/* <button
             onClick={() =>
               toast.custom(
                 (t) => (
@@ -260,13 +296,13 @@ const Management: FC = () => {
                     <div className="flex flex-col justify-start">
                       <p className="font-medium text-xs text-slate-800">
                         Личный кабинет менеджера создан
-                        {/* {managerIdForBellAdd.firstName}
-                        {managerIdForBellAdd.lastName} */}
+                        {managerIdForBellAdd.firstName}
+                        {managerIdForBellAdd.lastName}
                       </p>
                       <p className="text-xs font-normal text-slate-600 mt-2">
                         Временный пароль выслан на почту{' '}
                         <span className="text-slate-800 ext-xs">
-                          ribrbrty0@g,ao.ty
+                          ribrbrty0@g,ao.
                           {managerIdForBellAdd.email}
                         </span>
                       </p>
@@ -284,9 +320,9 @@ const Management: FC = () => {
             }
           >
             Give me a toast
-          </button>
+          </button> */}
         </div>
-        {/* )} */}
+
         <RoleSidebar />
 
         <div className="p-4">
