@@ -349,7 +349,9 @@ const Products: FC = () => {
           </div>
         )}
 
-        <h1 className="text-xl text-lime-600 font-medium">Продукты</h1>
+        <h1 className="text-xl text-lime-600 font-medium text-center">
+          Продукты
+        </h1>
 
         <div className="flex items-center">
           <span className="text-slate-600 text-sm font-normal my-2">

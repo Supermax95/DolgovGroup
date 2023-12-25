@@ -10,6 +10,12 @@ import Wrapper from '../../../../ui/Wrapper';
 import AccountNotification from '../../../../ui/AccountNotification';
 import RoleSidebar from '../../../RoleSidebar/RoleSidebar';
 import { unwrapResult } from '@reduxjs/toolkit';
+// import { ToastContainer, toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
+
+import { Toaster, toast } from 'sonner';
+import { XMarkIcon } from '@heroicons/react/24/outline';
+import PopUpNotification from '../../../../ui/PopUpNotification';
 
 interface IManager {
   id: number;
@@ -42,9 +48,11 @@ const Management: FC = () => {
   //console.log('managers', managers);
 
   //* для уведомления при добавлении
+  // //! ПОЧЕМУ-ТО ТЕПЕРЬ НЕ ЗАЛЕТАЕТ ОТВЕТ С БЭКА
   const managerIdForBellAdd = useAppSelector(
     (state) => state.managerSlice.addedManagerData
   );
+
   //* для уведомления при редактировании
   const managerIdForBellEdit = useAppSelector(
     (state) => state.managerSlice.updatedManager
@@ -68,6 +76,8 @@ const Management: FC = () => {
   const [showNotificationOnePass, setShowNotificationOnePass] = useState(false);
 
   const [modalError, setModalError] = useState<string | null>(null);
+
+  const [show, setShow] = useState(0);
 
   const columnsDefaultName: IColumnsDefaultName[] = [
     { name: 'Фамилия' },
@@ -150,6 +160,7 @@ const Management: FC = () => {
         setModalError(null);
         closeAddModal();
         setShowNotificationAdd(true);
+        // <PopUpNotification email={editedManager.email} />;
       }
     } catch (error) {
       console.error('Произошла ошибка при добавлении:', error);
@@ -211,70 +222,136 @@ const Management: FC = () => {
     }
   };
 
-  //* скрытие всплывающего окна
-  const removeNotificationAdd = (): void => {
-    setShowNotificationAdd(false);
-  };
+  // //* скрытие всплывающего окна
+  // const removeNotificationAdd = (): void => {
+  //   setShowNotificationAdd(false);
+  // };
 
-  const removeNotificationEdit = (): void => {
-    setShowNotificationEdit(false);
-  };
+  // const removeNotificationEdit = (): void => {
+  //   setShowNotificationEdit(false);
+  // };
 
-  const removeNotificationOnePass = (): void => {
-    setShowNotificationOnePass(false);
-  };
+  // const removeNotificationOnePass = (): void => {
+  //   setShowNotificationOnePass(false);
+  // };
 
   return (
-    <Wrapper>
-      <AccountNotification
-        //! нюанс: если несколько делать действий с разными аккаунтами, то уведомление всегда высвечивает только последнего юзера, а прошлые затираются
+    <>
+      {/* <AccountNotification
         showNotification={showNotificationAdd}
         onClickClose={removeNotificationAdd}
-        titleText={`Личный кабинет менеджера создан ${managerIdForBellAdd.firstName} ${managerIdForBellAdd.lastName}`}
-        bodyText={`Временный пароль выслан на почту ${managerIdForBellAdd.email}`}
-      />
-
-      <AccountNotification
+       titleText={'Личный кабинет менеджера создан'}
+              bodyText={'Временный пароль выслан на почту'}
+              email={managerIdForBellAdd.email}
+      /> */}
+      {/* <AccountNotification
         showNotification={showNotificationEdit}
         onClickClose={removeNotificationEdit}
-        titleText={` Данные менеджера успешно обновлены ${managerIdForBellEdit.firstName} ${managerIdForBellEdit.lastName}`}
-        bodyText={` Для обновления пароля менеджера отправьте новый пароль на почту ${managerIdForBellEdit.email}`}
-      />
-
-      <AccountNotification
+      titleText={' Данные менеджера успешно обновлены'}
+              bodyText={
+                'Для обновления пароля менеджера отправьте новый пароль на почту'
+              }
+              email={managerIdForBellEdit.email}
+      /> */}
+      {/* <AccountNotification
         showNotification={showNotificationOnePass}
         onClickClose={removeNotificationOnePass}
-        titleText={`Временный пароль выслан на почту ${managerIdForBellOneTimePass.email}`}
-      />
+            titleText={'Временный пароль выслан на почту'}
+       
+              email={managerIdForBellOneTimePass.email}
+      /> */}
+      <Wrapper>
+        <div>
+          {showNotificationAdd && (
+            <PopUpNotification
+              titleText={'Личный кабинет менеджера создан'}
+              bodyText={'Временный пароль выслан на почту'}
+              email={managerIdForBellAdd.email}
+            />
+          )}
+          {showNotificationEdit && (
+            <PopUpNotification
+              titleText={' Данные менеджера успешно обновлены'}
+              bodyText={
+                'Для обновления пароля менеджера отправьте новый пароль на почту'
+              }
+              email={managerIdForBellEdit.email}
+            />
+          )}
+          {showNotificationOnePass && (
+            <PopUpNotification
+              titleText={'Временный пароль выслан на почту'}
+              // bodyText={
+              //   'Для обновления пароля менеджера отправьте новый пароль на почту'
+              // }
+              email={managerIdForBellOneTimePass.email}
+            />
+          )}
 
-      <RoleSidebar />
+          {/* <button
+            onClick={() =>
+              toast.custom(
+                (t) => (
+                  <div className="flex flex-col p-4 bg-slate-50 shadow-md hover:shadow-lg rounded-lg border border-slate-200 w-full">
+                    <div className="flex flex-col justify-start">
+                      <p className="font-medium text-xs text-slate-800">
+                        Личный кабинет менеджера создан
+                        {managerIdForBellAdd.firstName}
+                        {managerIdForBellAdd.lastName}
+                      </p>
+                      <p className="text-xs font-normal text-slate-600 mt-2">
+                        Временный пароль выслан на почту{' '}
+                        <span className="text-slate-800 ext-xs">
+                          ribrbrty0@g,ao.
+                          {managerIdForBellAdd.email}
+                        </span>
+                      </p>
+                      <button
+                        className="absolute py-1 right-1 top-2"
+                        onClick={() => toast.dismiss(t)}
+                      >
+                        <XMarkIcon className="cursor-pointer w-4 h-4 text-slate-400 hover:text-slate-600 mx-1" />
+                      </button>
+                    </div>
+                  </div>
+                ),
+                { duration: Infinity }
+              )
+            }
+          >
+            Give me a toast
+          </button> */}
+        </div>
 
-      <div className="p-4">
-        <Table
-          title="Список менеджеров"
-          data={displayedManagers}
-          columnsDefaultName={columnsDefaultName}
-          columnsListDb={columnsListDb}
-          onAddClick={openAddModal}
-          onEditClick={openEditModal}
-          onOneTimePassword={(id) => handleOneTimePassword(id)}
-        />
-      </div>
-      {isModalOpen && (selectedManager || isAddingMode) && (
-        <ManagementModal
-          isOpen={isModalOpen}
-          manager={selectedManager}
-          onSaveEdit={handleSaveEdit}
-          onSaveAdd={handleSaveAdd}
-          onCloseAddModal={closeAddModal}
-          onCloseEditModal={closeEditModal}
-          isAddingMode={isAddingMode}
-          editedManager={editedManager}
-          setEditedManager={setEditedManager}
-          showError={modalError}
-        />
-      )}
-    </Wrapper>
+        <RoleSidebar />
+
+        <div className="p-4">
+          <Table
+            title="Список менеджеров"
+            data={displayedManagers}
+            columnsDefaultName={columnsDefaultName}
+            columnsListDb={columnsListDb}
+            onAddClick={openAddModal}
+            onEditClick={openEditModal}
+            onOneTimePassword={(id) => handleOneTimePassword(id)}
+          />
+        </div>
+        {isModalOpen && (selectedManager || isAddingMode) && (
+          <ManagementModal
+            isOpen={isModalOpen}
+            manager={selectedManager}
+            onSaveEdit={handleSaveEdit}
+            onSaveAdd={handleSaveAdd}
+            onCloseAddModal={closeAddModal}
+            onCloseEditModal={closeEditModal}
+            isAddingMode={isAddingMode}
+            editedManager={editedManager}
+            setEditedManager={setEditedManager}
+            showError={modalError}
+          />
+        )}
+      </Wrapper>
+    </>
   );
 };
 
