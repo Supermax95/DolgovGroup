@@ -8,7 +8,7 @@ interface RequestData {
     title: string;
     description: string;
     dateFrom: string;
-    updatedAt: Date;
+    updatedAt: Date | string ;
   };
 }
 

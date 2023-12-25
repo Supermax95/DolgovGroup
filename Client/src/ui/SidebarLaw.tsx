@@ -27,11 +27,6 @@ const SidebarLaw: FC<SidebarLawProps<T>> = ({
       setOnAddClickCalled(true);
     }
   }, [data, onAddClick, onEditClick, isOnAddClickCalled, isOnEditClickCalled]);
-  
-
-  console.log('isOnEditClickCalled', isOnEditClickCalled);
-  
-
 
   return (
     <div className="flex flex-col w-56 bg-white h-full border-r-2 border-orange-300">
