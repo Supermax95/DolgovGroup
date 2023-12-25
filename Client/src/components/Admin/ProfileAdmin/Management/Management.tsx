@@ -207,12 +207,32 @@ const Management: FC = () => {
 
       if (sendOneTimePassword.fulfilled.match(result)) {
         if (managerIdForBellOneTimePass) {
-          console.log(
-            'managerIdForBellOneTimePass------>',
-            managerIdForBellOneTimePass
-          );
-
           setShowNotificationOnePass(true);
+          // <PopUpNotification email={managerIdForBellOneTimePass.email} />;
+          // toast.custom(
+          //   (t) => (
+          //     <div className="flex flex-col p-4 bg-slate-50 shadow-md hover:shadow-lg rounded-lg border border-slate-200">
+          //       <div className="flex flex-col justify-start w-72">
+          //         <p className="font-medium text-xs text-slate-800">
+          //           {managerIdForBellOneTimePass.email}
+          //         </p>
+          //         <p className="text-xs font-normal text-slate-600 mt-2">
+          //           {managerIdForBellOneTimePass.firstName}{' '}
+          //           <span className="text-slate-800 ext-xs">
+          //             {managerIdForBellOneTimePass.email}
+          //           </span>
+          //         </p>
+          //         <button
+          //           className="absolute py-1 right-1 top-2"
+          //           onClick={() => toast.dismiss(t)}
+          //         >
+          //           <XMarkIcon className="cursor-pointer w-4 h-4 text-slate-400 hover:text-slate-600 mx-1" />
+          //         </button>
+          //       </div>
+          //     </div>
+          //   ),
+          //   { duration: Infinity }
+          // );
         } else {
           console.error('Ошибка. Пользователь не найден.');
         }
@@ -231,9 +251,9 @@ const Management: FC = () => {
   //   setShowNotificationEdit(false);
   // };
 
-  // const removeNotificationOnePass = (): void => {
-  //   setShowNotificationOnePass(false);
-  // };
+  const removeNotificationOnePass = (): void => {
+    setShowNotificationOnePass(false);
+  };
 
   return (
     <>
@@ -253,14 +273,13 @@ const Management: FC = () => {
               }
               email={managerIdForBellEdit.email}
       /> */}
-      {/* <AccountNotification
-        showNotification={showNotificationOnePass}
-        onClickClose={removeNotificationOnePass}
-            titleText={'Временный пароль выслан на почту'}
-       
-              email={managerIdForBellOneTimePass.email}
-      /> */}
       <Wrapper>
+        {/* <AccountNotification
+          showNotification={showNotificationOnePass}
+          onClickClose={removeNotificationOnePass}
+          titleText={'Временный пароль выслан на почту'}
+          email={managerIdForBellOneTimePass.email}
+        /> */}
         <div>
           {showNotificationAdd && (
             <PopUpNotification
@@ -287,6 +306,8 @@ const Management: FC = () => {
               email={managerIdForBellOneTimePass.email}
             />
           )}
+
+          <Toaster position="bottom-left" expand={true} />
 
           {/* <button
             onClick={() =>
