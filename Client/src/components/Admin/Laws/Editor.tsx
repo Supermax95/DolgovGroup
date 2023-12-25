@@ -58,7 +58,11 @@ const Editor: FC<LawEditorProps> = ({
         title: '',
         description: '',
         dateFrom: '',
-        updatedAt: new Date(),
+        updatedAt: new Date().toLocaleDateString('ru-RU', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+        }),
       });
     }
   }, [isAddingMode]);
@@ -185,7 +189,7 @@ const Editor: FC<LawEditorProps> = ({
     ],
   };
 
-  console.log('updatedAt', editedLaw.updatedAt);
+
 
   return (
     <div className="w-[1024px] mx-auto py-8 px-5 bg-white shadow-md rounded-3xl border border-slate-300">
@@ -266,7 +270,7 @@ const Editor: FC<LawEditorProps> = ({
                     htmlFor="updatedAt"
                     className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm"
                   >
-                    Дата внесения изменений
+                    Дата последнего обновления 
                   </label>
                 </div>
               </div>
