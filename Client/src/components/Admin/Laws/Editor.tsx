@@ -318,8 +318,7 @@ const Editor: FC<LawEditorProps> = ({
                   <div className="text-center">
                     <span className="text-xs text-orange-500 font-normal">
                       Вы можете внести содержание документа вручную, либо
-                      использовать кнопку "Сохранить", чтобы загрузить документ
-                      ?файлом в формате...?
+                      использовать кнопку "Сохранить", чтобы загрузить документ.
                     </span>
                   </div>
                   <div className="mb-2"></div>
