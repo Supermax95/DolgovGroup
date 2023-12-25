@@ -167,6 +167,7 @@ const Law: FC = () => {
         onAddClick={openAddEditor}
         onEditClick={openEditEditor}
       />
+      
       {/* <Table
           title="Правовые документы"
           columnsDefaultName={columnsDefaultName}
