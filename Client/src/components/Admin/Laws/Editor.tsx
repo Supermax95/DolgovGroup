@@ -5,7 +5,7 @@ import { VITE_URL } from '../../../VITE_URL';
 import axios from 'axios';
 import 'quill/dist/quill.snow.css';
 import deleteLaw from '../../../Redux/thunks/Document/deleteLaw.api';
-import { DocumentTextIcon } from '@heroicons/react/24/outline';
+import { DocumentTextIcon, EyeIcon } from '@heroicons/react/24/outline';
 import Button from '../../../ui/Button';
 import ReactQuill from 'react-quill';
 
@@ -22,6 +22,9 @@ interface LawEditorProps {
   setEditedLaw: React.Dispatch<React.SetStateAction<ILaw | null | undefined>>;
   axiosError: string | null;
   resetAxiosError: () => void;
+  currentStep: number;
+  setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
+  // setAddingMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Editor: FC<LawEditorProps> = ({
@@ -31,18 +34,19 @@ const Editor: FC<LawEditorProps> = ({
   onSaveAdd,
   onCloseAddEditor,
   onCloseEditEditor,
-  // openAddEditor,
   isAddingMode,
   editedLaw,
   setEditedLaw,
   axiosError,
   resetAxiosError,
+  currentStep,
+  setCurrentStep,
+  // setAddingMode,
 }) => {
   const laws = useAppSelector<ILaw[]>((state) => state.lawsSlice.data);
   const id = useAppSelector((state) => state.lawsSlice.postId);
   const dispatch = useAppDispatch();
   const [isUpload, setUpload] = useState(false);
-  const [currentStep, setCurrentStep] = useState(1);
 
   useEffect(() => {
     if (law) {
@@ -56,6 +60,7 @@ const Editor: FC<LawEditorProps> = ({
         id: 0,
         title: '',
         description: '',
+        documentLink: '',
         dateFrom: '',
         updatedAt: new Date().toLocaleDateString('ru-RU', {
           day: '2-digit',
@@ -67,11 +72,19 @@ const Editor: FC<LawEditorProps> = ({
   }, [isAddingMode]);
 
   const handleCancel = () => {
-    console.log('handleCancel: resetting editedLaw');
-    setEditedLaw(undefined);
+    if (!isAddingMode) {
+      setEditedLaw(editedLaw);
+    } else {
+      const sortedLaws = [...laws].sort(
+        (a, b) =>
+          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+      );
+      const newestLaw = sortedLaws[0];
+      // setAddingMode(false)
+      setEditedLaw(newestLaw);
+    }
     resetAxiosError();
-    onCloseEditEditor();
-    onCloseAddEditor();
+    setCurrentStep(1);
   };
 
   const uploadFile = async (
@@ -90,12 +103,7 @@ const Editor: FC<LawEditorProps> = ({
           },
           withCredentials: true,
         });
-
-        if (isAddingMode) {
-          onCloseAddEditor();
-        } else {
-          onCloseEditEditor();
-        }
+        handleCancel();
       } catch (error) {
         console.error('Ошибка при загрузке файла:', error);
       }
@@ -276,7 +284,30 @@ const Editor: FC<LawEditorProps> = ({
                     </label>
                   </div>
                 </div>
-
+                {editedLaw.documentLink ? (
+                  <div>
+                    <button
+                      type="button"
+                      className="flex items-center "
+                      onClick={() =>
+                        window.open(
+                          `${VITE_URL}${editedLaw.documentLink}`,
+                          '_blank'
+                        )
+                      }
+                    >
+                      Документ
+                      <EyeIcon
+                        className="h-5 w-5 ml-2 text-[#76a1dd] cursor-pointer"
+                        aria-hidden="true"
+                      />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="text-gray-500 dark:text-gray-300">
+                    Подгруженных документов: нет
+                  </div>
+                )}
                 <div className="text-center">
                   <label
                     htmlFor="description"
@@ -358,10 +389,20 @@ const Editor: FC<LawEditorProps> = ({
                       />
                       <label
                         htmlFor="fileInput"
-                        className="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+                        className="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mb-2 inline-block"
                       >
                         Выберите файл
                       </label>
+                      <br />
+                      <div className="mt-4">
+                        <button
+                          type="button"
+                          className="text-sm text-blue-500 hover:underline focus:outline-none"
+                          onClick={handleCancel}
+                        >
+                          Пропустить
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>

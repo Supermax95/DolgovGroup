@@ -14,6 +14,7 @@ export interface ILaw {
   id: number;
   title: string;
   description: string;
+  documentLink: string;
   dateFrom: string;
   updatedAt: Date | string;
 }
@@ -32,6 +33,7 @@ const Law: FC = () => {
   const [isAddingMode, setAddingMode] = useState(false);
   const [editedLaw, setEditedLaw] = useState<ILaw | null | undefined>(null);
   const [axiosError, setAxiosError] = useState<string | null>(null);
+  const [currentStep, setCurrentStep] = useState(1);
 
   const columnsDefaultName: IColumnsDefaultName[] = [
     { name: 'Название документа' },
@@ -52,24 +54,14 @@ const Law: FC = () => {
 
   const itemsPerPage = 10;
 
-  // const openAddEditor = (): void => {
-  //   setAddingMode(true);
-  //   setEditedLaw({
-  //     id: 0,
-  //     title: '',
-  //     description: '',
-  //     dateFrom: '',
-  //     updatedAt: new Date(),
-  //   });
-  //   setEditorOpen(true);
-  // };
-
   const openAddEditor = (): void => {
+    setCurrentStep(1);
     setAddingMode(true);
     setEditedLaw({
       id: 0,
       title: '',
       description: '',
+      documentLink:'',
       dateFrom: '',
       updatedAt: new Date().toLocaleDateString('ru-RU', {
         day: '2-digit',
@@ -81,6 +73,7 @@ const Law: FC = () => {
   };
 
   const openEditEditor = (law: ILaw): void => {
+    setCurrentStep(1);
     setSelectedLaw(law);
     setEditedLaw({ ...law });
     setAddingMode(false);
@@ -167,7 +160,7 @@ const Law: FC = () => {
         onAddClick={openAddEditor}
         onEditClick={openEditEditor}
       />
-      
+
       {/* <Table
           title="Правовые документы"
           columnsDefaultName={columnsDefaultName}
@@ -194,7 +187,9 @@ const Law: FC = () => {
             setEditedLaw={setEditedLaw}
             axiosError={axiosError}
             resetAxiosError={resetAxiosError}
-            // openAddEditor = {openAddEditor}
+            currentStep={currentStep}
+            setCurrentStep={setCurrentStep}
+            // setAddingMode = {setAddingMode}
           />
         )}
       </div>

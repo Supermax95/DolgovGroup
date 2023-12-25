@@ -7,6 +7,7 @@ interface RequestData {
     id: number;
     title: string;
     description: string;
+    documentLink: string;
     dateFrom: string;
     updatedAt: Date | string;
   };
@@ -16,6 +17,7 @@ interface ResponseData {
     id: number;
     title: string;
     description: string;
+    documentLink: string;
     dateFrom: string;
     updatedAt: Date;
 }
