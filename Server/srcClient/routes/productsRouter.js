@@ -2,6 +2,8 @@ const router = require('express').Router();
 const { isPast, parseISO, addDays, subDays } = require('date-fns');
 const { Op } = require('sequelize');
 const { Product } = require('../../db/models');
+const path = require('path');
+const fsPromises = require('fs').promises;
 
 router.get('/admin/products', async (req, res) => {
   try {
@@ -80,10 +82,39 @@ router.post('/admin/products', async (req, res) => {
 router.delete('/admin/products/:id', async (req, res) => {
   const productId = req.params.id;
   try {
+    // Найдите информацию о продукте
+    const product = await Product.findByPk(productId);
+
+    // Удалите запись из базы данных
     await Product.destroy({
       where: { id: productId },
     });
 
+    // Удалите связанный файл, если он существует
+    if (product && product.photo) {
+      const filePath = path.join(
+        __dirname,
+        '..',
+        '..',
+        product.photo,
+      );
+
+      // Проверьте, существует ли файл перед удалением
+      const fileExists = await fsPromises
+        .access(filePath)
+        .then(() => true)
+        .catch(() => false);
+
+      if (fileExists) {
+        // Удалите файл
+        await fsPromises.unlink(filePath);
+        console.log(`Файл ${filePath} успешно удален`);
+      } else {
+        console.log(`Файл ${filePath} не существует`);
+      }
+    }
+
+    // Получите обновленный список продуктов
     const products = await Product.findAll({
       order: [['productName', 'ASC']],
       raw: true,

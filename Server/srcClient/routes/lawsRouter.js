@@ -1,9 +1,8 @@
 const router = require('express').Router();
 const { Op } = require('sequelize');
-const { Law } = require('../../db/models');
-const fs = require('fs');
+const fsPromises = require('fs/promises');
 const path = require('path');
-
+const { Law } = require('../../db/models');
 
 router.get('/admin/laws', async (req, res) => {
   try {
@@ -54,17 +53,63 @@ router.post('/admin/laws', async (req, res) => {
   }
 });
 
+// router.delete('/admin/laws/:id', async (req, res) => {
+//   const lawId = req.params.id;
+//   try {
+//     await Law.destroy({
+//       where: { id: lawId },
+//     });
+
+//     const laws = await Law.findAll({
+//       order: [['title', 'ASC']],
+//       raw: true,
+//     });
+//     console.log(laws);
+//     res.json(laws);
+//   } catch (error) {
+//     console.error('Ошибка при удалении данных', error);
+//     res.status(500).json({
+//       error: 'Произошла ошибка на сервере при удалении данных из базы',
+//     });
+//   }
+// });
+
 router.delete('/admin/laws/:id', async (req, res) => {
   const lawId = req.params.id;
   try {
+    // Найдите информацию о законе
+    const law = await Law.findByPk(lawId);
+
+    // Удалите запись из базы данных
     await Law.destroy({
       where: { id: lawId },
     });
 
+    // Удалите связанный файл, если он существует
+    if (law && law.documentLink) {
+      const filePath = path.join(__dirname, '..', '..', law.documentLink);
+
+      // Проверьте, существует ли файл перед удалением
+      const fileExists = await fsPromises
+        .access(filePath)
+        .then(() => true)
+        .catch(() => false);
+
+      if (fileExists) {
+        // Удалите файл
+        await fsPromises.unlink(filePath);
+        console.log(`Файл ${filePath} успешно удален`);
+      } else {
+        console.log(`Файл ${filePath} не существует`);
+      }
+    }
+
+    // Получите обновленный список законов
     const laws = await Law.findAll({
       order: [['title', 'ASC']],
       raw: true,
     });
+
     console.log(laws);
     res.json(laws);
   } catch (error) {
@@ -74,7 +119,6 @@ router.delete('/admin/laws/:id', async (req, res) => {
     });
   }
 });
-
 
 router.put('/admin/laws', async (req, res) => {
   const { newInfo } = req.body;

@@ -2,6 +2,8 @@ const router = require('express').Router();
 const { isPast, parseISO, addDays, subDays } = require('date-fns');
 const { Op } = require('sequelize');
 const { Promotion } = require('../../db/models');
+const path = require('path');
+const fsPromises = require('fs').promises;
 
 router.get('/admin/promotions', async (req, res) => {
   try {
@@ -80,10 +82,39 @@ router.post('/admin/promotions', async (req, res) => {
 router.delete('/admin/promotions/:id', async (req, res) => {
   const promotionId = req.params.id;
   try {
+    // Найдите информацию о промо-акции
+    const promotion = await Promotion.findByPk(promotionId);
+
+    // Удалите запись из базы данных
     await Promotion.destroy({
       where: { id: promotionId },
     });
 
+    // Удалите связанный файл, если он существует
+    if (promotion && promotion.photo) {
+      const filePath = path.join(
+        __dirname,
+        '..',
+        '..',
+        promotion.photo,
+      );
+
+      // Проверьте, существует ли файл перед удалением
+      const fileExists = await fsPromises
+        .access(filePath)
+        .then(() => true)
+        .catch(() => false);
+
+      if (fileExists) {
+        // Удалите файл
+        await fsPromises.unlink(filePath);
+        console.log(`Файл ${filePath} успешно удален`);
+      } else {
+        console.log(`Файл ${filePath} не существует`);
+      }
+    }
+
+    // Получите обновленный список промо-акций
     const promotions = await Promotion.findAll({
       order: [['dateStart', 'DESC']],
       raw: true,
