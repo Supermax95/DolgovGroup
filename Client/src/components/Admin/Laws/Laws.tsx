@@ -190,6 +190,8 @@ const Law: FC = () => {
             currentStep={currentStep}
             setCurrentStep={setCurrentStep}
             setAddingMode = {setAddingMode}
+            setSelectedLaw = {setSelectedLaw}
+            openAddEditor = {openAddEditor}
           />
         )}
       </div>

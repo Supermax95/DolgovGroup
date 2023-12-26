@@ -37,7 +37,6 @@ interface ResponseDataId {
           `${VITE_URL}/admin/laws`,
           { newLaw }
         );
-        console.log(response.data);
         return response.data;
       } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
