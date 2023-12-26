@@ -2,7 +2,8 @@ import React, { ChangeEvent, FC, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import { ILaw } from './Laws';
 import { VITE_URL } from '../../../VITE_URL';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
+import getLaws from '../../../Redux/thunks/Document/getLaws.api';
 import 'quill/dist/quill.snow.css';
 import deleteLaw from '../../../Redux/thunks/Document/deleteLaw.api';
 import { DocumentTextIcon, EyeIcon } from '@heroicons/react/24/outline';
@@ -24,7 +25,7 @@ interface LawEditorProps {
   resetAxiosError: () => void;
   currentStep: number;
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
-  // setAddingMode: React.Dispatch<React.SetStateAction<boolean>>;
+  setAddingMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Editor: FC<LawEditorProps> = ({
@@ -41,7 +42,7 @@ const Editor: FC<LawEditorProps> = ({
   resetAxiosError,
   currentStep,
   setCurrentStep,
-  // setAddingMode,
+  setAddingMode,
 }) => {
   const laws = useAppSelector<ILaw[]>((state) => state.lawsSlice.data);
   const id = useAppSelector((state) => state.lawsSlice.postId);
@@ -72,20 +73,42 @@ const Editor: FC<LawEditorProps> = ({
   }, [isAddingMode]);
 
   const handleCancel = () => {
-    if (!isAddingMode) {
-      setEditedLaw(editedLaw);
-    } else {
-      const sortedLaws = [...laws].sort(
-        (a, b) =>
-          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-      );
-      const newestLaw = sortedLaws[0];
-      // setAddingMode(false)
-      setEditedLaw(newestLaw);
-    }
+    dispatch(getLaws());
+    const sortedLaws = [...laws].sort(
+      (a, b) =>
+        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+    );
+    const newestLaw = sortedLaws[0];
+    console.log('newestLaw', newestLaw);
+
+    setEditedLaw(newestLaw);
     resetAxiosError();
     setCurrentStep(1);
   };
+
+  // const uploadFile = async (
+  //   file: File,
+  //   id: number | 0,
+  //   isAddingMode: boolean
+  // ): Promise<void> => {
+  //   if (file && id) {
+  //     const formData = new FormData();
+  //     formData.append('file', file);
+
+  //     try {
+  //       await axios.put(`${VITE_URL}/admin/documentFile/${id}`, formData, {
+  //         headers: {
+  //           'Content-Type': 'multipart/form-data',
+  //         },
+  //         withCredentials: true,
+  //       });
+
+  //     } catch (error) {
+  //       console.error('Ошибка при загрузке файла:', error);
+  //     }
+  //     handleCancel();
+  //   }
+  // };
 
   const uploadFile = async (
     file: File,
@@ -97,13 +120,19 @@ const Editor: FC<LawEditorProps> = ({
       formData.append('file', file);
 
       try {
-        await axios.put(`${VITE_URL}/admin/documentFile/${id}`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-          withCredentials: true,
-        });
+        const response: AxiosResponse = await axios.put(
+          `${VITE_URL}/admin/documentFile/${id}`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+            withCredentials: true,
+          }
+        );
+        console.log('response.data', response.data);
         handleCancel();
+        return response.data;
       } catch (error) {
         console.error('Ошибка при загрузке файла:', error);
       }
@@ -114,7 +143,6 @@ const Editor: FC<LawEditorProps> = ({
     e.preventDefault();
     if (currentStep === 1) {
       let result = '';
-
       if (isAddingMode) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
@@ -195,6 +223,10 @@ const Editor: FC<LawEditorProps> = ({
       ['clean'],
     ],
   };
+
+
+
+  const currentLaw = laws.find((law) => law.id === editedLaw.id);
 
   return (
     <>
@@ -284,14 +316,14 @@ const Editor: FC<LawEditorProps> = ({
                     </label>
                   </div>
                 </div>
-                {editedLaw.documentLink ? (
+                {currentLaw && currentLaw.documentLink ? (
                   <div>
                     <button
                       type="button"
                       className="flex items-center "
                       onClick={() =>
                         window.open(
-                          `${VITE_URL}${editedLaw.documentLink}`,
+                          `${VITE_URL}${currentLaw.documentLink}`,
                           '_blank'
                         )
                       }

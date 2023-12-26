@@ -84,8 +84,12 @@ router.put(
         { documentLink: `/uploads/document/${originalname}` },
         { where: { id } }
       );
+      const laws = await Law.findAll({
+        order: [['title', 'ASC']],
+        raw: true,
+      });
 
-      res.json({ message: 'Файл загрузился.' });
+      res.json({ laws, message: 'Файл загрузился.' });
     } catch (error) {
       console.log('error', error);
       res.status(500).json({ message: 'Ошибка загрузки' });

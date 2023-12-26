@@ -189,7 +189,7 @@ const Law: FC = () => {
             resetAxiosError={resetAxiosError}
             currentStep={currentStep}
             setCurrentStep={setCurrentStep}
-            // setAddingMode = {setAddingMode}
+            setAddingMode = {setAddingMode}
           />
         )}
       </div>
