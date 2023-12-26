@@ -103,16 +103,6 @@ const Management: FC = () => {
     dispatch(getManager());
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   if (showNotification) {
-  //     const notificationTimeout = setTimeout(() => {
-  //       setShowNotification(false);
-  //     }, 5000);
-
-  //     return () => clearTimeout(notificationTimeout);
-  //   }
-  // }, [showNotification]);
-
   const openAddModal = (): void => {
     setAddingMode(true);
     setEditedManager({
@@ -208,31 +198,6 @@ const Management: FC = () => {
       if (sendOneTimePassword.fulfilled.match(result)) {
         if (managerIdForBellOneTimePass) {
           setShowNotificationOnePass(true);
-          // <PopUpNotification email={managerIdForBellOneTimePass.email} />;
-          // toast.custom(
-          //   (t) => (
-          //     <div className="flex flex-col p-4 bg-slate-50 shadow-md hover:shadow-lg rounded-lg border border-slate-200">
-          //       <div className="flex flex-col justify-start w-72">
-          //         <p className="font-medium text-xs text-slate-800">
-          //           {managerIdForBellOneTimePass.email}
-          //         </p>
-          //         <p className="text-xs font-normal text-slate-600 mt-2">
-          //           {managerIdForBellOneTimePass.firstName}{' '}
-          //           <span className="text-slate-800 ext-xs">
-          //             {managerIdForBellOneTimePass.email}
-          //           </span>
-          //         </p>
-          //         <button
-          //           className="absolute py-1 right-1 top-2"
-          //           onClick={() => toast.dismiss(t)}
-          //         >
-          //           <XMarkIcon className="cursor-pointer w-4 h-4 text-slate-400 hover:text-slate-600 mx-1" />
-          //         </button>
-          //       </div>
-          //     </div>
-          //   ),
-          //   { duration: Infinity }
-          // );
         } else {
           console.error('Ошибка. Пользователь не найден.');
         }
@@ -242,44 +207,25 @@ const Management: FC = () => {
     }
   };
 
-  // //* скрытие всплывающего окна
-  // const removeNotificationAdd = (): void => {
-  //   setShowNotificationAdd(false);
-  // };
+  useEffect(() => {
+    if (
+      showNotificationAdd ||
+      showNotificationOnePass ||
+      showNotificationEdit
+    ) {
+      const timeoutId = setTimeout(() => {
+        setShowNotificationAdd(false);
+        setShowNotificationEdit(false);
+        setShowNotificationOnePass(false);
+      });
 
-  // const removeNotificationEdit = (): void => {
-  //   setShowNotificationEdit(false);
-  // };
-
-  const removeNotificationOnePass = (): void => {
-    setShowNotificationOnePass(false);
-  };
+      return () => clearTimeout(timeoutId);
+    }
+  }, [showNotificationAdd, showNotificationEdit, showNotificationOnePass]);
 
   return (
     <>
-      {/* <AccountNotification
-        showNotification={showNotificationAdd}
-        onClickClose={removeNotificationAdd}
-       titleText={'Личный кабинет менеджера создан'}
-              bodyText={'Временный пароль выслан на почту'}
-              email={managerIdForBellAdd.email}
-      /> */}
-      {/* <AccountNotification
-        showNotification={showNotificationEdit}
-        onClickClose={removeNotificationEdit}
-      titleText={' Данные менеджера успешно обновлены'}
-              bodyText={
-                'Для обновления пароля менеджера отправьте новый пароль на почту'
-              }
-              email={managerIdForBellEdit.email}
-      /> */}
       <Wrapper>
-        {/* <AccountNotification
-          showNotification={showNotificationOnePass}
-          onClickClose={removeNotificationOnePass}
-          titleText={'Временный пароль выслан на почту'}
-          email={managerIdForBellOneTimePass.email}
-        /> */}
         <div>
           {showNotificationAdd && (
             <PopUpNotification
@@ -300,9 +246,6 @@ const Management: FC = () => {
           {showNotificationOnePass && (
             <PopUpNotification
               titleText={'Временный пароль выслан на почту'}
-              // bodyText={
-              //   'Для обновления пароля менеджера отправьте новый пароль на почту'
-              // }
               email={managerIdForBellOneTimePass.email}
             />
           )}
