@@ -124,6 +124,11 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     }
   };
 
+  const handleAll = () => {
+    onCategorySelect(null);
+    onSubcategorySelect(null);
+  };
+
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
@@ -367,6 +372,18 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
 
       <div className="h-full relative w-60">
         <ul className="py-2">
+          <div
+            onClick={handleAll}
+            className="cursor-pointer flex items-center p-2 justify-between rounded-md hover:bg-slate-100"
+          >
+            <div className="flex items-center justify-center  w-full">
+              <span className="text-slate-1000 text-sm font-medium">
+                Все продукты
+              </span>
+            </div>
+          </div>
+      {/* <div className="h-full relative w-60">
+        <ul className="py-2"> */}
           {isAddingCategory ? (
             <form onSubmit={addedHandleForm}>
               <div className="relative ml-3 p-0">
