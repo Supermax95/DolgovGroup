@@ -354,7 +354,6 @@ const Editor: FC<LawEditorProps> = ({
               </>
             )}
           </div>
-
           {currentStep === 1 && (
             <>
               <div className="mt-8"></div>
@@ -367,21 +366,22 @@ const Editor: FC<LawEditorProps> = ({
                   title="Сохранить"
                 />
 
-                <Button
-                  type="button"
-                  onClick={handleDelete}
-                  styleCSSButton={
-                    'relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-slate-700  rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white'
-                  }
-                  styleCSSSpan={
-                    'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
-                  }
-                  title="Удалить"
-                />
+                {!isAddingMode && (
+                  <Button
+                    type="button"
+                    onClick={handleDelete}
+                    styleCSSButton={
+                      'relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-slate-700  rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white'
+                    }
+                    styleCSSSpan={
+                      'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
+                    }
+                    title="Удалить"
+                  />
+                )}
               </div>
             </>
           )}
-
           {currentStep === 2 && (
             <>
               <div className="container mx-auto mt-8 p-8 max-w-4xl justify-center items-center flex-col block rounded-lg bg-white shadow-m">

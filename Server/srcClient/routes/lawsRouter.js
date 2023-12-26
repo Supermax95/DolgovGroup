@@ -1,6 +1,9 @@
 const router = require('express').Router();
 const { Op } = require('sequelize');
 const { Law } = require('../../db/models');
+const fs = require('fs');
+const path = require('path');
+
 
 router.get('/admin/laws', async (req, res) => {
   try {
@@ -71,6 +74,7 @@ router.delete('/admin/laws/:id', async (req, res) => {
     });
   }
 });
+
 
 router.put('/admin/laws', async (req, res) => {
   const { newInfo } = req.body;
