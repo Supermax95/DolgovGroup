@@ -9,7 +9,6 @@ id: number;
 title: string;
 description: string;
 dateFrom: string;
-//Пока закомичен ХЗ как типизировать так как малтер не здесь, а линки приходят 
 documentLink: string;
 updatedAt: Date;
 }
