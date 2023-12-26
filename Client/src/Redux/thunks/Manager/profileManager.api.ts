@@ -19,7 +19,10 @@ interface ResponseData {
 
 const editProfileManager = createAsyncThunk<ResponseData, RequestDate>(
   'api/profileManager',
-  async ({ managerId, newLastName, newFirstName, newMiddleName }) => {
+  async (
+    { managerId, newLastName, newFirstName, newMiddleName },
+    { rejectWithValue }
+  ) => {
     console.log(
       'newLastName, newFirstName, newMiddleName',
       newLastName,
@@ -32,11 +35,16 @@ const editProfileManager = createAsyncThunk<ResponseData, RequestDate>(
         `${VITE_URL}/profileManager/fullName`,
         { managerId, newLastName, newFirstName, newMiddleName }
       );
-      console.log('response.dataresponse.data', response.data);
+      // console.log('response.dataresponse.data', response.data);
 
       return response.data;
     } catch (error) {
-      console.error('Ошибка при получении данных', error);
+      if (axios.isAxiosError(error) && error.response) {
+        console.error('Server response data:', error.response.data.error);
+        throw rejectWithValue(error.response.data.error);
+      } else {
+        throw error;
+      }
     }
   }
 );

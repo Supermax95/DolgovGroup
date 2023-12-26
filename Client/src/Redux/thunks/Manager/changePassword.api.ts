@@ -15,7 +15,7 @@ interface ResponseData {
 
 const changePassword = createAsyncThunk<ResponseData, RequestDate>(
   'api/changePassword',
-  async ({ managerId, oldPassword, newPassword }) => {
+  async ({ managerId, oldPassword, newPassword }, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axios.put(
         `${VITE_URL}/profileManager/password`,
@@ -24,8 +24,12 @@ const changePassword = createAsyncThunk<ResponseData, RequestDate>(
 
       return response.data;
     } catch (error) {
-      console.log('Ошибка при получении данных', error);
-      throw error;
+      if (axios.isAxiosError(error) && error.response) {
+        console.error('Server response data:', error.response.data.error);
+        throw rejectWithValue(error.response.data.error);
+      } else {
+        throw error;
+      }
     }
   }
 );

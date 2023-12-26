@@ -15,7 +15,7 @@ interface ResponseData {
 
 const changeEmailAdmin = createAsyncThunk<ResponseData, RequestDate>(
   'api/changeEmail',
-  async ({ managerId, newEmail }) => {
+  async ({ managerId, newEmail }, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axios.put(
         `${VITE_URL}/profileManager/email`,
@@ -24,8 +24,12 @@ const changeEmailAdmin = createAsyncThunk<ResponseData, RequestDate>(
 
       return response.data;
     } catch (error) {
-      console.log('Ошибка при получении данных', error);
-      throw error;
+      if (axios.isAxiosError(error) && error.response) {
+        console.error('Server response data:', error.response.data.error);
+        throw rejectWithValue(error.response.data.error);
+      } else {
+        throw error;
+      }
     }
   }
 );

@@ -3,7 +3,7 @@ import React, { FC, useEffect } from 'react';
 import { toast } from 'sonner';
 
 interface IPopUpNotification {
-  email: string;
+  email?: string | undefined;
   titleText?: React.ReactNode | undefined;
   bodyText?: React.ReactNode | undefined;
 }
@@ -30,8 +30,9 @@ const PopUpNotification: FC<IPopUpNotification> = ({
             </button>
           </div>
         </div>
-      )
+      ),
       // { duration: Infinity }
+      { duration: 7000 }
     );
   }, [titleText, email, bodyText]);
 
