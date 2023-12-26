@@ -26,7 +26,7 @@ module.exports = router
       const manager = await Manager.findOne({ where: { id: managerId } });
 
       if (!manager) {
-        return res.status(401).json({ message: 'Пользователь не найден' });
+        return res.status(401).json({ error: 'Пользователь не найден' });
       }
 
       await manager.update({
@@ -47,7 +47,7 @@ module.exports = router
       });
     } catch (error) {
       console.error('Ошибка при получении данных из базы данных', error);
-      return res.status(500).json({ message: 'Произошла ошибка' });
+      return res.status(500).json({ error: 'Произошла ошибка' });
     }
   })
 
@@ -59,27 +59,36 @@ module.exports = router
 
       if (!manager) {
         res.status(401).json({ message: 'Пользователь не найден' });
-      } else {
-        const searchEmail = await Manager.findOne({
+      }
+
+      if (newEmail !== manager.email) {
+        const managerWithEmail = await Manager.findOne({
           where: { email: newEmail },
         });
 
-        if (searchEmail) {
-          res.status(409).json({
-            message: 'Пользователь с такой электронной почтой уже существует',
-          });
-        } else {
-          await manager.update({ email: newEmail });
-
+        if (!managerWithEmail) {
+          await Manager.update(
+            { email: newEmail },
+            { where: { id: managerId } }
+          );
           res.status(200).json({
             email: newEmail,
             message: 'Email успешно изменен',
           });
+        } else {
+          res.status(409).json({
+            error: 'Пользователь с такой электронной почтой уже существует',
+          });
         }
+      } else {
+        res.status(200).json({
+          email: newEmail,
+          message: 'Email успешно изменен',
+        });
       }
     } catch (error) {
       console.error('Ошибка при получении данных из базы данных', error);
-      return res.status(500).json({ message: 'Произошла ошибка' });
+      return res.status(500).json({ error: 'Произошла ошибка' });
     }
   })
 
@@ -91,23 +100,32 @@ module.exports = router
 
       if (!manager) {
         res.status(401).json({ message: 'Пользователь не найден' });
-      } else {
+      }
+
+      if (newPhone !== manager.phone) {
         const searchPhone = await Manager.findOne({
           where: { phone: newPhone },
         });
 
-        if (searchPhone) {
-          res.status(409).json({
-            message: 'Пользователь с таким номером телефона уже существует',
-          });
-        } else {
-          await manager.update({ phone: newPhone });
-
+        if (!searchPhone) {
+          await Manager.update(
+            { phone: newPhone },
+            { where: { id: managerId } }
+          );
           res.status(200).json({
             phone: newPhone,
             message: 'Номер телефона успешно изменен',
           });
+        } else {
+          res.status(409).json({
+            error: 'Пользователь с таким номером телефона уже существует',
+          });
         }
+      } else {
+        res.status(200).json({
+          phone: newPhone,
+          message: 'Номер телефона успешно изменен',
+        });
       }
     } catch (error) {
       console.error('Ошибка при получении данных из базы данных', error);
@@ -131,7 +149,7 @@ module.exports = router
       );
 
       if (!isPasswordValid) {
-        return res.status(400).json({ error: 'Старый пароль неверен' });
+        return res.status(400).json({ error: 'Текущий пароль введён неверно' });
       }
 
       const hash = await bcrypt.hash(newPassword, 10);

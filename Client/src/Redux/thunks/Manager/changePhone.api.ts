@@ -15,7 +15,7 @@ interface ResponseData {
 
 const changePhone = createAsyncThunk<ResponseData, RequestDate>(
   'api/changePhone',
-  async ({ managerId, newPhone }) => {
+  async ({ managerId, newPhone }, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axios.put(
         `${VITE_URL}/profileManager/phone`,
@@ -26,8 +26,12 @@ const changePhone = createAsyncThunk<ResponseData, RequestDate>(
 
       return response.data;
     } catch (error) {
-      console.log('Ошибка при получении данных', error);
-      throw error;
+      if (axios.isAxiosError(error) && error.response) {
+        console.error('Server response data:', error.response.data.error);
+        throw rejectWithValue(error.response.data.error);
+      } else {
+        throw error;
+      }
     }
   }
 );

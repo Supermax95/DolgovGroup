@@ -7,14 +7,9 @@ import addManager from '../../../../Redux/thunks/Manager/Management/addManager.a
 import editManager from '../../../../Redux/thunks/Manager/Management/editManager.api';
 import sendOneTimePassword from '../../../../Redux/thunks/Manager/Management/sendOneTimePassword.api';
 import Wrapper from '../../../../ui/Wrapper';
-import AccountNotification from '../../../../ui/AccountNotification';
 import RoleSidebar from '../../../RoleSidebar/RoleSidebar';
 import { unwrapResult } from '@reduxjs/toolkit';
-// import { ToastContainer, toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
-
-import { Toaster, toast } from 'sonner';
-import { XMarkIcon } from '@heroicons/react/24/outline';
+import { Toaster } from 'sonner';
 import PopUpNotification from '../../../../ui/PopUpNotification';
 
 interface IManager {
@@ -76,8 +71,6 @@ const Management: FC = () => {
   const [showNotificationOnePass, setShowNotificationOnePass] = useState(false);
 
   const [modalError, setModalError] = useState<string | null>(null);
-
-  const [show, setShow] = useState(0);
 
   const columnsDefaultName: IColumnsDefaultName[] = [
     { name: 'Фамилия' },
@@ -210,8 +203,8 @@ const Management: FC = () => {
   useEffect(() => {
     if (
       showNotificationAdd ||
-      showNotificationOnePass ||
-      showNotificationEdit
+      showNotificationEdit ||
+      showNotificationOnePass
     ) {
       const timeoutId = setTimeout(() => {
         setShowNotificationAdd(false);
@@ -226,33 +219,31 @@ const Management: FC = () => {
   return (
     <>
       <Wrapper>
-        <div>
-          {showNotificationAdd && (
-            <PopUpNotification
-              titleText={'Личный кабинет менеджера создан'}
-              bodyText={'Временный пароль выслан на почту'}
-              email={managerIdForBellAdd.email}
-            />
-          )}
-          {showNotificationEdit && (
-            <PopUpNotification
-              titleText={' Данные менеджера успешно обновлены'}
-              bodyText={
-                'Для обновления пароля менеджера отправьте новый пароль на почту'
-              }
-              email={managerIdForBellEdit.email}
-            />
-          )}
-          {showNotificationOnePass && (
-            <PopUpNotification
-              titleText={'Временный пароль выслан на почту'}
-              email={managerIdForBellOneTimePass.email}
-            />
-          )}
+        <Toaster position="bottom-left" expand={true} />
+        {showNotificationAdd && (
+          <PopUpNotification
+            titleText={'Личный кабинет менеджера создан'}
+            bodyText={'Временный пароль выслан на почту'}
+            email={managerIdForBellAdd.email}
+          />
+        )}
+        {showNotificationEdit && (
+          <PopUpNotification
+            titleText={' Данные менеджера успешно обновлены'}
+            bodyText={
+              'Для обновления пароля менеджера отправьте новый пароль на почту'
+            }
+            email={managerIdForBellEdit.email}
+          />
+        )}
+        {showNotificationOnePass && (
+          <PopUpNotification
+            titleText={'Временный пароль выслан на почту'}
+            email={managerIdForBellOneTimePass.email}
+          />
+        )}
 
-          <Toaster position="bottom-left" expand={true} />
-
-          {/* <button
+        {/* <button
             onClick={() =>
               toast.custom(
                 (t) => (
@@ -285,7 +276,6 @@ const Management: FC = () => {
           >
             Give me a toast
           </button> */}
-        </div>
 
         <RoleSidebar />
 
