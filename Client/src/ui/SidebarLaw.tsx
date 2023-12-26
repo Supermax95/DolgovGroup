@@ -3,7 +3,6 @@ import { FC, useEffect, useState } from 'react';
 
 interface SidebarLawProps<T> {
   data?: T[] | undefined;
-  //   onAddClick?: (item: T) => void | undefined;
   onAddClick?: () => void | undefined;
   onEditClick?: (item: T) => void | undefined;
   title: string;

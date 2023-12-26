@@ -26,6 +26,8 @@ interface LawEditorProps {
   currentStep: number;
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
   setAddingMode: React.Dispatch<React.SetStateAction<boolean>>;
+  setSelectedLaw: React.Dispatch<React.SetStateAction<ILaw | null>>;
+  openAddEditor: () => void;
 }
 
 const Editor: FC<LawEditorProps> = ({
@@ -43,6 +45,8 @@ const Editor: FC<LawEditorProps> = ({
   currentStep,
   setCurrentStep,
   setAddingMode,
+  setSelectedLaw,
+  openAddEditor,
 }) => {
   const laws = useAppSelector<ILaw[]>((state) => state.lawsSlice.data);
   const id = useAppSelector((state) => state.lawsSlice.postId);
@@ -79,36 +83,13 @@ const Editor: FC<LawEditorProps> = ({
         new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
     );
     const newestLaw = sortedLaws[0];
-    console.log('newestLaw', newestLaw);
-
+    setSelectedLaw(newestLaw);
     setEditedLaw(newestLaw);
+
+    setAddingMode(false);
     resetAxiosError();
     setCurrentStep(1);
   };
-
-  // const uploadFile = async (
-  //   file: File,
-  //   id: number | 0,
-  //   isAddingMode: boolean
-  // ): Promise<void> => {
-  //   if (file && id) {
-  //     const formData = new FormData();
-  //     formData.append('file', file);
-
-  //     try {
-  //       await axios.put(`${VITE_URL}/admin/documentFile/${id}`, formData, {
-  //         headers: {
-  //           'Content-Type': 'multipart/form-data',
-  //         },
-  //         withCredentials: true,
-  //       });
-
-  //     } catch (error) {
-  //       console.error('Ошибка при загрузке файла:', error);
-  //     }
-  //     handleCancel();
-  //   }
-  // };
 
   const uploadFile = async (
     file: File,
@@ -130,7 +111,6 @@ const Editor: FC<LawEditorProps> = ({
             withCredentials: true,
           }
         );
-        console.log('response.data', response.data);
         handleCancel();
         return response.data;
       } catch (error) {
@@ -176,13 +156,20 @@ const Editor: FC<LawEditorProps> = ({
   };
 
   const handleDelete = async () => {
-    if (editedLaw && editedLaw.id) {
-      const lawId = editedLaw.id;
-      await dispatch(deleteLaw(lawId));
-      if (laws.length > 0) {
-        setEditedLaw(laws[0]);
-      } else {
-        onCloseEditEditor();
+    if (laws.length > 0) {
+      if (editedLaw && editedLaw.id) {
+        const lawId = editedLaw.id;
+        const resultAction = await dispatch(deleteLaw(lawId));
+        if (deleteLaw.fulfilled.match(resultAction)) {
+          const response = resultAction.payload;
+
+          if (response.length === 0) {
+            setEditedLaw(null);
+            openAddEditor();
+          } else {
+            setEditedLaw(response[0]);
+          }
+        }
       }
     }
   };
@@ -223,9 +210,6 @@ const Editor: FC<LawEditorProps> = ({
       ['clean'],
     ],
   };
-
-
-
   const currentLaw = laws.find((law) => law.id === editedLaw.id);
 
   return (
@@ -287,34 +271,34 @@ const Editor: FC<LawEditorProps> = ({
                       Дата начала действия документа
                     </label>
                   </div>
-                  <div className="relative">
-                    <input
-                      onChange={(e) =>
-                        setEditedLaw({
-                          ...editedLaw,
-                          updatedAt: e.target.value,
-                        })
-                      }
-                      id="updatedAt"
-                      type="text"
-                      name="updatedAt"
-                      value={editedLaw.updatedAt.toLocaleString('ru-RU', {
-                        day: '2-digit',
-                        month: '2-digit',
-                        year: 'numeric',
-                      })}
-                      placeholder=""
-                      className="block py-2.5 px-0 w-full text-sm text-slate-400 bg-transparent border-0 border-b-2 border-slate-300 "
-                      required={true}
-                      disabled={true}
-                    />
-                    <label
-                      htmlFor="updatedAt"
-                      className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm"
-                    >
-                      Дата последнего обновления
-                    </label>
-                  </div>
+                  {currentLaw && currentLaw.updatedAt && (
+                    <div className="relative">
+                      <input
+                        onChange={(e) =>
+                          setEditedLaw({
+                            ...editedLaw,
+                            updatedAt: e.target.value,
+                          })
+                        }
+                        id="updatedAt"
+                        type="text"
+                        name="updatedAt"
+                        value={new Date(
+                          currentLaw.updatedAt
+                        ).toLocaleDateString('ru-RU')}
+                        placeholder=""
+                        className="block py-2.5 px-0 w-full text-sm text-slate-400 bg-transparent border-0 border-b-2 border-slate-300 "
+                        required={true}
+                        disabled={true}
+                      />
+                      <label
+                        htmlFor="updatedAt"
+                        className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm"
+                      >
+                        Дата последнего обновления
+                      </label>
+                    </div>
+                  )}
                 </div>
                 {currentLaw && currentLaw.documentLink ? (
                   <div>

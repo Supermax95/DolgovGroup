@@ -62,7 +62,7 @@ router.delete('/admin/laws/:id', async (req, res) => {
       order: [['title', 'ASC']],
       raw: true,
     });
-
+    console.log(laws);
     res.json(laws);
   } catch (error) {
     console.error('Ошибка при удалении данных', error);
