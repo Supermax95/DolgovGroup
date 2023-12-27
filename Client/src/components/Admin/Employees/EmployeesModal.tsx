@@ -257,8 +257,8 @@ const EmployeesModal: FC<UsersModalProps> = ({
               { value: 'Клиент', label: 'Клиент' },
             ]
           : [
+            { value: 'Новый сотрудник', label: 'Новый сотрудник' },
               { value: 'Сотрудник', label: 'Сотрудник' },
-              { value: 'Новый сотрудник', label: 'Новый сотрудник' },
               { value: 'Клиент', label: 'Клиент' },
             ],
       required: true,
