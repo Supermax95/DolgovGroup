@@ -146,6 +146,7 @@ module.exports = router
       }
     } catch (error) {
       console.log('Ошибка при получении данных из базы данных', error);
+      return res.status(500).json({ error: 'Произошла ошибка' });
     }
   })
 

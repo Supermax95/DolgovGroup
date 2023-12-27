@@ -129,7 +129,7 @@ module.exports = router
       }
     } catch (error) {
       console.error('Ошибка при получении данных из базы данных', error);
-      return res.status(500).json({ message: 'Произошла ошибка' });
+      return res.status(500).json({ error: 'Произошла ошибка' });
     }
   })
 
@@ -159,6 +159,6 @@ module.exports = router
       res.status(200).json({ message: 'Пароль успешно изменен' });
     } catch (error) {
       console.error('Ошибка при получении данных из базы данных', error);
-      return res.status(500).json({ message: 'Произошла ошибка' });
+      return res.status(500).json({ error: 'Произошла ошибка' });
     }
   });

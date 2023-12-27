@@ -29,7 +29,7 @@ interface ManagersModalProps {
     React.SetStateAction<IManager | null | undefined>
   >;
 
-  showError: React.ReactNode;
+  // showError: React.ReactNode;
 }
 
 const ManagementModal: FC<ManagersModalProps> = ({
@@ -42,7 +42,7 @@ const ManagementModal: FC<ManagersModalProps> = ({
   isAddingMode,
   editedManager,
   setEditedManager,
-  showError,
+  // showError,
 }) => {
   const dispatch = useAppDispatch();
 
@@ -260,11 +260,11 @@ const ManagementModal: FC<ManagersModalProps> = ({
             onCancelСlick={handleCancel}
             onDeleteClick={handleDelete}
           >
-            {showError && (
+            {/* {showError && (
               <div className="text-sm text-rose-400 text-center mt-2">
                 {showError}
               </div>
-            )}
+            )} */}
             <InputModal inputFields={inputFieldsDate} />
           </Modal>
         </form>
