@@ -116,6 +116,7 @@ const ClientsModal: React.FC<UsersModalProps> = ({
         }
       },
       required: true,
+      disabled: true,
     },
     {
       id: 'firstName',
@@ -251,7 +252,7 @@ const ClientsModal: React.FC<UsersModalProps> = ({
       },
       options: [
         { value: 'Сотрудник', label: 'Сотрудник' },
-        { value: 'Новый сотрудник', label: 'Новый сотрудник' },
+        // { value: 'Новый сотрудник', label: 'Новый сотрудник' },
         { value: 'Клиент', label: 'Клиент' },
       ],
       required: true,
@@ -277,6 +278,7 @@ const ClientsModal: React.FC<UsersModalProps> = ({
               'py-8 grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'
             }
             inputFields={allInputFields}
+            modalTitle={modalTitle}
             codeSend={() =>
               editedUser && dispatch(nodemailerCodeSend(editedUser))
             }
