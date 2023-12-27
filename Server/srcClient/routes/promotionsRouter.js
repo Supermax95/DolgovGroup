@@ -3,6 +3,7 @@ const { isPast, parseISO, addDays, subDays } = require('date-fns');
 const { Op } = require('sequelize');
 const { Promotion } = require('../../db/models');
 const path = require('path');
+const { log } = require('console');
 const fsPromises = require('fs').promises;
 
 router.get('/admin/promotions', async (req, res) => {
@@ -23,6 +24,11 @@ router.get('/admin/promotions', async (req, res) => {
         );
       }
     }
+
+    await Promotion.update(
+      { photo: '/uploads/noPhoto/null.jpeg' },
+      { where: { photo: null } }
+    );
 
     const updatedPromotions = await Promotion.findAll({
       order: [
@@ -92,12 +98,7 @@ router.delete('/admin/promotions/:id', async (req, res) => {
 
     // Удалите связанный файл, если он существует
     if (promotion && promotion.photo) {
-      const filePath = path.join(
-        __dirname,
-        '..',
-        '..',
-        promotion.photo,
-      );
+      const filePath = path.join(__dirname, '..', '..', promotion.photo);
 
       // Проверьте, существует ли файл перед удалением
       const fileExists = await fsPromises
@@ -179,4 +180,54 @@ router.put('/admin/promotions', async (req, res) => {
     });
   }
 });
+router.delete('/admin/promotions/photo/:id', async (req, res) => {
+  const promoId = req.params.id;
+
+  try {
+    const promotion = await Promotion.findByPk(promoId);
+    if (promotion && promotion.photo) {
+      const filePath = path.join(__dirname, '..', '..', promotion.photo);
+
+      if (promotion.photo !== '/uploads/noPhoto/null.jpeg') {
+        const fileExists = await fsPromises
+          .access(filePath)
+          .then(() => true)
+          .catch(() => false);
+
+        if (fileExists) {
+          await fsPromises.unlink(filePath);
+          console.log(`Файл ${filePath} успешно удален`);
+        } else {
+          console.log(`Файл ${filePath} не существует`);
+        }
+      }
+
+      await Promotion.update(
+        { photo: '/uploads/noPhoto/null.jpeg' },
+        { where: { id: promoId } }
+      );
+
+      console.log(`Картинка для продукта с ID ${promoId} успешно удалена`);
+
+      const updatedPromotions = await Promotion.findAll({
+        order: [
+          ['dateStart', 'DESC'],
+          ['title', 'ASC'],
+        ],
+        raw: true,
+      });
+
+      res.json(updatedPromotions);
+    } else {
+      console.log('Промо или его картинка не найдены');
+      res.status(404).json({ error: 'Промо или его картинка не найдены' });
+    }
+  } catch (error) {
+    console.error('Ошибка при удалении картинки промо', error);
+    res.status(500).json({
+      error: 'Произошла ошибка на сервере при удалении картинки промо',
+    });
+  }
+});
+
 module.exports = router;
