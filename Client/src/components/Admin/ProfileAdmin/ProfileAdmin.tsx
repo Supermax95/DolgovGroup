@@ -19,6 +19,7 @@ import {
 import { Toaster } from 'sonner';
 import PopUpNotification from '../../../ui/PopUpNotification';
 import { unwrapResult } from '@reduxjs/toolkit';
+import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
 
 interface IDate {
   newLastName: string;
@@ -83,21 +84,24 @@ const ProfileAdmin: FC = () => {
   const [showNotificationFullname, setShowNotificationFullname] =
     useState(false);
 
-  const [showNotificationEmail, setShowNotificationEmail] = useState(false);
-  const [showNotificationPhone, setShowNotificationPhone] = useState(false);
-  const [showNotificationPass, setShowNotificationPass] = useState(false);
+  const [showNotificationEmail, setShowNotificationEmail] =
+    useState<boolean>(false);
+  const [showNotificationPhone, setShowNotificationPhone] =
+    useState<boolean>(false);
+  const [showNotificationPass, setShowNotificationPass] =
+    useState<boolean>(false);
 
   const [errorNotification, setErrorNotification] = useState<string | null>(
     null
   );
   const [showErrorNotificationFullname, setShowErrorNotificationFullname] =
-    useState(false);
+    useState<boolean>(false);
   const [showErrorNotificationEmail, setShowErrorNotificationEmail] =
-    useState(false);
+    useState<boolean>(false);
   const [showErrorNotificationPhone, setShowErrorNotificationPhone] =
-    useState(false);
+    useState<boolean>(false);
   const [showErrorNotificationPass, setShowErrorNotificationPass] =
-    useState(false);
+    useState<boolean>(false);
 
   // ! предзаполняет поля инпутов
   //* из-за него в placeholder={data.newLastName} требуется такая запись, а если бы было из локального стора,
@@ -525,16 +529,16 @@ const ProfileAdmin: FC = () => {
 
       {/* //!уведомления об ошибках */}
       {showErrorNotificationFullname && (
-        <PopUpNotification titleText={'Ошибка'} bodyText={errorNotification} />
+        <PopUpErrorNotification titleText={'Ошибка'} bodyText={errorNotification} />
       )}
       {showErrorNotificationEmail && (
-        <PopUpNotification titleText={'Ошибка'} bodyText={errorNotification} />
+        <PopUpErrorNotification titleText={'Ошибка'} bodyText={errorNotification} />
       )}
       {showErrorNotificationPhone && (
-        <PopUpNotification titleText={'Ошибка'} bodyText={errorNotification} />
+        <PopUpErrorNotification titleText={'Ошибка'} bodyText={errorNotification} />
       )}
       {showErrorNotificationPass && (
-        <PopUpNotification titleText={'Ошибка'} bodyText={errorNotification} />
+        <PopUpErrorNotification titleText={'Ошибка'} bodyText={errorNotification} />
       )}
 
       <RoleSidebar />

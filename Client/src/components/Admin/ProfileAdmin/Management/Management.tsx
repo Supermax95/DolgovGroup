@@ -11,6 +11,7 @@ import RoleSidebar from '../../../RoleSidebar/RoleSidebar';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { Toaster } from 'sonner';
 import PopUpNotification from '../../../../ui/PopUpNotification';
+import PopUpErrorNotification from '../../../../ui/PopUpErrorNotification';
 
 interface IManager {
   id: number;
@@ -66,11 +67,24 @@ const Management: FC = () => {
     IManager | null | undefined
   >(null);
 
-  const [showNotificationAdd, setShowNotificationAdd] = useState(false);
-  const [showNotificationEdit, setShowNotificationEdit] = useState(false);
-  const [showNotificationOnePass, setShowNotificationOnePass] = useState(false);
+  const [showNotificationAdd, setShowNotificationAdd] =
+    useState<boolean>(false);
+  const [showNotificationEdit, setShowNotificationEdit] =
+    useState<boolean>(false);
+  const [showNotificationOnePass, setShowNotificationOnePass] =
+    useState<boolean>(false);
 
-  const [modalError, setModalError] = useState<string | null>(null);
+  // const [modalError, setModalError] = useState<string | null>(null);
+
+  const [errorNotification, setErrorNotification] = useState<string | null>(
+    null
+  );
+  const [showErrorNotificationAdd, setShowErrorNotificationAdd] =
+    useState<boolean>(false);
+  const [showErrorNotificationEdit, setShowErrorNotificationEdit] =
+    useState<boolean>(false);
+  const [showErrorNotificationOnePass, setShowErrorNotificationOnePass] =
+    useState<boolean>(false);
 
   const columnsDefaultName: IColumnsDefaultName[] = [
     { name: 'Фамилия' },
@@ -120,7 +134,7 @@ const Management: FC = () => {
     setSelectedManager(null);
     setEditedManager(null);
     setModalOpen(false);
-    setModalError(null);
+    // setModalError(null);
   };
 
   const closeEditModal = (): void => {
@@ -140,17 +154,14 @@ const Management: FC = () => {
           })
         );
         unwrapResult(resultAdd);
-        setModalError(null);
+        // setModalError(null);
         closeAddModal();
         setShowNotificationAdd(true);
-        // <PopUpNotification email={editedManager.email} />;
       }
     } catch (error) {
       console.error('Произошла ошибка при добавлении:', error);
-      setModalError(error as string | null);
-      setTimeout(() => {
-        setModalError(null);
-      }, 3000);
+      setErrorNotification(error as string | null);
+      setShowErrorNotificationAdd(true);
     }
   };
 
@@ -166,16 +177,14 @@ const Management: FC = () => {
         );
 
         unwrapResult(resultEdit);
-        setModalError(null);
+        // setModalError(null);
         closeEditModal();
         setShowNotificationEdit(true);
       }
     } catch (error) {
       console.error('Произошла ошибка при редактировании:', error);
-      setModalError(error as string | null);
-      setTimeout(() => {
-        setModalError(null);
-      }, 3000);
+      setErrorNotification(error as string | null);
+      setShowErrorNotificationEdit(true);
     }
   };
 
@@ -197,6 +206,8 @@ const Management: FC = () => {
       }
     } catch (error) {
       console.error('Произошла ошибка при отправке:', error);
+      setErrorNotification(error as string | null);
+      setShowErrorNotificationOnePass(true);
     }
   };
 
@@ -204,17 +215,30 @@ const Management: FC = () => {
     if (
       showNotificationAdd ||
       showNotificationEdit ||
-      showNotificationOnePass
+      showNotificationOnePass ||
+      showErrorNotificationAdd ||
+      showErrorNotificationEdit ||
+      showErrorNotificationOnePass
     ) {
       const timeoutId = setTimeout(() => {
         setShowNotificationAdd(false);
         setShowNotificationEdit(false);
         setShowNotificationOnePass(false);
+        setShowErrorNotificationAdd(false);
+        setShowErrorNotificationEdit(false);
+        setShowErrorNotificationOnePass(false);
       });
 
       return () => clearTimeout(timeoutId);
     }
-  }, [showNotificationAdd, showNotificationEdit, showNotificationOnePass]);
+  }, [
+    showNotificationAdd,
+    showNotificationEdit,
+    showNotificationOnePass,
+    showErrorNotificationAdd,
+    showErrorNotificationEdit,
+    showErrorNotificationOnePass,
+  ]);
 
   return (
     <>
@@ -243,39 +267,25 @@ const Management: FC = () => {
           />
         )}
 
-        {/* <button
-            onClick={() =>
-              toast.custom(
-                (t) => (
-                  <div className="flex flex-col p-4 bg-slate-50 shadow-md hover:shadow-lg rounded-lg border border-slate-200 w-full">
-                    <div className="flex flex-col justify-start">
-                      <p className="font-medium text-xs text-slate-800">
-                        Личный кабинет менеджера создан
-                        {managerIdForBellAdd.firstName}
-                        {managerIdForBellAdd.lastName}
-                      </p>
-                      <p className="text-xs font-normal text-slate-600 mt-2">
-                        Временный пароль выслан на почту{' '}
-                        <span className="text-slate-800 ext-xs">
-                          ribrbrty0@g,ao.
-                          {managerIdForBellAdd.email}
-                        </span>
-                      </p>
-                      <button
-                        className="absolute py-1 right-1 top-2"
-                        onClick={() => toast.dismiss(t)}
-                      >
-                        <XMarkIcon className="cursor-pointer w-4 h-4 text-slate-400 hover:text-slate-600 mx-1" />
-                      </button>
-                    </div>
-                  </div>
-                ),
-                { duration: Infinity }
-              )
-            }
-          >
-            Give me a toast
-          </button> */}
+        {/* //!уведомления об ошибках */}
+        {showErrorNotificationAdd && (
+          <PopUpErrorNotification
+            titleText={'Ошибка'}
+            bodyText={errorNotification}
+          />
+        )}
+        {showErrorNotificationEdit && (
+          <PopUpErrorNotification
+            titleText={'Ошибка'}
+            bodyText={errorNotification}
+          />
+        )}
+        {showErrorNotificationOnePass && (
+          <PopUpErrorNotification
+            titleText={'Ошибка'}
+            bodyText={errorNotification}
+          />
+        )}
 
         <RoleSidebar />
 
@@ -301,7 +311,7 @@ const Management: FC = () => {
             isAddingMode={isAddingMode}
             editedManager={editedManager}
             setEditedManager={setEditedManager}
-            showError={modalError}
+            // showError={modalError}
           />
         )}
       </Wrapper>
