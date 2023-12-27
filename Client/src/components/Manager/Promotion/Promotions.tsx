@@ -346,8 +346,8 @@ const Promotions: FC = () => {
                       />
                     </div>
                     <img
-                      className="h-56 w-full object-cover"
-                      src={`${VITE_URL}${promotion.photo}`}
+                       className="h-full w-full object-contain"
+                       src={`${VITE_URL}${promotion.photo}`}
                       alt={promotion.title}
                     />
                     {promotion.invisible && (

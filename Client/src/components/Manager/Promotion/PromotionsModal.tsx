@@ -332,11 +332,13 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
             <div className="container mx-auto mt-8 p-8 max-w-4xl justify-center items-center flex-col block rounded-lg bg-white shadow-md dark:bg-neutral-700">
               <div className="px-4 sm:px-0 text-center">
                 <h1 className="text-xl font-bold mb-4">
-                  Форма загрузки фотографии акции
+                  Форма загрузки изображения 
                   <span className="block mt-2 text-xs text-gray-500">
-                  Загрузите документ в формате IMG,PNG или JPEG.
+                  Загрузите документ в формате IMG,PNG,WEBP или JPEG.
                  <br/>
                   Для карусели используйте формат 1280*720px
+                  <br/>
+                  Для карточек 800*800px
                   </span>
                 </h1>
                 <span className="block mt-2 text-sm text-gray-500">

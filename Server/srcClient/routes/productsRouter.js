@@ -7,6 +7,7 @@ const fsPromises = require('fs').promises;
 
 router.get('/admin/products', async (req, res) => {
   try {
+    // Найти и обновить продукты
     const products = await Product.findAll({
       order: [['productName', 'ASC']],
       raw: true,
@@ -24,6 +25,13 @@ router.get('/admin/products', async (req, res) => {
       }
     }
 
+    // Обновить поле photo, если оно равно null
+    await Product.update(
+      { photo: '/uploads/noPhoto/null.jpeg' },
+      { where: { photo: null } }
+    );
+
+    // Получить обновленные продукты
     const updatedProducts = await Product.findAll({
       order: [['productName', 'ASC']],
       raw: true,
@@ -37,6 +45,7 @@ router.get('/admin/products', async (req, res) => {
     });
   }
 });
+
 router.post('/admin/products', async (req, res) => {
   const { newProduct } = req.body;
 
@@ -85,33 +94,34 @@ router.delete('/admin/products/:id', async (req, res) => {
     // Найдите информацию о продукте
     const product = await Product.findByPk(productId);
 
-    // Удалите запись из базы данных
-    await Product.destroy({
-      where: { id: productId },
-    });
+    // Проверьте, нужно ли удалить запись
+    if (product) {
+      // Сохраните путь к файлу
+      const filePath = path.join(__dirname, '..', '..', product.photo);
 
-    // Удалите связанный файл, если он существует
-    if (product && product.photo) {
-      const filePath = path.join(
-        __dirname,
-        '..',
-        '..',
-        product.photo,
-      );
+      // Проверьте, нужно ли удалить файл
+      if (product.photo !== '/uploads/noPhoto/null.jpeg') {
+        // Удалите связанный файл, если он существует
+        const fileExists = await fsPromises
+          .access(filePath)
+          .then(() => true)
+          .catch(() => false);
 
-      // Проверьте, существует ли файл перед удалением
-      const fileExists = await fsPromises
-        .access(filePath)
-        .then(() => true)
-        .catch(() => false);
-
-      if (fileExists) {
-        // Удалите файл
-        await fsPromises.unlink(filePath);
-        console.log(`Файл ${filePath} успешно удален`);
-      } else {
-        console.log(`Файл ${filePath} не существует`);
+        if (fileExists) {
+          // Удалите файл
+          await fsPromises.unlink(filePath);
+          console.log(`Файл ${filePath} успешно удален`);
+        } else {
+          console.log(`Файл ${filePath} не существует`);
+        }
       }
+
+      // Удалите запись из базы данных
+      await Product.destroy({
+        where: { id: productId },
+      });
+    } else {
+      console.log('Запись не найдена');
     }
 
     // Получите обновленный список продуктов
@@ -186,4 +196,54 @@ router.put('/admin/products', async (req, res) => {
     });
   }
 });
+
+router.delete('/admin/products/photo/:id', async (req, res) => {
+  const productId = req.params.id;
+
+  try {
+    const product = await Product.findByPk(productId);
+
+    if (product && product.photo) {
+      const filePath = path.join(__dirname, '..', '..', product.photo);
+
+      if (product.photo !== '/uploads/noPhoto/null.jpeg') {
+        const fileExists = await fsPromises
+          .access(filePath)
+          .then(() => true)
+          .catch(() => false);
+
+        if (fileExists) {
+          // Удалите файл
+          await fsPromises.unlink(filePath);
+          console.log(`Файл ${filePath} успешно удален`);
+        } else {
+          console.log(`Файл ${filePath} не существует`);
+        }
+      }
+
+      await Product.update(
+        { photo: '/uploads/noPhoto/null.jpeg' },
+        { where: { id: productId } }
+      );
+
+      console.log(`Картинка для продукта с ID ${productId} успешно удалена`);
+
+      const updatedProducts = await Product.findAll({
+        order: [['productName', 'ASC']],
+        raw: true,
+      });
+
+      res.json(updatedProducts);
+    } else {
+      console.log('Продукт или его картинка не найдены');
+      res.status(404).json({ error: 'Продукт или его картинка не найдены' });
+    }
+  } catch (error) {
+    console.error('Ошибка при удалении картинки продукта', error);
+    res.status(500).json({
+      error: 'Произошла ошибка на сервере при удалении картинки продукта',
+    });
+  }
+});
+
 module.exports = router;

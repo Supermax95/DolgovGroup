@@ -516,7 +516,7 @@ const Products: FC = () => {
                   >
                     <div className="relative">
                       <img
-                        className="h-56 w-full object-cover"
+                       className="h-full w-full object-contain"
                         src={`${VITE_URL}${product.photo}`}
                         alt={product.productName}
                       />
