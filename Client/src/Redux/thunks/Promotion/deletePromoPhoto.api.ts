@@ -16,7 +16,7 @@ interface ResponseData {
 type ArrayResponseData = Array<ResponseData>;
 
 const deletePromoPhoto = createAsyncThunk<ArrayResponseData, number>(
-  'admin/deleteproductPhoto',
+  'admin/deletePromoPhoto',
 
   async (promoId) => {
     try {
