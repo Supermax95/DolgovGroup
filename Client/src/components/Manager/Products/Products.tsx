@@ -303,18 +303,18 @@ const Products: FC = () => {
       });
   };
 
-  // //устаревший метод
-  //   const handleCopyToClipboard = (text: string) => {
-  //     const textarea = document.createElement('textarea');
-  //     textarea.value = text;
-  //     document.body.appendChild(textarea);
-  //     textarea.select();
-  //     document.execCommand('copy');
-  //     document.body.removeChild(textarea);
+  // //устаревший метод не удалять 
+    // const handleCopyToClipboard = (text: string) => {
+    //   const textarea = document.createElement('textarea');
+    //   textarea.value = text;
+    //   document.body.appendChild(textarea);
+    //   textarea.select();
+    //   document.execCommand('copy');
+    //   document.body.removeChild(textarea);
 
-  //     console.log('Текст скопирован в буфер обмена:', text);
-  //     setShowNotification(true);
-  //   };
+    //   console.log('Текст скопирован в буфер обмена:', text);
+    //   setShowNotification(true);
+    // };
 
   useEffect(() => {
     if (showNotification) {
@@ -348,10 +348,10 @@ const Products: FC = () => {
             </span>
           </div>
         )}
-
+{/* 
         <h1 className="text-xl text-lime-600 font-medium text-center">
           Продукты
-        </h1>
+        </h1> */}
 
         <div className="flex items-center">
           <span className="text-slate-600 text-sm font-normal my-2">

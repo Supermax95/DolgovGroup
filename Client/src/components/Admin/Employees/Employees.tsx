@@ -168,7 +168,7 @@ const Employees: FC = () => {
           />
           <div className="p-4">
             <Table
-              title="Список сотрудников"
+              // title="Список сотрудников"
               childrenSearch={<Search onFilter={setSearchText} />}
               columnsDefaultName={columnsDefaultName}
               data={displayedUsers}
