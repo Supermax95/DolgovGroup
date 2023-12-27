@@ -3,6 +3,7 @@ import getPromotions from './thunks/Promotion/getPromotion.api';
 import editPromotion from './thunks/Promotion/editPromotion.api';
 import deletePromotion from './thunks/Promotion/deletePromotion.api';
 import addPromotion from './thunks/Promotion/addPromotion.api';
+import deletePromoPhoto from './thunks/Promotion/deletePromoPhoto.api';
 
 interface Promotion {
   id: number;
@@ -91,6 +92,18 @@ const promotionSlice = createSlice({
       .addCase(addPromotion.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message || 'Произошла ошибка при добавлении';
+      })
+      .addCase(deletePromoPhoto.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(deletePromoPhoto.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.data = action.payload;
+      })
+      .addCase(deletePromoPhoto.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message || 'Произошла ошибка при удалении изображения';
       });
   },
 });
