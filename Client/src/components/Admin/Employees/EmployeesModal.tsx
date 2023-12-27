@@ -115,6 +115,7 @@ const EmployeesModal: FC<UsersModalProps> = ({
           });
         }
       },
+      disabled: true,
       required: true,
     },
     {
@@ -249,11 +250,17 @@ const EmployeesModal: FC<UsersModalProps> = ({
           });
         }
       },
-      options: [
-        { value: 'Сотрудник', label: 'Сотрудник' },
-        { value: 'Новый сотрудник', label: 'Новый сотрудник' },
-        { value: 'Клиент', label: 'Клиент' },
-      ],
+      options:
+        editedUser.userStatus === 'Сотрудник'
+          ? [
+              { value: 'Сотрудник', label: 'Сотрудник' },
+              { value: 'Клиент', label: 'Клиент' },
+            ]
+          : [
+              { value: 'Сотрудник', label: 'Сотрудник' },
+              { value: 'Новый сотрудник', label: 'Новый сотрудник' },
+              { value: 'Клиент', label: 'Клиент' },
+            ],
       required: true,
     },
     {
