@@ -333,6 +333,9 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
               <div className="px-4 sm:px-0 text-center">
                 <h1 className="text-xl font-bold mb-4">
                   Форма загрузки фотографии акции
+                  <span className="block mt-2 text-xs text-gray-500">
+                  Загрузите документ в формате IMG,PNG или JPEG.
+                  </span>
                 </h1>
                 <span className="block mt-2 text-sm text-gray-500">
                   Если фотографию акции менять не нужно, вы можете пропустить

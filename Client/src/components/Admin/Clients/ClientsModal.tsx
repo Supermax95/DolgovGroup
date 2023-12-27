@@ -251,9 +251,10 @@ const ClientsModal: React.FC<UsersModalProps> = ({
         }
       },
       options: [
+        { value: 'Клиент', label: 'Клиент' },
         { value: 'Сотрудник', label: 'Сотрудник' },
         // { value: 'Новый сотрудник', label: 'Новый сотрудник' },
-        { value: 'Клиент', label: 'Клиент' },
+
       ],
       required: true,
     },
