@@ -335,6 +335,8 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
                   Форма загрузки фотографии акции
                   <span className="block mt-2 text-xs text-gray-500">
                   Загрузите документ в формате IMG,PNG или JPEG.
+                 <br/>
+                  Для карусели используйте формат 1280*720px
                   </span>
                 </h1>
                 <span className="block mt-2 text-sm text-gray-500">

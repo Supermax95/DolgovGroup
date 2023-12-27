@@ -250,7 +250,7 @@ const Location: FC = () => {
       />
       <div className="p-4">
         <Table
-          title="Список магазинов"
+          // title="Список магазинов"
           childrenSearch={<Search onFilter={setSearchText} />}
           childrenFilter={filterRadio}
           columnsDefaultName={columnsDefaultName}
