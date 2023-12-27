@@ -127,6 +127,8 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   const handleAll = () => {
     onCategorySelect(null);
     onSubcategorySelect(null);
+    onActiveCategory(null);
+    onActiveSubcategory(null);
   };
 
   useEffect(() => {
