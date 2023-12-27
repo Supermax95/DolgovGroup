@@ -10,6 +10,7 @@ import axios from 'axios';
 import Quill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import ReactQuill from 'react-quill';
+import deleteProductPhoto from '../../../Redux/thunks/Products/deleteProductPhoto.api';
 
 interface Product {
   id: number;
@@ -197,6 +198,14 @@ const ProductsModal: FC<ProductsModalProps> = ({
       dispatch(deleteProduct(productId));
       onCloseEditModal();
     }
+  };
+
+  const handleDeletePhoto = () => {
+    if (editedProduct && editedProduct.id) {
+      const productId = editedProduct.id;
+      dispatch(deleteProductPhoto(productId));
+    }
+    onCloseEditModal();
   };
 
   if (!isOpen || !editedProduct) {
@@ -593,15 +602,17 @@ const ProductsModal: FC<ProductsModalProps> = ({
                   <h1 className="text-xl font-bold mb-4">
                     Форма загрузки фотографии продукта
                     <span className="block mt-2 text-xs text-gray-500">
-                  Загрузите документ в формате IMG,PNG или JPEG.
-                  </span>
+                      Загрузите изображение в формате PNG или WEBP.
+                      <br />
+                      Используйте формат 800*800px
+                    </span>
                   </h1>
                   <span className="block mt-2 text-sm text-gray-500">
                     Если фотографию продукта менять не нужно, вы можете
                     пропустить этот шаг
                   </span>
                   <div className="mt-6">
-                    <div className="mb-4">
+                    <div className="mb-4 space-x-4">
                       <input
                         type="file"
                         id="fileInput"
@@ -611,10 +622,17 @@ const ProductsModal: FC<ProductsModalProps> = ({
                       />
                       <label
                         htmlFor="fileInput"
-                        className="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+                        className="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded inline-block"
                       >
                         Выберите файл
                       </label>
+                      <button
+                        type="button"
+                        onClick={handleDeletePhoto}
+                        className="cursor-pointer bg-red-500 text-white font-bold py-2 px-4 rounded inline-block"
+                      >
+                        Сброс изображения
+                      </button>
                     </div>
                   </div>
                 </div>

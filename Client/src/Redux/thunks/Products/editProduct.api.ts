@@ -29,6 +29,7 @@ interface ResponseData {
   originalPrice: number;
   customerPrice: number;
   employeePrice: number;
+  photo:string;
   isNew: boolean;
   isDiscounted: boolean;
   description: string;
