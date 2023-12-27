@@ -19,7 +19,7 @@ interface ResponseData {
 const deleteManager = createAsyncThunk<ResponseData[], RequestData>(
   'api/deleteManager',
 
-  async ({ managerId }) => {
+  async ({ managerId }, { rejectWithValue }) => {
     console.log('async managerIdmanagerId', managerId);
 
     try {
@@ -31,8 +31,12 @@ const deleteManager = createAsyncThunk<ResponseData[], RequestData>(
 
       return response.data;
     } catch (error) {
-      console.error('Error:', error);
-      throw error;
+      if (axios.isAxiosError(error) && error.response) {
+        console.error('Server response data:', error.response.data.error);
+        throw rejectWithValue(error.response.data.error);
+      } else {
+        throw error;
+      }
     }
   }
 );
