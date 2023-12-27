@@ -1,6 +1,5 @@
 import React, { useState, useEffect, FC } from 'react';
 import Field from '../../../ui/Field';
-import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import ToggleShowPassword from '../../../ui/ToggleShowPassword';
 import Button from '../../../ui/Button';
@@ -14,6 +13,10 @@ import {
   IdentificationIcon,
   LockClosedIcon,
 } from '@heroicons/react/24/outline';
+import { unwrapResult } from '@reduxjs/toolkit';
+import { Toaster } from 'sonner';
+import PopUpNotification from '../../../ui/PopUpNotification';
+import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
 
 interface IDate {
   newLastName: string;
@@ -33,7 +36,6 @@ interface PasswordChangeData {
 }
 
 const ProfileManager: FC = () => {
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const managerProfile = useAppSelector<{
@@ -50,7 +52,6 @@ const ProfileManager: FC = () => {
   );
 
   const [openPersonalData, setOpenPersonalData] = useState<boolean>(false);
-  const [openEmail, setOpenEmail] = useState<boolean>(false);
   const [openPhone, setOpenPhone] = useState<boolean>(false);
   const [openPassword, setOpenPassword] = useState<boolean>(false);
 
@@ -63,6 +64,23 @@ const ProfileManager: FC = () => {
     newPassword: '',
     confirmPassword: '',
   });
+
+  const [showNotificationFullname, setShowNotificationFullname] =
+    useState(false);
+  const [showNotificationPhone, setShowNotificationPhone] =
+    useState<boolean>(false);
+  const [showNotificationPass, setShowNotificationPass] =
+    useState<boolean>(false);
+
+  const [errorNotification, setErrorNotification] = useState<string | null>(
+    null
+  );
+  const [showErrorNotificationFullname, setShowErrorNotificationFullname] =
+    useState<boolean>(false);
+  const [showErrorNotificationPhone, setShowErrorNotificationPhone] =
+    useState<boolean>(false);
+  const [showErrorNotificationPass, setShowErrorNotificationPass] =
+    useState<boolean>(false);
 
   const [data, setData] = useState<IDate>({
     newLastName: managerProfile.lastName || '',
@@ -93,14 +111,6 @@ const ProfileManager: FC = () => {
 
   const clickOpenPersonalData = (): void => {
     setOpenPersonalData(!openPersonalData);
-    setOpenEmail(false);
-    setOpenPhone(false);
-    setOpenPassword(false);
-  };
-
-  const clickOpenEmail = (): void => {
-    setOpenEmail(!openEmail);
-    setOpenPersonalData(false);
     setOpenPhone(false);
     setOpenPassword(false);
   };
@@ -108,14 +118,12 @@ const ProfileManager: FC = () => {
   const clickOpenPhone = (): void => {
     setOpenPhone(!openPhone);
     setOpenPersonalData(false);
-    setOpenEmail(false);
     setOpenPassword(false);
   };
 
   const clickOpenPassword = (): void => {
     setOpenPassword(!openPassword);
     setOpenPersonalData(false);
-    setOpenEmail(false);
     setOpenPhone(false);
   };
 
@@ -134,25 +142,28 @@ const ProfileManager: FC = () => {
   ): Promise<void> => {
     e.preventDefault();
 
-    try {
-      const resultEdit = await dispatch(
-        editProfileManager({
-          managerId,
-          newLastName: data.newLastName,
-          newFirstName: data.newFirstName,
-          newMiddleName: data.newMiddleName,
-        })
-      );
+    const isConfirmed = window.confirm(
+      'Вы уверены, что хотите внести изменения?'
+    );
 
-      if (editProfileManager.fulfilled.match(resultEdit)) {
-        alert('Данные успешно обновлены');
+    if (isConfirmed) {
+      try {
+        const resultEdit = await dispatch(
+          editProfileManager({
+            managerId,
+            newLastName: data.newLastName,
+            newFirstName: data.newFirstName,
+            newMiddleName: data.newMiddleName,
+          })
+        );
+        unwrapResult(resultEdit);
+        setErrorNotification(null);
+        setShowNotificationFullname(true);
+      } catch (error) {
+        console.error('Ошибка обновления данных:', error);
+        setShowErrorNotificationFullname(true);
+        setErrorNotification(error as string | null);
       }
-
-      if (editProfileManager.rejected.match(resultEdit)) {
-        alert('Не удалось обновить данные. Попробуйте ещё раз.');
-      }
-    } catch (error) {
-      console.error('Ошибка обновления данных:', error);
     }
   };
 
@@ -162,23 +173,27 @@ const ProfileManager: FC = () => {
   ): Promise<void> => {
     e.preventDefault();
 
-    try {
-      const resultEdit = await dispatch(
-        changePhone({
-          managerId,
-          newPhone: data.newPhone,
-        })
-      );
+    const isConfirmed = window.confirm(
+      'Вы уверены, что хотите внести изменения?'
+    );
 
-      if (changePhone.fulfilled.match(resultEdit)) {
-        alert('Данные успешно обновлены');
-      }
+    if (isConfirmed) {
+      try {
+        const resultEdit = await dispatch(
+          changePhone({
+            managerId,
+            newPhone: data.newPhone,
+          })
+        );
 
-      if (changePhone.rejected.match(resultEdit)) {
-        alert('Не удалось обновить данные. Попробуйте ещё раз.');
+        unwrapResult(resultEdit);
+        setErrorNotification(null);
+        setShowNotificationPhone(true);
+      } catch (error) {
+        console.error('Ошибка обновления данных:', error);
+        setShowErrorNotificationPhone(true);
+        setErrorNotification(error as string | null);
       }
-    } catch (error) {
-      console.error('Ошибка обновления данных:', error);
     }
   };
 
@@ -198,39 +213,74 @@ const ProfileManager: FC = () => {
   ): Promise<void> => {
     e.preventDefault();
 
-    if (!data.oldPassword || !data.newPassword || !data.confirmPassword) {
-      setErrorMessages({
-        oldPassword: !data.oldPassword ? 'Введите текущий пароль' : '',
-        newPassword: !data.newPassword ? 'Введите новый пароль' : '',
-        confirmPassword: !data.confirmPassword
-          ? 'Подтвердите новый пароль'
-          : '',
-      });
-    } else if (data.newPassword !== data.confirmPassword) {
-      setErrorMessages((prevErrors) => ({
-        ...prevErrors,
-        newPassword: 'Пароли не совпадают',
-      }));
-    } else {
-      try {
-        const resultEdit = await dispatch(
-          changePassword({
-            managerId,
-            oldPassword: data.oldPassword,
-            newPassword: data.newPassword,
-          })
-        );
-        if (changePassword.rejected.match(resultEdit)) {
-          alert('Не удалось обновить данные. Попробуйте ещё раз');
-        } else if (changePassword.fulfilled.match(resultEdit)) {
-          alert('Пароль успешно изменён');
+    const isConfirmed = window.confirm(
+      'Вы уверены, что хотите внести изменения?'
+    );
+
+    if (isConfirmed) {
+      if (!data.oldPassword || !data.newPassword || !data.confirmPassword) {
+        setErrorMessages({
+          oldPassword: !data.oldPassword ? 'Введите текущий пароль' : '',
+          newPassword: !data.newPassword ? 'Введите новый пароль' : '',
+          confirmPassword: !data.confirmPassword
+            ? 'Подтвердите новый пароль'
+            : '',
+        });
+      } else if (data.newPassword !== data.confirmPassword) {
+        setErrorMessages((prevErrors) => ({
+          ...prevErrors,
+          newPassword: 'Пароли не совпадают',
+        }));
+      } else {
+        try {
+          const resultEdit = await dispatch(
+            changePassword({
+              managerId,
+              oldPassword: data.oldPassword,
+              newPassword: data.newPassword,
+            })
+          );
+
+          unwrapResult(resultEdit);
+          setErrorNotification(null);
+          setShowNotificationPass(true);
+        } catch (error) {
+          console.error('Ошибка обновления данных:', error);
+          setShowErrorNotificationPass(true);
+          setErrorNotification(error as string | null);
         }
-      } catch (error) {
-        alert('Введён неверный текущий пароль или произошла ошибка');
-        console.error('Ошибка обновления данных:', error);
       }
     }
   };
+
+  useEffect(() => {
+    if (
+      showNotificationFullname ||
+      showNotificationPhone ||
+      showNotificationPass ||
+      showErrorNotificationFullname ||
+      showErrorNotificationPhone ||
+      showErrorNotificationPass
+    ) {
+      const timeoutId = setTimeout(() => {
+        setShowNotificationFullname(false);
+        setShowNotificationPhone(false);
+        setShowNotificationPass(false);
+        setShowErrorNotificationFullname(false);
+        setShowErrorNotificationPhone(false);
+        setShowErrorNotificationPass(false);
+      });
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [
+    showNotificationFullname,
+    showNotificationPhone,
+    showNotificationPass,
+    showErrorNotificationFullname,
+    showErrorNotificationPhone,
+    showErrorNotificationPass,
+  ]);
 
   const inputFieldsLastName = [
     {
@@ -380,6 +430,46 @@ const ProfileManager: FC = () => {
 
   return (
     <Wrapper>
+      <Toaster position="bottom-left" expand={true} />
+      {showNotificationFullname && (
+        <PopUpNotification
+          titleText={'Ваши персональные данные успешно обновлены'}
+          bodyText={`${data.newLastName} ${data.newFirstName} ${data.newMiddleName}`}
+        />
+      )}
+      {showNotificationPhone && (
+        <PopUpNotification
+          titleText={'Ваш номер телефона успешно обновлён'}
+          bodyText={data.newPhone}
+        />
+      )}
+      {showNotificationPass && (
+        <PopUpNotification
+          titleText={'Успех'}
+          bodyText={'Ваш пароль успешно обновлён'}
+        />
+      )}
+
+      {/* //!уведомления об ошибках */}
+      {showErrorNotificationFullname && (
+        <PopUpErrorNotification
+          titleText={'Ошибка'}
+          bodyText={errorNotification}
+        />
+      )}
+      {showErrorNotificationPhone && (
+        <PopUpErrorNotification
+          titleText={'Ошибка'}
+          bodyText={errorNotification}
+        />
+      )}
+      {showErrorNotificationPass && (
+        <PopUpErrorNotification
+          titleText={'Ошибка'}
+          bodyText={errorNotification}
+        />
+      )}
+
       <RoleSidebar />
 
       <section className="p-6 bg-white dark:text-gray-50  w-[1024px]">

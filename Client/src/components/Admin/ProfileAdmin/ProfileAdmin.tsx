@@ -83,7 +83,6 @@ const ProfileAdmin: FC = () => {
 
   const [showNotificationFullname, setShowNotificationFullname] =
     useState(false);
-
   const [showNotificationEmail, setShowNotificationEmail] =
     useState<boolean>(false);
   const [showNotificationPhone, setShowNotificationPhone] =
@@ -262,6 +261,7 @@ const ProfileAdmin: FC = () => {
     e: React.FormEvent
   ): Promise<void> => {
     e.preventDefault();
+
     const isConfirmed = window.confirm(
       'Вы уверены, что хотите внести изменения?'
     );
@@ -529,16 +529,28 @@ const ProfileAdmin: FC = () => {
 
       {/* //!уведомления об ошибках */}
       {showErrorNotificationFullname && (
-        <PopUpErrorNotification titleText={'Ошибка'} bodyText={errorNotification} />
+        <PopUpErrorNotification
+          titleText={'Ошибка'}
+          bodyText={errorNotification}
+        />
       )}
       {showErrorNotificationEmail && (
-        <PopUpErrorNotification titleText={'Ошибка'} bodyText={errorNotification} />
+        <PopUpErrorNotification
+          titleText={'Ошибка'}
+          bodyText={errorNotification}
+        />
       )}
       {showErrorNotificationPhone && (
-        <PopUpErrorNotification titleText={'Ошибка'} bodyText={errorNotification} />
+        <PopUpErrorNotification
+          titleText={'Ошибка'}
+          bodyText={errorNotification}
+        />
       )}
       {showErrorNotificationPass && (
-        <PopUpErrorNotification titleText={'Ошибка'} bodyText={errorNotification} />
+        <PopUpErrorNotification
+          titleText={'Ошибка'}
+          bodyText={errorNotification}
+        />
       )}
 
       <RoleSidebar />
