@@ -142,7 +142,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     const target = e.currentTarget as HTMLElement;
     const rect = target.getBoundingClientRect();
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
-    const newTop = rect.bottom + scrollTop - 110;
+    const newTop = rect.bottom + scrollTop - 130;
     setMenuPosition(newTop);
   };
 
@@ -372,19 +372,20 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
         <h2 className="text-xl text-slate-600 font-medium">Каталог</h2>
       </div>
 
-      <div className="h-full relative w-60">
-        <ul className="py-2">
-          <div
-            onClick={handleAll}
-            className="cursor-pointer flex items-center p-2 justify-between rounded-md hover:bg-slate-100"
-          >
-            <div className="flex items-center justify-center  w-full">
-              <span className="text-slate-1000 text-sm font-medium">
-                Все продукты
-              </span>
-            </div>
+      <div className="h-full relative w-60 py-1">
+        <div
+          onClick={handleAll}
+          className="cursor-pointer flex items-center p-2 justify-between rounded-md hover:bg-slate-100"
+        >
+          <div className="flex items-center justify-center w-full">
+            <span className="text-amber-600 text-sm font-medium">
+              Все продукты
+            </span>
           </div>
-      {/* <div className="h-full relative w-60">
+        </div>
+        <div className="my-1 shadow-sm border-b-2 border-orange-300 w-full"></div>
+        <ul className="py-2">
+          {/* <div className="h-full relative w-60">
         <ul className="py-2"> */}
           {isAddingCategory ? (
             <form onSubmit={addedHandleForm}>
@@ -422,7 +423,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
           ) : (
             <div
               onClick={startAddingCategory}
-              className="cursor-pointer flex items-center p-2 justify-between rounded-md hover:bg-slate-100"
+              className="cursor-pointer flex items-center p-2 justify-between rounded-md hover:bg-slate-100 "
             >
               <div className="flex items-center justify-center ml-6">
                 <span className="text-lime-600 text-sm font-medium">
@@ -485,7 +486,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                               subcategoryOutput(item.id);
                             }}
                           >
-                            <ChevronUpIcon className="cursor-pointer w-3 h-3 text-slate-600 mx-1" />
+                            <ChevronUpIcon className="cursor-pointer w-3 h-3 text-slate-800 mx-1" />
                           </div>
                         ) : (
                           <div
@@ -494,7 +495,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                             }}
                             className="rounded-full hover:bg-slate-200 py-1 "
                           >
-                            <ChevronDownIcon className="cursor-pointer w-3 h-3 text-slate-600 mx-1" />
+                            <ChevronDownIcon className="cursor-pointer w-3 h-3 text-slate-700 mx-1" />
                           </div>
                         )}
                         <span
@@ -502,13 +503,13 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                             // subcategoryOutput(item.id);
                             handleCategoryClick(item.id);
                           }}
-                          className="text-slate-600 text-sm font-normal"
+                          className="text-slate-700 text-sm font-normal"
                         >
                           {item.categoryName}
                         </span>
                       </div>
                       <div onClick={(e) => toggleMenuCategory(e, item.id)}>
-                        <Cog8ToothIcon className="cursor-pointer w-5 h-5 text-slate-600" />
+                        <Cog8ToothIcon className="cursor-pointer w-5 h-5 text-slate-700" />
                       </div>
                     </div>
 
@@ -657,7 +658,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                                     className="cursor-pointer w-52 flex items-center text-slate-600"
                                   >
                                     <ChevronRightIcon className="cursor-pointer w-3 h-3 text-slate-600 mr-2" />
-                                    <span className="text-lime-600 text-sm font-normal">
+                                    <span className="text-slate-600 text-sm font-normal">
                                       {subcategory.subcategoryName}
                                     </span>
                                   </div>
@@ -667,7 +668,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                                       toggleMenuSub(e, subcategory.id)
                                     }
                                   >
-                                    <Cog8ToothIcon className="cursor-pointer w-5 h-5 text-lime-600" />
+                                    <Cog8ToothIcon className="cursor-pointer w-5 h-5 text-slate-600" />
                                   </div>
                                 </div>
                               )}
