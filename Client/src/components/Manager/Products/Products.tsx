@@ -16,11 +16,13 @@ import { unwrapResult } from '@reduxjs/toolkit';
 import {
   CheckIcon,
   ChevronRightIcon,
-  ClipboardDocumentCheckIcon,
   PencilSquareIcon,
   Square2StackIcon,
 } from '@heroicons/react/24/outline';
 import Button from '../../../ui/Button';
+import { Toaster } from 'sonner';
+import PopUpNotification from '../../../ui/PopUpNotification';
+import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
 
 export interface IProduct {
   id: number;
@@ -90,13 +92,31 @@ const Products: FC = () => {
   const [editedProduct, setEditedProduct] = useState<
     IProduct | null | undefined
   >(null);
-  const [axiosError, setAxiosError] = useState<string | null>(null);
+  // const [axiosError, setAxiosError] = useState<string | null>(null);
   const [searchText, setSearchText] = useState('');
   const [showNew, setShowNew] = useState('');
   const [showDiscounted, setshowDiscounted] = useState('');
   const [withoutIsDiscounted, setwWthoutIsDiscounted] = useState('');
 
-  const [showNotification, setShowNotification] = useState(false);
+  const [showNotificationArticle, setShowNotificationArticle] =
+    useState<boolean>(false);
+
+  //* всплывающие уведомления
+  const [showNotificationAddProduct, setShowNotificationAddProduct] =
+    useState<boolean>(false);
+  const [showNotificationEditProduct, setShowNotificationEditProduct] =
+    useState<boolean>(false);
+
+  const [errorNotification, setErrorNotification] = useState<string | null>(
+    null
+  );
+
+  const [showErrorNotificationAddProduct, setShowErrorNotificationAddProduct] =
+    useState<boolean>(false);
+  const [
+    showErrorNotificationEditProduct,
+    setShowErrorNotificationEditProduct,
+  ] = useState<boolean>(false);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -113,6 +133,39 @@ const Products: FC = () => {
   useEffect(() => {
     dispatch(getSubcategory());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (
+      showNotificationAddProduct ||
+      showErrorNotificationAddProduct ||
+      showNotificationEditProduct ||
+      showErrorNotificationEditProduct
+    ) {
+      const timeoutId = setTimeout(() => {
+        setShowNotificationAddProduct(false);
+        setShowErrorNotificationAddProduct(false);
+        setShowNotificationEditProduct(false);
+        setShowErrorNotificationEditProduct(false);
+      });
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [
+    showNotificationAddProduct,
+    showErrorNotificationAddProduct,
+    showNotificationEditProduct,
+    showErrorNotificationEditProduct,
+  ]);
+
+  useEffect(() => {
+    if (showNotificationArticle) {
+      const notificationTimeout = setTimeout(() => {
+        setShowNotificationArticle(false);
+      }, 3000);
+
+      return () => clearTimeout(notificationTimeout);
+    }
+  }, [showNotificationArticle]);
 
   const itemsPerPage = 30;
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -240,9 +293,9 @@ const Products: FC = () => {
     dispatch(getProducts());
   };
 
-  const resetAxiosError = () => {
-    setAxiosError(null);
-  };
+  // const resetAxiosError = () => {
+  //   setAxiosError(null);
+  // };
 
   const handleSaveAdd = async () => {
     let add = {} as any;
@@ -255,11 +308,15 @@ const Products: FC = () => {
         );
         const result = unwrapResult(resultAction);
         add = result;
-        setAxiosError(null);
+        // setAxiosError(null);
+        setErrorNotification(null);
+        setShowNotificationAddProduct(true);
       }
     } catch (error) {
       console.error('Произошла ошибка при добавлении:', error);
-      setAxiosError(error as string | null);
+      // setAxiosError(error as string | null);
+      setErrorNotification(error as string | null);
+      setShowErrorNotificationAddProduct(true);
       add = error;
     }
     return add;
@@ -276,11 +333,15 @@ const Products: FC = () => {
         );
         const result = unwrapResult(resultAction);
         add = result;
-        setAxiosError(null);
+        // setAxiosError(null);
+        setErrorNotification(null);
+        setShowNotificationEditProduct(true);
       }
     } catch (error) {
       console.error('Произошла ошибка при редактировании:', error);
-      setAxiosError(error as string | null);
+      // setAxiosError(error as string | null);
+      setErrorNotification(error as string | null);
+      setShowErrorNotificationEditProduct(true);
       add = error;
     }
     return add;
@@ -296,38 +357,56 @@ const Products: FC = () => {
       .writeText(text)
       .then(() => {
         console.log('Текст скопирован в буфер обмена:', text);
-        setShowNotification(true);
+        setShowNotificationArticle(true);
       })
       .catch((error) => {
         console.error('Не удалось скопировать текст:', error);
       });
   };
 
-  // //устаревший метод не удалять 
-    // const handleCopyToClipboard = (text: string) => {
-    //   const textarea = document.createElement('textarea');
-    //   textarea.value = text;
-    //   document.body.appendChild(textarea);
-    //   textarea.select();
-    //   document.execCommand('copy');
-    //   document.body.removeChild(textarea);
+  // //устаревший метод не удалять
+  // const handleCopyToClipboard = (text: string) => {
+  //   const textarea = document.createElement('textarea');
+  //   textarea.value = text;
+  //   document.body.appendChild(textarea);
+  //   textarea.select();
+  //   document.execCommand('copy');
+  //   document.body.removeChild(textarea);
 
-    //   console.log('Текст скопирован в буфер обмена:', text);
-    //   setShowNotification(true);
-    // };
-
-  useEffect(() => {
-    if (showNotification) {
-      const notificationTimeout = setTimeout(() => {
-        setShowNotification(false);
-      }, 3000);
-
-      return () => clearTimeout(notificationTimeout);
-    }
-  }, [showNotification]);
+  //   console.log('Текст скопирован в буфер обмена:', text);
+  //   setShowNotificationArticle(true);
+  // };
 
   return (
     <Wrapper>
+      <Toaster position="bottom-left" expand={true} />
+      {showNotificationAddProduct && (
+        <PopUpNotification
+          titleText={'Добавлен новый продукт'}
+          // bodyText={`Наименование акции:`}
+          name={editedProduct?.productName}
+        />
+      )}
+      {showNotificationEditProduct && (
+        <PopUpNotification
+          titleText={'Внесены изменения'}
+          bodyText={`Наименование акции:`}
+          name={editedProduct?.productName}
+        />
+      )}
+      {/* //!уведомления об ошибках */}
+      {showErrorNotificationAddProduct && (
+        <PopUpErrorNotification
+          titleText={'Ошибка'}
+          bodyText={errorNotification}
+        />
+      )}
+      {showErrorNotificationEditProduct && (
+        <PopUpErrorNotification
+          titleText={'Ошибка'}
+          bodyText={errorNotification}
+        />
+      )}
       <ProductSidebar
         categories={categories}
         onCategorySelect={setCurrentCategory}
@@ -337,7 +416,7 @@ const Products: FC = () => {
       />
 
       <div className="p-4">
-        {showNotification && (
+        {showNotificationArticle && (
           <div className="fixed top-24 left-1/2 transform -translate-x-1/2 bg-opacity-75 animate-pulse h-10 w-56 z-10 bg-slate-600 p-4 rounded-md">
             <span
               className="text-slate-100 font-medium flex items-center"
@@ -348,7 +427,7 @@ const Products: FC = () => {
             </span>
           </div>
         )}
-{/* 
+        {/* 
         <h1 className="text-xl text-lime-600 font-medium text-center">
           Продукты
         </h1> */}
@@ -516,7 +595,7 @@ const Products: FC = () => {
                   >
                     <div className="relative">
                       <img
-                       className="h-full w-full object-contain"
+                        className="h-full w-full object-contain"
                         src={`${VITE_URL}${product.photo}`}
                         alt={product.productName}
                       />
@@ -717,8 +796,8 @@ const Products: FC = () => {
             isAddingMode={isAddingMode}
             editedProduct={editedProduct}
             setEditedProduct={setEditedProduct}
-            axiosError={axiosError}
-            resetAxiosError={resetAxiosError}
+            // axiosError={axiosError}
+            // resetAxiosError={resetAxiosError}
           />
         )}
       </div>
