@@ -86,6 +86,35 @@ const Management: FC = () => {
   const [showErrorNotificationOnePass, setShowErrorNotificationOnePass] =
     useState<boolean>(false);
 
+  useEffect(() => {
+    if (
+      showNotificationAdd ||
+      showNotificationEdit ||
+      showNotificationOnePass ||
+      showErrorNotificationAdd ||
+      showErrorNotificationEdit ||
+      showErrorNotificationOnePass
+    ) {
+      const timeoutId = setTimeout(() => {
+        setShowNotificationAdd(false);
+        setShowNotificationEdit(false);
+        setShowNotificationOnePass(false);
+        setShowErrorNotificationAdd(false);
+        setShowErrorNotificationEdit(false);
+        setShowErrorNotificationOnePass(false);
+      });
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [
+    showNotificationAdd,
+    showNotificationEdit,
+    showNotificationOnePass,
+    showErrorNotificationAdd,
+    showErrorNotificationEdit,
+    showErrorNotificationOnePass,
+  ]);
+
   const columnsDefaultName: IColumnsDefaultName[] = [
     { name: 'Фамилия' },
     { name: 'Имя' },
@@ -167,24 +196,29 @@ const Management: FC = () => {
 
   //* редактирование менеджера
   const handleSaveEdit = async (editedManager: IManager): Promise<void> => {
-    try {
-      if (selectedManager) {
-        const resultEdit = await dispatch(
-          editManager({
-            managerId: selectedManager.id,
-            updateManager: editedManager,
-          })
-        );
+    const isConfirmed = window.confirm(
+      'Вы уверены, что хотите внести изменения?'
+    );
+    if (isConfirmed) {
+      try {
+        if (selectedManager) {
+          const resultEdit = await dispatch(
+            editManager({
+              managerId: selectedManager.id,
+              updateManager: editedManager,
+            })
+          );
 
-        unwrapResult(resultEdit);
-        // setModalError(null);
-        closeEditModal();
-        setShowNotificationEdit(true);
+          unwrapResult(resultEdit);
+          // setModalError(null);
+          closeEditModal();
+          setShowNotificationEdit(true);
+        }
+      } catch (error) {
+        console.error('Произошла ошибка при редактировании:', error);
+        setErrorNotification(error as string | null);
+        setShowErrorNotificationEdit(true);
       }
-    } catch (error) {
-      console.error('Произошла ошибка при редактировании:', error);
-      setErrorNotification(error as string | null);
-      setShowErrorNotificationEdit(true);
     }
   };
 
@@ -210,35 +244,6 @@ const Management: FC = () => {
       setShowErrorNotificationOnePass(true);
     }
   };
-
-  useEffect(() => {
-    if (
-      showNotificationAdd ||
-      showNotificationEdit ||
-      showNotificationOnePass ||
-      showErrorNotificationAdd ||
-      showErrorNotificationEdit ||
-      showErrorNotificationOnePass
-    ) {
-      const timeoutId = setTimeout(() => {
-        setShowNotificationAdd(false);
-        setShowNotificationEdit(false);
-        setShowNotificationOnePass(false);
-        setShowErrorNotificationAdd(false);
-        setShowErrorNotificationEdit(false);
-        setShowErrorNotificationOnePass(false);
-      });
-
-      return () => clearTimeout(timeoutId);
-    }
-  }, [
-    showNotificationAdd,
-    showNotificationEdit,
-    showNotificationOnePass,
-    showErrorNotificationAdd,
-    showErrorNotificationEdit,
-    showErrorNotificationOnePass,
-  ]);
 
   return (
     <>

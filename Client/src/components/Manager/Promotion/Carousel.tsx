@@ -2,7 +2,6 @@ import { FC, useEffect, useState } from 'react';
 import Wrapper from '../../../ui/Wrapper';
 import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import { VITE_URL } from '../../../VITE_URL';
-// import Pagination from '../../../ui/Paggination';
 import { isToday, parseISO, isPast } from 'date-fns';
 import { unwrapResult } from '@reduxjs/toolkit';
 import getPromotions from '../../../Redux/thunks/Promotion/getPromotion.api';
@@ -15,15 +14,16 @@ import 'slick-carousel/slick/slick-theme.css';
 import Button from '../../../ui/Button';
 import { PencilSquareIcon } from '@heroicons/react/24/outline';
 import PromotionSidebar from './PromotionSidebar';
-
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { FreeMode, Navigation, Pagination } from 'swiper/modules';
-
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
+import { Toaster } from 'sonner';
+import PopUpNotification from '../../../ui/PopUpNotification';
+import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
 
 export interface IPromotion {
   id: number;
@@ -56,12 +56,49 @@ const Carousel: FC = () => {
   const [editedPromotion, setEditedPromotion] = useState<
     IPromotion | null | undefined
   >(null);
-  const [axiosError, setAxiosError] = useState<string | null>(null);
+
   const [searchText, setSearchText] = useState('');
+
+  const [showNotificationAddPromo, setShowNotificationAddPromo] =
+    useState<boolean>(false);
+  const [showNotificationEditPromo, setShowNotificationEditPromo] =
+    useState<boolean>(false);
+
+  const [errorNotification, setErrorNotification] = useState<string | null>(
+    null
+  );
+
+  const [showErrorNotificationAddPromo, setShowErrorNotificationAddPromo] =
+    useState<boolean>(false);
+  const [showErrorNotificationEditPromo, setShowErrorNotificationEditPromo] =
+    useState<boolean>(false);
 
   useEffect(() => {
     dispatch(getPromotions());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (
+      showNotificationAddPromo ||
+      showErrorNotificationAddPromo ||
+      showNotificationEditPromo ||
+      showErrorNotificationEditPromo
+    ) {
+      const timeoutId = setTimeout(() => {
+        setShowNotificationAddPromo(false);
+        setShowErrorNotificationAddPromo(false);
+        setShowNotificationEditPromo(false);
+        setShowErrorNotificationEditPromo(false);
+      });
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [
+    showNotificationAddPromo,
+    showErrorNotificationAddPromo,
+    showNotificationEditPromo,
+    showErrorNotificationEditPromo,
+  ]);
 
   const itemsPerPage = 30;
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -97,11 +134,10 @@ const Carousel: FC = () => {
   };
 
   const displayedPromotions = filterPromotions().slice(startIndex, endIndex);
-  const totalPages = Math.ceil(filterPromotions().length / itemsPerPage);
 
-  const resetAxiosError = () => {
-    setAxiosError(null);
-  };
+  // const resetAxiosError = () => {
+  //   setErrorNotification(null);
+  // };
 
   const openAddModal = () => {
     setAddingMode(true);
@@ -150,11 +186,13 @@ const Carousel: FC = () => {
         );
         const result = unwrapResult(resultAction);
         add = result;
-        setAxiosError(null);
+        setErrorNotification(null);
+        setShowNotificationAddPromo(true);
       }
     } catch (error) {
       console.error('Произошла ошибка при добавлении:', error);
-      setAxiosError(error as string | null);
+      setErrorNotification(error as string | null);
+      setShowErrorNotificationAddPromo(true);
       add = error;
     }
     return add;
@@ -162,23 +200,32 @@ const Carousel: FC = () => {
 
   const handleSaveEdit = async (editedPromotion: IPromotion) => {
     let add = {} as any;
-    try {
-      if (selectedPromotion) {
-        const resultAction = await dispatch(
-          editPromotion({
-            newInfo: editedPromotion,
-          })
-        );
-        const result = unwrapResult(resultAction);
-        add = result;
-        setAxiosError(null);
+
+    const isConfirmed = window.confirm(
+      'Вы уверены, что хотите внести изменения?'
+    );
+
+    if (isConfirmed) {
+      try {
+        if (selectedPromotion) {
+          const resultAction = await dispatch(
+            editPromotion({
+              newInfo: editedPromotion,
+            })
+          );
+          const result = unwrapResult(resultAction);
+          add = result;
+          setErrorNotification(null);
+          setShowNotificationEditPromo(true);
+        }
+      } catch (error) {
+        console.error('Произошла ошибка при редактировании:', error);
+        setErrorNotification(error as string | null);
+        setShowErrorNotificationEditPromo(true);
+        add = error;
       }
-    } catch (error) {
-      console.error('Произошла ошибка при редактировании:', error);
-      setAxiosError(error as string | null);
-      add = error;
+      return add;
     }
-    return add;
   };
 
   const reverseDate = (dateString: string): string => {
@@ -188,9 +235,41 @@ const Carousel: FC = () => {
 
   return (
     <Wrapper>
+      <Toaster position="bottom-left" expand={true} />
+      {showNotificationAddPromo && (
+        <PopUpNotification
+          titleText={'Акция создана'}
+          bodyText={`Наименование акции:`}
+          name={editedPromotion?.title}
+        />
+      )}
+      {showNotificationEditPromo && (
+        <PopUpNotification
+          titleText={'Внесены изменения'}
+          bodyText={`Наименование акции:`}
+          name={editedPromotion?.title}
+        />
+      )}
+
+      {/* //!уведомления об ошибках */}
+      {showErrorNotificationAddPromo && (
+        <PopUpErrorNotification
+          titleText={'Ошибка'}
+          bodyText={errorNotification}
+        />
+      )}
+      {showErrorNotificationEditPromo && (
+        <PopUpErrorNotification
+          titleText={'Ошибка'}
+          bodyText={errorNotification}
+        />
+      )}
+
       <PromotionSidebar />
       <div className="p-4">
-        <h1 className="text-xl text-lime-600 font-medium text-center mb-2">Акции в карусели</h1>
+        <h1 className="text-xl text-lime-600 font-medium text-center mb-2">
+          Акции в карусели
+        </h1>
 
         <div className="col-span-full mb-4">
           <div className="flex items-center justify-between">
@@ -423,12 +502,6 @@ const Carousel: FC = () => {
         )}
       </div>
 
-      {/* <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        /> */}
-
       {isModalOpen && (selectedPromotion || isAddingMode) && (
         <PromotionsModal
           isOpen={isModalOpen}
@@ -440,8 +513,8 @@ const Carousel: FC = () => {
           isAddingMode={isAddingMode}
           editedPromotion={editedPromotion}
           setEditedPromotion={setEditedPromotion}
-          axiosError={axiosError}
-          resetAxiosError={resetAxiosError}
+          errorNotification={errorNotification}
+          // resetAxiosError={resetAxiosError}
         />
       )}
     </Wrapper>

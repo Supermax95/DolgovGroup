@@ -98,21 +98,21 @@ const ManagementModal: FC<ManagersModalProps> = ({
   // };
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const isConfirmed = window.confirm(
-      'Вы уверены, что хотите внести изменения?'
-    );
-    if (isConfirmed) {
-      try {
-        if (isAddingMode) {
-          onSaveAdd(managerToSave);
-        } else {
-          onSaveEdit(managerToSave);
-        }
-      } catch (error) {
-        console.error('Произошла ошибка при сохранении:', error);
+    // const isConfirmed = window.confirm(
+    //   'Вы уверены, что хотите внести изменения?'
+    // );
+    // if (isConfirmed) {
+    try {
+      if (isAddingMode) {
+        onSaveAdd(managerToSave);
+      } else {
+        onSaveEdit(managerToSave);
       }
+    } catch (error) {
+      console.error('Произошла ошибка при сохранении:', error);
     }
   };
+  // };
 
   const handleDelete = async () => {
     const isConfirmed = window.confirm(
