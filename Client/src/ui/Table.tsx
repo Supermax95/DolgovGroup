@@ -2,8 +2,6 @@ import { FC } from 'react';
 import Button from './Button';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/20/solid';
 import {
-  BuildingStorefrontIcon,
-  DocumentTextIcon,
   PencilSquareIcon,
   PlusCircleIcon,
   UserGroupIcon,
