@@ -205,7 +205,6 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
     const isConfirmed = window.confirm(
       'Вы уверены, что хотите удалить изображение?'
     );
-    console.log('isConfirmed', isConfirmed);
 
     if (isConfirmed && editedPromotion && editedPromotion.id) {
       const promoId = editedPromotion.id;
@@ -439,15 +438,17 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
                     >
                       Выберите файл
                     </label>
-                    {editedPromotion.photo !== '/uploads/noPhoto/null.jpeg' && (
-                      <button
-                        type="button"
-                        onClick={handleDeletePhoto}
-                        className="cursor-pointer bg-red-500 text-white font-bold py-2 px-4 rounded inline-block"
-                      >
-                        Сброс изображения
-                      </button>
-                    )}
+                    {!isAddingMode &&
+                      editedPromotion.photo !==
+                        '/uploads/noPhoto/null.jpeg' && (
+                        <button
+                          type="button"
+                          onClick={handleDeletePhoto}
+                          className="cursor-pointer bg-red-500 text-white font-bold py-2 px-4 rounded inline-block"
+                        >
+                          Сброс изображения
+                        </button>
+                      )}
                   </div>
                 </div>
               </div>

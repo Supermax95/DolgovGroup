@@ -52,6 +52,7 @@ const Nocarousel: FC = () => {
   // const [axiosError, setAxiosError] = useState<string | null>(null);
   const [searchText, setSearchText] = useState('');
 
+  //* всплывающие уведомления
   const [showNotificationAddPromo, setShowNotificationAddPromo] =
     useState<boolean>(false);
   const [showNotificationEditPromo, setShowNotificationEditPromo] =
