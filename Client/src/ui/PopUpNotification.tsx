@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 
 interface IPopUpNotification {
   email?: string | undefined;
+  name?: string | undefined;
   titleText?: React.ReactNode | undefined;
   bodyText?: React.ReactNode | undefined;
 }
@@ -11,6 +12,7 @@ interface IPopUpNotification {
 const PopUpNotification: FC<IPopUpNotification> = ({
   titleText,
   email,
+  name,
   bodyText,
 }) => {
   useEffect(() => {
@@ -20,7 +22,8 @@ const PopUpNotification: FC<IPopUpNotification> = ({
           <div className="flex flex-col justify-start w-72">
             <p className="font-medium text-xs text-slate-800">{titleText}</p>
             <p className="text-xs font-normal text-slate-600 mt-2">
-              {bodyText} <span className="text-slate-800 ext-xs">{email}</span>
+              {bodyText}{' '}
+              <span className="text-slate-800 ext-xs">{email || name}</span>
             </p>
             <button
               className="absolute py-1 right-1 top-2"
@@ -34,7 +37,7 @@ const PopUpNotification: FC<IPopUpNotification> = ({
       // { duration: Infinity }
       { duration: 7000 }
     );
-  }, [titleText, email, bodyText]);
+  }, [titleText, email, name, bodyText]);
 
   return null;
 };

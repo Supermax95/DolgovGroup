@@ -1,6 +1,5 @@
 import React, { useState, useEffect, FC } from 'react';
 import Field from '../../../ui/Field';
-import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import ToggleShowPassword from '../../../ui/ToggleShowPassword';
 import Button from '../../../ui/Button';
@@ -39,7 +38,6 @@ interface PasswordChangeData {
 }
 
 const ProfileAdmin: FC = () => {
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const adminProfile = useAppSelector<{
@@ -102,6 +100,41 @@ const ProfileAdmin: FC = () => {
   const [showErrorNotificationPass, setShowErrorNotificationPass] =
     useState<boolean>(false);
 
+  useEffect(() => {
+    if (
+      showNotificationFullname ||
+      showNotificationEmail ||
+      showNotificationPhone ||
+      showNotificationPass ||
+      showErrorNotificationEmail ||
+      showErrorNotificationFullname ||
+      showErrorNotificationPhone ||
+      showErrorNotificationPass
+    ) {
+      const timeoutId = setTimeout(() => {
+        setShowNotificationFullname(false);
+        setShowNotificationEmail(false);
+        setShowNotificationPhone(false);
+        setShowNotificationPass(false);
+        setShowErrorNotificationFullname(false);
+        setShowErrorNotificationEmail(false);
+        setShowErrorNotificationPhone(false);
+        setShowErrorNotificationPass(false);
+      });
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [
+    showNotificationFullname,
+    showNotificationEmail,
+    showNotificationPhone,
+    showNotificationPass,
+    showErrorNotificationEmail,
+    showErrorNotificationFullname,
+    showErrorNotificationPhone,
+    showErrorNotificationPass,
+  ]);
+
   // ! предзаполняет поля инпутов
   //* из-за него в placeholder={data.newLastName} требуется такая запись, а если бы было из локального стора,
   //* то placeholder=''
@@ -160,6 +193,7 @@ const ProfileAdmin: FC = () => {
     e: React.FormEvent
   ): Promise<void> => {
     e.preventDefault();
+
     const isConfirmed = window.confirm(
       'Вы уверены, что хотите внести изменения?'
     );
@@ -295,47 +329,12 @@ const ProfileAdmin: FC = () => {
           setShowNotificationPass(true);
         } catch (error) {
           console.error('Ошибка обновления данных:', error);
-          setShowErrorNotificationPass(true);
           setErrorNotification(error as string | null);
+          setShowErrorNotificationPass(true);
         }
       }
     }
   };
-
-  useEffect(() => {
-    if (
-      showNotificationFullname ||
-      showNotificationEmail ||
-      showNotificationPhone ||
-      showNotificationPass ||
-      showErrorNotificationEmail ||
-      showErrorNotificationFullname ||
-      showErrorNotificationPhone ||
-      showErrorNotificationPass
-    ) {
-      const timeoutId = setTimeout(() => {
-        setShowNotificationFullname(false);
-        setShowNotificationEmail(false);
-        setShowNotificationPhone(false);
-        setShowNotificationPass(false);
-        setShowErrorNotificationFullname(false);
-        setShowErrorNotificationEmail(false);
-        setShowErrorNotificationPhone(false);
-        setShowErrorNotificationPass(false);
-      });
-
-      return () => clearTimeout(timeoutId);
-    }
-  }, [
-    showNotificationFullname,
-    showNotificationEmail,
-    showNotificationPhone,
-    showNotificationPass,
-    showErrorNotificationEmail,
-    showErrorNotificationFullname,
-    showErrorNotificationPhone,
-    showErrorNotificationPass,
-  ]);
 
   const inputFieldsLastName = [
     {
@@ -480,7 +479,7 @@ const ProfileAdmin: FC = () => {
       placeholder: '',
       autoComplete: 'off',
       htmlFor: 'confirmPassword',
-      title: 'Повторите пароль',
+      title: 'Повторите новый пароль',
       value: data.confirmPassword,
       onChange: (value: string) =>
         handleFieldChangeProfileManager('confirmPassword', value),

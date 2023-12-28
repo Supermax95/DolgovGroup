@@ -5,10 +5,14 @@ import InputModal, { InputField } from '../../../ui/InputModal';
 import Modal from '../../../ui/Modal';
 import { IPromotion } from './Promotions';
 import { VITE_URL } from '../../../VITE_URL';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import deletePromotion from '../../../Redux/thunks/Promotion/deletePromotion.api';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { Toaster } from 'sonner';
+import PopUpNotification from '../../../ui/PopUpNotification';
+import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
+import { unwrapResult } from '@reduxjs/toolkit';
 import deletePromoPhoto from '../../../Redux/thunks/Promotion/deletePromoPhoto.api';
 
 interface Promotion {
@@ -33,8 +37,8 @@ interface PromotionsModalProps {
   setEditedPromotion: React.Dispatch<
     React.SetStateAction<Promotion | null | undefined>
   >;
-  axiosError: string | null;
-  resetAxiosError: () => void;
+  // axiosError: string | null;
+  // resetAxiosError: () => void;
 }
 
 const PromotionsModal: FC<PromotionsModalProps> = ({
@@ -47,13 +51,25 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
   isAddingMode,
   editedPromotion,
   setEditedPromotion,
-  axiosError,
-  resetAxiosError,
+  // axiosError,
+  // resetAxiosError,
 }) => {
   const id = useAppSelector((state) => state.promotionSlice.postId);
   const dispatch = useAppDispatch();
   const [isUpload, setUpload] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
+
+  //! message не выводится с бэка в случае положительного действия
+  //! ошибка тоже не выгружается с бэка, т.к. ошибку он не допускает пока вовсе. Не знаю, обрабатывает ли вообще
+  // const [messNotification, setMessNotification] = useState<string | null>(null);
+  // const [errorNotification, setErrorNotification] = useState<string | null>(
+  //   null
+  // );
+
+  const [showNotificationPicture, setShowNotificationPicture] =
+    useState<boolean>(false);
+  // const [showErrorNotificationPicture, setErrorShowNotificationPicture] =
+  //   useState<boolean>(false);
 
   useEffect(() => {
     if (promotion) {
@@ -63,9 +79,20 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
 
   const modalTitle = isAddingMode ? 'Новая акция' : 'Редактирование акции';
 
+  useEffect(() => {
+    if (showNotificationPicture) {
+      const timeoutId = setTimeout(() => {
+        setShowNotificationPicture(false);
+        // setErrorShowNotificationPicture(false);
+      });
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [showNotificationPicture]);
+
   const handleCancel = () => {
     setEditedPromotion(undefined);
-    resetAxiosError();
+    // resetAxiosError();
     onCloseEditModal();
     onCloseAddModal();
   };
@@ -80,6 +107,7 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
       formData.append('file', file);
 
       try {
+        setShowNotificationPicture(true);
         await axios.put(`${VITE_URL}/admin/promotionsPhoto/${id}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -94,6 +122,8 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
         }
       } catch (error) {
         console.error('Ошибка при загрузке файла:', error);
+        // setErrorNotification(error as string | null);
+        // setErrorShowNotificationPicture(true);
       }
     }
   };
@@ -151,10 +181,15 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
   };
 
   const handleDelete = () => {
-    if (editedPromotion && editedPromotion.id) {
-      const promotionId = editedPromotion.id;
-      dispatch(deletePromotion(promotionId));
-      onCloseEditModal();
+    const isConfirmed = window.confirm('Вы уверены, что хотите удалить акцию?');
+    if (isConfirmed && editedPromotion && editedPromotion.id) {
+      try {
+        const promotionId = editedPromotion.id;
+        dispatch(deletePromotion(promotionId));
+        onCloseEditModal();
+      } catch (error) {
+        console.error('Произошла ошибка при удалении:', error);
+      }
     }
   };
 
@@ -193,6 +228,23 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
 
   return (
     <Wrapper>
+      <Toaster position="bottom-left" expand={true} />
+      {showNotificationPicture && (
+        <PopUpNotification
+          titleText={'Обложка акции загружена'}
+          bodyText={`Наименование акции:`}
+          name={editedPromotion.title}
+        />
+      )}
+
+      {/* //!уведомления об ошибках */}
+      {/* {showErrorNotificationPicture && (
+        <PopUpErrorNotification
+          titleText={'Ошибка'}
+          bodyText={errorNotification}
+        />
+      )} */}
+
       <form onSubmit={handleFormSubmit}>
         <Modal
           modalTitle={modalTitle}
@@ -201,11 +253,11 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
           onCancelСlick={handleCancel}
           isUpload={isUpload}
         >
-          {axiosError && (
+          {/* {axiosError && (
             <div className="text-sm text-rose-400 text-center mt-2">
               {axiosError}
             </div>
-          )}
+          )} */}
 
           {currentStep === 1 && (
             <InputModal

@@ -1,14 +1,12 @@
 import { FC, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import Wrapper from '../../../ui/Wrapper';
-import Table from '../../../ui/Table';
 import getLaws from '../../../Redux/thunks/Document/getLaws.api';
 import editLaw from '../../../Redux/thunks/Document/editLaw.api';
 import { unwrapResult } from '@reduxjs/toolkit';
 import addLaw from '../../../Redux/thunks/Document/addLaw.api';
 import Editor from './Editor';
 import SidebarLaw from '../../../ui/SidebarLaw';
-import Button from '../../../ui/Button';
 
 export interface ILaw {
   id: number;
@@ -18,12 +16,6 @@ export interface ILaw {
   dateFrom: string;
   updatedAt: Date | string;
 }
-
-interface IColumnsDefaultName {
-  name: string;
-}
-
-type IColumnsListDb = 'id' | 'title' | 'dateFrom' | 'updatedAt';
 
 const Law: FC = () => {
   const dispatch = useAppDispatch();
@@ -35,24 +27,9 @@ const Law: FC = () => {
   const [axiosError, setAxiosError] = useState<string | null>(null);
   const [currentStep, setCurrentStep] = useState(1);
 
-  const columnsDefaultName: IColumnsDefaultName[] = [
-    { name: 'Название документа' },
-    { name: 'От какого числа' },
-    { name: 'Последнее обновление' },
-  ];
-
-  const columnsListDb: IColumnsListDb[] = [
-    'id',
-    'title',
-    'dateFrom',
-    'updatedAt',
-  ];
-
   useEffect(() => {
     dispatch(getLaws());
   }, [dispatch]);
-
-  const itemsPerPage = 10;
 
   const openAddEditor = (): void => {
     setCurrentStep(1);
@@ -61,7 +38,7 @@ const Law: FC = () => {
       id: 0,
       title: '',
       description: '',
-      documentLink:'',
+      documentLink: '',
       dateFrom: '',
       updatedAt: new Date().toLocaleDateString('ru-RU', {
         day: '2-digit',
@@ -150,8 +127,6 @@ const Law: FC = () => {
     }),
   }));
 
-  const lawTitles = formattedLaws.map((law) => law.title);
-
   return (
     <Wrapper>
       <SidebarLaw
@@ -161,15 +136,6 @@ const Law: FC = () => {
         onEditClick={openEditEditor}
       />
 
-      {/* <Table
-          title="Правовые документы"
-          columnsDefaultName={columnsDefaultName}
-          itemsPerPage={itemsPerPage}
-          columnsListDb={columnsListDb}
-          onAddClick={openAddEditor}
-          onEditClick={openEditEditor}
-          data={formattedLaws}
-        /> */}
       <div className="p-4">
         {/* <h1 className="text-xl text-lime-600 font-medium mb-4 text-center">
           Правовая информация
@@ -189,9 +155,9 @@ const Law: FC = () => {
             resetAxiosError={resetAxiosError}
             currentStep={currentStep}
             setCurrentStep={setCurrentStep}
-            setAddingMode = {setAddingMode}
-            setSelectedLaw = {setSelectedLaw}
-            openAddEditor = {openAddEditor}
+            setAddingMode={setAddingMode}
+            setSelectedLaw={setSelectedLaw}
+            openAddEditor={openAddEditor}
           />
         )}
       </div>

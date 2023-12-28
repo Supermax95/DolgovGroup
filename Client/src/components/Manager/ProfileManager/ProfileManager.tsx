@@ -82,6 +82,35 @@ const ProfileManager: FC = () => {
   const [showErrorNotificationPass, setShowErrorNotificationPass] =
     useState<boolean>(false);
 
+  useEffect(() => {
+    if (
+      showNotificationFullname ||
+      showNotificationPhone ||
+      showNotificationPass ||
+      showErrorNotificationFullname ||
+      showErrorNotificationPhone ||
+      showErrorNotificationPass
+    ) {
+      const timeoutId = setTimeout(() => {
+        setShowNotificationFullname(false);
+        setShowNotificationPhone(false);
+        setShowNotificationPass(false);
+        setShowErrorNotificationFullname(false);
+        setShowErrorNotificationPhone(false);
+        setShowErrorNotificationPass(false);
+      });
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [
+    showNotificationFullname,
+    showNotificationPhone,
+    showNotificationPass,
+    showErrorNotificationFullname,
+    showErrorNotificationPhone,
+    showErrorNotificationPass,
+  ]);
+
   const [data, setData] = useState<IDate>({
     newLastName: managerProfile.lastName || '',
     newFirstName: managerProfile.firstName || '',
@@ -252,35 +281,6 @@ const ProfileManager: FC = () => {
       }
     }
   };
-
-  useEffect(() => {
-    if (
-      showNotificationFullname ||
-      showNotificationPhone ||
-      showNotificationPass ||
-      showErrorNotificationFullname ||
-      showErrorNotificationPhone ||
-      showErrorNotificationPass
-    ) {
-      const timeoutId = setTimeout(() => {
-        setShowNotificationFullname(false);
-        setShowNotificationPhone(false);
-        setShowNotificationPass(false);
-        setShowErrorNotificationFullname(false);
-        setShowErrorNotificationPhone(false);
-        setShowErrorNotificationPass(false);
-      });
-
-      return () => clearTimeout(timeoutId);
-    }
-  }, [
-    showNotificationFullname,
-    showNotificationPhone,
-    showNotificationPass,
-    showErrorNotificationFullname,
-    showErrorNotificationPhone,
-    showErrorNotificationPass,
-  ]);
 
   const inputFieldsLastName = [
     {
