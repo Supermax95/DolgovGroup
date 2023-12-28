@@ -6,22 +6,20 @@ interface ResponseData {
   id: number;
   title: string;
   description: string;
-  dateStart: string;
-  dateEnd: string;
-  photo: string;
-  carousel: boolean;
-  invisible: boolean;
+  documentLink: string;
+  dateFrom: string;
+  updatedAt: Date;
 }
 
 type ArrayResponseData = Array<ResponseData>;
 
-const deletePromotion = createAsyncThunk<ArrayResponseData, number>(
-  'admin/deletePromotion',
+const deleteDocumentLaw = createAsyncThunk<ArrayResponseData, number>(
+  'admin/deleteDocumentLaw',
 
-  async (promotionId) => {
+  async (lawId) => {
     try {
       const response: AxiosResponse = await axios.delete(
-        `${VITE_URL}/admin/promotions/${promotionId}`
+        `${VITE_URL}/admin/laws/doc/${lawId}`
       );
       return response.data;
     } catch (error) {
@@ -31,4 +29,4 @@ const deletePromotion = createAsyncThunk<ArrayResponseData, number>(
   }
 );
 
-export default deletePromotion;
+export default deleteDocumentLaw;

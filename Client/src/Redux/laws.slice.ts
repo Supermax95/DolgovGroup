@@ -3,6 +3,7 @@ import addLaw from "./thunks/Document/addLaw.api";
 import deleteLaw from "./thunks/Document/deleteLaw.api";
 import editLaw from "./thunks/Document/editLaw.api";
 import getLaws from "./thunks/Document/getLaws.api";
+import deleteDocumentLaw from './thunks/Document/deleteDocumentLaw.api';
 
 interface Law {
 id: number;
@@ -89,6 +90,18 @@ const initialState: LawState = {
         .addCase(addLaw.rejected, (state, action) => {
           state.isLoading = false;
           state.error = action.error.message || 'Произошла ошибка при добавлении';
+        })
+        .addCase(deleteDocumentLaw.pending, (state) => {
+          state.isLoading = true;
+          state.error = null;
+        })
+        .addCase(deleteDocumentLaw.fulfilled, (state, action) => {
+          state.isLoading = false;
+          state.data = action.payload;
+        })
+        .addCase(deleteDocumentLaw.rejected, (state, action) => {
+          state.isLoading = false;
+          state.error = action.error.message || 'Произошла ошибка при удалении файла';
         });
     },
   });

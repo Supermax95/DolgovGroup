@@ -157,4 +157,53 @@ router.put('/admin/laws', async (req, res) => {
     });
   }
 });
+router.delete('/admin/laws/doc/:id', async (req, res) => {
+  const lawId = req.params.id;
+
+  try {
+    const law = await Law.findByPk(lawId);
+
+    if (law && law.documentLink) {
+      const filePath = path.join(__dirname, '..', '..', law.documentLink);
+
+      if (law.documentLink !== null) {
+        const fileExists = await fsPromises
+          .access(filePath)
+          .then(() => true)
+          .catch(() => false);
+
+        if (fileExists) {
+          await fsPromises.unlink(filePath);
+          console.log(`Файл ${filePath} успешно удален`);
+        } else {
+          console.log(`Файл ${filePath} не существует`);
+        }
+      }
+
+      await Law.update(
+        { documentLink: null },
+        { where: { id: lawId } }
+      );
+
+      console.log(`Документ с ID ${lawId} успешно удалена`);
+
+      const updatedLaws = await Law.findAll({
+        order: [['title', 'ASC']],
+        raw: true,
+      });
+  
+
+      res.json(updatedLaws);
+    } else {
+      console.log('Продукт или его картинка не найдены');
+      res.status(404).json({ error: 'Продукт или его картинка не найдены' });
+    }
+  } catch (error) {
+    console.error('Ошибка при удалении картинки продукта', error);
+    res.status(500).json({
+      error: 'Произошла ошибка на сервере при удалении картинки продукта',
+    });
+  }
+});
+
 module.exports = router;
