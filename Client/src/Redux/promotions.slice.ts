@@ -11,6 +11,7 @@ interface Promotion {
   description: string;
   dateStart: string;
   dateEnd: string;
+  photo: string;
   carousel: boolean;
   invisible: boolean;
 }

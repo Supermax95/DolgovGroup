@@ -6,9 +6,10 @@ import axios, { AxiosResponse } from 'axios';
 import getLaws from '../../../Redux/thunks/Document/getLaws.api';
 import 'quill/dist/quill.snow.css';
 import deleteLaw from '../../../Redux/thunks/Document/deleteLaw.api';
-import { DocumentTextIcon, EyeIcon } from '@heroicons/react/24/outline';
+import { DocumentTextIcon, EyeIcon, XCircleIcon } from '@heroicons/react/24/outline';
 import Button from '../../../ui/Button';
 import ReactQuill from 'react-quill';
+import deleteDocumentLaw from '../../../Redux/thunks/Document/deleteDocumentLaw.api';
 
 interface LawEditorProps {
   isOpen: boolean;
@@ -174,6 +175,13 @@ const Editor: FC<LawEditorProps> = ({
     }
   };
 
+  const handleDeleteDocument = () => {
+    if (editedLaw && editedLaw.id) {
+      const lawId = editedLaw.id;
+      dispatch(deleteDocumentLaw(lawId));
+    }
+  };
+
   // const handleDelete = async () => {
   //   if (editedLaw && editedLaw.id) {
   //     const lawId = editedLaw.id;
@@ -318,6 +326,13 @@ const Editor: FC<LawEditorProps> = ({
                         aria-hidden="true"
                       />
                     </button>
+                    <button
+                      type="button"
+                      onClick={handleDeleteDocument}
+                      className="cursor-pointer"
+                    > Удалить файл
+                      <XCircleIcon className="h-4 w-4" aria-hidden="true" />
+                    </button>
                   </div>
                 ) : (
                   <div className="text-gray-500 dark:text-gray-300">
@@ -388,13 +403,13 @@ const Editor: FC<LawEditorProps> = ({
                 <div className="px-4 sm:px-0 text-center">
                   <h1 className="text-xl font-bold mb-4">
                     Форма загрузки документа
-                  <span className="block mt-2 text-xs text-gray-500">
-                  Загрузите документ в формате PDF или DOCX.
-                  </span>
-                  <span className="block mt-2 text-sm text-gray-500">
-                    Если документ загружать не нужно, вы можете пропустить этот
-                    шаг
-                  </span>
+                    <span className="block mt-2 text-xs text-gray-500">
+                      Загрузите документ в формате PDF или DOCX.
+                    </span>
+                    <span className="block mt-2 text-sm text-gray-500">
+                      Если документ загружать не нужно, вы можете пропустить
+                      этот шаг
+                    </span>
                   </h1>
                   <div className="mt-6">
                     <div className="mb-4">

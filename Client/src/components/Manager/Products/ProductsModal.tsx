@@ -433,7 +433,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
       required: true,
     },
   ];
-
+  
   return (
     <Wrapper>
       <form onSubmit={handleFormSubmit}>
@@ -626,13 +626,15 @@ const ProductsModal: FC<ProductsModalProps> = ({
                       >
                         Выберите файл
                       </label>
-                      <button
-                        type="button"
-                        onClick={handleDeletePhoto}
-                        className="cursor-pointer bg-red-500 text-white font-bold py-2 px-4 rounded inline-block"
-                      >
-                        Сброс изображения
-                      </button>
+                      {editedProduct.photo !== '/uploads/noPhoto/null.jpeg' && (
+                        <button
+                          type="button"
+                          onClick={handleDeletePhoto}
+                          className="cursor-pointer bg-red-500 text-white font-bold py-2 px-4 rounded inline-block"
+                        >
+                          Сброс изображения
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>

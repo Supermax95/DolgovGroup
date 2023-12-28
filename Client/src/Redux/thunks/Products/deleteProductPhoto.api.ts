@@ -30,7 +30,6 @@ const deleteProductPhoto = createAsyncThunk<ArrayResponseData, number>(
       const response: AxiosResponse = await axios.delete(
         `${VITE_URL}/admin/products/photo/${productId}`
       );
-      console.log('deleteProductPhoto', response.data);
       return response.data;
     } catch (error) {
       console.error('Error:', error);
