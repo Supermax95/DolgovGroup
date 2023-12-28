@@ -17,13 +17,13 @@ const Search: FC<SearchProps> = ({ onFilter }) => {
   };
 
   return (
-    <div className="w-full mr-4">
+    <div className="w-full main flex flex-col ">
       <form
         onSubmit={handleSearch}
-        className="relative flex w-full items-center justify-between rounded-md border shadow-md"
+        className="relative justify-between flex items-center text-slate-600 text-sm font-normal  cursor-pointer shadow-full"
       >
         <svg
-          className="absolute left-2 block h-5 w-5 text-slate-400"
+          className="absolute left-5 block h-5 w-5 text-slate-400"
           xmlns="http://www.w3.org/2000/svg"
           width="24"
           height="24"
@@ -40,7 +40,7 @@ const Search: FC<SearchProps> = ({ onFilter }) => {
         <input
           type="name"
           name="search"
-          className="h-10 w-full rounded-md py-4 pr-4 pl-12 outline-none focus:ring-2 focus:ring-orange-300"
+          className="h-10 w-full border rounded-full overflow-hidden select-none py-4 pr-4 pl-12 outline-none focus:ring-1 focus:ring-orange-300"
           placeholder="Поиск"
           value={searchText}
           autoComplete="off"
