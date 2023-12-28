@@ -13,6 +13,7 @@ interface IInputModal {
   containerClassName?: string;
   codeSend?: () => void;
   activationSend?: () => void;
+  modalTitle?: string;
 }
 
 export interface InputField {
@@ -42,6 +43,7 @@ const InputModal: FC<IInputModal> = ({
   containerClassName = 'py-8 text-base leading-6 space-y-4 text-slate-700 sm:text-lg sm:leading-7',
   codeSend,
   activationSend,
+  modalTitle,
 }) => {
   return (
     <div className={`${containerClassName}`}>
@@ -87,7 +89,7 @@ const InputModal: FC<IInputModal> = ({
                 {field.title}
               </label>
             </>
-          ) : field.id === 'isActivated' ? (
+          ) :   field.id === 'isActivated' ? (
             field.value ? (
               <div className="flex justify-between">
                 <div className="flex justify-start items-center">
@@ -100,17 +102,21 @@ const InputModal: FC<IInputModal> = ({
                   </h1>
                 </div>
                 <div className="">
-                  <Button
-                    type="button"
-                    title="Отправить код"
-                    styleCSSButton={
-                      'relative inline-flex items-center justify-center p-0.5 mb-0 mr-0 overflow-hidden text-sm font-medium text-slate-700 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 hover:text-white'
-                    }
-                    onClick={codeSend}
-                    styleCSSSpan={
-                      'w-44 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
-                    }
-                  />
+                  {modalTitle === 'Редактирование анкеты клиента' ? (
+                    null 
+                  ) : (
+                    <Button
+                      type="button"
+                      title="Отправить код"
+                      styleCSSButton={
+                        'relative inline-flex items-center justify-center p-0.5 mb-0 mr-0 overflow-hidden text-sm font-medium text-slate-700 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 hover:text-white'
+                      }
+                      onClick={codeSend}
+                      styleCSSSpan={
+                        'w-44 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
+                      }
+                    />
+                  )}
                 </div>
               </div>
             ) : (
@@ -139,8 +145,7 @@ const InputModal: FC<IInputModal> = ({
                 </div>
               </div>
             )
-          ) : field.disabled === true ? (
-            <>
+          ) : field.disabled === true ? (            <>
               <input
                 onChange={(e) => field.onChange?.(e.target.value)}
                 id={field.id}

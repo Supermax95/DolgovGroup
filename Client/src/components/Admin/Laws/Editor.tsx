@@ -388,11 +388,14 @@ const Editor: FC<LawEditorProps> = ({
                 <div className="px-4 sm:px-0 text-center">
                   <h1 className="text-xl font-bold mb-4">
                     Форма загрузки документа
-                  </h1>
+                  <span className="block mt-2 text-xs text-gray-500">
+                  Загрузите документ в формате PDF или DOCX.
+                  </span>
                   <span className="block mt-2 text-sm text-gray-500">
                     Если документ загружать не нужно, вы можете пропустить этот
                     шаг
                   </span>
+                  </h1>
                   <div className="mt-6">
                     <div className="mb-4">
                       <input

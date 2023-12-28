@@ -10,7 +10,7 @@ import {
 } from '@heroicons/react/24/outline';
 
 interface ITable {
-  title: string;
+  title?: string;
   columnsDefaultName: { name: string }[];
   data?: any[] | undefined;
   columnsListDb: string[];

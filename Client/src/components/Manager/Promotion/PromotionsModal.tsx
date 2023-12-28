@@ -13,6 +13,7 @@ import { Toaster } from 'sonner';
 import PopUpNotification from '../../../ui/PopUpNotification';
 import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
 import { unwrapResult } from '@reduxjs/toolkit';
+import deletePromoPhoto from '../../../Redux/thunks/Promotion/deletePromoPhoto.api';
 
 interface Promotion {
   id: number;
@@ -190,6 +191,14 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
         console.error('Произошла ошибка при удалении:', error);
       }
     }
+  };
+
+  const handleDeletePhoto = () => {
+    if (editedPromotion && editedPromotion.id) {
+      const promoId = editedPromotion.id;
+      dispatch(deletePromoPhoto(promoId));
+    }
+    onCloseEditModal();
   };
 
   if (!isOpen || !editedPromotion) {
@@ -384,27 +393,41 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
             <div className="container mx-auto mt-8 p-8 max-w-4xl justify-center items-center flex-col block rounded-lg bg-white shadow-md dark:bg-neutral-700">
               <div className="px-4 sm:px-0 text-center">
                 <h1 className="text-xl font-bold mb-4">
-                  Форма загрузки фотографии акции
+                  Форма загрузки изображения
+                  <span className="block mt-2 text-xs text-gray-500">
+                    Загрузите документ в формате IMG,PNG,WEBP или JPEG.
+                    <br />
+                    Для карусели используйте формат 1280*720px
+                    <br />
+                    Для карточек 800*800px
+                  </span>
                 </h1>
                 <span className="block mt-2 text-sm text-gray-500">
                   Если фотографию акции менять не нужно, вы можете пропустить
                   этот шаг
                 </span>
                 <div className="mt-6">
-                  <div className="mb-4">
+                  <div className="mb-4 space-x-4">
                     <input
                       type="file"
                       id="fileInput"
-                      name="promotionPhoto"
+                      name="productPhoto"
                       className="hidden"
                       onChange={handleFileInputChange}
                     />
                     <label
                       htmlFor="fileInput"
-                      className="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+                      className="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded inline-block"
                     >
                       Выберите файл
                     </label>
+                    <button
+                      type="button"
+                      onClick={handleDeletePhoto}
+                      className="cursor-pointer bg-red-500 text-white font-bold py-2 px-4 rounded inline-block"
+                    >
+                      Сброс изображения
+                    </button>
                   </div>
                 </div>
               </div>
