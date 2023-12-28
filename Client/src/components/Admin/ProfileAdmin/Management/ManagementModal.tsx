@@ -98,21 +98,21 @@ const ManagementModal: FC<ManagersModalProps> = ({
   // };
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // const isConfirmed = window.confirm(
-    //   'Вы уверены, что хотите внести изменения?'
-    // );
-    // if (isConfirmed) {
     try {
       if (isAddingMode) {
         onSaveAdd(managerToSave);
       } else {
-        onSaveEdit(managerToSave);
+        const isConfirmed = window.confirm(
+          'Вы уверены, что хотите внести изменения?'
+        );
+        if (isConfirmed) {
+          onSaveEdit(managerToSave);
+        }
       }
     } catch (error) {
       console.error('Произошла ошибка при сохранении:', error);
     }
   };
-  // };
 
   const handleDelete = async () => {
     const isConfirmed = window.confirm(
@@ -123,7 +123,6 @@ const ManagementModal: FC<ManagersModalProps> = ({
 
       try {
         await dispatch(deleteManager({ managerId }));
-        // Если операция удаления успешна, закройте модальное окно
         onCloseEditModal();
       } catch (error) {
         console.error('Произошла ошибка при удалении:', error);
