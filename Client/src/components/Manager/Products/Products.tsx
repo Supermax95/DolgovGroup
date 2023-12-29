@@ -654,24 +654,6 @@ const Products: FC = () => {
                   : 'items-center'
               }`}
             >
-              <article
-                onClick={openAddModal}
-                className="mx-auto my-4 flex w-full flex-col rounded-2xl border-2 border-slate-300 bg-white border-dashed transition hover:translate-y-2 hover:shadow-lg"
-              >
-                {/* <div className="relative h-full"> */}
-                  <img
-                    className="h-full w-full object-contain"
-                    src={`${VITE_URL}/uploads/noPhoto/null.jpeg`}
-                    // alt={product.productName}
-                  />
-                  {/* <div className="flex justify-center items-center relative">
-                    <p className="font-medium text-lime-600 text-md ">
-                      Добавить продукт
-                    </p>
-                  </div> */}
-                {/* </div> */}
-              </article>
-
               {displayedProducts.length ? (
                 displayedProducts.map((product) => (
                   <article
