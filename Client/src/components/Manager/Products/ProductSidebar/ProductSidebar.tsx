@@ -564,66 +564,82 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
           </div>
 
           <div className="my-1 shadow-sm border-b-2 border-orange-300 w-full"></div>
-          <div
+          {/* <div
             onClick={addModal}
             className="cursor-pointer flex items-center p-2 justify-between rounded-md hover:bg-slate-100"
           >
             <div className="flex items-center justify-center w-full">
               <span className="text-lime-600 text-sm font-medium">
-                Добавить продукт
+                Новый продукт
               </span>
             </div>
+          </div> */}
+          <div
+            onClick={addModal}
+            className="cursor-pointer flex items-center p-2 justify-between rounded-md hover:bg-slate-100 "
+          >
+            <div className="flex items-center justify-center ml-6">
+              <span className="text-lime-600 text-sm font-medium">
+                Новый продукт
+              </span>
+            </div>
+            <div className="flex items-center ml-auto">
+              <PlusCircleIcon className="cursor-pointer w-5 h-5 text-lime-600" />
+            </div>
           </div>
-          <ul className="py-2">
-            {isAddingCategory ? (
-              <form onSubmit={addedHandleForm}>
-                <div className="relative ml-3 p-0">
-                  <input
-                    id="newCategory"
-                    type="text"
-                    placeholder="Название категории"
-                    autoComplete="off"
-                    required={true}
-                    value={dataCategory?.categoryName || ''}
-                    autoFocus
-                    onChange={(e) =>
-                      setDataCategory({
-                        ...dataCategory,
-                        categoryName: e.target.value,
-                      })
-                    }
-                    className="block pr-14 py-1.5 px-2 w-56 text-sm text-slate-500 text-normal bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-orange-300 peer focus:text-lime-600"
+
+          {/* <div className="my-1 shadow-sm border-b-2 border-orange-300 w-full"></div> */}
+
+          {/* <ul className="py-2"> */}
+          {isAddingCategory ? (
+            <form onSubmit={addedHandleForm}>
+              <div className="relative ml-3 p-0">
+                <input
+                  id="newCategory"
+                  type="text"
+                  placeholder="Название категории"
+                  autoComplete="off"
+                  required={true}
+                  value={dataCategory?.categoryName || ''}
+                  autoFocus
+                  onChange={(e) =>
+                    setDataCategory({
+                      ...dataCategory,
+                      categoryName: e.target.value,
+                    })
+                  }
+                  className="block pr-14 py-1.5 px-2 w-56 text-sm text-slate-500 text-normal bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-orange-300 peer focus:text-lime-600"
+                />
+                <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center space-x-1">
+                  <button
+                    type="submit"
+                    className="text-lime-600 text-sm font-normal"
+                  >
+                    <CheckCircleIcon className="cursor-pointer w-5 h-5 text-lime-600" />
+                  </button>
+                  <XCircleIcon
+                    onClick={cancelAddingCategory}
+                    className="cursor-pointer w-5 h-5 text-amber-600"
                   />
-                  <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center space-x-1">
-                    <button
-                      type="submit"
-                      className="text-lime-600 text-sm font-normal"
-                    >
-                      <CheckCircleIcon className="cursor-pointer w-5 h-5 text-lime-600" />
-                    </button>
-                    <XCircleIcon
-                      onClick={cancelAddingCategory}
-                      className="cursor-pointer w-5 h-5 text-amber-600"
-                    />
-                  </div>
-                </div>
-              </form>
-            ) : (
-              <div
-                onClick={startAddingCategory}
-                className="cursor-pointer flex items-center p-2 justify-between rounded-md hover:bg-slate-100 "
-              >
-                <div className="flex items-center justify-center ml-6">
-                  <span className="text-lime-600 text-sm font-medium">
-                    Добавить категорию
-                  </span>
-                </div>
-                <div className="flex items-center ml-auto">
-                  <PlusCircleIcon className="cursor-pointer w-5 h-5 text-lime-600" />
                 </div>
               </div>
-            )}
-
+            </form>
+          ) : (
+            <div
+              onClick={startAddingCategory}
+              className="cursor-pointer flex items-center p-2 justify-between rounded-md hover:bg-slate-100 "
+            >
+              <div className="flex items-center justify-center ml-6">
+                <span className="text-lime-600 text-sm font-medium">
+                  Добавить категорию
+                </span>
+              </div>
+              <div className="flex items-center ml-auto">
+                <PlusCircleIcon className="cursor-pointer w-5 h-5 text-lime-600" />
+              </div>
+            </div>
+          )}
+          <ul className="py-0">
             {allCategories.length ? (
               allCategories.map((item) => (
                 <div key={item.id}>
