@@ -259,7 +259,9 @@ const Carousel: FC = () => {
         />
       )}
 
-      <PromotionSidebar />
+      <PromotionSidebar 
+          openAddModal={openAddModal}
+          />
       <div className="p-4">
         <h1 className="text-xl text-lime-600 font-medium text-center mb-2">
           Акции в карусели
