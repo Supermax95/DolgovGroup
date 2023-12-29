@@ -432,11 +432,12 @@ const Products: FC = () => {
           Продукты
         </h1> */}
 
-        <div className="flex items-center">
+        <div className="flex items-center space-x-1">
           <span className="text-slate-600 text-sm font-normal my-2">
             Каталог
           </span>
-          {(activeCategory || activeSubcategory) && (
+
+          {activeCategory || activeSubcategory ? (
             <>
               {activeCategory && (
                 <>
@@ -459,6 +460,15 @@ const Products: FC = () => {
                   </span>
                 </>
               )}
+            </>
+          ) : (
+            <>
+              <div>
+                <ChevronRightIcon className="cursor-pointer w-3 h-3 text-slate-600 mx-1" />
+              </div>
+              <span className="text-slate-600 text-sm font-normal mx-2 my-2">
+                Все продукты
+              </span>
             </>
           )}
         </div>
@@ -501,7 +511,7 @@ const Products: FC = () => {
                   onChange={(e) => {
                     setCurrentPage(1);
                     setshowDiscounted(e.target.checked ? 'isDiscounted' : '');
-                    console.log(e.target.checked);
+                    // console.log(e.target.checked);
                   }}
                   className="w-4 h-4 text-amber-600 text-sm font-normal bg-slate-100 border-slate-300 rounded focus:ring-amber-500"
                 />
