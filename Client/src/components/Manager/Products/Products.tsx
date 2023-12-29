@@ -390,7 +390,7 @@ const Products: FC = () => {
       {showNotificationEditProduct && (
         <PopUpNotification
           titleText={'Внесены изменения'}
-          bodyText={`Наименование акции:`}
+          // bodyText={`Наименование продукта:`}
           name={editedProduct?.productName}
         />
       )}
