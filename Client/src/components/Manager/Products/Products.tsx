@@ -408,6 +408,7 @@ const Products: FC = () => {
         />
       )}
       <ProductSidebar
+        addModal={openAddModal}
         categories={categories}
         onCategorySelect={setCurrentCategory}
         onSubcategorySelect={setCurrentSubcategory}

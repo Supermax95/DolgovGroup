@@ -35,6 +35,7 @@ interface ISubcategory {
 
 interface ProductSidebarProps {
   categories: ICategory[];
+  addModal: () => void | undefined;
   onCategorySelect: (category: ICategory | null) => void;
   onSubcategorySelect: (subcategory: ISubcategory | null) => void;
   onActiveCategory: (category: ICategory | null) => void;
@@ -43,6 +44,7 @@ interface ProductSidebarProps {
 
 const ProductSidebar: FC<ProductSidebarProps> = ({
   categories,
+  addModal,
   onCategorySelect,
   onSubcategorySelect,
   onActiveCategory,
@@ -560,7 +562,18 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
               </span>
             </div>
           </div>
+
           <div className="my-1 shadow-sm border-b-2 border-orange-300 w-full"></div>
+          <div
+            onClick={addModal}
+            className="cursor-pointer flex items-center p-2 justify-between rounded-md hover:bg-slate-100"
+          >
+            <div className="flex items-center justify-center w-full">
+              <span className="text-lime-600 text-sm font-medium">
+                Добавить продукт
+              </span>
+            </div>
+          </div>
           <ul className="py-2">
             {isAddingCategory ? (
               <form onSubmit={addedHandleForm}>
