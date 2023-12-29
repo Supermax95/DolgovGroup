@@ -104,6 +104,51 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   const menuClass = actionMenuForCategory ? 'block' : 'hidden';
   const menuClassSub = actionMenuForSub ? 'block' : 'hidden';
 
+  //* всплывающие уведомления
+  // ? категории
+  const [showNotificationAddCategory, setShowNotificationAddCategory] =
+    useState<boolean>(false);
+  const [showNotificationEditCategory, setShowNotificationEditCategory] =
+    useState<boolean>(false);
+
+  // ? ПОДкатегории
+  //!  надо ли разделить эрро на категорию и подкатегорию
+  const [errorNotification, setErrorNotification] = useState<string | null>(
+    null
+  );
+
+  const [
+    showErrorNotificationAddCategory,
+    setShowErrorNotificationAddCategory,
+  ] = useState<boolean>(false);
+  const [
+    showErrorNotificationEditCategory,
+    setShowErrorNotificationEditCategory,
+  ] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (
+      showNotificationAddCategory ||
+      showErrorNotificationAddCategory ||
+      showNotificationEditCategory ||
+      showErrorNotificationEditCategory
+    ) {
+      const timeoutId = setTimeout(() => {
+        setShowNotificationAddCategory(false);
+        setShowErrorNotificationAddCategory(false);
+        setShowNotificationEditCategory(false);
+        setShowErrorNotificationEditCategory(false);
+      });
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [
+    showNotificationAddCategory,
+    showErrorNotificationAddCategory,
+    showNotificationEditCategory,
+    showErrorNotificationEditCategory,
+  ]);
+
   //* всплывающее меню для каждой КАТЕГОРИИ
   const toggleMenuCategory = (e: React.MouseEvent, id: number): void => {
     e.stopPropagation(); // Это предотвратит всплытие события и отменит срабатывание обработчика событий на родительском элементе
