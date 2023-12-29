@@ -377,6 +377,20 @@ const Products: FC = () => {
   //   setShowNotificationArticle(true);
   // };
 
+  //* сбрасывает состояния чекбоксов и радиокнопок
+  const resetFirstComponentState = (): void => {
+    setCurrentPage(1);
+    setSelectedVisibility('all');
+    setShowNew('');
+    setshowDiscounted('');
+    setSearchText('');
+    setwWthoutIsDiscounted('');
+    document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
+      const inputCheckbox = checkbox as HTMLInputElement;
+      inputCheckbox.checked = false;
+    });
+  };
+
   return (
     <Wrapper>
       <Toaster position="bottom-left" expand={true} />
@@ -414,6 +428,7 @@ const Products: FC = () => {
         onSubcategorySelect={setCurrentSubcategory}
         onActiveCategory={setActiveCategory}
         onActiveSubcategory={setActiveSubcategory}
+        resetFirstComponentState={resetFirstComponentState}
       />
 
       <div className="p-4">
@@ -475,76 +490,9 @@ const Products: FC = () => {
         </div>
 
         <div className="col-span-full">
-          {/* <div className="flex items-end justify-center">
-            <Button
-              type="button"
-              title="Добавить"
-              onClick={openAddModal}
-              styleCSSButton={
-                'relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-slate-700 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 hover:text-white'
-              }
-              styleCSSSpan={
-                'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
-              }
-            />
-          </div> */}
           <div className="flex items-center justify-between mb-2">
             <Search onFilter={setSearchText} />
           </div>
-
-          {/* <div className="main flex flex-col overflow-hidden select-none px-4 mb-2">
-            <div className="flex space-x-3 py-2 px-2">
-              <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
-                <input
-                  type="checkbox"
-                  value="isNew"
-                  onChange={(e) => {
-                    setCurrentPage(1);
-                    setShowNew(e.target.checked ? 'isNew' : '');
-                  }}
-                  className="w-4 h-4 text-amber-600 text-sm font-normal bg-slate-100 border-slate-300 rounded focus:ring-amber-500"
-                />
-                <span className="ml-1">Новый товар</span>
-              </label>
-              <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
-                <input
-                  type="checkbox"
-                  onChange={(e) => {
-                    setCurrentPage(1);
-                    setshowDiscounted(e.target.checked ? 'isDiscounted' : '');
-                    // console.log(e.target.checked);
-                  }}
-                  className="w-4 h-4 text-amber-600 text-sm font-normal bg-slate-100 border-slate-300 rounded focus:ring-amber-500"
-                />
-                <span className="ml-1">Текущие акциии</span>
-              </label>
-              <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
-                <input
-                  type="checkbox"
-                  onChange={(e) => {
-                    setCurrentPage(1);
-                    setSearchText(e.target.checked ? 'завершена' : '');
-                  }}
-                  className="w-4 h-4 text-amber-600 text-sm font-normal bg-slate-100 border-slate-300 rounded focus:ring-amber-500"
-                />
-                <span className="ml-1">Завершенные акции</span>
-              </label>
-              <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
-                <input
-                  type="checkbox"
-                  onChange={(e) => {
-                    setCurrentPage(1);
-                    setwWthoutIsDiscounted(
-                      e.target.checked ? 'withoutIsDiscounted' : ''
-                    );
-                    console.log(e.target.checked);
-                  }}
-                  className="w-4 h-4 text-amber-600 text-sm font-normal bg-slate-100 border-slate-300 rounded focus:ring-amber-500"
-                />
-                <span className="ml-1">Товары без акции</span>
-              </label>
-            </div>{' '}
-          </div> */}
 
           <div className="main flex flex-col border rounded-full overflow-hidden select-none px-4">
             <div className="flex space-x-3 py-2 px-2">

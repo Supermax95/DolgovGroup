@@ -40,6 +40,7 @@ interface ProductSidebarProps {
   onSubcategorySelect: (subcategory: ISubcategory | null) => void;
   onActiveCategory: (category: ICategory | null) => void;
   onActiveSubcategory: (subcategory: ISubcategory | null) => void;
+  resetFirstComponentState: () => void | undefined;
 }
 
 const ProductSidebar: FC<ProductSidebarProps> = ({
@@ -49,6 +50,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   onSubcategorySelect,
   onActiveCategory,
   onActiveSubcategory,
+  resetFirstComponentState,
 }) => {
   const dispatch = useAppDispatch();
 
@@ -188,12 +190,13 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     showErrorNotificationEditSubcategory,
   ]);
 
-  // показывает все подукты
+  // показывает все продукты
   const handleAll = () => {
     onCategorySelect(null);
     onSubcategorySelect(null);
     onActiveCategory(null);
     onActiveSubcategory(null);
+    resetFirstComponentState();
   };
 
   //* всплывающее меню для каждой КАТЕГОРИИ
@@ -564,16 +567,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
           </div>
 
           <div className="my-1 shadow-sm border-b-2 border-orange-300 w-full"></div>
-          {/* <div
-            onClick={addModal}
-            className="cursor-pointer flex items-center p-2 justify-between rounded-md hover:bg-slate-100"
-          >
-            <div className="flex items-center justify-center w-full">
-              <span className="text-lime-600 text-sm font-medium">
-                Новый продукт
-              </span>
-            </div>
-          </div> */}
+
           <div
             onClick={addModal}
             className="cursor-pointer flex items-center p-2 justify-between rounded-md hover:bg-slate-100 "
@@ -588,9 +582,6 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
             </div>
           </div>
 
-          {/* <div className="my-1 shadow-sm border-b-2 border-orange-300 w-full"></div> */}
-
-          {/* <ul className="py-2"> */}
           {isAddingCategory ? (
             <form onSubmit={addedHandleForm}>
               <div className="relative ml-3 p-0">
@@ -639,7 +630,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
               </div>
             </div>
           )}
-          <ul className="py-0">
+          <ul>
             {allCategories.length ? (
               allCategories.map((item) => (
                 <div key={item.id}>
