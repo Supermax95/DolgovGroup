@@ -21,15 +21,20 @@ router.post('/admin/category', async (req, res) => {
   const { newCategory } = req.body;
 
   try {
+    const existingCategory = await Category.findOne({
+      where: { categoryName: Category.categoryName },
+    });
+    if (existingCategory) {
+      return res.status(400).json({
+        error: 'Категория с указанным названием уже существует',
+      });
+    }
     await Category.create({
       categoryName: newCategory.categoryName,
     });
 
     const categories = await Category.findAll({
-      order: [
-        ['categoryName', 'ASC'],
-        // ['subcategory', 'ASC'],
-      ],
+      order: [['categoryName', 'ASC']],
       raw: true,
     });
 

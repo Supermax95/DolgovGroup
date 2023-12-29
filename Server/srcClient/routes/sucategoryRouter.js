@@ -18,6 +18,14 @@ router.post('/admin/subcategory', async (req, res) => {
   const { newSubcategory, categoryId } = req.body;
 
   try {
+    const existingSubategory = await Subcategory.findOne({
+      where: { subcategoryName: Subcategory.subcategoryName },
+    });
+    if (existingSubategory) {
+      return res.status(400).json({
+        error: 'Подкатегория с указанным названием уже существует',
+      });
+    }
     const category = await Category.findOne({
       where: { id: categoryId },
     });
