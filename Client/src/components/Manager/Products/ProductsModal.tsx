@@ -433,6 +433,8 @@ const ProductsModal: FC<ProductsModalProps> = ({
       required: true,
     },
   ];
+  console.log('photo======>', editedProduct.photo);
+  
   
   return (
     <Wrapper>
@@ -626,7 +628,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
                       >
                         Выберите файл
                       </label>
-                      {editedProduct.photo !== '/uploads/noPhoto/null.jpeg' && (
+                      {!isAddingMode && editedProduct.photo !== '/uploads/noPhoto/null.jpeg' && (
                         <button
                           type="button"
                           onClick={handleDeletePhoto}

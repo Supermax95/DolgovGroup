@@ -1,32 +1,20 @@
 import { DocumentTextIcon, PlusCircleIcon } from '@heroicons/react/24/outline';
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
+import { ILaw } from '../components/Admin/Laws/Laws';
 
-interface SidebarLawProps<T> {
-  data?: T[] | undefined;
+interface SidebarLawProps<ILaw> {
+  data?: ILaw[] | undefined;
   onAddClick?: () => void | undefined;
-  onEditClick?: (item: T) => void | undefined;
+  onEditClick?: (item: ILaw) => void | undefined;
   title: string;
 }
 
-const SidebarLaw: FC<SidebarLawProps<T>> = ({
+const SidebarLaw: FC<SidebarLawProps<ILaw>> = ({
   data,
   onAddClick,
   onEditClick,
   title,
 }) => {
-  const [isOnEditClickCalled, setOnEditClickCalled] = useState(false);
-  const [isOnAddClickCalled, setOnAddClickCalled] = useState(false);
-
-  useEffect(() => {
-    if (data && data.length > 0 && onEditClick && !isOnEditClickCalled) {
-      onEditClick(data[0]);
-      setOnEditClickCalled(true);
-    } else if (data?.length === 0 && onAddClick && !isOnAddClickCalled) {
-      onAddClick();
-      setOnAddClickCalled(true);
-    }
-  }, [data, onAddClick, onEditClick, isOnAddClickCalled, isOnEditClickCalled]);
-
   return (
     <div className="flex flex-col w-56 bg-white h-full border-r-2 border-orange-300">
       <div className="h-16 flex items-center justify-center border-b-2 border-orange-300 text-center">

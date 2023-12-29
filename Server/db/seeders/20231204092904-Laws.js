@@ -4,18 +4,16 @@ module.exports = {
       'Laws',
       [
         {
-          title: 'Пользовательское соглашение',
-          description: 'Вы соглашаетесь на все',
+          title: '1Соглашение на продажу почки',
+          description: '',
           dateFrom: '2023-01-01',
-          documentLink: '/uploads/document/Молоко питьевое пастеризованное.webp',
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
-          title: 'Соглашение на продажу почки',
-          description: 'лялялял',
+          title: '11Пользовательское соглашение',
+          description: '',
           dateFrom: '2023-01-01',
-          documentLink: '/uploads/document/Молоко питьевое пастеризованное.webp',
           createdAt: new Date(),
           updatedAt: new Date(),
         },

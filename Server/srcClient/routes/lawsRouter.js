@@ -180,10 +180,7 @@ router.delete('/admin/laws/doc/:id', async (req, res) => {
         }
       }
 
-      await Law.update(
-        { documentLink: null },
-        { where: { id: lawId } }
-      );
+      await Law.update({ documentLink: null }, { where: { id: lawId } });
 
       console.log(`Документ с ID ${lawId} успешно удалена`);
 
@@ -191,7 +188,6 @@ router.delete('/admin/laws/doc/:id', async (req, res) => {
         order: [['title', 'ASC']],
         raw: true,
       });
-  
 
       res.json(updatedLaws);
     } else {
