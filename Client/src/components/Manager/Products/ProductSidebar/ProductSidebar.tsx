@@ -54,7 +54,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     (state) => state.categorySlice.data
   );
 
-  console.log('allCategories', allCategories);
+  // console.log('allCategories', allCategories);
 
   const allSubcategories = useAppSelector(
     (state) => state.subcategorySlice.data
@@ -304,7 +304,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   // ? удаление категории
   const deleteCategoryHandler = (id: number): void => {
     const isConfirmed = window.confirm(
-      'Вы уверены, что хотите удалить категорию?'
+      'Вы уверены, что хотите удалить категорию? Продукты будут удалены из категории автоматически.'
     );
 
     if (isConfirmed) {
@@ -407,7 +407,13 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
 
   // ? удаление ПОДкатегории
   const deleteSubcategoryHandler = (id: number): void => {
-    dispatch(deleteSubcategory(id));
+    const isConfirmed = window.confirm(
+      'Вы уверены, что хотите удалить подкатегорию? Продукты будут удалены из подкатегории автоматически.'
+    );
+
+    if (isConfirmed) {
+      dispatch(deleteSubcategory(id));
+    }
   };
 
   /** Рендер карточек на странице */
