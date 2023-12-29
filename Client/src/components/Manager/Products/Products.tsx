@@ -474,24 +474,24 @@ const Products: FC = () => {
         </div>
 
         <div className="col-span-full">
+          {/* <div className="flex items-end justify-center">
+            <Button
+              type="button"
+              title="Добавить"
+              onClick={openAddModal}
+              styleCSSButton={
+                'relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-slate-700 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 hover:text-white'
+              }
+              styleCSSSpan={
+                'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
+              }
+            />
+          </div> */}
           <div className="flex items-center justify-between mb-2">
             <Search onFilter={setSearchText} />
-            <div className="flex items-end justify-center">
-              <Button
-                type="button"
-                title="Добавить"
-                onClick={openAddModal}
-                styleCSSButton={
-                  'relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-slate-700 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 hover:text-white'
-                }
-                styleCSSSpan={
-                  'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
-                }
-              />
-            </div>
           </div>
 
-          <div className="main flex flex-col border rounded-full overflow-hidden select-none px-4">
+          {/* <div className="main flex flex-col overflow-hidden select-none px-4 mb-2">
             <div className="flex space-x-3 py-2 px-2">
               <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
                 <input
@@ -542,7 +542,10 @@ const Products: FC = () => {
                 />
                 <span className="ml-1">Товары без акции</span>
               </label>
-            </div>
+            </div>{' '}
+          </div> */}
+
+          <div className="main flex flex-col border rounded-full overflow-hidden select-none px-4">
             <div className="flex space-x-3 py-2 px-2">
               <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
                 <input
@@ -586,6 +589,59 @@ const Products: FC = () => {
             </div>
           </div>
         </div>
+        <div className="main flex flex-col overflow-hidden select-none px-4 mb-2">
+          <div className="flex space-x-3 py-2 px-2">
+            <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
+              <input
+                type="checkbox"
+                value="isNew"
+                onChange={(e) => {
+                  setCurrentPage(1);
+                  setShowNew(e.target.checked ? 'isNew' : '');
+                }}
+                className="w-4 h-4 text-amber-600 text-sm font-normal bg-slate-100 border-slate-300 rounded focus:ring-amber-500"
+              />
+              <span className="ml-1">Новый товар</span>
+            </label>
+            <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
+              <input
+                type="checkbox"
+                onChange={(e) => {
+                  setCurrentPage(1);
+                  setshowDiscounted(e.target.checked ? 'isDiscounted' : '');
+                  // console.log(e.target.checked);
+                }}
+                className="w-4 h-4 text-amber-600 text-sm font-normal bg-slate-100 border-slate-300 rounded focus:ring-amber-500"
+              />
+              <span className="ml-1">Текущие акциии</span>
+            </label>
+            <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
+              <input
+                type="checkbox"
+                onChange={(e) => {
+                  setCurrentPage(1);
+                  setSearchText(e.target.checked ? 'завершена' : '');
+                }}
+                className="w-4 h-4 text-amber-600 text-sm font-normal bg-slate-100 border-slate-300 rounded focus:ring-amber-500"
+              />
+              <span className="ml-1">Завершенные акции</span>
+            </label>
+            <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
+              <input
+                type="checkbox"
+                onChange={(e) => {
+                  setCurrentPage(1);
+                  setwWthoutIsDiscounted(
+                    e.target.checked ? 'withoutIsDiscounted' : ''
+                  );
+                  console.log(e.target.checked);
+                }}
+                className="w-4 h-4 text-amber-600 text-sm font-normal bg-slate-100 border-slate-300 rounded focus:ring-amber-500"
+              />
+              <span className="ml-1">Товары без акции</span>
+            </label>
+          </div>{' '}
+        </div>
 
         <section className="max-w-6xl mx-auto px-4 ">
           {/** новая карточка */}
@@ -597,11 +653,29 @@ const Products: FC = () => {
                   : 'items-center'
               }`}
             >
+              <article
+                onClick={openAddModal}
+                className="mx-auto my-4 flex w-full flex-col rounded-2xl border-2 border-slate-300 bg-white border-dashed transition hover:translate-y-2 hover:shadow-lg"
+              >
+                {/* <div className="relative h-full"> */}
+                  <img
+                    className="h-full w-full object-contain"
+                    src={`${VITE_URL}/uploads/noPhoto/null.jpeg`}
+                    // alt={product.productName}
+                  />
+                  {/* <div className="flex justify-center items-center relative">
+                    <p className="font-medium text-lime-600 text-md ">
+                      Добавить продукт
+                    </p>
+                  </div> */}
+                {/* </div> */}
+              </article>
+
               {displayedProducts.length ? (
                 displayedProducts.map((product) => (
                   <article
                     key={product.id}
-                    className="mx-auto my-4 flex w-full flex-col overflow-hidden rounded-2xl border border-gray-300 bg-white text-gray-900 transition hover:translate-y-2 hover:shadow-lg"
+                    className="mx-auto my-4 flex w-full flex-col overflow-hidden rounded-2xl border border-slate-300 bg-white text-gray-900 transition hover:translate-y-2 hover:shadow-lg"
                   >
                     <div className="relative">
                       <img
@@ -649,7 +723,7 @@ const Products: FC = () => {
                         />
 
                         <span className="text-slate-700 font-medium">
-                          {product.article || 'нет'}
+                          {product.article || 'Отсутствует'}
                         </span>
                       </span>
 
@@ -763,7 +837,7 @@ const Products: FC = () => {
                     </p>
                     <div
                       id="description"
-                      className="block p-2.5 h-full w-full text-justify text-sm text-slate-700 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 overflow-auto resize-y"
+                      className="block p-2.5 h-full w-full text-justify text-sm text-slate-700 bg-white rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 overflow-auto resize-y"
                       style={{ whiteSpace: 'pre-wrap', maxHeight: '100px' }}
                       dangerouslySetInnerHTML={{
                         __html: product.description,

@@ -117,11 +117,16 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     useState<boolean>(false);
 
   // ? ПОДкатегории
+  const [showNotificationAddSubcategory, setShowNotificationAddSubcategory] =
+    useState<boolean>(false);
+  const [showNotificationEditSubcategory, setShowNotificationEditSubcategory] =
+    useState<boolean>(false);
+
   //!  надо ли разделить эрро на категорию и подкатегорию
   const [errorNotification, setErrorNotification] = useState<string | null>(
     null
   );
-
+  // ? об ошибке категории
   const [
     showErrorNotificationAddCategory,
     setShowErrorNotificationAddCategory,
@@ -129,6 +134,15 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   const [
     showErrorNotificationEditCategory,
     setShowErrorNotificationEditCategory,
+  ] = useState<boolean>(false);
+  // ? ПОДкатегории
+  const [
+    showErrorNotificationAddSubcategory,
+    setShowErrorNotificationAddSubcategory,
+  ] = useState<boolean>(false);
+  const [
+    showErrorNotificationEditSubcategory,
+    setShowErrorNotificationEditSubcategory,
   ] = useState<boolean>(false);
 
   // useEffect(() => {
@@ -142,13 +156,21 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
       showNotificationAddCategory ||
       showErrorNotificationAddCategory ||
       showNotificationEditCategory ||
-      showErrorNotificationEditCategory
+      showErrorNotificationEditCategory ||
+      showNotificationAddSubcategory ||
+      showNotificationEditSubcategory ||
+      showErrorNotificationAddSubcategory ||
+      showErrorNotificationEditSubcategory
     ) {
       const timeoutId = setTimeout(() => {
         setShowNotificationAddCategory(false);
         setShowErrorNotificationAddCategory(false);
         setShowNotificationEditCategory(false);
         setShowErrorNotificationEditCategory(false);
+        setShowNotificationAddSubcategory(false);
+        setShowErrorNotificationAddSubcategory(false);
+        setShowNotificationEditSubcategory(false);
+        setShowErrorNotificationEditSubcategory(false);
       });
 
       return () => clearTimeout(timeoutId);
@@ -158,6 +180,10 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     showErrorNotificationAddCategory,
     showNotificationEditCategory,
     showErrorNotificationEditCategory,
+    showNotificationAddSubcategory,
+    showNotificationEditSubcategory,
+    showErrorNotificationAddSubcategory,
+    showErrorNotificationEditSubcategory,
   ]);
 
   // показывает все подукты
@@ -276,7 +302,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     e.preventDefault();
 
     const isConfirmed = window.confirm(
-      'Вы уверены, что хотите внести изменения?'
+      'Вы уверены, что хотите внести изменения в категорию?'
     );
 
     if (isConfirmed) {
@@ -350,11 +376,15 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
         );
         setAddingSubcategory(false);
         setDataSubcategory('');
+        setErrorNotification(null);
+        setShowNotificationAddSubcategory(true);
         //* при лобавлении подкатегории открывается тут же список в категории
         subcategoryOutput(selectedCategoryIdForSubcategory);
       }
     } catch (error) {
       console.error('Произошла ошибка при добавлении:', error);
+      setErrorNotification(error as string | null);
+      setShowErrorNotificationAddSubcategory(true);
     }
   };
 
@@ -388,20 +418,28 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   ): Promise<void> => {
     e.preventDefault();
 
-    try {
-      if (editSubcategory) {
-        const result = await dispatch(
-          editSubcategory({
-            subcategoryId: dataEditSubcategory.id,
-            newSubcategoryName: dataEditSubcategory?.subcategoryName,
-          })
-        );
-        if (editSubcategory.fulfilled.match(result)) {
+    const isConfirmed = window.confirm(
+      'Вы уверены, что хотите внести изменения в подкатегорию?'
+    );
+
+    if (isConfirmed) {
+      try {
+        if (editSubcategory) {
+          const result = await dispatch(
+            editSubcategory({
+              subcategoryId: dataEditSubcategory.id,
+              newSubcategoryName: dataEditSubcategory?.subcategoryName,
+            })
+          );
           setEditingSubcategory(null);
+          setErrorNotification(null);
+          setShowNotificationEditSubcategory(true);
         }
+      } catch (error) {
+        console.error('Произошла ошибка при добавлении:', error);
+        setErrorNotification(error as string | null);
+        setShowErrorNotificationEditSubcategory(true);
       }
-    } catch (error) {
-      console.error('Произошла ошибка при добавлении:', error);
     }
   };
 
@@ -461,10 +499,25 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
       )}
       {showNotificationEditCategory && (
         <PopUpNotification
-          titleText={'Внесены изменения'}
+          titleText={'Внесены изменения в категорию'}
           // name={dataCategory?.categoryName}
         />
       )}
+
+      {showNotificationAddSubcategory && (
+        <PopUpNotification
+          titleText={'Добавлена новая подкатегория'}
+          //! не отображается название
+          // name={dataCategory}
+        />
+      )}
+      {showNotificationEditSubcategory && (
+        <PopUpNotification
+          titleText={'Внесены изменения в подкатегорию'}
+          // name={dataCategory?.categoryName}
+        />
+      )}
+
       {/* //!уведомления об ошибках */}
       {showErrorNotificationAddCategory && (
         <PopUpErrorNotification
@@ -473,6 +526,19 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
         />
       )}
       {showErrorNotificationEditCategory && (
+        <PopUpErrorNotification
+          titleText={'Ошибка'}
+          bodyText={errorNotification}
+        />
+      )}
+
+      {showErrorNotificationAddSubcategory && (
+        <PopUpErrorNotification
+          titleText={'Ошибка'}
+          bodyText={errorNotification}
+        />
+      )}
+      {showErrorNotificationEditSubcategory && (
         <PopUpErrorNotification
           titleText={'Ошибка'}
           bodyText={errorNotification}
