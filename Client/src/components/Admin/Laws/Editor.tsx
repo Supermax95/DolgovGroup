@@ -60,7 +60,6 @@ const Editor: FC<LawEditorProps> = ({
 
 
 
-  console.log('selectedLaw', law);
   useEffect(() => {
     if (law) {
       setEditedLaw(law);
@@ -99,6 +98,8 @@ const Editor: FC<LawEditorProps> = ({
     resetAxiosError();
     setCurrentStep(1);
   };
+
+  
 
   const uploadFile = async (file: File, id: number | 0): Promise<void> => {
     if (file && id) {
@@ -208,7 +209,6 @@ const Editor: FC<LawEditorProps> = ({
     ],
   };
   const currentLaw = laws.find((law) => law.id === editedLaw.id);
-  console.log('editedLaw', editedLaw);
 
   return (
     <>

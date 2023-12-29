@@ -43,7 +43,6 @@ const Law: FC = () => {
   const openAddEditor = (): void => {
     setCurrentStep(1);
     setAddingMode(true);
-    console.log('openAddEditor');
     setEditedLaw({
       id: 0,
       title: '',
@@ -62,7 +61,6 @@ const Law: FC = () => {
  
 
   const openEditEditor = (law: ILaw): void => {
-    console.log('openEditEditor', law);
     setCurrentStep(1);
     setSelectedLaw(law);
     setEditedLaw(law);
