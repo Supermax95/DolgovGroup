@@ -438,17 +438,16 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
                     >
                       Выберите файл
                     </label>
-                    {!isAddingMode &&
-                      editedPromotion.photo !==
-                        '/uploads/noPhoto/null.jpeg' && (
-                        <button
-                          type="button"
-                          onClick={handleDeletePhoto}
-                          className="cursor-pointer bg-red-500 text-white font-bold py-2 px-4 rounded inline-block"
-                        >
-                          Сброс изображения
-                        </button>
-                      )}
+
+                    {!isAddingMode && editedPromotion.photo !== '/uploads/noPhoto/null.jpeg' &&(
+                      <button
+                        type="button"
+                        onClick={handleDeletePhoto}
+                        className="cursor-pointer bg-red-500 text-white font-bold py-2 px-4 rounded inline-block"
+                      >
+                        Сброс изображения
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>

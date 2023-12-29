@@ -25,15 +25,25 @@ const Law: FC = () => {
   const [isAddingMode, setAddingMode] = useState(false);
   const [editedLaw, setEditedLaw] = useState<ILaw | null | undefined>(null);
   const [axiosError, setAxiosError] = useState<string | null>(null);
+  const [dataLoaded, setDataLoaded] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
 
   useEffect(() => {
-    dispatch(getLaws());
+    dispatch(getLaws())
+      .then(() => {
+        setDataLoaded(true);
+      })
+      .catch((error) => {
+        console.error('Error fetching laws:', error);
+      });
   }, [dispatch]);
 
+
+  
   const openAddEditor = (): void => {
     setCurrentStep(1);
     setAddingMode(true);
+    console.log('openAddEditor');
     setEditedLaw({
       id: 0,
       title: '',
@@ -49,14 +59,34 @@ const Law: FC = () => {
     setEditorOpen(true);
   };
 
+ 
+
   const openEditEditor = (law: ILaw): void => {
+    console.log('openEditEditor', law);
     setCurrentStep(1);
     setSelectedLaw(law);
-    setEditedLaw({ ...law });
+    setEditedLaw(law);
     setAddingMode(false);
     setEditorOpen(true);
     dispatch(getLaws());
   };
+
+
+  useEffect(() => {
+    if (dataLoaded && laws.length === 0) {
+      openAddEditor();
+    } else if (dataLoaded && laws.length > 0 && !selectedLaw) {
+      openEditEditor(laws[0]);
+    }
+  }, [dataLoaded, laws, selectedLaw]);
+  
+  // const openEditEditor = (law: ILaw): void => {
+  //   setCurrentStep(1);
+  //   setAddingMode(false);
+  //   setEditorOpen(true);
+  //   setSelectedLaw({ ...law });
+  //   dispatch(getLaws());
+  // };
 
   const closeAddEditor = (): void => {
     setSelectedLaw(null);

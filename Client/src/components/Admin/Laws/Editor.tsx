@@ -6,7 +6,11 @@ import axios, { AxiosResponse } from 'axios';
 import getLaws from '../../../Redux/thunks/Document/getLaws.api';
 import 'quill/dist/quill.snow.css';
 import deleteLaw from '../../../Redux/thunks/Document/deleteLaw.api';
-import { DocumentTextIcon, EyeIcon, XCircleIcon } from '@heroicons/react/24/outline';
+import {
+  DocumentTextIcon,
+  EyeIcon,
+  XCircleIcon,
+} from '@heroicons/react/24/outline';
 import Button from '../../../ui/Button';
 import ReactQuill from 'react-quill';
 import deleteDocumentLaw from '../../../Redux/thunks/Document/deleteDocumentLaw.api';
@@ -54,11 +58,14 @@ const Editor: FC<LawEditorProps> = ({
   const dispatch = useAppDispatch();
   const [isUpload, setUpload] = useState(false);
 
+
+
+  console.log('selectedLaw', law);
   useEffect(() => {
     if (law) {
-      setEditedLaw({ ...law });
+      setEditedLaw(law);
     }
-  }, [law, isAddingMode, setEditedLaw]);
+  }, [law, setEditedLaw]);
 
   useEffect(() => {
     if (isAddingMode) {
@@ -75,7 +82,9 @@ const Editor: FC<LawEditorProps> = ({
         }),
       });
     }
-  }, [isAddingMode]);
+  }, [isAddingMode, setEditedLaw]);
+
+
 
   const handleCancel = () => {
     dispatch(getLaws());
@@ -86,17 +95,12 @@ const Editor: FC<LawEditorProps> = ({
     const newestLaw = sortedLaws[0];
     setSelectedLaw(newestLaw);
     setEditedLaw(newestLaw);
-
     setAddingMode(false);
     resetAxiosError();
     setCurrentStep(1);
   };
 
-  const uploadFile = async (
-    file: File,
-    id: number | 0,
-    isAddingMode: boolean
-  ): Promise<void> => {
+  const uploadFile = async (file: File, id: number | 0): Promise<void> => {
     if (file && id) {
       const formData = new FormData();
       formData.append('file', file);
@@ -131,6 +135,7 @@ const Editor: FC<LawEditorProps> = ({
       } else {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
+
         result = await onSaveEdit(editedLaw as ILaw);
       }
 
@@ -182,22 +187,6 @@ const Editor: FC<LawEditorProps> = ({
     }
   };
 
-  // const handleDelete = async () => {
-  //   if (editedLaw && editedLaw.id) {
-  //     const lawId = editedLaw.id;
-  //     await dispatch(deleteLaw(lawId));
-  //     if (laws.length > 0) {
-  //       setEditedLaw(laws[0]);
-  //     }
-  //     if (laws.length > 0) {
-  //       setEditedLaw(laws[0]);
-  //     } else {
-  //       onCloseEditEditor();
-  //       openAddEditor();
-  //     }
-  //   }
-  // };
-
   if (!isOpen || !editedLaw) {
     return null;
   }
@@ -219,6 +208,7 @@ const Editor: FC<LawEditorProps> = ({
     ],
   };
   const currentLaw = laws.find((law) => law.id === editedLaw.id);
+  console.log('editedLaw', editedLaw);
 
   return (
     <>
@@ -237,24 +227,25 @@ const Editor: FC<LawEditorProps> = ({
               <>
                 <div className="relative">
                   <input
-                    onChange={(e) =>
-                      setEditedLaw({ ...editedLaw, title: e.target.value })
-                    }
                     id="title"
                     name="title"
                     type="text"
                     value={editedLaw.title}
+                    onChange={(e) =>
+                      setEditedLaw({ ...editedLaw, title: e.target.value })
+                    }
                     placeholder=""
                     className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
                     required={true}
                   />
                   <label
                     htmlFor="title"
-                    className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm"
+                    className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-300 peer-focus:text-sm"
                   >
                     Наименование документа
                   </label>
                 </div>
+
                 <div className="pt-4 pb-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
                   <div className="relative">
                     <input
@@ -282,12 +273,6 @@ const Editor: FC<LawEditorProps> = ({
                   {currentLaw && currentLaw.updatedAt && (
                     <div className="relative">
                       <input
-                        onChange={(e) =>
-                          setEditedLaw({
-                            ...editedLaw,
-                            updatedAt: e.target.value,
-                          })
-                        }
                         id="updatedAt"
                         type="text"
                         name="updatedAt"
@@ -295,13 +280,13 @@ const Editor: FC<LawEditorProps> = ({
                           currentLaw.updatedAt
                         ).toLocaleDateString('ru-RU')}
                         placeholder=""
-                        className="block py-2.5 px-0 w-full text-sm text-slate-400 bg-transparent border-0 border-b-2 border-slate-300 "
+                        className="block py-2.5 px-0 w-full text-sm text-slate-400 bg-transparent border-0 border-b-2 border-slate-300"
                         required={true}
                         disabled={true}
                       />
                       <label
                         htmlFor="updatedAt"
-                        className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm"
+                        className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-300 peer-focus:text-sm"
                       >
                         Дата последнего обновления
                       </label>
@@ -309,10 +294,10 @@ const Editor: FC<LawEditorProps> = ({
                   )}
                 </div>
                 {currentLaw && currentLaw.documentLink ? (
-                  <div>
+                  <div className="cursor-pointer flex items-center justify-between">
                     <button
                       type="button"
-                      className="flex items-center "
+                      className="flex items-center"
                       onClick={() =>
                         window.open(
                           `${VITE_URL}${currentLaw.documentLink}`,
@@ -326,12 +311,17 @@ const Editor: FC<LawEditorProps> = ({
                         aria-hidden="true"
                       />
                     </button>
+
                     <button
                       type="button"
                       onClick={handleDeleteDocument}
-                      className="cursor-pointer"
-                    > Удалить файл
-                      <XCircleIcon className="h-4 w-4" aria-hidden="true" />
+                      className="cursor-pointer flex items-center text-red-500"
+                    >
+                      Удалить файл
+                      <XCircleIcon
+                        className="h-5 w-5 ml-2"
+                        aria-hidden="true"
+                      />
                     </button>
                   </div>
                 ) : (

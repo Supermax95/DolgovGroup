@@ -682,18 +682,16 @@ const ProductsModal: FC<ProductsModalProps> = ({
                       >
                         Выберите файл
                       </label>
-                      {!isAddingMode &&
-                        editedProduct.photo !==
-                          '/uploads/noPhoto/null.jpeg' && (
-                          <button
-                            type="button"
-                            onClick={handleDeletePhoto}
-                            className="cursor-pointer bg-red-500 text-white font-bold py-2 px-4 rounded inline-block"
-                          >
-                            Сброс изображения
-                          </button>
-                        )}
-                    </div>
+                      {!isAddingMode && editedProduct.photo !== '/uploads/noPhoto/null.jpeg' && (
+                        <button
+                          type="button"
+                          onClick={handleDeletePhoto}
+                          className="cursor-pointer bg-red-500 text-white font-bold py-2 px-4 rounded inline-block"
+                        >
+                          Сброс изображения
+                        </button>
+                      )}
+              </div>
                   </div>
                 </div>
               </div>
