@@ -252,7 +252,9 @@ const Nocarousel: FC = () => {
           bodyText={errorNotification}
         />
       )}
-      <PromotionSidebar />
+      <PromotionSidebar
+          openAddModal={openAddModal}
+           />
       {/* <div className="max-w-screen-lg	"> */}
       <div className="p-4">
         <h1 className="text-xl text-lime-600 font-medium text-center mb-2">

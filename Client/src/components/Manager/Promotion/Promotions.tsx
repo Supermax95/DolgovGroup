@@ -106,6 +106,7 @@ const Promotions: FC = () => {
   };
 
   const openAddModal = () => {
+    console.log('=====>')
     setAddingMode(true);
     setEditedPromotion({
       id: 0,
@@ -190,7 +191,8 @@ const Promotions: FC = () => {
 
   return (
     <Wrapper>
-      <PromotionSidebar />
+      <PromotionSidebar
+      />
       <div className="p-4">
         <div className="col-span-full mb-4">
           <div className="flex items-center justify-between">

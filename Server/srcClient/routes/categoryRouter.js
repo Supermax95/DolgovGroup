@@ -6,7 +6,6 @@ router.get('/admin/category', async (req, res) => {
     const categories = await Category.findAll({
       order: [
         ['categoryName', 'ASC'],
-        // ['subcategory', 'ASC'],
       ],
       raw: true,
     });

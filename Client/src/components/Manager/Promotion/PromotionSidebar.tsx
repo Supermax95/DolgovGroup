@@ -1,7 +1,12 @@
 import  { FC } from 'react';
 import PromotionSidebarUI from '../../../ui/SidebarPromotionUI';
 
-const PromotionSidebar: FC = () => {
+interface PromotionSidebarProps {
+  openAddModal: () => void | undefined;
+}
+const PromotionSidebar: FC<PromotionSidebarProps> = ({
+  openAddModal
+}) => {
   const promoSidebar = { 
     title: 'Акции',
     links: [
@@ -20,7 +25,7 @@ const PromotionSidebar: FC = () => {
 
   return (
     <div>
-      <PromotionSidebarUI links={promoSidebar.links} title={promoSidebar.title} />
+      <PromotionSidebarUI links={promoSidebar.links} title={promoSidebar.title} openAddModal={openAddModal} />
     </div>
   );
 };
