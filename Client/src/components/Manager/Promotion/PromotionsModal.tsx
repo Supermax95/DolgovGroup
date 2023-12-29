@@ -132,6 +132,10 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    const isConfirmed = window.confirm(
+      'Вы уверены, что хотите внести изменения?'
+    );
+
     if (currentStep === 1) {
       let result = '';
       let result2 = '';
@@ -141,9 +145,11 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
         // @ts-ignore
         result = await onSaveAdd(editedPromotion as IPromotion);
       } else {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        result2 = await onSaveEdit(editedPromotion as IPromotion);
+        if (isConfirmed) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          result2 = await onSaveEdit(editedPromotion as IPromotion);
+        }
       }
 
       if (typeof result2 !== 'string') {
@@ -184,8 +190,9 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
   const handleDelete = () => {
     const isConfirmed = window.confirm('Вы уверены, что хотите удалить акцию?');
     if (isConfirmed && editedPromotion && editedPromotion.id) {
+      const promotionId = editedPromotion.id;
+
       try {
-        const promotionId = editedPromotion.id;
         dispatch(deletePromotion(promotionId));
         onCloseEditModal();
       } catch (error) {
@@ -195,11 +202,20 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
   };
 
   const handleDeletePhoto = () => {
-    if (editedPromotion && editedPromotion.id) {
+    const isConfirmed = window.confirm(
+      'Вы уверены, что хотите удалить изображение?'
+    );
+
+    if (isConfirmed && editedPromotion && editedPromotion.id) {
       const promoId = editedPromotion.id;
-      dispatch(deletePromoPhoto(promoId));
+
+      try {
+        dispatch(deletePromoPhoto(promoId));
+        onCloseEditModal();
+      } catch (error) {
+        console.error('Произошла ошибка при удалении:', error);
+      }
     }
-    onCloseEditModal();
   };
 
   if (!isOpen || !editedPromotion) {
@@ -422,6 +438,7 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
                     >
                       Выберите файл
                     </label>
+
                     {!isAddingMode && editedPromotion.photo !== '/uploads/noPhoto/null.jpeg' &&(
                       <button
                         type="button"

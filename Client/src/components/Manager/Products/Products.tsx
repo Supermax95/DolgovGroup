@@ -16,11 +16,13 @@ import { unwrapResult } from '@reduxjs/toolkit';
 import {
   CheckIcon,
   ChevronRightIcon,
-  ClipboardDocumentCheckIcon,
   PencilSquareIcon,
   Square2StackIcon,
 } from '@heroicons/react/24/outline';
 import Button from '../../../ui/Button';
+import { Toaster } from 'sonner';
+import PopUpNotification from '../../../ui/PopUpNotification';
+import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
 
 export interface IProduct {
   id: number;
@@ -90,13 +92,31 @@ const Products: FC = () => {
   const [editedProduct, setEditedProduct] = useState<
     IProduct | null | undefined
   >(null);
-  const [axiosError, setAxiosError] = useState<string | null>(null);
+  // const [axiosError, setAxiosError] = useState<string | null>(null);
   const [searchText, setSearchText] = useState('');
   const [showNew, setShowNew] = useState('');
   const [showDiscounted, setshowDiscounted] = useState('');
   const [withoutIsDiscounted, setwWthoutIsDiscounted] = useState('');
 
-  const [showNotification, setShowNotification] = useState(false);
+  const [showNotificationArticle, setShowNotificationArticle] =
+    useState<boolean>(false);
+
+  //* всплывающие уведомления
+  const [showNotificationAddProduct, setShowNotificationAddProduct] =
+    useState<boolean>(false);
+  const [showNotificationEditProduct, setShowNotificationEditProduct] =
+    useState<boolean>(false);
+
+  const [errorNotification, setErrorNotification] = useState<string | null>(
+    null
+  );
+
+  const [showErrorNotificationAddProduct, setShowErrorNotificationAddProduct] =
+    useState<boolean>(false);
+  const [
+    showErrorNotificationEditProduct,
+    setShowErrorNotificationEditProduct,
+  ] = useState<boolean>(false);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -113,6 +133,39 @@ const Products: FC = () => {
   useEffect(() => {
     dispatch(getSubcategory());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (
+      showNotificationAddProduct ||
+      showErrorNotificationAddProduct ||
+      showNotificationEditProduct ||
+      showErrorNotificationEditProduct
+    ) {
+      const timeoutId = setTimeout(() => {
+        setShowNotificationAddProduct(false);
+        setShowErrorNotificationAddProduct(false);
+        setShowNotificationEditProduct(false);
+        setShowErrorNotificationEditProduct(false);
+      });
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [
+    showNotificationAddProduct,
+    showErrorNotificationAddProduct,
+    showNotificationEditProduct,
+    showErrorNotificationEditProduct,
+  ]);
+
+  useEffect(() => {
+    if (showNotificationArticle) {
+      const notificationTimeout = setTimeout(() => {
+        setShowNotificationArticle(false);
+      }, 3000);
+
+      return () => clearTimeout(notificationTimeout);
+    }
+  }, [showNotificationArticle]);
 
   const itemsPerPage = 30;
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -240,9 +293,9 @@ const Products: FC = () => {
     dispatch(getProducts());
   };
 
-  const resetAxiosError = () => {
-    setAxiosError(null);
-  };
+  // const resetAxiosError = () => {
+  //   setAxiosError(null);
+  // };
 
   const handleSaveAdd = async () => {
     let add = {} as any;
@@ -255,11 +308,15 @@ const Products: FC = () => {
         );
         const result = unwrapResult(resultAction);
         add = result;
-        setAxiosError(null);
+        // setAxiosError(null);
+        setErrorNotification(null);
+        setShowNotificationAddProduct(true);
       }
     } catch (error) {
       console.error('Произошла ошибка при добавлении:', error);
-      setAxiosError(error as string | null);
+      // setAxiosError(error as string | null);
+      setErrorNotification(error as string | null);
+      setShowErrorNotificationAddProduct(true);
       add = error;
     }
     return add;
@@ -276,11 +333,15 @@ const Products: FC = () => {
         );
         const result = unwrapResult(resultAction);
         add = result;
-        setAxiosError(null);
+        // setAxiosError(null);
+        setErrorNotification(null);
+        setShowNotificationEditProduct(true);
       }
     } catch (error) {
       console.error('Произошла ошибка при редактировании:', error);
-      setAxiosError(error as string | null);
+      // setAxiosError(error as string | null);
+      setErrorNotification(error as string | null);
+      setShowErrorNotificationEditProduct(true);
       add = error;
     }
     return add;
@@ -296,38 +357,56 @@ const Products: FC = () => {
       .writeText(text)
       .then(() => {
         console.log('Текст скопирован в буфер обмена:', text);
-        setShowNotification(true);
+        setShowNotificationArticle(true);
       })
       .catch((error) => {
         console.error('Не удалось скопировать текст:', error);
       });
   };
 
-  // //устаревший метод не удалять 
-    // const handleCopyToClipboard = (text: string) => {
-    //   const textarea = document.createElement('textarea');
-    //   textarea.value = text;
-    //   document.body.appendChild(textarea);
-    //   textarea.select();
-    //   document.execCommand('copy');
-    //   document.body.removeChild(textarea);
+  // //устаревший метод не удалять
+  // const handleCopyToClipboard = (text: string) => {
+  //   const textarea = document.createElement('textarea');
+  //   textarea.value = text;
+  //   document.body.appendChild(textarea);
+  //   textarea.select();
+  //   document.execCommand('copy');
+  //   document.body.removeChild(textarea);
 
-    //   console.log('Текст скопирован в буфер обмена:', text);
-    //   setShowNotification(true);
-    // };
-
-  useEffect(() => {
-    if (showNotification) {
-      const notificationTimeout = setTimeout(() => {
-        setShowNotification(false);
-      }, 3000);
-
-      return () => clearTimeout(notificationTimeout);
-    }
-  }, [showNotification]);
+  //   console.log('Текст скопирован в буфер обмена:', text);
+  //   setShowNotificationArticle(true);
+  // };
 
   return (
     <Wrapper>
+      <Toaster position="bottom-left" expand={true} />
+      {showNotificationAddProduct && (
+        <PopUpNotification
+          titleText={'Добавлен новый продукт'}
+          // bodyText={`Наименование акции:`}
+          name={editedProduct?.productName}
+        />
+      )}
+      {showNotificationEditProduct && (
+        <PopUpNotification
+          titleText={'Внесены изменения'}
+          // bodyText={`Наименование продукта:`}
+          name={editedProduct?.productName}
+        />
+      )}
+      {/* //!уведомления об ошибках */}
+      {showErrorNotificationAddProduct && (
+        <PopUpErrorNotification
+          titleText={'Ошибка'}
+          bodyText={errorNotification}
+        />
+      )}
+      {showErrorNotificationEditProduct && (
+        <PopUpErrorNotification
+          titleText={'Ошибка'}
+          bodyText={errorNotification}
+        />
+      )}
       <ProductSidebar
         categories={categories}
         onCategorySelect={setCurrentCategory}
@@ -337,7 +416,7 @@ const Products: FC = () => {
       />
 
       <div className="p-4">
-        {showNotification && (
+        {showNotificationArticle && (
           <div className="fixed top-24 left-1/2 transform -translate-x-1/2 bg-opacity-75 animate-pulse h-10 w-56 z-10 bg-slate-600 p-4 rounded-md">
             <span
               className="text-slate-100 font-medium flex items-center"
@@ -348,16 +427,17 @@ const Products: FC = () => {
             </span>
           </div>
         )}
-{/* 
+        {/* 
         <h1 className="text-xl text-lime-600 font-medium text-center">
           Продукты
         </h1> */}
 
-        <div className="flex items-center">
+        <div className="flex items-center space-x-1">
           <span className="text-slate-600 text-sm font-normal my-2">
             Каталог
           </span>
-          {(activeCategory || activeSubcategory) && (
+
+          {activeCategory || activeSubcategory ? (
             <>
               {activeCategory && (
                 <>
@@ -381,28 +461,37 @@ const Products: FC = () => {
                 </>
               )}
             </>
+          ) : (
+            <>
+              <div>
+                <ChevronRightIcon className="cursor-pointer w-3 h-3 text-slate-600 mx-1" />
+              </div>
+              <span className="text-slate-600 text-sm font-normal mx-2 my-2">
+                Все продукты
+              </span>
+            </>
           )}
         </div>
 
         <div className="col-span-full">
+          {/* <div className="flex items-end justify-center">
+            <Button
+              type="button"
+              title="Добавить"
+              onClick={openAddModal}
+              styleCSSButton={
+                'relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-slate-700 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 hover:text-white'
+              }
+              styleCSSSpan={
+                'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
+              }
+            />
+          </div> */}
           <div className="flex items-center justify-between mb-2">
             <Search onFilter={setSearchText} />
-            <div className="flex items-end justify-center">
-              <Button
-                type="button"
-                title="Добавить"
-                onClick={openAddModal}
-                styleCSSButton={
-                  'relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-slate-700 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 hover:text-white'
-                }
-                styleCSSSpan={
-                  'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
-                }
-              />
-            </div>
           </div>
 
-          <div className="main flex flex-col border rounded-full overflow-hidden select-none px-4">
+          {/* <div className="main flex flex-col overflow-hidden select-none px-4 mb-2">
             <div className="flex space-x-3 py-2 px-2">
               <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
                 <input
@@ -422,7 +511,7 @@ const Products: FC = () => {
                   onChange={(e) => {
                     setCurrentPage(1);
                     setshowDiscounted(e.target.checked ? 'isDiscounted' : '');
-                    console.log(e.target.checked);
+                    // console.log(e.target.checked);
                   }}
                   className="w-4 h-4 text-amber-600 text-sm font-normal bg-slate-100 border-slate-300 rounded focus:ring-amber-500"
                 />
@@ -453,7 +542,10 @@ const Products: FC = () => {
                 />
                 <span className="ml-1">Товары без акции</span>
               </label>
-            </div>
+            </div>{' '}
+          </div> */}
+
+          <div className="main flex flex-col border rounded-full overflow-hidden select-none px-4">
             <div className="flex space-x-3 py-2 px-2">
               <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
                 <input
@@ -497,6 +589,59 @@ const Products: FC = () => {
             </div>
           </div>
         </div>
+        <div className="main flex flex-col overflow-hidden select-none px-4 mb-2">
+          <div className="flex space-x-3 py-2 px-2">
+            <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
+              <input
+                type="checkbox"
+                value="isNew"
+                onChange={(e) => {
+                  setCurrentPage(1);
+                  setShowNew(e.target.checked ? 'isNew' : '');
+                }}
+                className="w-4 h-4 text-amber-600 text-sm font-normal bg-slate-100 border-slate-300 rounded focus:ring-amber-500"
+              />
+              <span className="ml-1">Новый товар</span>
+            </label>
+            <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
+              <input
+                type="checkbox"
+                onChange={(e) => {
+                  setCurrentPage(1);
+                  setshowDiscounted(e.target.checked ? 'isDiscounted' : '');
+                  // console.log(e.target.checked);
+                }}
+                className="w-4 h-4 text-amber-600 text-sm font-normal bg-slate-100 border-slate-300 rounded focus:ring-amber-500"
+              />
+              <span className="ml-1">Текущие акциии</span>
+            </label>
+            <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
+              <input
+                type="checkbox"
+                onChange={(e) => {
+                  setCurrentPage(1);
+                  setSearchText(e.target.checked ? 'завершена' : '');
+                }}
+                className="w-4 h-4 text-amber-600 text-sm font-normal bg-slate-100 border-slate-300 rounded focus:ring-amber-500"
+              />
+              <span className="ml-1">Завершенные акции</span>
+            </label>
+            <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
+              <input
+                type="checkbox"
+                onChange={(e) => {
+                  setCurrentPage(1);
+                  setwWthoutIsDiscounted(
+                    e.target.checked ? 'withoutIsDiscounted' : ''
+                  );
+                  console.log(e.target.checked);
+                }}
+                className="w-4 h-4 text-amber-600 text-sm font-normal bg-slate-100 border-slate-300 rounded focus:ring-amber-500"
+              />
+              <span className="ml-1">Товары без акции</span>
+            </label>
+          </div>{' '}
+        </div>
 
         <section className="max-w-6xl mx-auto px-4 ">
           {/** новая карточка */}
@@ -508,15 +653,33 @@ const Products: FC = () => {
                   : 'items-center'
               }`}
             >
+              <article
+                onClick={openAddModal}
+                className="mx-auto my-4 flex w-full flex-col rounded-2xl border-2 border-slate-300 bg-white border-dashed transition hover:translate-y-2 hover:shadow-lg"
+              >
+                {/* <div className="relative h-full"> */}
+                  <img
+                    className="h-full w-full object-contain"
+                    src={`${VITE_URL}/uploads/noPhoto/null.jpeg`}
+                    // alt={product.productName}
+                  />
+                  {/* <div className="flex justify-center items-center relative">
+                    <p className="font-medium text-lime-600 text-md ">
+                      Добавить продукт
+                    </p>
+                  </div> */}
+                {/* </div> */}
+              </article>
+
               {displayedProducts.length ? (
                 displayedProducts.map((product) => (
                   <article
                     key={product.id}
-                    className="mx-auto my-4 flex w-full flex-col overflow-hidden rounded-2xl border border-gray-300 bg-white text-gray-900 transition hover:translate-y-2 hover:shadow-lg"
+                    className="mx-auto my-4 flex w-full flex-col overflow-hidden rounded-2xl border border-slate-300 bg-white text-gray-900 transition hover:translate-y-2 hover:shadow-lg"
                   >
                     <div className="relative">
                       <img
-                       className="h-full w-full object-contain"
+                        className="h-full w-full object-contain"
                         src={`${VITE_URL}${product.photo}`}
                         alt={product.productName}
                       />
@@ -560,7 +723,7 @@ const Products: FC = () => {
                         />
 
                         <span className="text-slate-700 font-medium">
-                          {product.article || 'нет'}
+                          {product.article || 'Отсутствует'}
                         </span>
                       </span>
 
@@ -674,7 +837,7 @@ const Products: FC = () => {
                     </p>
                     <div
                       id="description"
-                      className="block p-2.5 h-full w-full text-justify text-sm text-slate-700 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 overflow-auto resize-y"
+                      className="block p-2.5 h-full w-full text-justify text-sm text-slate-700 bg-white rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 overflow-auto resize-y"
                       style={{ whiteSpace: 'pre-wrap', maxHeight: '100px' }}
                       dangerouslySetInnerHTML={{
                         __html: product.description,
@@ -717,8 +880,8 @@ const Products: FC = () => {
             isAddingMode={isAddingMode}
             editedProduct={editedProduct}
             setEditedProduct={setEditedProduct}
-            axiosError={axiosError}
-            resetAxiosError={resetAxiosError}
+            // axiosError={axiosError}
+            // resetAxiosError={resetAxiosError}
           />
         )}
       </div>

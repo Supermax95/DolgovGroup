@@ -7,10 +7,11 @@ import Modal from '../../../ui/Modal';
 import { IProduct } from './Products';
 import { VITE_URL } from '../../../VITE_URL';
 import axios from 'axios';
-import Quill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import ReactQuill from 'react-quill';
 import deleteProductPhoto from '../../../Redux/thunks/Products/deleteProductPhoto.api';
+import { Toaster } from 'sonner';
+import PopUpNotification from '../../../ui/PopUpNotification';
 
 interface Product {
   id: number;
@@ -52,8 +53,8 @@ interface ProductsModalProps {
   setEditedProduct: React.Dispatch<
     React.SetStateAction<Product | null | undefined>
   >;
-  axiosError: string | null;
-  resetAxiosError: () => void;
+  // axiosError: string | null;
+  // resetAxiosError: () => void;
 }
 
 const ProductsModal: FC<ProductsModalProps> = ({
@@ -66,30 +67,43 @@ const ProductsModal: FC<ProductsModalProps> = ({
   isAddingMode,
   editedProduct,
   setEditedProduct,
-  axiosError,
-  resetAxiosError,
+  // axiosError,
+  // resetAxiosError,
 }) => {
   const subcategory = useAppSelector((state) => state.subcategorySlice.data);
   const category = useAppSelector((state) => state.categorySlice.data);
-  console.log('category', category);
+  // console.log('category', category);
 
   const selectedSubcategory = editedProduct?.subcategoryId
     ? subcategory.find(
         (subcategory) => subcategory.id === editedProduct.subcategoryId
       )
     : null;
-  console.log('selectedSubcategory', selectedSubcategory);
+  // console.log('selectedSubcategory', selectedSubcategory);
+
   const selectedCategory = selectedSubcategory
     ? category.find(
         (category) => category.id === selectedSubcategory.categoryId
       )
     : null;
-  console.log('selectedCategory', selectedCategory);
+  // console.log('selectedCategory', selectedCategory);
 
   const id = useAppSelector((state) => state.productSlice.postId);
   const dispatch = useAppDispatch();
   const [isUpload, setUpload] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
+
+  //! message не выводится с бэка в случае положительного действия
+  //! ошибка тоже не выгружается с бэка, т.к. ошибку он не допускает пока вовсе. Не знаю, обрабатывает ли вообще
+  // const [messNotification, setMessNotification] = useState<string | null>(null);
+  // const [errorNotification, setErrorNotification] = useState<string | null>(
+  //   null
+  // );
+
+  const [showNotificationPicture, setShowNotificationPicture] =
+    useState<boolean>(false);
+  // const [showErrorNotificationPicture, setErrorShowNotificationPicture] =
+  //   useState<boolean>(false);
 
   useEffect(() => {
     if (product) {
@@ -99,7 +113,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
   const modalTitle = isAddingMode ? 'Новый продукт' : 'Редактирование продукта';
   const handleCancel = () => {
     setEditedProduct(undefined);
-    resetAxiosError();
+    // resetAxiosError();
     onCloseEditModal();
     onCloseAddModal();
   };
@@ -115,6 +129,8 @@ const ProductsModal: FC<ProductsModalProps> = ({
       formData.append('file', file);
 
       try {
+        setShowNotificationPicture(true);
+
         await axios.put(`${VITE_URL}/admin/productsPhoto/${id}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -129,12 +145,19 @@ const ProductsModal: FC<ProductsModalProps> = ({
         }
       } catch (error) {
         console.error('Ошибка при загрузке файла:', error);
+        // setErrorNotification(error as string | null);
+        // setErrorShowNotificationPicture(true);
       }
     }
   };
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const isConfirmed = window.confirm(
+      'Вы уверены, что хотите внести изменения?'
+    );
+
     if (currentStep === 1) {
       if (
         !selectedSubcategory ||
@@ -151,9 +174,11 @@ const ProductsModal: FC<ProductsModalProps> = ({
         // @ts-ignore
         result = await onSaveAdd(editedProduct as IProduct);
       } else {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        result2 = await onSaveEdit(editedProduct as IProduct);
+        if (isConfirmed) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          result2 = await onSaveEdit(editedProduct as IProduct);
+        }
       }
 
       if (typeof result2 !== 'string') {
@@ -193,19 +218,34 @@ const ProductsModal: FC<ProductsModalProps> = ({
   };
 
   const handleDelete = () => {
-    if (editedProduct && editedProduct.id) {
+    const isConfirmed = window.confirm('Вы уверены, что хотите удалить акцию?');
+
+    if (isConfirmed && editedProduct && editedProduct.id) {
       const productId = editedProduct.id;
-      dispatch(deleteProduct(productId));
-      onCloseEditModal();
+      try {
+        dispatch(deleteProduct(productId));
+        onCloseEditModal();
+      } catch (error) {
+        console.error('Произошла ошибка при удалении:', error);
+      }
     }
   };
 
   const handleDeletePhoto = () => {
-    if (editedProduct && editedProduct.id) {
+    const isConfirmed = window.confirm(
+      'Вы уверены, что хотите удалить изображение?'
+    );
+
+    if (isConfirmed && editedProduct && editedProduct.id) {
       const productId = editedProduct.id;
-      dispatch(deleteProductPhoto(productId));
+
+      try {
+        dispatch(deleteProductPhoto(productId));
+        onCloseEditModal();
+      } catch (error) {
+        console.error('Произошла ошибка при удалении:', error);
+      }
     }
-    onCloseEditModal();
   };
 
   if (!isOpen || !editedProduct) {
@@ -433,11 +473,25 @@ const ProductsModal: FC<ProductsModalProps> = ({
       required: true,
     },
   ];
-  console.log('photo======>', editedProduct.photo);
-  
-  
+
   return (
     <Wrapper>
+      <Toaster position="bottom-left" expand={true} />
+      {showNotificationPicture && (
+        <PopUpNotification
+          titleText={'Обложка продукта загружена'}
+          // bodyText={`Наименование акции:`}
+          name={editedProduct.productName}
+        />
+      )}
+
+      {/* //!уведомления об ошибках */}
+      {/* {showErrorNotificationPicture && (
+        <PopUpErrorNotification
+          titleText={'Ошибка'}
+          bodyText={errorNotification}
+        />
+      )} */}
       <form onSubmit={handleFormSubmit}>
         <Modal
           modalTitle={modalTitle}
@@ -446,11 +500,11 @@ const ProductsModal: FC<ProductsModalProps> = ({
           onCancelСlick={handleCancel}
           isUpload={isUpload}
         >
-          {axiosError && (
+          {/* {axiosError && (
             <div className="text-sm text-rose-400 text-center mt-2">
               {axiosError}
             </div>
-          )}
+          )} */}
 
           {currentStep === 1 && (
             <InputModal
@@ -637,7 +691,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
                           Сброс изображения
                         </button>
                       )}
-                    </div>
+              </div>
                   </div>
                 </div>
               </div>

@@ -52,6 +52,7 @@ const Nocarousel: FC = () => {
   // const [axiosError, setAxiosError] = useState<string | null>(null);
   const [searchText, setSearchText] = useState('');
 
+  //* всплывающие уведомления
   const [showNotificationAddPromo, setShowNotificationAddPromo] =
     useState<boolean>(false);
   const [showNotificationEditPromo, setShowNotificationEditPromo] =
@@ -195,31 +196,25 @@ const Nocarousel: FC = () => {
   const handleSaveEdit = async (editedPromotion: IPromotion) => {
     let add = {} as any;
 
-    const isConfirmed = window.confirm(
-      'Вы уверены, что хотите внести изменения?'
-    );
-
-    if (isConfirmed) {
-      try {
-        if (selectedPromotion) {
-          const resultAction = await dispatch(
-            editPromotion({
-              newInfo: editedPromotion,
-            })
-          );
-          const result = unwrapResult(resultAction);
-          add = result;
-          setErrorNotification(null);
-          setShowNotificationEditPromo(true);
-        }
-      } catch (error) {
-        console.error('Произошла ошибка при редактировании:', error);
-        setErrorNotification(error as string | null);
-        setShowErrorNotificationEditPromo(true);
-        add = error;
+    try {
+      if (selectedPromotion) {
+        const resultAction = await dispatch(
+          editPromotion({
+            newInfo: editedPromotion,
+          })
+        );
+        const result = unwrapResult(resultAction);
+        add = result;
+        setErrorNotification(null);
+        setShowNotificationEditPromo(true);
       }
-      return add;
+    } catch (error) {
+      console.error('Произошла ошибка при редактировании:', error);
+      setErrorNotification(error as string | null);
+      setShowErrorNotificationEditPromo(true);
+      add = error;
     }
+    return add;
   };
 
   const reverseDate = (dateString: string): string => {

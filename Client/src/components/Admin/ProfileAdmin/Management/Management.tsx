@@ -74,8 +74,6 @@ const Management: FC = () => {
   const [showNotificationOnePass, setShowNotificationOnePass] =
     useState<boolean>(false);
 
-  // const [modalError, setModalError] = useState<string | null>(null);
-
   const [errorNotification, setErrorNotification] = useState<string | null>(
     null
   );
@@ -163,7 +161,6 @@ const Management: FC = () => {
     setSelectedManager(null);
     setEditedManager(null);
     setModalOpen(false);
-    // setModalError(null);
   };
 
   const closeEditModal = (): void => {
@@ -174,7 +171,6 @@ const Management: FC = () => {
 
   //* добавление менеджера
   const handleSaveAdd = async (): Promise<void> => {
-    console.log('editedManager при добавлении:', editedManager);
     try {
       if (editedManager) {
         const resultAdd = await dispatch(
@@ -183,7 +179,6 @@ const Management: FC = () => {
           })
         );
         unwrapResult(resultAdd);
-        // setModalError(null);
         closeAddModal();
         setShowNotificationAdd(true);
       }
@@ -196,29 +191,23 @@ const Management: FC = () => {
 
   //* редактирование менеджера
   const handleSaveEdit = async (editedManager: IManager): Promise<void> => {
-    const isConfirmed = window.confirm(
-      'Вы уверены, что хотите внести изменения?'
-    );
-    if (isConfirmed) {
-      try {
-        if (selectedManager) {
-          const resultEdit = await dispatch(
-            editManager({
-              managerId: selectedManager.id,
-              updateManager: editedManager,
-            })
-          );
+    try {
+      if (selectedManager) {
+        const resultEdit = await dispatch(
+          editManager({
+            managerId: selectedManager.id,
+            updateManager: editedManager,
+          })
+        );
 
-          unwrapResult(resultEdit);
-          // setModalError(null);
-          closeEditModal();
-          setShowNotificationEdit(true);
-        }
-      } catch (error) {
-        console.error('Произошла ошибка при редактировании:', error);
-        setErrorNotification(error as string | null);
-        setShowErrorNotificationEdit(true);
+        unwrapResult(resultEdit);
+        closeEditModal();
+        setShowNotificationEdit(true);
       }
+    } catch (error) {
+      console.error('Произошла ошибка при редактировании:', error);
+      setErrorNotification(error as string | null);
+      setShowErrorNotificationEdit(true);
     }
   };
 
@@ -316,7 +305,6 @@ const Management: FC = () => {
             isAddingMode={isAddingMode}
             editedManager={editedManager}
             setEditedManager={setEditedManager}
-            // showError={modalError}
           />
         )}
       </Wrapper>

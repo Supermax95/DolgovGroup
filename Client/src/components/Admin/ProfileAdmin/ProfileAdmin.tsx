@@ -49,6 +49,7 @@ const ProfileAdmin: FC = () => {
     password?: string;
   }>((state) => state.managerSlice.manager);
 
+
   const managerId = useAppSelector<number>(
     (state) => state.managerSlice.manager.id
   );

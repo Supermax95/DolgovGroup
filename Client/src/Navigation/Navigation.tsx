@@ -22,7 +22,7 @@ import Law from '../components/Admin/Laws/Laws';
 
 const Navigation: FC = () => {
   const manager = useAppSelector((state) => state.managerSlice.manager);
-  console.log('manager в навигации', manager);
+  // console.log('manager в навигации', manager);
 
   return (
     <div className="wrapperCss">
