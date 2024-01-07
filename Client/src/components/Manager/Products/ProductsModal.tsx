@@ -598,7 +598,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
                   />
                   <label
                     htmlFor="promoStartDate"
-                    className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm"
+                    className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-slate-400 peer-focus:text-sm"
                   >
                     Начало акции
                   </label>
@@ -619,7 +619,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
                   />
                   <label
                     htmlFor="promoEndDate"
-                    className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm"
+                    className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-slate-400 peer-focus:text-sm"
                   >
                     Окончание акции
                   </label>
@@ -682,16 +682,18 @@ const ProductsModal: FC<ProductsModalProps> = ({
                       >
                         Выберите файл
                       </label>
-                      {!isAddingMode && editedProduct.photo !== '/uploads/noPhoto/null.jpeg' && (
-                        <button
-                          type="button"
-                          onClick={handleDeletePhoto}
-                          className="cursor-pointer bg-red-500 text-white font-bold py-2 px-4 rounded inline-block"
-                        >
-                          Сброс изображения
-                        </button>
-                      )}
-              </div>
+                      {!isAddingMode &&
+                        editedProduct.photo !==
+                          '/uploads/noPhoto/null.jpeg' && (
+                          <button
+                            type="button"
+                            onClick={handleDeletePhoto}
+                            className="cursor-pointer bg-red-500 text-white font-bold py-2 px-4 rounded inline-block"
+                          >
+                            Сброс изображения
+                          </button>
+                        )}
+                    </div>
                   </div>
                 </div>
               </div>

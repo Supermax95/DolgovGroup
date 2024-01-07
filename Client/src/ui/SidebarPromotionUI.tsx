@@ -14,26 +14,30 @@ interface IPromotionsSidebar {
   openAddModal: () => void | undefined;
 }
 
-const PromotionSidebarUI: FC<IPromotionsSidebar> = ({ links, title, openAddModal }) => {
+const PromotionSidebarUI: FC<IPromotionsSidebar> = ({
+  links,
+  title,
+  openAddModal,
+}) => {
   return (
     <div className="flex flex-col w-56 bg-white h-full border-r-2 border-orange-300">
       <div className="h-16 flex items-center justify-center border-b-2 border-orange-300 text-center">
         <h2 className="text-xl text-slate-600 font-medium">{title}</h2>
       </div>
-      <div
-            onClick={openAddModal}
-            className="cursor-pointer flex items-center p-2 justify-between rounded-md hover:bg-slate-100 "
-          >
-            <div className="flex items-center justify-center ml-6">
-              <span className="text-lime-600 text-sm font-medium">
-                Новая акция
-              </span>
-            </div>
-            <div className="flex items-center ml-auto">
-              <PlusCircleIcon className="cursor-pointer w-5 h-5 text-lime-600" />
-            </div>
+      <ul className="py-0">
+        <div
+          onClick={openAddModal}
+          className="cursor-pointer flex items-center p-2 justify-between rounded-md hover:bg-slate-100"
+        >
+          <div className="flex items-center justify-center ml-6">
+            <span className="text-lime-600 text-sm font-medium">
+              Новая акция
+            </span>
           </div>
-      <ul className="py-2">
+          <div className="flex items-center ml-auto">
+            <PlusCircleIcon className="cursor-pointer w-5 h-5 text-lime-600" />
+          </div>
+        </div>
         {links.map((item) => (
           <li key={item.id} className="flex items-center">
             <Link

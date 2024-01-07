@@ -84,12 +84,12 @@ const InputModal: FC<IInputModal> = ({
               />
               <label
                 htmlFor={field.htmlFor}
-                className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm"
+                className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-slate-400 peer-focus:text-sm"
               >
                 {field.title}
               </label>
             </>
-          ) :   field.id === 'isActivated' ? (
+          ) : field.id === 'isActivated' ? (
             field.value ? (
               <div className="flex justify-between">
                 <div className="flex justify-start items-center">
@@ -102,9 +102,7 @@ const InputModal: FC<IInputModal> = ({
                   </h1>
                 </div>
                 <div className="">
-                  {modalTitle === 'Редактирование анкеты клиента' ? (
-                    null 
-                  ) : (
+                  {modalTitle === 'Редактирование анкеты клиента' ? null : (
                     <Button
                       type="button"
                       title="Отправить код"
@@ -145,7 +143,8 @@ const InputModal: FC<IInputModal> = ({
                 </div>
               </div>
             )
-          ) : field.disabled === true ? (            <>
+          ) : field.disabled === true ? (
+            <>
               <input
                 onChange={(e) => field.onChange?.(e.target.value)}
                 id={field.id}
@@ -159,7 +158,7 @@ const InputModal: FC<IInputModal> = ({
               />
               <label
                 htmlFor={field.htmlFor}
-                className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm"
+                className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-slate-400 peer-focus:text-sm"
               >
                 {field.title}
               </label>
@@ -188,7 +187,7 @@ const InputModal: FC<IInputModal> = ({
               </select>
               <label
                 htmlFor={field.htmlFor}
-                className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm"
+                className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-slate-400 peer-focus:text-sm"
               >
                 {field.title}
               </label>
@@ -209,7 +208,7 @@ const InputModal: FC<IInputModal> = ({
               />
               <label
                 htmlFor={field.htmlFor}
-                className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm"
+                className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-slate-400 peer-focus:text-sm"
               >
                 {field.title}
               </label>
@@ -237,7 +236,7 @@ const InputModal: FC<IInputModal> = ({
               />
               <label
                 htmlFor={field.htmlFor}
-                className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm"
+                className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-slate-400 peer-focus:text-sm"
               >
                 {field.title}
               </label>
@@ -284,7 +283,7 @@ const InputModal: FC<IInputModal> = ({
               />
               <label
                 htmlFor={field.htmlFor}
-                className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm"
+                className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-slate-400 peer-focus:text-sm"
               >
                 {field.title}
               </label>
