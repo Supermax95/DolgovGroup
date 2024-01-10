@@ -79,14 +79,12 @@ const ProductsModal: FC<ProductsModalProps> = ({
         (subcategory) => subcategory.id === editedProduct.subcategoryId
       )
     : null;
-  // console.log('selectedSubcategory', selectedSubcategory);
 
   const selectedCategory = selectedSubcategory
     ? category.find(
         (category) => category.id === selectedSubcategory.categoryId
       )
     : null;
-  // console.log('selectedCategory', selectedCategory);
 
   const id = useAppSelector((state) => state.productSlice.postId);
   const dispatch = useAppDispatch();
@@ -102,6 +100,9 @@ const ProductsModal: FC<ProductsModalProps> = ({
 
   const [showNotificationPicture, setShowNotificationPicture] =
     useState<boolean>(false);
+  //* удаление
+  const [showNotificationDelProd, setShowNotificationDelProd] =
+    useState<boolean>(false);
   // const [showErrorNotificationPicture, setErrorShowNotificationPicture] =
   //   useState<boolean>(false);
 
@@ -110,10 +111,21 @@ const ProductsModal: FC<ProductsModalProps> = ({
       setEditedProduct({ ...product });
     }
   }, [product, isAddingMode, setEditedProduct]);
+
+  useEffect(() => {
+    if (showNotificationPicture || showNotificationDelProd) {
+      const timeoutId = setTimeout(() => {
+        setShowNotificationPicture(false);
+        setShowNotificationDelProd(false);
+      });
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [showNotificationPicture, showNotificationDelProd]);
+
   const modalTitle = isAddingMode ? 'Новый продукт' : 'Редактирование продукта';
   const handleCancel = () => {
     setEditedProduct(undefined);
-    // resetAxiosError();
     onCloseEditModal();
     onCloseAddModal();
   };
@@ -218,13 +230,17 @@ const ProductsModal: FC<ProductsModalProps> = ({
   };
 
   const handleDelete = () => {
-    const isConfirmed = window.confirm('Вы уверены, что хотите удалить акцию?');
+    const isConfirmed = window.confirm(
+      'Вы уверены, что хотите удалить продукт?'
+    );
 
     if (isConfirmed && editedProduct && editedProduct.id) {
       const productId = editedProduct.id;
       try {
         dispatch(deleteProduct(productId));
         onCloseEditModal();
+        setShowNotificationDelProd(true);
+        console.log('showNotificationDelProd', showNotificationDelProd);
       } catch (error) {
         console.error('Произошла ошибка при удалении:', error);
       }
@@ -480,8 +496,13 @@ const ProductsModal: FC<ProductsModalProps> = ({
       {showNotificationPicture && (
         <PopUpNotification
           titleText={'Обложка продукта загружена'}
-          // bodyText={`Наименование акции:`}
           name={editedProduct.productName}
+        />
+      )}
+      {showNotificationDelProd && (
+        <PopUpNotification
+          titleText={'Продукт удалён'}
+          // name={editedProduct.productName}
         />
       )}
 
@@ -598,7 +619,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
                   />
                   <label
                     htmlFor="promoStartDate"
-                    className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm"
+                    className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-slate-400 peer-focus:text-sm"
                   >
                     Начало акции
                   </label>
@@ -619,7 +640,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
                   />
                   <label
                     htmlFor="promoEndDate"
-                    className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm"
+                    className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-slate-400 peer-focus:text-sm"
                   >
                     Окончание акции
                   </label>
@@ -682,16 +703,18 @@ const ProductsModal: FC<ProductsModalProps> = ({
                       >
                         Выберите файл
                       </label>
-                      {!isAddingMode && editedProduct.photo !== '/uploads/noPhoto/null.jpeg' && (
-                        <button
-                          type="button"
-                          onClick={handleDeletePhoto}
-                          className="cursor-pointer bg-red-500 text-white font-bold py-2 px-4 rounded inline-block"
-                        >
-                          Сброс изображения
-                        </button>
-                      )}
-              </div>
+                      {!isAddingMode &&
+                        editedProduct.photo !==
+                          '/uploads/noPhoto/null.jpeg' && (
+                          <button
+                            type="button"
+                            onClick={handleDeletePhoto}
+                            className="cursor-pointer bg-red-500 text-white font-bold py-2 px-4 rounded inline-block"
+                          >
+                            Сброс изображения
+                          </button>
+                        )}
+                    </div>
                   </div>
                 </div>
               </div>

@@ -9,6 +9,7 @@ interface RequestData {
 interface ResponseData {
   id: number;
   categoryName: string;
+  error?: string;
 }
 
 type ArrayResponseData = Array<ResponseData>;
@@ -16,7 +17,7 @@ type ArrayResponseData = Array<ResponseData>;
 const addCategory = createAsyncThunk<ArrayResponseData, RequestData>(
   'admin/addcategory',
 
-  async ({ newCategory }) => {
+  async ({ newCategory }, { rejectWithValue }) => {
     try {
       console.log('axios', newCategory);
 
@@ -26,8 +27,12 @@ const addCategory = createAsyncThunk<ArrayResponseData, RequestData>(
       );
       return response.data;
     } catch (error) {
-      console.error('Error:', error);
-      throw error;
+      if (axios.isAxiosError(error) && error.response) {
+        console.error('Server response data:', error.response.data.error);
+        throw rejectWithValue(error.response.data.error);
+      } else {
+        throw error;
+      }
     }
   }
 );

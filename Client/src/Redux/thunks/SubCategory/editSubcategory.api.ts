@@ -18,7 +18,7 @@ type ArrayResponseData = Array<ResponseData>;
 const editSubcategory = createAsyncThunk<ArrayResponseData, RequestData>(
   'admin/editsubcategory',
 
-  async ({ subcategoryId, newSubcategoryName }) => {
+  async ({ subcategoryId, newSubcategoryName }, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axios.put(
         `${VITE_URL}/admin/subcategory/${subcategoryId}`,
@@ -26,8 +26,12 @@ const editSubcategory = createAsyncThunk<ArrayResponseData, RequestData>(
       );
       return response.data;
     } catch (error) {
-      console.error('Error:', error);
-      throw error;
+      if (axios.isAxiosError(error) && error.response) {
+        console.error('Server response data:', error.response.data.error);
+        throw rejectWithValue(error.response.data.error);
+      } else {
+        throw error;
+      }
     }
   }
 );

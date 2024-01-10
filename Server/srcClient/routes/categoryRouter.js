@@ -4,9 +4,7 @@ const { Category } = require('../../db/models');
 router.get('/admin/category', async (req, res) => {
   try {
     const categories = await Category.findAll({
-      order: [
-        ['categoryName', 'ASC'],
-      ],
+      order: [['categoryName', 'ASC']],
       raw: true,
     });
     res.json(categories);
@@ -21,23 +19,24 @@ router.post('/admin/category', async (req, res) => {
 
   try {
     const existingCategory = await Category.findOne({
-      where: { categoryName: Category.categoryName },
+      where: { categoryName: newCategory.categoryName },
     });
+
     if (existingCategory) {
-      return res.status(400).json({
+      res.status(400).json({
         error: 'Категория с указанным названием уже существует',
       });
+    } else {
+      await Category.create({
+        categoryName: newCategory.categoryName,
+      });
+      const categories = await Category.findAll({
+        order: [['categoryName', 'ASC']],
+        raw: true,
+      });
+
+      res.json(categories);
     }
-    await Category.create({
-      categoryName: newCategory.categoryName,
-    });
-
-    const categories = await Category.findAll({
-      order: [['categoryName', 'ASC']],
-      raw: true,
-    });
-
-    res.json(categories);
   } catch (error) {
     console.error('Ошибка при добавлении данных', error);
     res.status(500).json({ error: 'Произошла ошибка на сервере' });
@@ -64,6 +63,8 @@ router.delete('/admin/category/:id', async (req, res) => {
   }
 });
 
+//* даже если название категории осталось прежним у текущего id,
+//* появится уведомление, что изменения внесены
 router.put('/admin/category/:id', async (req, res) => {
   const categoryId = req.params.id;
   const { newCategoryName } = req.body;
@@ -73,15 +74,39 @@ router.put('/admin/category/:id', async (req, res) => {
 
     if (!category) {
       res.status(401).json({ message: 'Категория не найдена' });
-    } else {
-      await category.update({ categoryName: newCategoryName });
     }
 
-    const categories = await Category.findAll({
-      order: [['categoryName', 'ASC']],
-      raw: true,
-    });
-    res.json(categories);
+    if (newCategoryName !== category.categoryName) {
+      const searchCategoryName = await Category.findOne({
+        where: { categoryName: newCategoryName },
+      });
+
+      if (!searchCategoryName) {
+        await category.update({ categoryName: newCategoryName });
+
+        //! мб, сделать так, чтобы возвращал не массив всех,
+        //! а одну конкретную категорию, которая изменена
+        // res.status(200).json({
+        //   message: 'Категория успешно изменена',
+        // });
+
+        const categories = await Category.findAll({
+          order: [['categoryName', 'ASC']],
+          raw: true,
+        });
+        res.json(categories);
+      } else {
+        res.status(400).json({
+          error: 'Категория с указанным названием уже существует',
+        });
+      }
+    } else {
+      const categories = await Category.findAll({
+        order: [['categoryName', 'ASC']],
+        raw: true,
+      });
+      res.json(categories);
+    }
   } catch (error) {
     console.error('Ошибка при обновлении данных', error);
     res.status(500).json({ error: 'Произошла ошибка на сервере' });

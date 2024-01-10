@@ -58,8 +58,6 @@ const Editor: FC<LawEditorProps> = ({
   const dispatch = useAppDispatch();
   const [isUpload, setUpload] = useState(false);
 
-
-
   useEffect(() => {
     if (law) {
       setEditedLaw(law);
@@ -83,8 +81,6 @@ const Editor: FC<LawEditorProps> = ({
     }
   }, [isAddingMode, setEditedLaw]);
 
-
-
   const handleCancel = () => {
     dispatch(getLaws());
     const sortedLaws = [...laws].sort(
@@ -98,8 +94,6 @@ const Editor: FC<LawEditorProps> = ({
     resetAxiosError();
     setCurrentStep(1);
   };
-
-  
 
   const uploadFile = async (file: File, id: number | 0): Promise<void> => {
     if (file && id) {
@@ -240,7 +234,7 @@ const Editor: FC<LawEditorProps> = ({
                   />
                   <label
                     htmlFor="title"
-                    className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-300 peer-focus:text-sm"
+                    className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-slate-400 peer-focus:text-sm"
                   >
                     Наименование документа
                   </label>
@@ -265,7 +259,7 @@ const Editor: FC<LawEditorProps> = ({
                     />
                     <label
                       htmlFor="dateFrom"
-                      className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm"
+                      className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-slate-400 peer-focus:text-sm"
                     >
                       Дата начала действия документа
                     </label>
@@ -286,7 +280,7 @@ const Editor: FC<LawEditorProps> = ({
                       />
                       <label
                         htmlFor="updatedAt"
-                        className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-300 peer-focus:text-sm"
+                        className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-slate-400 peer-focus:text-sm"
                       >
                         Дата последнего обновления
                       </label>

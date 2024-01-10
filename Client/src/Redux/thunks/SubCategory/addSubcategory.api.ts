@@ -18,7 +18,7 @@ type ArrayResponseData = Array<ResponseData>;
 const addSubcategory = createAsyncThunk<ArrayResponseData, RequestData>(
   'admin/addsubcategory',
 
-  async ({ newSubcategory, categoryId }) => {
+  async ({ newSubcategory, categoryId }, { rejectWithValue }) => {
     try {
       console.log('axios', newSubcategory, categoryId);
 
@@ -28,8 +28,12 @@ const addSubcategory = createAsyncThunk<ArrayResponseData, RequestData>(
       );
       return response.data;
     } catch (error) {
-      console.error('Error:', error);
-      throw error;
+      if (axios.isAxiosError(error) && error.response) {
+        console.error('Server response data:', error.response.data.error);
+        throw rejectWithValue(error.response.data.error);
+      } else {
+        throw error;
+      }
     }
   }
 );

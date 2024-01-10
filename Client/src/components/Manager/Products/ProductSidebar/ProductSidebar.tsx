@@ -20,6 +20,7 @@ import { XMarkIcon } from '@heroicons/react/20/solid';
 import { Toaster } from 'sonner';
 import PopUpNotification from '../../../../ui/PopUpNotification';
 import PopUpErrorNotification from '../../../../ui/PopUpErrorNotification';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 interface ICategory {
   //Продукты.tsx ругаются на эти вопросы
@@ -72,6 +73,8 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   const [dataEditCategory, setDataEditCategory] = useState<ICategory | null>(
     null
   );
+  const [titleNotification, setTitleNotification] = useState<string>('');
+
   //* добавление подкатегории
   const [isAddingSubcategory, setAddingSubcategory] = useState<boolean>(false);
   const [dataSubcategory, setDataSubcategory] = useState<string>('');
@@ -148,12 +151,6 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     showErrorNotificationEditSubcategory,
     setShowErrorNotificationEditSubcategory,
   ] = useState<boolean>(false);
-
-  // useEffect(() => {
-  //   setDataCategory(() => ({
-  //     newCategory: allCategories.map
-  //   }));
-  // }, [adminProfile]);
 
   useEffect(() => {
     if (
@@ -254,7 +251,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
 
   const cancelAddingCategory = (): void => {
     setAddingCategory(false);
-    setDataCategory('');
+    // setDataCategory('');
   };
 
   const addedHandleForm = async (
@@ -263,15 +260,17 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     e.preventDefault();
     try {
       if (addCategory) {
-        await dispatch(
+        const resultAdd = await dispatch(
           addCategory({
             newCategory: dataCategory,
           })
         );
+        unwrapResult(resultAdd);
         setAddingCategory(false);
         setDataCategory('');
         setErrorNotification(null);
         setShowNotificationAddCategory(true);
+        setTitleNotification(dataCategory.categoryName);
       }
     } catch (error) {
       console.error('Произошла ошибка при добавлении:', error);
@@ -313,16 +312,17 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     if (isConfirmed) {
       try {
         if (editCategory) {
-          const result = await dispatch(
+          const resultEdit = await dispatch(
             editCategory({
               categoryId: dataEditCategory.id,
               newCategoryName: dataEditCategory?.categoryName,
             })
           );
-
+          unwrapResult(resultEdit);
           setEditingCategory(null);
           setErrorNotification(null);
           setShowNotificationEditCategory(true);
+          setTitleNotification(dataEditCategory.categoryName);
         }
       } catch (error) {
         console.error('Произошла ошибка при добавлении:', error);
@@ -341,6 +341,8 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     if (isConfirmed) {
       dispatch(deleteCategory(id));
     }
+    setActionMenuForCategory(false);
+    setActionMenuForSub(false);
   };
 
   // ? вывод подкатегорий в сайдбаре и их скрытие
@@ -371,20 +373,21 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   ): Promise<void> => {
     e.preventDefault();
     try {
-      //! мб, добавить скролл или уведомление при добалении категории и подкатегории
       if (addSubcategory) {
-        await dispatch(
+        const resultAdd = await dispatch(
           addSubcategory({
-            newSubcategory: dataSubcategory,
+            newSubcategory: dataSubcategory.subcategoryName,
             categoryId: selectedCategoryIdForSubcategory,
           })
         );
+        unwrapResult(resultAdd);
         setAddingSubcategory(false);
         setDataSubcategory('');
         setErrorNotification(null);
         setShowNotificationAddSubcategory(true);
         //* при лобавлении подкатегории открывается тут же список в категории
         subcategoryOutput(selectedCategoryIdForSubcategory);
+        setTitleNotification(dataSubcategory.subcategoryName);
       }
     } catch (error) {
       console.error('Произошла ошибка при добавлении:', error);
@@ -430,15 +433,17 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     if (isConfirmed) {
       try {
         if (editSubcategory) {
-          const result = await dispatch(
+          const resultEdit = await dispatch(
             editSubcategory({
               subcategoryId: dataEditSubcategory.id,
               newSubcategoryName: dataEditSubcategory?.subcategoryName,
             })
           );
+          unwrapResult(resultEdit);
           setEditingSubcategory(null);
           setErrorNotification(null);
           setShowNotificationEditSubcategory(true);
+          setTitleNotification(dataEditSubcategory.subcategoryName);
         }
       } catch (error) {
         console.error('Произошла ошибка при добавлении:', error);
@@ -457,6 +462,8 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     if (isConfirmed) {
       dispatch(deleteSubcategory(id));
     }
+    setActionMenuForCategory(false);
+    setActionMenuForSub(false);
   };
 
   /** Рендер карточек на странице */
@@ -498,28 +505,26 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
       {showNotificationAddCategory && (
         <PopUpNotification
           titleText={'Добавлена новая категория'}
-          //! не отображается название
-          name={dataCategory}
+          name={titleNotification}
         />
       )}
       {showNotificationEditCategory && (
         <PopUpNotification
-          titleText={'Внесены изменения в категорию'}
-          // name={dataCategory?.categoryName}
+          titleText={'Категория переименова'}
+          name={titleNotification}
         />
       )}
 
       {showNotificationAddSubcategory && (
         <PopUpNotification
           titleText={'Добавлена новая подкатегория'}
-          //! не отображается название
-          // name={dataCategory}
+          name={titleNotification}
         />
       )}
       {showNotificationEditSubcategory && (
         <PopUpNotification
           titleText={'Внесены изменения в подкатегорию'}
-          // name={dataCategory?.categoryName}
+          name={titleNotification}
         />
       )}
 
