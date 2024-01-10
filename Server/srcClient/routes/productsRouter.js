@@ -9,6 +9,7 @@ router.get('/admin/products', async (req, res) => {
   try {
     // Найти и обновить продукты
     const products = await Product.findAll({
+      attributes: { exclude: ['description'] },
       order: [['productName', 'ASC']],
       raw: true,
     });
@@ -33,11 +34,32 @@ router.get('/admin/products', async (req, res) => {
 
     // Получить обновленные продукты
     const updatedProducts = await Product.findAll({
+      attributes: { exclude: ['description'] },
       order: [['productName', 'ASC']],
       raw: true,
     });
 
     res.json(updatedProducts);
+  } catch (error) {
+    console.error('Ошибка при получении данных из базы данных', error);
+    res.status(500).json({
+      error: 'Произошла ошибка на сервере при получении данных из базы',
+    });
+  }
+});
+
+router.get('/admin/currentproduct/:id', async (req, res) => {
+  const productId = req.params.id;
+  try {
+    const product = await Product.findByPk(productId, {
+      raw: true,
+    });
+
+    if (!product) {
+      return res.status(404).json({ error: 'Продукт не найден' });
+    }
+
+    res.json(product);
   } catch (error) {
     console.error('Ошибка при получении данных из базы данных', error);
     res.status(500).json({
@@ -76,6 +98,7 @@ router.post('/admin/products', async (req, res) => {
 
     const products = await Product.findAll({
       order: [['productName', 'ASC']],
+      attributes: { exclude: ['description'] },
       raw: true,
     });
 
@@ -127,6 +150,7 @@ router.delete('/admin/products/:id', async (req, res) => {
     // Получите обновленный список продуктов
     const products = await Product.findAll({
       order: [['productName', 'ASC']],
+      attributes: { exclude: ['description'] },
       raw: true,
     });
 
@@ -185,6 +209,7 @@ router.put('/admin/products', async (req, res) => {
 
     const products = await Product.findAll({
       order: [['productName', 'ASC']],
+      attributes: { exclude: ['description'] },
       raw: true,
     });
 
@@ -230,6 +255,7 @@ router.delete('/admin/products/photo/:id', async (req, res) => {
 
       const updatedProducts = await Product.findAll({
         order: [['productName', 'ASC']],
+        attributes: { exclude: ['description'] },
         raw: true,
       });
 

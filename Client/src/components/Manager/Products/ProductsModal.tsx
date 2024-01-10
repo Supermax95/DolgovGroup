@@ -48,6 +48,9 @@ interface ProductsModalProps {
   onSaveEdit: (editedProduct: IProduct) => void;
   onCloseAddModal: () => void;
   onCloseEditModal: () => void;
+  openEditModal: React.Dispatch<
+    React.SetStateAction<IProduct | null | undefined>
+  >;
   isAddingMode: boolean;
   editedProduct: Product | null | undefined;
   setEditedProduct: React.Dispatch<
@@ -67,13 +70,16 @@ const ProductsModal: FC<ProductsModalProps> = ({
   isAddingMode,
   editedProduct,
   setEditedProduct,
+  openEditModal,
   // axiosError,
   // resetAxiosError,
 }) => {
   const subcategory = useAppSelector((state) => state.subcategorySlice.data);
   const category = useAppSelector((state) => state.categorySlice.data);
   // console.log('category', category);
-
+  const products = useAppSelector<IProduct[]>(
+    (state) => state.productSlice.data
+  );
   const selectedSubcategory = editedProduct?.subcategoryId
     ? subcategory.find(
         (subcategory) => subcategory.id === editedProduct.subcategoryId
@@ -264,6 +270,20 @@ const ProductsModal: FC<ProductsModalProps> = ({
     }
   };
 
+
+  
+  const handleBack = () => {    
+    const product = products.find((p) => p.id === id);
+    setEditedProduct(undefined);
+    onCloseEditModal();
+    openEditModal(product);
+    setCurrentStep(1);
+  };
+  
+
+
+
+  
   if (!isOpen || !editedProduct) {
     return null;
   }
@@ -703,6 +723,12 @@ const ProductsModal: FC<ProductsModalProps> = ({
                       >
                         Выберите файл
                       </label>
+                      <button
+                        onClick={handleBack}
+                        className="cursor-pointer bg-red-500 text-white font-bold py-2 px-4 rounded inline-block"
+                      >
+                        Назад
+                      </button>
                       {!isAddingMode &&
                         editedProduct.photo !==
                           '/uploads/noPhoto/null.jpeg' && (

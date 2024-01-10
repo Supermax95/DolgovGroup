@@ -62,6 +62,7 @@ router.post('/admin/laws', async (req, res) => {
 
     const laws = await Law.findAll({
       order: [['title', 'ASC']],
+      attributes: { exclude: ['description'] },
       raw: true,
     });
 
@@ -107,6 +108,7 @@ router.delete('/admin/laws/:id', async (req, res) => {
     // Получите обновленный список законов
     const laws = await Law.findAll({
       order: [['title', 'ASC']],
+      attributes: { exclude: ['description'] },
       raw: true,
     });
 
@@ -146,6 +148,7 @@ router.put('/admin/laws', async (req, res) => {
 
     const laws = await Law.findAll({
       order: [['title', 'ASC']],
+      attributes: { exclude: ['description'] },
       raw: true,
     });
 
@@ -186,6 +189,7 @@ router.delete('/admin/laws/doc/:id', async (req, res) => {
 
       const updatedLaws = await Law.findAll({
         order: [['title', 'ASC']],
+        attributes: { exclude: ['description'] },
         raw: true,
       });
 

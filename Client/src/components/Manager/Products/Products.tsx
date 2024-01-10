@@ -23,6 +23,7 @@ import Button from '../../../ui/Button';
 import { Toaster } from 'sonner';
 import PopUpNotification from '../../../ui/PopUpNotification';
 import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
+import currentProduct from '../../../Redux/thunks/Products/getcurrentProduct';
 
 export interface IProduct {
   id: number;
@@ -89,6 +90,9 @@ const Products: FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);
   const [isAddingMode, setAddingMode] = useState(false);
+  const openProduct = useAppSelector(
+    (state) => state.productSlice.currentProduct
+  );
   const [editedProduct, setEditedProduct] = useState<
     IProduct | null | undefined
   >(null);
@@ -278,12 +282,14 @@ const Products: FC = () => {
     dispatch(getProducts());
   };
 
-  const openEditModal = (product: IProduct) => {
-    setSelectedProduct(product);
-    setEditedProduct({ ...product });
+  const openEditModal = async (product: IProduct) => {
+    const productId = product.id;
+    const res = await dispatch(currentProduct(productId));
+    const result = unwrapResult(res);
+    setSelectedProduct(result);
+    setEditedProduct(result);
     setAddingMode(false);
     setModalOpen(true);
-    dispatch(getProducts());
   };
 
   const closeEditModal = () => {
@@ -809,6 +815,7 @@ const Products: FC = () => {
             isAddingMode={isAddingMode}
             editedProduct={editedProduct}
             setEditedProduct={setEditedProduct}
+            openEditModal = {openEditModal}
             // axiosError={axiosError}
             // resetAxiosError={resetAxiosError}
           />
