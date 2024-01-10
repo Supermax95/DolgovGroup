@@ -20,7 +20,7 @@ const PopUpNotification: FC<IPopUpNotification> = ({
       (t) => (
         <div className="flex flex-col p-4 bg-slate-50 shadow-md hover:shadow-lg rounded-lg border border-slate-200">
           <div className="flex flex-col justify-start w-72">
-            <p className="font-medium text-xs text-slate-800">{titleText}</p>
+            <h1 className="font-medium text-xs text-slate-800">{titleText}</h1>
             <p className="text-xs font-normal text-slate-600 mt-2">
               {bodyText}{' '}
               <span className="text-slate-800 ext-xs">{email || name}</span>
