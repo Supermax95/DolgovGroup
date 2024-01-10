@@ -79,14 +79,12 @@ const ProductsModal: FC<ProductsModalProps> = ({
         (subcategory) => subcategory.id === editedProduct.subcategoryId
       )
     : null;
-  // console.log('selectedSubcategory', selectedSubcategory);
 
   const selectedCategory = selectedSubcategory
     ? category.find(
         (category) => category.id === selectedSubcategory.categoryId
       )
     : null;
-  // console.log('selectedCategory', selectedCategory);
 
   const id = useAppSelector((state) => state.productSlice.postId);
   const dispatch = useAppDispatch();
@@ -102,6 +100,9 @@ const ProductsModal: FC<ProductsModalProps> = ({
 
   const [showNotificationPicture, setShowNotificationPicture] =
     useState<boolean>(false);
+  //* удаление
+  const [showNotificationDelProd, setShowNotificationDelProd] =
+    useState<boolean>(false);
   // const [showErrorNotificationPicture, setErrorShowNotificationPicture] =
   //   useState<boolean>(false);
 
@@ -110,10 +111,21 @@ const ProductsModal: FC<ProductsModalProps> = ({
       setEditedProduct({ ...product });
     }
   }, [product, isAddingMode, setEditedProduct]);
+
+  useEffect(() => {
+    if (showNotificationPicture || showNotificationDelProd) {
+      const timeoutId = setTimeout(() => {
+        setShowNotificationPicture(false);
+        setShowNotificationDelProd(false);
+      });
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [showNotificationPicture, showNotificationDelProd]);
+
   const modalTitle = isAddingMode ? 'Новый продукт' : 'Редактирование продукта';
   const handleCancel = () => {
     setEditedProduct(undefined);
-    // resetAxiosError();
     onCloseEditModal();
     onCloseAddModal();
   };
@@ -218,13 +230,17 @@ const ProductsModal: FC<ProductsModalProps> = ({
   };
 
   const handleDelete = () => {
-    const isConfirmed = window.confirm('Вы уверены, что хотите удалить акцию?');
+    const isConfirmed = window.confirm(
+      'Вы уверены, что хотите удалить продукт?'
+    );
 
     if (isConfirmed && editedProduct && editedProduct.id) {
       const productId = editedProduct.id;
       try {
         dispatch(deleteProduct(productId));
         onCloseEditModal();
+        setShowNotificationDelProd(true);
+        console.log('showNotificationDelProd', showNotificationDelProd);
       } catch (error) {
         console.error('Произошла ошибка при удалении:', error);
       }
@@ -480,8 +496,13 @@ const ProductsModal: FC<ProductsModalProps> = ({
       {showNotificationPicture && (
         <PopUpNotification
           titleText={'Обложка продукта загружена'}
-          // bodyText={`Наименование акции:`}
           name={editedProduct.productName}
+        />
+      )}
+      {showNotificationDelProd && (
+        <PopUpNotification
+          titleText={'Продукт удалён'}
+          // name={editedProduct.productName}
         />
       )}
 
