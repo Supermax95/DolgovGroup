@@ -259,9 +259,7 @@ const Carousel: FC = () => {
         />
       )}
 
-      <PromotionSidebar 
-          openAddModal={openAddModal}
-          />
+      <PromotionSidebar openAddModal={openAddModal} />
       <div className="p-4">
         <h1 className="text-xl text-lime-600 font-medium text-center mb-2">
           Акции в карусели
@@ -270,20 +268,6 @@ const Carousel: FC = () => {
         <div className="col-span-full mb-4">
           <div className="flex items-center justify-between">
             <Search onFilter={setSearchText} />
-
-            <div className="flex items-end justify-center py-2">
-              <Button
-                type="button"
-                title="Добавить"
-                onClick={openAddModal}
-                styleCSSButton={
-                  'relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-slate-700 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 hover:text-white'
-                }
-                styleCSSSpan={
-                  'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
-                }
-              />
-            </div>
           </div>
         </div>
 
