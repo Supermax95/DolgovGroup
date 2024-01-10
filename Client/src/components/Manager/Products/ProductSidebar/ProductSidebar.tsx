@@ -510,7 +510,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
       )}
       {showNotificationEditCategory && (
         <PopUpNotification
-          titleText={'Внесены изменения в категорию'}
+          titleText={'Категория переименова'}
           name={titleNotification}
         />
       )}

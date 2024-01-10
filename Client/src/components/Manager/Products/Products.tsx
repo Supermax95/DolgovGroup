@@ -397,14 +397,12 @@ const Products: FC = () => {
       {showNotificationAddProduct && (
         <PopUpNotification
           titleText={'Добавлен новый продукт'}
-          // bodyText={`Наименование акции:`}
           name={editedProduct?.productName}
         />
       )}
       {showNotificationEditProduct && (
         <PopUpNotification
-          titleText={'Внесены изменения'}
-          // bodyText={`Наименование продукта:`}
+          titleText={'Внесены изменения в продукт'}
           name={editedProduct?.productName}
         />
       )}
