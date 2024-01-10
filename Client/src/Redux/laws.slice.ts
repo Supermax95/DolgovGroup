@@ -4,6 +4,7 @@ import deleteLaw from "./thunks/Document/deleteLaw.api";
 import editLaw from "./thunks/Document/editLaw.api";
 import getLaws from "./thunks/Document/getLaws.api";
 import deleteDocumentLaw from './thunks/Document/deleteDocumentLaw.api';
+import currentLaw from './thunks/Document/getcurrentLaw.api';
 
 interface Law {
 id: number;
@@ -22,6 +23,7 @@ interface LawState {
     error: string | null;
     status: number | null;
     message: string | null;
+    currentLaw: Law | null; 
   }
 
 
@@ -32,7 +34,9 @@ const initialState: LawState = {
     error: null,
     status: null,
     message: null,
+    currentLaw:null,
   };
+  
 
   const lawSlice = createSlice({
     name: 'laws',
@@ -102,6 +106,18 @@ const initialState: LawState = {
         .addCase(deleteDocumentLaw.rejected, (state, action) => {
           state.isLoading = false;
           state.error = action.error.message || 'Произошла ошибка при удалении файла';
+        })
+        .addCase(currentLaw.pending, (state) => {
+          state.isLoading = true;
+          state.error = null;
+        })
+        .addCase(currentLaw.fulfilled, (state, action) => {
+          state.isLoading = false;
+          state.currentLaw = action.payload;
+        })
+        .addCase(currentLaw.rejected, (state, action) => {
+          state.isLoading = false;
+          state.error = action.error.message || 'Произошла ошибка при открытии правового документа';
         });
     },
   });

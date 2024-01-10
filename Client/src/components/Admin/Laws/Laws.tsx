@@ -5,8 +5,10 @@ import getLaws from '../../../Redux/thunks/Document/getLaws.api';
 import editLaw from '../../../Redux/thunks/Document/editLaw.api';
 import { unwrapResult } from '@reduxjs/toolkit';
 import addLaw from '../../../Redux/thunks/Document/addLaw.api';
+import currentLaw from '../../../Redux/thunks/Document/getcurrentLaw.api';
 import Editor from './Editor';
 import SidebarLaw from '../../../ui/SidebarLaw';
+import LoadingAnimation from './Loading';
 
 export interface ILaw {
   id: number;
@@ -20,6 +22,7 @@ export interface ILaw {
 const Law: FC = () => {
   const dispatch = useAppDispatch();
   const laws = useAppSelector<ILaw[]>((state) => state.lawsSlice.data);
+  const openLaw = useAppSelector((state) => state.lawsSlice.currentLaw);  
   const [isEditorOpen, setEditorOpen] = useState(false);
   const [selectedLaw, setSelectedLaw] = useState<ILaw | null>(null);
   const [isAddingMode, setAddingMode] = useState(false);
@@ -27,6 +30,7 @@ const Law: FC = () => {
   const [axiosError, setAxiosError] = useState<string | null>(null);
   const [dataLoaded, setDataLoaded] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     dispatch(getLaws())
@@ -38,8 +42,6 @@ const Law: FC = () => {
       });
   }, [dispatch]);
 
-
-  
   const openAddEditor = (): void => {
     setCurrentStep(1);
     setAddingMode(true);
@@ -58,17 +60,33 @@ const Law: FC = () => {
     setEditorOpen(true);
   };
 
- 
-
-  const openEditEditor = (law: ILaw): void => {
+  const openEditEditor = async (law: ILaw): Promise<void> => {
+    const lawId = law.id;
+    const res = await dispatch(currentLaw(lawId));
+    const result = unwrapResult(res);
     setCurrentStep(1);
-    setSelectedLaw(law);
-    setEditedLaw(law);
+    setSelectedLaw(result);
+    setEditedLaw(result);
     setAddingMode(false);
     setEditorOpen(true);
-    dispatch(getLaws());
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    },500);
   };
 
+  // const openEditEditor = (law: ILaw): void => {
+  //   setCurrentStep(1);
+  //   setSelectedLaw(law);
+  //   setEditedLaw(law);
+  //   setAddingMode(false);
+  //   setEditorOpen(true);
+  //   dispatch(getLaws());
+  //   setLoading(true);
+  //   setTimeout(() => {
+  //         setLoading(false);
+  //       },500);
+  // };
 
   useEffect(() => {
     if (dataLoaded && laws.length === 0) {
@@ -77,14 +95,7 @@ const Law: FC = () => {
       openEditEditor(laws[0]);
     }
   }, [dataLoaded, laws, selectedLaw]);
-  
-  // const openEditEditor = (law: ILaw): void => {
-  //   setCurrentStep(1);
-  //   setAddingMode(false);
-  //   setEditorOpen(true);
-  //   setSelectedLaw({ ...law });
-  //   dispatch(getLaws());
-  // };
+
 
   const closeAddEditor = (): void => {
     setSelectedLaw(null);
@@ -163,30 +174,30 @@ const Law: FC = () => {
         onAddClick={openAddEditor}
         onEditClick={openEditEditor}
       />
-
-      <div className="p-4">
-        {/* <h1 className="text-xl text-lime-600 font-medium mb-4 text-center">
-          Правовая информация
-        </h1> */}
-        {isEditorOpen && (selectedLaw || isAddingMode) && (
-          <Editor
-            isOpen={isEditorOpen}
-            law={selectedLaw}
-            onSaveEdit={handleSaveEdit}
-            onSaveAdd={handleSaveAdd}
-            onCloseAddEditor={closeAddEditor}
-            onCloseEditEditor={closeEditEditor}
-            isAddingMode={isAddingMode}
-            editedLaw={editedLaw}
-            setEditedLaw={setEditedLaw}
-            axiosError={axiosError}
-            resetAxiosError={resetAxiosError}
-            currentStep={currentStep}
-            setCurrentStep={setCurrentStep}
-            setAddingMode={setAddingMode}
-            setSelectedLaw={setSelectedLaw}
-            openAddEditor={openAddEditor}
-          />
+         <div className="p-4">
+        {isLoading ? (
+          <LoadingAnimation />
+        ) : (
+          isEditorOpen && (selectedLaw || isAddingMode) && (
+            <Editor
+              isOpen={isEditorOpen}
+              law={selectedLaw}
+              onSaveEdit={handleSaveEdit}
+              onSaveAdd={handleSaveAdd}
+              onCloseAddEditor={closeAddEditor}
+              onCloseEditEditor={closeEditEditor}
+              isAddingMode={isAddingMode}
+              editedLaw={editedLaw}
+              setEditedLaw={setEditedLaw}
+              axiosError={axiosError}
+              resetAxiosError={resetAxiosError}
+              currentStep={currentStep}
+              setCurrentStep={setCurrentStep}
+              setAddingMode={setAddingMode}
+              setSelectedLaw={setSelectedLaw}
+              openAddEditor={openAddEditor}
+            />
+          )
         )}
       </div>
     </Wrapper>

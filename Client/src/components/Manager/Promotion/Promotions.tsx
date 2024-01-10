@@ -39,7 +39,7 @@ export interface IPromotion {
   dateEnd: string;
   carousel: boolean;
   invisible: boolean;
-  photo?: string;
+  photo: string;
 }
 
 const Promotions: FC = () => {
@@ -113,6 +113,7 @@ const Promotions: FC = () => {
       title: '',
       description: '',
       dateStart: '',
+      photo:'',
       dateEnd: '',
       carousel: false,
       invisible: false,

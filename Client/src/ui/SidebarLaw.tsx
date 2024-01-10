@@ -5,7 +5,7 @@ import { ILaw } from '../components/Admin/Laws/Laws';
 interface SidebarLawProps<ILaw> {
   data?: ILaw[] | undefined;
   onAddClick?: () => void | undefined;
-  onEditClick?: (item: ILaw) => void | undefined;
+  onEditClick?: (item: ILaw) => void;
   title: string;
 }
 
