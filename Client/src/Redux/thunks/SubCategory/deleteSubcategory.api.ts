@@ -13,15 +13,19 @@ type ArrayResponseData = Array<ResponseData>;
 const deleteSubcategory = createAsyncThunk<ArrayResponseData, number>(
   'admin/deletesubcategory',
 
-  async (subcategoryId) => {
+  async (subcategoryId, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axios.delete(
         `${VITE_URL}/admin/subcategory/${subcategoryId}`
       );
       return response.data;
     } catch (error) {
-      console.error('Error:', error);
-      throw error;
+      if (axios.isAxiosError(error) && error.response) {
+        console.error('Server response data:', error.response.data.error);
+        throw rejectWithValue(error.response.data.error);
+      } else {
+        throw error;
+      }
     }
   }
 );

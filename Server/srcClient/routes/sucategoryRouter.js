@@ -19,13 +19,15 @@ router.post('/admin/subcategory', async (req, res) => {
 
   try {
     const existingSubategory = await Subcategory.findOne({
-      where: { subcategoryName: Subcategory.subcategoryName },
+      where: { subcategoryName: newSubcategory.subcategoryName },
     });
+
     if (existingSubategory) {
       return res.status(400).json({
         error: 'Подкатегория с указанным названием уже существует',
       });
     }
+
     const category = await Category.findOne({
       where: { id: categoryId },
     });
@@ -70,29 +72,47 @@ router.delete('/admin/subcategory/:id', async (req, res) => {
   }
 });
 
+//* даже если название подкатегории осталось прежним у текущего id,
+//* появится уведомление, что изменения внесены
 router.put('/admin/subcategory/:id', async (req, res) => {
   const subcategoryId = req.params.id;
   const { newSubcategoryName } = req.body;
+  console.log('newSubcategoryName', newSubcategoryName);
 
   try {
     const subcategory = await Subcategory.findOne({
       where: { id: subcategoryId },
     });
 
-    if (!subcategory) {
-      res.status(400).json({ error: 'Подкатегория не найдена' });
-    } else {
-      await subcategory.update({
-        subcategoryName: newSubcategoryName,
+    if (newSubcategoryName !== subcategory.subcategoryName) {
+      const searchSubcategoryName = await Subcategory.findOne({
+        where: { subcategoryName: newSubcategoryName },
       });
+
+      if (!searchSubcategoryName) {
+        await subcategory.update({
+          subcategoryName: newSubcategoryName,
+        });
+
+        const subcategories = await Subcategory.findAll({
+          order: [['subcategoryName', 'ASC']],
+          raw: true,
+        });
+
+        res.json(subcategories);
+      } else {
+        res
+          .status(400)
+          .json({ error: 'Подкатегория с указанным названием уже существует' });
+      }
+    } else {
+      const subcategories = await Subcategory.findAll({
+        order: [['subcategoryName', 'ASC']],
+        raw: true,
+      });
+
+      res.json(subcategories);
     }
-
-    const subcategories = await Subcategory.findAll({
-      order: [['subcategoryName', 'ASC']],
-      raw: true,
-    });
-
-    res.json(subcategories);
   } catch (error) {
     console.error('Ошибка при обновлении данных', error);
     res.status(500).json({ error: 'Произошла ошибка на сервере' });

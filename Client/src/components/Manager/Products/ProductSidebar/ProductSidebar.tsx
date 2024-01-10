@@ -20,6 +20,7 @@ import { XMarkIcon } from '@heroicons/react/20/solid';
 import { Toaster } from 'sonner';
 import PopUpNotification from '../../../../ui/PopUpNotification';
 import PopUpErrorNotification from '../../../../ui/PopUpErrorNotification';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 interface ICategory {
   //Продукты.tsx ругаются на эти вопросы
@@ -263,11 +264,12 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     e.preventDefault();
     try {
       if (addCategory) {
-        await dispatch(
+        const resultAdd = await dispatch(
           addCategory({
             newCategory: dataCategory,
           })
         );
+        unwrapResult(resultAdd);
         setAddingCategory(false);
         setDataCategory('');
         setErrorNotification(null);
@@ -313,13 +315,13 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     if (isConfirmed) {
       try {
         if (editCategory) {
-          const result = await dispatch(
+          const resultEdit = await dispatch(
             editCategory({
               categoryId: dataEditCategory.id,
               newCategoryName: dataEditCategory?.categoryName,
             })
           );
-
+          unwrapResult(resultEdit);
           setEditingCategory(null);
           setErrorNotification(null);
           setShowNotificationEditCategory(true);
@@ -371,14 +373,14 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   ): Promise<void> => {
     e.preventDefault();
     try {
-      //! мб, добавить скролл или уведомление при добалении категории и подкатегории
       if (addSubcategory) {
-        await dispatch(
+        const resultAdd = await dispatch(
           addSubcategory({
             newSubcategory: dataSubcategory,
             categoryId: selectedCategoryIdForSubcategory,
           })
         );
+        unwrapResult(resultAdd);
         setAddingSubcategory(false);
         setDataSubcategory('');
         setErrorNotification(null);
@@ -430,12 +432,13 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     if (isConfirmed) {
       try {
         if (editSubcategory) {
-          const result = await dispatch(
+          const resultEdit = await dispatch(
             editSubcategory({
               subcategoryId: dataEditSubcategory.id,
               newSubcategoryName: dataEditSubcategory?.subcategoryName,
             })
           );
+          unwrapResult(resultEdit);
           setEditingSubcategory(null);
           setErrorNotification(null);
           setShowNotificationEditSubcategory(true);

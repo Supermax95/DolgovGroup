@@ -51,6 +51,8 @@ module.exports = router
     }
   })
 
+  //* даже если email осталось прежним у текущего id,
+  //* появится уведомление, что изменения внесены
   .put('/email/', async (req, res) => {
     const { managerId, newEmail } = req.body;
 
@@ -92,6 +94,8 @@ module.exports = router
     }
   })
 
+  //* даже если phone осталось прежним у текущего id,
+  //* появится уведомление, что изменения внесены
   .put('/phone/', async (req, res) => {
     const { managerId, newPhone } = req.body;
 

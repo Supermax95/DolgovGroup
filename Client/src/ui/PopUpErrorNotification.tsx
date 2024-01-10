@@ -25,7 +25,7 @@ const PopUpNotification: FC<IPopUpNotification> = ({
               <div className="rounded-full py-1">
                 <ExclamationTriangleIcon className="w-4 h-4 text-rose-600" />
               </div>
-              <p className="font-medium text-xs text-rose-800">{titleText}</p>
+              <h1 className="font-medium text-xs text-rose-800">{titleText}</h1>
             </div>
             <p className="text-xs font-normal text-rose-600 mt-2">
               {bodyText} <span className="text-rose-800 ext-xs">{email}</span>
