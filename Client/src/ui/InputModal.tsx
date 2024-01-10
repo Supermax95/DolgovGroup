@@ -101,7 +101,7 @@ const InputModal: FC<IInputModal> = ({
                     Профиль активирован
                   </h1>
                 </div>
-                <div className="">
+                <div>
                   {modalTitle === 'Редактирование анкеты клиента' ? null : (
                     <Button
                       type="button"
