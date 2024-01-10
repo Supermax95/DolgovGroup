@@ -73,6 +73,8 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   const [dataEditCategory, setDataEditCategory] = useState<ICategory | null>(
     null
   );
+  const [titleNotification, setTitleNotification] = useState<string>('');
+
   //* добавление подкатегории
   const [isAddingSubcategory, setAddingSubcategory] = useState<boolean>(false);
   const [dataSubcategory, setDataSubcategory] = useState<string>('');
@@ -255,7 +257,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
 
   const cancelAddingCategory = (): void => {
     setAddingCategory(false);
-    setDataCategory('');
+    // setDataCategory('');
   };
 
   const addedHandleForm = async (
@@ -274,6 +276,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
         setDataCategory('');
         setErrorNotification(null);
         setShowNotificationAddCategory(true);
+        setTitleNotification(dataCategory.categoryName);
       }
     } catch (error) {
       console.error('Произошла ошибка при добавлении:', error);
@@ -325,6 +328,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
           setEditingCategory(null);
           setErrorNotification(null);
           setShowNotificationEditCategory(true);
+          setTitleNotification(dataEditCategory.categoryName);
         }
       } catch (error) {
         console.error('Произошла ошибка при добавлении:', error);
@@ -376,7 +380,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
       if (addSubcategory) {
         const resultAdd = await dispatch(
           addSubcategory({
-            newSubcategory: dataSubcategory,
+            newSubcategory: dataSubcategory.subcategoryName,
             categoryId: selectedCategoryIdForSubcategory,
           })
         );
@@ -387,6 +391,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
         setShowNotificationAddSubcategory(true);
         //* при лобавлении подкатегории открывается тут же список в категории
         subcategoryOutput(selectedCategoryIdForSubcategory);
+        setTitleNotification(dataSubcategory.subcategoryName);
       }
     } catch (error) {
       console.error('Произошла ошибка при добавлении:', error);
@@ -442,6 +447,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
           setEditingSubcategory(null);
           setErrorNotification(null);
           setShowNotificationEditSubcategory(true);
+          setTitleNotification(dataEditSubcategory.subcategoryName);
         }
       } catch (error) {
         console.error('Произошла ошибка при добавлении:', error);
@@ -501,28 +507,26 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
       {showNotificationAddCategory && (
         <PopUpNotification
           titleText={'Добавлена новая категория'}
-          //! не отображается название
-          name={dataCategory}
+          name={titleNotification}
         />
       )}
       {showNotificationEditCategory && (
         <PopUpNotification
           titleText={'Внесены изменения в категорию'}
-          // name={dataCategory?.categoryName}
+          name={titleNotification}
         />
       )}
 
       {showNotificationAddSubcategory && (
         <PopUpNotification
           titleText={'Добавлена новая подкатегория'}
-          //! не отображается название
-          // name={dataCategory}
+          name={titleNotification}
         />
       )}
       {showNotificationEditSubcategory && (
         <PopUpNotification
           titleText={'Внесены изменения в подкатегорию'}
-          // name={dataCategory?.categoryName}
+          name={titleNotification}
         />
       )}
 
