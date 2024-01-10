@@ -152,12 +152,6 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     setShowErrorNotificationEditSubcategory,
   ] = useState<boolean>(false);
 
-  // useEffect(() => {
-  //   setDataCategory(() => ({
-  //     newCategory: allCategories.map
-  //   }));
-  // }, [adminProfile]);
-
   useEffect(() => {
     if (
       showNotificationAddCategory ||
@@ -347,6 +341,8 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     if (isConfirmed) {
       dispatch(deleteCategory(id));
     }
+    setActionMenuForCategory(false);
+    setActionMenuForSub(false);
   };
 
   // ? вывод подкатегорий в сайдбаре и их скрытие
@@ -466,6 +462,8 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     if (isConfirmed) {
       dispatch(deleteSubcategory(id));
     }
+    setActionMenuForCategory(false);
+    setActionMenuForSub(false);
   };
 
   /** Рендер карточек на странице */
