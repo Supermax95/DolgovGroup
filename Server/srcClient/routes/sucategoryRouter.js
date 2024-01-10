@@ -19,7 +19,7 @@ router.post('/admin/subcategory', async (req, res) => {
 
   try {
     const existingSubategory = await Subcategory.findOne({
-      where: { subcategoryName: newSubcategory.subcategoryName },
+      where: { subcategoryName: newSubcategory },
     });
 
     if (existingSubategory) {
@@ -36,7 +36,7 @@ router.post('/admin/subcategory', async (req, res) => {
       res.status(400).json({ error: 'Категория не найдена' });
     } else {
       await Subcategory.create({
-        subcategoryName: newSubcategory.subcategoryName,
+        subcategoryName: newSubcategory,
         categoryId,
       });
     }
