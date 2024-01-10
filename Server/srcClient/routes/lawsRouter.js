@@ -7,11 +7,32 @@ const { Law } = require('../../db/models');
 router.get('/admin/laws', async (req, res) => {
   try {
     const laws = await Law.findAll({
+      attributes: { exclude: ['description'] },
       order: [['title', 'ASC']],
       raw: true,
     });
 
     res.json(laws);
+  } catch (error) {
+    console.error('Ошибка при получении данных из базы данных', error);
+    res.status(500).json({
+      error: 'Произошла ошибка на сервере при получении данных из базы',
+    });
+  }
+});
+
+router.get('/admin/currentlaw/:id', async (req, res) => {
+  const lawId = req.params.id;
+  try {
+    const law = await Law.findByPk(lawId, {
+      raw: true,
+    });
+
+    if (!law) {
+      return res.status(404).json({ error: 'Закон не найден' });
+    }
+
+    res.json(law);
   } catch (error) {
     console.error('Ошибка при получении данных из базы данных', error);
     res.status(500).json({
@@ -52,27 +73,6 @@ router.post('/admin/laws', async (req, res) => {
     });
   }
 });
-
-// router.delete('/admin/laws/:id', async (req, res) => {
-//   const lawId = req.params.id;
-//   try {
-//     await Law.destroy({
-//       where: { id: lawId },
-//     });
-
-//     const laws = await Law.findAll({
-//       order: [['title', 'ASC']],
-//       raw: true,
-//     });
-//     console.log(laws);
-//     res.json(laws);
-//   } catch (error) {
-//     console.error('Ошибка при удалении данных', error);
-//     res.status(500).json({
-//       error: 'Произошла ошибка на сервере при удалении данных из базы',
-//     });
-//   }
-// });
 
 router.delete('/admin/laws/:id', async (req, res) => {
   const lawId = req.params.id;

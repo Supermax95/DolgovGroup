@@ -27,7 +27,7 @@ export interface IPromotion {
   dateEnd: string;
   carousel: boolean;
   invisible: boolean;
-  photo?: string;
+  photo: string;
 }
 
 const Nocarousel: FC = () => {
@@ -142,6 +142,7 @@ const Nocarousel: FC = () => {
       description: '',
       dateStart: '',
       dateEnd: '',
+      photo:'',
       carousel: false,
       invisible: false,
     });
