@@ -14,6 +14,13 @@ import { Toaster } from 'sonner';
 import PopUpNotification from '../../../ui/PopUpNotification';
 import { unwrapResult } from '@reduxjs/toolkit';
 import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
+import {
+  ArrowUturnDownIcon,
+  ArrowUturnLeftIcon,
+  CloudArrowUpIcon,
+  TrashIcon,
+} from '@heroicons/react/24/outline';
+import Button from '../../../ui/Button';
 
 interface Product {
   id: number;
@@ -178,7 +185,6 @@ const ProductsModal: FC<ProductsModalProps> = ({
         // const res = response.data.error;
         // console.log('res', res);
         unwrapResult(response);
-
         setShowNotificationPicture(true);
 
         if (isAddingMode) {
@@ -708,78 +714,99 @@ const ProductsModal: FC<ProductsModalProps> = ({
           )}
 
           {currentStep === 1 && (
-            <div className="text-center">
-              <label
-                htmlFor="description"
-                className="text-slate-600 text-md font-normal"
-              >
-                Описание продукта
-              </label>
-              <div className="mb-2"></div>
+            <>
+              <div className="text-center">
+                <label
+                  htmlFor="description"
+                  className="text-slate-600 text-md font-normal"
+                >
+                  Описание продукта
+                </label>
+                <div className="mb-2"></div>
 
-              <ReactQuill
-                id="description"
-                theme="snow"
-                value={editedProduct.description}
-                onChange={(value) =>
-                  setEditedProduct({ ...editedProduct, description: value })
-                }
-                className="w-full h-[15vh]"
-              />
-            </div>
+                <ReactQuill
+                  id="description"
+                  theme="snow"
+                  value={editedProduct.description}
+                  onChange={(value) =>
+                    setEditedProduct({ ...editedProduct, description: value })
+                  }
+                  className="w-full h-[15vh]"
+                />
+              </div>
+              <div className="mt-14"></div>
+            </>
           )}
-          <div className="mt-14"></div>
 
           {currentStep === 2 && (
             <>
-              <div className="container mx-auto mt-8 p-8 max-w-4xl justify-center items-center flex-col block rounded-lg bg-white shadow-m">
-                <div className="px-4 sm:px-0 text-center">
-                  <h1 className="text-xl font-bold mb-4">
-                    Форма загрузки фотографии продукта
-                    <span className="block mt-2 text-xs text-gray-500">
-                      Загрузите изображение в формате PNG или WEBP.
-                      <br />
-                      Используйте формат 800*800px
-                    </span>
-                  </h1>
-                  <span className="block mt-2 text-sm text-gray-500">
-                    Если фотографию продукта менять не нужно, вы можете
-                    пропустить этот шаг
-                  </span>
-                  <div className="mt-6">
-                    <div className="mb-4 space-x-4">
-                      <input
-                        type="file"
-                        id="fileInput"
-                        name="productPhoto"
-                        className="hidden"
-                        onChange={handleFileInputChange}
-                      />
-                      <label
-                        htmlFor="fileInput"
-                        className="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded inline-block"
-                      >
-                        Выберите файл
-                      </label>
-                      <button
-                        onClick={handleBack}
-                        className="cursor-pointer bg-red-500 text-white font-bold py-2 px-4 rounded inline-block"
-                      >
-                        Назад
-                      </button>
-                      {!isAddingMode &&
-                        editedProduct.photo !==
-                          '/uploads/noPhoto/null.jpeg' && (
-                          <button
-                            type="button"
-                            onClick={handleDeletePhoto}
-                            className="cursor-pointer bg-red-500 text-white font-bold py-2 px-4 rounded inline-block"
-                          >
-                            Сброс изображения
-                          </button>
-                        )}
-                    </div>
+              <div className="flex items-center justify-center">
+                <label
+                  htmlFor="dropzone-file"
+                  className="flex flex-col items-center justify-center w-full h-22 border-2 border-slate-300 border-dashed rounded-lg cursor-pointer bg-slate-50 dark:hover:bg-bray-800 dark:bg-slate-700 hover:bg-slate-100 dark:border-slate-600 dark:hover:border-slate-500 dark:hover:bg-slate-600"
+                >
+                  {' '}
+                  {/* <div className="text-center my-2">
+                    <p className="text-xs font-medium text-slate-500 dark:text-slate-400">
+                      Если фотографию продукта менять не нужно, вы можете
+                      пропустить этот шаг
+                    </p>{' '}
+                  </div> */}
+                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                    <CloudArrowUpIcon className="cursor-pointer w-8 h-8 text-slate-500" />
+                    <p className="mb-2 text-sm text-slate-500 dark:text-slate-400">
+                      <span className="font-medium">Нажмите,</span> чтобы
+                      загрузить файл
+                    </p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                      Загрузите изображение в формате PNG, WEBP (Разрешение:
+                      800x800px)
+                    </p>
                   </div>
+                  <input
+                    id="dropzone-file"
+                    type="file"
+                    className="hidden"
+                    onChange={handleFileInputChange}
+                  />
+                  <div className="text-center my-2">
+                    <p className="text-xs font-medium text-slate-500 dark:text-slate-400">
+                      Если фотографию продукта менять не нужно, вы можете
+                      пропустить этот шаг
+                    </p>{' '}
+                  </div>
+                </label>
+              </div>
+
+              <div className="flex justify-between mt-2">
+                <div>
+                  <button
+                    type="button"
+                    onClick={handleBack}
+                    className="w-full flex items-center justify-center w-1/2 px-5 py-2 text-sm text-slate-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto dark:hover:bg-slate-800 dark:bg-slate-900 hover:bg-slate-100 dark:text-slate-200 dark:border-slate-700"
+                  >
+                    <ArrowUturnLeftIcon className="w-4 h-4 text-slate-500" />
+                    <span className="text-sm text-slate-500 dark:text-slate-400">
+                      Назад
+                    </span>
+                  </button>
+                </div>
+
+                <div>
+                  {!isAddingMode &&
+                    editedProduct.photo !== '/uploads/noPhoto/null.jpeg' && (
+                      <button
+                        type="button"
+                        onClick={handleDeletePhoto}
+                        className="w-full flex items-center justify-center w-1/2 px-5 py-2 text-sm transition-colors duration-200 bg-rose-600 border rounded-lg gap-x-2 sm:w-auto dark:hover:bg-slate-800 dark:bg-slate-900 hover:bg-rose-700 dark:text-slate-200 dark:border-slate-700"
+                      >
+                        <TrashIcon className="w-4 h-4 text-slate-50" />
+
+                        <span className="text-sm text-slate-50 dark:text-slate-400">
+                          Удалить изображение{' '}
+                        </span>
+                      </button>
+                    )}
                 </div>
               </div>
             </>
