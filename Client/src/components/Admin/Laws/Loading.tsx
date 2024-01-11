@@ -1,8 +1,6 @@
-import React from 'react';
-
 const LoadingAnimation = () => {
   return (
-    <div className="flex items-center justify-center">
+    <div className=" items-center justify-center">
       <img
         src="https://usagif.com/wp-content/uploads/loading-96.gif"
         alt="Loading..."
@@ -13,3 +11,5 @@ const LoadingAnimation = () => {
 };
 
 export default LoadingAnimation;
+
+

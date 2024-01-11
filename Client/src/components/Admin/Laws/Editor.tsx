@@ -22,11 +22,13 @@ interface LawEditorProps {
   onSaveEdit: (editedLaw: ILaw) => void;
   onCloseAddEditor: () => void;
   onCloseEditEditor: () => void;
-  // openAddEditor: () => void;
   isAddingMode: boolean;
   editedLaw: ILaw | null | undefined;
   setEditedLaw: React.Dispatch<React.SetStateAction<ILaw | null | undefined>>;
   axiosError: string | null;
+  openEditEditor: React.Dispatch<
+  React.SetStateAction<ILaw | null | undefined>
+>;
   resetAxiosError: () => void;
   currentStep: number;
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
@@ -51,6 +53,7 @@ const Editor: FC<LawEditorProps> = ({
   setCurrentStep,
   setAddingMode,
   setSelectedLaw,
+  openEditEditor,
   openAddEditor,
 }) => {
   const laws = useAppSelector<ILaw[]>((state) => state.lawsSlice.data);
@@ -83,16 +86,11 @@ const Editor: FC<LawEditorProps> = ({
 
   const handleCancel = () => {
     dispatch(getLaws());
-    const sortedLaws = [...laws].sort(
-      (a, b) =>
-        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-    );
-    const newestLaw = sortedLaws[0];
-    setSelectedLaw(newestLaw);
-    setEditedLaw(newestLaw);
+    const law = laws.find((p) => p.id === id);
+    setEditedLaw(undefined);
+    openEditEditor(law);
     setAddingMode(false);
     resetAxiosError();
-    setCurrentStep(1);
   };
 
   const uploadFile = async (file: File, id: number | 0): Promise<void> => {

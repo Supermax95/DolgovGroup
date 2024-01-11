@@ -3,6 +3,7 @@ import Button from './Button';
 import { XMarkIcon, UserGroupIcon } from '@heroicons/react/24/outline';
 
 //* Модальное окно используеются в компонентах Clients и Employees
+//* Вопрос с кодом сотрудника,подумать насчет того что делать с ним,убирать или оставлять решить во время рест апи 1С
 
 interface IModalUser {
   children: React.ReactNode;

@@ -22,7 +22,6 @@ export interface ILaw {
 const Law: FC = () => {
   const dispatch = useAppDispatch();
   const laws = useAppSelector<ILaw[]>((state) => state.lawsSlice.data);
-  const openLaw = useAppSelector((state) => state.lawsSlice.currentLaw);  
   const [isEditorOpen, setEditorOpen] = useState(false);
   const [selectedLaw, setSelectedLaw] = useState<ILaw | null>(null);
   const [isAddingMode, setAddingMode] = useState(false);
@@ -72,21 +71,8 @@ const Law: FC = () => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-    },500);
+    }, 500);
   };
-
-  // const openEditEditor = (law: ILaw): void => {
-  //   setCurrentStep(1);
-  //   setSelectedLaw(law);
-  //   setEditedLaw(law);
-  //   setAddingMode(false);
-  //   setEditorOpen(true);
-  //   dispatch(getLaws());
-  //   setLoading(true);
-  //   setTimeout(() => {
-  //         setLoading(false);
-  //       },500);
-  // };
 
   useEffect(() => {
     if (dataLoaded && laws.length === 0) {
@@ -95,7 +81,6 @@ const Law: FC = () => {
       openEditEditor(laws[0]);
     }
   }, [dataLoaded, laws, selectedLaw]);
-
 
   const closeAddEditor = (): void => {
     setSelectedLaw(null);
@@ -174,11 +159,12 @@ const Law: FC = () => {
         onAddClick={openAddEditor}
         onEditClick={openEditEditor}
       />
-         <div className="p-4">
+      <div className="p-4">
         {isLoading ? (
           <LoadingAnimation />
         ) : (
-          isEditorOpen && (selectedLaw || isAddingMode) && (
+          isEditorOpen &&
+          (selectedLaw || isAddingMode) && (
             <Editor
               isOpen={isEditorOpen}
               law={selectedLaw}
@@ -196,6 +182,7 @@ const Law: FC = () => {
               setAddingMode={setAddingMode}
               setSelectedLaw={setSelectedLaw}
               openAddEditor={openAddEditor}
+              openEditEditor={openEditEditor}
             />
           )
         )}
