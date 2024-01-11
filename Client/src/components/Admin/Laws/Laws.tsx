@@ -59,7 +59,7 @@ const Law: FC = () => {
     setEditorOpen(true);
   };
 
-  const openEditEditor = async (law: ILaw): Promise<void> => {
+  const openEditEditor = async (law: ILaw)=> {
     const lawId = law.id;
     const res = await dispatch(currentLaw(lawId));
     const result = unwrapResult(res);
