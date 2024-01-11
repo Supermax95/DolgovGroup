@@ -50,7 +50,7 @@ interface ProductsModalProps {
   onSaveEdit: (editedProduct: IProduct ) => void;
   onCloseAddModal: () => void;
   onCloseEditModal: () => void;
-  openEditModal:  (product: IProduct | undefined) => void;
+  openEditModal:  (product: IProduct ) => void;
   isAddingMode: boolean;
   editedProduct: Product | null | undefined;
   setEditedProduct: React.Dispatch<
@@ -278,13 +278,13 @@ const ProductsModal: FC<ProductsModalProps> = ({
       try {
         dispatch(deleteProduct(productId));
         setShowNotificationDelProd(true);
+        setTimeout(() => {
+          onCloseEditModal();
+        }, 50);
       } catch (error) {
         console.error('Произошла ошибка при удалении:', error);
       }
     }
-    setTimeout(() => {
-      onCloseEditModal();
-    }, 50);
   };
   console.log('showNotificationDelProd', showNotificationDelProd);
 
