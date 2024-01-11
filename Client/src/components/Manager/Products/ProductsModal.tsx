@@ -12,6 +12,8 @@ import ReactQuill from 'react-quill';
 import deleteProductPhoto from '../../../Redux/thunks/Products/deleteProductPhoto.api';
 import { Toaster } from 'sonner';
 import PopUpNotification from '../../../ui/PopUpNotification';
+import { unwrapResult } from '@reduxjs/toolkit';
+import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
 
 interface Product {
   id: number;
@@ -100,17 +102,19 @@ const ProductsModal: FC<ProductsModalProps> = ({
   //! message не выводится с бэка в случае положительного действия
   //! ошибка тоже не выгружается с бэка, т.к. ошибку он не допускает пока вовсе. Не знаю, обрабатывает ли вообще
   // const [messNotification, setMessNotification] = useState<string | null>(null);
-  // const [errorNotification, setErrorNotification] = useState<string | null>(
-  //   null
-  // );
+  const [errorNotification, setErrorNotification] = useState<string | null>(
+    null
+  );
 
   const [showNotificationPicture, setShowNotificationPicture] =
     useState<boolean>(false);
   //* удаление
   const [showNotificationDelProd, setShowNotificationDelProd] =
     useState<boolean>(false);
-  // const [showErrorNotificationPicture, setErrorShowNotificationPicture] =
-  //   useState<boolean>(false);
+  const [showNotificationDelPick, setShowNotificationDelPick] =
+    useState<boolean>(false);
+  const [showErrorNotificationPicture, setErrorShowNotificationPicture] =
+    useState<boolean>(false);
 
   useEffect(() => {
     if (product) {
@@ -119,17 +123,30 @@ const ProductsModal: FC<ProductsModalProps> = ({
   }, [product, isAddingMode, setEditedProduct]);
 
   useEffect(() => {
-    if (showNotificationPicture || showNotificationDelProd) {
+    if (
+      showNotificationPicture ||
+      showNotificationDelProd ||
+      showNotificationDelPick ||
+      showErrorNotificationPicture
+    ) {
       const timeoutId = setTimeout(() => {
         setShowNotificationPicture(false);
         setShowNotificationDelProd(false);
+        setShowNotificationDelPick(false);
+        setErrorShowNotificationPicture(false);
       });
 
       return () => clearTimeout(timeoutId);
     }
-  }, [showNotificationPicture, showNotificationDelProd]);
+  }, [
+    showNotificationPicture,
+    showNotificationDelProd,
+    showNotificationDelPick,
+    showErrorNotificationPicture,
+  ]);
 
   const modalTitle = isAddingMode ? 'Новый продукт' : 'Редактирование продукта';
+
   const handleCancel = () => {
     setEditedProduct(undefined);
     onCloseEditModal();
@@ -140,31 +157,49 @@ const ProductsModal: FC<ProductsModalProps> = ({
     file: File,
     id: number | 0,
     isAddingMode: boolean
-    // isAddingMode?: boolean
+    // { rejectWithValue }: any
   ): Promise<void> => {
     if (file && id) {
       const formData = new FormData();
       formData.append('file', file);
 
       try {
-        setShowNotificationPicture(true);
+        // setShowNotificationPicture(true);
 
-        await axios.put(`${VITE_URL}/admin/productsPhoto/${id}`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-          withCredentials: true,
-        });
+        const response = await axios.put(
+          `${VITE_URL}/admin/productsPhoto/${id}`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+            withCredentials: true,
+          }
+        );
+
+        // const res = response.data.error;
+        // console.log('res', res);
+        unwrapResult(response);
+
+        setShowNotificationPicture(true);
 
         if (isAddingMode) {
           onCloseAddModal();
         } else {
-          onCloseEditModal();
+          // onCloseEditModal();
+          setTimeout(() => {
+            onCloseEditModal();
+          }, 50);
         }
       } catch (error) {
-        console.error('Ошибка при загрузке файла:', error);
-        // setErrorNotification(error as string | null);
-        // setErrorShowNotificationPicture(true);
+        if (axios.isAxiosError(error) && error.response) {
+          console.error('Server response data:', error.response.data.error);
+          const errorRes = error.response.data.error;
+          setErrorNotification(errorRes);
+          setErrorShowNotificationPicture(true);
+        } else {
+          throw error;
+        }
       }
     }
   };
@@ -244,14 +279,16 @@ const ProductsModal: FC<ProductsModalProps> = ({
       const productId = editedProduct.id;
       try {
         dispatch(deleteProduct(productId));
-        onCloseEditModal();
         setShowNotificationDelProd(true);
-        console.log('showNotificationDelProd', showNotificationDelProd);
       } catch (error) {
         console.error('Произошла ошибка при удалении:', error);
       }
     }
+    setTimeout(() => {
+      onCloseEditModal();
+    }, 50);
   };
+  console.log('showNotificationDelProd', showNotificationDelProd);
 
   const handleDeletePhoto = () => {
     const isConfirmed = window.confirm(
@@ -263,27 +300,24 @@ const ProductsModal: FC<ProductsModalProps> = ({
 
       try {
         dispatch(deleteProductPhoto(productId));
-        onCloseEditModal();
+        setShowNotificationDelPick(true);
       } catch (error) {
         console.error('Произошла ошибка при удалении:', error);
       }
     }
+    setTimeout(() => {
+      onCloseEditModal();
+    }, 50);
   };
 
-
-  
-  const handleBack = () => {    
+  const handleBack = () => {
     const product = products.find((p) => p.id === id);
     setEditedProduct(undefined);
     onCloseEditModal();
     openEditModal(product);
     setCurrentStep(1);
   };
-  
 
-
-
-  
   if (!isOpen || !editedProduct) {
     return null;
   }
@@ -522,17 +556,24 @@ const ProductsModal: FC<ProductsModalProps> = ({
       {showNotificationDelProd && (
         <PopUpNotification
           titleText={'Продукт удалён'}
-          // name={editedProduct.productName}
+          name={editedProduct.productName}
+        />
+      )}
+
+      {showNotificationDelPick && (
+        <PopUpNotification
+          titleText={'Изображение продукта удалёно'}
+          name={editedProduct.productName}
         />
       )}
 
       {/* //!уведомления об ошибках */}
-      {/* {showErrorNotificationPicture && (
+      {showErrorNotificationPicture && (
         <PopUpErrorNotification
           titleText={'Ошибка'}
           bodyText={errorNotification}
         />
-      )} */}
+      )}
       <form onSubmit={handleFormSubmit}>
         <Modal
           modalTitle={modalTitle}

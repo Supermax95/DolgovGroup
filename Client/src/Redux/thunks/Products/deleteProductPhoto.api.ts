@@ -2,7 +2,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
 import { VITE_URL } from '../../../VITE_URL';
 
-
 interface ResponseData {
   id: number;
   article: string;
@@ -25,15 +24,19 @@ type ArrayResponseData = Array<ResponseData>;
 const deleteProductPhoto = createAsyncThunk<ArrayResponseData, number>(
   'admin/deleteproductPhoto',
 
-  async (productId) => {
+  async (productId, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axios.delete(
         `${VITE_URL}/admin/products/photo/${productId}`
       );
       return response.data;
     } catch (error) {
-      console.error('Error:', error);
-      throw error;
+      if (axios.isAxiosError(error) && error.response) {
+        console.error('Server response data:', error.response.data.error);
+        throw rejectWithValue(error.response.data.error);
+      } else {
+        throw error;
+      }
     }
   }
 );

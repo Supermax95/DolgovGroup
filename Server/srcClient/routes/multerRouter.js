@@ -40,15 +40,21 @@ router.put(
     const { id } = req.params;
     const originalname = req.file.filename;
     try {
-      await Product.update(
-        { photo: `/uploads/product/${originalname}` },
-        { where: { id } }
-      );
+      const product = await Product.findByPk(id);
 
-      res.json({ message: 'Файл загрузился.' });
+      if (!product) {
+        res.status(404).json({ error: 'Продукт не найден' });
+      } else {
+        await product.update(
+          { photo: `/uploads/product/${originalname}` },
+          { where: { id } }
+        );
+
+        res.json({ message: 'Файл загрузился.' });
+      }
     } catch (error) {
       console.log('error', error);
-      res.status(500).json({ message: 'Ошибка загрузки' });
+      res.status(500).json({ error: 'Ошибка загрузки' });
     }
   }
 );
