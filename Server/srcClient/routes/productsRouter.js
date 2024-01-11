@@ -7,7 +7,6 @@ const fsPromises = require('fs').promises;
 
 router.get('/admin/products', async (req, res) => {
   try {
-    // Найти и обновить продукты
     const products = await Product.findAll({
       attributes: { exclude: ['description'] },
       order: [['productName', 'ASC']],

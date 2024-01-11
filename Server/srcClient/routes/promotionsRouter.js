@@ -121,19 +121,20 @@ router.delete('/admin/promotions/:id', async (req, res) => {
     // Удалите связанный файл, если он существует
     if (promotion && promotion.photo) {
       const filePath = path.join(__dirname, '..', '..', promotion.photo);
+      if (promotion.photo !== '/uploads/noPhoto/null.jpeg') {
+        // Проверьте, существует ли файл перед удалением
+        const fileExists = await fsPromises
+          .access(filePath)
+          .then(() => true)
+          .catch(() => false);
 
-      // Проверьте, существует ли файл перед удалением
-      const fileExists = await fsPromises
-        .access(filePath)
-        .then(() => true)
-        .catch(() => false);
-
-      if (fileExists) {
-        // Удалите файл
-        await fsPromises.unlink(filePath);
-        console.log(`Файл ${filePath} успешно удален`);
-      } else {
-        console.log(`Файл ${filePath} не существует`);
+        if (fileExists) {
+          // Удалите файл
+          await fsPromises.unlink(filePath);
+          console.log(`Файл ${filePath} успешно удален`);
+        } else {
+          console.log(`Файл ${filePath} не существует`);
+        }
       }
     }
 
