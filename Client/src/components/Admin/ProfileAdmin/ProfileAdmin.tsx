@@ -49,7 +49,6 @@ const ProfileAdmin: FC = () => {
     password?: string;
   }>((state) => state.managerSlice.manager);
 
-
   const managerId = useAppSelector<number>(
     (state) => state.managerSlice.manager.id
   );
@@ -190,6 +189,35 @@ const ProfileAdmin: FC = () => {
 
   //! нужна регулярка, проверяющая верность кириллицы на введение ФИО  её прокинуть в native
   //! сделать регистр первой буквы заглавной для ФИО
+  // const handleSubmitProfileManager = async (
+  //   e: React.FormEvent
+  // ): Promise<void> => {
+  //   e.preventDefault();
+
+  //   const isConfirmed = window.confirm(
+  //     'Вы уверены, что хотите внести изменения?'
+  //   );
+
+  //   if (isConfirmed) {
+  //     try {
+  //       const resultEdit = await dispatch(
+  //         editProfileManager({
+  //           managerId,
+  //           newLastName: data.newLastName,
+  //           newFirstName: data.newFirstName,
+  //           newMiddleName: data.newMiddleName,
+  //         })
+  //       );
+  //       unwrapResult(resultEdit);
+  //       setErrorNotification(null);
+  //       setShowNotificationFullname(true);
+  //     } catch (error) {
+  //       console.error('Ошибка обновления данных:', error);
+  //       setShowErrorNotificationFullname(true);
+  //       setErrorNotification(error as string | null);
+  //     }
+  //   }
+  // };
   const handleSubmitProfileManager = async (
     e: React.FormEvent
   ): Promise<void> => {
@@ -201,12 +229,31 @@ const ProfileAdmin: FC = () => {
 
     if (isConfirmed) {
       try {
+        // Проверка верности кириллицы
+        const cyrillicRegex = /^[А-Яа-яЁё\s\-]+$/;
+        if (
+          !cyrillicRegex.test(data.newLastName) ||
+          !cyrillicRegex.test(data.newFirstName) ||
+          !cyrillicRegex.test(data.newMiddleName)
+        ) {
+          // Если есть хотя бы одна ошибка, выход из функции
+          setShowErrorNotificationFullname(true);
+          setErrorNotification(
+            'ФИО должны содержать только кириллические символы, пробелы и дефисы'
+            );
+          return;
+        }
+
+        // Приведение первой буквы каждого слова к заглавной
+        const capitalizeFirstLetter = (str: string) =>
+          str.replace(/(^|\s)\S/g, (char) => char.toUpperCase());
+
         const resultEdit = await dispatch(
           editProfileManager({
             managerId,
-            newLastName: data.newLastName,
-            newFirstName: data.newFirstName,
-            newMiddleName: data.newMiddleName,
+            newLastName: capitalizeFirstLetter(data.newLastName),
+            newFirstName: capitalizeFirstLetter(data.newFirstName),
+            newMiddleName: capitalizeFirstLetter(data.newMiddleName),
           })
         );
         unwrapResult(resultEdit);
@@ -291,6 +338,7 @@ const ProfileAdmin: FC = () => {
   };
 
   //! нужна регулярка, проверяющая пароль по условиям надёжности и её прокинуть в native
+
   //* изменение пароля
   const handleSubmitProfileManagerPassword = async (
     e: React.FormEvent
@@ -317,6 +365,14 @@ const ProfileAdmin: FC = () => {
         }));
       } else {
         try {
+          const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+          if (!passwordRegex.test(data.newPassword)) {
+            setShowErrorNotificationPass(true);
+            setErrorNotification(
+              'Пароль должен содержать хотя бы одну цифру, одну букву в верхнем регистре, одну букву в нижнем регистре и должен быть длиной не менее 8 символов'
+            );
+            return;
+          }
           const resultEdit = await dispatch(
             changePassword({
               managerId,
@@ -324,8 +380,9 @@ const ProfileAdmin: FC = () => {
               newPassword: data.newPassword,
             })
           );
-
           unwrapResult(resultEdit);
+          console.log(resultEdit);
+
           setErrorNotification(null);
           setShowNotificationPass(true);
         } catch (error) {

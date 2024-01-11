@@ -26,7 +26,7 @@ interface LawEditorProps {
   editedLaw: ILaw | null | undefined;
   setEditedLaw: React.Dispatch<React.SetStateAction<ILaw | null | undefined>>;
   axiosError: string | null;
-  openEditEditor: (law: ILaw | undefined) => void;
+  openEditEditor: (law: ILaw) => void;
   resetAxiosError: () => void;
   currentStep: number;
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;

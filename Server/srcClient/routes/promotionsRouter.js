@@ -122,7 +122,6 @@ router.delete('/admin/promotions/:id', async (req, res) => {
     if (promotion && promotion.photo) {
       const filePath = path.join(__dirname, '..', '..', promotion.photo);
       if (promotion.photo !== '/uploads/noPhoto/null.jpeg') {
-        // Проверьте, существует ли файл перед удалением
         const fileExists = await fsPromises
           .access(filePath)
           .then(() => true)
