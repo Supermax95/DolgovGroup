@@ -57,6 +57,10 @@ const Law: FC = () => {
       }),
     });
     setEditorOpen(true);
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
   };
 
   const openEditEditor = async (law: ILaw) => {
