@@ -9,7 +9,7 @@ interface RequestData {
     description: string;
     dateStart: string;
     dateEnd: string;
-    photo: string;
+    photo?: string;
     carousel: boolean;
     invisible: boolean;
   };
@@ -21,7 +21,7 @@ interface ResponseData {
   description: string;
   dateStart: string;
   dateEnd: string;
-  photo: string;
+  photo?: string;
   carousel: boolean;
   invisible: boolean;
 }

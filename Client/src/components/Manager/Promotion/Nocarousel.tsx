@@ -18,8 +18,9 @@ import PromotionSidebar from './PromotionSidebar';
 import { Toaster } from 'sonner';
 import PopUpNotification from '../../../ui/PopUpNotification';
 import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
+import currentPromotion from '../../../Redux/thunks/Promotion/getcurrentPromotion.api';
 
-export interface IPromotion {
+export interface Promotion {
   id: number;
   title: string;
   description: string;
@@ -27,12 +28,12 @@ export interface IPromotion {
   dateEnd: string;
   carousel: boolean;
   invisible: boolean;
-  photo: string;
+  photo?: string;
 }
 
 const Nocarousel: FC = () => {
   const dispatch = useAppDispatch();
-  const noCarouselPromotions = useAppSelector<IPromotion[]>(
+  const noCarouselPromotions = useAppSelector<Promotion[]>(
     (state) => state.promotionSlice.data
   );
 
@@ -42,12 +43,12 @@ const Nocarousel: FC = () => {
   // остальное
   const [isModalOpen, setModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedPromotion, setSelectedPromotion] = useState<IPromotion | null>(
+  const [selectedPromotion, setSelectedPromotion] = useState<Promotion | null>(
     null
   );
   const [isAddingMode, setAddingMode] = useState(false);
   const [editedPromotion, setEditedPromotion] = useState<
-    IPromotion | null | undefined
+    Promotion | null | undefined
   >(null);
   // const [axiosError, setAxiosError] = useState<string | null>(null);
   const [searchText, setSearchText] = useState('');
@@ -156,12 +157,14 @@ const Nocarousel: FC = () => {
     dispatch(getPromotions());
   };
 
-  const openEditModal = (promotion: IPromotion) => {
-    setSelectedPromotion(promotion);
-    setEditedPromotion({ ...promotion });
+  const openEditModal = async (promotion: Promotion) => {
+    const promotionId = promotion.id;
+    const res = await dispatch(currentPromotion(promotionId));
+    const result = unwrapResult(res);
+    setSelectedPromotion(result);
+    setEditedPromotion(result);
     setAddingMode(false);
     setModalOpen(true);
-    dispatch(getPromotions());
   };
 
   const closeEditModal = () => {
@@ -194,7 +197,7 @@ const Nocarousel: FC = () => {
     return add;
   };
 
-  const handleSaveEdit = async (editedPromotion: IPromotion) => {
+  const handleSaveEdit = async (editedPromotion: Promotion) => {
     let add = {} as any;
 
     try {
@@ -466,6 +469,7 @@ const Nocarousel: FC = () => {
           isAddingMode={isAddingMode}
           editedPromotion={editedPromotion}
           setEditedPromotion={setEditedPromotion}
+          openEditModal={openEditModal}
           // axiosError={axiosError}
           // resetAxiosError={resetAxiosError}
         />
