@@ -90,9 +90,9 @@ const Products: FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);
   const [isAddingMode, setAddingMode] = useState(false);
-  const openProduct = useAppSelector(
-    (state) => state.productSlice.currentProduct
-  );
+  // const openProduct = useAppSelector(
+  //   (state) => state.productSlice.currentProduct
+  // );
   const [editedProduct, setEditedProduct] = useState<
     IProduct | null | undefined
   >(null);

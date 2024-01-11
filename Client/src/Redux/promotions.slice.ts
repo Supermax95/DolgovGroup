@@ -4,6 +4,7 @@ import editPromotion from './thunks/Promotion/editPromotion.api';
 import deletePromotion from './thunks/Promotion/deletePromotion.api';
 import addPromotion from './thunks/Promotion/addPromotion.api';
 import deletePromoPhoto from './thunks/Promotion/deletePromoPhoto.api';
+import currentPromotion from './thunks/Promotion/getcurrentPromotion.api';
 
 interface Promotion {
   id: number;
@@ -11,7 +12,7 @@ interface Promotion {
   description: string;
   dateStart: string;
   dateEnd: string;
-  photo: string;
+  photo?: string;
   carousel: boolean;
   invisible: boolean;
 }
@@ -23,6 +24,7 @@ interface PromotionState {
   error: string | null;
   status: number | null;
   message: string | null;
+  currentPromotion: Promotion | null;
 }
 
 const initialState: PromotionState = {
@@ -32,6 +34,7 @@ const initialState: PromotionState = {
   error: null,
   status: null,
   message: null,
+  currentPromotion: null,
 };
 
 const promotionSlice = createSlice({
@@ -61,7 +64,6 @@ const promotionSlice = createSlice({
         state.isLoading = false;
         state.data = action.payload.promotions;
         state.postId = action.payload.postId;
-        console.log('state.data ', state.data);
       })
       .addCase(editPromotion.rejected, (state, action) => {
         state.isLoading = false;
@@ -88,7 +90,6 @@ const promotionSlice = createSlice({
         state.isLoading = false;
         state.data = action.payload.promotions;
         state.postId = action.payload.postId;
-        console.log('state.data', state.data);
       })
       .addCase(addPromotion.rejected, (state, action) => {
         state.isLoading = false;
@@ -104,7 +105,21 @@ const promotionSlice = createSlice({
       })
       .addCase(deletePromoPhoto.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message || 'Произошла ошибка при удалении изображения';
+        state.error =
+          action.error.message || 'Произошла ошибка при удалении изображения';
+      })
+      .addCase(currentPromotion.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(currentPromotion.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.currentPromotion = action.payload;
+      })
+      .addCase(currentPromotion.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error =
+          action.error.message || 'Произошла ошибка при открытии акции';
       });
   },
 });

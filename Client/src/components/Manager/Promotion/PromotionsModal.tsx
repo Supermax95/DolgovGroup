@@ -3,7 +3,6 @@ import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import Wrapper from '../../../ui/Wrapper';
 import InputModal, { InputField } from '../../../ui/InputModal';
 import Modal from '../../../ui/Modal';
-import { IPromotion } from './Promotions';
 import { VITE_URL } from '../../../VITE_URL';
 import axios, { AxiosResponse } from 'axios';
 import deletePromotion from '../../../Redux/thunks/Promotion/deletePromotion.api';
@@ -22,15 +21,15 @@ interface Promotion {
   dateEnd: string;
   invisible: boolean;
   description: string;
-  photo: string;
+  photo?: string;
   carousel: boolean;
 }
 
 interface PromotionsModalProps {
   isOpen: boolean;
   promotion: Promotion | null;
-  onSaveEdit: (editedPromotion: IPromotion) => void;
-  onSaveAdd: (editedPromotion: IPromotion) => void;
+  onSaveEdit: (editedPromotion: Promotion) => void;
+  onSaveAdd: (editedPromotion: Promotion) => void;
   onCloseEditModal: () => void;
   onCloseAddModal: () => void;
   isAddingMode: boolean;
@@ -38,6 +37,10 @@ interface PromotionsModalProps {
   setEditedPromotion: React.Dispatch<
     React.SetStateAction<Promotion | null | undefined>
   >;
+  // openEditModal: React.Dispatch<
+  //   React.SetStateAction<Promotion | null | undefined>
+  // >;
+  openEditModal: (promotion: Promotion) => void;
   // axiosError: string | null;
   // resetAxiosError: () => void;
 }
@@ -52,11 +55,15 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
   isAddingMode,
   editedPromotion,
   setEditedPromotion,
+  openEditModal,
   // axiosError,
   // resetAxiosError,
 }) => {
   const id = useAppSelector((state) => state.promotionSlice.postId);
   const dispatch = useAppDispatch();
+  const promotions =  useAppSelector<Promotion[]>(
+    (state) => state.promotionSlice.data
+  );
   const [isUpload, setUpload] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
 
@@ -217,6 +224,20 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
       }
     }
   };
+
+  const handleBack = () => {        
+    const promotion = promotions.find((p) => p.id === id);
+  
+    if (promotion) {
+      setEditedPromotion(undefined);
+      onCloseEditModal();
+      openEditModal(promotion);
+    } else {
+      console.error(`Promotion with id ${id} not found.`);
+    }
+  };
+  
+
 
   if (!isOpen || !editedPromotion) {
     return null;
@@ -438,7 +459,12 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
                     >
                       Выберите файл
                     </label>
-
+                    <button
+                        onClick={handleBack}
+                        className="cursor-pointer bg-red-500 text-white font-bold py-2 px-4 rounded inline-block"
+                      >
+                        Назад
+                      </button>
                     {!isAddingMode &&
                       editedPromotion.photo !==
                         '/uploads/noPhoto/null.jpeg' && (

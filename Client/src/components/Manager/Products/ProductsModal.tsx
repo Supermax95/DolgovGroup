@@ -277,7 +277,6 @@ const ProductsModal: FC<ProductsModalProps> = ({
     setEditedProduct(undefined);
     onCloseEditModal();
     openEditModal(product);
-    setCurrentStep(1);
   };
   
 

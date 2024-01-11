@@ -31,6 +31,7 @@ router.get('/admin/promotions', async (req, res) => {
     );
 
     const updatedPromotions = await Promotion.findAll({
+      attributes: { exclude: ['description'] },
       order: [
         ['dateStart', 'DESC'],
         ['title', 'ASC'],
@@ -39,6 +40,26 @@ router.get('/admin/promotions', async (req, res) => {
     });
 
     res.json(updatedPromotions);
+  } catch (error) {
+    console.error('Ошибка при получении данных из базы данных', error);
+    res.status(500).json({
+      error: 'Произошла ошибка на сервере при получении данных из базы',
+    });
+  }
+});
+
+router.get('/admin/currentpromotion/:id', async (req, res) => {
+  const promotionId = req.params.id;
+  try {
+    const promotion = await Promotion.findByPk(promotionId, {
+      raw: true,
+    });
+
+    if (!promotion) {
+      return res.status(404).json({ error: 'Акция не найдена' });
+    }
+
+    res.json(promotion);
   } catch (error) {
     console.error('Ошибка при получении данных из базы данных', error);
     res.status(500).json({
@@ -70,6 +91,7 @@ router.post('/admin/promotions', async (req, res) => {
     });
 
     const promotions = await Promotion.findAll({
+      attributes: { exclude: ['description'] },
       order: [
         ['dateStart', 'DESC'],
         ['title', 'ASC'],
@@ -117,6 +139,7 @@ router.delete('/admin/promotions/:id', async (req, res) => {
 
     // Получите обновленный список промо-акций
     const promotions = await Promotion.findAll({
+      attributes: { exclude: ['description'] },
       order: [['dateStart', 'DESC']],
       raw: true,
     });
@@ -166,6 +189,7 @@ router.put('/admin/promotions', async (req, res) => {
     );
 
     const promotions = await Promotion.findAll({
+      attributes: { exclude: ['description'] },
       order: [
         ['dateStart', 'DESC'],
         ['title', 'ASC'],
@@ -210,6 +234,7 @@ router.delete('/admin/promotions/photo/:id', async (req, res) => {
       console.log(`Картинка для продукта с ID ${promoId} успешно удалена`);
 
       const updatedPromotions = await Promotion.findAll({
+        attributes: { exclude: ['description'] },
         order: [
           ['dateStart', 'DESC'],
           ['title', 'ASC'],
