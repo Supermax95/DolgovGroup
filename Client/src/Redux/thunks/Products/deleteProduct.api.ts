@@ -24,15 +24,19 @@ type ArrayResponseData = Array<ResponseData>;
 const deleteProduct = createAsyncThunk<ArrayResponseData, number>(
   'admin/deleteproduct',
 
-  async (productId) => {
+  async (productId, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axios.delete(
         `${VITE_URL}/admin/products/${productId}`
       );
       return response.data;
     } catch (error) {
-      console.error('Error:', error);
-      throw error;
+      if (axios.isAxiosError(error) && error.response) {
+        console.error('Server response data:', error.response.data.error);
+        throw rejectWithValue(error.response.data.error);
+      } else {
+        throw error;
+      }
     }
   }
 );
