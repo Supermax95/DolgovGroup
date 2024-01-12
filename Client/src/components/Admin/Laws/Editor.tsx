@@ -25,7 +25,7 @@ import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
 
 interface LawEditorProps {
   isOpen: boolean;
-  law: ILaw | null 
+  law: ILaw | null;
   onSaveAdd: (editedLaw: ILaw) => void;
   onSaveEdit: (editedLaw: ILaw) => void;
   onCloseAddEditor: () => void;
@@ -428,7 +428,6 @@ const Editor: FC<LawEditorProps> = ({
                         >
                           <div className="flex items-center justify-center">
                             <span className="text-sm text-slate-600 font-normal underline decoration-sky-500 decoration-1">
-                              {/* <span className="text-sm text-lime-600 font-normal "> */}
                               {editedLaw.title}
                             </span>
                             <EyeIcon

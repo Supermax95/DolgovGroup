@@ -15,7 +15,6 @@ import {
   LockClosedIcon,
   UserIcon,
 } from '@heroicons/react/24/outline';
-import { Toaster } from 'sonner';
 import PopUpNotification from '../../../ui/PopUpNotification';
 import { unwrapResult } from '@reduxjs/toolkit';
 import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
@@ -240,7 +239,7 @@ const ProfileAdmin: FC = () => {
           setShowErrorNotificationFullname(true);
           setErrorNotification(
             'ФИО должны содержать только кириллические символы, пробелы и дефисы'
-            );
+          );
           return;
         }
 
@@ -558,7 +557,6 @@ const ProfileAdmin: FC = () => {
 
   return (
     <Wrapper>
-      <Toaster position="bottom-left" expand={true} />
       {showNotificationFullname && (
         <PopUpNotification
           titleText={'Ваши персональные данные успешно обновлены'}

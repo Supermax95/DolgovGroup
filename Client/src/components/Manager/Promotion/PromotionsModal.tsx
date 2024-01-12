@@ -8,7 +8,6 @@ import axios, { AxiosResponse } from 'axios';
 import deletePromotion from '../../../Redux/thunks/Promotion/deletePromotion.api';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { Toaster } from 'sonner';
 import PopUpNotification from '../../../ui/PopUpNotification';
 import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
 import { unwrapResult } from '@reduxjs/toolkit';
@@ -270,7 +269,6 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
 
   return (
     <Wrapper>
-      <Toaster position="bottom-left" expand={true} />
       {showNotificationPicture && (
         <PopUpNotification
           titleText={'Обложка акции загружена'}

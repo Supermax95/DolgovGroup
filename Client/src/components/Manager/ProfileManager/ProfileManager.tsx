@@ -14,7 +14,6 @@ import {
   LockClosedIcon,
 } from '@heroicons/react/24/outline';
 import { unwrapResult } from '@reduxjs/toolkit';
-import { Toaster } from 'sonner';
 import PopUpNotification from '../../../ui/PopUpNotification';
 import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
 
@@ -430,7 +429,6 @@ const ProfileManager: FC = () => {
 
   return (
     <Wrapper>
-      <Toaster position="bottom-left" expand={true} />
       {showNotificationFullname && (
         <PopUpNotification
           titleText={'Ваши персональные данные успешно обновлены'}
