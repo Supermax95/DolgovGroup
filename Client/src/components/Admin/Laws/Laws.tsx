@@ -9,6 +9,9 @@ import currentLaw from '../../../Redux/thunks/Document/getcurrentLaw.api';
 import Editor from './Editor';
 import SidebarLaw from '../../../ui/SidebarLaw';
 import LoadingAnimation from './Loading';
+import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
+import PopUpNotification from '../../../ui/PopUpNotification';
+import { Toaster } from 'sonner';
 
 export interface ILaw {
   id: number;
@@ -30,6 +33,42 @@ const Law: FC = () => {
   const [dataLoaded, setDataLoaded] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [isLoading, setLoading] = useState(false);
+  const [showNotificationAddLaw, setShowNotificationAddLaw] =
+    useState<boolean>(false);
+  const [showNotificationEditLaw, setShowNotificationEditLaw] =
+    useState<boolean>(false);
+
+  const [errorNotification, setErrorNotification] = useState<string | null>(
+    null
+  );
+
+  const [showErrorNotificationAddLaw, setShowErrorNotificationAddLaw] =
+    useState<boolean>(false);
+  const [showErrorNotificationEditLaw, setShowErrorNotificationEditLaw] =
+    useState<boolean>(false);
+
+  useEffect(() => {
+    if (
+      showNotificationAddLaw ||
+      showErrorNotificationAddLaw ||
+      showNotificationEditLaw ||
+      showErrorNotificationEditLaw
+    ) {
+      const timeoutId = setTimeout(() => {
+        setShowNotificationAddLaw(false);
+        setShowErrorNotificationAddLaw(false);
+        setShowNotificationEditLaw(false);
+        setShowErrorNotificationEditLaw(false);
+      });
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [
+    showNotificationAddLaw,
+    showErrorNotificationAddLaw,
+    showNotificationEditLaw,
+    showErrorNotificationEditLaw,
+  ]);
 
   useEffect(() => {
     dispatch(getLaws())
@@ -115,11 +154,13 @@ const Law: FC = () => {
         );
         const result = unwrapResult(resultAction);
         add = result;
-        setAxiosError(null);
+        setErrorNotification(null);
+        setShowNotificationAddLaw(true);
       }
     } catch (error) {
       console.error('Произошла ошибка при добавлении:', error);
-      setAxiosError(error as string | null);
+      setErrorNotification(error as string | null);
+      setShowErrorNotificationAddLaw(true);
       add = error;
     }
     return add;
@@ -136,11 +177,12 @@ const Law: FC = () => {
         );
         const result = unwrapResult(resultAction);
         add = result;
-        setAxiosError(null);
+        setShowNotificationEditLaw(true);
       }
     } catch (error) {
       console.error('Произошла ошибка при редактировании:', error);
-      setAxiosError(error as string | null);
+      setErrorNotification(error as string | null);
+      setShowErrorNotificationEditLaw(true);
       add = error;
     }
     return add;
@@ -193,6 +235,32 @@ const Law: FC = () => {
 
   return (
     <Wrapper>
+      <Toaster position="bottom-left" expand={true} />
+      {showNotificationAddLaw && (
+        <PopUpNotification
+          titleText={'Добавлен новый правовой документ'}
+          name={editedLaw?.title}
+        />
+      )}
+      {showNotificationEditLaw && (
+        <PopUpNotification
+          titleText={'Внесены изменения правовой документ'}
+          name={editedLaw?.title}
+        />
+      )}
+      {/* //!уведомления об ошибках */}
+      {showErrorNotificationAddLaw && (
+        <PopUpErrorNotification
+          titleText={'Ошибка'}
+          bodyText={errorNotification}
+        />
+      )}
+      {showErrorNotificationEditLaw && (
+        <PopUpErrorNotification
+          titleText={'Ошибка'}
+          bodyText={errorNotification}
+        />
+      )}
       <SidebarLaw
         data={formattedLaws}
         title="Документы"

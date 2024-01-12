@@ -18,6 +18,10 @@ import {
 import Button from '../../../ui/Button';
 import ReactQuill from 'react-quill';
 import deleteDocumentLaw from '../../../Redux/thunks/Document/deleteDocumentLaw.api';
+import { unwrapResult } from '@reduxjs/toolkit';
+import { Toaster } from 'sonner';
+import PopUpNotification from '../../../ui/PopUpNotification';
+import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
 
 interface LawEditorProps {
   isOpen: boolean;
@@ -62,12 +66,49 @@ const Editor: FC<LawEditorProps> = ({
   const id = useAppSelector((state) => state.lawsSlice.postId);
   const dispatch = useAppDispatch();
   const [isUpload, setUpload] = useState(false);
+  const [errorNotification, setErrorNotification] = useState<string | null>(
+    null
+  );
+
+  const [showNotificationPicture, setShowNotificationPicture] =
+    useState<boolean>(false);
+  //* удаление
+  const [showNotificationDelLaw, setShowNotificationDelLaw] =
+    useState<boolean>(false);
+  const [showNotificationDelPick, setShowNotificationDelPick] =
+    useState<boolean>(false);
+  const [showErrorNotificationPicture, setErrorShowNotificationPicture] =
+    useState<boolean>(false);
 
   useEffect(() => {
     if (law) {
       setEditedLaw(law);
     }
   }, [law, setEditedLaw]);
+
+
+  useEffect(() => {
+    if (
+      showNotificationPicture ||
+      showNotificationDelLaw ||
+      showNotificationDelPick ||
+      showErrorNotificationPicture
+    ) {
+      const timeoutId = setTimeout(() => {
+        setShowNotificationPicture(false);
+        setShowNotificationDelLaw(false);
+        setShowNotificationDelPick(false);
+        setErrorShowNotificationPicture(false);
+      });
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [
+    showNotificationPicture,
+    showNotificationDelLaw,
+    showNotificationDelPick,
+    showErrorNotificationPicture,
+  ]);
 
   useEffect(() => {
     if (isAddingMode) {
@@ -95,6 +136,37 @@ const Editor: FC<LawEditorProps> = ({
     resetAxiosError();
   };
 
+  // const uploadFile = async (file: File, id: number | 0): Promise<void> => {
+  //   if (file && id) {
+  //     const formData = new FormData();
+  //     formData.append('file', file);
+
+  //     try {
+  //       const response: AxiosResponse = await axios.put(
+  //         `${VITE_URL}/admin/documentFile/${id}`,
+  //         formData,
+  //         {
+  //           headers: {
+  //             'Content-Type': 'multipart/form-data',
+  //           },
+  //           withCredentials: true,
+  //         }
+  //       );
+  //       console.log('======>', showNotificationPicture);
+  //       unwrapResult(response);
+  //       setShowNotificationPicture(true);
+  //         handleCancel();
+  //         setTimeout(() => {
+  //           handleCancel();
+  //         }, 50);
+  //     } catch (error) {
+  //       console.error('Ошибка при загрузке файла:', error);
+  //       const errorRes = 'Ошибка при загрузке файла'
+  //       setErrorNotification(errorRes);
+  //       setErrorShowNotificationPicture(true);
+  //     }
+  //   }
+  // };
   const uploadFile = async (file: File, id: number | 0): Promise<void> => {
     if (file && id) {
       const formData = new FormData();
@@ -111,13 +183,26 @@ const Editor: FC<LawEditorProps> = ({
             withCredentials: true,
           }
         );
-        handleCancel();
-        return response.data;
+        console.log('======>', showNotificationPicture);
+        unwrapResult(response);
+        setShowNotificationPicture(true);
       } catch (error) {
         console.error('Ошибка при загрузке файла:', error);
+        const errorRes = 'Ошибка при загрузке файла';
+        setErrorNotification(errorRes);
+        setErrorShowNotificationPicture(true);
       }
     }
   };
+
+  useEffect(() => {
+    if (showNotificationPicture) {
+      handleCancel();
+      setTimeout(() => {
+        handleCancel();
+      }, 50);
+    }
+  }, [showNotificationPicture]);
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -167,9 +252,10 @@ const Editor: FC<LawEditorProps> = ({
       if (isConfirmed && editedLaw && editedLaw.id) {
         const lawId = editedLaw.id;
         const resultAction = await dispatch(deleteLaw(lawId));
+        setShowNotificationDelLaw(true);
         if (deleteLaw.fulfilled.match(resultAction)) {
           const response = resultAction.payload;
-
+          setShowNotificationDelLaw(true);
           if (response.length === 0) {
             setEditedLaw(null);
             openAddEditor();
@@ -186,7 +272,7 @@ const Editor: FC<LawEditorProps> = ({
     if (isConfirmed && editedLaw && editedLaw.id) {
       const lawId = editedLaw.id;
       dispatch(deleteDocumentLaw(lawId));
-    }
+    }   setShowNotificationDelPick(true);
   };
 
   if (!isOpen || !editedLaw) {
@@ -216,6 +302,34 @@ const Editor: FC<LawEditorProps> = ({
       {/* <div className="mx-auto max-w-screen-lg h-max max-w-2xl w-11/12 md:w-2/3 max-w-2xl"> */}
       <div className="mx-auto max-w-screen-lg h-max w-[974.2px]">
         <div className="relative py-8 px-5 md:px-10 bg-white shadow-md rounded-3xl border border-slate-200">
+        <Toaster position="bottom-left" expand={true} />
+      {showNotificationPicture && (
+        <PopUpNotification
+          titleText={'Файл загружен'}
+          name={editedLaw.title}
+        />
+      )}
+      {showNotificationDelLaw && (
+        <PopUpNotification
+          titleText={'Правовой документ удалён'}
+          name={editedLaw.title}
+        />
+      )}
+
+      {showNotificationDelPick && (
+        <PopUpNotification
+          titleText={'Файл удалён'}
+          name={editedLaw.title}
+        />
+      )}
+
+      {/* //!уведомления об ошибках */}
+      {showErrorNotificationPicture && (
+        <PopUpErrorNotification
+          titleText={'Ошибка'}
+          bodyText={errorNotification}
+        />
+      )}
           <form onSubmit={handleFormSubmit}>
             <div className="flex justify-center items-center">
               <div className="w-8 text-gray-600">
