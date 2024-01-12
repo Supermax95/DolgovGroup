@@ -737,11 +737,11 @@ const Products: FC = () => {
                                 <br />
                                 <span className="text-center">
                                   с{' '}
-                                  <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
+                                  <span className="underline decoration-sky-500 decoration-1 text-sm font-medium">
                                     {reverseDate(product.promoStartDate)}
                                   </span>{' '}
                                   по{' '}
-                                  <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
+                                  <span className="underline decoration-sky-500 decoration-1 text-sm font-medium">
                                     {reverseDate(product.promoEndDate)}
                                   </span>
                                 </span>
@@ -753,7 +753,7 @@ const Products: FC = () => {
                             <p className="mb-2 text-slate-600 text-sm font-normal text-center">
                               Период акции: <br />
                               <span className="text-center">
-                                <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
+                                <span className="underline decoration-sky-500 decoration-1 text-sm font-medium">
                                   бессрочная
                                 </span>
                               </span>
