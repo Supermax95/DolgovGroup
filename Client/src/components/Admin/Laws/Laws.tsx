@@ -202,7 +202,7 @@ const Law: FC = () => {
       <div
         className={`p-4 ${
           isLoading
-            ? 'max-w-screen-lg mx-auto mt-8 p-8 bg-white shadow-md rounded-xl w-[1020px] h-[1100px] backdrop-blur-lg'
+            ? 'max-w-screen-lg mx-auto mt-8 p-8 bg-white shadow-md rounded-xl w-[1020px] h-[500px] backdrop-blur-lg'
             : ''
         }`}
       >
