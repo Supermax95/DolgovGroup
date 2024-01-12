@@ -17,7 +17,7 @@ import deleteDocumentLaw from '../../../Redux/thunks/Document/deleteDocumentLaw.
 
 interface LawEditorProps {
   isOpen: boolean;
-  law: ILaw | null;
+  law: ILaw | null 
   onSaveAdd: (editedLaw: ILaw) => void;
   onSaveEdit: (editedLaw: ILaw) => void;
   onCloseAddEditor: () => void;

@@ -24,6 +24,7 @@ import { Toaster } from 'sonner';
 import PopUpNotification from '../../../ui/PopUpNotification';
 import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
 import currentProduct from '../../../Redux/thunks/Products/getcurrentProduct';
+import LoadingAnimation from '../../Admin/Laws/Loading';
 
 export interface IProduct {
   id: number;
@@ -61,7 +62,7 @@ const Products: FC = () => {
   const [selectedVisibility, setSelectedVisibility] = useState<
     'all' | 'visible' | 'invisible'
   >('all');
-
+  const [isLoading, setLoading] = useState(false);
   //* для сайдбара
   const categories = useAppSelector<ICategory[]>(
     (state) => state.categorySlice.data
@@ -290,6 +291,10 @@ const Products: FC = () => {
     setEditedProduct(result);
     setAddingMode(false);
     setModalOpen(true);
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
   };
 
   const closeEditModal = () => {
@@ -396,6 +401,7 @@ const Products: FC = () => {
       inputCheckbox.checked = false;
     });
   };
+  console.log('======>', isLoading);
 
   return (
     <Wrapper>
@@ -803,6 +809,14 @@ const Products: FC = () => {
           totalPages={totalPages}
           onPageChange={setCurrentPage}
         />
+        <div className="relative">
+        {isLoading && (
+      <div className="fixed inset-0 z-20 backdrop-blur-sm flex items-center justify-center">
+      <div className="bg-white p-1 rounded-sm shadow-xs">
+            <LoadingAnimation />
+            </div>
+          </div>
+        )}
 
         {isModalOpen && (selectedProduct || isAddingMode) && (
           <ProductsModal
@@ -815,11 +829,10 @@ const Products: FC = () => {
             isAddingMode={isAddingMode}
             editedProduct={editedProduct}
             setEditedProduct={setEditedProduct}
-            openEditModal = {openEditModal}
-            // axiosError={axiosError}
-            // resetAxiosError={resetAxiosError}
+            openEditModal={openEditModal}
           />
         )}
+      </div>
       </div>
     </Wrapper>
   );

@@ -54,10 +54,10 @@ interface ProductsModalProps {
   isOpen: boolean;
   product: Product | null;
   onSaveAdd: (editedProduct: IProduct) => void;
-  onSaveEdit: (editedProduct: IProduct) => void;
+  onSaveEdit: (editedProduct: IProduct ) => void;
   onCloseAddModal: () => void;
   onCloseEditModal: () => void;
-  openEditModal: (product: IProduct) => void;
+  openEditModal:  (product: IProduct ) => void;
   isAddingMode: boolean;
   editedProduct: Product | null | undefined;
   setEditedProduct: React.Dispatch<
@@ -745,16 +745,22 @@ const ProductsModal: FC<ProductsModalProps> = ({
                   htmlFor="dropzone-file"
                   className="flex flex-col items-center justify-center w-full h-22 border-2 border-slate-300 border-dashed rounded-lg cursor-pointer bg-slate-50 dark:hover:bg-bray-800 dark:bg-slate-700 hover:bg-slate-100 dark:border-slate-600 dark:hover:border-slate-500 dark:hover:bg-slate-600"
                 >
+                  {' '}
+                  {/* <div className="text-center my-2">
+                    <p className="text-xs font-medium text-slate-500 dark:text-slate-400">
+                      Если фотографию продукта менять не нужно, вы можете
+                      пропустить этот шаг
+                    </p>{' '}
+                  </div> */}
                   <div className="flex flex-col items-center justify-center pt-5 pb-6">
                     <CloudArrowUpIcon className="cursor-pointer w-8 h-8 text-slate-500" />
                     <p className="mb-2 text-sm text-slate-500 dark:text-slate-400">
                       <span className="font-medium">Нажмите,</span> чтобы
                       загрузить файл
                     </p>
-                    <p className="text-center text-xs text-slate-500 dark:text-slate-400">
-                      Загрузите изображение в формате PNG или WEBP <br />
-                      Разрешение для карточек:{' '}
-                      <span className="font-medium"> 800x800px</span>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                      Загрузите изображение в формате PNG, WEBP (Разрешение:
+                      800x800px)
                     </p>
                   </div>
                   <input
