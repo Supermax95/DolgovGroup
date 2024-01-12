@@ -3,6 +3,7 @@ import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/20/solid';
 import Button from './Button';
 import InputMask from 'react-input-mask';
 import 'react-quill/dist/quill.snow.css';
+import { HandThumbUpIcon } from '@heroicons/react/24/outline';
 
 //* Здесь инпуты, которые переиспользуются в модальных окнах
 //* На Location, в профиле админа (создание/редактирование менеджера) - один столбец
@@ -40,7 +41,7 @@ export interface InputField {
 
 const InputModal: FC<IInputModal> = ({
   inputFields,
-  containerClassName = 'py-8 text-base leading-6 space-y-4 text-slate-700 sm:text-lg sm:leading-7',
+  containerClassName = 'py-8',
   codeSend,
   activationSend,
   modalTitle,
@@ -91,54 +92,51 @@ const InputModal: FC<IInputModal> = ({
             </>
           ) : field.id === 'isActivated' ? (
             field.value ? (
-              <div className="flex justify-between">
-                <div className="flex justify-start items-center">
+              <div className="mt-2 flex items-center space-y-2 flex-col">
+                <div className="flex space-x-1 items-center justify-center">
                   <CheckCircleIcon
-                    className="h-8 w-8 text-lime-600"
+                    className="h-5 w-5 text-lime-600"
                     aria-hidden="true"
                   />
                   <h1 className="text-lime-600 text-sm tracking-normal leading-tight">
                     Профиль активирован
                   </h1>
                 </div>
-                <div>
+                {/* //! Не удалять */}
+                {/* <div>
                   {modalTitle === 'Редактирование анкеты клиента' ? null : (
                     <Button
                       type="button"
-                      title="Отправить код"
                       styleCSSButton={
-                        'relative inline-flex items-center justify-center p-0.5 mb-0 mr-0 overflow-hidden text-sm font-medium text-slate-700 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 hover:text-white'
+                        'w-full flex items-center justify-center w-1/2 px-5 py-2 mr-2 text-sm transition-colors duration-200 p-0.5 group bg-gradient-to-br from-teal-300 to-lime-300 hover:bg-gradient-to-bl from-teal-400 to-lime-500 rounded-lg gap-x-2 sm:w-auto'
                       }
                       onClick={codeSend}
-                      styleCSSSpan={
-                        'w-44 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
-                      }
+                      // icon={<HandThumbUpIcon className="w-4 h-4 text-slate-50" />}
+                      title="Отправить код"
                     />
                   )}
-                </div>
+                </div> */}
               </div>
             ) : (
-              <div className="flex justify-between">
-                <div className="flex justify-start items-center">
+              <div className="flex items-center space-y-2 flex-col">
+                <div className="flex space-x-1 items-center">
                   <XCircleIcon
-                    className="h-8 w-8 text-orange-400"
+                    className="h-5 w-5 text-orange-400"
                     aria-hidden="true"
                   />
                   <h1 className="text-orange-400 text-sm tracking-normal leading-tight">
                     Профиль не активирован
                   </h1>
                 </div>
-                <div className="">
+                <div>
                   <Button
                     type="button"
-                    title="Отправить ссылку"
                     styleCSSButton={
-                      'relative inline-flex items-center justify-center p-0.5 mb-0 mr-0 overflow-hidden text-sm font-medium text-slate-700 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 hover:text-white'
+                      'w-full flex items-center justify-center w-1/2 px-5 py-2 mr-2 text-sm transition-colors duration-200 p-0.5 group bg-gradient-to-br from-orange-300 to-red-300 hover:bg-gradient-to-bl from-orange-400 to-red-500 rounded-lg gap-x-2 sm:w-auto'
                     }
                     onClick={activationSend}
-                    styleCSSSpan={
-                      'w-44 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
-                    }
+                    // icon={<HandThumbUpIcon className="w-4 h-4 text-slate-50" />}
+                    title="Отправить ссылку для активации"
                   />
                 </div>
               </div>

@@ -1,5 +1,9 @@
 import { FC } from 'react';
-import { IdentificationIcon, ListBulletIcon, UserIcon } from '@heroicons/react/24/outline';
+import {
+  IdentificationIcon,
+  ListBulletIcon,
+  UserIcon,
+} from '@heroicons/react/24/outline';
 import SidebarProfile from '../../ui/SidebarProfile';
 import { useAppSelector } from '../../Redux/hooks';
 
@@ -30,15 +34,17 @@ const RoleSidebar: FC = () => {
       links: [
         {
           id: 1,
-          href: '/listOfManagers',
-          name: 'Список менеджеров',
-          childrenIcon: <ListBulletIcon className="w-4 h-4 text-slate-600" />,
+          href: '/profileAdmin',
+          name: 'Персональные данные',
+          childrenIcon: (
+            <IdentificationIcon className="w-4 h-4 text-slate-600" />
+          ),
         },
         {
           id: 2,
-          href: '/profileAdmin',
-          name: 'Персональные данные',
-          childrenIcon: <IdentificationIcon className="w-4 h-4 text-slate-600" />,
+          href: '/listOfManagers',
+          name: 'Список менеджеров',
+          childrenIcon: <ListBulletIcon className="w-4 h-4 text-slate-600" />,
         },
       ],
     },
@@ -56,15 +62,15 @@ const RoleSidebar: FC = () => {
       links: [
         {
           id: 1,
-          href: '/listOfManagersForManager',
-          name: 'Список контактов',
-          childrenIcon: <ListBulletIcon className="w-4 h-4 text-slate-600" />,
-        },
-        {
-          id: 2,
           href: '/profileManager',
           name: 'Персональные данные',
           childrenIcon: <UserIcon className="w-4 h-4 text-slate-600" />,
+        },
+        {
+          id: 2,
+          href: '/listOfManagersForManager',
+          name: 'Список контактов',
+          childrenIcon: <ListBulletIcon className="w-4 h-4 text-slate-600" />,
         },
       ],
     },

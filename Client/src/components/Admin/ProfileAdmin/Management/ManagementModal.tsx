@@ -73,29 +73,6 @@ const ManagementModal: FC<ManagersModalProps> = ({
     onCloseEditModal();
   };
 
-  // const handleFormSubmit = (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   try {
-  //     if (isAddingMode) {
-  //       onSaveAdd(managerToSave);
-  //     } else {
-  //       onSaveEdit(managerToSave);
-  //     }
-  //   } catch (error) {
-  //     console.error('Произошла ошибка при сохранении:', error);
-  //   }
-  // };
-
-  // const handleDelete = () => {
-  //   //console.log('editedManager', editedManager);
-
-  //   if (editedManager && editedManager.id) {
-  //     const managerId = editedManager.id;
-
-  //     dispatch(deleteManager({ managerId }));
-  //     onCloseEditModal();
-  //   }
-  // };
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -259,11 +236,6 @@ const ManagementModal: FC<ManagersModalProps> = ({
             onCancelСlick={handleCancel}
             onDeleteClick={handleDelete}
           >
-            {/* {showError && (
-              <div className="text-sm text-rose-400 text-center mt-2">
-                {showError}
-              </div>
-            )} */}
             <InputModal inputFields={inputFieldsDate} />
           </Modal>
         </form>

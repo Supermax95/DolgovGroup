@@ -18,6 +18,7 @@ import {
   CloudArrowUpIcon,
   TrashIcon,
 } from '@heroicons/react/24/outline';
+import Button from '../../../ui/Button';
 
 interface Promotion {
   id: number;
@@ -432,7 +433,7 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
 
           {currentStep === 2 && (
             <>
-              <div className="flex items-center justify-center">
+              <div className="flex items-center justify-center mt-2">
                 <label
                   htmlFor="dropzone-file"
                   className="flex flex-col items-center justify-center w-full h-22 border-2 border-slate-300 border-dashed rounded-lg cursor-pointer bg-slate-50 dark:hover:bg-bray-800 dark:bg-slate-700 hover:bg-slate-100 dark:border-slate-600 dark:hover:border-slate-500 dark:hover:bg-slate-600"
@@ -485,17 +486,15 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
                 <div>
                   {!isAddingMode &&
                     editedPromotion.photo !== '/uploads/noPhoto/null.jpeg' && (
-                      <button
+                      <Button
                         type="button"
                         onClick={handleDeletePhoto}
-                        className="w-full flex items-center justify-center w-1/2 px-5 py-2 text-sm transition-colors duration-200 bg-rose-600 border rounded-lg gap-x-2 sm:w-auto dark:hover:bg-slate-800 dark:bg-slate-900 hover:bg-rose-700 dark:text-slate-200 dark:border-slate-700"
-                      >
-                        <TrashIcon className="w-4 h-4 text-slate-50" />
-
-                        <span className="text-sm text-slate-50 dark:text-slate-400">
-                          Удалить изображение{' '}
-                        </span>
-                      </button>
+                        styleCSSButton={
+                          'w-full flex items-center justify-center w-1/2 px-5 py-2 mr-2 text-sm transition-colors duration-200 p-0.5 group bg-gradient-to-br from-red-500 to-rose-400 hover:bg-gradient-to-bl from-red-500 to-rose-400 rounded-lg gap-x-2 sm:w-auto'
+                        }
+                        icon={<TrashIcon className="w-4 h-4 text-slate-50" />}
+                        title="Удалить изображение"
+                      />
                     )}
                 </div>
               </div>
