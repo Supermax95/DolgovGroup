@@ -1,6 +1,10 @@
 import React, { FC } from 'react';
 import Button from './Button';
-import { XMarkIcon, UserGroupIcon } from '@heroicons/react/24/outline';
+import {
+  XMarkIcon,
+  UserGroupIcon,
+  HandThumbUpIcon,
+} from '@heroicons/react/24/outline';
 
 //* Модальное окно используеются в компонентах Clients и Employees
 //* Вопрос с кодом сотрудника,подумать насчет того что делать с ним,убирать или оставлять решить во время рест апи 1С
@@ -40,17 +44,13 @@ const ModalUser: FC<IModalUser> = ({
             {isAddingMode ? (
               <Button
                 type="submit"
-                styleCSSSpan={
-                  'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-slate-800'
-                }
+                icon={<HandThumbUpIcon className="w-4 h-4 text-slate-50" />}
                 title="Добавить"
               />
             ) : (
               <Button
                 type="submit"
-                styleCSSSpan={
-                  'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
-                }
+                icon={<HandThumbUpIcon className="w-4 h-4 text-slate-50" />}
                 title="Сохранить"
               />
             )}

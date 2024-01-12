@@ -7,8 +7,12 @@ import getLaws from '../../../Redux/thunks/Document/getLaws.api';
 import 'quill/dist/quill.snow.css';
 import deleteLaw from '../../../Redux/thunks/Document/deleteLaw.api';
 import {
+  ArrowUturnLeftIcon,
+  CloudArrowUpIcon,
   DocumentTextIcon,
   EyeIcon,
+  HandThumbUpIcon,
+  TrashIcon,
   XCircleIcon,
 } from '@heroicons/react/24/outline';
 import Button from '../../../ui/Button';
@@ -202,184 +206,238 @@ const Editor: FC<LawEditorProps> = ({
 
   return (
     <>
-      <div className="max-w-screen-lg h-max py-8 px-5 md:px-10 bg-white shadow-md rounded-3xl border border-slate-300">
-        <form onSubmit={handleFormSubmit}>
-          <div className="flex justify-center items-center">
-            <div className="w-8 text-gray-600">
-              <DocumentTextIcon className="w-6 h-6 text-slate-400" />
+      {/* <div className="mx-auto max-w-screen-lg h-max max-w-2xl w-11/12 md:w-2/3 max-w-2xl"> */}
+      <div className="mx-auto max-w-screen-lg h-max w-[974.2px]">
+        <div className="relative py-8 px-5 md:px-10 bg-white shadow-md rounded-3xl border border-slate-200">
+          <form onSubmit={handleFormSubmit}>
+            <div className="flex justify-center items-center">
+              <div className="w-8 text-gray-600">
+                <DocumentTextIcon className="w-6 h-6 text-slate-400" />
+              </div>
+              <h1 className="text-lime-600 text-lg font-bold tracking-normal leading-tight">
+                {isAddingMode ? 'Новый документ' : 'Редактирование документа'}
+              </h1>
             </div>
-            <h1 className="text-lime-600 text-lg font-bold tracking-normal leading-tight">
-              {isAddingMode ? 'Новый документ' : 'Редактирование документа'}
-            </h1>
-          </div>
-          <div className="py-8 text-base leading-6 space-y-4 text-slate-700 sm:text-lg sm:leading-7">
             {currentStep === 1 && (
-              <>
-                <div className="relative">
-                  <input
-                    id="title"
-                    name="title"
-                    type="text"
-                    value={editedLaw.title}
-                    onChange={(e) =>
-                      setEditedLaw({ ...editedLaw, title: e.target.value })
-                    }
-                    placeholder=""
-                    className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
-                    required={true}
-                  />
-                  <label
-                    htmlFor="title"
-                    className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-slate-400 peer-focus:text-sm"
-                  >
-                    Наименование документа
-                  </label>
-                </div>
-
-                <div className="pt-4 pb-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
+              <div className="py-8">
+                <>
                   <div className="relative">
                     <input
+                      id="title"
+                      name="title"
+                      type="text"
+                      value={editedLaw.title}
                       onChange={(e) =>
-                        setEditedLaw({
-                          ...editedLaw,
-                          dateFrom: e.target.value,
-                        })
+                        setEditedLaw({ ...editedLaw, title: e.target.value })
                       }
-                      id="dateFrom"
-                      type="date"
-                      name="dateFrom"
-                      value={editedLaw.dateFrom}
                       placeholder=""
                       className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
                       required={true}
                     />
                     <label
-                      htmlFor="dateFrom"
+                      htmlFor="title"
                       className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-slate-400 peer-focus:text-sm"
                     >
-                      Дата начала действия документа
+                      Наименование документа
                     </label>
                   </div>
-                  {currentLaw && currentLaw.updatedAt && (
+
+                  <div className="py-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
                     <div className="relative">
                       <input
-                        id="updatedAt"
-                        type="text"
-                        name="updatedAt"
-                        value={new Date(
-                          currentLaw.updatedAt
-                        ).toLocaleDateString('ru-RU')}
+                        onChange={(e) =>
+                          setEditedLaw({
+                            ...editedLaw,
+                            dateFrom: e.target.value,
+                          })
+                        }
+                        id="dateFrom"
+                        type="date"
+                        name="dateFrom"
+                        value={editedLaw.dateFrom}
                         placeholder=""
-                        className="block py-2.5 px-0 w-full text-sm text-slate-400 bg-transparent border-0 border-b-2 border-slate-300"
+                        className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
                         required={true}
-                        disabled={true}
                       />
                       <label
-                        htmlFor="updatedAt"
+                        htmlFor="dateFrom"
                         className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-slate-400 peer-focus:text-sm"
                       >
-                        Дата последнего обновления
+                        Дата начала действия документа
                       </label>
                     </div>
-                  )}
-                </div>
-                {currentLaw && currentLaw.documentLink ? (
-                  <div className="cursor-pointer flex items-center justify-between">
-                    <button
-                      type="button"
-                      className="flex items-center"
-                      onClick={() =>
-                        window.open(
-                          `${VITE_URL}${currentLaw.documentLink}`,
-                          '_blank'
-                        )
-                      }
-                    >
-                      Документ
-                      <EyeIcon
-                        className="h-5 w-5 ml-2 text-[#76a1dd] cursor-pointer"
-                        aria-hidden="true"
-                      />
-                    </button>
+                    {currentLaw && currentLaw.updatedAt && (
+                      <div className="relative">
+                        <input
+                          id="updatedAt"
+                          type="text"
+                          name="updatedAt"
+                          value={new Date(
+                            currentLaw.updatedAt
+                          ).toLocaleDateString('ru-RU')}
+                          placeholder=""
+                          className="block py-2.5 px-0 w-full text-sm text-slate-400 bg-transparent border-0 border-b-2 border-slate-300"
+                          required={true}
+                          disabled={true}
+                        />
+                        <label
+                          htmlFor="updatedAt"
+                          className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-slate-400 peer-focus:text-sm"
+                        >
+                          Дата последнего обновления
+                        </label>
+                      </div>
+                    )}
+                  </div>
+                  {currentLaw && currentLaw.documentLink ? (
+                    <div className="flex justify-between">
+                      <div className="flex items-center space-x-1">
+                        <span className="text-slate-600 text-sm font-normal">
+                          Подгружен документ:
+                        </span>
+                        <button
+                          type="button"
+                          className="flex items-center justify-center"
+                          onClick={() =>
+                            window.open(
+                              `${VITE_URL}${currentLaw.documentLink}`,
+                              '_blank'
+                            )
+                          }
+                        >
+                          <div className="flex items-center justify-center">
+                            <span className="text-sm text-slate-600 font-normal underline decoration-sky-500 decoration-1">
+                              {/* <span className="text-sm text-lime-600 font-normal "> */}
+                              {editedLaw.title}
+                            </span>
+                            <EyeIcon
+                              className="h-5 w-5 ml-2 text-sky-600"
+                              aria-hidden="true"
+                            />
+                          </div>
+                        </button>
+                      </div>
 
-                    <button
-                      type="button"
-                      onClick={handleDeleteDocument}
-                      className="cursor-pointer flex items-center text-red-500"
-                    >
-                      Удалить файл
-                      <XCircleIcon
-                        className="h-5 w-5 ml-2"
-                        aria-hidden="true"
+                      <Button
+                        type="button"
+                        onClick={handleDeleteDocument}
+                        styleCSSButton={
+                          'w-full flex items-center justify-center w-1/2 px-5 py-2 mr-2 text-sm transition-colors duration-200 p-0.5 group bg-gradient-to-br from-red-500 to-rose-400 hover:bg-gradient-to-bl from-red-500 to-rose-400 rounded-lg gap-x-2 sm:w-auto'
+                        }
+                        icon={<TrashIcon className="w-4 h-4 text-slate-50" />}
+                        title="Удалить документ"
                       />
-                    </button>
-                  </div>
-                ) : (
-                  <div className="text-gray-500 dark:text-gray-300">
-                    Подгруженных документов: нет
-                  </div>
-                )}
-                <div className="text-center">
-                  <label
-                    htmlFor="description"
-                    className="text-slate-600 text-md font-normal"
-                  >
-                    Содержание документа
-                  </label>
-                  <div className="text-center">
-                    <span className="text-xs text-orange-500 font-normal">
-                      Вы можете внести содержание документа вручную, либо
-                      использовать кнопку "Сохранить", чтобы загрузить документ.
+                    </div>
+                  ) : (
+                    <span className="text-slate-600 text-sm font-normal">
+                      Подгруженные документы отсутствуют
                     </span>
-                  </div>
-                  <div className="mb-2"></div>
+                  )}
 
-                  <div id="editor-container h-[60vh] resize-y overflow-auto">
-                    <ReactQuill
-                      theme="snow"
-                      value={editedLaw.description}
-                      onChange={(value) =>
-                        setEditedLaw({ ...editedLaw, description: value })
-                      }
-                      modules={quillModules}
-                      className="w-full h-[50vh]"
-                    />
+                  <div className="text-center my-4">
+                    <label
+                      htmlFor="description"
+                      className="text-slate-600 text-md font-normal"
+                    >
+                      Содержание документа
+                    </label>
+                    <div className="text-center">
+                      <span className="text-xs text-orange-500 font-normal">
+                        Вы можете внести содержание документа вручную, либо
+                        использовать кнопку "Сохранить", чтобы загрузить
+                        документ.
+                      </span>
+                    </div>
+                    <div className="mb-2"></div>
+
+                    <div id="editor-container h-[60vh] resize-y overflow-auto">
+                      <ReactQuill
+                        theme="snow"
+                        value={editedLaw.description}
+                        onChange={(value) =>
+                          setEditedLaw({ ...editedLaw, description: value })
+                        }
+                        modules={quillModules}
+                        className="w-full h-[50vh]"
+                      />
+                    </div>
                   </div>
+                </>
+              </div>
+            )}
+
+            {currentStep === 1 && (
+              <>
+                <div className="mt-8"></div>
+                <div className="flex items-center justify-center w-full">
+                  <Button
+                    type="submit"
+                    icon={<HandThumbUpIcon className="w-4 h-4 text-slate-50" />}
+                    title="Сохранить"
+                  />
+
+                  {!isAddingMode && (
+                    <Button
+                      type="button"
+                      onClick={handleDelete}
+                      styleCSSButton={
+                        'w-full flex items-center justify-center w-1/2 px-5 py-2 mr-2 text-sm transition-colors duration-200 p-0.5 group bg-gradient-to-br from-red-500 to-rose-400 hover:bg-gradient-to-bl from-red-500 to-rose-400 rounded-lg gap-x-2 sm:w-auto'
+                      }
+                      icon={<TrashIcon className="w-4 h-4 text-slate-50" />}
+                      title="Удалить"
+                    />
+                  )}
                 </div>
               </>
             )}
-          </div>
-          {currentStep === 1 && (
-            <>
-              <div className="mt-8"></div>
-              <div className="flex items-center justify-center w-full">
-                <Button
-                  type="submit"
-                  styleCSSSpan={
-                    'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
-                  }
-                  title="Сохранить"
-                />
 
-                {!isAddingMode && (
+            {currentStep === 2 && (
+              <>
+                <div className="mx-auto mt-2 flex items-center justify-center">
+                  <label
+                    htmlFor="dropzone-file"
+                    className="flex flex-col items-center justify-center w-full h-22 border-2 border-slate-300 border-dashed rounded-lg cursor-pointer bg-slate-50 dark:hover:bg-bray-800 dark:bg-slate-700 hover:bg-slate-100 dark:border-slate-600 dark:hover:border-slate-500 dark:hover:bg-slate-600"
+                  >
+                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                      <CloudArrowUpIcon className="cursor-pointer w-8 h-8 text-slate-500" />
+                      <p className="mb-2 text-sm text-slate-500 dark:text-slate-400">
+                        <span className="font-medium">Нажмите,</span> чтобы
+                        загрузить файл
+                      </p>
+                      <p className="text-center text-xs text-slate-500 dark:text-slate-400">
+                        Загрузите документ в формате PDF или DOCX
+                      </p>
+                    </div>
+                    <input
+                      id="dropzone-file"
+                      type="file"
+                      className="hidden"
+                      onChange={handleFileInputChange}
+                    />
+                    <div className="text-center my-2">
+                      <p className="text-xs font-medium text-slate-500 dark:text-slate-400">
+                        Если документ загружать не нужно, вы можете пропустить
+                        этот шаг
+                      </p>{' '}
+                    </div>
+                  </label>
+                </div>
+                <div className="flex justify-between mt-2">
                   <Button
                     type="button"
-                    onClick={handleDelete}
+                    onClick={handleCancel}
                     styleCSSButton={
-                      'relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-slate-700  rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white'
+                      'w-full flex items-center justify-center w-1/2 px-5 py-2 text-sm text-slate-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto dark:hover:bg-slate-800 dark:bg-slate-900 hover:bg-slate-100 dark:text-slate-200 dark:border-slate-700'
                     }
-                    styleCSSSpan={
-                      'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
+                    styleCSSSpan={'text-sm text-slate-500 dark:text-slate-400'}
+                    icon={
+                      <ArrowUturnLeftIcon className="w-4 h-4 text-slate-500" />
                     }
-                    title="Удалить"
+                    title="Назад"
                   />
-                )}
-              </div>
-            </>
-          )}
-          {currentStep === 2 && (
-            <>
-              <div className="container mx-auto mt-8 p-8 max-w-4xl justify-center items-center flex-col block rounded-lg bg-white shadow-m">
+                </div>
+
+                {/* <div className="container mx-auto mt-8 p-8 max-w-4xl justify-center items-center flex-col block rounded-lg bg-white shadow-m">
                 <div className="px-4 sm:px-0 text-center">
                   <h1 className="text-xl font-bold mb-4">
                     Форма загрузки документа
@@ -416,13 +474,30 @@ const Editor: FC<LawEditorProps> = ({
                           Пропустить
                         </button>
                       </div>
+                      <div className="mt-4">
+                        <Button
+                          type="button"
+                          onClick={handleCancel}
+                          styleCSSButton={
+                            'w-full flex items-center justify-center w-1/2 px-5 py-2 text-sm text-slate-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto dark:hover:bg-slate-800 dark:bg-slate-900 hover:bg-slate-100 dark:text-slate-200 dark:border-slate-700'
+                          }
+                          styleCSSSpan={
+                            'text-sm text-slate-500 dark:text-slate-400'
+                          }
+                          icon={
+                            <ArrowUturnLeftIcon className="w-4 h-4 text-slate-500" />
+                          }
+                          title="Назад"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </>
-          )}
-        </form>
+              </div> */}
+              </>
+            )}
+          </form>
+        </div>
       </div>
     </>
   );

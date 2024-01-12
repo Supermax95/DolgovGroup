@@ -4,6 +4,9 @@ import {
   BuildingStorefrontIcon,
   XMarkIcon,
   UserIcon,
+  TrashIcon,
+  CheckCircleIcon,
+  HandThumbUpIcon,
 } from '@heroicons/react/24/outline';
 import {
   ArrowPathIcon,
@@ -77,15 +80,15 @@ const Modal: FC<IModal> = ({
               {modalTitle}
             </h1>
           </div>
-          <div className="text-center mt-2">
-            {modalTitle === 'Регистрация нового менеджера' ||
-            modalTitle === 'Сброс пароля' ? (
+          {modalTitle === 'Регистрация нового менеджера' ||
+          modalTitle === 'Сброс пароля' ? (
+            <div className="text-center mt-2">
               <span className="text-sm text-amber-600 font-normal">
                 Временный пароль будет сформирован автоматически <br /> и
                 отправлен на указанный адрес электронной почты
               </span>
-            ) : null}
-          </div>
+            </div>
+          ) : null}
 
           {children}
 
@@ -95,25 +98,15 @@ const Modal: FC<IModal> = ({
                 {isAddingMode ? (
                   <Button
                     type="submit"
-                    styleCSSSpan={
-                      'w-44 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-slate-800'
-                    }
+                    icon={<HandThumbUpIcon className="w-4 h-4 text-slate-50" />}
                     title="Добавить"
                   />
                 ) : modalTitle === 'Сброс пароля' ? (
-                  <Button
-                    type="submit"
-                    styleCSSSpan={
-                      'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
-                    }
-                    title="Отправить"
-                  />
+                  <Button type="submit" title="Отправить" />
                 ) : (
                   <Button
                     type="submit"
-                    styleCSSSpan={
-                      'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
-                    }
+                    icon={<HandThumbUpIcon className="w-4 h-4 text-slate-50" />}
                     title="Сохранить"
                   />
                 )}
@@ -123,11 +116,9 @@ const Modal: FC<IModal> = ({
                     type="button"
                     onClick={onDeleteClick}
                     styleCSSButton={
-                      'relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-slate-700  rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white'
+                      'w-full flex items-center justify-center w-1/2 px-5 py-2 mr-2 text-sm transition-colors duration-200 p-0.5 group bg-gradient-to-br from-red-500 to-rose-400 hover:bg-gradient-to-bl from-red-500 to-rose-400 rounded-lg gap-x-2 sm:w-auto'
                     }
-                    styleCSSSpan={
-                      'w-36 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white text-sm font-normal rounded-md group-hover:bg-opacity-0 hover:text-white'
-                    }
+                    icon={<TrashIcon className="w-4 h-4 text-slate-50" />}
                     title="Удалить"
                   />
                 )}
