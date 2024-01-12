@@ -3,7 +3,7 @@ import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/20/solid';
 import Button from './Button';
 import InputMask from 'react-input-mask';
 import 'react-quill/dist/quill.snow.css';
-import { HandThumbUpIcon } from '@heroicons/react/24/outline';
+import { EnvelopeIcon, HandThumbUpIcon } from '@heroicons/react/24/outline';
 
 //* Здесь инпуты, которые переиспользуются в модальных окнах
 //* На Location, в профиле админа (создание/редактирование менеджера) - один столбец
@@ -118,25 +118,17 @@ const InputModal: FC<IInputModal> = ({
                 </div> */}
               </div>
             ) : (
-              <div className="flex items-center space-y-2 flex-col">
-                <div className="flex space-x-1 items-center">
-                  <XCircleIcon
-                    className="h-5 w-5 text-orange-400"
-                    aria-hidden="true"
-                  />
-                  <h1 className="text-orange-400 text-sm tracking-normal leading-tight">
-                    Профиль не активирован
-                  </h1>
-                </div>
+              <div className="flex items-center justify-center">
                 <div>
                   <Button
                     type="button"
                     styleCSSButton={
-                      'w-full flex items-center justify-center w-1/2 px-5 py-2 mr-2 text-sm transition-colors duration-200 p-0.5 group bg-gradient-to-br from-orange-300 to-red-300 hover:bg-gradient-to-bl from-orange-400 to-red-500 rounded-lg gap-x-2 sm:w-auto'
+                      'w-full flex items-center justify-center w-1/2 px-3 py-1 mr-2 text-sm transition-colors duration-200 p-0.5 group bg-gradient-to-br from-orange-300 to-red-300 hover:bg-gradient-to-bl from-orange-400 to-red-500 rounded-lg gap-x-2 sm:w-auto'
                     }
+                    styleCSSSpan={'text-xs text-slate-50 dark:text-slate-400'}
                     onClick={activationSend}
-                    // icon={<HandThumbUpIcon className="w-4 h-4 text-slate-50" />}
-                    title="Отправить ссылку для активации"
+                    icon={<EnvelopeIcon className="w-5 h-5 text-slate-50" />}
+                    title="Отправить ссылку для активации профиля на почту"
                   />
                 </div>
               </div>
