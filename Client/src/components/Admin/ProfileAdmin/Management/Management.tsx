@@ -218,14 +218,9 @@ const Management: FC = () => {
           managerId: managerId,
         })
       );
+      unwrapResult(result);
 
-      if (sendOneTimePassword.fulfilled.match(result)) {
-        if (managerIdForBellOneTimePass) {
-          setShowNotificationOnePass(true);
-        } else {
-          console.error('Ошибка. Пользователь не найден.');
-        }
-      }
+      setShowNotificationOnePass(true);
     } catch (error) {
       console.error('Произошла ошибка при отправке:', error);
       setErrorNotification(error as string | null);

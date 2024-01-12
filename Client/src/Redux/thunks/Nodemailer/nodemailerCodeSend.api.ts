@@ -17,7 +17,10 @@ interface ResponseData {
 const nodemailerCodeSend = createAsyncThunk<ResponseData, RequestData>(
   'admin/nodemailerCode',
 
-  async ({ id, firstName, middleName, email, userStatus }) => {
+  async (
+    { id, firstName, middleName, email, userStatus },
+    { rejectWithValue }
+  ) => {
     try {
       const response: AxiosResponse = await axios.post(
         `${VITE_URL}/nodemailerCodeSend/${id}`,
@@ -25,11 +28,14 @@ const nodemailerCodeSend = createAsyncThunk<ResponseData, RequestData>(
       );
       return response.data;
     } catch (error) {
-      console.error('Error:', error);
-      throw error;
+      if (axios.isAxiosError(error) && error.response) {
+        console.error('Server response data:', error.response.data.error);
+        throw rejectWithValue(error.response.data.error);
+      } else {
+        throw error;
+      }
     }
   }
 );
 
 export default nodemailerCodeSend;
-

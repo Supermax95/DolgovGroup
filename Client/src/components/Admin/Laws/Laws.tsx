@@ -11,7 +11,6 @@ import SidebarLaw from '../../../ui/SidebarLaw';
 import LoadingAnimation from './Loading';
 import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
 import PopUpNotification from '../../../ui/PopUpNotification';
-import { Toaster } from 'sonner';
 
 export interface ILaw {
   id: number;
@@ -235,7 +234,6 @@ const Law: FC = () => {
 
   return (
     <Wrapper>
-      <Toaster position="bottom-left" expand={true} />
       {showNotificationAddLaw && (
         <PopUpNotification
           titleText={'Добавлен новый правовой документ'}
@@ -244,7 +242,7 @@ const Law: FC = () => {
       )}
       {showNotificationEditLaw && (
         <PopUpNotification
-          titleText={'Внесены изменения правовой документ'}
+          titleText={'Внесены изменения в документ'}
           name={editedLaw?.title}
         />
       )}
