@@ -5,6 +5,9 @@ import InputModal, { InputField } from '../../../ui/InputModal';
 import ModalUser from '../../../ui/ModalUser';
 import nodemailerActivationSend from '../../../Redux/thunks/Nodemailer/nodemailerActivation.api';
 import nodemailerCodeSend from '../../../Redux/thunks/Nodemailer/nodemailerCodeSend.api';
+import PopUpNotification from '../../../ui/PopUpNotification';
+import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 interface IUser {
   id: number;
@@ -40,6 +43,29 @@ const ClientsModal: React.FC<UsersModalProps> = ({
   axiosError,
 }) => {
   const dispatch = useAppDispatch();
+
+  const [showNotificationActivationSend, setShowNotificationActivationSend] =
+    useState<boolean>(false);
+
+  const [errorNotification, setErrorNotification] = useState<string | null>(
+    null
+  );
+
+  const [
+    showErrorNotificationActivationSend,
+    setShowErrorNotificationActivationSend,
+  ] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (showNotificationActivationSend || showErrorNotificationActivationSend) {
+      const timeoutId = setTimeout(() => {
+        setShowNotificationActivationSend(false);
+        setShowErrorNotificationActivationSend(false);
+      });
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [showNotificationActivationSend, showErrorNotificationActivationSend]);
 
   const userToSave = editedUser || {
     id: 0,
@@ -80,6 +106,21 @@ const ClientsModal: React.FC<UsersModalProps> = ({
     setTimeout(() => {
       onCloseEditModal();
     }, 50);
+  };
+
+  const handleActivationSend = () => {
+    try {
+      if (editedUser) {
+        const result = dispatch(nodemailerActivationSend(editedUser));
+
+        unwrapResult(result);
+        setShowNotificationActivationSend(true);
+      }
+    } catch (error) {
+      console.error('Произошла ошибка при отправке:', error);
+      setErrorNotification(error as string | null);
+      setShowErrorNotificationActivationSend(true);
+    }
   };
 
   if (!isOpen || !editedUser) {
@@ -273,30 +314,46 @@ const ClientsModal: React.FC<UsersModalProps> = ({
 
   const allInputFields = [...inputFieldsDate];
   return (
-    <Wrapper>
-      <form onSubmit={handleFormSubmit}>
-        <ModalUser modalTitle={modalTitle} onCancelСlick={handleCancel}>
-          {axiosError && (
-            <div className="text-sm text-rose-400 text-center mt-2">
-              {axiosError}
-            </div>
-          )}
-          <InputModal
-            containerClassName={
-              'py-8 grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'
-            }
-            inputFields={allInputFields}
-            modalTitle={modalTitle}
-            codeSend={() =>
-              editedUser && dispatch(nodemailerCodeSend(editedUser))
-            }
-            activationSend={() =>
-              editedUser && dispatch(nodemailerActivationSend(editedUser))
-            }
-          />
-        </ModalUser>
-      </form>
-    </Wrapper>
+    <>
+      {showNotificationActivationSend && (
+        <PopUpNotification
+          titleText={'Ссылка для активации аккаунта выслана на почту:'}
+          email={editedUser.email}
+        />
+      )}
+      {/* //!уведомления об ошибках */}
+      {showErrorNotificationActivationSend && (
+        <PopUpErrorNotification
+          titleText={'Ошибка'}
+          bodyText={errorNotification}
+        />
+      )}
+      <Wrapper>
+        <form onSubmit={handleFormSubmit}>
+          <ModalUser modalTitle={modalTitle} onCancelСlick={handleCancel}>
+            {axiosError && (
+              <div className="text-sm text-rose-400 text-center mt-2">
+                {axiosError}
+              </div>
+            )}
+            <InputModal
+              containerClassName={
+                'py-8 grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'
+              }
+              inputFields={allInputFields}
+              modalTitle={modalTitle}
+              // codeSend={() =>
+              //   editedUser && dispatch(nodemailerCodeSend(editedUser))
+              // }
+              activationSend={handleActivationSend}
+              // activationSend={() =>
+              //   editedUser && dispatch(nodemailerActivationSend(editedUser))
+              // }
+            />
+          </ModalUser>
+        </form>
+      </Wrapper>{' '}
+    </>
   );
 };
 

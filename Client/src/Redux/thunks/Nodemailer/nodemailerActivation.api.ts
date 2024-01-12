@@ -12,24 +12,27 @@ interface ResponseData {
   message: string;
 }
 
-const nodemailerActivationSend  = createAsyncThunk<ResponseData, RequestData>(
+const nodemailerActivationSend = createAsyncThunk<ResponseData, RequestData>(
   'admin/nodemailerActivation',
 
-  async ({ id, firstName, middleName }) => {
+  async ({ id, firstName, middleName }, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axios.post(
         `${VITE_URL}/nodemailerActivation/${id}`,
-        { firstName, middleName, }
+        { firstName, middleName }
       );
-      console.log('====>',response.data);
-      
+      console.log('====>', response.data);
+
       return response.data;
     } catch (error) {
-      console.error('Error:', error);
-      throw error;
+      if (axios.isAxiosError(error) && error.response) {
+        console.error('Server response data:', error.response.data.error);
+        throw rejectWithValue(error.response.data.error);
+      } else {
+        throw error;
+      }
     }
   }
 );
 
 export default nodemailerActivationSend;
-

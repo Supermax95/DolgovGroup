@@ -34,8 +34,8 @@ const PopUpNotification: FC<IPopUpNotification> = ({
           </div>
         </div>
       ),
-      { duration: Infinity }
-      // { duration: 7000 }
+      // { duration: Infinity }
+      { duration: 7000 }
     );
   }, [titleText, email, name, bodyText]);
 

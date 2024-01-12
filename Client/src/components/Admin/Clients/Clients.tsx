@@ -181,7 +181,12 @@ const Clients: FC = () => {
       {showNotificationEditClient && (
         <PopUpNotification
           titleText={'Внесены изменения в карточку клиента'}
-          bodyText={`${editedUser?.lastName} ${editedUser?.firstName} ${editedUser?.middleName}`}
+          bodyText={
+            <>
+              {`${editedUser?.lastName} ${editedUser?.firstName} ${editedUser?.middleName}`}
+              <br />
+            </>
+          }
           name={editedUser?.email}
         />
       )}
