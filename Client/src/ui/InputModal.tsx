@@ -41,7 +41,7 @@ export interface InputField {
 
 const InputModal: FC<IInputModal> = ({
   inputFields,
-  containerClassName = 'py-8',
+  containerClassName = 'py-8 space-y-4',
   codeSend,
   activationSend,
   modalTitle,
