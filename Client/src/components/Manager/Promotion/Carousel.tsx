@@ -25,6 +25,7 @@ import { Toaster } from 'sonner';
 import PopUpNotification from '../../../ui/PopUpNotification';
 import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
 import currentPromotion from '../../../Redux/thunks/Promotion/getcurrentPromotion.api';
+import LoadingAnimation from '../../Admin/Laws/Loading';
 
 export interface Promotion {
   id: number;
@@ -50,6 +51,7 @@ const Carousel: FC = () => {
   // остальное
   const [isModalOpen, setModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setLoading] = useState(false);
   const [selectedPromotion, setSelectedPromotion] = useState<Promotion | null>(
     null
   );
@@ -171,6 +173,10 @@ const Carousel: FC = () => {
     setEditedPromotion(result);
     setAddingMode(false);
     setModalOpen(true);
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
   };
 
   const closeEditModal = () => {
@@ -486,7 +492,15 @@ const Carousel: FC = () => {
           </div>
         )}
       </div>
-
+      <div className="relative ">
+        {isLoading && (
+           <div className="fixed inset-0 z-20 backdrop-blur-lg flex items-center justify-center ">
+           {/* <div className="bg-white p-1 rounded-sm shadow-xs  "> */}
+           <div className="bg-white p-1 rounded-sm z-10 py-20 bg-opacity-70 fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center ">
+                 <LoadingAnimation />
+                 </div>
+               </div>
+             )}
       {isModalOpen && (selectedPromotion || isAddingMode) && (
         <PromotionsModal
           isOpen={isModalOpen}
@@ -503,6 +517,7 @@ const Carousel: FC = () => {
           // resetAxiosError={resetAxiosError}
         />
       )}
+        </div>
     </Wrapper>
   );
 };

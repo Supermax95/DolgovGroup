@@ -401,9 +401,9 @@ const Products: FC = () => {
       inputCheckbox.checked = false;
     });
   };
-  console.log('======>', isLoading);
 
   return (
+    
     <Wrapper>
       <Toaster position="bottom-left" expand={true} />
       {showNotificationAddProduct && (

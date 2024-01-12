@@ -29,7 +29,7 @@ const Law: FC = () => {
   const [axiosError, setAxiosError] = useState<string | null>(null);
   const [dataLoaded, setDataLoaded] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     dispatch(getLaws())
@@ -75,7 +75,7 @@ const Law: FC = () => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-    }, 1000);
+    }, 500);
   };
 
   useEffect(() => {

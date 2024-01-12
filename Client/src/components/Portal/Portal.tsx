@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import portalLogin from '../../Redux/thunks/PortalLogin/portalLogin.api';
 import PortalModal from './PortalModal';
 import resetPassword from '../../Redux/thunks/PortalLogin/portalResetPassword.api';
+import LoadingAnimation from '../Admin/Laws/Loading';
 
 interface IDate {
   email: string;
@@ -23,7 +24,7 @@ const Portal: FC = () => {
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [data, setData] = useState<IDate>({ email: '', password: '' });
-
+  const [isLoading, setLoading] = useState(false);
   const [isModalOpen, setModalOpen] = useState(true);
   const [enterEmail, setEnterEmail] = useState<IEmail | null | undefined>(null);
   const [selectedManager, setSelectedManager] = useState<string | null>(null);
@@ -53,7 +54,11 @@ const Portal: FC = () => {
 
       if (portalLogin.fulfilled.match(resultAction)) {
         //! вход для всех - магазины. затем надо будет исправить, что для админа редирект на что-то одно, для менеджера другое, мб
-        navigate('/locations');
+        setLoading(true);
+        setTimeout(() => {
+          setLoading(false);
+          navigate('/locations');
+        }, 1000);
       }
 
       if (portalLogin.rejected.match(resultAction)) {
@@ -128,8 +133,15 @@ const Portal: FC = () => {
     },
   ];
 
+
+  
   return (
     <>
+     {isLoading && 
+      <div className="bg-white p-1 rounded-sm z-10 py-20 bg-opacity-70 fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center ">
+      <LoadingAnimation />
+        </div>
+        } 
       <div className="min-h-screen bg-slate-100 py-6 flex flex-col justify-center sm:py-12">
         <div className="relative py-3 sm:max-w-xl sm:mx-auto">
           <div className="absolute inset-0 bg-gradient-to-r  from-lime-200 to-green-200 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
