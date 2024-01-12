@@ -54,10 +54,10 @@ interface ProductsModalProps {
   isOpen: boolean;
   product: Product | null;
   onSaveAdd: (editedProduct: IProduct) => void;
-  onSaveEdit: (editedProduct: IProduct ) => void;
+  onSaveEdit: (editedProduct: IProduct) => void;
   onCloseAddModal: () => void;
   onCloseEditModal: () => void;
-  openEditModal:  (product: IProduct ) => void;
+  openEditModal: (product: IProduct) => void;
   isAddingMode: boolean;
   editedProduct: Product | null | undefined;
   setEditedProduct: React.Dispatch<
@@ -752,9 +752,10 @@ const ProductsModal: FC<ProductsModalProps> = ({
                       <span className="font-medium">Нажмите,</span> чтобы
                       загрузить файл
                     </p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">
-                      Загрузите изображение в формате PNG, WEBP (Разрешение:
-                      800x800px)
+                    <p className="text-center text-xs text-slate-500 dark:text-slate-400">
+                      Загрузите изображение в формате PNG, WEBP <br />
+                      Разрешение:{' '}
+                      <span className="font-medium"> 800x800px</span>
                     </p>
                   </div>
                   <input
