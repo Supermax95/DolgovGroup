@@ -121,6 +121,9 @@ const Editor: FC<LawEditorProps> = ({
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const isConfirmed = window.confirm(
+      'Вы уверены, что хотите внести изменения?'
+    );
     if (currentStep === 1) {
       let result = '';
       if (isAddingMode) {
@@ -128,11 +131,13 @@ const Editor: FC<LawEditorProps> = ({
         // @ts-ignore
         result = await onSaveAdd(editedLaw as ILaw);
       } else {
+      if (isConfirmed)  {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
 
         result = await onSaveEdit(editedLaw as ILaw);
       }
+    }
 
       if (typeof result !== 'string') {
         setCurrentStep(2);
@@ -157,8 +162,9 @@ const Editor: FC<LawEditorProps> = ({
   };
 
   const handleDelete = async () => {
+    const isConfirmed = window.confirm('Вы уверены, что хотите удалить документ?');
     if (laws.length > 0) {
-      if (editedLaw && editedLaw.id) {
+      if (isConfirmed && editedLaw && editedLaw.id) {
         const lawId = editedLaw.id;
         const resultAction = await dispatch(deleteLaw(lawId));
         if (deleteLaw.fulfilled.match(resultAction)) {
@@ -176,7 +182,8 @@ const Editor: FC<LawEditorProps> = ({
   };
 
   const handleDeleteDocument = () => {
-    if (editedLaw && editedLaw.id) {
+    const isConfirmed = window.confirm('Вы уверены, что хотите удалить файл?');
+    if (isConfirmed && editedLaw && editedLaw.id) {
       const lawId = editedLaw.id;
       dispatch(deleteDocumentLaw(lawId));
     }

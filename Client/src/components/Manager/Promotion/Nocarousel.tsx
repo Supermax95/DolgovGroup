@@ -357,7 +357,7 @@ const Nocarousel: FC = () => {
           </div>
           {displayedPromotions.filter((promotion) => !promotion.invisible)
             .length === 0 && (
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center max-w-screen-lg mx-auto mt-8 p-8 bg-white rounded-xl w-[1020px] backdrop-blur-lg">
               <span className="text-slate-600 text-sm font-normal">
                 Актуальные акции отсутствуют{' '}
               </span>
@@ -450,7 +450,7 @@ const Nocarousel: FC = () => {
           </div>
           {displayedPromotions.filter((promotion) => promotion.invisible)
             .length === 0 && (
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center max-w-screen-lg mx-auto mt-8 p-8 bg-white rounded-xl w-[1020px] backdrop-blur-lg">
               <span className="text-slate-600 text-sm font-normal">
                 Скрытые акции отсутствуют{' '}
               </span>

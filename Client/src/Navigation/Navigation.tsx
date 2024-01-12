@@ -8,7 +8,6 @@ import ProfileAdmin from '../components/Admin/ProfileAdmin/ProfileAdmin';
 import Locations from '../components/Manager/Locations/Locations';
 import Products from '../components/Manager/Products/Products';
 import ProfileManager from '../components/Manager/ProfileManager/ProfileManager';
-// import Promotions from '../components/Manager/Promotion/Promotions';
 import { FC, useEffect, useState } from 'react';
 import Footer from '../components/Footer/Footer';
 import Management from '../components/Admin/ProfileAdmin/Management/Management';
