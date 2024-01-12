@@ -19,8 +19,6 @@ import {
   PencilSquareIcon,
   Square2StackIcon,
 } from '@heroicons/react/24/outline';
-import Button from '../../../ui/Button';
-import { Toaster } from 'sonner';
 import PopUpNotification from '../../../ui/PopUpNotification';
 import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
 import currentProduct from '../../../Redux/thunks/Products/getcurrentProduct';
@@ -304,10 +302,6 @@ const Products: FC = () => {
     dispatch(getProducts());
   };
 
-  // const resetAxiosError = () => {
-  //   setAxiosError(null);
-  // };
-
   const handleSaveAdd = async () => {
     let add = {} as any;
     try {
@@ -319,13 +313,11 @@ const Products: FC = () => {
         );
         const result = unwrapResult(resultAction);
         add = result;
-        // setAxiosError(null);
         setErrorNotification(null);
         setShowNotificationAddProduct(true);
       }
     } catch (error) {
       console.error('Произошла ошибка при добавлении:', error);
-      // setAxiosError(error as string | null);
       setErrorNotification(error as string | null);
       setShowErrorNotificationAddProduct(true);
       add = error;
@@ -405,7 +397,6 @@ const Products: FC = () => {
 
   return (
     <Wrapper>
-      <Toaster position="bottom-left" expand={true} />
       {showNotificationAddProduct && (
         <PopUpNotification
           titleText={'Добавлен новый продукт'}
@@ -810,30 +801,30 @@ const Products: FC = () => {
           onPageChange={setCurrentPage}
         />
         <div className="relative ">
-        {isLoading && (
-      <div className="fixed inset-0 z-20 backdrop-blur-lg flex items-center justify-center ">
-      {/* <div className="bg-white p-1 rounded-sm shadow-xs  "> */}
-      <div className="bg-white p-1 rounded-sm z-10 py-20 bg-opacity-70 fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center ">
-            <LoadingAnimation />
+          {isLoading && (
+            <div className="fixed inset-0 z-20 backdrop-blur-lg flex items-center justify-center ">
+              {/* <div className="bg-white p-1 rounded-sm shadow-xs  "> */}
+              <div className="bg-white p-1 rounded-sm z-10 py-20 bg-opacity-70 fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center ">
+                <LoadingAnimation />
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {isModalOpen && (selectedProduct || isAddingMode) && (
-          <ProductsModal
-            isOpen={isModalOpen}
-            product={selectedProduct}
-            onSaveEdit={handleSaveEdit}
-            onSaveAdd={handleSaveAdd}
-            onCloseAddModal={closeAddModal}
-            onCloseEditModal={closeEditModal}
-            isAddingMode={isAddingMode}
-            editedProduct={editedProduct}
-            setEditedProduct={setEditedProduct}
-            openEditModal={openEditModal}
-          />
-        )}
-      </div>
+          {isModalOpen && (selectedProduct || isAddingMode) && (
+            <ProductsModal
+              isOpen={isModalOpen}
+              product={selectedProduct}
+              onSaveEdit={handleSaveEdit}
+              onSaveAdd={handleSaveAdd}
+              onCloseAddModal={closeAddModal}
+              onCloseEditModal={closeEditModal}
+              isAddingMode={isAddingMode}
+              editedProduct={editedProduct}
+              setEditedProduct={setEditedProduct}
+              openEditModal={openEditModal}
+            />
+          )}
+        </div>
       </div>
     </Wrapper>
   );

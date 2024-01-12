@@ -9,7 +9,6 @@ import sendOneTimePassword from '../../../../Redux/thunks/Manager/Management/sen
 import Wrapper from '../../../../ui/Wrapper';
 import RoleSidebar from '../../../RoleSidebar/RoleSidebar';
 import { unwrapResult } from '@reduxjs/toolkit';
-import { Toaster } from 'sonner';
 import PopUpNotification from '../../../../ui/PopUpNotification';
 import PopUpErrorNotification from '../../../../ui/PopUpErrorNotification';
 
@@ -237,11 +236,10 @@ const Management: FC = () => {
   return (
     <>
       <Wrapper>
-        <Toaster position="bottom-left" expand={true} />
         {showNotificationAdd && (
           <PopUpNotification
             titleText={'Личный кабинет менеджера создан'}
-            bodyText={'Временный пароль выслан на почту'}
+            bodyText={'Временный пароль выслан на почту:'}
             email={managerIdForBellAdd.email}
           />
         )}
@@ -249,14 +247,14 @@ const Management: FC = () => {
           <PopUpNotification
             titleText={' Данные менеджера успешно обновлены'}
             bodyText={
-              'Для обновления пароля менеджера отправьте новый пароль на почту'
+              'Для обновления пароля менеджера отправьте новый пароль на почту:'
             }
             email={managerIdForBellEdit.email}
           />
         )}
         {showNotificationOnePass && (
           <PopUpNotification
-            titleText={'Временный пароль выслан на почту'}
+            titleText={'Временный пароль выслан на почту:'}
             email={managerIdForBellOneTimePass.email}
           />
         )}

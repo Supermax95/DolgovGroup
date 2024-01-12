@@ -10,12 +10,10 @@ import axios from 'axios';
 import 'react-quill/dist/quill.snow.css';
 import ReactQuill from 'react-quill';
 import deleteProductPhoto from '../../../Redux/thunks/Products/deleteProductPhoto.api';
-import { Toaster } from 'sonner';
 import PopUpNotification from '../../../ui/PopUpNotification';
 import { unwrapResult } from '@reduxjs/toolkit';
 import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
 import {
-  ArrowUturnDownIcon,
   ArrowUturnLeftIcon,
   CloudArrowUpIcon,
   TrashIcon,
@@ -190,7 +188,6 @@ const ProductsModal: FC<ProductsModalProps> = ({
         if (isAddingMode) {
           onCloseAddModal();
         } else {
-          // onCloseEditModal();
           setTimeout(() => {
             onCloseEditModal();
           }, 50);
@@ -274,6 +271,8 @@ const ProductsModal: FC<ProductsModalProps> = ({
     );
   };
 
+  //! прокинуть ошибки при удалении
+  //! нужны стейты здесь
   const handleDelete = () => {
     const isConfirmed = window.confirm(
       'Вы уверены, что хотите удалить продукт?'
@@ -292,7 +291,6 @@ const ProductsModal: FC<ProductsModalProps> = ({
       }
     }
   };
-  console.log('showNotificationDelProd', showNotificationDelProd);
 
   const handleDeletePhoto = () => {
     const isConfirmed = window.confirm(
@@ -549,7 +547,6 @@ const ProductsModal: FC<ProductsModalProps> = ({
 
   return (
     <Wrapper>
-      <Toaster position="bottom-left" expand={true} />
       {showNotificationPicture && (
         <PopUpNotification
           titleText={'Обложка продукта загружена'}

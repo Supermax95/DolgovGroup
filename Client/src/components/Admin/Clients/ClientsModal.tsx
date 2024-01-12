@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppDispatch } from '../../../Redux/hooks';
 import Wrapper from '../../../ui/Wrapper';
 import InputModal, { InputField } from '../../../ui/InputModal';
@@ -70,8 +70,16 @@ const ClientsModal: React.FC<UsersModalProps> = ({
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSaveEdit(userToSave);
-    // onCloseEditModal();
+
+    const isConfirmed = window.confirm(
+      'Вы уверены, что хотите внести изменения?'
+    );
+    if (isConfirmed) {
+      onSaveEdit(userToSave);
+    }
+    setTimeout(() => {
+      onCloseEditModal();
+    }, 50);
   };
 
   if (!isOpen || !editedUser) {
@@ -254,7 +262,6 @@ const ClientsModal: React.FC<UsersModalProps> = ({
         { value: 'Клиент', label: 'Клиент' },
         { value: 'Сотрудник', label: 'Сотрудник' },
         // { value: 'Новый сотрудник', label: 'Новый сотрудник' },
-
       ],
       required: true,
     },

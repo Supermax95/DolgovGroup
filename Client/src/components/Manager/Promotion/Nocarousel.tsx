@@ -15,7 +15,6 @@ import 'slick-carousel/slick/slick-theme.css';
 import Button from '../../../ui/Button';
 import { PencilSquareIcon } from '@heroicons/react/24/outline';
 import PromotionSidebar from './PromotionSidebar';
-import { Toaster } from 'sonner';
 import PopUpNotification from '../../../ui/PopUpNotification';
 import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
 import currentPromotion from '../../../Redux/thunks/Promotion/getcurrentPromotion.api';
@@ -143,7 +142,7 @@ const Nocarousel: FC = () => {
       description: '',
       dateStart: '',
       dateEnd: '',
-      photo:'',
+      photo: '',
       carousel: false,
       invisible: false,
     });
@@ -228,7 +227,6 @@ const Nocarousel: FC = () => {
 
   return (
     <Wrapper>
-      <Toaster position="bottom-left" expand={true} />
       {showNotificationAddPromo && (
         <PopUpNotification
           titleText={'Акция создана'}

@@ -21,7 +21,6 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
-import { Toaster } from 'sonner';
 import PopUpNotification from '../../../ui/PopUpNotification';
 import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
 import currentPromotion from '../../../Redux/thunks/Promotion/getcurrentPromotion.api';
@@ -163,7 +162,7 @@ const Carousel: FC = () => {
     dispatch(getPromotions());
   };
 
-  const openEditModal = async (promotion: Promotion) => {    
+  const openEditModal = async (promotion: Promotion) => {
     const promotionId = promotion.id;
     const res = await dispatch(currentPromotion(promotionId));
     const result = unwrapResult(res);
@@ -234,7 +233,6 @@ const Carousel: FC = () => {
 
   return (
     <Wrapper>
-      <Toaster position="bottom-left" expand={true} />
       {showNotificationAddPromo && (
         <PopUpNotification
           titleText={'Акция создана'}

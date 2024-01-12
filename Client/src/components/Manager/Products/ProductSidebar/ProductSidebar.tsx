@@ -17,7 +17,6 @@ import addSubcategory from '../../../../Redux/thunks/SubCategory/addSubcategory.
 import editSubcategory from '../../../../Redux/thunks/SubCategory/editSubcategory.api';
 import deleteSubcategory from '../../../../Redux/thunks/SubCategory/deleteSubcategory.api';
 import { XMarkIcon } from '@heroicons/react/20/solid';
-import { Toaster } from 'sonner';
 import PopUpNotification from '../../../../ui/PopUpNotification';
 import PopUpErrorNotification from '../../../../ui/PopUpErrorNotification';
 import { unwrapResult } from '@reduxjs/toolkit';
@@ -501,7 +500,6 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
 
   return (
     <>
-      <Toaster position="bottom-left" expand={true} />
       {showNotificationAddCategory && (
         <PopUpNotification
           titleText={'Добавлена новая категория'}

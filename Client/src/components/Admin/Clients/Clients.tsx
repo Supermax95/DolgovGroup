@@ -9,6 +9,8 @@ import editClients from '../../../Redux/thunks/Users/editClients.api';
 import Search from '../../../ui/Search';
 import UsersModal from './ClientsModal';
 import { unwrapResult } from '@reduxjs/toolkit';
+import PopUpNotification from '../../../ui/PopUpNotification';
+import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
 
 interface User {
   id: number;
@@ -48,6 +50,27 @@ const Clients: FC = () => {
   const [searchText, setSearchText] = useState('');
   const [isModalOpen, setModalOpen] = useState(false);
   const [axiosError, setAxiosError] = useState<string | null>(null);
+
+  const [showNotificationEditClient, setShowNotificationEditClient] =
+    useState<boolean>(false);
+
+  const [errorNotification, setErrorNotification] = useState<string | null>(
+    null
+  );
+
+  const [showErrorNotificationEditClient, setShowErrorNotificationEditClient] =
+    useState<boolean>(false);
+
+  useEffect(() => {
+    if (showNotificationEditClient || showErrorNotificationEditClient) {
+      const timeoutId = setTimeout(() => {
+        setShowNotificationEditClient(false);
+        setShowErrorNotificationEditClient(false);
+      });
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [showNotificationEditClient, showErrorNotificationEditClient]);
 
   const columnsDefaultName: IColumnsDefaultName[] = [
     { name: 'Фамилия' },
@@ -138,21 +161,37 @@ const Clients: FC = () => {
           })
         );
         const result = unwrapResult(resultAction);
-        // console.log('Результат выполнения диспетчера:', result);
-        setAxiosError(null);
-        closeEditModal();
+        setErrorNotification(null);
+        setShowNotificationEditClient(true);
       }
     } catch (error) {
       console.error('Произошла ошибка при редактировании:', error);
-      setAxiosError(error as string | null);
+      setErrorNotification(error as string | null);
+      setShowErrorNotificationEditClient(true);
     }
   };
 
   const totalPages = Math.ceil(totalMatches / itemsPerPage);
   const uniqueStatus = ['Активные', 'Неактивные'];
 
+  console.log('editedUser', editedUser);
+
   return (
     <Wrapper>
+      {showNotificationEditClient && (
+        <PopUpNotification
+          titleText={'Внесены изменения в карточку клиента'}
+          bodyText={`${editedUser?.lastName} ${editedUser?.firstName} ${editedUser?.middleName}`}
+          name={editedUser?.email}
+        />
+      )}
+      {/* //!уведомления об ошибках */}
+      {showErrorNotificationEditClient && (
+        <PopUpErrorNotification
+          titleText={'Ошибка'}
+          bodyText={errorNotification}
+        />
+      )}
       <div>
         <div className="flex">
           <Sidebar

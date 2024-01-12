@@ -3,6 +3,7 @@ import './App.css';
 import Navigation from './Navigation/Navigation';
 import { useAppDispatch } from './Redux/hooks';
 import portalCheck from './Redux/thunks/PortalLogin/portalCheck';
+import { Toaster } from 'sonner';
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -13,6 +14,8 @@ const App: FC = () => {
 
   return (
     <>
+      <Toaster position="bottom-left" expand={true} />
+
       <Navigation />
     </>
   );
