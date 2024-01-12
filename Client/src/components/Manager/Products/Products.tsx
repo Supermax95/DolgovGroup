@@ -809,10 +809,10 @@ const Products: FC = () => {
           totalPages={totalPages}
           onPageChange={setCurrentPage}
         />
-        <div className="relative">
+        <div className="relative ">
         {isLoading && (
-      <div className="fixed inset-0 z-20 backdrop-blur-sm flex items-center justify-center">
-      <div className="bg-white p-1 rounded-sm shadow-xs">
+      <div className="fixed inset-0 z-20 backdrop-blur-lg flex items-center justify-center">
+      <div className="bg-white p-1 rounded-sm shadow-xs ">
             <LoadingAnimation />
             </div>
           </div>
