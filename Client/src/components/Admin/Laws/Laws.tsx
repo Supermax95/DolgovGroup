@@ -155,84 +155,88 @@ const Law: FC = () => {
     }),
   }));
 
+  //   return (
+  //     <Wrapper>
+  //       <SidebarLaw
+  //         data={formattedLaws}
+  //         title="Документы"
+  //         onAddClick={openAddEditor}
+  //         onEditClick={openEditEditor}
+  //       />
+  //       <div className={`p-4 ${isLoading ? 'blur' : ''}`}>
+  //         {isLoading || isEditorOpen ? (
+  //           <Editor
+  //             isOpen={isEditorOpen}
+  //             law={selectedLaw}
+  //             onSaveEdit={handleSaveEdit}
+  //             onSaveAdd={handleSaveAdd}
+  //             onCloseAddEditor={closeAddEditor}
+  //             onCloseEditEditor={closeEditEditor}
+  //             isAddingMode={isAddingMode}
+  //             editedLaw={editedLaw}
+  //             setEditedLaw={setEditedLaw}
+  //             axiosError={axiosError}
+  //             resetAxiosError={resetAxiosError}
+  //             currentStep={currentStep}
+  //             setCurrentStep={setCurrentStep}
+  //             setAddingMode={setAddingMode}
+  //             setSelectedLaw={setSelectedLaw}
+  //             openAddEditor={openAddEditor}
+  //             openEditEditor={openEditEditor}
+  //           />
+  //         ) : null}
+  //       </div>
+  //     </Wrapper>
+  //   );
+  // };
+  // export default Law;
 
-  
-
-//   return (
-//     <Wrapper>
-//       <SidebarLaw
-//         data={formattedLaws}
-//         title="Документы"
-//         onAddClick={openAddEditor}
-//         onEditClick={openEditEditor}
-//       />
-//       <div className={`p-4 ${isLoading ? 'blur' : ''}`}>
-//         {isLoading || isEditorOpen ? (
-//           <Editor
-//             isOpen={isEditorOpen}
-//             law={selectedLaw}
-//             onSaveEdit={handleSaveEdit}
-//             onSaveAdd={handleSaveAdd}
-//             onCloseAddEditor={closeAddEditor}
-//             onCloseEditEditor={closeEditEditor}
-//             isAddingMode={isAddingMode}
-//             editedLaw={editedLaw}
-//             setEditedLaw={setEditedLaw}
-//             axiosError={axiosError}
-//             resetAxiosError={resetAxiosError}
-//             currentStep={currentStep}
-//             setCurrentStep={setCurrentStep}
-//             setAddingMode={setAddingMode}
-//             setSelectedLaw={setSelectedLaw}
-//             openAddEditor={openAddEditor}
-//             openEditEditor={openEditEditor}
-//           />
-//         ) : null}
-//       </div>
-//     </Wrapper>
-//   );
-// };
-// export default Law;
-
-return (
-  <Wrapper>
-    <SidebarLaw
-      data={formattedLaws}
-      title="Документы"
-      onAddClick={openAddEditor}
-      onEditClick={openEditEditor}
-    />
-    <div className={`p-4 ${isLoading ? 'max-w-screen-lg mx-auto mt-8 p-8 bg-white shadow-md rounded-xl w-[1020px] h-[1100px] backdrop-blur-lg' : ''}`}>
-      {isLoading ? (
-        <LoadingAnimation />
-      ) : (
-        isEditorOpen &&
-        (selectedLaw || isAddingMode) && (
-          <Editor
-            isOpen={isEditorOpen}
-            law={selectedLaw}
-            onSaveEdit={handleSaveEdit}
-            onSaveAdd={handleSaveAdd}
-            onCloseAddEditor={closeAddEditor}
-            onCloseEditEditor={closeEditEditor}
-            isAddingMode={isAddingMode}
-            editedLaw={editedLaw}
-            setEditedLaw={setEditedLaw}
-            axiosError={axiosError}
-            resetAxiosError={resetAxiosError}
-            currentStep={currentStep}
-            setCurrentStep={setCurrentStep}
-            setAddingMode={setAddingMode}
-            setSelectedLaw={setSelectedLaw}
-            openAddEditor={openAddEditor}
-            openEditEditor={openEditEditor}
-          />
-        )
-      )}
-    </div>
-  </Wrapper>
-);
+  return (
+    <Wrapper>
+      <SidebarLaw
+        data={formattedLaws}
+        title="Документы"
+        onAddClick={openAddEditor}
+        onEditClick={openEditEditor}
+      />
+      <div
+        className={`p-4 ${
+          isLoading
+            ? 'max-w-screen-lg mx-auto mt-8 p-8 bg-white shadow-md rounded-xl w-[1020px] h-[1100px] backdrop-blur-lg'
+            : ''
+        }`}
+      >
+        {isLoading ? (
+          <div className="flex items-center justify-center h-full">
+            <LoadingAnimation />
+          </div>
+        ) : (
+          isEditorOpen &&
+          (selectedLaw || isAddingMode) && (
+            <Editor
+              isOpen={isEditorOpen}
+              law={selectedLaw}
+              onSaveEdit={handleSaveEdit}
+              onSaveAdd={handleSaveAdd}
+              onCloseAddEditor={closeAddEditor}
+              onCloseEditEditor={closeEditEditor}
+              isAddingMode={isAddingMode}
+              editedLaw={editedLaw}
+              setEditedLaw={setEditedLaw}
+              axiosError={axiosError}
+              resetAxiosError={resetAxiosError}
+              currentStep={currentStep}
+              setCurrentStep={setCurrentStep}
+              setAddingMode={setAddingMode}
+              setSelectedLaw={setSelectedLaw}
+              openAddEditor={openAddEditor}
+              openEditEditor={openEditEditor}
+            />
+          )
+        )}
+      </div>
+    </Wrapper>
+  );
 };
 
 export default Law;
-
