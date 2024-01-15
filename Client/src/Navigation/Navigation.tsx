@@ -25,21 +25,18 @@ const Navigation: FC = () => {
   const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-
   useEffect(() => {
     const navigateToLocations = () => {
       setLoading(false);
       navigate('/locations');
     };
-  
+
     if (window.location.pathname === '/portal' && manager.email) {
       setLoading(true);
-  
+
       setTimeout(navigateToLocations, 1000);
     }
   }, [manager.email, navigate]);
-  
-  
 
   return (
     <>
@@ -57,11 +54,27 @@ const Navigation: FC = () => {
             />
             <Route
               path="/clients"
-              element={manager.email ? <Clients /> : <Portal />}
+              element={
+                manager.email && manager.isAdmin ? (
+                  <Clients />
+                ) : manager.email ? (
+                  <Locations />
+                ) : (
+                  <Portal />
+                )
+              }
             />
             <Route
               path="/employees"
-              element={manager.email ? <Employees /> : <Portal />}
+              element={
+                manager.email && manager.isAdmin ? (
+                  <Employees />
+                ) : manager.email ? (
+                  <Locations />
+                ) : (
+                  <Portal />
+                )
+              }
             />
             <Route
               path="/products"
@@ -78,7 +91,15 @@ const Navigation: FC = () => {
             {/* <Route path="/promotions" element={<Promotions />} /> */}
             <Route
               path="/profileAdmin"
-              element={manager.email ? <ProfileAdmin /> : <Portal />}
+              element={
+                manager.email && manager.isAdmin ? (
+                  <ProfileAdmin />
+                ) : manager.email ? (
+                  <Locations />
+                ) : (
+                  <Portal />
+                )
+              }
             />
             <Route
               path="/profileManager"
@@ -102,7 +123,15 @@ const Navigation: FC = () => {
             />
             <Route
               path="/admin/laws"
-              element={manager.email ? <Law /> : <Portal />}
+              element={
+                manager.email && manager.isAdmin ? (
+                  <Law />
+                ) : manager.email ? (
+                  <Locations />
+                ) : (
+                  <Portal />
+                )
+              }
             />
 
             <Route path="/registration/success" element={<Success />} />
