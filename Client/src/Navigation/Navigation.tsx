@@ -25,15 +25,26 @@ const Navigation: FC = () => {
   const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  // useEffect(() => {
+  //   const navigateToLocations = () => {
+  //     setLoading(false);
+  //     navigate('/locations');
+  //   };
+
+  //   if (window.location.pathname === '/portal' && manager.email) {
+  //     setLoading(true);
+
+  //     setTimeout(navigateToLocations, 1000);
+  //   }
+  // }, [manager.email, navigate]);
   useEffect(() => {
     const navigateToLocations = () => {
       setLoading(false);
       navigate('/locations');
     };
 
-    if (window.location.pathname === '/portal' && manager.email) {
+    if (window.location.pathname.includes('/portal') && manager.email) {
       setLoading(true);
-
       setTimeout(navigateToLocations, 1000);
     }
   }, [manager.email, navigate]);
@@ -103,15 +114,40 @@ const Navigation: FC = () => {
             />
             <Route
               path="/profileManager"
-              element={manager.email ? <ProfileManager /> : <Portal />}
+              element={
+                manager.email && !manager.isAdmin ? (
+                  <ProfileManager />
+                ) : manager.isAdmin ? (
+                  <ProfileAdmin />
+                ) : (
+                  <Portal />
+                )
+              }
             />
+
             <Route
               path="/listOfManagers"
-              element={manager.email ? <Management /> : <Portal />}
+              element={
+                manager.email && manager.isAdmin ? (
+                  <Management />
+                ) : manager.email ? (
+                  <ListContact />
+                ) : (
+                  <Portal />
+                )
+              }
             />
             <Route
               path="/listOfManagersForManager"
-              element={manager.email ? <ListContact /> : <Portal />}
+              element={
+                manager.email && !manager.isAdmin ? (
+                  <ListContact />
+                ) : manager.email ? (
+                  <Management />
+                ) : (
+                  <Portal />
+                )
+              }
             />
             <Route
               path="/promotions/carousel"
