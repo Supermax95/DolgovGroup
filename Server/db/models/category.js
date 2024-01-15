@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(Subcategory, { foreignKey: 'categoryId' });
     }
   }
+
   Category.init(
     {
       categoryName: {
@@ -15,11 +16,18 @@ module.exports = (sequelize, DataTypes) => {
           this.setDataValue('categoryName', value.trim());
         },
       },
+      img: {
+        type: DataTypes.STRING,
+        set(value) {
+          this.setDataValue('img', value ? value.trim() : null);
+        },
+      },
     },
     {
       sequelize,
       modelName: 'Category',
     }
   );
+
   return Category;
 };

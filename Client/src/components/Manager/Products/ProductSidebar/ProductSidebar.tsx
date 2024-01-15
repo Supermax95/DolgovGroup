@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../Redux/hooks';
 import {
   Cog8ToothIcon,
@@ -9,6 +9,9 @@ import {
   ChevronRightIcon,
   ChevronDownIcon,
   ChevronUpIcon,
+  ExclamationCircleIcon,
+  PhotoIcon,
+  CloudArrowUpIcon,
 } from '@heroicons/react/24/outline';
 import addCategory from '../../../../Redux/thunks/Category/addCategory.api';
 import deleteCategory from '../../../../Redux/thunks/Category/deleteCategory.api';
@@ -20,11 +23,15 @@ import { XMarkIcon } from '@heroicons/react/20/solid';
 import PopUpNotification from '../../../../ui/PopUpNotification';
 import PopUpErrorNotification from '../../../../ui/PopUpErrorNotification';
 import { unwrapResult } from '@reduxjs/toolkit';
+import { Tooltip } from 'flowbite-react';
+import { VITE_URL } from '../../../../VITE_URL';
+import axios from 'axios';
 
 interface ICategory {
   //Продукты.tsx ругаются на эти вопросы
   id?: number;
   categoryName?: string;
+  img?: string;
 }
 
 interface ISubcategory {
@@ -251,6 +258,36 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   const cancelAddingCategory = (): void => {
     setAddingCategory(false);
     // setDataCategory('');
+  };
+  //Загрузка изображения категории
+  const uploadFile = async (file: File, id: number | 0): Promise<void> => {
+    if (file && id) {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        console.log('idupload', id);
+
+        await axios.put(`${VITE_URL}/categoryImg/${id}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          withCredentials: true,
+        });
+      } catch (error) {
+        console.error('Ошибка при загрузке файла:', error);
+      }
+    }
+  };
+
+  const handleFileInputChange = (
+    e: ChangeEvent<HTMLInputElement>,
+    id: number
+  ): void => {
+    const file = e.target.files?.[0] || null;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    uploadFile(file, id);
   };
 
   const addedHandleForm = async (
@@ -674,7 +711,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                       {/** Вывод категорий  */}
                       <div
                         id={`category-${item.id}`}
-                        className="flex justify-between items-center p-2 rounded-md hover:bg-slate-100"
+                        className="flex space-x-2 items-center p-2 rounded-md hover:bg-slate-100"
                       >
                         <div className="cursor-pointer w-52 flex items-center space-x-1 text-slate-600">
                           {subcategoryStates[item.id] ? (
@@ -706,6 +743,26 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                             {item.categoryName}
                           </span>
                         </div>
+
+                        {item.img ? (
+                          <Tooltip
+                            content="Просмотр обложки"
+                            placement="right"
+                            style="light"
+                            animation="duration-500"
+                          >
+                            <PhotoIcon className="cursor-pointer hover:text-lime-600 w-5 h-5 text-slate-700" />
+                          </Tooltip>
+                        ) : (
+                          <Tooltip
+                            content="Необходимо добавить обложку"
+                            placement="right"
+                            style="light"
+                            animation="duration-500"
+                          >
+                            <ExclamationCircleIcon className="cursor-pointer w-5 h-5 text-orange-400" />
+                          </Tooltip>
+                        )}
                         <div onClick={(e) => toggleMenuCategory(e, item.id)}>
                           <Cog8ToothIcon className="cursor-pointer w-5 h-5 text-slate-700" />
                         </div>
@@ -739,6 +796,29 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                               <span className="text-slate-600 text-xs font-normal">
                                 Создать подкатегорию
                               </span>
+                            </li>
+                            <li
+                              onClick={(e) => handleFileInputChange(e, item.id)}
+                            >
+                              <div>
+                                <CloudArrowUpIcon className="w-3 h-3 text-slate-600" />
+                              </div>
+                              <label
+                                htmlFor="dropzone-file"
+                                className="flex flex-col items-center justify-center w-full h-22 border-2 border-slate-300 border-dashed rounded-lg cursor-pointer bg-slate-50 dark:hover:bg-bray-800 dark:bg-slate-700 hover:bg-slate-100 dark:border-slate-600 dark:hover:border-slate-500 dark:hover:bg-slate-600"
+                              >
+                                <span className="text-slate-600 text-xs font-normal">
+                                  Загрузить обложку
+                                  <input
+                                    id="dropzone-file"
+                                    type="file"
+                                    className="hidden"
+                                    onChange={(e) =>
+                                      handleFileInputChange(e, item.id)
+                                    }
+                                  />
+                                </span>
+                              </label>
                             </li>
                             <li
                               onClick={() => startEditingCategory(item.id)}

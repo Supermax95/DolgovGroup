@@ -135,37 +135,7 @@ const Editor: FC<LawEditorProps> = ({
     resetAxiosError();
   };
 
-  // const uploadFile = async (file: File, id: number | 0): Promise<void> => {
-  //   if (file && id) {
-  //     const formData = new FormData();
-  //     formData.append('file', file);
 
-  //     try {
-  //       const response: AxiosResponse = await axios.put(
-  //         `${VITE_URL}/admin/documentFile/${id}`,
-  //         formData,
-  //         {
-  //           headers: {
-  //             'Content-Type': 'multipart/form-data',
-  //           },
-  //           withCredentials: true,
-  //         }
-  //       );
-  //       console.log('======>', showNotificationPicture);
-  //       unwrapResult(response);
-  //       setShowNotificationPicture(true);
-  //         handleCancel();
-  //         setTimeout(() => {
-  //           handleCancel();
-  //         }, 50);
-  //     } catch (error) {
-  //       console.error('Ошибка при загрузке файла:', error);
-  //       const errorRes = 'Ошибка при загрузке файла'
-  //       setErrorNotification(errorRes);
-  //       setErrorShowNotificationPicture(true);
-  //     }
-  //   }
-  // };
   const uploadFile = async (file: File, id: number | 0): Promise<void> => {
     if (file && id) {
       const formData = new FormData();

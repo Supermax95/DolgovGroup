@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const multer = require('multer');
-const { Product, Promotion, Law } = require('../../db/models');
+const { Product, Promotion, Law, Category } = require('../../db/models');
 
 const storageProduct = multer.diskStorage({
   destination(req, file, cb) {
@@ -30,8 +30,18 @@ const storageDocument = multer.diskStorage({
     cb(null, `${file.originalname}`);
   },
 });
-
 const uploadsDocument = multer({ storage: storageDocument });
+
+const storageCategory = multer.diskStorage({
+  destination(req, file, cb) {
+    cb(null, './uploads/category');
+  },
+  filename(req, file, cb) {
+    cb(null, `${file.originalname}`);
+  },
+});
+
+const uploadsCategory = multer({ storage: storageCategory });
 
 router.put(
   '/admin/productsPhoto/:id',
@@ -96,6 +106,30 @@ router.put(
       });
 
       res.json({ laws, message: 'Файл загрузился.' });
+    } catch (error) {
+      console.log('error', error);
+      res.status(500).json({ message: 'Ошибка загрузки' });
+    }
+  }
+);
+
+router.put(
+  '/categoryImg/:id',
+  uploadsCategory.single('file'),
+  async (req, res) => {
+    const { id } = req.params;
+    const originalname = req.file.filename;
+    try {
+      await Category.update(
+        { img: `/uploads/category/${originalname}` },
+        { where: { id } }
+      );
+      const category = await Category.findAll({
+        order: [['categoryName', 'ASC']],
+        raw: true,
+      });
+
+      res.json({ category, message: 'Файл загрузился.' });
     } catch (error) {
       console.log('error', error);
       res.status(500).json({ message: 'Ошибка загрузки' });

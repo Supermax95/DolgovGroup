@@ -8,11 +8,13 @@ module.exports = {
       [
         {
           categoryName: 'Молочные продукты',
+          img: null,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           categoryName: 'Колбасные изделия',
+          img: null,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
