@@ -23,12 +23,12 @@ const Navbar: FC = () => {
   const manager = useAppSelector((state) => state.managerSlice.manager);
 
   const navigation: INavigation[] = [
-    {
-      id: 11,
-      name: 'Вход',
-      href: '/portal',
-      isActive: location.pathname === '/portal',
-    },
+    // {
+    //   id: 11,
+    //   name: 'Вход',
+    //   href: '/portal',
+    //   isActive: location.pathname === '/portal',
+    // },
     {
       id: 1,
       name: 'Клиенты',
