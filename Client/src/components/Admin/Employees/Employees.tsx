@@ -9,6 +9,8 @@ import Search from '../../../ui/Search';
 import EmployeesModal from './EmployeesModal';
 import editEmployees from '../../../Redux/thunks/Users/editEmployee.api';
 import { unwrapResult } from '@reduxjs/toolkit';
+import PopUpNotification from '../../../ui/PopUpNotification';
+import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
 
 interface User {
   id: number;
@@ -48,7 +50,27 @@ const Employees: FC = () => {
   const [searchText, setSearchText] = useState('');
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [editedUser, setEditedUser] = useState<User | null | undefined>(null);
-  const [axiosError, setAxiosError] = useState<string | null>(null);
+  //* уведомления
+  const [showNotificationEditUser, setShowNotificationEditUser] =
+    useState<boolean>(false);
+
+  const [errorNotification, setErrorNotification] = useState<string | null>(
+    null
+  );
+
+  const [showErrorNotificationEditUser, setShowErrorNotificationEditUser] =
+    useState<boolean>(false);
+
+  useEffect(() => {
+    if (showNotificationEditUser || showErrorNotificationEditUser) {
+      const timeoutId = setTimeout(() => {
+        setShowNotificationEditUser(false);
+        setShowErrorNotificationEditUser(false);
+      });
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [showNotificationEditUser, showErrorNotificationEditUser]);
 
   const columnsDefaultName: IColumnsDefaultName[] = [
     { name: 'Фамилия' },
@@ -124,16 +146,12 @@ const Employees: FC = () => {
     setSelectedUser(user);
     setEditedUser({ ...user });
     setModalOpen(true);
-    //!
-    setAxiosError(null);
   };
 
   const closeEditModal = (): void => {
     setSelectedUser(null);
     setEditedUser(null);
     setModalOpen(true);
-    //!
-    setAxiosError(null);
   };
 
   const handleSaveEdit = async (editedUser: User): Promise<void> => {
@@ -146,17 +164,40 @@ const Employees: FC = () => {
           })
         );
         unwrapResult(resultAction);
-        setAxiosError(null);
-        closeEditModal();
+        setErrorNotification(null);
+        setShowNotificationEditUser(true);
       }
+      setTimeout(() => {
+        closeEditModal();
+      }, 50);
     } catch (error) {
       console.error('Произошла ошибка при редактировании:', error);
-      setAxiosError(error as string | null);
+      setErrorNotification(error as string | null);
+      setShowErrorNotificationEditUser(true);
     }
   };
 
   return (
     <Wrapper>
+      {showNotificationEditUser && (
+        <PopUpNotification
+          titleText={'Внесены изменения в карточку клиента'}
+          bodyText={
+            <>
+              {`${editedUser?.lastName} ${editedUser?.firstName} ${editedUser?.middleName}`}
+              <br />
+            </>
+          }
+          name={editedUser?.email}
+        />
+      )}
+      {/* //!уведомления об ошибках */}
+      {showErrorNotificationEditUser && (
+        <PopUpErrorNotification
+          titleText={'Ошибка'}
+          bodyText={errorNotification}
+        />
+      )}
       <div>
         <div className="flex">
           <Sidebar
@@ -183,19 +224,18 @@ const Employees: FC = () => {
               onPageChange={setCurrentPage}
             />
           </div>
-        </div>
 
-        {isModalOpen && selectedUser && (
-          <EmployeesModal
-            isOpen={isModalOpen}
-            user={selectedUser}
-            onSaveEdit={handleSaveEdit}
-            onCloseEditModal={closeEditModal}
-            editedUser={editedUser}
-            setEditedUser={setEditedUser}
-            axiosError={axiosError}
-          />
-        )}
+          {isModalOpen && selectedUser && (
+            <EmployeesModal
+              isOpen={isModalOpen}
+              user={selectedUser}
+              onSaveEdit={handleSaveEdit}
+              onCloseEditModal={closeEditModal}
+              editedUser={editedUser}
+              setEditedUser={setEditedUser}
+            />
+          )}
+        </div>
       </div>
     </Wrapper>
   );

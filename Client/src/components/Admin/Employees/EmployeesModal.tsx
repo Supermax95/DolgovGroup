@@ -27,7 +27,6 @@ interface UsersModalProps {
   onCloseEditModal: () => void;
   editedUser: IUser | null | undefined;
   setEditedUser: React.Dispatch<React.SetStateAction<IUser | null | undefined>>;
-  axiosError: string | null;
 }
 
 const EmployeesModal: FC<UsersModalProps> = ({
@@ -37,7 +36,6 @@ const EmployeesModal: FC<UsersModalProps> = ({
   onCloseEditModal,
   editedUser,
   setEditedUser,
-  axiosError,
 }) => {
   const dispatch = useAppDispatch();
 
@@ -71,7 +69,6 @@ const EmployeesModal: FC<UsersModalProps> = ({
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSaveEdit(userToSave);
-    // onCloseEditModal();
   };
 
   if (!isOpen || !editedUser) {
@@ -257,7 +254,7 @@ const EmployeesModal: FC<UsersModalProps> = ({
               { value: 'Клиент', label: 'Клиент' },
             ]
           : [
-            { value: 'Новый сотрудник', label: 'Новый сотрудник' },
+              { value: 'Новый сотрудник', label: 'Новый сотрудник' },
               { value: 'Сотрудник', label: 'Сотрудник' },
               { value: 'Клиент', label: 'Клиент' },
             ],
@@ -273,11 +270,6 @@ const EmployeesModal: FC<UsersModalProps> = ({
     <Wrapper>
       <form onSubmit={handleFormSubmit}>
         <ModalUser modalTitle={modalTitle} onCancelСlick={handleCancel}>
-          {axiosError && (
-            <div className="text-sm text-rose-400 text-center mt-2">
-              {axiosError}
-            </div>
-          )}
           <InputModal
             containerClassName={
               'py-8 grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'

@@ -51,30 +51,28 @@ const Clients: FC = () => {
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
   const [searchText, setSearchText] = useState('');
   const [isModalOpen, setModalOpen] = useState(false);
-  const [axiosError, setAxiosError] = useState<string | null>(null);
 
-  console.log('users', users);
-
-  const [showNotificationEditClient, setShowNotificationEditClient] =
+  //* уведомления
+  const [showNotificationEditUser, setShowNotificationEditUser] =
     useState<boolean>(false);
 
   const [errorNotification, setErrorNotification] = useState<string | null>(
     null
   );
 
-  const [showErrorNotificationEditClient, setShowErrorNotificationEditClient] =
+  const [showErrorNotificationEditUser, setShowErrorNotificationEditUser] =
     useState<boolean>(false);
 
   useEffect(() => {
-    if (showNotificationEditClient || showErrorNotificationEditClient) {
+    if (showNotificationEditUser || showErrorNotificationEditUser) {
       const timeoutId = setTimeout(() => {
-        setShowNotificationEditClient(false);
-        setShowErrorNotificationEditClient(false);
+        setShowNotificationEditUser(false);
+        setShowErrorNotificationEditUser(false);
       });
 
       return () => clearTimeout(timeoutId);
     }
-  }, [showNotificationEditClient, showErrorNotificationEditClient]);
+  }, [showNotificationEditUser, showErrorNotificationEditUser]);
 
   const columnsDefaultName: IColumnsDefaultName[] = [
     { name: 'Фамилия' },
@@ -155,22 +153,18 @@ const Clients: FC = () => {
     setModalOpen(false);
   };
 
-  const [clientId, setClientId] = useState<number | null>(null);
-
   const handleSaveEdit = async (editedUser: IUserTable) => {
     try {
       if (selectedUser) {
-        //* позволяет получить id для catch, поэтому асинхронно
-        // await setClientId(selectedUser.id);
         const resultAction = await dispatch(
           editClients({
             clientId: selectedUser.id,
             newInfo: editedUser,
           })
         );
-        const result = unwrapResult(resultAction);
+        unwrapResult(resultAction);
         setErrorNotification(null);
-        setShowNotificationEditClient(true);
+        setShowNotificationEditUser(true);
       }
       setTimeout(() => {
         closeEditModal();
@@ -178,9 +172,7 @@ const Clients: FC = () => {
     } catch (error) {
       console.error('Произошла ошибка при редактировании:', error);
       setErrorNotification(error as string | null);
-      setShowErrorNotificationEditClient(true);
-      // const client = users.find((client) => client.id === clientId);
-      // openEditModal(client);
+      setShowErrorNotificationEditUser(true);
     }
   };
 
@@ -189,7 +181,7 @@ const Clients: FC = () => {
 
   return (
     <Wrapper>
-      {showNotificationEditClient && (
+      {showNotificationEditUser && (
         <PopUpNotification
           titleText={'Внесены изменения в карточку клиента'}
           bodyText={
@@ -202,7 +194,7 @@ const Clients: FC = () => {
         />
       )}
       {/* //!уведомления об ошибках */}
-      {showErrorNotificationEditClient && (
+      {showErrorNotificationEditUser && (
         <PopUpErrorNotification
           titleText={'Ошибка'}
           bodyText={errorNotification}
@@ -241,7 +233,6 @@ const Clients: FC = () => {
                 onCloseEditModal={closeEditModal}
                 editedUser={editedUser}
                 setEditedUser={setEditedUser}
-                axiosError={axiosError}
               />
             )}
           </div>
