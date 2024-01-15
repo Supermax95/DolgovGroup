@@ -93,7 +93,7 @@ const Navbar: FC = () => {
     <>
       <nav className="bg-white dark:bg-gray-900 fixed w-full z-30 top-0 left-0 border-b border-slate-200 dark:border-gray-600">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-          <Link to="/" className="flex items-center">
+          <Link to="/locations" className="flex items-center">
             <img
               src="/src/assets/DGCompany.png"
               className="h-8 mr-3"
