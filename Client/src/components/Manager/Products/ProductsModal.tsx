@@ -44,7 +44,7 @@ interface ProductsModalProps {
   onSaveEdit: (editedProduct: IProduct) => void;
   onCloseAddModal: () => void;
   onCloseEditModal: () => void;
-  openEditModal: (product: IProduct) => void;
+  openEditModal: (product: IProduct | undefined) => void;
   isAddingMode: boolean;
   editedProduct: Product | null | undefined;
   setEditedProduct: React.Dispatch<

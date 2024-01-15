@@ -34,7 +34,7 @@ interface LawEditorProps {
   editedLaw: ILaw | null | undefined;
   setEditedLaw: React.Dispatch<React.SetStateAction<ILaw | null | undefined>>;
   axiosError: string | null;
-  openEditEditor: (law: ILaw) => void;
+  openEditEditor: (law: ILaw | undefined) => void;
   resetAxiosError: () => void;
   currentStep: number;
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
@@ -85,7 +85,6 @@ const Editor: FC<LawEditorProps> = ({
       setEditedLaw(law);
     }
   }, [law, setEditedLaw]);
-
 
   useEffect(() => {
     if (
@@ -183,7 +182,7 @@ const Editor: FC<LawEditorProps> = ({
             withCredentials: true,
           }
         );
-        console.log('======>', showNotificationPicture);
+
         unwrapResult(response);
         setShowNotificationPicture(true);
       } catch (error) {
@@ -216,13 +215,13 @@ const Editor: FC<LawEditorProps> = ({
         // @ts-ignore
         result = await onSaveAdd(editedLaw as ILaw);
       } else {
-      if (isConfirmed)  {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        if (isConfirmed) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
 
-        result = await onSaveEdit(editedLaw as ILaw);
+          result = await onSaveEdit(editedLaw as ILaw);
+        }
       }
-    }
 
       if (typeof result !== 'string') {
         setCurrentStep(2);
@@ -247,7 +246,9 @@ const Editor: FC<LawEditorProps> = ({
   };
 
   const handleDelete = async () => {
-    const isConfirmed = window.confirm('Вы уверены, что хотите удалить документ?');
+    const isConfirmed = window.confirm(
+      'Вы уверены, что хотите удалить документ?'
+    );
     if (laws.length > 0) {
       if (isConfirmed && editedLaw && editedLaw.id) {
         const lawId = editedLaw.id;
@@ -272,7 +273,8 @@ const Editor: FC<LawEditorProps> = ({
     if (isConfirmed && editedLaw && editedLaw.id) {
       const lawId = editedLaw.id;
       dispatch(deleteDocumentLaw(lawId));
-    }   setShowNotificationDelPick(true);
+    }
+    setShowNotificationDelPick(true);
   };
 
   if (!isOpen || !editedLaw) {
@@ -302,34 +304,34 @@ const Editor: FC<LawEditorProps> = ({
       {/* <div className="mx-auto max-w-screen-lg h-max max-w-2xl w-11/12 md:w-2/3 max-w-2xl"> */}
       <div className="mx-auto max-w-screen-lg h-max w-[974.2px]">
         <div className="relative py-8 px-5 md:px-10 bg-white shadow-md rounded-3xl border border-slate-200">
-        <Toaster position="bottom-left" expand={true} />
-      {showNotificationPicture && (
-        <PopUpNotification
-          titleText={'Файл загружен'}
-          name={editedLaw.title}
-        />
-      )}
-      {showNotificationDelLaw && (
-        <PopUpNotification
-          titleText={'Правовой документ удалён'}
-          name={editedLaw.title}
-        />
-      )}
+          <Toaster position="bottom-left" expand={true} />
+          {showNotificationPicture && (
+            <PopUpNotification
+              titleText={'Файл загружен'}
+              name={editedLaw.title}
+            />
+          )}
+          {showNotificationDelLaw && (
+            <PopUpNotification
+              titleText={'Правовой документ удалён'}
+              name={editedLaw.title}
+            />
+          )}
 
-      {showNotificationDelPick && (
-        <PopUpNotification
-          titleText={'Файл удалён'}
-          name={editedLaw.title}
-        />
-      )}
+          {showNotificationDelPick && (
+            <PopUpNotification
+              titleText={'Файл удалён'}
+              name={editedLaw.title}
+            />
+          )}
 
-      {/* //!уведомления об ошибках */}
-      {showErrorNotificationPicture && (
-        <PopUpErrorNotification
-          titleText={'Ошибка'}
-          bodyText={errorNotification}
-        />
-      )}
+          {/* //!уведомления об ошибках */}
+          {showErrorNotificationPicture && (
+            <PopUpErrorNotification
+              titleText={'Ошибка'}
+              bodyText={errorNotification}
+            />
+          )}
           <form onSubmit={handleFormSubmit}>
             <div className="flex justify-center items-center">
               <div className="w-8 text-gray-600">
