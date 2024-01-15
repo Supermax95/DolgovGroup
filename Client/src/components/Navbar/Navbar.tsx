@@ -3,6 +3,7 @@ import { Link, Outlet } from 'react-router-dom';
 import UserMenu from './UserMenu';
 import { FC } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useAppSelector } from '../../Redux/hooks';
 
 interface INavigation {
   id: number;
@@ -19,6 +20,7 @@ interface INavigation {
 
 const Navbar: FC = () => {
   const location = useLocation(); // хз, как типизировать
+  const manager = useAppSelector((state) => state.managerSlice.manager);
 
   const navigation: INavigation[] = [
     {
@@ -81,6 +83,12 @@ const Navbar: FC = () => {
   // ]
   // };
 
+  const filteredNavigation = manager.isAdmin
+    ? navigation
+    : navigation.filter((item) =>
+        ['Магазины', 'Продукты', 'Маркетинговые акции'].includes(item.name)
+      );
+
   return (
     <>
       <nav className="bg-white dark:bg-gray-900 fixed w-full z-30 top-0 left-0 border-b border-slate-200 dark:border-gray-600">
@@ -130,7 +138,7 @@ const Navbar: FC = () => {
             id="navbar-sticky"
           >
             <div className="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-              {navigation.map((item) => (
+              {filteredNavigation.map((item) => (
                 <Link
                   key={item.id}
                   to={item.href}
