@@ -336,13 +336,11 @@ const Products: FC = () => {
         );
         const result = unwrapResult(resultAction);
         add = result;
-        // setAxiosError(null);
         setErrorNotification(null);
         setShowNotificationEditProduct(true);
       }
     } catch (error) {
       console.error('Произошла ошибка при редактировании:', error);
-      // setAxiosError(error as string | null);
       setErrorNotification(error as string | null);
       setShowErrorNotificationEditProduct(true);
       add = error;

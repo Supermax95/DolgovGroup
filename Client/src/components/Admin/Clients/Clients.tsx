@@ -12,7 +12,7 @@ import { unwrapResult } from '@reduxjs/toolkit';
 import PopUpNotification from '../../../ui/PopUpNotification';
 import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
 
-interface User {
+export interface IUserTable {
   id: number;
   lastName: string;
   firstName: string;
@@ -42,14 +42,18 @@ type IColumnsListDb =
 const Clients: FC = () => {
   const dispatch = useAppDispatch();
 
-  const users = useAppSelector<User[]>((state) => state.usersSlice.data);
+  const users = useAppSelector<IUserTable[]>((state) => state.usersSlice.data);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const [editedUser, setEditedUser] = useState<User | null | undefined>(null);
+  const [selectedUser, setSelectedUser] = useState<IUserTable | null>(null);
+  const [editedUser, setEditedUser] = useState<IUserTable | null | undefined>(
+    null
+  );
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
   const [searchText, setSearchText] = useState('');
   const [isModalOpen, setModalOpen] = useState(false);
   const [axiosError, setAxiosError] = useState<string | null>(null);
+
+  console.log('users', users);
 
   const [showNotificationEditClient, setShowNotificationEditClient] =
     useState<boolean>(false);
@@ -139,7 +143,7 @@ const Clients: FC = () => {
   const totalMatches = filteredUsersPag.length;
   const displayedUsers = filterUsers().slice(startIndex, endIndex);
 
-  const openEditModal = (user: User) => {
+  const openEditModal = (user: IUserTable) => {
     setSelectedUser(user);
     setEditedUser({ ...user });
     setModalOpen(true);
@@ -151,9 +155,13 @@ const Clients: FC = () => {
     setModalOpen(false);
   };
 
-  const handleSaveEdit = async (editedUser: User) => {
+  const [clientId, setClientId] = useState<number | null>(null);
+
+  const handleSaveEdit = async (editedUser: IUserTable) => {
     try {
       if (selectedUser) {
+        //* позволяет получить id для catch, поэтому асинхронно
+        // await setClientId(selectedUser.id);
         const resultAction = await dispatch(
           editClients({
             clientId: selectedUser.id,
@@ -164,17 +172,20 @@ const Clients: FC = () => {
         setErrorNotification(null);
         setShowNotificationEditClient(true);
       }
+      setTimeout(() => {
+        closeEditModal();
+      }, 50);
     } catch (error) {
       console.error('Произошла ошибка при редактировании:', error);
       setErrorNotification(error as string | null);
       setShowErrorNotificationEditClient(true);
+      // const client = users.find((client) => client.id === clientId);
+      // openEditModal(client);
     }
   };
 
   const totalPages = Math.ceil(totalMatches / itemsPerPage);
   const uniqueStatus = ['Активные', 'Неактивные'];
-
-  console.log('editedUser', editedUser);
 
   return (
     <Wrapper>
