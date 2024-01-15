@@ -103,9 +103,6 @@ const ClientsModal: React.FC<UsersModalProps> = ({
     if (isConfirmed) {
       onSaveEdit(userToSave);
     }
-    setTimeout(() => {
-      onCloseEditModal();
-    }, 50);
   };
 
   const handleActivationSend = () => {

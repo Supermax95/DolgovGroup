@@ -269,7 +269,7 @@ const Carousel: FC = () => {
       )}
 
       <PromotionSidebar openAddModal={openAddModal} />
-      <div className="p-4">
+      <div className="p-4 w-[1020px]">
         <h1 className="text-xl text-lime-600 font-medium text-center mb-2">
           Акции в карусели
         </h1>
@@ -387,7 +387,7 @@ const Carousel: FC = () => {
 
         {displayedPromotions.filter((promotion) => !promotion.invisible)
           .length === 0 && (
-          <div className="flex items-center justify-center max-w-screen-lg mx-auto mt-8 p-8 bg-white rounded-xl w-[1020px] backdrop-blur-lg">
+          <div className="flex items-center justify-center max-w-screen-lg mx-auto mt-8 p-8 bg-white rounded-xl backdrop-blur-lg">
             <span className="text-slate-600 text-sm font-normal">
               Актуальные акции отсутствуют{' '}
             </span>
@@ -483,7 +483,7 @@ const Carousel: FC = () => {
 
         {displayedPromotions.filter((promotion) => promotion.invisible)
           .length === 0 && (
-          <div className="flex items-center justify-center max-w-screen-lg mx-auto mt-8 p-8 bg-white rounded-xl w-[1020px] backdrop-blur-lg">
+          <div className="flex items-center justify-center max-w-screen-lg mx-auto mt-8 p-8 bg-white rounded-xl backdrop-blur-lg">
             <span className="text-slate-600 text-sm font-normal">
               Скрытые акции в карусели отсутствуют{' '}
             </span>

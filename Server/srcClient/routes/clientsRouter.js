@@ -40,6 +40,7 @@ router.put('/admin/clients/:id', async (req, res) => {
     await DiscountCard.update(newInfo, {
       where: { id: clientId },
     });
+
     const clients = await DiscountCard.findAll({
       where: {
         userStatus: 'Клиент',

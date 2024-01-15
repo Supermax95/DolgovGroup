@@ -37,17 +37,6 @@ interface Product {
   invisible: boolean;
 }
 
-// interface Category {
-//   id: number | 0;
-//   categoryName: string | '';
-// }
-
-// interface Subcategory {
-//   id: number | null;
-//   categoryId: number | 0;
-//   subcategoryName: string | '';
-// }
-
 interface ProductsModalProps {
   isOpen: boolean;
   product: Product | null;
@@ -85,6 +74,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
   const products = useAppSelector<IProduct[]>(
     (state) => state.productSlice.data
   );
+
   const selectedSubcategory = editedProduct?.subcategoryId
     ? subcategory.find(
         (subcategory) => subcategory.id === editedProduct.subcategoryId
@@ -180,8 +170,6 @@ const ProductsModal: FC<ProductsModalProps> = ({
           }
         );
 
-        // const res = response.data.error;
-        // console.log('res', res);
         unwrapResult(response);
         setShowNotificationPicture(true);
 
