@@ -106,7 +106,7 @@ const Navigation: FC = () => {
                 manager.email && manager.isAdmin ? (
                   <ProfileAdmin />
                 ) : manager.email ? (
-                  <Locations />
+                  <ProfileManager/>
                 ) : (
                   <Portal />
                 )
