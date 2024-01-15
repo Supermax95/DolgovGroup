@@ -295,7 +295,7 @@ const Nocarousel: FC = () => {
                       alt={promotion.title}
                     />
                     {promotion.invisible && (
-                      <div className="absolute flex h-6 w-6 p-2 items-center justify-center rounded-lg bg-slate-400 bottom-2 left-8 ">
+                      <div className="absolute bottom-0 left-2 p-2 text-center flex space-x-2 items-center">
                         {promotion.invisible && (
                           <p className="rounded-full border-2 border-slate-300 bg-slate-500 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3 mt-2">
                             Скрыта
@@ -388,7 +388,7 @@ const Nocarousel: FC = () => {
                       alt={promotion.title}
                     />
                     {promotion.invisible && (
-                      <div className="absolute flex h-6 w-6 p-2 items-center justify-center rounded-lg bg-slate-400 bottom-2 left-8 ">
+                      <div className="absolute bottom-0 left-2 p-2 text-center flex space-x-2 items-center">
                         {promotion.invisible && (
                           <p className="rounded-full border-2 border-slate-300 bg-slate-500 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3 mt-2">
                             Скрыта

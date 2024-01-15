@@ -323,7 +323,7 @@ const Carousel: FC = () => {
                             alt={promotion.title}
                           />
                           {promotion.invisible && (
-                            <div className="absolute flex h-6 w-6 p-2 items-center justify-center rounded-lg bg-slate-400 bottom-2 left-8 ">
+                            <div className="absolute bottom-0 left-2 p-2 text-center flex space-x-2 items-center">
                               {promotion.invisible && (
                                 <p className="rounded-full border-2 border-slate-300 bg-slate-500 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3 mt-2">
                                   Скрыта
@@ -420,7 +420,7 @@ const Carousel: FC = () => {
                           alt={promotion.title}
                         />
                         {promotion.invisible && (
-                          <div className="absolute flex h-6 w-6 p-2 items-center justify-center rounded-lg bg-slate-400 bottom-2 left-8 ">
+                          <div className="absolute bottom-0 left-2 p-2 text-center flex space-x-2 items-center">
                             {promotion.invisible && (
                               <p className="rounded-full border-2 border-slate-300 bg-slate-500 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3 mt-2">
                                 Скрыта
@@ -492,30 +492,30 @@ const Carousel: FC = () => {
       </div>
       <div className="relative ">
         {isLoading && (
-           <div className="fixed inset-0 z-20 backdrop-blur-lg flex items-center justify-center ">
-           {/* <div className="bg-white p-1 rounded-sm shadow-xs  "> */}
-           <div className="bg-white p-1 rounded-sm z-10 py-20 bg-opacity-70 fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center ">
-                 <LoadingAnimation />
-                 </div>
-               </div>
-             )}
-      {isModalOpen && (selectedPromotion || isAddingMode) && (
-        <PromotionsModal
-          isOpen={isModalOpen}
-          promotion={selectedPromotion}
-          onSaveEdit={handleSaveEdit}
-          onSaveAdd={handleSaveAdd}
-          onCloseAddModal={closeAddModal}
-          onCloseEditModal={closeEditModal}
-          isAddingMode={isAddingMode}
-          editedPromotion={editedPromotion}
-          setEditedPromotion={setEditedPromotion}
-          errorNotification={errorNotification}
-          openEditModal={openEditModal}
-          // resetAxiosError={resetAxiosError}
-        />
-      )}
-        </div>
+          <div className="fixed inset-0 z-20 backdrop-blur-lg flex items-center justify-center ">
+            {/* <div className="bg-white p-1 rounded-sm shadow-xs  "> */}
+            <div className="bg-white p-1 rounded-sm z-10 py-20 bg-opacity-70 fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center ">
+              <LoadingAnimation />
+            </div>
+          </div>
+        )}
+        {isModalOpen && (selectedPromotion || isAddingMode) && (
+          <PromotionsModal
+            isOpen={isModalOpen}
+            promotion={selectedPromotion}
+            onSaveEdit={handleSaveEdit}
+            onSaveAdd={handleSaveAdd}
+            onCloseAddModal={closeAddModal}
+            onCloseEditModal={closeEditModal}
+            isAddingMode={isAddingMode}
+            editedPromotion={editedPromotion}
+            setEditedPromotion={setEditedPromotion}
+            errorNotification={errorNotification}
+            openEditModal={openEditModal}
+            // resetAxiosError={resetAxiosError}
+          />
+        )}
+      </div>
     </Wrapper>
   );
 };
