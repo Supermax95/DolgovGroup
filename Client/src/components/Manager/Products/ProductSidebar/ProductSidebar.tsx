@@ -825,6 +825,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                                 </span>
                               </label>
                             </li>
+
                             <li
                               onClick={() => startEditingCategory(item.id)}
                               className="flex items-center px-4 py-2 space-x-2 hover:bg-slate-100"
@@ -848,6 +849,19 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                                 Удалить категорию
                               </span>
                             </li>
+                            {item.img ? (
+                              <li
+                                // onClick={() => startAddingSubcategory(item.id)}
+                                className="flex items-center px-4 py-2 space-x-2 hover:bg-slate-100"
+                              >
+                                <div>
+                                  <XCircleIcon className="w-4 h-4 text-slate-600" />
+                                </div>
+                                <span className="text-slate-600 text-xs font-normal">
+                                  Удалить обложку
+                                </span>
+                              </li>
+                            ) : null}
                           </ul>
                         </div>
                       )}
