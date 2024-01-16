@@ -26,6 +26,7 @@ import { unwrapResult } from '@reduxjs/toolkit';
 import { Tooltip } from 'flowbite-react';
 import { VITE_URL } from '../../../../VITE_URL';
 import axios from 'axios';
+import getCategory from '../../../../Redux/thunks/Category/getCategory.api';
 
 interface ICategory {
   //Продукты.tsx ругаются на эти вопросы
@@ -266,29 +267,34 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
       formData.append('file', file);
 
       try {
-        console.log('idupload', id);
-
         await axios.put(`${VITE_URL}/categoryImg/${id}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
           withCredentials: true,
-        });
+        }
+        );
       } catch (error) {
         console.error('Ошибка при загрузке файла:', error);
       }
     }
   };
 
-  const handleFileInputChange = (
+  const handleFileInputChange = async (
     e: ChangeEvent<HTMLInputElement>,
     id: number
-  ): void => {
-    const file = e.target.files?.[0] || null;
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    uploadFile(file, id);
+  ): Promise<void> => {
+    try {
+      const file = e.target.files?.[0] || null;
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      await uploadFile(file, id);  
+      await dispatch(getCategory());
+    } catch (error) {
+      console.error('Error in handleFileInputChange:', error);
+    }
   };
+  
 
   const addedHandleForm = async (
     e: React.FormEvent<HTMLFormElement>

@@ -22,6 +22,8 @@ import LoadingAnimation from '../components/Admin/Laws/Loading';
 
 const Navigation: FC = () => {
   const manager = useAppSelector((state) => state.managerSlice.manager);
+  console.log('manager======>',manager);
+  
   const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
 
