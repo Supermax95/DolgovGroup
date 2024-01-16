@@ -22,10 +22,10 @@ import LoadingAnimation from '../components/Admin/Laws/Loading';
 
 const Navigation: FC = () => {
   const manager = useAppSelector((state) => state.managerSlice.manager);
-  console.log('manager======>',manager);
-  
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+
 
   // useEffect(() => {
   //   const navigateToLocations = () => {
@@ -33,17 +33,24 @@ const Navigation: FC = () => {
   //     navigate('/locations');
   //   };
 
-  //   if (window.location.pathname === '/portal' && manager.email) {
+  //   if (window.location.pathname.includes('/portal') && manager.email) {
   //     setLoading(true);
-
   //     setTimeout(navigateToLocations, 1000);
   //   }
   // }, [manager.email, navigate]);
+
   useEffect(() => {
     const navigateToLocations = () => {
       setLoading(false);
       navigate('/locations');
     };
+
+    if (manager.email) {
+      setLoading(false);
+    } else {
+      navigate('/portal');
+      setLoading(false);
+    }
 
     if (window.location.pathname.includes('/portal') && manager.email) {
       setLoading(true);
@@ -108,7 +115,7 @@ const Navigation: FC = () => {
                 manager.email && manager.isAdmin ? (
                   <ProfileAdmin />
                 ) : manager.email ? (
-                  <ProfileManager/>
+                  <ProfileManager />
                 ) : (
                   <Portal />
                 )

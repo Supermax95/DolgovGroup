@@ -5,17 +5,22 @@ const fsPromises = require('fs').promises;
 
 router.get('/admin/category', async (req, res) => {
   try {
-    await Category.update(
-      { img: '/uploads/noPhoto/null.jpeg' },
-      { where: { img: null } }
-    );
-
     const categories = await Category.findAll({
       order: [['categoryName', 'ASC']],
       raw: true,
     });
 
-    res.json(categories);
+    await Category.update(
+      { img: '/uploads/noPhoto/null.jpeg' },
+      { where: { img: null } }
+    );
+
+    const updatedCategories = await Category.findAll({
+      order: [['categoryName', 'ASC']],
+      raw: true,
+    });
+
+    res.json(updatedCategories);
   } catch (error) {
     console.error('Ошибка при получении данных из базы данных', error);
     res.status(500).json({ error: 'Произошла ошибка на сервере' });
@@ -128,7 +133,7 @@ router.delete('/admin/category/photo/:id', async (req, res) => {
     const category = await Category.findByPk(categoryId);
 
     if (category && category.img) {
-      const filePath = path.join(__dirname, '..', '..', category.photo);
+      const filePath = path.join(__dirname, '..', '..', category.img);
 
       if (category.img !== '/uploads/noPhoto/null.jpeg') {
         const fileExists = await fsPromises
@@ -146,7 +151,7 @@ router.delete('/admin/category/photo/:id', async (req, res) => {
       }
 
       await Category.update(
-        { photo: '/uploads/noPhoto/null.jpeg' },
+        { img: '/uploads/noPhoto/null.jpeg' },
         { where: { id: categoryId } }
       );
 
