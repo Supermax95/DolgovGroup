@@ -1,12 +1,20 @@
 const router = require('express').Router();
 const { Category } = require('../../db/models');
+const path = require('path');
+const fsPromises = require('fs').promises;
 
 router.get('/admin/category', async (req, res) => {
   try {
+    await Category.update(
+      { img: '/uploads/noPhoto/null.jpeg' },
+      { where: { img: null } }
+    );
+
     const categories = await Category.findAll({
       order: [['categoryName', 'ASC']],
       raw: true,
     });
+
     res.json(categories);
   } catch (error) {
     console.error('Ошибка при получении данных из базы данных', error);
@@ -110,6 +118,55 @@ router.put('/admin/category/:id', async (req, res) => {
   } catch (error) {
     console.error('Ошибка при обновлении данных', error);
     res.status(500).json({ error: 'Произошла ошибка на сервере' });
+  }
+});
+
+router.delete('/admin/category/photo/:id', async (req, res) => {
+  const categoryId = req.params.id;
+
+  try {
+    const category = await Category.findByPk(categoryId);
+
+    if (category && category.img) {
+      const filePath = path.join(__dirname, '..', '..', category.photo);
+
+      if (category.img !== '/uploads/noPhoto/null.jpeg') {
+        const fileExists = await fsPromises
+          .access(filePath)
+          .then(() => true)
+          .catch(() => false);
+
+        if (fileExists) {
+          // Удалите файл
+          await fsPromises.unlink(filePath);
+          console.log(`Файл ${filePath} успешно удален`);
+        } else {
+          console.log(`Файл ${filePath} не существует`);
+        }
+      }
+
+      await Category.update(
+        { photo: '/uploads/noPhoto/null.jpeg' },
+        { where: { id: categoryId } }
+      );
+
+      console.log(`Картинка для категории с ID ${categoryId} успешно удалена`);
+
+      const updateCategory = await Category.findAll({
+        order: [['categoryName', 'ASC']],
+        raw: true,
+      });
+
+      res.json(updateCategory);
+    } else {
+      console.log('Категория или ее картинка не найдены');
+      res.status(404).json({ error: 'Категория или его картинка не найдены' });
+    }
+  } catch (error) {
+    console.error('Ошибка при удалении картинки продукта', error);
+    res.status(500).json({
+      error: 'Произошла ошибка на сервере при удалении картинки продукта',
+    });
   }
 });
 

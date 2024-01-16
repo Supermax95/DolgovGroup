@@ -27,6 +27,7 @@ import { Tooltip } from 'flowbite-react';
 import { VITE_URL } from '../../../../VITE_URL';
 import axios from 'axios';
 import getCategory from '../../../../Redux/thunks/Category/getCategory.api';
+import deleteCategoryPhoto from '../../../../Redux/thunks/Category/deleteCategoryPhoto.api';
 
 interface ICategory {
   //Продукты.tsx ругаются на эти вопросы
@@ -293,6 +294,27 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
       console.error('Error in handleFileInputChange:', error);
     }
   };
+  const handleDeletePhoto = () => {
+    const isConfirmed = window.confirm(
+      'Вы уверены, что хотите удалить изображение?'
+    );
+console.log('editCategory', editCategory);
+
+    if (isConfirmed && editCategory && editCategory.id) {
+      const categoryId = editCategory.id;
+
+      try {
+        dispatch(deleteCategoryPhoto(categoryId));
+        // setShowNotificationDelPick(true);
+      } catch (error) {
+        console.error('Произошла ошибка при удалении:', error);
+      }
+      // setTimeout(() => {
+      //   onCloseEditModal();
+      // }, 50);
+    }
+  };
+
 
   const addedHandleForm = async (
     e: React.FormEvent<HTMLFormElement>
@@ -759,7 +781,15 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                             style="light"
                             animation="duration-500"
                           >
-                            <PhotoIcon className="cursor-pointer hover:text-lime-600 w-5 h-5 text-slate-700" />
+                            <button
+                              type="button"
+                              className="flex items-center justify-center"
+                              onClick={() =>
+                                window.open(`${VITE_URL}${item.img}`, '_blank')
+                              }
+                            >
+                              <PhotoIcon className="cursor-pointer hover:text-lime-600 w-5 h-5 text-slate-700" />
+                            </button>
                           </Tooltip>
                         ) : (
                           <Tooltip

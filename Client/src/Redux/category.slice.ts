@@ -3,6 +3,7 @@ import getCategory from './thunks/Category/getCategory.api';
 import editCategory from './thunks/Category/editCategory.api';
 import deleteCategory from './thunks/Category/deleteCategory.api';
 import addCategory from './thunks/Category/addCategory.api';
+import deleteCategoryPhoto from './thunks/Category/deleteCategoryPhoto.api';
 
 interface Category {
   id: number;
@@ -80,6 +81,18 @@ const categorySlice = createSlice({
       .addCase(addCategory.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message || 'Произошла ошибка при добавлении';
+      })
+      .addCase(deleteCategoryPhoto.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(deleteCategoryPhoto.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.data = action.payload;
+      })
+      .addCase(deleteCategoryPhoto.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message || 'Произошла ошибка при удалении изображения';
       });
   },
 });
