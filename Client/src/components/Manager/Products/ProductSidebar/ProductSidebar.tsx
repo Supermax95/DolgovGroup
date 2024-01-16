@@ -294,14 +294,13 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
       console.error('Error in handleFileInputChange:', error);
     }
   };
-  const handleDeletePhoto = () => {
+  const handleDeletePhoto = (id: number) => {
     const isConfirmed = window.confirm(
       'Вы уверены, что хотите удалить изображение?'
     );
-console.log('editCategory', editCategory);
 
-    if (isConfirmed && editCategory && editCategory.id) {
-      const categoryId = editCategory.id;
+    if (isConfirmed && id) {
+      const categoryId = id;
 
       try {
         dispatch(deleteCategoryPhoto(categoryId));
@@ -565,6 +564,7 @@ console.log('editCategory', editCategory);
     onActiveSubcategory(currentSubcategory || null);
   };
 
+
   return (
     <>
       {showNotificationAddCategory && (
@@ -774,7 +774,7 @@ console.log('editCategory', editCategory);
                           </span>
                         </div>
 
-                        {item.img ? (
+                        {item.img  !== '/uploads/noPhoto/null.jpeg' ? (
                           <Tooltip
                             content="Просмотр обложки"
                             placement="right"
@@ -883,9 +883,9 @@ console.log('editCategory', editCategory);
                                 Удалить категорию
                               </span>
                             </li>
-                            {item.img ? (
+                            {item.img !== '/uploads/noPhoto/null.jpeg' ? (
                               <li
-                                // onClick={() => startAddingSubcategory(item.id)}
+                                onClick={() => handleDeletePhoto(item.id)}
                                 className="flex items-center px-4 py-2 space-x-2 hover:bg-slate-100"
                               >
                                 <div>
