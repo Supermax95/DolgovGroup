@@ -58,6 +58,14 @@ const Navigation: FC = () => {
     }
   }, [manager.email, navigate]);
 
+  if (isLoading) {
+    return (
+      <div className="bg-white p-1 rounded-sm z-10 py-20 bg-opacity-70 fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center">
+        <LoadingAnimation />
+      </div>
+    );
+  }
+
   return (
     <>
       {isLoading && (
