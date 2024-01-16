@@ -380,9 +380,11 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
 
     if (isConfirmed) {
       dispatch(deleteCategory(id));
+      setActionMenuForCategory(false);
+      setActionMenuForSub(false);
+    } else {
+      setActionMenuForCategory(true);
     }
-    setActionMenuForCategory(false);
-    setActionMenuForSub(false);
   };
 
   // ? вывод подкатегорий в сайдбаре и их скрытие
@@ -501,9 +503,11 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
 
     if (isConfirmed) {
       dispatch(deleteSubcategory(id));
+      setActionMenuForCategory(false);
+      setActionMenuForSub(false);
+    } else {
+      setActionMenuForSub(true);
     }
-    setActionMenuForCategory(false);
-    setActionMenuForSub(false);
   };
 
   /** Рендер карточек на странице */
