@@ -111,7 +111,7 @@ export const Registration: FC = () => {
         });
       } else {
         setErrorMessages({});
-        setStep(step + 1); // Переход ко второму шагу
+        setStep(step + 1);
       }
     } else if (step === 2) {
       if (!data.email || !data.password || !passwordCheck) {

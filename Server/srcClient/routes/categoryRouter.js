@@ -5,11 +5,6 @@ const fsPromises = require('fs').promises;
 
 router.get('/admin/category', async (req, res) => {
   try {
-    const categories = await Category.findAll({
-      order: [['categoryName', 'ASC']],
-      raw: true,
-    });
-
     await Category.update(
       { img: '/uploads/noPhoto/null.jpeg' },
       { where: { img: null } }

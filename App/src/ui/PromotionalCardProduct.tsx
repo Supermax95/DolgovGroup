@@ -9,7 +9,7 @@ interface IPromotionalCardProduct {
   originalPrice: number;
   discountedPrice: number;
   discountPercentage: number;
-  imageProduct: object;
+  imageProduct: string;
 }
 
 const PromotionalCardProduct: FC<IPromotionalCardProduct> = ({
@@ -26,7 +26,7 @@ const PromotionalCardProduct: FC<IPromotionalCardProduct> = ({
       style={{ ...BOX_SHADOW }}
       className="bg-white h-64 w-48 mt-2 mb-2 rounded-2xl items-center"
     >
-      <Image source={imageProduct} className="h-32 w-36 mt-6" />
+      <Image source={{ uri: imageProduct }} className="h-32 w-36 mt-6" />
       <View className="px-2 py-1 bg-yellow-300 rounded-full absolute left-3 mt-2">
         <Text className="text-xs font-light opacity-80">
           -{discountPercentage}%
