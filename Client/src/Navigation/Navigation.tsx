@@ -26,37 +26,21 @@ const Navigation: FC = () => {
   const navigate = useNavigate();
 
 
-
-  // useEffect(() => {
-  //   const navigateToLocations = () => {
-  //     setLoading(false);
-  //     navigate('/locations');
-  //   };
-
-  //   if (window.location.pathname.includes('/portal') && manager.email) {
-  //     setLoading(true);
-  //     setTimeout(navigateToLocations, 1000);
-  //   }
-  // }, [manager.email, navigate]);
-
   useEffect(() => {
     const navigateToLocations = () => {
       setLoading(false);
       navigate('/locations');
     };
-
-    if (manager.email) {
-      setLoading(false);
-    } else {
-      navigate('/portal');
-      setLoading(false);
-    }
-
-    if (window.location.pathname.includes('/portal') && manager.email) {
+  
+    if (manager.email && window.location.pathname.includes('/portal')) {
       setLoading(true);
       setTimeout(navigateToLocations, 1000);
+    } else if (!manager.email) {
+      navigate('/portal');
+      // setLoading(false);
     }
   }, [manager.email, navigate]);
+  
 
   if (isLoading) {
     return (
