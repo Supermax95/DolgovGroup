@@ -294,7 +294,6 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
       console.error('Error in handleFileInputChange:', error);
     }
   };
-
   const handleDeletePhoto = () => {
     const isConfirmed = window.confirm(
       'Вы уверены, что хотите удалить изображение?'
@@ -315,6 +314,7 @@ console.log('editCategory', editCategory);
       // }, 50);
     }
   };
+
 
   const addedHandleForm = async (
     e: React.FormEvent<HTMLFormElement>
@@ -402,9 +402,11 @@ console.log('editCategory', editCategory);
 
     if (isConfirmed) {
       dispatch(deleteCategory(id));
+      setActionMenuForCategory(false);
+      setActionMenuForSub(false);
+    } else {
+      setActionMenuForCategory(true);
     }
-    setActionMenuForCategory(false);
-    setActionMenuForSub(false);
   };
 
   // ? вывод подкатегорий в сайдбаре и их скрытие
@@ -523,9 +525,11 @@ console.log('editCategory', editCategory);
 
     if (isConfirmed) {
       dispatch(deleteSubcategory(id));
+      setActionMenuForCategory(false);
+      setActionMenuForSub(false);
+    } else {
+      setActionMenuForSub(true);
     }
-    setActionMenuForCategory(false);
-    setActionMenuForSub(false);
   };
 
   /** Рендер карточек на странице */
@@ -833,13 +837,14 @@ console.log('editCategory', editCategory);
                             </li>
                             <li
                               onClick={(e) => handleFileInputChange(e, item.id)}
+                              className="flex items-center px-4 py-2 space-x-2 hover:bg-slate-100"
                             >
                               <div>
-                                <CloudArrowUpIcon className="w-3 h-3 text-slate-600" />
+                                <CloudArrowUpIcon className="w-4 h-4 text-slate-600" />
                               </div>
                               <label
                                 htmlFor="dropzone-file"
-                                className="flex flex-col items-center justify-center w-full h-22 border-2 border-slate-300 border-dashed rounded-lg cursor-pointer bg-slate-50 dark:hover:bg-bray-800 dark:bg-slate-700 hover:bg-slate-100 dark:border-slate-600 dark:hover:border-slate-500 dark:hover:bg-slate-600"
+                                className="w-full cursor-pointer"
                               >
                                 <span className="text-slate-600 text-xs font-normal">
                                   Загрузить обложку
@@ -854,6 +859,7 @@ console.log('editCategory', editCategory);
                                 </span>
                               </label>
                             </li>
+
                             <li
                               onClick={() => startEditingCategory(item.id)}
                               className="flex items-center px-4 py-2 space-x-2 hover:bg-slate-100"
@@ -877,6 +883,19 @@ console.log('editCategory', editCategory);
                                 Удалить категорию
                               </span>
                             </li>
+                            {item.img ? (
+                              <li
+                                // onClick={() => startAddingSubcategory(item.id)}
+                                className="flex items-center px-4 py-2 space-x-2 hover:bg-slate-100"
+                              >
+                                <div>
+                                  <XCircleIcon className="w-4 h-4 text-slate-600" />
+                                </div>
+                                <span className="text-slate-600 text-xs font-normal">
+                                  Удалить обложку
+                                </span>
+                              </li>
+                            ) : null}
                           </ul>
                         </div>
                       )}
