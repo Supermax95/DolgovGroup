@@ -21,10 +21,8 @@ import Law from '../components/Admin/Laws/Laws';
 import LoadingAnimation from '../components/Admin/Laws/Loading';
 
 const Navigation: FC = () => {
-  const manager = useAppSelector((state) => state.managerSlice.manager);
-  console.log('manager======>',manager);
-  
-  const [isLoading, setLoading] = useState(false);
+  const manager = useAppSelector((state) => state.managerSlice.manager);  
+  const [isLoading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   // useEffect(() => {
@@ -33,23 +31,46 @@ const Navigation: FC = () => {
   //     navigate('/locations');
   //   };
 
-  //   if (window.location.pathname === '/portal' && manager.email) {
-  //     setLoading(true);
-
-  //     setTimeout(navigateToLocations, 1000);
+  //   if (window.location.pathname.includes('/portal') && manager.email) {
+  //     // Если данные о manager уже получены, устанавливаем isLoading в false сразу
+  //     if (manager.email) {
+  //       setLoading(false);
+  //     } else {
+  //       setLoading(true);
+  //       setTimeout(navigateToLocations, 1000);
+  //     }
   //   }
   // }, [manager.email, navigate]);
+
+
+
   useEffect(() => {
     const navigateToLocations = () => {
       setLoading(false);
       navigate('/locations');
     };
 
+    // Если у вас уже есть данные о manager, устанавливаем isLoading в false
+    if (manager.email) {
+      setLoading(false);
+    }
+
+    // Если мы находимся на /portal и manager.email есть, то устанавливаем isLoading в true
     if (window.location.pathname.includes('/portal') && manager.email) {
       setLoading(true);
+      // И запускаем таймер, который через 1000 миллисекунд установит isLoading в false
       setTimeout(navigateToLocations, 1000);
     }
   }, [manager.email, navigate]);
+
+  // Если isLoading равно true, отображаем LoadingAnimation
+  if (isLoading) {
+    return (
+      <div className="bg-white p-1 rounded-sm z-10 py-20 bg-opacity-70 fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center">
+        <LoadingAnimation />
+      </div>
+    );
+  }
 
   return (
     <>
