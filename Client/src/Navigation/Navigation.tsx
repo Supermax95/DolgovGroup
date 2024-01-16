@@ -37,7 +37,7 @@ const Navigation: FC = () => {
       setTimeout(navigateToLocations, 1000);
     } else if (!manager.email) {
       navigate('/portal');
-      // setLoading(false);
+      setLoading(false);
     }
   }, [manager.email, navigate]);
   
