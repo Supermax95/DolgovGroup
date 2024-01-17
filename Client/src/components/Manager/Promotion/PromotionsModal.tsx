@@ -483,7 +483,7 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
 
                 <div>
                   {!isAddingMode &&
-                    editedPromotion.photo !== '/uploads/noPhoto/null.jpeg' && (
+                    editedPromotion.photo !== '/uploads/noPhoto/null.png' && (
                       <Button
                         type="button"
                         onClick={handleDeletePhoto}

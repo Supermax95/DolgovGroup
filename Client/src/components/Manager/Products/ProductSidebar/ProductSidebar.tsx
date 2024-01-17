@@ -314,7 +314,6 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     }
   };
 
-
   const addedHandleForm = async (
     e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
@@ -564,7 +563,6 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     onActiveSubcategory(currentSubcategory || null);
   };
 
-
   return (
     <>
       {showNotificationAddCategory && (
@@ -774,7 +772,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                           </span>
                         </div>
 
-                        {item.img  !== '/uploads/noPhoto/null.jpeg' ? (
+                        {item.img !== '/uploads/noPhoto/null.png' ? (
                           <Tooltip
                             content="Просмотр обложки"
                             placement="right"
@@ -883,7 +881,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                                 Удалить категорию
                               </span>
                             </li>
-                            {item.img !== '/uploads/noPhoto/null.jpeg' ? (
+                            {item.img !== '/uploads/noPhoto/null.png' ? (
                               <li
                                 onClick={() => handleDeletePhoto(item.id)}
                                 className="flex items-center px-4 py-2 space-x-2 hover:bg-slate-100"

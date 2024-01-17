@@ -27,8 +27,8 @@ router.get('/admin/products', async (req, res) => {
 
     // Обновить поле photo, если оно равно null
     await Product.update(
-      { photo: '/uploads/noPhoto/null.jpeg' },
-      { where: { photo: null } }
+      { photo: '/uploads/noPhoto/null.png' },
+      { where: { photo: null || '' } }
     );
 
     // Получить обновленные продукты
@@ -122,7 +122,7 @@ router.delete('/admin/products/:id', async (req, res) => {
       const filePath = path.join(__dirname, '..', '..', product.photo);
 
       // Проверьте, нужно ли удалить файл
-      if (product.photo !== '/uploads/noPhoto/null.jpeg') {
+      if (product.photo !== '/uploads/noPhoto/null.png') {
         // Удалите связанный файл, если он существует
         const fileExists = await fsPromises
           .access(filePath)
@@ -230,7 +230,7 @@ router.delete('/admin/products/photo/:id', async (req, res) => {
     if (product && product.photo) {
       const filePath = path.join(__dirname, '..', '..', product.photo);
 
-      if (product.photo !== '/uploads/noPhoto/null.jpeg') {
+      if (product.photo !== '/uploads/noPhoto/null.png') {
         const fileExists = await fsPromises
           .access(filePath)
           .then(() => true)
@@ -246,7 +246,7 @@ router.delete('/admin/products/photo/:id', async (req, res) => {
       }
 
       await Product.update(
-        { photo: '/uploads/noPhoto/null.jpeg' },
+        { photo: '/uploads/noPhoto/null.png' },
         { where: { id: productId } }
       );
 
