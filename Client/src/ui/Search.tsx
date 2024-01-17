@@ -1,3 +1,4 @@
+import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { FC, useEffect, useState } from 'react';
 
 interface SearchProps {
@@ -22,21 +23,7 @@ const Search: FC<SearchProps> = ({ onFilter }) => {
         onSubmit={handleSearch}
         className="relative justify-between flex items-center text-slate-600 text-sm font-normal  cursor-pointer shadow-full"
       >
-        <svg
-          className="absolute left-5 block h-5 w-5 text-slate-400"
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="#94a3b8"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <circle cx="11" cy="11" r="8" />
-          <line x1="21" y1="21" x2="16.65" y2="16.65" />
-        </svg>
+        <MagnifyingGlassIcon className="absolute left-5 block h-5 w-5 text-slate-400" />
         <input
           type="name"
           name="search"
