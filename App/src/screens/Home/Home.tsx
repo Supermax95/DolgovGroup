@@ -30,6 +30,8 @@ const Home: FC = () => {
   const numberPointsRub = formatPoints(numberPoints);
   //console.log(numberPointsRub);
 
+  //* боже, хз, что это за код. наверное, надо его пересмотреть и скрол и хединг и пр.
+
   return (
     <View className="bg-white h-full">
       <ScrollView alwaysBounceVertical showsVerticalScrollIndicator={false}>

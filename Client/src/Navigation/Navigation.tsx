@@ -25,22 +25,20 @@ const Navigation: FC = () => {
   const [isLoading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-
   useEffect(() => {
     const navigateToLocations = () => {
       setLoading(false);
       navigate('/locations');
     };
-  
+
     if (manager.email && window.location.pathname.includes('/portal')) {
       setLoading(true);
       setTimeout(navigateToLocations, 1000);
     } else if (!manager.email) {
       navigate('/portal');
-      // setLoading(false);
+      setLoading(false);
     }
   }, [manager.email, navigate]);
-  
 
   if (isLoading) {
     return (
