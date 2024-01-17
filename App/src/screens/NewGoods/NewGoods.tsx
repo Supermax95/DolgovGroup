@@ -43,11 +43,11 @@ export const NewGoods: FC = () => {
   const products = useAppSelector<IProduct[]>(
     (state) => state.productSlice.data
   );
-  console.log('products',products);
+  // console.log('products',products);
   const categories = useAppSelector<ICategory[]>(
     (state) => state.categorySlice.data
   );
-  console.log(categories);
+  // console.log(categories);
   
   const subcategories = useAppSelector<ISubcategory[]>(
     (state) => state.subcategorySlice.data
@@ -101,7 +101,7 @@ export const NewGoods: FC = () => {
 
   return (
   <View className="flex-row flex-wrap justify-between mb-2">
-  {products.slice(0, 3).map((product) => (
+  {products.map((product) => (
     <CardProduct
       key={product.id}
       productName={product.productName}
@@ -116,15 +116,6 @@ export const NewGoods: FC = () => {
         imageProduct={`http://${IP}:${PORT}${product.photo}`}
       />
     ))}
-      <CardProduct
-        productName="Название продуктаbvhdn dbkdnkn lbnskl"
-        promoStartDate="2023-10-10"
-        promoEndDate="2023-10-20"
-        originalPrice={10.99}
-        discountedPrice={8.99}
-        discountPercentage={discountPercentage}
-        imageProduct={require('../../assets/ChocoMilka.png')}
-      />
     </View>
   );
 };

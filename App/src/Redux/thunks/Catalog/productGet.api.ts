@@ -7,7 +7,6 @@ const getProducts = createAsyncThunk('getProductsUser', async () => {
   const response: AxiosResponse = await axios.get(
     `http://${IP}:${PORT}/admin/products`
   );
-  console.log(response);
   return response.data;
   
 });
