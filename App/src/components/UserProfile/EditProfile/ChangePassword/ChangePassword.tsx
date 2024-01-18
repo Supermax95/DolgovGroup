@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from 'navigation/types';
 import { View, Text, Alert } from 'react-native';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import Field from 'ui/Field';
+import FieldInput from 'ui/FieldInput';
 import Button from 'ui/Button';
 import changeProfilePass from 'Redux/thunks/Profile/profileChangePass.api';
 import Padding from 'ui/Padding';
@@ -101,7 +101,7 @@ const ChangePassword: FC = () => {
       <Padding>
         <Padding>
           <View className="flex-row items-center">
-            <Field
+            <FieldInput
               value={data.oldPassword}
               placeholder="Старый пароль"
               onChange={(value) => handleFieldChange('oldPassword', value)}
@@ -126,7 +126,7 @@ const ChangePassword: FC = () => {
             </Text>
           )}
           <View className="flex-row items-center">
-            <Field
+            <FieldInput
               value={data.newPassword}
               placeholder="Новый пароль"
               onChange={(value) => handleFieldChange('newPassword', value)}
@@ -151,7 +151,7 @@ const ChangePassword: FC = () => {
             </Text>
           )}
           <View className="flex-row items-center">
-            <Field
+            <FieldInput
               value={data.confirmPassword}
               placeholder="Подтвердите новый пароль"
               onChange={(value) => handleFieldChange('confirmPassword', value)}

@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from 'navigation/types';
 import { View, Text, Alert } from 'react-native';
-import Field from 'ui/Field';
+import FieldInput from 'ui/FieldInput';
 import Button from 'ui/Button';
 import profileChangeFullName from 'Redux/thunks/Profile/profileChangeFullName.api';
 import Padding from 'ui/Padding';
@@ -19,14 +19,12 @@ const ChangeFullName: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
   const userId = useAppSelector<number>((state) => state.userSlice.user.id);
 
-
   const dateProfile = useAppSelector<{
     lastName?: string;
     firstName?: string;
     middleName?: string;
-  }>((state) => state.profileSlice); 
-  
-  
+  }>((state) => state.profileSlice);
+
   const [data, setData] = useState<IFullName>({
     newLastName: dateProfile.lastName || '',
     newFirstName: dateProfile.firstName || '',
@@ -90,7 +88,7 @@ const ChangeFullName: FC = () => {
     <View className="bg-white h-full">
       <Padding>
         <Padding>
-          <Field
+          <FieldInput
             value={data.newLastName}
             placeholder="Фамилия"
             onChange={(value) => handleFieldChange('newLastName', value)}
@@ -101,7 +99,7 @@ const ChangeFullName: FC = () => {
               {errorMessages.newLastName}
             </Text>
           )}
-          <Field
+          <FieldInput
             value={data.newFirstName}
             placeholder="Имя"
             onChange={(value) => handleFieldChange('newFirstName', value)}
@@ -112,7 +110,7 @@ const ChangeFullName: FC = () => {
               {errorMessages.newFirstName}
             </Text>
           )}
-          <Field
+          <FieldInput
             value={data.newMiddleName}
             placeholder="Отчество"
             onChange={(value) => handleFieldChange('newMiddleName', value)}

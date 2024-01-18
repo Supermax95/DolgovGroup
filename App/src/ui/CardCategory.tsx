@@ -68,21 +68,12 @@ const CardCategory = () => {
         style={[styles.cardContainer, { width: cardWidth }]}
       >
         <Image
-          source={require('../assets/ChocoMilka.png')}
+          source={require('../assets/молоко_яйца.png')}
           resizeMode="contain"
           style={styles.image}
         />
-
-        <View style={styles.textContainer}>
-          <Text style={styles.nameText}>Нейм</Text>
-          <Text style={styles.descriptionText}>Хз...</Text>
-        </View>
-
-        <View style={styles.priceContainer}>
-          <Text style={styles.priceText}>₹ 150</Text>
-          <TouchableOpacity style={styles.heartIconContainer}>
-            <MaterialCommunityIcons name="heart" size={16} color="#fbfbfb" />
-          </TouchableOpacity>
+        <View style={styles.overlayText}>
+          <Text style={styles.overlayNameText}>Колбасные изделия</Text>
         </View>
       </TouchableOpacity>
       <TouchableOpacity
@@ -90,21 +81,12 @@ const CardCategory = () => {
         style={[styles.cardContainer, { width: cardWidth }]}
       >
         <Image
-          source={require('../assets/ChocoMilka.png')}
+          source={require('../assets/pelmen.png')}
           resizeMode="contain"
           style={styles.image}
         />
-
-        <View style={styles.textContainer}>
-          <Text style={styles.nameText}>Нейм</Text>
-          <Text style={styles.descriptionText}>Хз...</Text>
-        </View>
-
-        <View style={styles.priceContainer}>
-          <Text style={styles.priceText}>₹ 150</Text>
-          <TouchableOpacity style={styles.heartIconContainer}>
-            <MaterialCommunityIcons name="heart" size={16} color="#fbfbfb" />
-          </TouchableOpacity>
+        <View style={styles.overlayText}>
+          <Text style={styles.overlayNameText}>Колбасные изделия</Text>
         </View>
       </TouchableOpacity>
     </>
@@ -113,17 +95,18 @@ const CardCategory = () => {
 
 const styles = StyleSheet.create({
   cardContainer: {
-    padding: 2,
+    position: 'relative',
+    padding: 0,
     margin: 4,
-    borderRadius: 10,
-    backgroundColor: 'white',
+    borderRadius: 20,
+    backgroundColor: '#f1e1d2',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
   },
   image: {
-    width: 100,
-    height: 100,
+    width: 200,
+    height: 120,
   },
   textContainer: {
     flexDirection: 'column',
@@ -131,35 +114,30 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     width: '100%',
   },
-  nameText: {
+  // nameText: {
+  //   fontSize: 14,
+  //   fontWeight: 'bold',
+  //   color: 'black',
+  //   marginHorizontal: 5,
+  // },
+  overlayText: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    padding: 10,
+  },
+  overlayNameText: {
     fontSize: 14,
     fontWeight: 'bold',
-    color: 'gray',
+    color: '#292520',
   },
-  descriptionText: {
+  overlayDescriptionText: {
     fontSize: 12,
     color: 'gray',
-  },
-  priceContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '100%',
-  },
-  priceText: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: 'gray',
-  },
-  heartIconContainer: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: 'black',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
 

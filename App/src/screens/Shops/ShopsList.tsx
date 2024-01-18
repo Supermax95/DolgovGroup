@@ -1,10 +1,15 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { TabScreenNavigationProp } from 'navigation/types';
-import { View, FlatList, Text, TouchableHighlight, StyleSheet } from 'react-native';
-import Field from 'ui/Field';
+import {
+  View,
+  FlatList,
+  Text,
+  TouchableHighlight,
+  StyleSheet,
+} from 'react-native';
+import FieldInput from 'ui/FieldInput';
 import { useAppSelector } from 'Redux/hooks';
-
 
 interface ISelectedShop {
   id: number;
@@ -32,7 +37,7 @@ const ShopsList: FC = () => {
 
   return (
     <View>
-      <Field
+      <FieldInput
         placeholder="Поиск магазина"
         value={searchText}
         onChange={setSearchText}
@@ -44,8 +49,8 @@ const ShopsList: FC = () => {
           <TouchableHighlight onPress={() => handleShopSelected(item)}>
             <View>
               <Text>
-                <Text style={styles.boldText}>{item.city},</Text>{' '}
-                {item.address}, {item.hours}
+                <Text style={styles.boldText}>{item.city},</Text> {item.address}
+                , {item.hours}
               </Text>
             </View>
           </TouchableHighlight>
