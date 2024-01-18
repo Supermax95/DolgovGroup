@@ -9,7 +9,7 @@ import { StackNavigationProp, TabScreenNavigationProp } from 'navigation/types';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import userLogin from 'Redux/thunks/User/login.api';
 import Button from 'ui/Button';
-import Field from 'ui/Field';
+import FieldInput from 'ui/FieldInput';
 
 interface IData {
   email: string;
@@ -85,7 +85,7 @@ const SignIn: FC = () => {
           Авторизация
         </Text>
         <View className="w-10/12">
-          <Field
+          <FieldInput
             value={data.email}
             placeholder="Введите email"
             autoCapitalize="none"
@@ -93,7 +93,7 @@ const SignIn: FC = () => {
             onChange={(value) => setData({ ...data, email: value })}
           />
           <View className="flex-row items-center">
-            <Field
+            <FieldInput
               value={data.password}
               placeholder="Введите пароль"
               autoCapitalize="none"

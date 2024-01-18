@@ -3,7 +3,7 @@ import { useAppDispatch } from '../../../Redux/hooks';
 import addLocation from '../../../Redux/thunks/Locations/addLocation.api';
 import deleteLocation from '../../../Redux/thunks/Locations/deleteLocation.api';
 import Wrapper from '../../../ui/Wrapper';
-import Field from '../../../ui/Field';
+import FieldInput from '../../../ui/FieldInput';
 import InputModal from '../../../ui/InputModal';
 
 interface Location {

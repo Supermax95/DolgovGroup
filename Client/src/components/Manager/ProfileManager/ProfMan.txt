@@ -60,7 +60,7 @@ const handleSubmitProfileManager = async (e: React.FormEvent): Promise<void> => 
 ////////////////
 
 import React, { useState, useEffect, FC } from 'react';
-import Field from '../../../ui/Field';
+import FieldInput from '../../../ui/FieldInput';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import ToggleShowPassword from '../../../ui/ToggleShowPassword';
@@ -317,7 +317,7 @@ const ProfileManager: FC = () => {
               className="flex flex-col"
             >
               <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                <Field inputFields={inputFields} />
+                <FieldInput inputFields={inputFields} />
 
                 <div className="relative flex justify-center">
                   <Button type="submit" title="Сохранить" />

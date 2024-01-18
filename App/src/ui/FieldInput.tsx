@@ -1,7 +1,7 @@
 import { TextInput, TextInputProps } from 'react-native';
 import React, { FC } from 'react';
 
-interface IField {
+interface IFieldInput {
   onChange: (value: string) => void;
   value?: string;
   placeholder: string;
@@ -10,7 +10,7 @@ interface IField {
   keyboardType?: TextInputProps['keyboardType'];
 }
 
-const Field: FC<IField> = ({
+const FieldInput: FC<IFieldInput> = ({
   onChange,
   value,
   placeholder,
@@ -32,4 +32,4 @@ const Field: FC<IField> = ({
   );
 };
 
-export default Field;
+export default FieldInput;

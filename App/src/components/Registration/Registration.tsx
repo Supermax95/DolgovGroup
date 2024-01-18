@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from 'navigation/types';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Button from 'ui/Button';
-import Field from 'ui/Field';
+import FieldInput from 'ui/FieldInput';
 import Calendar from '../Calendar/Calendar';
 import userRegister from 'Redux/thunks/User/reg.api';
 
@@ -143,7 +143,7 @@ export const Registration: FC = () => {
                 <Text className="text-center text-gray-800 text-2xl font-bold mb-2">
                   Заполните поля
                 </Text>
-                <Field
+                <FieldInput
                   value={data.lastName}
                   placeholder="Фамилия"
                   onChange={(value) => handleFieldChange('lastName', value)}
@@ -154,7 +154,7 @@ export const Registration: FC = () => {
                     {errorMessages.lastName}
                   </Text>
                 )}
-                <Field
+                <FieldInput
                   value={data.firstName}
                   placeholder="Имя"
                   onChange={(value) => handleFieldChange('firstName', value)}
@@ -165,7 +165,7 @@ export const Registration: FC = () => {
                     {errorMessages.firstName}
                   </Text>
                 )}
-                <Field
+                <FieldInput
                   value={data.middleName}
                   placeholder="Отчество"
                   onChange={(value) => handleFieldChange('middleName', value)}
@@ -197,7 +197,7 @@ export const Registration: FC = () => {
                 <Text className="text-center text-gray-800 text-2xl font-bold mb-2">
                   Заполните еще раз поля
                 </Text>
-                <Field
+                <FieldInput
                   value={data.email}
                   placeholder="Email"
                   onChange={(value) => handleFieldChange('email', value)}
@@ -210,7 +210,7 @@ export const Registration: FC = () => {
                   </Text>
                 )}
                 <View className="flex-row items-center">
-                  <Field
+                  <FieldInput
                     value={data.password}
                     placeholder="Пароль"
                     onChange={(value) => handleFieldChange('password', value)}
@@ -235,7 +235,7 @@ export const Registration: FC = () => {
                   </Text>
                 )}
                 <View className="flex-row items-center">
-                  <Field
+                  <FieldInput
                     value={passwordCheck}
                     placeholder="Подтвердите пароль"
                     onChange={(value) => {

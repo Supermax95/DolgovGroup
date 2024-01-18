@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import Button from '../../ui/Button';
-import Field from '../../ui/Field';
+import FieldInput from '../../ui/FieldInput';
 import ToggleShowPassword from '../../ui/ToggleShowPassword';
 import { useAppDispatch } from '../../Redux/hooks';
 import { useNavigate } from 'react-router-dom';
@@ -133,15 +133,13 @@ const Portal: FC = () => {
     },
   ];
 
-
-  
   return (
     <>
-     {isLoading && 
-      <div className="bg-white p-1 rounded-sm z-10 py-20 bg-opacity-70 fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center ">
-      <LoadingAnimation />
+      {isLoading && (
+        <div className="bg-white p-1 rounded-sm z-10 py-20 bg-opacity-70 fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center ">
+          <LoadingAnimation />
         </div>
-        } 
+      )}
       <div className="min-h-screen bg-slate-100 py-6 flex flex-col justify-center sm:py-12">
         <div className="relative py-3 sm:max-w-xl sm:mx-auto">
           <div className="absolute inset-0 bg-gradient-to-r  from-lime-200 to-green-200 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
@@ -154,7 +152,7 @@ const Portal: FC = () => {
               </div>
               <form onSubmit={authHandler} className="divide-y divide-gray-200">
                 <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                  <Field inputFields={inputFields} />
+                  <FieldInput inputFields={inputFields} />
                   <div className="relative flex justify-center">
                     <Button type="submit" title="Войти" />
                   </div>

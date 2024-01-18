@@ -24,7 +24,7 @@ interface IField {
   error?: React.ReactNode;
 }
 
-const Field: FC<IInput> = ({ inputFields }) => {
+const FieldInput: FC<IInput> = ({ inputFields }) => {
   return (
     <>
       {inputFields.map((field) => (
@@ -81,4 +81,4 @@ const Field: FC<IInput> = ({ inputFields }) => {
   );
 };
 
-export default Field;
+export default FieldInput;

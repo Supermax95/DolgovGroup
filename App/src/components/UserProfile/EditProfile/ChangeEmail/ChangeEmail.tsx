@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from 'navigation/types';
 import { View, Text, Alert } from 'react-native';
-import Field from 'ui/Field';
+import FieldInput from 'ui/FieldInput';
 import Button from 'ui/Button';
 import Padding from 'ui/Padding';
 import profileChangeEmail from 'Redux/thunks/Profile/profileChangeEmail.api';
@@ -81,7 +81,7 @@ const ChangeEmail: FC = () => {
     <View className="bg-white h-full">
       <Padding>
         <Padding>
-          <Field
+          <FieldInput
             value={data.newEmail}
             placeholder="Email"
             onChange={(value) => handleFieldChange('newEmail', value)}
