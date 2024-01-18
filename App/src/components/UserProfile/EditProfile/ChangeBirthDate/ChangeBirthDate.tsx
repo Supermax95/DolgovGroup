@@ -8,6 +8,7 @@ import Calendar from '../../../Calendar/Calendar';
 import Button from 'ui/Button';
 import profileChangeBirthDate from 'Redux/thunks/Profile/profileChangeBirthDate.api';
 import Padding from 'ui/Padding';
+import refreshToken from 'Redux/thunks/User/refresh.api';
 
 export const ChangeBirthDate: FC = () => {
   const dispatch = useAppDispatch();
@@ -16,6 +17,11 @@ export const ChangeBirthDate: FC = () => {
   const userDate = useAppSelector<Date | null | string>(
     (state) => state.profileSlice.birthDate
   );
+ const accessToken = useAppSelector(state => state.userSlice.token?.accessToken);
+ console.log('accessToken', accessToken);
+ const email = useAppSelector<null | string>(state => state.userSlice.user.email)
+
+//  const refreshResult = dispatch(refreshToken());
 
   const userDateAsDate =
     userDate !== null ? parseISO(userDate as string) : null;
@@ -36,7 +42,7 @@ export const ChangeBirthDate: FC = () => {
       }
 
       const result = await dispatch(
-        profileChangeBirthDate({ userId, newBirthDate: data.newBirthDate })
+        profileChangeBirthDate({ userId, newBirthDate: data.newBirthDate ,accessToken})
       );
       if (result.meta.requestStatus === 'rejected') {
         Alert.alert(

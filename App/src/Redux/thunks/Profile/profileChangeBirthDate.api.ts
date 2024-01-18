@@ -6,6 +6,7 @@ import { PORT, IP } from '@env';
 interface RequestData {
   newBirthDate: Date | null | string;
   userId: number;
+  accessToken: string;
 }
 interface ResponseData {
   birthDate: Date | null | string;
@@ -13,11 +14,17 @@ interface ResponseData {
 const profileChangeBirthDate = createAsyncThunk<ResponseData,RequestData>(
   'api/profileChangeBirthDate',
 
-  async ({ userId, newBirthDate }) => {
+  async ({ userId, newBirthDate,accessToken }) => {
     try {
       const response: AxiosResponse = await axios.put(
         `http://${IP}:${PORT}/calendar/${userId}`,
-        { newBirthDate }
+        { newBirthDate },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`, 
+            'Content-Type': 'application/json',
+          },
+        }
       );
       return response.data;
     } catch (error) {
