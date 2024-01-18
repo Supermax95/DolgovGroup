@@ -93,6 +93,13 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: 'root',
   storage,
+  blacklist:[  'locationsSlice',
+    'usersSlice',
+   'productSlice',
+    'categorySlice',
+    'subcategorySlice',
+    'promotionSlice',
+   'lawsSlice']
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
