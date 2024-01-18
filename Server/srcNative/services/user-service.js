@@ -85,9 +85,6 @@ class UserService {
       throw ApiError.BadRequest('Пользователь с данным e-mail не найден');
     }
 
-    // if (!user.isActivated) {
-    //   throw ApiError.Forbidden('Аккаунт не активирован');
-    // }
     if (user.isActivated !== true) {
       throw new Error('Аккаунт не активирован');
     }
