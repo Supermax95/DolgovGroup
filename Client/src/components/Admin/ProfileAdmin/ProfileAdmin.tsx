@@ -1,5 +1,5 @@
 import React, { useState, useEffect, FC } from 'react';
-import FieldInput from '../../../ui/FieldInput';
+import Field from '../../../ui/Field';
 import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import ToggleShowPassword from '../../../ui/ToggleShowPassword';
 import Button from '../../../ui/Button';
@@ -650,18 +650,18 @@ const ProfileAdmin: FC = () => {
               <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
                 <div className="col-span-full sm:col-span-3">
                   <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                    <FieldInput inputFields={inputFieldsLastName} />
+                    <Field inputFields={inputFieldsLastName} />
                   </div>
                 </div>
                 <div className="col-span-full sm:col-span-3">
                   <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                    <FieldInput inputFields={inputFieldsFirstName} />
+                    <Field inputFields={inputFieldsFirstName} />
                   </div>
                 </div>
 
                 <div className="col-span-full sm:col-span-3">
                   <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                    <FieldInput inputFields={inputFieldsMiddleName} />
+                    <Field inputFields={inputFieldsMiddleName} />
                   </div>
                 </div>
               </div>
@@ -704,7 +704,7 @@ const ProfileAdmin: FC = () => {
               <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
                 <div className="col-span-full sm:col-span-3">
                   <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                    <FieldInput inputFields={inputFieldsEmail} />
+                    <Field inputFields={inputFieldsEmail} />
                   </div>
                 </div>
               </div>
@@ -745,7 +745,7 @@ const ProfileAdmin: FC = () => {
               <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
                 <div className="col-span-full sm:col-span-3">
                   <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                    <FieldInput inputFields={inputFieldsPhone} />
+                    <Field inputFields={inputFieldsPhone} />
                   </div>
                 </div>
               </div>
@@ -787,19 +787,19 @@ const ProfileAdmin: FC = () => {
               <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
                 <div className="col-span-full sm:col-span-3">
                   <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                    <FieldInput inputFields={inputFieldsOldPassword} />{' '}
+                    <Field inputFields={inputFieldsOldPassword} />{' '}
                   </div>
                 </div>
 
                 <div className="col-span-full sm:col-span-3">
                   <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                    <FieldInput inputFields={inputFieldsNewPassword} />{' '}
+                    <Field inputFields={inputFieldsNewPassword} />{' '}
                   </div>{' '}
                 </div>
 
                 <div className="col-span-full sm:col-span-3">
                   <div className="pt-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                    <FieldInput inputFields={inputFieldsConfirmPassword} />
+                    <Field inputFields={inputFieldsConfirmPassword} />
                   </div>{' '}
                 </div>
               </div>

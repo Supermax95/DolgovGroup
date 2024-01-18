@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import Button from '../../ui/Button';
-import FieldInput from '../../ui/FieldInput';
+import Field from '../../ui/Field';
 import ToggleShowPassword from '../../ui/ToggleShowPassword';
 import { useAppDispatch } from '../../Redux/hooks';
 import { useNavigate } from 'react-router-dom';
@@ -147,7 +147,7 @@ const Portal: FC = () => {
               </div>
               <form onSubmit={authHandler} className="divide-y divide-gray-200">
                 <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                  <FieldInput inputFields={inputFields} />
+                  <Field inputFields={inputFields} />
                   <div className="relative flex justify-center">
                     <Button type="submit" title="Войти" />
                   </div>
