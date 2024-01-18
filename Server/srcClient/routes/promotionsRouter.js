@@ -26,8 +26,8 @@ router.get('/admin/promotions', async (req, res) => {
     }
 
     await Promotion.update(
-      { photo: '/uploads/noPhoto/null.jpeg' },
-      { where: { photo: null } }
+      { photo: '/uploads/noPhoto/null.png' },
+      { where: { photo: null || '' } }
     );
 
     const updatedPromotions = await Promotion.findAll({
@@ -121,7 +121,7 @@ router.delete('/admin/promotions/:id', async (req, res) => {
     // Удалите связанный файл, если он существует
     if (promotion && promotion.photo) {
       const filePath = path.join(__dirname, '..', '..', promotion.photo);
-      if (promotion.photo !== '/uploads/noPhoto/null.jpeg') {
+      if (promotion.photo !== '/uploads/noPhoto/null.png') {
         const fileExists = await fsPromises
           .access(filePath)
           .then(() => true)
@@ -212,7 +212,7 @@ router.delete('/admin/promotions/photo/:id', async (req, res) => {
     if (promotion && promotion.photo) {
       const filePath = path.join(__dirname, '..', '..', promotion.photo);
 
-      if (promotion.photo !== '/uploads/noPhoto/null.jpeg') {
+      if (promotion.photo !== '/uploads/noPhoto/null.png') {
         const fileExists = await fsPromises
           .access(filePath)
           .then(() => true)
@@ -227,7 +227,7 @@ router.delete('/admin/promotions/photo/:id', async (req, res) => {
       }
 
       await Promotion.update(
-        { photo: '/uploads/noPhoto/null.jpeg' },
+        { photo: '/uploads/noPhoto/null.png' },
         { where: { id: promoId } }
       );
 

@@ -99,7 +99,7 @@ class UserService {
     const userDto = new UserDto(user);
     console.log('=====>', userDto);
     const tokens = tokenService.generateTokens({ ...userDto });
-    console.log(tokens);
+    console.log('=====>', tokens);
     await tokenService.saveToken(userDto.id, tokens.refreshToken);
     return {
       ...tokens,

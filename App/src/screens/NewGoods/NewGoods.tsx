@@ -52,10 +52,7 @@ export const NewGoods: FC = () => {
   const subcategories = useAppSelector<ISubcategory[]>(
     (state) => state.subcategorySlice.data
   );
-  //* для сайдбара
-  const [currentCategory, setCurrentCategory] = useState<ICategory | null>(
-    null
-  );
+
 
   useEffect(() => {
     dispatch(getProducts());

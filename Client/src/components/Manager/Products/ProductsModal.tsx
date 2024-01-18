@@ -776,7 +776,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
 
                 <div>
                   {!isAddingMode &&
-                    editedProduct.photo !== '/uploads/noPhoto/null.jpeg' && (
+                    editedProduct.photo !== '/uploads/noPhoto/null.png' && (
                       <Button
                         type="button"
                         onClick={handleDeletePhoto}

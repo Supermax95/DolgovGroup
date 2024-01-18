@@ -22,13 +22,15 @@ import LoadingAnimation from '../components/Admin/Laws/Loading';
 
 const Navigation: FC = () => {
   const manager = useAppSelector((state) => state.managerSlice.manager);
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
+  console.log(isLoading);
+  console.log(manager);
 
   useEffect(() => {
     const navigateToLocations = () => {
-      setLoading(false);
       navigate('/locations');
+      setLoading(false);
     };
 
     if (manager.email && window.location.pathname.includes('/portal')) {
@@ -36,20 +38,16 @@ const Navigation: FC = () => {
       setTimeout(navigateToLocations, 1000);
     } else if (!manager.email) {
       navigate('/portal');
-      setLoading(false);
     }
   }, [manager.email, navigate]);
 
-  if (isLoading) {
-    return (
-      <div className="bg-white p-1 rounded-sm z-10 py-20 bg-opacity-70 fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center">
-        <LoadingAnimation />
-      </div>
-    );
-  }
-
   return (
     <>
+      {isLoading && (
+        <div className="bg-white p-1 rounded-sm z-10 py-20 bg-opacity-70 fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center ">
+          <LoadingAnimation />
+        </div>
+      )}
       <div className="wrapperCss">
         <Routes>
           <Route path="/" element={manager.email ? <Navbar /> : null}>

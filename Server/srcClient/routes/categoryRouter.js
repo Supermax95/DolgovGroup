@@ -6,7 +6,7 @@ const fsPromises = require('fs').promises;
 router.get('/admin/category', async (req, res) => {
   try {
     await Category.update(
-      { img: '/uploads/noPhoto/null.jpeg' },
+      { img: '/uploads/noPhoto/null.png' },
       { where: { img: null } }
     );
 
@@ -130,7 +130,7 @@ router.delete('/admin/category/photo/:id', async (req, res) => {
     if (category && category.img) {
       const filePath = path.join(__dirname, '..', '..', category.img);
 
-      if (category.img !== '/uploads/noPhoto/null.jpeg') {
+      if (category.img !== '/uploads/noPhoto/null.png') {
         const fileExists = await fsPromises
           .access(filePath)
           .then(() => true)
@@ -146,7 +146,7 @@ router.delete('/admin/category/photo/:id', async (req, res) => {
       }
 
       await Category.update(
-        { img: '/uploads/noPhoto/null.jpeg' },
+        { img: '/uploads/noPhoto/null.png' },
         { where: { id: categoryId } }
       );
 

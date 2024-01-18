@@ -4,6 +4,7 @@ import userLogout from './thunks/User/logout.api';
 import userLogin from './thunks/User/login.api';
 import userActivate from './thunks/User/activated.api';
 import resetPassword from './thunks/User/newPassword.api';
+import refreshToken from './thunks/User/refresh.api';
 
 type User = {
   email: string;
@@ -113,7 +114,7 @@ const userSlice = createSlice({
         state.isAuth = true;
         state.token = {
           accessToken: action.payload?.token?.accessToken || '',
-          refreshToken: '',
+          refreshToken: action.payload?.token?.refreshToken || '',
         };
       })
       .addCase(userActivate.rejected, (state, action) => {
@@ -128,6 +129,21 @@ const userSlice = createSlice({
         state.email = action.payload.message;
       })
       .addCase(resetPassword.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      .addCase(refreshToken.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(refreshToken.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.token = {
+          accessToken: action.payload?.accessToken || '',
+          refreshToken: action.payload?.refreshToken || '',
+        };
+        state.user = action.payload.user;
+      })
+      .addCase(refreshToken.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       });
