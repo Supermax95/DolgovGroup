@@ -3,12 +3,12 @@ import axios, { AxiosResponse } from 'axios';
 import { PORT, IP } from '@env';
 
 interface RequestData {
-  token:
-    | {
-        accessToken: string;
-        refreshToken?: string;
-      }
-    | undefined;
+  // token:
+  //   | {
+  //       accessToken: string;
+  //       refreshToken?: string;
+  //     }
+  //   | undefined;
   userData: {
     password: string;
     email: string;
@@ -28,19 +28,18 @@ interface ResponseData {
 
 const userLogin = createAsyncThunk<ResponseData, RequestData>(
   'api/login',
-  async ({ token, userData }) => {
+  async ({userData }) => {
     try {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      };
+      // const config = {
+      //   headers: {
+      //     Authorization: `Bearer ${token}`,
+      //     'Content-Type': 'application/json',
+      //   },
+      // };
 
       const response: AxiosResponse = await axios.post(
         `http://${IP}:${PORT}/api/login`,
         userData,
-        config
       );
       // console.log('response axios', response.data);
 
