@@ -29,8 +29,12 @@ const Shops: FC = () => {
     (state) => state.locationsUserSlice.data
   );
 
+  const token = useAppSelector<string | undefined>(
+    (state) => state.userSlice.token?.refreshToken
+  );
+  
   useEffect(() => {
-    dispatch(getUserLocations());
+    dispatch(getUserLocations({token}));
   }, [dispatch]);
 
   useEffect(() => {

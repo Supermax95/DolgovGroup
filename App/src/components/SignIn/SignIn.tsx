@@ -32,9 +32,9 @@ const styleCenter = 'h-full w-full bg-white';
 const SignIn: FC = () => {
   const navigation = useNavigation<HomeAndPropResetPassword>();
   const dispatch = useAppDispatch();
-  const userToken = useAppSelector<IToken | undefined>(
-    (state) => state.userSlice.token
-  );
+  // const userToken = useAppSelector<IToken | undefined>(
+  //   (state) => state.userSlice.token
+  // );
 
   
 
@@ -60,7 +60,10 @@ const SignIn: FC = () => {
       }
 
       const result = await dispatch(
-        userLogin({ token: userToken, userData: data })
+        userLogin({ 
+          // token: userToken
+          // , 
+          userData: data })
       );
 
       if (result.meta.requestStatus === 'rejected') {
