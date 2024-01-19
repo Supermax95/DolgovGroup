@@ -28,7 +28,12 @@ router.get('/admin/products', async (req, res) => {
     // Обновить поле photo, если оно равно null
     await Product.update(
       { photo: '/uploads/noPhoto/null.png' },
-      { where: { photo: null || '' } }
+      { where: { photo: null } }
+    );
+
+    await Product.update(
+      { photo: '/uploads/noPhoto/null.png' },
+      { where: { photo: '' } }
     );
 
     // Получить обновленные продукты
