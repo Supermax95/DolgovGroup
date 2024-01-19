@@ -56,17 +56,12 @@ class UserController {
   }
 
   async logout(req, res, next) {
-    const {refreshToken} = req.body;
+    const refreshToken = req.headers.authorization.split(' ')[1];
     console.log(refreshToken);
     try {
       const token = await userService.logout(refreshToken);
-
       // Очищаем сессию и куки
-      req.session.destroy(() => {
-        res.clearCookie('name');
-        res.clearCookie(refreshToken);
-        res.status(200).json({ message: 'Logged out successfully' });
-      });
+      res.status(200).json({ message: 'Logged out successfully' });
     } catch (e) {
       next(e);
     }
@@ -87,9 +82,9 @@ class UserController {
   //   }
   // }
 
-
   async refresh(req, res, next) {
     const { refreshToken } = req.headers;
+    console.log(refreshToken);
     try {
       const userData = await userService.refresh(refreshToken);
       // res.cookie('refreshToken', userData.refreshToken, {
@@ -101,7 +96,6 @@ class UserController {
       next(e);
     }
   }
-
 
   async newPassword(req, res, next) {
     try {
