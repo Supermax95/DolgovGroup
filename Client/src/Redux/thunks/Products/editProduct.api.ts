@@ -46,7 +46,6 @@ const editProduct = createAsyncThunk<ResponseDataId, RequestData>(
   'admin/editProduct',
 
   async ({ newInfo }, { rejectWithValue }) => {
-    console.log('newInfo=======>', newInfo);
     try {
       const response: AxiosResponse = await axios.put(
         `${VITE_URL}/admin/products`,

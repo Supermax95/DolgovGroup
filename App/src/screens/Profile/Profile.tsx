@@ -15,7 +15,9 @@ const Profile: FC = () => {
   const firstName = useAppSelector<string>(
     (state) => state.profileSlice.firstName
   );
-const token = useAppSelector<string | undefined>((state) => state.userSlice.token?.refreshToken);
+  const token = useAppSelector<string | undefined>(
+    (state) => state.userSlice.token?.refreshToken
+  );
 
   useEffect(() => {
     if (token) {
@@ -25,7 +27,7 @@ const token = useAppSelector<string | undefined>((state) => state.userSlice.toke
 
   const handleLogout = async (): Promise<void> => {
     try {
-      await dispatch(userLogout());
+      await dispatch(userLogout({ token }));
       navigation.navigate('SignIn');
     } catch (error) {
       console.error('Ошибка при выходе:', error);
