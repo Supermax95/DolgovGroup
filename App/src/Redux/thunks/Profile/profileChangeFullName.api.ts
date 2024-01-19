@@ -4,7 +4,7 @@ import axios from 'axios';
 import { PORT, IP } from '@env';
 
 interface RequestDate {
-  userId: number;
+  token?: string | undefined;
   newLastName: string;
   newFirstName: string;
   newMiddleName: string;
@@ -19,11 +19,21 @@ interface ResponseData {
 
 const profileChangeFullName = createAsyncThunk<ResponseData, RequestDate>(
   'api/profileChangeFullName',
-  async ({ userId, newLastName, newFirstName, newMiddleName }) => {
+  async ({ token, newLastName, newFirstName, newMiddleName }) => {
     try {
       const response: AxiosResponse = await axios.put(
-        `http://${IP}:${PORT}/fullname/${userId}`,
-        { newLastName, newFirstName, newMiddleName }
+        `http://${IP}:${PORT}/fullname`,
+        {
+          newLastName,
+          newFirstName,
+          newMiddleName,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
       );
       return response.data;
     } catch (error) {

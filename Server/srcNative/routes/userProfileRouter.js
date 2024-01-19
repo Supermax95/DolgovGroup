@@ -6,11 +6,10 @@ const { DiscountCard } = require('../../db/models');
 module.exports = router
   .get('/edit', async (req, res) => {
     try {
-      // const { token } = req.params;
       const token = req.headers.authorization.split(' ')[1];
-      console.log('===============================>', token);
+      // console.log('===============================>', token);
       const user = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
-      console.log('============>', user);
+      // console.log('============>', user);
       const dataUser = await DiscountCard.findOne({ where: { id: user.id } });
 
       res.json(dataUser);
@@ -20,33 +19,35 @@ module.exports = router
     }
   })
 
-  .put('/fullname/:userId', async (req, res) => {
+  .put('/fullname', async (req, res) => {
     try {
-      const { userId } = req.params;
       const { newLastName, newFirstName, newMiddleName } = req.body;
+      const token = req.headers.authorization.split(' ')[1];
+      const user = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+
       console.log('Пришедшие данные:', {
         newLastName,
         newFirstName,
         newMiddleName,
       });
 
-      const user = await DiscountCard.findOne({ where: { id: userId } });
+      const userData = await DiscountCard.findOne({ where: { id: user.id } });
 
-      if (!user) {
+      if (!userData) {
         return res.status(404).json({ error: 'Пользователь не найден' });
       }
 
-      const lastNameUpdate = await user.update({
+      const lastNameUpdate = await userData.update({
         lastName: newLastName,
       });
       console.log('================>lastNameUpdate', lastNameUpdate);
 
-      const firstNameUpdate = await user.update({
+      const firstNameUpdate = await userData.update({
         firstName: newFirstName,
       });
       console.log('===========>firstNameUpdate', firstNameUpdate);
 
-      const middleNameUpdate = await user.update({
+      const middleNameUpdate = await userData.update({
         middleName: newMiddleName,
       });
 
@@ -64,19 +65,21 @@ module.exports = router
     }
   })
 
-  .put('/calendar/:userId', async (req, res) => {
+  .put('/calendar', async (req, res) => {
     try {
-      const { userId } = req.params;
       const { newBirthDate } = req.body;
+      const token = req.headers.authorization.split(' ')[1];
+
+      const user = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
 
       console.log('Пришедшие данные newBirthDate:', newBirthDate);
-      const user = await DiscountCard.findOne({ where: { id: userId } });
+      const userData = await DiscountCard.findOne({ where: { id: user.id } });
 
-      if (!user) {
+      if (!userData) {
         return res.status(404).json({ error: 'Пользователь не найден' });
       }
 
-      await user.update({
+      await userData.update({
         birthDate: newBirthDate,
       });
       res.status(200).json({
@@ -89,13 +92,16 @@ module.exports = router
     }
   })
 
-  .put('/email/:userId', async (req, res) => {
+  .put('/email', async (req, res) => {
     try {
-      const { userId } = req.params;
       const { newEmail } = req.body;
 
-      const user = await DiscountCard.findOne({ where: { id: userId } });
-      if (!user) {
+      const token = req.headers.authorization.split(' ')[1];
+      const user = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+
+      const userData = await DiscountCard.findOne({ where: { id: user.id } });
+
+      if (!userData) {
         return res.status(404).json({ error: 'Пользователь не найден' });
       }
 
@@ -109,7 +115,7 @@ module.exports = router
         });
       }
 
-      const emailUpdate = await user.update({
+      const emailUpdate = await userData.update({
         email: newEmail,
       });
       console.log('emailUpdate', emailUpdate);
@@ -124,18 +130,26 @@ module.exports = router
     }
   })
 
-  .put('/newpassword/:userId', async (req, res) => {
+  .put('/newpassword', async (req, res) => {
     try {
-      const { userId } = req.params;
       const { oldPassword, newPassword } = req.body;
+      console.log('req.headers', req.headers);
 
-      const user = await DiscountCard.findOne({ where: { id: userId } });
+      const token = req.headers.authorization.split(' ')[1];
+      console.log('===============================>', token);
 
-      if (!user) {
+      const user = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+
+      const userData = await DiscountCard.findOne({ where: { id: user.id } });
+
+      if (!userData) {
         return res.status(404).json({ error: 'Пользователь не найден' });
       }
 
-      const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
+      const isPasswordValid = await bcrypt.compare(
+        oldPassword,
+        userData.password
+      );
 
       if (!isPasswordValid) {
         return res.status(400).json({ error: 'Старый пароль неверен' });
@@ -143,7 +157,7 @@ module.exports = router
 
       const hash = await bcrypt.hash(newPassword, 10);
 
-      await user.update({ password: hash });
+      await userData.update({ password: hash });
 
       res.status(200).json({ message: 'Пароль успешно изменен' });
     } catch (error) {
