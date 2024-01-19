@@ -23,10 +23,11 @@ router.get('/check/:userId', async (req, res) => {
       console.log('Access Token:', token.accessToken);
       await tokenService.saveToken(user.id, token.refreshToken);
       req.session.userId = userDto.id;
-      res.cookie('refreshToken', token.refreshToken, {
-        maxAge: 30 * 24 * 60 * 60 * 1000,
-        httpOnly: true,
-      });
+        req.session.refreshToken = token.refreshToken;
+      // res.cookie('refreshToken', token.refreshToken, {
+      //   maxAge: 30 * 24 * 60 * 60 * 1000,
+      //   httpOnly: true,
+      // });
       // console.log('Отправлен токен:', token);
       console.log('Отправляем на клиент:', {
         message: 'Аккаунт активирован',

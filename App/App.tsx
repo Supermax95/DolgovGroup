@@ -6,6 +6,7 @@ import store from './src/Redux/store';
 import { AppNavigator } from './src/navigation/Navigation';
 
 export default function App() {
+  
   return (
     <Provider store={store}>
       {/* <SafeAreaView style={{ flex: 1 }}> */}

@@ -105,6 +105,7 @@ class UserService {
   }
 
   async logout(refreshToken) {
+    console.log('refreshToken', refreshToken)
     const token = await tokenService.removeToken(refreshToken);
     return token;
   }
@@ -115,7 +116,7 @@ class UserService {
     }
     const userData = tokenService.validateRefreshToken(refreshToken);
     const tokenFromBd = await tokenService.findToken(refreshToken);
-    if (!userData || tokenFromBd) {
+    if (!userData || !tokenFromBd) {
       throw ApiError.UnauthorizedError();
     }
     const user = await DiscountCard.findById(userData.id);
