@@ -1,15 +1,16 @@
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
-const { DiscountCard } = require('../../db/models');
 const jwt = require('jsonwebtoken');
+const { DiscountCard } = require('../../db/models');
 
 module.exports = router
-  .get('/edit/:token', async (req, res) => {
+  .get('/edit', async (req, res) => {
     try {
-      const { token } = req.params;
-      console.log(token);
+      // const { token } = req.params;
+      const token = req.headers.authorization.split(' ')[1];
+      console.log('===============================>', token);
       const user = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
-      console.log('============>',user)
+      console.log('============>', user);
       const dataUser = await DiscountCard.findOne({ where: { id: user.id } });
 
       res.json(dataUser);
