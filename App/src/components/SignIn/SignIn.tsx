@@ -35,6 +35,8 @@ const SignIn: FC = () => {
   const userToken = useAppSelector<IToken | undefined>(
     (state) => state.userSlice.token
   );
+  console.log('=====>', userToken);
+  
 
   const isLoading = useAppSelector<boolean>(
     (state) => state.userSlice.isLoading

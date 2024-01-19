@@ -29,6 +29,7 @@ const promotionRouter = require('./srcClient/routes/promotionsRouter');
 const lawsRouter = require('./srcClient/routes/lawsRouter');
 // middleware
 const errorMiddleware = require('./srcNative/middlewares/error-middleware');
+// const authMiddleware = require('./srcNative/middlewares/auth-middleware');
 
 const { PORT, IP } = process.env;
 

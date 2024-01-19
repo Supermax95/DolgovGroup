@@ -44,7 +44,7 @@ class UserController {
       const { email, password } = req.body;
       const userData = await userService.login(email, password);
       req.session.userId = userData.user.id;
-      req.session.refreshToken = userData.refreshToken
+      req.session.refreshToken = userData.refreshToken;
       // res.cookie('refreshToken', userData.refreshToken, {
       //   maxAge: 30 * 24 * 60 * 60 * 1000,
       //   httpOnly: true,
@@ -56,6 +56,8 @@ class UserController {
   }
 
   async logout(req, res, next) {
+    // const { refreshToken } = req.body;
+
     try {
       const { refreshToken } = req.cookies;
       const token = await userService.logout(refreshToken);
@@ -71,20 +73,36 @@ class UserController {
     }
   }
 
+  // async refresh(req, res, next) {
+  //   try {
+  //     const { refreshToken } = req.cookies;
+  //     const { email } = req.body;
+  //     const userData = await userService.refresh(email);
+  //     res.cookie('refreshToken', userData.refreshToken, {
+  //       maxAge: 30 * 24 * 60 * 60 * 1000,
+  //       httpOnly: true,
+  //     });
+  //     return res.json(userData);
+  //   } catch (e) {
+  //     next(e);
+  //   }
+  // }
+
+
   async refresh(req, res, next) {
+    const { refreshToken } = req.headers;
     try {
-      const { refreshToken } = req.cookies;
-      const { email } = req.body;
-      const userData = await userService.refresh(email);
-      res.cookie('refreshToken', userData.refreshToken, {
-        maxAge: 30 * 24 * 60 * 60 * 1000,
-        httpOnly: true,
-      });
+      const userData = await userService.refresh(refreshToken);
+      // res.cookie('refreshToken', userData.refreshToken, {
+      //   maxAge: 30 * 24 * 60 * 60 * 1000,
+      //   httpOnly: true,
+      // });
       return res.json(userData);
     } catch (e) {
       next(e);
     }
   }
+
 
   async newPassword(req, res, next) {
     try {

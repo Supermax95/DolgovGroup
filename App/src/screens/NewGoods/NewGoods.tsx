@@ -6,6 +6,7 @@ import getProducts from 'Redux/thunks/Catalog/productGet.api';
 import getCategory from 'Redux/thunks/Catalog/categoryGet.api';
 import getSubcategory from 'Redux/thunks/Catalog/subcategoryGet.api';
 import { PORT, IP } from '@env';
+import refreshToken from 'Redux/thunks/User/refresh.api';
 
 
 export interface IProduct {
@@ -40,6 +41,10 @@ export interface ISubcategory {
 export const NewGoods: FC = () => {
   const dispatch = useAppDispatch();
   
+  const user = useAppSelector((state) => state.userSlice);
+console.log('USER==================>',user);
+
+  
   const products = useAppSelector<IProduct[]>(
     (state) => state.productSlice.data
   );
@@ -64,6 +69,10 @@ export const NewGoods: FC = () => {
 
   useEffect(() => {
     dispatch(getSubcategory());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(refreshToken());
   }, [dispatch]);
   
   function calculateDiscountPercentageWithCents(

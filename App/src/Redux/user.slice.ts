@@ -25,8 +25,8 @@ type UserState = {
   user: User;
   isAuth: boolean;
   isLoading: boolean;
-  error: any; //* указать конкретный тип для ошибок, если он известен
-  email: string;
+  error: undefined | string //* указать конкретный тип для ошибок, если он известен
+  // email: string;
 };
 
 const initialState: UserState = {
@@ -42,9 +42,10 @@ const initialState: UserState = {
   },
   isAuth: false,
   isLoading: false,
-  error: null,
-  email: '',
+  error: undefined,
+  // email:'',
 };
+
 
 const userSlice = createSlice({
   name: 'user',
@@ -60,11 +61,10 @@ const userSlice = createSlice({
         if (action.payload) state.isLoading = false;
         state.token = {
           accessToken: action.payload.accessToken || '',
-          refreshToken: '',
+          refreshToken: action.payload.refreshToken || '',
         };
         state.user = action.payload.user;
         state.isAuth = true;
-        console.log('tokenslice', state.token);
       })
 
       .addCase(userLogin.rejected, (state, action) => {
@@ -126,7 +126,7 @@ const userSlice = createSlice({
       })
       .addCase(resetPassword.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.email = action.payload.message;
+        state.user.email = action.payload.message;
       })
       .addCase(resetPassword.rejected, (state, action) => {
         state.isLoading = false;
@@ -142,6 +142,9 @@ const userSlice = createSlice({
           refreshToken: action.payload?.refreshToken || '',
         };
         state.user = action.payload.user;
+        console.log('state.user',state.user);
+        console.log('refreshToken',state.token);
+        
       })
       .addCase(refreshToken.rejected, (state, action) => {
         state.isLoading = false;

@@ -17,6 +17,7 @@ interface IFullName {
 const ChangeFullName: FC = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<StackNavigationProp>();
+  const accessToken = useAppSelector(state => state.userSlice.token?.accessToken);
   const userId = useAppSelector<number>((state) => state.userSlice.user.id);
 
   const dateProfile = useAppSelector<{

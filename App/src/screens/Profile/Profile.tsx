@@ -15,10 +15,11 @@ const Profile: FC = () => {
   const firstName = useAppSelector<string>(
     (state) => state.profileSlice.firstName
   );
+const token = useAppSelector<string | undefined>((state) => state.userSlice.token?.refreshToken);
 
   useEffect(() => {
-    if (userId) {
-      dispatch(getProfileInfo({ userId }));
+    if (token) {
+      dispatch(getProfileInfo({ token }));
     }
   }, [dispatch, userId]);
 
