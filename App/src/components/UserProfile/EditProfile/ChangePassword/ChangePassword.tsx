@@ -18,8 +18,9 @@ interface PasswordChangeData {
 const ChangePassword: FC = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<StackNavigationProp>();
-  const userId = useAppSelector<number>((state) => state.userSlice.user.id);
-
+  const token = useAppSelector<string | undefined>(
+    (state) => state.userSlice.token?.refreshToken
+  );
   const [data, setData] = useState<PasswordChangeData>({
     oldPassword: '',
     newPassword: '',
@@ -63,7 +64,7 @@ const ChangePassword: FC = () => {
       try {
         const result = await dispatch(
           changeProfilePass({
-            userId,
+            token,
             oldPassword: data.oldPassword,
             newPassword: data.newPassword,
           })

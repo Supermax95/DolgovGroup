@@ -17,7 +17,9 @@ interface IFullName {
 const ChangeFullName: FC = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<StackNavigationProp>();
-  const accessToken = useAppSelector(state => state.userSlice.token?.accessToken);
+  const token = useAppSelector<string | undefined>(
+    (state) => state.userSlice.token?.refreshToken
+  );
   const userId = useAppSelector<number>((state) => state.userSlice.user.id);
 
   const dateProfile = useAppSelector<{
@@ -54,7 +56,7 @@ const ChangeFullName: FC = () => {
       try {
         const result = await dispatch(
           profileChangeFullName({
-            userId,
+            token,
             newLastName: data.newLastName,
             newFirstName: data.newFirstName,
             newMiddleName: data.newMiddleName,

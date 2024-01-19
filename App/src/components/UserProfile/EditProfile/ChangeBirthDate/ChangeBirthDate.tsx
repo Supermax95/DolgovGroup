@@ -17,11 +17,15 @@ export const ChangeBirthDate: FC = () => {
   const userDate = useAppSelector<Date | null | string>(
     (state) => state.profileSlice.birthDate
   );
- const accessToken = useAppSelector(state => state.userSlice.token?.accessToken);
- console.log('accessToken', accessToken);
- const email = useAppSelector<null | string>(state => state.userSlice.user.email)
 
-//  const refreshResult = dispatch(refreshToken());
+  const token = useAppSelector<string | undefined>(
+    (state) => state.userSlice.token?.refreshToken
+  );
+  const email = useAppSelector<null | string>(
+    (state) => state.userSlice.user.email
+  );
+
+  //  const refreshResult = dispatch(refreshToken());
 
   const userDateAsDate =
     userDate !== null ? parseISO(userDate as string) : null;
@@ -42,7 +46,7 @@ export const ChangeBirthDate: FC = () => {
       }
 
       const result = await dispatch(
-        profileChangeBirthDate({ userId, newBirthDate: data.newBirthDate ,accessToken})
+        profileChangeBirthDate({ token, newBirthDate: data.newBirthDate })
       );
       if (result.meta.requestStatus === 'rejected') {
         Alert.alert(

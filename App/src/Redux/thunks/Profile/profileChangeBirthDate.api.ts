@@ -5,23 +5,22 @@ import { PORT, IP } from '@env';
 
 interface RequestData {
   newBirthDate: Date | null | string;
-  userId: number;
-  accessToken: string;
+  token?: string | undefined;
 }
 interface ResponseData {
   birthDate: Date | null | string;
 }
-const profileChangeBirthDate = createAsyncThunk<ResponseData,RequestData>(
+const profileChangeBirthDate = createAsyncThunk<ResponseData, RequestData>(
   'api/profileChangeBirthDate',
 
-  async ({ userId, newBirthDate,accessToken }) => {
+  async ({ newBirthDate, token }) => {
     try {
       const response: AxiosResponse = await axios.put(
-        `http://${IP}:${PORT}/calendar/${userId}`,
+        `http://${IP}:${PORT}/calendar`,
         { newBirthDate },
         {
           headers: {
-            Authorization: `Bearer ${accessToken}`, 
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
         }

@@ -15,7 +15,9 @@ interface IChangeEmail {
 const ChangeEmail: FC = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<StackNavigationProp>();
-  const accessToken = useAppSelector(state => state.userSlice.token?.accessToken);
+  const token = useAppSelector<string | undefined>(
+    (state) => state.userSlice.token?.refreshToken
+  );
   const userId = useAppSelector<number>((state) => state.userSlice.user.id);
   const emailProfile = useAppSelector<string>(
     (state) => state.profileSlice.email
@@ -45,7 +47,7 @@ const ChangeEmail: FC = () => {
       try {
         const result = await dispatch(
           profileChangeEmail({
-            userId,
+            token,
             newEmail: data.newEmail,
           })
         );
