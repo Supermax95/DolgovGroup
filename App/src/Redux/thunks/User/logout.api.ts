@@ -13,14 +13,15 @@ interface ResponseData {
 
 export const userLogout = createAsyncThunk<ResponseData, Request>(
   'api/logout',
-  async (token) => {
-    console.log('API=====>', token);
-
+  async ({ token }) => {
     try {
       const response: AxiosResponse = await axios.post(
         `http://${IP}:${PORT}/api/logout`,
-        { token },
+        null,
         {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
           withCredentials: true,
         }
       );

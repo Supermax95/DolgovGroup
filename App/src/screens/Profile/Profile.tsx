@@ -18,7 +18,6 @@ const Profile: FC = () => {
   const token = useAppSelector<string | undefined>(
     (state) => state.userSlice.token?.refreshToken
   );
-  console.log('PROFILE', token);
 
   useEffect(() => {
     if (token) {

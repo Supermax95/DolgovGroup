@@ -8,9 +8,7 @@ module.exports = router
     try {
       // const { token } = req.params;
       const token = req.headers.authorization.split(' ')[1];
-      console.log('===============================>', token);
       const user = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
-      console.log('============>', user);
       const dataUser = await DiscountCard.findOne({ where: { id: user.id } });
 
       res.json(dataUser);
