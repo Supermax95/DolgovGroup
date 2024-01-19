@@ -57,7 +57,8 @@ import axios from 'axios';
 import { PORT, IP } from '@env';
 
 interface IProfileInfoRequest {
-  token: string | undefined;
+  token?: string | undefined;
+
 }
 
 interface IProfileInfoResponse {
@@ -83,7 +84,12 @@ const getProfileInfo = createAsyncThunk<
 >('api/profileInfo', async ({ token }, { rejectWithValue }) => {
   try {
     const response: AxiosResponse = await axios.get(
-      `http://${IP}:${PORT}/edit/${token}`
+      `http://${IP}:${PORT}/edit`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
 
     if (response.status === 200) {
