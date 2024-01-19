@@ -56,10 +56,9 @@ class UserController {
   }
 
   async logout(req, res, next) {
-    // const { refreshToken } = req.body;
-
+    const {refreshToken} = req.body;
+    console.log(refreshToken);
     try {
-      const { refreshToken } = req.cookies;
       const token = await userService.logout(refreshToken);
 
       // Очищаем сессию и куки

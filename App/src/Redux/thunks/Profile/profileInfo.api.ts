@@ -57,7 +57,7 @@ import axios from 'axios';
 import { PORT, IP } from '@env';
 
 interface IProfileInfoRequest {
-  token?: string;
+  token: string | undefined;
 }
 
 interface IProfileInfoResponse {
