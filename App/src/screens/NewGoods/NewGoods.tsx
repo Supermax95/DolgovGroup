@@ -42,7 +42,6 @@ export const NewGoods: FC = () => {
   const dispatch = useAppDispatch();
   
   const user = useAppSelector((state) => state.userSlice);
-console.log('USER==================>',user);
 
   
   const products = useAppSelector<IProduct[]>(
