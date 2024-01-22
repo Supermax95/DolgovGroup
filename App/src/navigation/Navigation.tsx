@@ -39,6 +39,7 @@ export const AppNavigator: FC = () => {
   }, [dispatch]);
 
   const user = useAppSelector((state) => state.userSlice.user.id);
+  console.log('🚀 ~ user:', user);
 
   const renderLoggedInUserScreens = () => (
     <>
@@ -92,7 +93,7 @@ export const AppNavigator: FC = () => {
         component={ShopsList}
         options={{ title: 'Список магазинов' }}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="CheckMail"
         component={CheckMail}
         options={{ title: 'Проверка активации' }}
