@@ -87,7 +87,7 @@ export const Registration: FC = () => {
           'Пользователь с данным email существует или произошла ошибка'
         );
       } else if (result.meta.requestStatus === 'fulfilled') {
-        navigation.replace('CheckMail');
+        navigation.navigate('CheckMail');
       }
     } catch (error) {
       console.error('Произошла ошибка при отправке запроса:', error);
