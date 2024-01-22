@@ -128,7 +128,6 @@ export const FooterTabs: FC = () => {
   }, [dispatch]);
 
   const user = useAppSelector((state) => state.userSlice.user.id);
-  console.log(user);
 
   const renderTabs = () => {
     if (user) {
@@ -210,9 +209,9 @@ export const FooterTabs: FC = () => {
       return (
         <Tab.Screen
           name="Auth"
-          component={SignIn}
+          component={Auth}
           options={{
-            title: 'Вход',
+            title: 'Auth',
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons
                 name="account"

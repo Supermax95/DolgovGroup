@@ -28,7 +28,7 @@ const Profile: FC = () => {
   const handleLogout = async (): Promise<void> => {
     try {
       await dispatch(userLogout({ token }));
-    navigation.navigate('SignIn');
+      navigation.navigate('Auth');
     } catch (error) {
       console.error('Ошибка при выходе:', error);
     }

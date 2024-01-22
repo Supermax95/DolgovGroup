@@ -28,6 +28,7 @@ type TabNavigatorOptions = {
   Shops: undefined;
   Support: undefined;
   Profile: undefined;
+  // SignIn:undefined;
 };
 
 type StackNavigationProp = NativeStackNavigationProp<RootStackParamList>;
