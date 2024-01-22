@@ -24,8 +24,7 @@ const Navigation: FC = () => {
   const manager = useAppSelector((state) => state.managerSlice.manager);
   const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
-  console.log(isLoading);
-  console.log(manager);
+
 
   useEffect(() => {
     const navigateToLocations = () => {

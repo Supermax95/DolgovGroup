@@ -36,6 +36,7 @@ class UserController {
       // return res.redirect('https://ya.ru');
     } catch (e) {
       console.log(e);
+      next(e);
     }
   }
 

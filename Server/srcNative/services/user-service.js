@@ -94,9 +94,9 @@ class UserService {
       throw ApiError.BadRequest('Пароль введён неверно');
     }
     const userDto = new UserDto(user);
-    console.log('=====>', userDto);
+    // console.log('=====>', userDto);
     const tokens = tokenService.generateTokens({ ...userDto });
-    console.log('=====>', tokens);
+    // console.log('=====>', tokens);
     await tokenService.saveToken(userDto.id, tokens.refreshToken);
     return {
       ...tokens,
@@ -105,7 +105,7 @@ class UserService {
   }
 
   async logout(refreshToken) {
-    console.log('refreshToken', refreshToken)
+    // console.log('refreshToken', refreshToken)
     const token = await tokenService.removeToken(refreshToken);
     return token;
   }
