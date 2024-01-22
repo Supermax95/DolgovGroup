@@ -11,10 +11,11 @@ import {
   SafeAreaView,
   ScrollView,
   TextInput,
-  TouchableOpacity,
 } from 'react-native';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import CardCategory from 'ui/CardCategory';
+import CardNoCarusel from 'components/ Action/CardNoCarusel/CardNoCarusel';
+import Heading from 'ui/Heading';
+import Search from 'ui/Search';
 
 function CategoryDetail() {
   const navigation = useNavigation<StackNavigationProp>();
@@ -23,42 +24,26 @@ function CategoryDetail() {
     <SafeAreaView
       className={`flex-1 items-center justify-start py-2 bg-[#ffff] `}
     >
-      <View
-        className={`flex-row items-center justify-between px-4 py-2 w-full`}
-      >
-        <View className={`flex-row items-center mr-12`}>
-          <View
-            className={`px-4 py-2 bg-gray-100  rounded-xl flex-row items-center justify-center mr-2`}
-          >
-            <MaterialCommunityIcons name="magnify" size={23} color="#7f7f7f" />
-            <TextInput
-              className={`text-md font-normal flex-1 px-2 py-1`}
-              placeholderTextColor="#555"
-              placeholder="Найти продукты"
-              // value={searchTerm}
-              // onChangeText={handleSearchTerm}
-            />
-          </View>
-        </View>
-
-        <TouchableOpacity
-          className={`w-12 h-12 right-11 rounded-xl flex items-center justify-center bg-gray-100`}
-        >
-          <MaterialCommunityIcons name="filter" size={24} color="#7f7f7f" />
-        </TouchableOpacity>
-      </View>
+      <Search />
 
       {/* Scrollable container start */}
-
       <ScrollView style={{ flex: 1, width: '100%' }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-          }}
-        >
-          <CardCategory />
+        <View className="bg-green-100">
+          <Heading title="Рекомендуем" />
+          <ScrollView
+            style={{ flex: 1, width: '100%', paddingHorizontal: 9 }}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+          >
+            <CardNoCarusel />
+          </ScrollView>
+        </View>
+
+        <View className="">
+          <Heading title="Или нет" />
+          <View className="flex-row flex-wrap justify-center">
+            <CardCategory />
+          </View>
         </View>
         {/* {isLoading ? (
       <View className={`flex-1 h-80 items-center justify-center`}>

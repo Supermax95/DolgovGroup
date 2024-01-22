@@ -18,7 +18,7 @@ const ChangeEmail: FC = () => {
   const token = useAppSelector<string | undefined>(
     (state) => state.userSlice.token?.refreshToken
   );
-  const userId = useAppSelector<number>((state) => state.userSlice.user.id);
+  // const userId = useAppSelector<number>((state) => state.userSlice.user.id);
   const emailProfile = useAppSelector<string>(
     (state) => state.profileSlice.email
   );

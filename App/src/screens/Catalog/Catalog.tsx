@@ -4,12 +4,18 @@ import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { StackNavigationProp } from 'navigation/types';
 
 import CategoryDetail from 'components/Catalog/CategoryDetail/CategoryDetail';
+import SubcagoryDetail from 'components/Catalog/SubcagoryDetail/SubcagoryDetail';
 
 const Catalog: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
   const dispatch = useAppDispatch();
 
-  return <CategoryDetail />;
+  return (
+    <>
+      <SubcagoryDetail />
+      {/* <CategoryDetail /> */}
+    </>
+  );
 };
 
 export default Catalog;
