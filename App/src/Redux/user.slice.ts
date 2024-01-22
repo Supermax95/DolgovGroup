@@ -5,11 +5,12 @@ import userLogin from './thunks/User/login.api';
 import userActivate from './thunks/User/activated.api';
 import resetPassword from './thunks/User/newPassword.api';
 import refreshToken from './thunks/User/refresh.api';
+import getCheck from './thunks/User/check.api';
 
 type User = {
   email: string;
   firstName: string;
-  id: number;
+  id: number | undefined;
   isActivated: boolean;
 };
 
@@ -149,7 +150,20 @@ const userSlice = createSlice({
       .addCase(refreshToken.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
-      });
+      })
+      .addCase(getCheck.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user.id = action.payload.id;
+        console.log(' state.user.id', state.user.id);
+        
+      })
+      .addCase(getCheck.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      .addCase(getCheck.pending, (state) => {
+        state.isLoading = true;
+      })
   },
 });
 

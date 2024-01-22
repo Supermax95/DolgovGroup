@@ -20,10 +20,10 @@ router.get('/check/:userId', async (req, res) => {
       const userDto = new UserDto(user);
       console.log('uuuuussssseerrrr', userDto);
       const token = tokenService.generateTokens({ ...userDto });
-      console.log('Access Token:', token.accessToken);
+      // console.log('Access Token:', token.accessToken);
       await tokenService.saveToken(user.id, token.refreshToken);
-      req.session.userId = userDto.id;
-        req.session.refreshToken = token.refreshToken;
+      // req.session.userId = userDto.id;
+        // req.session.refreshToken = token.refreshToken;
       // res.cookie('refreshToken', token.refreshToken, {
       //   maxAge: 30 * 24 * 60 * 60 * 1000,
       //   httpOnly: true,

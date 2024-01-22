@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
@@ -23,11 +23,24 @@ import ChangeBirthDate from 'components/UserProfile/EditProfile/ChangeBirthDate/
 import ChangeEmail from 'components/UserProfile/EditProfile/ChangeEmail/ChangeEmail';
 import ChangePassword from 'components/UserProfile/EditProfile/ChangePassword/ChangePassword';
 import { RootStackParamList, TabNavigatorOptions } from './types';
+import { useAppDispatch, useAppSelector } from 'Redux/hooks';
+import getCheck from 'Redux/thunks/User/check.api';
+
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabNavigatorOptions>();
 
 export const AppNavigator: FC = () => {
+  const dispatch = useAppDispatch();
+  const token = useAppSelector<string | undefined>(
+    (state) => state.userSlice.token?.refreshToken
+  );
+  useEffect(() => {
+    dispatch(getCheck({ token }));
+  }, [dispatch]);
+  
+  const user = useAppSelector((state) => state.userSlice.user.id);
+  
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="FooterTabs">
