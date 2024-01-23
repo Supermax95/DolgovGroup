@@ -133,8 +133,7 @@ const userSlice = createSlice({
       })
       .addCase(resetPassword.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message;
-        console.log(state.error);
+        state.error = action.payload;
       })
       .addCase(refreshToken.pending, (state) => {
         state.isLoading = true;
