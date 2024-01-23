@@ -11,7 +11,7 @@ type User = {
   email: string;
   firstName: string;
   id: number | undefined;
-  isActivated: boolean;
+  isActivated: boolean | undefined;
 };
 
 type IToken =
@@ -23,11 +23,10 @@ type IToken =
 
 type UserState = {
   token: IToken | undefined;
-  user: User;
-  isAuth: boolean;
+  user: User | undefined;
+  isAuth: boolean | null;
   isLoading: boolean;
-  error: undefined | string //* указать конкретный тип для ошибок, если он известен
-  // email: string;
+  error: undefined | string;
 };
 
 const initialState: UserState = {
@@ -38,15 +37,14 @@ const initialState: UserState = {
   user: {
     email: '',
     firstName: '',
-    id: 0,
-    isActivated: false,
+    id: 0 || undefined,
+    isActivated: null || undefined,
   },
   isAuth: false,
   isLoading: false,
   error: undefined,
   // email:'',
 };
-
 
 const userSlice = createSlice({
   name: 'user',
@@ -111,6 +109,8 @@ const userSlice = createSlice({
       })
       .addCase(userActivate.fulfilled, (state, action) => {
         if (action.payload) state.user = action.payload.user;
+        console.log( ' state.user======>', state.user);
+        
         state.isLoading = false;
         state.isAuth = true;
         state.token = {
@@ -143,9 +143,8 @@ const userSlice = createSlice({
           refreshToken: action.payload?.refreshToken || '',
         };
         state.user = action.payload.user;
-        console.log('state.user',state.user);
-        console.log('refreshToken',state.token);
-        
+        console.log('state.user', state.user);
+        console.log('refreshToken', state.token);
       })
       .addCase(refreshToken.rejected, (state, action) => {
         state.isLoading = false;
@@ -153,9 +152,9 @@ const userSlice = createSlice({
       })
       .addCase(getCheck.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.user.id = action.payload.id;
-        console.log(' state.user.id', state.user.id);
-        
+        state.user.id = action.payload;
+        state.user.isActivated = action.payload || undefined;
+        console.log(state.user.isActivated);
       })
       .addCase(getCheck.rejected, (state, action) => {
         state.isLoading = false;
@@ -163,7 +162,7 @@ const userSlice = createSlice({
       })
       .addCase(getCheck.pending, (state) => {
         state.isLoading = true;
-      })
+      });
   },
 });
 

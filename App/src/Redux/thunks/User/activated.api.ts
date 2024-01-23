@@ -12,36 +12,25 @@ interface IPropsActivateResponse {
   user: {
     email: string;
     firstName: string;
-    id: number;
+    id?: number | undefined;
     isActivated: boolean;
   };
 }
 
 interface IPropsActivateRequest {
-  userId: number;
-  token:
-    | {
-        accessToken: string;
-        refreshToken?: string;
-      }
-    | undefined;
+  userId?: number | undefined;
   force?: boolean;
 }
 
 const checkActivation = createAsyncThunk<
   IPropsActivateResponse | undefined,
   IPropsActivateRequest
->('api/activate', async ({ userId, token }) => {
+>('api/activate', async ({userId}) => {
+  console.log(userId);
+  
   try {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-    };
     const response: AxiosResponse = await axios.get(
-      `http://${IP}:${PORT}/check/${userId}`,
-      config
+      `http://${IP}:${PORT}/check/${userId}`
     );
 
     if (response.status === 200) {

@@ -13,6 +13,7 @@ const indexRouter = require('./srcNative/routes/indexRouter');
 const activateRouter = require('./srcNative/routes/activateRouter');
 const userProfileRouter = require('./srcNative/routes/userProfileRouter');
 const locationUserRouter = require('./srcNative/routes/locationsUserRouter');
+const checkUserNative = require('./srcNative/routes/checkRouter');
 // ? Require Routes React
 const locationRouter = require('./srcClient/routes/locationsRouter');
 const portalRouter = require('./srcClient/routes/portalRouter');
@@ -29,7 +30,6 @@ const promotionRouter = require('./srcClient/routes/promotionsRouter');
 const lawsRouter = require('./srcClient/routes/lawsRouter');
 // middleware
 const errorMiddleware = require('./srcNative/middlewares/error-middleware');
-// const authMiddleware = require('./srcNative/middlewares/auth-middleware');
 
 const { PORT, IP } = process.env;
 
@@ -72,6 +72,7 @@ app.use('/api', indexRouter);
 app.use('/', activateRouter);
 app.use('/', userProfileRouter);
 app.use('/', locationUserRouter);
+app.use('/', checkUserNative);
 app.use(errorMiddleware);
 
 // ? Routes React

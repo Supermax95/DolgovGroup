@@ -18,24 +18,21 @@ type IToken =
 const CheckMail: FC = () => {
   const navigation = useNavigation<TabScreenNavigationProp>();
   const dispatch = useAppDispatch();
-  const userId = useAppSelector<number>((state) => state.userSlice.user.id);
-  const userToken = useAppSelector<IToken | undefined>(
-    (state) => state.userSlice.token
+  const userId = useAppSelector<number | undefined>(
+    (state) => state.userSlice.user?.id
   );
 
   const [activationMessage, setActivationMessage] = useState<string>('');
 
   useEffect(() => {
     if (userId) {
-      dispatch(userActivate({ userId, token: userToken }));
+      dispatch(userActivate({userId, force: true }));
     }
-  }, [dispatch, userId, userToken]);
+  }, [dispatch, userId]);
 
   const handleCheckActivation = async () => {
     try {
-      const result = await dispatch(
-        userActivate({ userId, token: userToken, force: true })
-      );
+      const result = await dispatch(userActivate({ userId, force: true }));
       if (result.meta.requestStatus === 'fulfilled') {
         navigation.navigate('Home');
       } else {

@@ -28,21 +28,13 @@ interface ResponseData {
 
 const userLogin = createAsyncThunk<ResponseData, RequestData>(
   'api/login',
-  async ({userData }) => {
+  async ({ userData }) => {
     try {
-      // const config = {
-      //   headers: {
-      //     Authorization: `Bearer ${token}`,
-      //     'Content-Type': 'application/json',
-      //   },
-      // };
-
       const response: AxiosResponse = await axios.post(
         `http://${IP}:${PORT}/api/login`,
-        userData,
+        userData
       );
-      // console.log('response axios', response.data);
-
+    
       return response.data;
     } catch (error) {
       throw error;
