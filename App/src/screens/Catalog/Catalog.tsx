@@ -5,6 +5,7 @@ import { StackNavigationProp } from 'navigation/types';
 
 import CategoryDetail from 'components/Catalog/CategoryDetail/CategoryDetail';
 import SubcagoryDetail from 'components/Catalog/SubcagoryDetail/SubcagoryDetail';
+import ProductsCards from 'components/Catalog/ProductsCards/ProductsCards';
 
 const Catalog: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
@@ -12,8 +13,9 @@ const Catalog: FC = () => {
 
   return (
     <>
-      <SubcagoryDetail />
       {/* <CategoryDetail /> */}
+      {/* <SubcagoryDetail /> */}
+      <ProductsCards />
     </>
   );
 };

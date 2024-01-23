@@ -222,12 +222,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     width: '100%',
   },
-  // nameText: {
-  //   fontSize: 14,
-  //   fontWeight: 'bold',
-  //   color: 'black',
-  //   marginHorizontal: 5,
-  // },
   overlayText: {
     position: 'absolute',
     top: 0,

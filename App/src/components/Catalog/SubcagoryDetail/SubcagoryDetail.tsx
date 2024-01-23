@@ -6,7 +6,7 @@ import { View, SafeAreaView, ScrollView, TextInput } from 'react-native';
 
 import Heading from 'ui/Heading';
 import Search from 'ui/Search';
-import HeadingSubcategory from 'ui/HeadingSubcategory';
+import Subcategory from 'ui/Subcategory';
 
 const SubcagoryDetail = () => {
   return (
@@ -19,7 +19,7 @@ const SubcagoryDetail = () => {
       {/* Scrollable container для подкатегорий */}
       <ScrollView style={{ flex: 1, width: '100%' }}>
         <View className="my-4">
-          <HeadingSubcategory title="Колбаса" />
+          <Subcategory title="Колбаса" />
 
           <View className="flex-row flex-wrap justify-center">
             {/* <CardCategory /> */}
