@@ -54,13 +54,14 @@ export const AppNavigator: FC = () => {
   useEffect(() => {
     console.log('token в юз', token);
 
+  useEffect(() => {    
+
     if (token) {
       dispatch(getCheck({ token }));
     }
   }, [dispatch]);
 
   const user = useAppSelector((state) => state.userSlice.user.isActivated);
-  console.log(user);
 
   const renderLoggedInUserScreens = () => (
     <>

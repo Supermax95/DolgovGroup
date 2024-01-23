@@ -36,7 +36,7 @@ export const ResetPassword: FC = () => {
       if (result.meta.requestStatus === 'rejected') {
         Alert.alert(
           'Ошибка',
-          'Данного пользователя не существует или произошла ошибка'
+          result.payload
         );
       } else if (result.meta.requestStatus === 'fulfilled') {
         Alert.alert('Пароль выслан на вашу почту', '', [

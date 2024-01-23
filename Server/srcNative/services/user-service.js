@@ -21,11 +21,8 @@ class UserService {
     password
   ) {
     const userReg = await DiscountCard.findOne({ where: { email } });
-    console.log('userReg', userReg);
     if (userReg) {
-      throw ApiError.BadRequest(
-        `Пользователь с такой электронной почтой ${email} уже существует`
-      );
+      throw `Пользователь с такой электронной почтой ${email} уже существует`;
     }
     const hash = await bcrypt.hash(password, 10);
 
@@ -52,51 +49,36 @@ class UserService {
     };
   }
 
-  // async activate(activationLink) {
-  //   const newUser = await DiscountCard.findOne({ where: { activationLink } });
-  //   if (!newUser) {
-  //     throw ApiError.BadRequest('Некорректная ссылка активации');
-  //   }
-  //   newUser.isActivated = true;
-  //   await newUser.save();
-  // }
-
   async activate(activationLink) {
     const user = await DiscountCard.findOne({ where: { activationLink } });
     if (!user) {
-      throw ApiError.BadRequest('Некорректная ссылка активации');
+      throw 'Некорректная ссылка активации';
     }
     user.isActivated = true;
     await user.save();
-
-    // const userDto = new UserDto(newUser);
-    // const tokens = tokenService.generateTokens({ ...userDto });
-    // await tokenService.saveToken(userDto.id, tokens.refreshToken);
-
-    // return {
-    // user: userDto,
-    // refreshToken: tokens.refreshToken,
-    // };
   }
 
   async login(email, password) {
     const user = await DiscountCard.findOne({ where: { email } });
     if (!user) {
-      throw ApiError.BadRequest('Пользователь с данным e-mail не найден');
-    }
-
-    if (user.isActivated !== true) {
-      throw new Error('Аккаунт не активирован');
+      throw 'Пользователь с данным e-mail не найден';
     }
 
     const isPassEquels = await bcrypt.compare(password, user.password);
     if (!isPassEquels) {
-      throw ApiError.BadRequest('Пароль введён неверно');
+      throw 'Пароль введён неверно';
     }
+
+    if (!user.isActivated) {
+      const userDto = new UserDto(user);
+      return {
+        user: userDto,
+        activationError: 'Аккаунт не активирован',
+      };
+    }
+
     const userDto = new UserDto(user);
-    // console.log('=====>', userDto);
     const tokens = tokenService.generateTokens({ ...userDto });
-    // console.log('=====>', tokens);
     await tokenService.saveToken(userDto.id, tokens.refreshToken);
     return {
       ...tokens,
@@ -105,7 +87,6 @@ class UserService {
   }
 
   async logout(refreshToken) {
-    // console.log('refreshToken', refreshToken)
     const token = await tokenService.removeToken(refreshToken);
     return token;
   }
@@ -144,7 +125,9 @@ class UserService {
     const hash = await bcrypt.hash(newPassword, 10);
     const user = await DiscountCard.findOne({ where: { email } });
     if (!user) {
-      throw new Error('Пользователь с указанным email не существует');
+      throw 'Пользователь с указанным email не существует';
+    } else if (user.isActivated === false || user.isActivated === null) {
+      throw 'Аккаунт не активен';
     }
     await DiscountCard.update({ password: hash }, { where: { email } });
     await MailService.sendNewPasswordMail(email, newPassword);

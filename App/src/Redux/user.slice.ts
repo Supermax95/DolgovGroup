@@ -27,6 +27,7 @@ type UserState = {
   isAuth: boolean | null;
   isLoading: boolean;
   error: undefined | string;
+  activationError: undefined | string;
 };
 
 const initialState: UserState = {
@@ -43,6 +44,7 @@ const initialState: UserState = {
   isAuth: false,
   isLoading: false,
   error: undefined,
+  activationError: undefined,
   // email:'',
 };
 
@@ -63,12 +65,13 @@ const userSlice = createSlice({
           refreshToken: action.payload.refreshToken || '',
         };
         state.user = action.payload.user;
+        state.activationError = action.payload.activationError;
         state.isAuth = true;
       })
 
       .addCase(userLogin.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message;
+        state.error = action.payload;
       })
       .addCase(userRegister.pending, (state) => {
         state.isLoading = true;
@@ -109,8 +112,7 @@ const userSlice = createSlice({
       })
       .addCase(userActivate.fulfilled, (state, action) => {
         if (action.payload) state.user = action.payload.user;
-        console.log( ' state.user======>', state.user);
-        
+
         state.isLoading = false;
         state.isAuth = true;
         state.token = {
@@ -131,7 +133,7 @@ const userSlice = createSlice({
       })
       .addCase(resetPassword.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message;
+        state.error = action.payload;
       })
       .addCase(refreshToken.pending, (state) => {
         state.isLoading = true;
@@ -154,7 +156,6 @@ const userSlice = createSlice({
         state.isLoading = false;
         state.user.id = action.payload;
         state.user.isActivated = action.payload || undefined;
-        console.log(state.user.isActivated);
       })
       .addCase(getCheck.rejected, (state, action) => {
         state.isLoading = false;

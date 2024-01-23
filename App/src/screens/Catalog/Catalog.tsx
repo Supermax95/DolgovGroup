@@ -16,6 +16,7 @@ const Catalog: FC = () => {
       <CategoryDetail />
       {/* <SubcagoryDetail /> */}
       {/* <ProductsCards /> */}
+
     </>
   );
 };
