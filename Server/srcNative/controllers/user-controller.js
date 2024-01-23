@@ -23,7 +23,9 @@ class UserController {
       // });
       return res.json(userData);
     } catch (e) {
-      next(e);
+      const errorMessage = typeof e === 'string' ? e : 'Internal Server Error';
+      console.log(errorMessage);
+      return res.status(500).json({ message: errorMessage });
     }
   }
 
@@ -35,8 +37,9 @@ class UserController {
       return res.redirect(`http://${IP}:${FRONTPORT}/registration/success`);
       // return res.redirect('https://ya.ru');
     } catch (e) {
-      console.log(e);
-      next(e);
+      const errorMessage = typeof e === 'string' ? e : 'Internal Server Error';
+      console.log(errorMessage);
+      return res.status(500).json({ message: errorMessage });
     }
   }
 
@@ -44,16 +47,12 @@ class UserController {
     try {
       const { email, password } = req.body;
       const userData = await userService.login(email, password);
-      // req.session.userId = userData.user.id;
-      // req.session.refreshToken = userData.refreshToken;
-      // res.cookie('refreshToken', userData.refreshToken, {
-      //   maxAge: 30 * 24 * 60 * 60 * 1000,
-      //   httpOnly: true,
-      // });
       console.log(userData);
       return res.json(userData);
     } catch (e) {
-      next(e);
+      const errorMessage = typeof e === 'string' ? e : 'Internal Server Error';
+      console.log(errorMessage);
+      return res.status(500).json({ message: errorMessage });
     }
   }
 
@@ -65,7 +64,9 @@ class UserController {
       // Очищаем сессию и куки
       res.status(200).json({ message: 'Logged out successfully' });
     } catch (e) {
-      next(e);
+      const errorMessage = typeof e === 'string' ? e : 'Internal Server Error';
+      console.log(errorMessage);
+      return res.status(500).json({ message: errorMessage });
     }
   }
 
@@ -107,7 +108,9 @@ class UserController {
 
       return res.json({ message: 'Новый пароль отправлен на указанный email' });
     } catch (e) {
-      next(e);
+      const errorMessage = typeof e === 'string' ? e : 'Internal Server Error';
+      console.log(errorMessage);
+      return res.status(500).json({ message: errorMessage });
     }
   }
 }

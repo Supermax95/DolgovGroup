@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { useAppDispatch } from 'Redux/hooks';
-import { View, Text, ScrollView, Alert } from 'react-native';
+import { View, Text, ScrollView, Alert, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from 'navigation/types';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
@@ -22,6 +22,7 @@ interface IData {
 export const Registration: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
   const dispatch = useAppDispatch();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [step, setStep] = useState<number>(1);
   const [data, setData] = useState<IData>({
     email: '',
@@ -80,14 +81,24 @@ export const Registration: FC = () => {
     }
 
     try {
+      setIsLoading(true);
       const result = await dispatch(userRegister(data));
       if (result.meta.requestStatus === 'rejected') {
-        Alert.alert(
-          'Ошибка',
-          'Пользователь с данным email существует или произошла ошибка'
-        );
+        setTimeout(() => {
+          setIsLoading(false);
+          Alert.alert(
+            'Ошибка',
+            'Пользователь с данным email существует или произошла ошибка'
+          );
+        }, 2000);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 2000);
       } else if (result.meta.requestStatus === 'fulfilled') {
-        navigation.navigate('CheckMail');
+        setTimeout(() => {
+          setIsLoading(false);
+          navigation.navigate('CheckMail');
+        }, 2000);
       }
     } catch (error) {
       console.error('Произошла ошибка при отправке запроса:', error);
@@ -135,152 +146,156 @@ export const Registration: FC = () => {
 
   return (
     <ScrollView contentContainerStyle={{ minHeight: '100%' }}>
-      <View className="h-full w-full bg-white">
-        <View className="mx-1 justify-center items-center h-full">
-          <View className="w-10/12">
-            {step === 1 && (
-              <>
-                <Text className="text-center text-gray-800 text-2xl font-bold mb-2">
-                  Заполните поля
-                </Text>
-                <FieldInput
-                  value={data.lastName}
-                  placeholder="Фамилия"
-                  onChange={(value) => handleFieldChange('lastName', value)}
-                  autoCapitalize="words"
-                />
-                {errorMessages.lastName && (
-                  <Text className="text-red-500 ml-1 mt-1 text-xs">
-                    {errorMessages.lastName}
+      {isLoading ? (
+        <ActivityIndicator size="large" color="green" />
+      ) : (
+        <View className="h-full w-full bg-white">
+          <View className="mx-1 justify-center items-center h-full">
+            <View className="w-10/12">
+              {step === 1 && (
+                <>
+                  <Text className="text-center text-gray-800 text-2xl font-bold mb-2">
+                    Заполните поля
                   </Text>
-                )}
-                <FieldInput
-                  value={data.firstName}
-                  placeholder="Имя"
-                  onChange={(value) => handleFieldChange('firstName', value)}
-                  autoCapitalize="words"
-                />
-                {errorMessages.firstName && (
-                  <Text className="text-red-500 ml-1 mt-1 text-xs">
-                    {errorMessages.firstName}
-                  </Text>
-                )}
-                <FieldInput
-                  value={data.middleName}
-                  placeholder="Отчество"
-                  onChange={(value) => handleFieldChange('middleName', value)}
-                  autoCapitalize="words"
-                />
-                {errorMessages.middleName && (
-                  <Text className="text-red-500 ml-1 mt-1 text-xs">
-                    {errorMessages.middleName}
-                  </Text>
-                )}
-                <Calendar
-                  onDateChange={(selectedDate) =>
-                    handleFieldChange('birthDate', selectedDate)
-                  }
-                />
+                  <FieldInput
+                    value={data.lastName}
+                    placeholder="Фамилия"
+                    onChange={(value) => handleFieldChange('lastName', value)}
+                    autoCapitalize="words"
+                  />
+                  {errorMessages.lastName && (
+                    <Text className="text-red-500 ml-1 mt-1 text-xs">
+                      {errorMessages.lastName}
+                    </Text>
+                  )}
+                  <FieldInput
+                    value={data.firstName}
+                    placeholder="Имя"
+                    onChange={(value) => handleFieldChange('firstName', value)}
+                    autoCapitalize="words"
+                  />
+                  {errorMessages.firstName && (
+                    <Text className="text-red-500 ml-1 mt-1 text-xs">
+                      {errorMessages.firstName}
+                    </Text>
+                  )}
+                  <FieldInput
+                    value={data.middleName}
+                    placeholder="Отчество"
+                    onChange={(value) => handleFieldChange('middleName', value)}
+                    autoCapitalize="words"
+                  />
+                  {errorMessages.middleName && (
+                    <Text className="text-red-500 ml-1 mt-1 text-xs">
+                      {errorMessages.middleName}
+                    </Text>
+                  )}
+                  <Calendar
+                    onDateChange={(selectedDate) =>
+                      handleFieldChange('birthDate', selectedDate)
+                    }
+                  />
 
-                {errorMessages.birthDate && (
-                  <Text className="text-red-500 ml-1 mt-1 text-xs">
-                    {errorMessages.birthDate
-                      ? errorMessages.birthDate.toLocaleString()
-                      : ''}
+                  {errorMessages.birthDate && (
+                    <Text className="text-red-500 ml-1 mt-1 text-xs">
+                      {errorMessages.birthDate
+                        ? errorMessages.birthDate.toLocaleString()
+                        : ''}
+                    </Text>
+                  )}
+                  <Button onPress={handleNextStep} title="Далее" />
+                </>
+              )}
+              {step === 2 && (
+                <>
+                  <Text className="text-center text-gray-800 text-2xl font-bold mb-2">
+                    Заполните еще раз поля
                   </Text>
-                )}
-                <Button onPress={handleNextStep} title="Далее" />
-              </>
-            )}
-            {step === 2 && (
-              <>
-                <Text className="text-center text-gray-800 text-2xl font-bold mb-2">
-                  Заполните еще раз поля
-                </Text>
-                <FieldInput
-                  value={data.email}
-                  placeholder="Email"
-                  onChange={(value) => handleFieldChange('email', value)}
-                  autoCapitalize="none"
-                  keyboardType="email-address"
-                />
-                {errorMessages.email && (
-                  <Text className="text-red-500 ml-1 mt-1 text-xs">
-                    {errorMessages.email}
-                  </Text>
-                )}
-                <View className="flex-row items-center">
                   <FieldInput
-                    value={data.password}
-                    placeholder="Пароль"
-                    onChange={(value) => handleFieldChange('password', value)}
-                    isSecure={!showPassword}
+                    value={data.email}
+                    placeholder="Email"
+                    onChange={(value) => handleFieldChange('email', value)}
                     autoCapitalize="none"
+                    keyboardType="email-address"
                   />
-                  <MaterialCommunityIcons
-                    name={showPassword ? 'eye' : 'eye-off'}
-                    size={25}
-                    color="gray"
-                    onPress={toggleShowPassword}
-                    style={{
-                      position: 'absolute',
-                      right: 15,
-                      transform: [{ translateY: 5 }],
-                    }}
+                  {errorMessages.email && (
+                    <Text className="text-red-500 ml-1 mt-1 text-xs">
+                      {errorMessages.email}
+                    </Text>
+                  )}
+                  <View className="flex-row items-center">
+                    <FieldInput
+                      value={data.password}
+                      placeholder="Пароль"
+                      onChange={(value) => handleFieldChange('password', value)}
+                      isSecure={!showPassword}
+                      autoCapitalize="none"
+                    />
+                    <MaterialCommunityIcons
+                      name={showPassword ? 'eye' : 'eye-off'}
+                      size={25}
+                      color="gray"
+                      onPress={toggleShowPassword}
+                      style={{
+                        position: 'absolute',
+                        right: 15,
+                        transform: [{ translateY: 5 }],
+                      }}
+                    />
+                  </View>
+                  {errorMessages.password && (
+                    <Text className="text-red-500 ml-1 mt-1 text-xs">
+                      {errorMessages.password}
+                    </Text>
+                  )}
+                  <View className="flex-row items-center">
+                    <FieldInput
+                      value={passwordCheck}
+                      placeholder="Подтвердите пароль"
+                      onChange={(value) => {
+                        setPasswordCheck(value);
+                        setErrorMessages((prevErrors) => ({
+                          ...prevErrors,
+                          password: '',
+                        }));
+                      }}
+                      isSecure={!showPasswordRepeat}
+                      autoCapitalize="none"
+                    />
+                    <MaterialCommunityIcons
+                      name={showPasswordRepeat ? 'eye' : 'eye-off'}
+                      size={25}
+                      color="gray"
+                      onPress={toggleShowPasswordRepeat}
+                      style={{
+                        position: 'absolute',
+                        right: 15,
+                        transform: [{ translateY: 5 }],
+                      }}
+                    />
+                  </View>
+                  {errorMessages.password && (
+                    <Text className="text-red-500 ml-1 mt-1 text-xs">
+                      {errorMessages.password}
+                    </Text>
+                  )}
+                  <View className="mt-2">
+                    <Text className=" text-gray-800 ml-1 text-xs font-normal">
+                      Регестрируясь вы соглашаетесь продать душу дьяволу
+                    </Text>
+                  </View>
+                  <Button
+                    onPress={handlePrevStep}
+                    title="Назад"
+                    colors={['bg-red-200', 'bg-lime-300']}
                   />
-                </View>
-                {errorMessages.password && (
-                  <Text className="text-red-500 ml-1 mt-1 text-xs">
-                    {errorMessages.password}
-                  </Text>
-                )}
-                <View className="flex-row items-center">
-                  <FieldInput
-                    value={passwordCheck}
-                    placeholder="Подтвердите пароль"
-                    onChange={(value) => {
-                      setPasswordCheck(value);
-                      setErrorMessages((prevErrors) => ({
-                        ...prevErrors,
-                        password: '',
-                      }));
-                    }}
-                    isSecure={!showPasswordRepeat}
-                    autoCapitalize="none"
-                  />
-                  <MaterialCommunityIcons
-                    name={showPasswordRepeat ? 'eye' : 'eye-off'}
-                    size={25}
-                    color="gray"
-                    onPress={toggleShowPasswordRepeat}
-                    style={{
-                      position: 'absolute',
-                      right: 15,
-                      transform: [{ translateY: 5 }],
-                    }}
-                  />
-                </View>
-                {errorMessages.password && (
-                  <Text className="text-red-500 ml-1 mt-1 text-xs">
-                    {errorMessages.password}
-                  </Text>
-                )}
-                <View className="mt-2">
-                  <Text className=" text-gray-800 ml-1 text-xs font-normal">
-                    Регестрируясь вы соглашаетесь продать душу дьяволу
-                  </Text>
-                </View>
-                <Button
-                  onPress={handlePrevStep}
-                  title="Назад"
-                  colors={['bg-red-200', 'bg-lime-300']}
-                />
-                <Button onPress={handleSubmit} title={`Зарегистрироваться`} />
-              </>
-            )}
+                  <Button onPress={handleSubmit} title={`Зарегистрироваться`} />
+                </>
+              )}
+            </View>
           </View>
         </View>
-      </View>
+      )}
     </ScrollView>
   );
 };

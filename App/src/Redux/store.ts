@@ -10,7 +10,7 @@ import subcategorySlice from './subcategory.slice';
 import productSlice from './product.slice';
 
 const reducers = combineReducers({
-  userSlice:userSlice,
+  userSlice,
   profileSlice,
   locationsUserSlice,
   categorySlice,

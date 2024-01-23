@@ -34,18 +34,13 @@ export const AppNavigator: FC = () => {
   const token = useAppSelector<string | undefined>(
     (state) => state.userSlice.token?.refreshToken
   );
-  console.log('token',token);
-  
-  useEffect(() => {
-    console.log('token в юз',token);
-    
+  useEffect(() => {    
     if (token) {
       dispatch(getCheck({ token }));
     }
   }, [dispatch]);
-  
+
   const user = useAppSelector((state) => state.userSlice.user.isActivated);
-console.log(user);
 
   const renderLoggedInUserScreens = () => (
     <>

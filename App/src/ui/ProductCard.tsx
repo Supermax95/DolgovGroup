@@ -32,7 +32,7 @@ const ProductCard = () => {
         <View className="h-19 space-y-1">
           <View style={styles.textContainer}>
             <Text className="text-sm text-gray-700 font-medium">
-              Пюре из чернослива и груши, 90 г
+            Колбаса сырокопчёная Ремит Trio mio в нарезке ассорти, 100г
             </Text>
           </View>
           <View style={styles.priceContainer}>

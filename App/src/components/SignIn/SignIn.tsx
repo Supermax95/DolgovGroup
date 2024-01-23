@@ -36,8 +36,6 @@ const SignIn: FC = () => {
   //   (state) => state.userSlice.token
   // );
 
-  
-
   const isLoading = useAppSelector<boolean>(
     (state) => state.userSlice.isLoading
   );
@@ -46,6 +44,7 @@ const SignIn: FC = () => {
     email: '',
     password: '',
   });
+
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const toggleShowPassword = (): void => {
@@ -60,19 +59,19 @@ const SignIn: FC = () => {
       }
 
       const result = await dispatch(
-        userLogin({ 
-          // token: userToken
-          // , 
-          userData: data })
+        userLogin({
+          userData: data,
+        })
       );
 
       if (result.meta.requestStatus === 'rejected') {
-        Alert.alert(
-          'Ошибка',
-          'Данного пользователя не существует или произошла ошибка'
-        );
+        Alert.alert('Ошибка', result.payload);
       } else if (result.meta.requestStatus === 'fulfilled') {
-        navigation.navigate('Home');
+        if (result.payload.activationError === 'Аккаунт не активирован') {
+          navigation.navigate('CheckMail');
+        } else {
+          navigation.navigate('Home');
+        }
       }
     } catch (error) {
       Alert.alert(

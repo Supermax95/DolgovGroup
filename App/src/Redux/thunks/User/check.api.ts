@@ -19,7 +19,6 @@ interface ICheckResponse {
 const getCheck = createAsyncThunk<ICheckResponse, ICheckRequest>(
   'api/checkUser',
   async ({ token }) => {
-    console.log('=====>Апи', token);
     try {
       const response: AxiosResponse<ICheckResponse> = await axios.get(
         `http://${IP}:${PORT}/checkUser`,
