@@ -23,7 +23,7 @@ const Profile: FC = () => {
     if (token) {
       dispatch(getProfileInfo({ token }));
     }
-  }, [dispatch, userId]);
+  }, [dispatch]);
 
   const handleLogout = async (): Promise<void> => {
     try {

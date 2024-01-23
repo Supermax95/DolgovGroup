@@ -34,12 +34,18 @@ export const AppNavigator: FC = () => {
   const token = useAppSelector<string | undefined>(
     (state) => state.userSlice.token?.refreshToken
   );
+  console.log('token',token);
+  
   useEffect(() => {
-    dispatch(getCheck({ token }));
+    console.log('token в юз',token);
+    
+    if (token) {
+      dispatch(getCheck({ token }));
+    }
   }, [dispatch]);
-
-  const user = useAppSelector((state) => state.userSlice.user.id);
-  console.log('🚀 ~ user:', user);
+  
+  const user = useAppSelector((state) => state.userSlice.user.isActivated);
+console.log(user);
 
   const renderLoggedInUserScreens = () => (
     <>
@@ -93,11 +99,11 @@ export const AppNavigator: FC = () => {
         component={ShopsList}
         options={{ title: 'Список магазинов' }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="CheckMail"
         component={CheckMail}
         options={{ title: 'Проверка активации' }}
-      />
+      /> */}
     </>
   );
 
@@ -122,6 +128,11 @@ export const AppNavigator: FC = () => {
         name="ResetPassword"
         component={ResetPassword}
         options={{ title: 'Сброс пароля' }}
+      />
+      <Stack.Screen
+        name="CheckMail"
+        component={CheckMail}
+        options={{ title: 'Проверка активации' }}
       />
     </>
   );

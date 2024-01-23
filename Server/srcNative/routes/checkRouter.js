@@ -13,6 +13,7 @@ module.exports = router.get('/checkUser', async (req, res) => {
     res.json({
       message: 'Проверка авторизации прошла успешно!',
       id: userData.id,
+      isActivated: userData.isActivated,
     });
   } catch (error) {
     console.error(error);
