@@ -18,9 +18,8 @@ const SubcagoryDetail = () => {
 
       {/* Scrollable container для подкатегорий */}
       <ScrollView style={{ flex: 1, width: '100%' }}>
-        <View className="">
+        <View className="my-4">
           <HeadingSubcategory title="Колбаса" />
-          <HeadingSubcategory title="Ветчина" />
 
           <View className="flex-row flex-wrap justify-center">
             {/* <CardCategory /> */}
