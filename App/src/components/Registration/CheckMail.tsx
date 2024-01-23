@@ -81,9 +81,10 @@ const CheckMail: FC = () => {
     <>
       <View className={styleCenter}>
         <View className="mx-1 justify-center items-center h-full">
-            <Text className="text-center text-gray-800 text-lg font-normal">
-              На вашу почту отправлено письмо
-            </Text>
+          <Text className="text-center text-gray-800 text-lg font-normal">
+            На вашу почту было отправлено письмо, в случае если письмо не пришло
+            ,проверьте спам или запросите повторно ссылку
+          </Text>
           <View className="w-10/12">
             <Button
               title="Проверить активацию"
