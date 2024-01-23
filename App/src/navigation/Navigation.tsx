@@ -52,10 +52,6 @@ export const AppNavigator: FC = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    console.log('token в юз', token);
-
-  useEffect(() => {    
-
     if (token) {
       dispatch(getCheck({ token }));
     }
