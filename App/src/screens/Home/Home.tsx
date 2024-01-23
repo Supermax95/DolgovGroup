@@ -36,6 +36,7 @@ const Home: FC = () => {
     <View className="bg-white h-full">
       <ScrollView alwaysBounceVertical showsVerticalScrollIndicator={false}>
         <Padding>
+          {/* здесь должен быть штрих-код */}
           <LargeCard
             numberPoints={numberPointsRub}
             barcode={require('../../assets/shtrihkod.jpg')}
