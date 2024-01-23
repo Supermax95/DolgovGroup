@@ -1,63 +1,98 @@
-import React from 'react';
+import React, { FC } from 'react';
 import {
   ScrollView,
   Image,
   View,
   Text,
-  TouchableOpacity,
+  Pressable,
   Dimensions,
   StyleSheet,
 } from 'react-native';
+import { BOX_SHADOW } from 'styles';
+
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
-const ProductCard = () => {
+interface IProductCard {
+  onPress?: () => void | undefined;
+  productName: string;
+  originalPrice: number;
+  isDiscount?: boolean | undefined;
+  discountedPrice?: number | undefined;
+  discountPercentage?: number | undefined;
+  isNew?: boolean | undefined;
+  imageProduct: string;
+}
+
+const ProductCard: FC<IProductCard> = ({
+  productName,
+  originalPrice,
+  isDiscount,
+  discountedPrice,
+  discountPercentage,
+  isNew,
+  imageProduct,
+}) => {
   const screenWidth = Math.round(Dimensions.get('window').width);
   const cardWidth = screenWidth / 2 - 20;
+  console.log('cardWidth', cardWidth);
 
   return (
     <>
-      <TouchableOpacity
-        // onPress={handleClick}
+      <Pressable
+        // onPress={onPress}
         style={[styles.cardContainer, { width: cardWidth }]}
       >
         <Image
-          source={require('../assets/Teos.png')}
+          source={{ uri: imageProduct }}
           resizeMode="contain"
           style={styles.image}
         />
-        {/* <View className="px-2 py-1 bg-amber-400 rounded-full absolute justify-start items-center top-2 left-1.5">
-          <Text className="text-xs font-light opacity-80">-47%</Text>
-        </View> */}
 
-        <View className="h-19 space-y-1">
-          <View style={styles.textContainer}>
-            <Text className="text-sm text-gray-700 font-medium">
-              Пюре из чернослива и груши, 90 г
+        {discountPercentage ? (
+          <View className="px-2 py-1 bg-amber-400 rounded-full absolute justify-start items-center top-2 left-1.5">
+            <Text className="text-[11px] text-gray-700 font-normal">
+              -{discountPercentage}%
             </Text>
           </View>
-          <View style={styles.priceContainer}>
-            <Text className="text-lg font-medium">150 ₽</Text>
+        ) : (
+          <></>
+        )}
+
+        <View className="h-19 w-full space-y-1 px-1">
+          <View
+            // style={styles.textContainer}
+            className="flex-col items-start justify-start w-full h-8"
+          >
+            <Text className="text-xs text-gray-700 font-medium">
+              {productName}
+            </Text>
           </View>
-        </View>
-      </TouchableOpacity>
-      {/* <TouchableOpacity
-        // onPress={handleClick}
-        style={[styles.cardContainer, { width: cardWidth }]}
-      >
-        <Image
-          source={require('../assets/Teos.png')}
-          resizeMode="contain"
-          style={styles.image}
-        />
+          <View className="flex-col items-start justify-start w-full h-4">
+            {isNew ? (
+              <Text className="text-xs text-blue-500 font-medium">Новый</Text>
+            ) : (
+              <></>
+            )}
+          </View>
 
-        <View style={styles.textContainer}>
-          <Text className="text-sm text-gray-700 font-medium mx-2">Нейм</Text>
+          {originalPrice && isDiscount ? (
+            <View className="flex-row items-center space-x-1">
+              <Text className="text-lg font-medium text-red-600">
+                {discountedPrice}₽
+              </Text>
+              <Text className="text-xs font-medium opacity-50 line-through">
+                {originalPrice}₽
+              </Text>
+            </View>
+          ) : (
+            <View className="flex-row items-center">
+              <Text className="text-lg font-medium text-gray-800">
+                {originalPrice}₽
+              </Text>
+            </View>
+          )}
         </View>
-
-        <View style={styles.priceContainer}>
-          <Text style={styles.priceText}>₹ 150</Text>
-        </View>
-      </TouchableOpacity> */}
+      </Pressable>
     </>
   );
 };
@@ -70,12 +105,12 @@ const styles = StyleSheet.create({
       height: 2,
     },
     shadowOpacity: 0.15,
-    shadowRadius: 10,
+    shadowRadius: 5,
     elevation: 5,
     //
     position: 'relative',
     padding: 2,
-    margin: 4,
+    margin: 6,
     borderRadius: 10,
     backgroundColor: 'white',
     flexDirection: 'column',
@@ -86,44 +121,6 @@ const styles = StyleSheet.create({
   image: {
     width: 144,
     height: 128,
-  },
-  //* как в категориях
-  //   image: {
-  //     width: 200,
-  //     height: 120,
-  //   },
-  textContainer: {
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-    width: '100%',
-  },
-  //   nameText: {
-  //     fontSize: 14,
-  //     fontWeight: 'normal',
-  //     color: 'gray',
-  //     marginHorizontal: 8,
-  //   },
-  priceContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '100%',
-  },
-  priceText: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: 'gray',
-  },
-  heartIconContainer: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: 'black',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
 

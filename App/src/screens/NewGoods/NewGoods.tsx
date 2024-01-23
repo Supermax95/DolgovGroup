@@ -8,72 +8,56 @@ import getSubcategory from 'Redux/thunks/Catalog/subcategoryGet.api';
 import { PORT, IP } from '@env';
 import refreshToken from 'Redux/thunks/User/refresh.api';
 
+// export interface IProduct {
+//   id: number;
+//   article: string;
+//   productName: string;
+//   promoStartDate: string;
+//   promoEndDate: string;
+//   originalPrice: number;
+//   customerPrice: number;
+//   employeePrice: number;
+//   isNew: boolean;
+//   isDiscounted: boolean;
+//   description: string;
+//   photo: string;
+//   subcategoryId: number;
+//   invisible: boolean;
+// }
 
-export interface IProduct {
-  id: number;
-  article: string;
-  productName: string;
-  promoStartDate: string;
-  promoEndDate: string;
-  originalPrice: number;
-  customerPrice: number;
-  employeePrice: number;
-  isNew: boolean;
-  isDiscounted: boolean;
-  description: string;
-  photo: string;
-  subcategoryId: number;
-  invisible: boolean;
-}
+// export interface ICategory {
+//   id: number;
+//   categoryName: string;
+// }
 
-export interface ICategory {
-  id: number;
-  categoryName: string;
-}
-
-export interface ISubcategory {
-  id: number;
-  subcategoryName: string;
-  categoryId: number;
-}
-
+// export interface ISubcategory {
+//   id: number;
+//   subcategoryName: string;
+//   categoryId: number;
+// }
 
 export const NewGoods: FC = () => {
   const dispatch = useAppDispatch();
-  
+
   const user = useAppSelector((state) => state.userSlice);
 
-  
-  const products = useAppSelector<IProduct[]>(
-    (state) => state.productSlice.data
-  );
-  // console.log('products',products);
-  const categories = useAppSelector<ICategory[]>(
-    (state) => state.categorySlice.data
-  );
-  // console.log(categories);
-  
-  const subcategories = useAppSelector<ISubcategory[]>(
-    (state) => state.subcategorySlice.data
-  );
+  // const products = useAppSelector<IProduct[]>(
+  //   (state) => state.productSlice.data
+  // );
+  // // console.log('products',products);
+  // const categories = useAppSelector<ICategory[]>(
+  //   (state) => state.categorySlice.data
+  // );
+  // // console.log(categories);
 
-
-  useEffect(() => {
-    dispatch(getProducts());
-  }, [dispatch]);
-
-  useEffect(() => {
-    dispatch(getCategory());
-  }, [dispatch]);
-
-  useEffect(() => {
-    dispatch(getSubcategory());
-  }, [dispatch]);
+  // const subcategories = useAppSelector<ISubcategory[]>(
+  //   (state) => state.subcategorySlice.data
+  // );
 
   useEffect(() => {
     dispatch(refreshToken());
   }, [dispatch]);
-  
+
   function calculateDiscountPercentageWithCents(
     originalPrice: number,
     discountedPrice: number
@@ -105,26 +89,24 @@ export const NewGoods: FC = () => {
   //console.log(`Скидка составляет ${discountPercentage}%`);
 
   return (
-  <View className="flex-row flex-wrap justify-between mb-2">
-  {products.map((product) => (
-    <CardProduct
-      key={product.id}
-      productName={product.productName}
-      promoStartDate={product.promoStartDate}
-      promoEndDate={product.promoEndDate}
-      originalPrice={product.originalPrice}
-      discountedPrice={product.employeePrice}
-      discountPercentage={calculateDiscountPercentageWithCents(
-        product.originalPrice,
-        product.employeePrice
-        )}
-        imageProduct={`http://${IP}:${PORT}${product.photo}`}
-      />
-    ))}
+    <View className="flex-row flex-wrap justify-between mb-2">
+      {/* {products.map((product) => (
+        <CardProduct
+          key={product.id}
+          productName={product.productName}
+          promoStartDate={product.promoStartDate}
+          promoEndDate={product.promoEndDate}
+          originalPrice={product.originalPrice}
+          discountedPrice={product.employeePrice}
+          discountPercentage={calculateDiscountPercentageWithCents(
+            product.originalPrice,
+            product.employeePrice
+          )}
+          imageProduct={`http://${IP}:${PORT}${product.photo}`}
+        />
+      ))} */}
     </View>
   );
 };
 
 export default NewGoods;
-
-

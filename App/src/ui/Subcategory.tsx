@@ -44,7 +44,7 @@ const Subcategory: FC<ISubcategory> = ({
         </View>
       </Pressable>
 
-      <Pressable
+      {/* <Pressable
         onPress={onPress}
         // className={`py-4 flex-row justify-between ${tailwindClass}`}
         className={`px-2 py-3 flex-row justify-between border-b-[1px] border-gray-100`}
@@ -61,152 +61,8 @@ const Subcategory: FC<ISubcategory> = ({
             color="#10b981"
           />
         </View>
-      </Pressable>
+      </Pressable> */}
 
-      <Pressable
-        onPress={onPress}
-        // className={`py-4 flex-row justify-between ${tailwindClass}`}
-        className={`px-2 py-3 flex-row justify-between border-b-[1px] border-gray-100`}
-      >
-        <View>
-          <Text className="text-gray-800 font-medium text-md">{title}</Text>
-        </View>
-        <View className="w-7">
-          <MaterialCommunityIcons
-            name="chevron-right"
-            size={26}
-            color="#b7b7b6"
-          />
-        </View>
-      </Pressable>
-      <Pressable
-        onPress={onPress}
-        // className={`py-4 flex-row justify-between ${tailwindClass}`}
-        className={`px-2 py-3 flex-row justify-between border-b-[1px] border-gray-100`}
-      >
-        <View>
-          <Text className="text-gray-800 font-medium text-md">{title}</Text>
-        </View>
-        <View className="w-7">
-          <MaterialCommunityIcons
-            name="chevron-right"
-            size={26}
-            color="#b7b7b6"
-          />
-        </View>
-      </Pressable>
-      <Pressable
-        onPress={onPress}
-        // className={`py-4 flex-row justify-between ${tailwindClass}`}
-        className={`px-2 py-3 flex-row justify-between border-b-[1px] border-gray-100`}
-      >
-        <View>
-          <Text className="text-gray-800 font-medium text-md">{title}</Text>
-        </View>
-        <View className="w-7">
-          <MaterialCommunityIcons
-            name="chevron-right"
-            size={26}
-            color="#b7b7b6"
-          />
-        </View>
-      </Pressable>
-      <Pressable
-        onPress={onPress}
-        // className={`py-4 flex-row justify-between ${tailwindClass}`}
-        className={`px-2 py-3 flex-row justify-between border-b-[1px] border-gray-100`}
-      >
-        <View>
-          <Text className="text-gray-800 font-medium text-md">{title}</Text>
-        </View>
-        <View className="w-7">
-          <MaterialCommunityIcons
-            name="chevron-right"
-            size={26}
-            color="#b7b7b6"
-          />
-        </View>
-      </Pressable>
-      <Pressable
-        onPress={onPress}
-        // className={`py-4 flex-row justify-between ${tailwindClass}`}
-        className={`px-2 py-3 flex-row justify-between border-b-[1px] border-gray-100`}
-      >
-        <View>
-          <Text className="text-gray-800 font-medium text-md">{title}</Text>
-        </View>
-        <View className="w-7">
-          <MaterialCommunityIcons
-            name="chevron-right"
-            size={26}
-            color="#b7b7b6"
-          />
-        </View>
-      </Pressable>
-      <Pressable
-        onPress={onPress}
-        // className={`py-4 flex-row justify-between ${tailwindClass}`}
-        className={`px-2 py-3 flex-row justify-between border-b-[1px] border-gray-100`}
-      >
-        <View>
-          <Text className="text-gray-800 font-medium text-md">{title}</Text>
-        </View>
-        <View className="w-7">
-          <MaterialCommunityIcons
-            name="chevron-right"
-            size={26}
-            color="#b7b7b6"
-          />
-        </View>
-      </Pressable>
-      <Pressable
-        onPress={onPress}
-        // className={`py-4 flex-row justify-between ${tailwindClass}`}
-        className={`px-2 py-3 flex-row justify-between border-b-[1px] border-gray-100`}
-      >
-        <View>
-          <Text className="text-gray-800 font-medium text-md">{title}</Text>
-        </View>
-        <View className="w-7">
-          <MaterialCommunityIcons
-            name="chevron-right"
-            size={26}
-            color="#b7b7b6"
-          />
-        </View>
-      </Pressable>
-      <Pressable
-        onPress={onPress}
-        // className={`py-4 flex-row justify-between ${tailwindClass}`}
-        className={`px-2 py-3 flex-row justify-between border-b-[1px] border-gray-100`}
-      >
-        <View>
-          <Text className="text-gray-800 font-medium text-md">{title}</Text>
-        </View>
-        <View className="w-7">
-          <MaterialCommunityIcons
-            name="chevron-right"
-            size={26}
-            color="#b7b7b6"
-          />
-        </View>
-      </Pressable>
-      <Pressable
-        onPress={onPress}
-        // className={`py-4 flex-row justify-between ${tailwindClass}`}
-        className={`px-2 py-3 flex-row justify-between border-b-[1px] border-gray-100`}
-      >
-        <View>
-          <Text className="text-gray-800 font-medium text-md">{title}</Text>
-        </View>
-        <View className="w-7">
-          <MaterialCommunityIcons
-            name="chevron-right"
-            size={26}
-            color="#b7b7b6"
-          />
-        </View>
-      </Pressable>
       <Pressable
         onPress={onPress}
         // className={`py-4 flex-row justify-between ${tailwindClass}`}

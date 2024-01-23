@@ -16,10 +16,23 @@ import CardCategory from 'ui/CardCategory';
 import CardNoCarusel from 'components/ Action/CardNoCarusel/CardNoCarusel';
 import Heading from 'ui/Heading';
 import Search from 'ui/Search';
+import { PORT, IP } from '@env';
+
+export interface ICategory {
+  id: number;
+  categoryName: string;
+  img: string;
+}
 
 function CategoryDetail() {
   const navigation = useNavigation<StackNavigationProp>();
   const dispatch = useAppDispatch();
+
+  const categories = useAppSelector<ICategory[]>(
+    (state) => state.categorySlice.data
+  );
+  console.log('categoriesCatDet', categories);
+
   return (
     <SafeAreaView
       className={`flex-1 items-center justify-start py-2 bg-[#ffff] `}
@@ -28,23 +41,44 @@ function CategoryDetail() {
 
       {/* Scrollable container start */}
       <ScrollView style={{ flex: 1, width: '100%' }}>
+        {/* //! вне карусели */}
         <View className="bg-green-100">
           <Heading title="Рекомендуем" />
-          <ScrollView
-            style={{ flex: 1, width: '100%', paddingHorizontal: 9 }}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-          >
-            <CardNoCarusel />
-          </ScrollView>
-        </View>
-
-        <View className="">
-          <Heading title="Или нет" />
-          <View className="flex-row flex-wrap justify-center">
-            <CardCategory />
+          <View className=" mx-3">
+            <ScrollView
+              style={{ flex: 1, width: '100%' }}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+            >
+              <CardNoCarusel />
+            </ScrollView>
           </View>
         </View>
+
+        {/* Каталог */}
+        <View>
+          <Heading title="Каталог" />
+          {categories.length ? (
+            <View className="flex-row flex-wrap justify-center">
+              {categories.map((category) => (
+                <CardCategory
+                  key={category.id}
+                  categoryName={category.categoryName}
+                  imageCategory={`http://${IP}:${PORT}${category.img}`}
+                />
+              ))}
+            </View>
+          ) : (
+            <View className="flex-row flex-wrap justify-center">
+              <Text className="text-gray-600 font-medium"> Каталог пуст</Text>
+            </View>
+          )}
+          {/*//! здесь ошибка */}
+        </View>
+        {/* <View className="flex-row flex-wrap justify-center">
+            <CardCategory categoryName imageProduct />
+          </View>
+        </View> */}
         {/* {isLoading ? (
       <View className={`flex-1 h-80 items-center justify-center`}>
         <ActivityIndicator size={'large'} color={'teal'} />

@@ -8,7 +8,19 @@ import Heading from 'ui/Heading';
 import Search from 'ui/Search';
 import Subcategory from 'ui/Subcategory';
 
+export interface ISubcategory {
+  id: number;
+  subcategoryName: string;
+  categoryId: number;
+}
+
 const SubcagoryDetail = () => {
+  const subcategories = useAppSelector<ISubcategory[]>(
+    (state) => state.subcategorySlice.data
+  );
+
+  console.log('subcategoriesDet', subcategories);
+
   return (
     <SafeAreaView
       className={`flex-1 items-center justify-start py-2 bg-[#ffff] `}
