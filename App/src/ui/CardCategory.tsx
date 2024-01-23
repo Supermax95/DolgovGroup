@@ -1,6 +1,6 @@
-import React from 'react';
+import { useAppSelector } from 'Redux/hooks';
+import React, { FC } from 'react';
 import {
-  ScrollView,
   Image,
   View,
   Text,
@@ -9,13 +9,45 @@ import {
   StyleSheet,
 } from 'react-native';
 
-const CardCategory = () => {
+// export interface ICategory {
+//   id: number;
+//   categoryName: string;
+// }
+
+interface ICardCategory {
+  onPress?: () => void | undefined;
+  categoryName: string;
+  imageCategory: string;
+}
+
+const CardCategory: FC<ICardCategory> = ({
+  onPress,
+  categoryName,
+  imageCategory,
+}) => {
   const screenWidth = Math.round(Dimensions.get('window').width);
   const cardWidth = screenWidth / 2 - 20;
+
+  // const categories = useAppSelector<ICategory[]>(
+  //   (state) => state.categorySlice.data
+  // );
 
   return (
     <>
       <Pressable
+        // onPress={onPress}
+        style={[styles.cardContainer, { width: cardWidth }]}
+      >
+        <Image
+          source={{ uri: imageCategory }}
+          resizeMode="contain"
+          style={styles.image}
+        />
+        <View style={styles.overlayText}>
+          <Text style={styles.overlayNameText}>{categoryName}</Text>
+        </View>
+      </Pressable>
+      {/* <Pressable
         // onPress={handleClick}
         style={[styles.cardContainer, { width: cardWidth }]}
       >
@@ -27,176 +59,7 @@ const CardCategory = () => {
         <View style={styles.overlayText}>
           <Text style={styles.overlayNameText}>Колбасные изделия</Text>
         </View>
-      </Pressable>
-      <Pressable
-        // onPress={handleClick}
-        style={[styles.cardContainer, { width: cardWidth }]}
-      >
-        <Image
-          source={require('../assets/pelmen.png')}
-          resizeMode="contain"
-          style={styles.image}
-        />
-        <View style={styles.overlayText}>
-          <Text style={styles.overlayNameText}>Колбасные изделия</Text>
-        </View>
-      </Pressable>
-      <Pressable
-        // onPress={handleClick}
-        style={[styles.cardContainer, { width: cardWidth }]}
-      >
-        <Image
-          source={require('../assets/pelmen.png')}
-          resizeMode="contain"
-          style={styles.image}
-        />
-        <View style={styles.overlayText}>
-          <Text style={styles.overlayNameText}>Колбасные изделия</Text>
-        </View>
-      </Pressable>
-      <Pressable
-        // onPress={handleClick}
-        style={[styles.cardContainer, { width: cardWidth }]}
-      >
-        <Image
-          source={require('../assets/pelmen.png')}
-          resizeMode="contain"
-          style={styles.image}
-        />
-        <View style={styles.overlayText}>
-          <Text style={styles.overlayNameText}>Колбасные изделия</Text>
-        </View>
-      </Pressable>
-      <Pressable
-        // onPress={handleClick}
-        style={[styles.cardContainer, { width: cardWidth }]}
-      >
-        <Image
-          source={require('../assets/pelmen.png')}
-          resizeMode="contain"
-          style={styles.image}
-        />
-        <View style={styles.overlayText}>
-          <Text style={styles.overlayNameText}>Колбасные изделия</Text>
-        </View>
-      </Pressable>
-      <Pressable
-        // onPress={handleClick}
-        style={[styles.cardContainer, { width: cardWidth }]}
-      >
-        <Image
-          source={require('../assets/pelmen.png')}
-          resizeMode="contain"
-          style={styles.image}
-        />
-        <View style={styles.overlayText}>
-          <Text style={styles.overlayNameText}>Колбасные изделия</Text>
-        </View>
-      </Pressable>
-      <Pressable
-        // onPress={handleClick}
-        style={[styles.cardContainer, { width: cardWidth }]}
-      >
-        <Image
-          source={require('../assets/pelmen.png')}
-          resizeMode="contain"
-          style={styles.image}
-        />
-        <View style={styles.overlayText}>
-          <Text style={styles.overlayNameText}>Колбасные изделия</Text>
-        </View>
-      </Pressable>
-      <Pressable
-        // onPress={handleClick}
-        style={[styles.cardContainer, { width: cardWidth }]}
-      >
-        <Image
-          source={require('../assets/pelmen.png')}
-          resizeMode="contain"
-          style={styles.image}
-        />
-        <View style={styles.overlayText}>
-          <Text style={styles.overlayNameText}>Колбасные изделия</Text>
-        </View>
-      </Pressable>
-      <Pressable
-        // onPress={handleClick}
-        style={[styles.cardContainer, { width: cardWidth }]}
-      >
-        <Image
-          source={require('../assets/pelmen.png')}
-          resizeMode="contain"
-          style={styles.image}
-        />
-        <View style={styles.overlayText}>
-          <Text style={styles.overlayNameText}>Колбасные изделия</Text>
-        </View>
-      </Pressable>
-      <Pressable
-        // onPress={handleClick}
-        style={[styles.cardContainer, { width: cardWidth }]}
-      >
-        <Image
-          source={require('../assets/pelmen.png')}
-          resizeMode="contain"
-          style={styles.image}
-        />
-        <View style={styles.overlayText}>
-          <Text style={styles.overlayNameText}>Колбасные изделия</Text>
-        </View>
-      </Pressable>
-      <Pressable
-        // onPress={handleClick}
-        style={[styles.cardContainer, { width: cardWidth }]}
-      >
-        <Image
-          source={require('../assets/pelmen.png')}
-          resizeMode="contain"
-          style={styles.image}
-        />
-        <View style={styles.overlayText}>
-          <Text style={styles.overlayNameText}>Колбасные изделия</Text>
-        </View>
-      </Pressable>
-      <Pressable
-        // onPress={handleClick}
-        style={[styles.cardContainer, { width: cardWidth }]}
-      >
-        <Image
-          source={require('../assets/pelmen.png')}
-          resizeMode="contain"
-          style={styles.image}
-        />
-        <View style={styles.overlayText}>
-          <Text style={styles.overlayNameText}>Колбасные изделия</Text>
-        </View>
-      </Pressable>
-      <Pressable
-        // onPress={handleClick}
-        style={[styles.cardContainer, { width: cardWidth }]}
-      >
-        <Image
-          source={require('../assets/pelmen.png')}
-          resizeMode="contain"
-          style={styles.image}
-        />
-        <View style={styles.overlayText}>
-          <Text style={styles.overlayNameText}>Колбасные изделия</Text>
-        </View>
-      </Pressable>
-      <Pressable
-        // onPress={handleClick}
-        style={[styles.cardContainer, { width: cardWidth }]}
-      >
-        <Image
-          source={require('../assets/pelmen.png')}
-          resizeMode="contain"
-          style={styles.image}
-        />
-        <View style={styles.overlayText}>
-          <Text style={styles.overlayNameText}>Колбасные изделия</Text>
-        </View>
-      </Pressable>
+      </Pressable> */}
     </>
   );
 };

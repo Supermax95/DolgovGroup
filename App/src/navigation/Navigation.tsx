@@ -25,6 +25,9 @@ import ChangePassword from 'components/UserProfile/EditProfile/ChangePassword/Ch
 import { RootStackParamList, TabNavigatorOptions } from './types';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import getCheck from 'Redux/thunks/User/check.api';
+import getCategory from 'Redux/thunks/Catalog/categoryGet.api';
+import getProducts from 'Redux/thunks/Catalog/productGet.api';
+import getSubcategory from 'Redux/thunks/Catalog/subcategoryGet.api';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabNavigatorOptions>();
@@ -34,7 +37,25 @@ export const AppNavigator: FC = () => {
   const token = useAppSelector<string | undefined>(
     (state) => state.userSlice.token?.refreshToken
   );
+  console.log('token', token);
+
+  useEffect(() => {
+    dispatch(getProducts());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(getCategory());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(getSubcategory());
+  }, [dispatch]);
+
+  useEffect(() => {
+    console.log('token в юз', token);
+
   useEffect(() => {    
+
     if (token) {
       dispatch(getCheck({ token }));
     }
