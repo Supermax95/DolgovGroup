@@ -179,7 +179,6 @@ export const FooterTabs: FC = () => {
           ),
         }}
       />
-
       <Tab.Screen
         name="Home"
         component={Home}
@@ -194,6 +193,7 @@ export const FooterTabs: FC = () => {
           ),
         }}
       />
+
       <Tab.Screen
         name="Catalog"
         component={Catalog}

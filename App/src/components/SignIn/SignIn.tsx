@@ -70,7 +70,7 @@ const SignIn: FC = () => {
         if (result.payload.activationError === 'Аккаунт не активирован') {
           navigation.navigate('CheckMail');
         } else {
-          navigation.navigate('Home');
+          navigation.navigate('FooterTabs');
         }
       }
     } catch (error) {
