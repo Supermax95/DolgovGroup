@@ -15,7 +15,7 @@ import {
 // }
 
 interface ICardCategory {
-  onPress?: () => void | undefined;
+  onPress: () => void;
   categoryName: string;
   imageCategory: string;
 }
@@ -35,7 +35,7 @@ const CardCategory: FC<ICardCategory> = ({
   return (
     <>
       <Pressable
-        // onPress={onPress}
+        onPress={onPress}
         style={[styles.cardContainer, { width: cardWidth }]}
       >
         <Image

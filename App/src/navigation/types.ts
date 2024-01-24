@@ -17,6 +17,8 @@ type RootStackParamList = {
   ChangeEmail: undefined;
   ChangePassword: undefined;
   ShopsList: undefined;
+  SubcategoryDetail: undefined;
+  ProductsCards: undefined;
 };
 
 type IMaterialCommunityIcons = keyof typeof MaterialCommunityIcons.glyphMap;

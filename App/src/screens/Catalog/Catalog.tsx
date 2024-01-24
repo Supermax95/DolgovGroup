@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { StackNavigationProp } from 'navigation/types';
 
 import CategoryDetail from 'components/Catalog/CategoryDetail/CategoryDetail';
-import SubcagoryDetail from 'components/Catalog/SubcagoryDetail/SubcagoryDetail';
+import SubcategoryDetail from 'components/Catalog/SubcategoryDetail/SubcategoryDetail';
 import ProductsCards from 'components/Catalog/ProductsCards/ProductsCards';
 
 const Catalog: FC = () => {
@@ -13,9 +13,9 @@ const Catalog: FC = () => {
 
   return (
     <>
-      {/* <CategoryDetail /> */}
-      {/* <SubcagoryDetail /> */}
-      <ProductsCards />
+      <CategoryDetail />
+      {/* <SubcategoryDetail /> */}
+      {/* <ProductsCards /> */}
     </>
   );
 };

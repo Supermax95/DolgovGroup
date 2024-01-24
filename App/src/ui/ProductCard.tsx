@@ -34,7 +34,6 @@ const ProductCard: FC<IProductCard> = ({
 }) => {
   const screenWidth = Math.round(Dimensions.get('window').width);
   const cardWidth = screenWidth / 2 - 20;
-  console.log('cardWidth', cardWidth);
 
   return (
     <>
