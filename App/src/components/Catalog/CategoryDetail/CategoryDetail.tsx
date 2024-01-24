@@ -41,12 +41,12 @@ function CategoryDetail() {
 
       {/* Scrollable container start */}
       <ScrollView style={{ flex: 1, width: '100%' }}>
-        {/* //! вне карусели */}
+        {/* акции вне карусели */}
         <View className="bg-green-100">
           <Heading title="Рекомендуем" />
           <View className=" mx-3">
             <ScrollView
-              style={{ flex: 1, width: '100%' }}
+              style={{ flex: 1, width: '100%', flexShrink: 0 }}
               horizontal={true}
               showsHorizontalScrollIndicator={false}
             >
@@ -70,10 +70,11 @@ function CategoryDetail() {
             </View>
           ) : (
             <View className="flex-row flex-wrap justify-center">
-              <Text className="text-gray-600 font-medium"> Каталог пуст</Text>
+              <Text className="text-gray-600 font-medium text-lg">
+                Каталог пуст
+              </Text>
             </View>
           )}
-          {/*//! здесь ошибка */}
         </View>
         {/* <View className="flex-row flex-wrap justify-center">
             <CardCategory categoryName imageProduct />

@@ -7,7 +7,8 @@ import { AppNavigator } from './src/navigation/Navigation';
 import { store, persistor } from './src/Redux/store';
 
 // //!!!!Для сброса состояния не удалять
-// persistor.purge()
+// persistor
+//   .purge()
 //   .then(() => {
 //     console.log('Состояние успешно сброшено');
 //   })
