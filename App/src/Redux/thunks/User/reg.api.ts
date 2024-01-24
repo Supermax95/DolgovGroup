@@ -23,7 +23,7 @@ interface ResponseData {
 
 const userRegister = createAsyncThunk<ResponseData, RequestData>(
   'api/register',
-  async (user) => {
+  async (user,{ rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axios.post(
         `http://${IP}:${PORT}/api/registration`,
@@ -35,7 +35,12 @@ const userRegister = createAsyncThunk<ResponseData, RequestData>(
         throw new Error('Ошибка при регистрации');
       }
     } catch (error) {
-      throw error;
+      if (axios.isAxiosError(error) && error.response) {
+        // console.error(error.response.data.message);
+        throw rejectWithValue(error.response.data.message);
+      } else {
+        throw error;
+      }
     }
   }
 );

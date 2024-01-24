@@ -86,10 +86,7 @@ export const Registration: FC = () => {
       if (result.meta.requestStatus === 'rejected') {
         setTimeout(() => {
           setIsLoading(false);
-          Alert.alert(
-            'Ошибка',
-            'Пользователь с данным email существует или произошла ошибка'
-          );
+          Alert.alert('Ошибка', result.payload);
         }, 2000);
         setTimeout(() => {
           setIsLoading(false);

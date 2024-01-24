@@ -72,7 +72,7 @@ const ChangePassword: FC = () => {
         if (result.meta.requestStatus === 'rejected') {
           Alert.alert(
             'Ошибка',
-            'Произошла ошибка при изменении пароля. Пожалуйста, попробуйте ещё раз.'
+            result.payload
           );
         } else if (result.meta.requestStatus === 'fulfilled') {
           Alert.alert(

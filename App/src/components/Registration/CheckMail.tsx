@@ -49,7 +49,7 @@ const CheckMail: FC = () => {
     try {
       const result = await dispatch(userActivate({ userId, force: true }));
       if (result.meta.requestStatus === 'fulfilled') {
-        navigation.navigate('Home');
+        navigation.navigate('FooterTabs');
       } else {
         Alert.alert('Аккаунт не активирован, проверьте почту/спам.');
         // setActivationMessage('Аккаунт не активирован, проверьте почту/спам.');

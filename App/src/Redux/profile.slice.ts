@@ -114,7 +114,7 @@ const profileSlice = createSlice({
       })
       .addCase(changeProfilePass.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message;
+        state.error = action.payload;
       });
   },
 });
