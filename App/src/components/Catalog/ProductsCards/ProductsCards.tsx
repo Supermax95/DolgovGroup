@@ -40,9 +40,11 @@ const ProductsCards = () => {
   const navigation = useNavigation<StackNavigationProp>();
   const dispatch = useAppDispatch();
 
-  const products = useAppSelector<IProduct[]>(
+  const allProducts = useAppSelector<IProduct[]>(
     (state) => state.productSlice.data
   );
+
+  const products = allProducts.filter((prod) => prod.invisible === false);
   console.log('productsCArds', products);
 
   // function calculateDiscountPercentageWithCents(
@@ -83,22 +85,30 @@ const ProductsCards = () => {
       <ScrollView style={{ flex: 1, width: '100%' }}>
         {/* <View className=""> */}
         <View className="flex-row flex-wrap justify-center">
-          {products.map((product) => (
-            <ProductCard
-              key={product.id}
-              productName={product.productName}
-              originalPrice={product.originalPrice}
-              isDiscount={product.isDiscounted}
-              discountedPrice={255}
-              discountPercentage={15}
-              // discountPercentage={calculateDiscountPercentageWithCents(
-              //   product.originalPrice,
-              //   product.employeePrice
-              // )}
-              isNew={product.isNew}
-              imageProduct={`http://${IP}:${PORT}${product.photo}`}
-            />
-          ))}
+          {products.length ? (
+            products.map((product) => (
+              <ProductCard
+                key={product.id}
+                productName={product.productName}
+                originalPrice={product.originalPrice}
+                isDiscount={product.isDiscounted}
+                discountedPrice={255}
+                discountPercentage={15}
+                // discountPercentage={calculateDiscountPercentageWithCents(
+                //   product.originalPrice,
+                //   product.employeePrice
+                // )}
+                isNew={product.isNew}
+                imageProduct={`http://${IP}:${PORT}${product.photo}`}
+              />
+            ))
+          ) : (
+            <View className="flex-row flex-wrap justify-center">
+              <Text className="text-gray-600 font-medium text-lg">
+                Продуктов нет
+              </Text>
+            </View>
+          )}
           {/* </View> */}
         </View>
         {/* {isLoading ? (

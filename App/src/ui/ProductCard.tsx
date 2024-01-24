@@ -48,7 +48,7 @@ const ProductCard: FC<IProductCard> = ({
           style={styles.image}
         />
 
-        {discountPercentage ? (
+        {discountPercentage && isDiscount ? (
           <View className="px-2 py-1 bg-amber-400 rounded-full absolute justify-start items-center top-2 left-1.5">
             <Text className="text-[11px] text-gray-700 font-normal">
               -{discountPercentage}%
@@ -75,7 +75,7 @@ const ProductCard: FC<IProductCard> = ({
             )}
           </View>
 
-          {originalPrice && isDiscount ? (
+          {isDiscount ? (
             <View className="flex-row items-center space-x-1">
               <Text className="text-lg font-medium text-red-600">
                 {discountedPrice}₽
