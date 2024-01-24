@@ -14,7 +14,7 @@ interface ResponseData {
 
 const changeProfilePass = createAsyncThunk<ResponseData, RequestData>(
   'api/profileChangePass',
-  async ({ token, newPassword, oldPassword }) => {
+  async ({ token, newPassword, oldPassword }, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axios.put(
         `http://${IP}:${PORT}/newpassword`,
@@ -26,12 +26,15 @@ const changeProfilePass = createAsyncThunk<ResponseData, RequestData>(
           },
         }
       );
-      console.log('response', response.data);
 
       return response.data;
     } catch (error) {
-      console.error('Error:', error);
-      throw error;
+      if (axios.isAxiosError(error) && error.response) {
+        // console.error(error.response.data.error);
+        throw rejectWithValue(error.response.data.error);
+      } else {
+        throw error;
+      }
     }
   }
 );

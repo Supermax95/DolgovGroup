@@ -83,7 +83,7 @@ const userSlice = createSlice({
       })
       .addCase(userRegister.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message;
+        state.error = action.payload;
       })
       .addCase(userLogout.pending, (state) => {
         state.isLoading = true;
@@ -145,8 +145,6 @@ const userSlice = createSlice({
           refreshToken: action.payload?.refreshToken || '',
         };
         state.user = action.payload.user;
-        console.log('state.user', state.user);
-        console.log('refreshToken', state.token);
       })
       .addCase(refreshToken.rejected, (state, action) => {
         state.isLoading = false;
