@@ -24,6 +24,12 @@ export interface ICategory {
   img: string;
 }
 
+export interface ISubcategory {
+  id: number;
+  subcategoryName: string;
+  categoryId: number;
+}
+
 function CategoryDetail() {
   const navigation = useNavigation<StackNavigationProp>();
   const dispatch = useAppDispatch();
@@ -31,7 +37,16 @@ function CategoryDetail() {
   const categories = useAppSelector<ICategory[]>(
     (state) => state.categorySlice.data
   );
-  console.log('categoriesCatDet', categories);
+  // console.log('categoriesCatDet===========>', categories);
+
+  // console.log('subcategoriesCATALDet***********************', subcategories);
+
+  const navigateToSubcategoryDetail = (
+    categoryId: number,
+    categoryName: string
+  ): void => {
+    navigation.navigate('SubcategoryDetail', { categoryId, categoryName });
+  };
 
   return (
     <SafeAreaView
@@ -63,6 +78,12 @@ function CategoryDetail() {
               {categories.map((category) => (
                 <CardCategory
                   key={category.id}
+                  onPress={() =>
+                    navigateToSubcategoryDetail(
+                      category.id,
+                      category.categoryName
+                    )
+                  }
                   categoryName={category.categoryName}
                   imageCategory={`http://${IP}:${PORT}${category.img}`}
                 />
@@ -70,7 +91,7 @@ function CategoryDetail() {
             </View>
           ) : (
             <View className="flex-row flex-wrap justify-center">
-              <Text className="text-gray-600 font-medium text-lg">
+              <Text className="text-gray-600 font-medium text-lg mt-4">
                 Каталог пуст
               </Text>
             </View>

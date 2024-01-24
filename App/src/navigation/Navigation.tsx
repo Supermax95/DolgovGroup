@@ -28,6 +28,8 @@ import getCheck from 'Redux/thunks/User/check.api';
 import getCategory from 'Redux/thunks/Catalog/categoryGet.api';
 import getProducts from 'Redux/thunks/Catalog/productGet.api';
 import getSubcategory from 'Redux/thunks/Catalog/subcategoryGet.api';
+import ProductsCards from 'components/Catalog/ProductsCards/ProductsCards';
+import SubcategoryDetail from 'components/Catalog/SubcategoryDetail/SubcategoryDetail';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabNavigatorOptions>();
@@ -110,6 +112,16 @@ export const AppNavigator: FC = () => {
         name="ShopsList"
         component={ShopsList}
         options={{ title: 'Список магазинов' }}
+      />
+      <Stack.Screen
+        name="SubcategoryDetail"
+        component={SubcategoryDetail}
+        options={{ title: 'Тайтл выбранной категории' }}
+      />
+      <Stack.Screen
+        name="ProductsCards"
+        component={ProductsCards}
+        options={{ title: 'Тайтл выбранной Подкатегории' }}
       />
       {/* <Stack.Screen
         name="CheckMail"

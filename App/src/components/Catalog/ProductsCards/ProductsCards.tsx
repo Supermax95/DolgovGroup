@@ -36,15 +36,29 @@ export interface IProduct {
   invisible: boolean;
 }
 
-const ProductsCards = () => {
+const ProductsCards = ({ route }: any) => {
+  const { subcategoryIdArray, subcategoryId, subcategoryName } = route.params;
+
+  console.log('subcategoryIdArray', subcategoryIdArray);
+
   const navigation = useNavigation<StackNavigationProp>();
   const dispatch = useAppDispatch();
 
-  const products = useAppSelector<IProduct[]>(
+  const allProducts = useAppSelector<IProduct[]>(
     (state) => state.productSlice.data
   );
-  console.log('productsCArds', products);
 
+  const products = allProducts.filter(
+    (prod) =>
+      prod.invisible === false &&
+      (prod.subcategoryId === subcategoryId ||
+        subcategoryIdArray?.includes(prod.subcategoryId))
+  );
+
+  // console.log('productsCArds', products);
+
+  // const productsAll = allProducts.filter((prod) => prod.invisible === false);
+  // console.log('productsAll', productsAll);
   // function calculateDiscountPercentageWithCents(
   //   originalPrice: number,
   //   discountedPrice: number
@@ -77,28 +91,36 @@ const ProductsCards = () => {
     <SafeAreaView
       className={`flex-1 items-center justify-start py-2 bg-[#ffff] `}
     >
-      <Heading title="тайтл подкатегории" />
+      <Heading title={subcategoryName} />
       <Search />
       {/* Scrollable container start */}
       <ScrollView style={{ flex: 1, width: '100%' }}>
         {/* <View className=""> */}
         <View className="flex-row flex-wrap justify-center">
-          {products.map((product) => (
-            <ProductCard
-              key={product.id}
-              productName={product.productName}
-              originalPrice={product.originalPrice}
-              isDiscount={product.isDiscounted}
-              discountedPrice={255}
-              discountPercentage={15}
-              // discountPercentage={calculateDiscountPercentageWithCents(
-              //   product.originalPrice,
-              //   product.employeePrice
-              // )}
-              isNew={product.isNew}
-              imageProduct={`http://${IP}:${PORT}${product.photo}`}
-            />
-          ))}
+          {products.length ? (
+            products.map((product) => (
+              <ProductCard
+                key={product.id}
+                productName={product.productName}
+                originalPrice={product.originalPrice}
+                isDiscount={product.isDiscounted}
+                discountedPrice={255}
+                discountPercentage={15}
+                // discountPercentage={calculateDiscountPercentageWithCents(
+                //   product.originalPrice,
+                //   product.employeePrice
+                // )}
+                isNew={product.isNew}
+                imageProduct={`http://${IP}:${PORT}${product.photo}`}
+              />
+            ))
+          ) : (
+            <View className="flex-row flex-wrap justify-center mt-4">
+              <Text className="text-gray-600 font-medium text-lg">
+                Продуктов нет
+              </Text>
+            </View>
+          )}
           {/* </View> */}
         </View>
         {/* {isLoading ? (

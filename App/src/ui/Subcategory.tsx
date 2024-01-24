@@ -5,23 +5,14 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 interface ISubcategory {
   onPress?: () => void;
-  // icon: keyof typeof MaterialCommunityIcons.glyphMap;
   title: string;
-  isLast?: boolean;
 }
 
-const Subcategory: FC<ISubcategory> = ({
-  onPress,
-  title,
-  icon,
-  isLast = false,
-}) => {
-  // const tailwindClass = isLast ? '' : 'border-b-[1px] border-zinc-200';
-
+const Subcategory: FC<ISubcategory> = ({ onPress, title }) => {
   return (
     <Padding>
-      <Pressable
-        onPress={onPress}
+      {/* <Pressable
+        // onPress={onPress}
         // className={`py-4 flex-row justify-between ${tailwindClass}`}
         className={`px-2 py-3 flex-row border-b-[1px] border-gray-100`}
       >
@@ -42,7 +33,7 @@ const Subcategory: FC<ISubcategory> = ({
             />
           </View>
         </View>
-      </Pressable>
+      </Pressable> */}
 
       {/* <Pressable
         onPress={onPress}
