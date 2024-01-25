@@ -9,7 +9,6 @@ module.exports = router
       const token = req.headers.authorization.split(' ')[1];
       const user = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
       const dataUser = await DiscountCard.findOne({ where: { id: user.id } });
-
       res.json(dataUser);
     } catch (error) {
       console.error(error);
