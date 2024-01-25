@@ -30,6 +30,7 @@ import getProducts from 'Redux/thunks/Catalog/productGet.api';
 import getSubcategory from 'Redux/thunks/Catalog/subcategoryGet.api';
 import ProductsCards from 'components/Catalog/ProductsCards/ProductsCards';
 import SubcategoryDetail from 'components/Catalog/SubcategoryDetail/SubcategoryDetail';
+import SingleProduct from 'components/Catalog/ProductsCards/SingleProduct/SingleProduct';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabNavigatorOptions>();
@@ -122,6 +123,11 @@ export const AppNavigator: FC = () => {
         name="ProductsCards"
         component={ProductsCards}
         options={{ title: 'Тайтл выбранной Подкатегории' }}
+      />
+      <Stack.Screen
+        name="SingleProduct"
+        component={SingleProduct}
+        options={{ title: 'Карточка одного продукта' }}
       />
       {/* <Stack.Screen
         name="CheckMail"
