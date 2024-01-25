@@ -23,6 +23,8 @@ module.exports = (sequelize) => {
       userStatus: DataTypes.STRING,
       isActivated: DataTypes.BOOLEAN,
       activationLink: DataTypes.STRING,
+      notificationPush:DataTypes.BOOLEAN,
+      notificationEmail:DataTypes.BOOLEAN,
     },
     {
       sequelize,

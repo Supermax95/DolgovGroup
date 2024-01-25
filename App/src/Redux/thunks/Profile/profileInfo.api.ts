@@ -58,7 +58,6 @@ import { PORT, IP } from '@env';
 
 interface IProfileInfoRequest {
   token?: string | undefined;
-
 }
 
 interface IProfileInfoResponse {
@@ -67,6 +66,8 @@ interface IProfileInfoResponse {
   middleName: string;
   birthDate: Date | null | string;
   email: string;
+  notificationPush: boolean;
+  notificationEmail: boolean;
 }
 
 const getProfileInfo = createAsyncThunk<
@@ -101,6 +102,8 @@ const getProfileInfo = createAsyncThunk<
         middleName: data.middleName,
         birthDate: data.birthDate,
         email: data.email,
+        notificationPush: data.notificationPush,
+        notificationEmail: data.notificationEmail,
       };
 
       return profileInfo;

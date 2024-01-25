@@ -1,16 +1,40 @@
-import { View, Text, Switch } from 'react-native';
+import { View, Text, Switch, Button } from 'react-native';
 import React, { FC, useState } from 'react';
 import Padding from 'ui/Padding';
+import { useAppDispatch, useAppSelector } from 'Redux/hooks';
+import profileNotification from 'Redux/thunks/Profile/profileNotificationUpdate.api';
 
 const NotificationSettings: FC = () => {
-  const [isEnabledPush, setIsEnabledPush] = useState<boolean>(false);
-  const [isEnabledEmail, setIsEnabledEmail] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
+  const notificationPush = useAppSelector<boolean>(
+    (state) => state.profileSlice.notificationPush
+  );
+
+  const notificationEmail = useAppSelector<boolean>(
+    (state) => state.profileSlice.notificationEmail
+  );
+  const [isEnabledPush, setIsEnabledPush] = useState<boolean>(notificationPush);
+  const [isEnabledEmail, setIsEnabledEmail] =
+    useState<boolean>(notificationEmail);
+  const token = useAppSelector<string | undefined>(
+    (state) => state.userSlice.token?.refreshToken
+  );
 
   const toggleSwitchPush = (): void =>
     setIsEnabledPush((previousStatePush) => !previousStatePush);
 
   const toggleSwitchEmail = (): void =>
     setIsEnabledEmail((previousStateEmail) => !previousStateEmail);
+
+  const handleSaveSettings = () => {
+    dispatch(
+      profileNotification({
+        token,
+        notificationPush: isEnabledPush,
+        notificationEmail: isEnabledEmail,
+      })
+    );
+  };
 
   return (
     <View className="bg-white h-full">
@@ -53,6 +77,7 @@ const NotificationSettings: FC = () => {
               />
             </View>
           </View>
+          <Button title="Save Settings" onPress={handleSaveSettings} />
         </Padding>
       </Padding>
     </View>
