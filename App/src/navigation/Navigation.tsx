@@ -33,6 +33,7 @@ import SubcategoryDetail from 'components/Catalog/SubcategoryDetail/SubcategoryD
 import SingleProduct from 'components/Catalog/ProductsCards/SingleProduct/SingleProduct';
 import * as Notifications from 'expo-notifications';
 import { Alert } from 'react-native';
+import getProfileInfo from 'Redux/thunks/Profile/profileInfo.api';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabNavigatorOptions>();
@@ -64,33 +65,46 @@ async function sendPushNotification() {
       body: 'Ждем вас в нашем приложении',
       data: { someData: '' },
       vibrate: [0, 250, 250, 250],
+      // attachments: [
+      //   {
+      //     identifier: 'attachment-identifier',
+      //     asset: require('../assets/images/adaptive-icon.png'),
+      //     type: '.png',
+      //   },
+      // ],
     };
-
+    await Notifications.cancelAllScheduledNotificationsAsync();
+    // ../src/assets/images/adaptive-icon.png
     await Notifications.scheduleNotificationAsync({
       content: message,
-      trigger: { seconds: 4, repeats: false },
+      trigger: { seconds: 10, repeats: false },
     });
   }
 }
 
 export const AppNavigator: FC = () => {
   const dispatch = useAppDispatch();
+
   const notificationPush = useAppSelector<boolean>(
     (state) => state.profileSlice.notificationPush
   );
-
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      if (notificationPush) {
-        sendPushNotification();
-      }
-    }, 1000000000000);
-
-    return () => clearTimeout(timeoutId);
-  }, [notificationPush]);
   const token = useAppSelector<string | undefined>(
     (state) => state.userSlice.token?.refreshToken
   );
+  useEffect(() => {
+    if (token) {
+      dispatch(getProfileInfo({ token }));
+    }
+    const timeoutId = setTimeout(() => {
+      if (notificationPush) {
+        console.log('======>через 10 секунд будет уведомление');
+        sendPushNotification();
+      }
+      console.log('упало уведомление');
+    }, 2000);
+
+    return () => clearTimeout(timeoutId);
+  }, [notificationPush]);
 
   useEffect(() => {
     dispatch(getProducts());
