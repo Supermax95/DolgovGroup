@@ -39,7 +39,7 @@ export interface IProduct {
 const ProductsCards = ({ route }: any) => {
   const { subcategoryIdArray, subcategoryId, subcategoryName } = route.params;
 
-  console.log('subcategoryIdArray', subcategoryIdArray);
+  // console.log('subcategoryIdArray', subcategoryIdArray);
 
   const navigation = useNavigation<StackNavigationProp>();
   const dispatch = useAppDispatch();
@@ -87,6 +87,12 @@ const ProductsCards = ({ route }: any) => {
   //   discountedPrice
   // );
 
+  const navigateToSingleProduct = (
+    productId: number
+    // categoryName: string
+  ): void => {
+    navigation.navigate('SingleProduct', { productId });
+  };
   return (
     <SafeAreaView
       className={`flex-1 items-center justify-start py-2 bg-[#ffff] `}
@@ -100,6 +106,7 @@ const ProductsCards = ({ route }: any) => {
           {products.length ? (
             products.map((product) => (
               <ProductCard
+                onPress={() => navigateToSingleProduct(product.id)}
                 key={product.id}
                 productName={product.productName}
                 originalPrice={product.originalPrice}

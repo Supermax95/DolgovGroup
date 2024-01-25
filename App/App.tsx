@@ -54,15 +54,15 @@ async function sendPushNotification() {
 }
 
 export default function App() {
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      console.log('=====>');
-      sendPushNotification();
-    }, 100000);
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, []);
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     console.log('=====>');
+  //     sendPushNotification();
+  //   }, 100000);
+  //   return () => {
+  //     clearInterval(intervalId);
+  //   };
+  // }, []);
 
   return (
     <Provider store={store}>
@@ -73,9 +73,6 @@ export default function App() {
     </Provider>
   );
 }
-
-
-
 
 // import React, { useEffect } from 'react';
 // import { StatusBar } from 'expo-status-bar';
