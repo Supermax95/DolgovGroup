@@ -28,10 +28,6 @@ const CardCategory: FC<ICardCategory> = ({
   const screenWidth = Math.round(Dimensions.get('window').width);
   const cardWidth = screenWidth / 2 - 20;
 
-  // const categories = useAppSelector<ICategory[]>(
-  //   (state) => state.categorySlice.data
-  // );
-
   return (
     <>
       <Pressable
@@ -47,19 +43,6 @@ const CardCategory: FC<ICardCategory> = ({
           <Text style={styles.overlayNameText}>{categoryName}</Text>
         </View>
       </Pressable>
-      {/* <Pressable
-        // onPress={handleClick}
-        style={[styles.cardContainer, { width: cardWidth }]}
-      >
-        <Image
-          source={require('../assets/молоко_яйца.png')}
-          resizeMode="contain"
-          style={styles.image}
-        />
-        <View style={styles.overlayText}>
-          <Text style={styles.overlayNameText}>Колбасные изделия</Text>
-        </View>
-      </Pressable> */}
     </>
   );
 };

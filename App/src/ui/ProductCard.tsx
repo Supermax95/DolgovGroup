@@ -13,7 +13,7 @@ import { BOX_SHADOW } from 'styles';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 interface IProductCard {
-  onPress?: () => void | undefined;
+  onPress: () => void;
   productName: string;
   originalPrice: number;
   isDiscount?: boolean | undefined;
@@ -24,6 +24,7 @@ interface IProductCard {
 }
 
 const ProductCard: FC<IProductCard> = ({
+  onPress,
   productName,
   originalPrice,
   isDiscount,
@@ -38,7 +39,7 @@ const ProductCard: FC<IProductCard> = ({
   return (
     <>
       <Pressable
-        // onPress={onPress}
+        onPress={onPress}
         style={[styles.cardContainer, { width: cardWidth }]}
       >
         <Image
