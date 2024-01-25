@@ -160,4 +160,33 @@ module.exports = router
       console.error('Произошла ошибка при изменении пароля:', error);
       res.status(500).json({ error: 'Произошла ошибка' });
     }
+  })
+
+  .put('/notification', async (req, res) => {
+    try {
+      const { notificationEmail, notificationPush } = req.body;
+      const token = req.headers.authorization.split(' ')[1];
+      if (!token) {
+        return res.status(401).json({ error: 'Отсутствует токен авторизации' });
+      }
+      const user = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+      if (!user || !user.id) {
+        return res.status(401).json({ error: 'Неверный токен авторизации' });
+      }
+      const userToUpdate = await DiscountCard.findByPk(user.id);
+      if (!userToUpdate) {
+        return res.status(404).json({ error: 'Пользователь не найден' });
+      }
+      await userToUpdate.update({
+        notificationEmail,
+        notificationPush,
+      });
+
+      return res
+        .status(200)
+        .json({notificationEmail,notificationPush, message: 'Настройки уведомлений успешно обновлены' });
+    } catch (error) {
+      console.error('Ошибка при обновлении настроек уведомлений:', error);
+      return res.status(500).json({ error: 'Внутренняя ошибка сервера' });
+    }
   });

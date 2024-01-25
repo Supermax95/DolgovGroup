@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { Alert, SafeAreaView } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Provider } from 'react-redux';
 import { AppNavigator } from './src/navigation/Navigation';
 import { store, persistor } from './src/Redux/store';
-import * as Notifications from 'expo-notifications';
 
 // //!!!!Для сброса состояния не удалять
 // persistor
@@ -17,52 +16,8 @@ import * as Notifications from 'expo-notifications';
 //     console.error('Ошибка сброса состояния:', error);
 //   });
 
-const requestNotificationPermission = async () => {
-  const { status } = await Notifications.requestPermissionsAsync();
-  if (status !== 'granted') {
-    Alert.alert('Вам нужно разрешить отправку уведомлений');
-    return false;
-  }
-  return true;
-};
-
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: true,
-  }),
-});
-
-async function sendPushNotification() {
-  const permissionGranted = await requestNotificationPermission();
-
-  if (permissionGranted) {
-    const message = {
-      sound: 'default',
-      title: 'Вы давно к нам не заходили',
-      body: 'Ждем вас в нашем приложении',
-      data: { someData: '' },
-      vibrate: [0, 250, 250, 250],
-    };
-
-    await Notifications.scheduleNotificationAsync({
-      content: message,
-      trigger: { seconds: 5, repeats: false },
-    });
-  }
-}
-
 export default function App() {
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      console.log('=====>');
-      sendPushNotification();
-    }, 100000);
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, []);
+
 
   return (
     <Provider store={store}>
@@ -73,7 +28,6 @@ export default function App() {
     </Provider>
   );
 }
-
 
 
 

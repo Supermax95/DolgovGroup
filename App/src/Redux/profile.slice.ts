@@ -4,6 +4,7 @@ import changeProfilePass from './thunks/Profile/profileChangePass.api';
 import profileChangeBirthDate from './thunks/Profile/profileChangeBirthDate.api';
 import profileChangeFullName from './thunks/Profile/profileChangeFullName.api';
 import profileChangeEmail from './thunks/Profile/profileChangeEmail.api';
+import profileNotification from './thunks/Profile/profileNotificationUpdate.api';
 
 interface IUser {
   lastName: string;
@@ -11,6 +12,8 @@ interface IUser {
   middleName: string;
   birthDate: Date | null | string;
   email: string;
+  notificationPush: boolean;
+  notificationEmail: boolean;
   isLoading: boolean;
   error: any; //* указать конкретный тип для ошибок, если он известен
   successMessage: any; //* указать конкретный тип для ошибок, если он известен
@@ -24,6 +27,8 @@ const initialState: IUser = {
   middleName: '',
   birthDate: null || '',
   email: '',
+  notificationPush: false,
+  notificationEmail: false,
   isLoading: false,
   error: null,
   successMessage: null,
@@ -41,19 +46,30 @@ const profileSlice = createSlice({
       })
       .addCase(getProfileInfo.fulfilled, (state, action) => {
         state.isLoading = false;
-        const { lastName, firstName, middleName, birthDate, email } =
-          action.payload as {
-            lastName: string;
-            firstName: string;
-            middleName: string;
-            birthDate: Date | null | string;
-            email: string;
-          };
+        const {
+          lastName,
+          firstName,
+          middleName,
+          birthDate,
+          email,
+          notificationEmail,
+          notificationPush,
+        } = action.payload as {
+          lastName: string;
+          firstName: string;
+          middleName: string;
+          birthDate: Date | null | string;
+          email: string;
+          notificationPush: boolean;
+          notificationEmail: boolean;
+        };
         state.lastName = lastName;
         state.firstName = firstName;
         state.middleName = middleName;
         state.birthDate = birthDate;
         state.email = email;
+        state.notificationPush = notificationPush;
+        state.notificationEmail = notificationEmail;
       })
       .addCase(getProfileInfo.rejected, (state, action) => {
         state.isLoading = false;
@@ -113,6 +129,21 @@ const profileSlice = createSlice({
         state.successMessage = action.payload.message;
       })
       .addCase(changeProfilePass.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(profileNotification.pending, (state) => {
+        /** */
+        state.isLoading = true;
+        state.error = null;
+        state.successMessage = null;
+      })
+      .addCase(profileNotification.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.notificationPush = action.payload.notificationPush;
+        state.notificationEmail = action.payload.notificationEmail;
+      })
+      .addCase(profileNotification.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });

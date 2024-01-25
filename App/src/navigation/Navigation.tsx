@@ -30,16 +30,66 @@ import getProducts from 'Redux/thunks/Catalog/productGet.api';
 import getSubcategory from 'Redux/thunks/Catalog/subcategoryGet.api';
 import ProductsCards from 'components/Catalog/ProductsCards/ProductsCards';
 import SubcategoryDetail from 'components/Catalog/SubcategoryDetail/SubcategoryDetail';
+import * as Notifications from 'expo-notifications';
+import { Alert } from 'react-native';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabNavigatorOptions>();
 
+const requestNotificationPermission = async () => {
+  const { status } = await Notifications.requestPermissionsAsync();
+  if (status !== 'granted') {
+    Alert.alert('Вам нужно разрешить отправку уведомлений');
+    return false;
+  }
+  return true;
+};
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+});
+
+async function sendPushNotification() {
+  const permissionGranted = await requestNotificationPermission();
+
+  if (permissionGranted) {
+    const message = {
+      sound: 'default',
+      title: 'Вы давно к нам не заходили',
+      body: 'Ждем вас в нашем приложении',
+      data: { someData: '' },
+      vibrate: [0, 250, 250, 250],
+    };
+
+    await Notifications.scheduleNotificationAsync({
+      content: message,
+      trigger: { seconds: 4, repeats: false },
+    });
+  }
+}
+
 export const AppNavigator: FC = () => {
   const dispatch = useAppDispatch();
+  const notificationPush = useAppSelector<boolean>(
+    (state) => state.profileSlice.notificationPush
+  );
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (notificationPush) {      
+        sendPushNotification();
+      }
+    }, 10000);
+
+    return () => clearTimeout(timeoutId);
+  }, [notificationPush]);
   const token = useAppSelector<string | undefined>(
     (state) => state.userSlice.token?.refreshToken
   );
-  console.log('token', token);
 
   useEffect(() => {
     dispatch(getProducts());

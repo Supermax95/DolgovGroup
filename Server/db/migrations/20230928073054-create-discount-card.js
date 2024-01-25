@@ -57,6 +57,14 @@ module.exports = {
       activationLink: {
         type: Sequelize.STRING,
       },
+      notificationPush: {
+        defaultValue: true,
+        type: Sequelize.BOOLEAN,
+      },
+      notificationEmail: {
+        defaultValue: true,
+        type: Sequelize.BOOLEAN,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
