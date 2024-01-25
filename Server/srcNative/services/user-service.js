@@ -41,10 +41,7 @@ class UserService {
       `http://${IP}:${PORT}/api/activate/${activationLink}`
     );
     const userDto = new UserDto(user);
-    // const tokens = tokenService.generateTokens({ ...userDto });
-    // await tokenService.saveToken(userDto.id, tokens.refreshToken);
     return {
-      // ...tokens,
       user: userDto,
     };
   }
