@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import getProducts from './thunks/Catalog/productGet.api';
-
+import currentProduct from './thunks/Catalog/getcurrentProduct';
 
 interface Product {
   id: number;
@@ -26,6 +26,7 @@ interface ProductState {
   error: string | null;
   status: number | null;
   message: string | null;
+  currentProduct: Product | null;
 }
 
 const initialState: ProductState = {
@@ -35,6 +36,7 @@ const initialState: ProductState = {
   error: null,
   status: null,
   message: null,
+  currentProduct: null,
 };
 
 const productSlice = createSlice({
@@ -54,6 +56,19 @@ const productSlice = createSlice({
       .addCase(getProducts.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message || 'Произошла ошибка';
+      })
+      .addCase(currentProduct.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(currentProduct.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.currentProduct = action.payload;
+      })
+      .addCase(currentProduct.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error =
+          action.error.message || 'Произошла ошибка при открытии продукта';
       });
   },
 });

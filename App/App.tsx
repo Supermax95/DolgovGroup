@@ -17,8 +17,6 @@ import { store, persistor } from './src/Redux/store';
 //   });
 
 export default function App() {
-
-
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
@@ -28,4 +26,3 @@ export default function App() {
     </Provider>
   );
 }
-

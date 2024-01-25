@@ -34,7 +34,6 @@ import SingleProduct from 'components/Catalog/ProductsCards/SingleProduct/Single
 import * as Notifications from 'expo-notifications';
 import { Alert } from 'react-native';
 
-
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabNavigatorOptions>();
 
@@ -82,10 +81,10 @@ export const AppNavigator: FC = () => {
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      if (notificationPush) {      
+      if (notificationPush) {
         sendPushNotification();
       }
-    }, 10000);
+    }, 1000000000000);
 
     return () => clearTimeout(timeoutId);
   }, [notificationPush]);

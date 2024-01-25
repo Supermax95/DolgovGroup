@@ -1,7 +1,17 @@
-import { View, Text, SafeAreaView, ScrollView } from 'react-native';
-import React from 'react';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
+import React, { useEffect } from 'react';
 import SingleProductCard from 'ui/SingleProductCard';
-import { useAppSelector } from 'Redux/hooks';
+import { useAppDispatch, useAppSelector } from 'Redux/hooks';
+import { PORT, IP } from '@env';
+import { unwrapResult } from '@reduxjs/toolkit';
+import currentProduct from 'Redux/thunks/Catalog/getcurrentProduct';
+import RenderHtml from 'react-native-render-html';
 
 export interface IProduct {
   id: number;
@@ -22,27 +32,78 @@ export interface IProduct {
 
 const SingleProduct = ({ route }: any) => {
   const { productId } = route.params;
+  console.log('productId', productId);
+
+  const dispatch = useAppDispatch();
 
   const allProducts = useAppSelector<IProduct[]>(
     (state) => state.productSlice.data
   );
 
+  const currentProductOpen = useAppSelector<IProduct>(
+    (state) => state.productSlice.currentProduct
+  );
+  console.log('currentProductOpen', currentProductOpen);
+
+  // const y = currentProductOpen.map((el) => el.article);
+  // console.log('currentProductOpen', y);
+
   const product = allProducts.filter((prod) => prod.id === productId);
 
-  console.log('productId==>', productId);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const product = await dispatch(currentProduct(productId));
+        // unwrapResult(product);
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-  console.log('product-=-==-=-=--=+++++>', product);
+    fetchData();
+  }, [dispatch, productId]);
+
+  // console.log('add==>', add);
+
+  // const t = product.map((el) => el.description);
+  // console.log('product-=-==-=-=--=+++++>', t);
+
+  // const descObject = JSON.parse(currentProductOpen.description);
+  // console.log('descObject', descObject);
+
+  const desc = <RenderHtml source={{ html: currentProductOpen.description }} />;
+  console.log('desc', desc);
 
   return (
-    <SafeAreaView
-      className={`flex-1 items-center justify-start py-2 bg-[#ffff] `}
-    >
+    <SafeAreaView className={`flex-1 items-center justify-start bg-[#ffff] `}>
+      <View
+        className={`flex-row items-center justify-between px-4 py-0 w-full`}
+      >
+        <TouchableOpacity
+        //   onPress={() => navigation.goBack()
+        //   }
+        >
+          <Text>ИКОНКА</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+        //   onPress={() => navigation.navigate('CartScreen')}
+        >
+          <Text>иконка</Text>
+        </TouchableOpacity>
+      </View>
       {/* Scrollable container start */}
       <ScrollView style={{ flex: 1, width: '100%' }}>
         {/* <View className=""> */}
         <View className="flex-row flex-wrap justify-center">
-          {product.length ? (
-            product.map((prod) => <SingleProductCard key={prod.id} />)
+          {currentProductOpen ? (
+            <SingleProductCard
+              key={currentProductOpen.id}
+              article={currentProductOpen.article}
+              productName={currentProductOpen.productName}
+              image={`http://${IP}:${PORT}${currentProductOpen.photo}`}
+              // description={desc}
+            />
           ) : (
             <View className="flex-row flex-wrap justify-center mt-4">
               <Text className="text-gray-600 font-medium text-lg">
