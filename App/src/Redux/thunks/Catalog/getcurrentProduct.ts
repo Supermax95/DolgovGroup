@@ -28,8 +28,6 @@ const currentProduct = createAsyncThunk<ResponseData, number>(
       const response: AxiosResponse = await axios.get(
         `http://${IP}:${PORT}/admin/currentproduct/${productId}`
       );
-
-      console.log('🚀 ~ response.data:', response.data);
       return response.data;
     } catch (error) {
       console.error('Error:', error);
