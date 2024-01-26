@@ -12,7 +12,7 @@ interface ISingleProductCard {
   article: string;
   productName: string;
   image: string;
-  description?: object | undefined;
+  description?: object | null;
 }
 
 const SingleProductCard: FC<ISingleProductCard> = ({
