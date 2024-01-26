@@ -14,7 +14,7 @@
       ]
     ],
 
-    "icon": "./src/assets/images/icon.png",
+    "icon": "./src/assets/images/adaptive-icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./src/assets/adaptive-icon2.png",

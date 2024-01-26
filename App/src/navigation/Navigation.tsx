@@ -61,8 +61,8 @@ async function sendPushNotification() {
   if (permissionGranted) {
     const message = {
       sound: 'default',
-      title: 'Вы давно к нам не заходили',
-      body: 'Ждем вас в нашем приложении',
+      title: 'Катя Глупышка!',
+      body: 'Ты давно не заходила в приложение ',
       data: { someData: '' },
       vibrate: [0, 250, 250, 250],
       // attachments: [
@@ -77,7 +77,7 @@ async function sendPushNotification() {
     // ../src/assets/images/adaptive-icon.png
     await Notifications.scheduleNotificationAsync({
       content: message,
-      trigger: { seconds: 10, repeats: false },
+      trigger: { seconds: 172800, repeats: false },
     });
   }
 }

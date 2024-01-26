@@ -9,9 +9,10 @@ import React, { useEffect } from 'react';
 import SingleProductCard from 'ui/SingleProductCard';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { PORT, IP } from '@env';
-import { unwrapResult } from '@reduxjs/toolkit';
 import currentProduct from 'Redux/thunks/Catalog/getcurrentProduct';
 import RenderHtml from 'react-native-render-html';
+import { Dimensions } from 'react-native';
+
 
 export interface IProduct {
   id: number;
@@ -33,28 +34,20 @@ export interface IProduct {
 const SingleProduct = ({ route }: any) => {
   const { productId } = route.params;
   console.log('productId', productId);
-
   const dispatch = useAppDispatch();
-
-  const allProducts = useAppSelector<IProduct[]>(
-    (state) => state.productSlice.data
-  );
-
-  const currentProductOpen = useAppSelector<IProduct>(
-    (state) => state.productSlice.currentProduct
-  );
-  console.log('currentProductOpen', currentProductOpen);
-
-  // const y = currentProductOpen.map((el) => el.article);
-  // console.log('currentProductOpen', y);
-
-  const product = allProducts.filter((prod) => prod.id === productId);
-
+  // const allProducts = useAppSelector<IProduct[]>(
+  //   (state) => state.productSlice.data
+  // );
+  // const currentProductOpen1 = useAppSelector<IProduct>(
+  //   (state) =>
+  //     state.productSlice.data.find((prod) => prod.id === productId) ||
+  //     ({} as IProduct)
+  // );
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const product = await dispatch(currentProduct(productId));
-        // unwrapResult(product);
+        await dispatch(currentProduct(productId));
       } catch (error) {
         console.error(error);
       }
@@ -62,6 +55,12 @@ const SingleProduct = ({ route }: any) => {
 
     fetchData();
   }, [dispatch, productId]);
+  const currentProductOpen = useAppSelector<IProduct>(  (state) =>
+  state.productSlice.currentProduct) ||
+  ({} as IProduct)
+  // console.log('currentProductOpen=====>',currentProductOpen);
+  
+  
 
   // console.log('add==>', add);
 
@@ -71,8 +70,14 @@ const SingleProduct = ({ route }: any) => {
   // const descObject = JSON.parse(currentProductOpen.description);
   // console.log('descObject', descObject);
 
-  const desc = <RenderHtml source={{ html: currentProductOpen.description }} />;
-  console.log('desc', desc);
+  // const desc = <RenderHtml source={{ html: currentProductOpen.description }} />;
+  const desc = (
+    <RenderHtml
+      source={{ html: currentProductOpen.description }}
+      contentWidth={Dimensions.get('window').width}
+    />
+  );
+  // console.log('desc', desc);
 
   return (
     <SafeAreaView className={`flex-1 items-center justify-start bg-[#ffff] `}>
@@ -102,7 +107,7 @@ const SingleProduct = ({ route }: any) => {
               article={currentProductOpen.article}
               productName={currentProductOpen.productName}
               image={`http://${IP}:${PORT}${currentProductOpen.photo}`}
-              // description={desc}
+              description={desc}
             />
           ) : (
             <View className="flex-row flex-wrap justify-center mt-4">
