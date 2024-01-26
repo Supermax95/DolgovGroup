@@ -70,12 +70,13 @@ const Search = () =>
       (state) => state.productSlice.data
     );
     const applyFilters = () => {
-      let filtered = products;
+      // let filtered = products;
+      let filtered: IProduct[] = Array.isArray(products) ? products : [];
       console.log(filtered);
       
 
       if (showNew) {
-        filtered = filtered.filter((product) => product.isNew === true);
+        filtered = filtered.filter((product ) => product.isNew === true);
       }
 
       if (showDiscounted) {
