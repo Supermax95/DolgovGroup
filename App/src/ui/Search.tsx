@@ -36,7 +36,7 @@
 import { View, Pressable, TextInput, Modal, Button, Text } from 'react-native';
 import React, { useState } from 'react';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { isPast, isToday, parseISO } from 'date-fns';
+// import { isPast, isToday, parseISO } from 'date-fns';
 import { useAppSelector } from 'Redux/hooks';
 
 export interface IProduct {
@@ -73,10 +73,9 @@ const Search = () =>
       // let filtered = products;
       let filtered: IProduct[] = Array.isArray(products) ? products : [];
       console.log(filtered);
-      
 
       if (showNew) {
-        filtered = filtered.filter((product ) => product.isNew === true);
+        filtered = filtered.filter((product) => product.isNew === true);
       }
 
       if (showDiscounted) {
@@ -98,22 +97,30 @@ const Search = () =>
 
           const searchTerms = searchText.toLowerCase().split(' ');
 
-          const isPromoEnded =
-            product.promoEndDate &&
-            isPast(parseISO(product.promoEndDate)) &&
-            !isToday(parseISO(product.promoEndDate));
-
-          return (
-            searchTerms.every((term) =>
-              productFields.some((field) => field.toLowerCase().includes(term))
-            ) ||
-            (isPromoEnded && searchText.toLowerCase().includes('завершена'))
+          return searchTerms.every((term) =>
+            productFields.some((field) => field.toLowerCase().includes(term))
           );
         });
       }
 
       console.log('Отфильтрованные продукты:', filtered);
+
+      return filtered;
     };
+
+    //     const isPromoEnded =
+    //       product.promoEndDate &&
+    //       isPast(parseISO(product.promoEndDate)) &&
+    //       !isToday(parseISO(product.promoEndDate));
+
+    //     return (
+    //       searchTerms.every((term) =>
+    //         productFields.some((field) => field.toLowerCase().includes(term))
+    //       ) ||
+    //       (isPromoEnded && searchText.toLowerCase().includes('завершена'))
+    //     );
+    //   });
+    // }
 
     const clearFilters = () => {
       setSearchText('');
