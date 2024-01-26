@@ -13,7 +13,6 @@ import currentProduct from 'Redux/thunks/Catalog/getcurrentProduct';
 import RenderHtml from 'react-native-render-html';
 import { Dimensions } from 'react-native';
 
-
 export interface IProduct {
   id: number;
   article: string;
@@ -43,7 +42,7 @@ const SingleProduct = ({ route }: any) => {
   //     state.productSlice.data.find((prod) => prod.id === productId) ||
   //     ({} as IProduct)
   // );
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -55,12 +54,10 @@ const SingleProduct = ({ route }: any) => {
 
     fetchData();
   }, [dispatch, productId]);
-  const currentProductOpen = useAppSelector<IProduct>(  (state) =>
-  state.productSlice.currentProduct) ||
-  ({} as IProduct)
+  const currentProductOpen =
+    useAppSelector<IProduct>((state) => state.productSlice.currentProduct) ||
+    ({} as IProduct);
   // console.log('currentProductOpen=====>',currentProductOpen);
-  
-  
 
   // console.log('add==>', add);
 
@@ -71,12 +68,13 @@ const SingleProduct = ({ route }: any) => {
   // console.log('descObject', descObject);
 
   // const desc = <RenderHtml source={{ html: currentProductOpen.description }} />;
-  const desc = (
+  const desc = currentProductOpen.description ? (
     <RenderHtml
       source={{ html: currentProductOpen.description }}
       contentWidth={Dimensions.get('window').width}
     />
-  );
+  ) : null;
+
   // console.log('desc', desc);
 
   return (
