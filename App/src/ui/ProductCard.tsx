@@ -67,9 +67,10 @@ const ProductCard: FC<IProductCard> = ({
               {productName}
             </Text>
           </View>
+
           <View className="flex-col items-start justify-start w-full h-4">
             {isNew ? (
-              <Text className="text-xs text-blue-500 font-medium">Новый</Text>
+              <Text className="text-xs text-blue-500 font-medium">Новинка</Text>
             ) : (
               <></>
             )}

@@ -34,6 +34,8 @@ import SingleProduct from 'components/Catalog/ProductsCards/SingleProduct/Single
 import * as Notifications from 'expo-notifications';
 import { Alert } from 'react-native';
 import getProfileInfo from 'Redux/thunks/Profile/profileInfo.api';
+import getPromotions from 'Redux/thunks/Promotion/getPromotion.api';
+import PromoDetails from 'components/Promotion/PromoDetails';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabNavigatorOptions>();
@@ -124,6 +126,10 @@ export const AppNavigator: FC = () => {
     }
   }, [dispatch]);
 
+  useEffect(() => {
+    dispatch(getPromotions());
+  }, [dispatch]);
+
   const user = useAppSelector((state) => state.userSlice.user.isActivated);
 
   const renderLoggedInUserScreens = () => (
@@ -192,6 +198,11 @@ export const AppNavigator: FC = () => {
         name="SingleProduct"
         component={SingleProduct}
         options={{ title: 'Карточка одного продукта' }}
+      />
+      <Stack.Screen
+        name="PromoDetails"
+        component={PromoDetails}
+        options={{ title: 'Конкретная акция' }}
       />
       {/* <Stack.Screen
         name="CheckMail"

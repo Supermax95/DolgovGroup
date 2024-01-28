@@ -1,12 +1,13 @@
-import { VITE_URL } from '../../../VITE_URL';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { AxiosResponse } from 'axios';
 import axios from 'axios';
+import { PORT, IP } from '@env';
 
-const getPromotions = createAsyncThunk('admin/getPromotions', async () => {
+const getPromotions = createAsyncThunk('api/getPromotions', async () => {
   const response: AxiosResponse = await axios.get(
-    `${VITE_URL}/admin/promotions`
+    `http://${IP}:${PORT}/admin/promotions`
   );
+  console.log('response.data', response.data);
 
   return response.data;
 });

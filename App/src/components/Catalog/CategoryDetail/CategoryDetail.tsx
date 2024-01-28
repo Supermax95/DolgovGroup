@@ -13,10 +13,10 @@ import {
   TextInput,
 } from 'react-native';
 import CardCategory from 'ui/CardCategory';
-import CardNoCarusel from 'components/ Action/CardNoCarusel/CardNoCarusel';
 import Heading from 'ui/Heading';
 import Search from 'ui/Search';
 import { PORT, IP } from '@env';
+import CardsNoCarusel from 'components/Promotion/CardsNoCarusel';
 
 export interface ICategory {
   id: number;
@@ -37,6 +37,7 @@ function CategoryDetail() {
   const categories = useAppSelector<ICategory[]>(
     (state) => state.categorySlice.data
   );
+
   // console.log('categoriesCatDet===========>', categories);
 
   // console.log('subcategoriesCATALDet***********************', subcategories);
@@ -59,15 +60,15 @@ function CategoryDetail() {
         {/* акции вне карусели */}
         <View className="bg-green-100">
           <Heading title="Рекомендуем" />
-          <View className=" mx-3">
+          <CardsNoCarusel />
+          {/* <View className=" mx-3">
             <ScrollView
               style={{ flex: 1, width: '100%', flexShrink: 0 }}
               horizontal={true}
               showsHorizontalScrollIndicator={false}
             >
-              <CardNoCarusel />
             </ScrollView>
-          </View>
+          </View> */}
         </View>
 
         {/* Каталог */}
