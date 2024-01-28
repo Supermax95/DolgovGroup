@@ -14,35 +14,21 @@ import RenderHtml from 'react-native-render-html';
 import { Dimensions } from 'react-native';
 import { useWindowDimensions } from 'react-native';
 
-export interface IProduct {
+export interface IPromotion {
   id: number;
-  article: string;
-  productName: string;
-  promoStartDate: string;
-  promoEndDate: string;
-  originalPrice: number;
-  customerPrice: number;
-  employeePrice: number;
-  isNew: boolean;
-  isDiscounted: boolean;
+  title: string;
   description: string;
-  photo: string;
-  subcategoryId: number;
+  dateStart: string;
+  dateEnd: string;
+  carousel: boolean;
   invisible: boolean;
+  photo?: string;
 }
 
-const SingleProduct = ({ route }: any) => {
+const PromoDetails = ({ route }: any) => {
   const { productId } = route.params;
-  console.log('productId', productId);
+
   const dispatch = useAppDispatch();
-  // const allProducts = useAppSelector<IProduct[]>(
-  //   (state) => state.productSlice.data
-  // );
-  // const currentProductOpen1 = useAppSelector<IProduct>(
-  //   (state) =>
-  //     state.productSlice.data.find((prod) => prod.id === productId) ||
-  //     ({} as IProduct)
-  // );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,45 +44,6 @@ const SingleProduct = ({ route }: any) => {
   const currentProductOpen =
     useAppSelector<IProduct>((state) => state.productSlice.currentProduct) ||
     ({} as IProduct);
-  // console.log('currentProductOpen=====>',currentProductOpen);
-
-  // console.log('add==>', add);
-
-  // const t = product.map((el) => el.description);
-  // console.log('product-=-==-=-=--=+++++>', t);
-
-  // const descObject = JSON.parse(currentProductOpen.description);
-  // console.log('descObject', descObject);
-
-  // const desc = <RenderHtml source={{ html: currentProductOpen.description }} />;
-  ////////////////////////////////////////////////////
-  // const desc = currentProductOpen.description ? (
-  //   <RenderHtml
-  //     source={{ html: currentProductOpen.description }}
-  //     contentWidth={Dimensions.get('window').width}
-  //   />
-  // ) : null;
-
-  // console.log('desc', desc);
-  const { width } = useWindowDimensions();
-
-  // const desc = currentProductOpen.description ? (
-  //   <RenderHtml
-  //     source={{ html: currentProductOpen.description }}
-  //     contentWidth={width}
-  //   />
-  // ) : null;
-
-  const desc = (
-    <RenderHtml
-      source={{
-        html: currentProductOpen.description,
-      }}
-      contentWidth={width}
-      enableExperimentalMarginCollapsing={true}
-    />
-  );
-  console.log('desc', desc);
 
   return (
     <SafeAreaView className={`flex-1 items-center justify-start bg-[#ffff] `}>
@@ -157,4 +104,4 @@ const SingleProduct = ({ route }: any) => {
   );
 };
 
-export default SingleProduct;
+export default PromoDetails;

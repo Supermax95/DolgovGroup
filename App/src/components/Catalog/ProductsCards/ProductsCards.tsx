@@ -12,8 +12,6 @@ import {
   ScrollView,
   TextInput,
 } from 'react-native';
-import CardCategory from 'ui/CardCategory';
-import CardNoCarusel from 'components/ Action/CardNoCarusel/CardNoCarusel';
 import Heading from 'ui/Heading';
 import Search from 'ui/Search';
 import ProductCard from 'ui/ProductCard';
