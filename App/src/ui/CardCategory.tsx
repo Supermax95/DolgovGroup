@@ -8,6 +8,7 @@ import {
   Dimensions,
   StyleSheet,
 } from 'react-native';
+import { PORT, IP } from '@env';
 
 // export interface ICategory {
 //   id: number;
@@ -35,7 +36,7 @@ const CardCategory: FC<ICardCategory> = ({
         style={[styles.cardContainer, { width: cardWidth }]}
       >
         <Image
-          source={{ uri: imageCategory }}
+          source={{ uri: `http://${IP}:${PORT}${imageCategory}` }}
           resizeMode="contain"
           style={styles.image}
         />

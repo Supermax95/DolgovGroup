@@ -15,7 +15,6 @@ import {
 import CardCategory from 'ui/CardCategory';
 import Heading from 'ui/Heading';
 import Search from 'ui/Search';
-import { PORT, IP } from '@env';
 import CardsNoCarusel from 'components/Promotion/CardsNoCarusel';
 
 export interface ICategory {
@@ -86,7 +85,7 @@ function CategoryDetail() {
                     )
                   }
                   categoryName={category.categoryName}
-                  imageCategory={`http://${IP}:${PORT}${category.img}`}
+                  imageCategory={category.img}
                 />
               ))}
             </View>

@@ -1,15 +1,14 @@
 import { View, Text, Image, SafeAreaView, Dimensions } from 'react-native';
 import React, { FC } from 'react';
+import { PORT, IP } from '@env';
 
 interface ISinglePromo {
   onPress: () => void;
   title: string;
-  description: string;
-  image: string;
+  description: React.ReactNode;
+  image?: string | undefined;
   dateStart: Date | string;
   dateEnd: Date | string;
-  carousel: boolean;
-  invisible: boolean;
 }
 
 const SinglePromo: FC<ISinglePromo> = ({
@@ -18,8 +17,6 @@ const SinglePromo: FC<ISinglePromo> = ({
   image,
   dateStart,
   dateEnd,
-
-  invisible,
 }) => {
   const screenHeight = Math.round(Dimensions.get('window').height);
 
@@ -36,8 +33,7 @@ const SinglePromo: FC<ISinglePromo> = ({
             className={`w-full h-full absolute top-0 left-0 flex items-center justify-center`}
           >
             <Image
-              source={{ uri: image }}
-              //   source={require('../assets/Trio.webp')}
+              source={{ uri: `http://${IP}:${PORT}${image}` }}
               resizeMode="contain"
               className={`w-80 h-80`}
             />

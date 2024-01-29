@@ -35,6 +35,8 @@ const SingleProduct = ({ route }: any) => {
   const { productId } = route.params;
   console.log('productId', productId);
   const dispatch = useAppDispatch();
+  const { width } = useWindowDimensions();
+
   // const allProducts = useAppSelector<IProduct[]>(
   //   (state) => state.productSlice.data
   // );
@@ -78,7 +80,6 @@ const SingleProduct = ({ route }: any) => {
   // ) : null;
 
   // console.log('desc', desc);
-  const { width } = useWindowDimensions();
 
   // const desc = currentProductOpen.description ? (
   //   <RenderHtml

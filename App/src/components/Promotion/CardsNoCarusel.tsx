@@ -1,3 +1,4 @@
+import { PORT, IP } from '@env';
 import { useNavigation } from '@react-navigation/native';
 import { useAppSelector } from 'Redux/hooks';
 import { StackNavigationProp } from 'navigation/types';
@@ -44,7 +45,7 @@ export default function CardsNoCarusel() {
   //! возможно, нужны другие карточки под акции вне карусели, более квадратные
 
   return (
-    <View className=" mx-3">
+    <View className="mx-3">
       <ScrollView
         style={{ flex: 1, width: '100%', flexShrink: 0 }}
         horizontal={true}
@@ -58,12 +59,20 @@ export default function CardsNoCarusel() {
               style={[styles.cardContainer, { width: cardWidth }]}
             >
               <Image
-                source={{ uri: promotion.photo }}
+                source={{ uri: `http://${IP}:${PORT}${promotion.photo}` }}
                 resizeMode="contain"
                 style={styles.image}
               />
-              <View style={styles.overlayText}>
-                <Text style={styles.overlayNameText}>{promotion.title}</Text>
+
+              <View className="h-19 w-full space-y-1 mt-2 px-1">
+                <View
+                  // style={styles.textContainer}
+                  className="flex-col items-center justify-center w-full h-8"
+                >
+                  <Text className="text-xs text-gray-700 font-medium">
+                    {promotion.title}
+                  </Text>
+                </View>
               </View>
             </Pressable>
           ))
@@ -81,41 +90,27 @@ export default function CardsNoCarusel() {
 
 const styles = StyleSheet.create({
   cardContainer: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.15,
+    shadowRadius: 5,
+    elevation: 5,
+    //
     position: 'relative',
-    padding: 0,
-    margin: 4,
-    borderRadius: 20,
-    backgroundColor: '#f1e1d2',
-    // flexDirection: 'column',
+    padding: 2,
+    margin: 6,
+    borderRadius: 10,
+    backgroundColor: 'white',
+    flexDirection: 'column',
     alignItems: 'center',
+    justifyContent: 'center',
+    height: 200,
   },
   image: {
-    width: 200,
-    height: 120,
-  },
-  textContainer: {
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-    width: '100%',
-  },
-  overlayText: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    padding: 10,
-  },
-  overlayNameText: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: '#292520',
-  },
-  overlayDescriptionText: {
-    fontSize: 12,
-    color: 'gray',
+    width: 144,
+    height: 128,
   },
 });
