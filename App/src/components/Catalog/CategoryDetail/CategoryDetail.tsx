@@ -60,14 +60,6 @@ function CategoryDetail() {
         <View className="bg-green-100">
           <Heading title="Рекомендуем" />
           <CardsNoCarusel />
-          {/* <View className=" mx-3">
-            <ScrollView
-              style={{ flex: 1, width: '100%', flexShrink: 0 }}
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-            >
-            </ScrollView>
-          </View> */}
         </View>
 
         {/* Каталог */}

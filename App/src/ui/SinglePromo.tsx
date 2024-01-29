@@ -1,14 +1,14 @@
 import { View, Text, Image, SafeAreaView, Dimensions } from 'react-native';
 import React, { FC } from 'react';
 import { PORT, IP } from '@env';
+import { isToday, parseISO } from 'date-fns';
 
 interface ISinglePromo {
-  onPress: () => void;
   title: string;
   description: React.ReactNode;
   image?: string | undefined;
-  dateStart: Date | string;
-  dateEnd: Date | string;
+  dateStart: string;
+  dateEnd: string;
 }
 
 const SinglePromo: FC<ISinglePromo> = ({
@@ -37,20 +37,6 @@ const SinglePromo: FC<ISinglePromo> = ({
               resizeMode="contain"
               className={`w-80 h-80`}
             />
-            {/* {discountPercentage && isDiscount ? (
-              <View className="px-2 py-1 bg-amber-400 rounded-full absolute justify-start items-center bottom-10 left-3">
-                <Text className="text-sm text-gray-700 font-normal">
-                  -{discountPercentage}%
-                </Text>
-              </View>
-            ) : (
-              <></>
-            )} */}
-            {/* <View className={`absolute flex items-end w-full bottom-2 right-5`}>
-            <Text className={`text-xs font-normal text-gray-500`}>
-              Арт. {article}
-            </Text>
-          </View> */}
           </View>
         </View>
       </SafeAreaView>
@@ -58,43 +44,30 @@ const SinglePromo: FC<ISinglePromo> = ({
       <View
         className={`w-full flex-1 h-full bg-white rounded-t-3xl px-6 py-2 bg-slate-100`}
       >
-        {/* //! артикул */}
-        <View className="space-y-2">
-          {/* <View className={`flex items-end w-full`}>
-            <Text className={`text-xs font-normal text-gray-500`}>
-              Арт. {article}
+        {dateStart && dateEnd ? (
+          <View className="flex-row items-center">
+            {isToday(parseISO(dateEnd)) ? (
+              <Text className="text-base font-normal text-slate-600">
+                Последний день акции
+              </Text>
+            ) : (
+              <Text className="text-base font-normal text-slate-600">
+                C {dateStart} по {dateEnd}
+              </Text>
+            )}
+          </View>
+        ) : (
+          <View className="flex-row items-center">
+            <Text className="text-base font-normal text-slate-600">
+              Акция бессрочная
             </Text>
-          </View> */}
-
+          </View>
+        )}
+        <View className="space-y-2">
           <View className={`flex items-start justify-start w-full`}>
             <Text className={`text-lg font-bold text-gray-800`}>{title}</Text>
           </View>
-
-          {/* {isDiscount ? (
-            <View className="flex-row items-center space-x-1">
-              <Text className="text-2xl font-medium text-red-600">
-                {discountedPrice}₽
-              </Text>
-              <Text className="text-lg font-normal opacity-50 line-through">
-                {originalPrice}₽
-              </Text>
-            </View>
-          ) : (
-            <View className="flex-row items-center">
-              <Text className="text-2xl font-medium text-gray-800">
-                {originalPrice}₽
-              </Text>
-            </View>
-          )} */}
         </View>
-
-        {/* <View className="flex-col items-start justify-start w-full h-4">
-          {isNew ? (
-            <Text className="text-xs text-blue-500 font-medium">Новинка</Text>
-          ) : (
-            <></>
-          )}
-        </View> */}
 
         {/* //! на андроид нет отступа от текста и текст не переносится */}
         <SafeAreaView

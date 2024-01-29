@@ -11,52 +11,8 @@ interface ISubcategory {
 const Subcategory: FC<ISubcategory> = ({ onPress, title }) => {
   return (
     <Padding>
-      {/* <Pressable
-        // onPress={onPress}
-        // className={`py-4 flex-row justify-between ${tailwindClass}`}
-        className={`px-2 py-3 flex-row border-b-[1px] border-gray-100`}
-      >
-        <View className="w-7">
-          <MaterialCommunityIcons name="creation" size={19} color="#10b981" />
-        </View>
-        <View className="flex-1 flex-row justify-between">
-          <View>
-            <Text className="text-green-600 font-medium text-md">
-              Все товары категории
-            </Text>
-          </View>
-          <View className="w-7">
-            <MaterialCommunityIcons
-              name="chevron-right"
-              size={26}
-              color="#10b981"
-            />
-          </View>
-        </View>
-      </Pressable> */}
-
-      {/* <Pressable
-        onPress={onPress}
-        // className={`py-4 flex-row justify-between ${tailwindClass}`}
-        className={`px-2 py-3 flex-row justify-between border-b-[1px] border-gray-100`}
-      >
-        <View>
-          <Text className="text-green-600 font-medium text-md">
-            Все товары категории
-          </Text>
-        </View>
-        <View className="w-7">
-          <MaterialCommunityIcons
-            name="chevron-right"
-            size={26}
-            color="#10b981"
-          />
-        </View>
-      </Pressable> */}
-
       <Pressable
         onPress={onPress}
-        // className={`py-4 flex-row justify-between ${tailwindClass}`}
         className={`px-2 py-3 flex-row justify-between border-b-[1px] border-gray-100`}
       >
         <View>

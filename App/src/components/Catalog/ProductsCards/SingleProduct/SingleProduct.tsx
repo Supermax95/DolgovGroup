@@ -33,18 +33,8 @@ export interface IProduct {
 
 const SingleProduct = ({ route }: any) => {
   const { productId } = route.params;
-  console.log('productId', productId);
   const dispatch = useAppDispatch();
   const { width } = useWindowDimensions();
-
-  // const allProducts = useAppSelector<IProduct[]>(
-  //   (state) => state.productSlice.data
-  // );
-  // const currentProductOpen1 = useAppSelector<IProduct>(
-  //   (state) =>
-  //     state.productSlice.data.find((prod) => prod.id === productId) ||
-  //     ({} as IProduct)
-  // );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,46 +47,21 @@ const SingleProduct = ({ route }: any) => {
 
     fetchData();
   }, [dispatch, productId]);
+
   const currentProductOpen =
     useAppSelector<IProduct>((state) => state.productSlice.currentProduct) ||
     ({} as IProduct);
-  // console.log('currentProductOpen=====>',currentProductOpen);
 
-  // console.log('add==>', add);
-
-  // const t = product.map((el) => el.description);
-  // console.log('product-=-==-=-=--=+++++>', t);
-
-  // const descObject = JSON.parse(currentProductOpen.description);
-  // console.log('descObject', descObject);
-
-  // const desc = <RenderHtml source={{ html: currentProductOpen.description }} />;
-  ////////////////////////////////////////////////////
-  // const desc = currentProductOpen.description ? (
-  //   <RenderHtml
-  //     source={{ html: currentProductOpen.description }}
-  //     contentWidth={Dimensions.get('window').width}
-  //   />
-  // ) : null;
-
-  // console.log('desc', desc);
-
-  // const desc = currentProductOpen.description ? (
-  //   <RenderHtml
-  //     source={{ html: currentProductOpen.description }}
-  //     contentWidth={width}
-  //   />
-  // ) : null;
-
-  const desc = (
+  const desc = currentProductOpen.description ? (
     <RenderHtml
       source={{
-        html: currentProductOpen.description,
+        html: String(currentProductOpen.description),
       }}
       contentWidth={width}
       enableExperimentalMarginCollapsing={true}
     />
-  );
+  ) : null;
+
   console.log('desc', desc);
 
   return (
@@ -119,7 +84,6 @@ const SingleProduct = ({ route }: any) => {
       </View>
       {/* Scrollable container start */}
       <ScrollView style={{ flex: 1, width: '100%' }}>
-        {/* <View className=""> */}
         <View className="flex-col flex-wrap justify-center">
           {currentProductOpen ? (
             <SingleProductCard
@@ -142,7 +106,6 @@ const SingleProduct = ({ route }: any) => {
               </Text>
             </View>
           )}
-          {/* </View> */}
         </View>
         {/* {isLoading ? (
     <View className={`flex-1 h-80 items-center justify-center`}>

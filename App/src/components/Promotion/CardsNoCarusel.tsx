@@ -45,14 +45,14 @@ export default function CardsNoCarusel() {
   //! возможно, нужны другие карточки под акции вне карусели, более квадратные
 
   return (
-    <View className="mx-3">
-      <ScrollView
-        style={{ flex: 1, width: '100%', flexShrink: 0 }}
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-      >
-        {promotions.length ? (
-          promotions.map((promotion) => (
+    <ScrollView
+      style={{ flex: 1, width: '100%', flexShrink: 0, margin: 2 }}
+      horizontal={true}
+      showsHorizontalScrollIndicator={false}
+    >
+      {promotions.length ? (
+        <View className="flex-row flex-wrap justify-center mx-3">
+          {promotions.map((promotion) => (
             <Pressable
               key={promotion.id}
               onPress={() => navigateToPromoDetail(promotion.id)}
@@ -65,26 +65,23 @@ export default function CardsNoCarusel() {
               />
 
               <View className="h-19 w-full space-y-1 mt-2 px-1">
-                <View
-                  // style={styles.textContainer}
-                  className="flex-col items-center justify-center w-full h-8"
-                >
+                <View className="flex-col items-center justify-center w-full h-8">
                   <Text className="text-xs text-gray-700 font-medium">
                     {promotion.title}
                   </Text>
                 </View>
               </View>
             </Pressable>
-          ))
-        ) : (
-          <View className="flex-row flex-wrap justify-center">
-            <Text className="text-gray-600 font-medium text-lg mt-4">
-              Акции отсутствуют
-            </Text>
-          </View>
-        )}
-      </ScrollView>
-    </View>
+          ))}
+        </View>
+      ) : (
+        <View className="flex-row flex-wrap justify-center">
+          <Text className="text-gray-600 font-medium text-lg mt-4">
+            Акции отсутствуют
+          </Text>
+        </View>
+      )}
+    </ScrollView>
   );
 }
 
@@ -101,7 +98,7 @@ const styles = StyleSheet.create({
     //
     position: 'relative',
     padding: 2,
-    margin: 6,
+    margin: 4,
     borderRadius: 10,
     backgroundColor: 'white',
     flexDirection: 'column',
