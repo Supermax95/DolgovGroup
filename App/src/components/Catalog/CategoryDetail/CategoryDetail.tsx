@@ -1,6 +1,7 @@
 import React, { FC, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { StackNavigationProp } from 'navigation/types';
 import {
   View,
@@ -52,8 +53,14 @@ function CategoryDetail() {
     <SafeAreaView
       className={`flex-1 items-center justify-start py-2 bg-[#ffff] `}
     >
-      <Search />
-
+      {/* <Search /> */}
+      {/* <MaterialCommunityIcons name="magnify" size={23} color="#7f7f7f" />
+      <TextInput
+      className={`text-md font-normal flex-1 px-2 py-1`}
+      placeholderTextColor="#555"
+      onSubmitEditing={() => navigation.navigate('Search')}
+      placeholder="Поиск"
+    /> */}
       {/* Scrollable container start */}
       <ScrollView style={{ flex: 1, width: '100%' }}>
         {/* акции вне карусели */}

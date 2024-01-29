@@ -1,43 +1,21 @@
-// import { View, Pressable, TextInput } from 'react-native';
-// import React from 'react';
-// import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-
-// const Search = () => {
-//   return (
-//     <View
-//       className={`bg-purple-100 py-4 flex-row items-center justify-between px-4 w-full`}
-//     >
-//       <View className={`flex-row items-center mr-12`}>
-//         <View
-//           className={`px-4 py-2 bg-gray-100  rounded-xl flex-row items-center justify-center mr-2`}
-//         >
-//           <MaterialCommunityIcons name="magnify" size={23} color="#7f7f7f" />
-//           <TextInput
-//             className={`text-md font-normal flex-1 px-2 py-1`}
-//             placeholderTextColor="#555"
-//             placeholder="Найти продукты"
-//             // value={searchTerm}
-//             // onChangeText={handleSearchTerm}
-//           />
-//         </View>
-//       </View>
-
-//       <Pressable
-//         className={`w-12 h-12 right-11 rounded-xl flex items-center justify-center bg-gray-100`}
-//       >
-//         <MaterialCommunityIcons name="filter" size={24} color="#7f7f7f" />
-//       </Pressable>
-//     </View>
-//   );
-// };
-
-// export default Search;
-
-import { View, Pressable, TextInput, Modal, Button, Text } from 'react-native';
+import {
+  View,
+  Pressable,
+  TextInput,
+  Modal,
+  Text,
+  Switch,
+  ScrollView,
+  SafeAreaView,
+} from 'react-native';
 import React, { useState } from 'react';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 // import { isPast, isToday, parseISO } from 'date-fns';
 import { useAppSelector } from 'Redux/hooks';
+import ProductCard from './ProductCard';
+import { PORT, IP } from '@env';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from 'navigation/types';
 
 export interface IProduct {
   id: number;
@@ -62,17 +40,25 @@ const Search = () =>
     // const { products } = route.params;
     const [searchText, setSearchText] = useState('');
     const [isFilterModalVisible, setFilterModalVisible] = useState(false);
+    const [isCardVisible, setCardVisible] = useState(false);
     const [showNew, setShowNew] = useState(false);
     const [showDiscounted, setShowDiscounted] = useState(false);
-    const [withoutIsDiscounted, setWithoutIsDiscounted] = useState(false);
+    const navigation = useNavigation<StackNavigationProp>();
 
     const products = useAppSelector<IProduct>(
       (state) => state.productSlice.data
     );
+
+    const navigateToSingleProduct = (
+      productId: number
+      // categoryName: string
+    ): void => {
+      navigation.navigate('SingleProduct', { productId });
+    };
+
     const applyFilters = () => {
       // let filtered = products;
       let filtered: IProduct[] = Array.isArray(products) ? products : [];
-      console.log(filtered);
 
       if (showNew) {
         filtered = filtered.filter((product) => product.isNew === true);
@@ -80,10 +66,6 @@ const Search = () =>
 
       if (showDiscounted) {
         filtered = filtered.filter((product) => product.isDiscounted === true);
-      }
-
-      if (withoutIsDiscounted) {
-        filtered = filtered.filter((product) => product.isDiscounted === false);
       }
 
       if (searchText !== '') {
@@ -108,6 +90,8 @@ const Search = () =>
       return filtered;
     };
 
+    const displayedProducts = applyFilters();
+
     //     const isPromoEnded =
     //       product.promoEndDate &&
     //       isPast(parseISO(product.promoEndDate)) &&
@@ -122,13 +106,6 @@ const Search = () =>
     //   });
     // }
 
-    const clearFilters = () => {
-      setSearchText('');
-      setShowNew(false);
-      setShowDiscounted(false);
-      setWithoutIsDiscounted(false);
-    };
-
     return (
       // <View
       //   style={{
@@ -139,7 +116,8 @@ const Search = () =>
       //     alignItems: 'center',
       //   }}
       // >
-      <View
+
+      <SafeAreaView
         className={`bg-purple-100 py-4 flex-row items-center justify-between px-4 w-full`}
       >
         {/* <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -157,16 +135,26 @@ const Search = () =>
             className={`px-4 py-2 bg-gray-100  rounded-xl flex-row items-center justify-center mr-2`}
           >
             <MaterialCommunityIcons name="magnify" size={23} color="#7f7f7f" />
+            {/* <Pressable onPress={() => setCardVisible(true)}>
+              <MaterialCommunityIcons
+                name="magnify"
+                size={23}
+                color="#7f7f7f"
+              />
+            </Pressable> */}
             <TextInput
               className={`text-md font-normal flex-1 px-2 py-1`}
               placeholderTextColor="#555"
               placeholder="Найти продукты"
               value={searchText}
-              onChangeText={(text) => setSearchText(text)}
+              onChangeText={(text) => {
+                setSearchText(text);
+                // setCardVisible(true)
+                applyFilters();
+              }}
             />
           </View>
         </View>
-
         {/* <Pressable
           style={{
             width: 40,
@@ -184,47 +172,127 @@ const Search = () =>
         >
           <MaterialCommunityIcons name="filter" size={24} color="#7f7f7f" />
         </Pressable>
-
         <Modal
           visible={isFilterModalVisible}
           animationType="slide"
           transparent={true}
-          onRequestClose={() => setFilterModalVisible(false)}
+          onRequestClose={() => {
+            applyFilters();
+            setFilterModalVisible(false);
+          }}
         >
           <View
-            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+            style={{
+              position: 'absolute',
+              height: '85%',
+              bottom: 0,
+              left: 0,
+              right: 0,
+            }}
           >
             <View
               style={{
                 backgroundColor: 'white',
+                borderTopLeftRadius: 20,
+                borderTopRightRadius: 20,
                 padding: 20,
-                borderRadius: 10,
-                width: 300,
+                width: '100%',
+                height: '100%',
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: -2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+                elevation: 5,
               }}
             >
-              <Text style={{ fontSize: 18, marginBottom: 10 }}>Фильтры</Text>
-              <Button
-                title="Применить"
+              <Pressable
                 onPress={() => {
                   applyFilters();
                   setFilterModalVisible(false);
                 }}
-              />
-              <Button
-                title="Сбросить"
-                onPress={() => {
-                  clearFilters();
-                  setFilterModalVisible(false);
+                style={{
+                  position: 'absolute',
+                  top: 10,
+                  left: 10,
+                  zIndex: 1,
+                  padding: 5,
                 }}
-              />
-              <Button
-                title="Отмена"
-                onPress={() => setFilterModalVisible(false)}
-              />
+              >
+                <MaterialCommunityIcons name="close" size={24} color="black" />
+              </Pressable>
+              {/* <Text style={{ fontSize: 18, marginBottom: 10 }}>Фильтры</Text> */}
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginTop: 20,
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginBottom: 10,
+                }}
+              >
+                <Text>Новые продукты</Text>
+                <Switch
+                  trackColor={{ false: '#d6d3d1', true: '#a7f3d0' }}
+                  thumbColor={showNew ? '#22c55e' : '#f5f5f4'}
+                  ios_backgroundColor="#d6d3d1"
+                  onValueChange={() => setShowNew(!showNew)}
+                  value={showNew}
+                />
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginBottom: 10,
+                }}
+              >
+                <Text>Продукты со скидкой</Text>
+                <Switch
+                  trackColor={{ false: '#d6d3d1', true: '#a7f3d0' }}
+                  thumbColor={showDiscounted ? '#22c55e' : '#f5f5f4'}
+                  ios_backgroundColor="#d6d3d1"
+                  onValueChange={() => setShowDiscounted(!showDiscounted)}
+                  value={showDiscounted}
+                />
+              </View>
             </View>
           </View>
         </Modal>
-      </View>
+
+        <MaterialCommunityIcons name="close" size={24} color="black" />
+
+        <ScrollView style={{ flex: 1, width: '100%' }}>
+          <View className="flex-row flex-wrap justify-center">
+            {displayedProducts.length ? (
+              displayedProducts.map((product) => (
+                <ProductCard
+                  onPress={() => {
+                    navigateToSingleProduct(product.id);
+                  }}
+                  key={product.id}
+                  productName={product.productName}
+                  originalPrice={product.originalPrice}
+                  isDiscount={product.isDiscounted}
+                  discountedPrice={255}
+                  discountPercentage={15}
+                  isNew={product.isNew}
+                  imageProduct={`http://${IP}:${PORT}${product.photo}`}
+                />
+              ))
+            ) : (
+              <View className="flex-row flex-wrap justify-center mt-4">
+                <Text className="text-gray-600 font-medium text-lg">
+                  Продуктов нет
+                </Text>
+              </View>
+            )}
+          </View>
+        </ScrollView>
+      </SafeAreaView>
     );
   };
 export default Search;
