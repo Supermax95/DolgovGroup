@@ -80,7 +80,7 @@ const SubcategoryDetail = ({ route }: any) => {
       <Heading title={categoryName} />
 
       {/* поиск внутри подкатегории */}
-      <Search />
+      {/* <Search /> */}
 
       {/* Scrollable container для подкатегорий */}
       <ScrollView style={{ flex: 1, width: '100%' }}>
