@@ -77,7 +77,7 @@ const NotificationSettings: FC = () => {
               />
             </View>
           </View>
-          <Button title="Save Settings" onPress={handleSaveSettings} />
+          <Button title="Сохранить" onPress={handleSaveSettings} />
         </Padding>
       </Padding>
     </View>

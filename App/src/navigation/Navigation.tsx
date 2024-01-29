@@ -36,6 +36,7 @@ import { Alert } from 'react-native';
 import getProfileInfo from 'Redux/thunks/Profile/profileInfo.api';
 import getPromotions from 'Redux/thunks/Promotion/getPromotion.api';
 import PromoDetails from 'components/Promotion/PromoDetails';
+import Search from 'ui/Search';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabNavigatorOptions>();
@@ -63,8 +64,8 @@ async function sendPushNotification() {
   if (permissionGranted) {
     const message = {
       sound: 'default',
-      title: 'Катя Глупышка!',
-      body: 'Ты давно не заходила в приложение ',
+      title: 'Уважаемый покупатель!',
+      body: 'Ты давно не заходил в приложение ',
       data: { someData: '' },
       vibrate: [0, 250, 250, 250],
       // attachments: [
@@ -99,7 +100,7 @@ export const AppNavigator: FC = () => {
     }
     const timeoutId = setTimeout(() => {
       if (notificationPush) {
-        console.log('======>через 10 секунд будет уведомление');
+        console.log('======>через 3 дня будет уведомление');
         sendPushNotification();
       }
       console.log('упало уведомление');
@@ -203,6 +204,11 @@ export const AppNavigator: FC = () => {
         name="PromoDetails"
         component={PromoDetails}
         options={{ title: 'Конкретная акция' }}
+      />
+        <Stack.Screen
+        name="Search"
+        component={Search}
+        options={{ title: 'Поиск' }}
       />
       {/* <Stack.Screen
         name="CheckMail"
