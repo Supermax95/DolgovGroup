@@ -60,14 +60,14 @@ const PromoDetails = ({ route }: any) => {
   );
   console.log('desc', desc);
 
-  const reverseDate = (dateString: string): string => {
-    if (!dateString) {
-      return ''; // or handle the case when dateString is undefined
-    }
+  // const reverseDate = (dateString: string): string => {
+  //   if (!dateString) {
+  //     return ''; // or handle the case when dateString is undefined
+  //   }
 
-    const [year, month, day] = dateString.split('-');
-    return `${day}.${month}.${year}`;
-  };
+  //   const [year, month, day] = dateString.split('-');
+  //   return `${day}.${month}.${year}`;
+  // };
 
   return (
     <SafeAreaView className={`flex-1 items-center justify-start bg-[#ffff] `}>
@@ -96,8 +96,8 @@ const PromoDetails = ({ route }: any) => {
               title={currentPromotionOpen.title}
               image={currentPromotionOpen.photo}
               description={desc}
-              dateStart={reverseDate(currentPromotionOpen.dateStart)}
-              dateEnd={reverseDate(currentPromotionOpen.dateEnd)}
+              dateStart={currentPromotionOpen.dateStart}
+              dateEnd={currentPromotionOpen.dateEnd}
             />
           ) : (
             <View className="flex-row flex-wrap justify-center mt-4">

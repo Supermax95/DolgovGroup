@@ -20,6 +20,15 @@ const SinglePromo: FC<ISinglePromo> = ({
 }) => {
   const screenHeight = Math.round(Dimensions.get('window').height);
 
+  const reverseDate = (dateString: string): string => {
+    if (!dateString) {
+      return ''; // or handle the case when dateString is undefined
+    }
+
+    const [year, month, day] = dateString.split('-');
+    return `${day}.${month}.${year}`;
+  };
+
   return (
     <>
       <SafeAreaView className={`w-full`}>
@@ -45,17 +54,26 @@ const SinglePromo: FC<ISinglePromo> = ({
         className={`w-full flex-1 h-full bg-white rounded-t-3xl px-6 py-2 bg-slate-100`}
       >
         {dateStart && dateEnd ? (
-          <View className="flex-row items-center">
-            {isToday(parseISO(dateEnd)) ? (
+          isToday(parseISO(dateEnd)) ? (
+            <>
+              <View className="flex-row items-center">
+                <Text className="text-base font-normal text-red-600">
+                  Последний день акции
+                </Text>
+              </View>
+              <View className="flex-row items-center">
+                <Text className="text-base font-normal text-slate-600">
+                  C {reverseDate(dateStart)} по {reverseDate(dateEnd)}
+                </Text>
+              </View>
+            </>
+          ) : (
+            <View className="flex-row items-center">
               <Text className="text-base font-normal text-slate-600">
-                Последний день акции
+                C {reverseDate(dateStart)} по {reverseDate(dateEnd)}
               </Text>
-            ) : (
-              <Text className="text-base font-normal text-slate-600">
-                C {dateStart} по {dateEnd}
-              </Text>
-            )}
-          </View>
+            </View>
+          )
         ) : (
           <View className="flex-row items-center">
             <Text className="text-base font-normal text-slate-600">
