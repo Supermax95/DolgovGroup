@@ -28,7 +28,6 @@ export default function CardsNoCarusel() {
   const screenWidth = Math.round(Dimensions.get('window').width);
   const cardWidth = screenWidth / 2 - 20;
 
-  //! необходимо протипизировать
   const promotionsAll = useAppSelector<IPromotion[]>(
     (state) => state.promotiosSlice.data
   );

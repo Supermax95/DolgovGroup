@@ -19,7 +19,7 @@ router.get('/admin/promotions', async (req, res) => {
         isPast(addDays(parseISO(promotion.dateEnd), 1))
       ) {
         await Promotion.update(
-          { invisible: true, carousel: false },
+          { invisible: true },
           { where: { id: promotion.id } }
         );
       }
