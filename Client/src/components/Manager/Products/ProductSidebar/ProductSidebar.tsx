@@ -772,7 +772,8 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                           </span>
                         </div>
 
-                        {item.img !== '/uploads/noPhoto/null.png' ? (
+                        {item.img !== '/uploads/noPhoto/null.png' &&
+                        item.img !== null ? (
                           <Tooltip
                             content="Просмотр обложки"
                             placement="right"
