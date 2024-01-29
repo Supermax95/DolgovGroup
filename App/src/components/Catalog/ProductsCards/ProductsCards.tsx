@@ -96,7 +96,7 @@ const ProductsCards = ({ route }: any) => {
       className={`flex-1 items-center justify-start py-2 bg-[#ffff] `}
     >
       <Heading title={subcategoryName} />
-      <Search />
+      {/* <Search /> */}
       {/* Scrollable container start */}
       <ScrollView style={{ flex: 1, width: '100%' }}>
         {/* <View className=""> */}
