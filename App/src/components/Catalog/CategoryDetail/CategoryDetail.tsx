@@ -15,7 +15,6 @@ import {
 import CardCategory from 'ui/CardCategory';
 import Heading from 'ui/Heading';
 import Search from 'ui/Search';
-import { PORT, IP } from '@env';
 import CardsNoCarusel from 'components/Promotion/CardsNoCarusel';
 
 export interface ICategory {
@@ -61,14 +60,6 @@ function CategoryDetail() {
         <View className="bg-green-100">
           <Heading title="Рекомендуем" />
           <CardsNoCarusel />
-          {/* <View className=" mx-3">
-            <ScrollView
-              style={{ flex: 1, width: '100%', flexShrink: 0 }}
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-            >
-            </ScrollView>
-          </View> */}
         </View>
 
         {/* Каталог */}
@@ -86,7 +77,7 @@ function CategoryDetail() {
                     )
                   }
                   categoryName={category.categoryName}
-                  imageCategory={`http://${IP}:${PORT}${category.img}`}
+                  imageCategory={category.img}
                 />
               ))}
             </View>

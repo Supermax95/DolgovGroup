@@ -8,6 +8,7 @@ import {
   Dimensions,
   StyleSheet,
 } from 'react-native';
+import { PORT, IP } from '@env';
 
 // export interface ICategory {
 //   id: number;
@@ -32,15 +33,25 @@ const CardCategory: FC<ICardCategory> = ({
     <>
       <Pressable
         onPress={onPress}
-        style={[styles.cardContainer, { width: cardWidth }]}
+        // style={[styles.cardContainer, { width: cardWidth }]}
+        className="relative p-0 m-1 rounded-xl flex-col items-center justify-center bg-[#f1e1d2]"
+        style={{ width: cardWidth }}
       >
         <Image
-          source={{ uri: imageCategory }}
+          source={{ uri: `http://${IP}:${PORT}${imageCategory}` }}
           resizeMode="contain"
           style={styles.image}
         />
-        <View style={styles.overlayText}>
-          <Text style={styles.overlayNameText}>{categoryName}</Text>
+        <View
+          // style={styles.overlayText}
+          className="absolute top-0 right-0 bottom-0 left-0 justify-start items-start pl-2 pt-2"
+        >
+          <Text
+            // style={styles.overlayNameText}
+            className="text-md font-bold text-[#292520]"
+          >
+            {categoryName}
+          </Text>
         </View>
       </Pressable>
     </>
@@ -48,44 +59,19 @@ const CardCategory: FC<ICardCategory> = ({
 };
 
 const styles = StyleSheet.create({
-  cardContainer: {
-    position: 'relative',
-    padding: 0,
-    margin: 4,
-    borderRadius: 20,
-    backgroundColor: '#f1e1d2',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  // cardContainer: {
+  //   position: 'relative',
+  //   padding: 0,
+  //   margin: 4,
+  //   borderRadius: 15,
+  //   backgroundColor: '#f1e1d2',
+  //   flexDirection: 'column',
+  //   alignItems: 'center',
+  //   justifyContent: 'center',
+  // },
   image: {
     width: 200,
     height: 120,
-  },
-  textContainer: {
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-    width: '100%',
-  },
-  overlayText: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    padding: 10,
-  },
-  overlayNameText: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: '#292520',
-  },
-  overlayDescriptionText: {
-    fontSize: 12,
-    color: 'gray',
   },
 });
 

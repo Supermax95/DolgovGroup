@@ -58,7 +58,7 @@ const ProductCard: FC<IProductCard> = ({
           <></>
         )}
 
-        <View className="h-19 w-full space-y-1 px-1">
+        <View className="h-19 w-full space-y-1 mt-2 px-1">
           <View
             // style={styles.textContainer}
             className="flex-col items-start justify-start w-full h-8"
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 256,
+    height: 245,
   },
   image: {
     width: 144,
