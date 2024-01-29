@@ -9,7 +9,10 @@ router.get('/admin/category', async (req, res) => {
       { img: '/uploads/noPhoto/null.png' },
       { where: { img: null } }
     );
-
+    await Category.update(
+      { photo: '/uploads/noPhoto/null.png' },
+      { where: { img: '' } }
+    );
     const updatedCategories = await Category.findAll({
       order: [['categoryName', 'ASC']],
       raw: true,
