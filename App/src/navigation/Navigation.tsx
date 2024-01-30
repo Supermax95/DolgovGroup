@@ -37,6 +37,7 @@ import getProfileInfo from 'Redux/thunks/Profile/profileInfo.api';
 import getPromotions from 'Redux/thunks/Promotion/getPromotion.api';
 import PromoDetails from 'components/Promotion/PromoDetails';
 import Search from 'ui/Search';
+import SingleLaw from 'components/UserProfile/AboutApplication/SingleLaw';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabNavigatorOptions>();
@@ -212,6 +213,12 @@ export const AppNavigator: FC = () => {
       <Stack.Screen
         name="Search"
         component={Search}
+        // options={{ title: 'Поиск' }}
+        options={{ headerShown: false }}
+      />
+       <Stack.Screen
+        name="SingleLaw"
+        component={SingleLaw}
         // options={{ title: 'Поиск' }}
         options={{ headerShown: false }}
       />

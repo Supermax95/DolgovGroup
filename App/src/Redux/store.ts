@@ -9,6 +9,7 @@ import categorySlice from './category.slice';
 import subcategorySlice from './subcategory.slice';
 import productSlice from './product.slice';
 import promotiosSlice from './promotions.slice';
+import lawSlice from './law.slice';
 
 const reducers = combineReducers({
   userSlice,
@@ -18,6 +19,7 @@ const reducers = combineReducers({
   subcategorySlice,
   productSlice,
   promotiosSlice,
+  lawSlice,
 });
 
 const persistConfig = {
@@ -30,6 +32,7 @@ const persistConfig = {
     'subcategorySlice',
     'productSlice',
     'promotiosSlice',
+    'lawSlice',
   ],
 };
 

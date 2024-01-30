@@ -223,7 +223,7 @@ const Search = () => {
           <View
             style={{
               position: 'absolute',
-              height: '85%',
+              height: '50%',
               bottom: 0,
               left: 0,
               right: 0,
