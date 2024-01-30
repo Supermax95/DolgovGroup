@@ -8,12 +8,13 @@ import {
   ScrollView,
   SafeAreaView,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 // import { isPast, isToday, parseISO } from 'date-fns';
 import { useAppSelector } from 'Redux/hooks';
 import ProductCard from './ProductCard';
 import { PORT, IP } from '@env';
+import Slider from '@react-native-community/slider';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from 'navigation/types';
 import UniversalHeader from './UniversalHeader';
@@ -43,6 +44,10 @@ const Search = () =>
     const [isFilterModalVisible, setFilterModalVisible] = useState(false);
     const [showNew, setShowNew] = useState(false);
     const [showDiscounted, setShowDiscounted] = useState(false);
+    const [minPrice, setMinPrice] = useState(0);
+    const [maxPrice, setMaxPrice] = useState(0);
+    const [initialRender, setInitialRender] = useState(true);
+
     const navigation = useNavigation<StackNavigationProp>();
 
     const products = useAppSelector<IProduct>(
@@ -55,6 +60,10 @@ const Search = () =>
     ): void => {
       navigation.navigate('SingleProduct', { productId });
     };
+    const maxProductOriginalPrice = Math.max(
+      ...products.map((product: IProduct) => product.originalPrice),
+      0
+    );
 
     const applyFilters = () => {
       // let filtered = products;
@@ -84,9 +93,21 @@ const Search = () =>
           );
         });
       }
+      filtered = filtered.filter(
+        (product) =>
+          product.originalPrice >= minPrice && product.originalPrice <= maxPrice
+      );
 
       return filtered;
     };
+
+
+    useEffect(() => {
+      if (initialRender) {
+        setMaxPrice(maxProductOriginalPrice);
+        setInitialRender(false);
+      }
+    }, [initialRender, maxProductOriginalPrice]);
 
     const displayedProducts = applyFilters();
     console.log('displayedProducts', displayedProducts);
@@ -96,11 +117,11 @@ const Search = () =>
       <SafeAreaView
         className={`flex-1 items-center justify-start py-2 bg-[#ffff] `}
       >
-       <UniversalHeader
-        onPress={() => navigation.goBack()}
-        title={'Поиск'}
-        // onPressSearch={() => navigation.navigate('Search')}
-      />
+        <UniversalHeader
+          onPress={() => navigation.goBack()}
+          title={'Поиск'}
+          // onPressSearch={() => navigation.navigate('Search')}
+        />
         <View className={`flex-row items-center justify-between w-full p-4`}>
           <View className={`flex-row flex-1`}>
             <View
@@ -216,6 +237,20 @@ const Search = () =>
                   ios_backgroundColor="#d6d3d1"
                   onValueChange={() => setShowDiscounted(!showDiscounted)}
                   value={showDiscounted}
+                />
+              </View>
+              <View style={{ marginBottom: 10 }}>
+                <Text>
+                  Цена: от {minPrice}&#8381; до {maxPrice}&#8381;
+                </Text>
+                <Slider
+                  style={{ width: '100%', height: 40 }}
+                  minimumValue={0}
+                  maximumValue={maxProductOriginalPrice}
+                  step={10}
+                  value={maxPrice}
+                  minimumTrackTintColor="#a7f3d0" 
+                  onValueChange={(value) => setMaxPrice(value)}
                 />
               </View>
             </View>
