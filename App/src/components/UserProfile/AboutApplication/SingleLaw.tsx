@@ -3,6 +3,8 @@ import { View, Text, SafeAreaView, ScrollView, Dimensions, Linking, TouchableOpa
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import RenderHtml from 'react-native-render-html';
 import currentLaw from 'Redux/thunks/Law/getCurrentLaw.api';
+import { PORT, IP } from '@env';
+
 
 export interface ILaw {
   id: number;
@@ -48,7 +50,7 @@ const SingleLaw = ({ route }: any) => {
 
   const openDocumentLink = () => {
     if (currentLawOpen.documentLink) {
-      Linking.openURL(currentLawOpen.documentLink);
+      Linking.openURL(`http://${IP}:${PORT}${currentLawOpen.documentLink}`);
     }
   };
 
