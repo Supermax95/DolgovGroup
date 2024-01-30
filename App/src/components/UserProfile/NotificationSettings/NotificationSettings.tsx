@@ -1,11 +1,14 @@
-import { View, Text, Switch, Button } from 'react-native';
-import React, { FC, useState } from 'react';
+import { View, Text, Switch, Button, Alert } from 'react-native';
+import React, { FC, useState, useEffect } from 'react';
 import Padding from 'ui/Padding';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import profileNotification from 'Redux/thunks/Profile/profileNotificationUpdate.api';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from 'navigation/types';
 
 const NotificationSettings: FC = () => {
   const dispatch = useAppDispatch();
+  const navigation = useNavigation<StackNavigationProp>();
   const notificationPush = useAppSelector<boolean>(
     (state) => state.profileSlice.notificationPush
   );
@@ -15,6 +18,9 @@ const NotificationSettings: FC = () => {
   );
   const [isEnabledPush, setIsEnabledPush] = useState<boolean>(notificationPush);
   const [isEnabledEmail, setIsEnabledEmail] =
+    useState<boolean>(notificationEmail);
+  const [tempEnabledPush, setTempEnabledPush] = useState<boolean>(notificationPush);
+  const [tempEnabledEmail, setTempEnabledEmail] =
     useState<boolean>(notificationEmail);
   const token = useAppSelector<string | undefined>(
     (state) => state.userSlice.token?.refreshToken
@@ -27,14 +33,42 @@ const NotificationSettings: FC = () => {
     setIsEnabledEmail((previousStateEmail) => !previousStateEmail);
 
   const handleSaveSettings = () => {
-    dispatch(
-      profileNotification({
-        token,
-        notificationPush: isEnabledPush,
-        notificationEmail: isEnabledEmail,
-      })
+    Alert.alert(
+      'Подтверждение',
+      'Вы уверены, что хотите сохранить данные настройки?',
+      [
+        {
+          text: 'Отмена',
+          style: 'cancel',
+          onPress: () => {
+            setIsEnabledPush(tempEnabledPush);
+            setIsEnabledEmail(tempEnabledEmail);
+          },
+        },
+        {
+          text: 'Сохранить',
+          onPress: () => {
+            setTempEnabledPush(isEnabledPush);
+            setTempEnabledEmail(isEnabledEmail);
+            navigation.navigate('Profile');
+            dispatch(
+              profileNotification({
+                token,
+                notificationPush: isEnabledPush,
+                notificationEmail: isEnabledEmail,
+              })
+            );
+          },
+        },
+      ]
     );
   };
+
+  // Используем useEffect для обновления временных состояний при изменении notificationPush и notificationEmail
+  useEffect(() => {
+    setTempEnabledPush(notificationPush);
+    setTempEnabledEmail(notificationEmail);
+  }, [notificationPush, notificationEmail]);
 
   return (
     <View className="bg-white h-full">

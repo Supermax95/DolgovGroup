@@ -266,6 +266,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     if (file && id) {
       const formData = new FormData();
       formData.append('file', file);
+      console.log('==========>', id);
 
       try {
         await axios.put(`${VITE_URL}/categoryImg/${id}`, formData, {
@@ -285,6 +286,8 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     id: number
   ): Promise<void> => {
     try {
+      console.log('===========>handleFileInputChange');
+
       const file = e.target.files?.[0] || null;
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
