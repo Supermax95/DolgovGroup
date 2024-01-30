@@ -189,7 +189,7 @@ export const AppNavigator: FC = () => {
       <Stack.Screen
         name="SubcategoryDetail"
         component={SubcategoryDetail}
-        // options={{ title: 'Тайтл выбранной категории' }}
+        // options={{ title: '' }}
         options={{ headerShown: false }}
       />
       <Stack.Screen
