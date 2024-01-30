@@ -40,7 +40,6 @@ const Search = () =>
     // const { products } = route.params;
     const [searchText, setSearchText] = useState('');
     const [isFilterModalVisible, setFilterModalVisible] = useState(false);
-    const [isCardVisible, setCardVisible] = useState(false);
     const [showNew, setShowNew] = useState(false);
     const [showDiscounted, setShowDiscounted] = useState(false);
     const navigation = useNavigation<StackNavigationProp>();
@@ -85,93 +84,47 @@ const Search = () =>
         });
       }
 
-      console.log('Отфильтрованные продукты:', filtered);
-
       return filtered;
     };
 
     const displayedProducts = applyFilters();
-
-    //     const isPromoEnded =
-    //       product.promoEndDate &&
-    //       isPast(parseISO(product.promoEndDate)) &&
-    //       !isToday(parseISO(product.promoEndDate));
-
-    //     return (
-    //       searchTerms.every((term) =>
-    //         productFields.some((field) => field.toLowerCase().includes(term))
-    //       ) ||
-    //       (isPromoEnded && searchText.toLowerCase().includes('завершена'))
-    //     );
-    //   });
-    // }
+    console.log('displayedProducts', displayedProducts);
 
     return (
-      // <View
-      //   style={{
-      //     backgroundColor: '#F8D3D3',
-      //     padding: 10,
-      //     flexDirection: 'row',
-      //     justifyContent: 'space-between',
-      //     alignItems: 'center',
-      //   }}
-      // >
-
+      //  <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
       <SafeAreaView
-        className={`bg-purple-100 py-4 flex-row items-center justify-between px-4 w-full`}
+        className={`flex-1 items-center justify-start py-2 bg-[#ffff] `}
       >
-        {/* <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              backgroundColor: '#D1D5DB',
-              borderRadius: 10,
-              padding: 5,
-            }}
-          > */}
-        <View className={`flex-row items-center mr-12`}>
-          <View
-            className={`px-4 py-2 bg-gray-100  rounded-xl flex-row items-center justify-center mr-2`}
-          >
-            <MaterialCommunityIcons name="magnify" size={23} color="#7f7f7f" />
-            {/* <Pressable onPress={() => setCardVisible(true)}>
+        <View className={`flex-row items-center justify-between w-full p-4`}>
+          <View className={`flex-row flex-1`}>
+            <View
+              className={`px-4 py-2 bg-gray-100 rounded-xl flex-row items-center justify-center mr-2`}
+            >
               <MaterialCommunityIcons
                 name="magnify"
                 size={23}
                 color="#7f7f7f"
               />
-            </Pressable> */}
-            <TextInput
-              className={`text-md font-normal flex-1 px-2 py-1`}
-              placeholderTextColor="#555"
-              placeholder="Найти продукты"
-              value={searchText}
-              onChangeText={(text) => {
-                setSearchText(text);
-                // setCardVisible(true)
-                applyFilters();
-              }}
-            />
+              <TextInput
+                className={`text-md font-normal flex-1 px-2 py-1`}
+                placeholderTextColor="#555"
+                placeholder="Найти продукты"
+                value={searchText}
+                onChangeText={(text) => {
+                  setSearchText(text);
+                  applyFilters();
+                }}
+              />
+            </View>
           </View>
+
+          <Pressable
+            onPress={() => setFilterModalVisible(true)}
+            className={`w-12 h-12 rounded-xl flex items-center justify-center bg-gray-100`}
+          >
+            <MaterialCommunityIcons name="filter" size={24} color="#7f7f7f" />
+          </Pressable>
         </View>
-        {/* <Pressable
-          style={{
-            width: 40,
-            height: 40,
-            borderRadius: 20,
-            backgroundColor: '#D1D5DB',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-          onPress={() => setFilterModalVisible(true)}
-        > */}
-        <Pressable
-          onPress={() => setFilterModalVisible(true)}
-          className={`w-12 h-12 right-11 rounded-xl flex items-center justify-center bg-gray-100`}
-        >
-          <MaterialCommunityIcons name="filter" size={24} color="#7f7f7f" />
-        </Pressable>
         <Modal
           visible={isFilterModalVisible}
           animationType="slide"
@@ -262,9 +215,6 @@ const Search = () =>
             </View>
           </View>
         </Modal>
-
-        <MaterialCommunityIcons name="close" size={24} color="black" />
-
         <ScrollView style={{ flex: 1, width: '100%' }}>
           <View className="flex-row flex-wrap justify-center">
             {displayedProducts.length ? (

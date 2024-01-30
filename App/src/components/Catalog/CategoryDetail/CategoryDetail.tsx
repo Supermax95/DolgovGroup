@@ -49,18 +49,28 @@ function CategoryDetail() {
     navigation.navigate('SubcategoryDetail', { categoryId, categoryName });
   };
 
+  const handleSearchPress = () => {
+    navigation.navigate('Search');
+  };
   return (
-    <SafeAreaView
-      className={`flex-1 items-center justify-start py-2 bg-[#ffff] `}
+<SafeAreaView className={`flex-1 items-center justify-start py-2 bg-[#ffff] `}>
+  <View className={`flex-row items-center`}>
+    <Pressable
+      onPress={handleSearchPress}
+      className={`w-full px-4 py-2 bg-gray-100 rounded-xl flex-row items-center justify-between mr-2`}
     >
-      {/* <Search /> */}
-      {/* <MaterialCommunityIcons name="magnify" size={23} color="#7f7f7f" />
-      <TextInput
-      className={`text-md font-normal flex-1 px-2 py-1`}
-      placeholderTextColor="#555"
-      onSubmitEditing={() => navigation.navigate('Search')}
-      placeholder="Поиск"
-    /> */}
+      <View className={`flex-row items-center`}>
+        <MaterialCommunityIcons name="magnify" size={24} color="#7f7f7f" />
+        <Pressable onPress={handleSearchPress}>
+          <Text className={`text-md font-normal px-2 py-1`}>
+            Поиск
+          </Text>
+        </Pressable>
+      </View>
+        <MaterialCommunityIcons name="filter" size={24} color="#7f7f7f" />
+    </Pressable>
+
+      </View>
       {/* Scrollable container start */}
       <ScrollView style={{ flex: 1, width: '100%' }}>
         {/* акции вне карусели */}
