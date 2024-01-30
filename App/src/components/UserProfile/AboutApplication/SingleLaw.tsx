@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, Text, SafeAreaView, ScrollView, Dimensions, Linking, TouchableOpacity } from 'react-native';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
-import currentProduct from 'Redux/thunks/Catalog/getcurrentProduct';
 import RenderHtml from 'react-native-render-html';
 import currentLaw from 'Redux/thunks/Law/getCurrentLaw.api';
 
@@ -68,7 +67,6 @@ const SingleLaw = ({ route }: any) => {
               </Text>
             </TouchableOpacity>
           )}
-          {desc}
         </View>
       </ScrollView>
     </SafeAreaView>
