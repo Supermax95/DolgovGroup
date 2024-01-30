@@ -61,10 +61,7 @@ const ProductsCardsUI = ({ route }: any) => {
         subcategoryIdArray?.includes(prod.subcategoryId))
   );
 
-  // console.log('productsCArds', products);
-
-  // const productsAll = allProducts.filter((prod) => prod.invisible === false);
-  // console.log('productsAll', productsAll);
+ 
   // function calculateDiscountPercentageWithCents(
   //   originalPrice: number,
   //   discountedPrice: number
