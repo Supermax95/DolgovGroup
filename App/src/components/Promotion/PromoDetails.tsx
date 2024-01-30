@@ -71,22 +71,6 @@ const PromoDetails = ({ route }: any) => {
 
   return (
     <SafeAreaView className={`flex-1 items-center justify-start bg-[#ffff] `}>
-      <View
-        className={`flex-row items-center justify-between px-4 py-0 w-full`}
-      >
-        <TouchableOpacity
-        //   onPress={() => navigation.goBack()
-        //   }
-        >
-          <Text>ИКОНКА</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-        //   onPress={() => navigation.navigate('CartScreen')}
-        >
-          <Text>иконка</Text>
-        </TouchableOpacity>
-      </View>
       {/* Scrollable container start */}
       <ScrollView style={{ flex: 1, width: '100%' }}>
         <View className="flex-col flex-wrap justify-center">

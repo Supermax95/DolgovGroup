@@ -4,6 +4,8 @@ import {
   SafeAreaView,
   ScrollView,
   TouchableOpacity,
+  Pressable,
+  Platform,
 } from 'react-native';
 import React, { useEffect } from 'react';
 import SingleProductCard from 'ui/SingleProductCard';
@@ -11,8 +13,11 @@ import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { PORT, IP } from '@env';
 import currentProduct from 'Redux/thunks/Catalog/getcurrentProduct';
 import RenderHtml from 'react-native-render-html';
-import { Dimensions } from 'react-native';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useWindowDimensions } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import UniversalHeader from 'ui/UniversalHeader';
+import { StackNavigationProp } from 'navigation/types';
 
 export interface IProduct {
   id: number;
@@ -35,6 +40,7 @@ const SingleProduct = ({ route }: any) => {
   const { productId } = route.params;
   const dispatch = useAppDispatch();
   const { width } = useWindowDimensions();
+  const navigation = useNavigation<StackNavigationProp>();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -65,23 +71,28 @@ const SingleProduct = ({ route }: any) => {
   console.log('desc', desc);
 
   return (
-    <SafeAreaView className={`flex-1 items-center justify-start bg-[#ffff] `}>
+    <SafeAreaView
+      className={`relative flex-1 items-center justify-start bg-[#ffff] `}
+    >
       <View
-        className={`flex-row items-center justify-between px-4 py-0 w-full`}
+        style={{
+          position: 'absolute',
+          zIndex: 999,
+          top: Platform.OS === 'android' ? 0 : 60,
+        }}
+        className="flex-row items-center justify-between w-full"
       >
-        <TouchableOpacity
-        //   onPress={() => navigation.goBack()
-        //   }
-        >
-          <Text>ИКОНКА</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-        //   onPress={() => navigation.navigate('CartScreen')}
-        >
-          <Text>иконка</Text>
-        </TouchableOpacity>
+        <Pressable onPress={() => navigation.goBack()}>
+          <View className="w-8">
+            <MaterialCommunityIcons
+              name="chevron-left"
+              size={36}
+              color="#71716F"
+            />
+          </View>
+        </Pressable>
       </View>
+
       {/* Scrollable container start */}
       <ScrollView style={{ flex: 1, width: '100%' }}>
         <View className="flex-col flex-wrap justify-center">
