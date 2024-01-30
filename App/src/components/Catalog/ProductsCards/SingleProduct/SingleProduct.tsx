@@ -18,6 +18,7 @@ import { useWindowDimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import UniversalHeader from 'ui/UniversalHeader';
 import { StackNavigationProp } from 'navigation/types';
+import ArrowGoBack from 'ui/ArrowGoBack';
 
 export interface IProduct {
   id: number;
@@ -74,24 +75,7 @@ const SingleProduct = ({ route }: any) => {
     <SafeAreaView
       className={`relative flex-1 items-center justify-start bg-[#ffff] `}
     >
-      <View
-        style={{
-          position: 'absolute',
-          zIndex: 999,
-          top: Platform.OS === 'android' ? 0 : 60,
-        }}
-        className="flex-row items-center justify-between w-full"
-      >
-        <Pressable onPress={() => navigation.goBack()}>
-          <View className="w-8">
-            <MaterialCommunityIcons
-              name="chevron-left"
-              size={36}
-              color="#71716F"
-            />
-          </View>
-        </Pressable>
-      </View>
+      <ArrowGoBack />
 
       {/* Scrollable container start */}
       <ScrollView style={{ flex: 1, width: '100%' }}>
