@@ -155,17 +155,16 @@ export const AppNavigator: FC = () => {
       <Stack.Screen
         name="NotificationSettings"
         component={NotificationSettings}
-        options={{ title: 'Настройка уведомлений' }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="AboutApplication"
         component={AboutApplication}
-        options={{ title: 'О приложении' }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="ChangeFullName"
         component={ChangeFullName}
-        // options={{ title: 'Изменение профиля' }}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -216,7 +215,6 @@ export const AppNavigator: FC = () => {
       <Stack.Screen
         name="SingleLaw"
         component={SingleLaw}
-        // options={{ title: 'Поиск' }}
         options={{ headerShown: false }}
       />
       {/* <Stack.Screen
