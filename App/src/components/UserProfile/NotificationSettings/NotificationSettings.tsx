@@ -5,6 +5,8 @@ import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import profileNotification from 'Redux/thunks/Profile/profileNotificationUpdate.api';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from 'navigation/types';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import UniversalHeader from 'ui/UniversalHeader';
 
 const NotificationSettings: FC = () => {
   const dispatch = useAppDispatch();
@@ -19,7 +21,8 @@ const NotificationSettings: FC = () => {
   const [isEnabledPush, setIsEnabledPush] = useState<boolean>(notificationPush);
   const [isEnabledEmail, setIsEnabledEmail] =
     useState<boolean>(notificationEmail);
-  const [tempEnabledPush, setTempEnabledPush] = useState<boolean>(notificationPush);
+  const [tempEnabledPush, setTempEnabledPush] =
+    useState<boolean>(notificationPush);
   const [tempEnabledEmail, setTempEnabledEmail] =
     useState<boolean>(notificationEmail);
   const token = useAppSelector<string | undefined>(
@@ -71,12 +74,16 @@ const NotificationSettings: FC = () => {
   }, [notificationPush, notificationEmail]);
 
   return (
-    <View className="bg-white h-full">
-      <View className="mt-4 mb-2">
+    <SafeAreaView className="bg-white h-full flex-1">
+      <UniversalHeader
+        onPress={() => navigation.goBack()}
+        title="Настройка уведомлений"
+      />
+      {/* <View className="mt-4 mb-2">
         <Text className="text-center text-xl font-bold text-zinc-800">
           Маркетинговые рассылки
         </Text>
-      </View>
+      </View> */}
       <Padding>
         <View className="mb-2">
           <Text className="text-lg font-molmal text-zinc-500">
@@ -114,7 +121,7 @@ const NotificationSettings: FC = () => {
           <Button title="Сохранить" onPress={handleSaveSettings} />
         </Padding>
       </Padding>
-    </View>
+    </SafeAreaView>
   );
 };
 
