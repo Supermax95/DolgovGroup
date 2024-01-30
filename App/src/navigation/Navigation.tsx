@@ -188,27 +188,32 @@ export const AppNavigator: FC = () => {
       <Stack.Screen
         name="SubcategoryDetail"
         component={SubcategoryDetail}
-        options={{ title: 'Тайтл выбранной категории' }}
+        // options={{ title: 'Тайтл выбранной категории' }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="ProductsCards"
         component={ProductsCards}
-        options={{ title: 'Тайтл выбранной Подкатегории' }}
+        // options={{ title: 'Тайтл выбранной Подкатегории' }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="SingleProduct"
         component={SingleProduct}
-        options={{ title: 'Карточка одного продукта' }}
+        // options={{ title: 'Карточка одного продукта' }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="PromoDetails"
         component={PromoDetails}
-        options={{ title: 'Конкретная акция' }}
+        // options={{ title: 'Конкретная акция' }}
+        options={{ headerShown: false }}
       />
-        <Stack.Screen
+      <Stack.Screen
         name="Search"
         component={Search}
-        options={{ title: 'Поиск' }}
+        // options={{ title: 'Поиск' }}
+        options={{ headerShown: false }}
       />
       {/* <Stack.Screen
         name="CheckMail"

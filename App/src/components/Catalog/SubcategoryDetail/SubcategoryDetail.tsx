@@ -9,6 +9,7 @@ import {
   TextInput,
   Text,
   Pressable,
+  TouchableOpacity,
 } from 'react-native';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
@@ -16,6 +17,7 @@ import Heading from 'ui/Heading';
 import Search from 'ui/Search';
 import Subcategory from 'ui/Subcategory';
 import Padding from 'ui/Padding';
+import UniversalHeader from 'ui/UniversalHeader';
 
 export interface ISubcategory {
   id: number;
@@ -53,13 +55,6 @@ const SubcategoryDetail = ({ route }: any) => {
     (subcategory) => subcategory.categoryId === categoryId
   );
 
-  //* все товары по определённой категории
-
-  console.log(
-    'subOfCat=================================================+++ЮЮЮЮЮЮЮ>',
-    subOfCat
-  );
-
   const subcategoryIdArray = subOfCat.map((sub) => sub.id);
 
   const navigateToProductDetail = (
@@ -70,14 +65,18 @@ const SubcategoryDetail = ({ route }: any) => {
   };
 
   const navigateToProductDetailAll = (subcategoryIdArray: number): void => {
-    navigation.navigate('ProductsCards', { subcategoryIdArray });
+    navigation.navigate('ProductsCards', { subcategoryIdArray, categoryName });
   };
 
   return (
     <SafeAreaView
       className={`flex-1 items-center justify-start py-2 bg-[#ffff] `}
     >
-      <Heading title={categoryName} />
+      <UniversalHeader
+        onPress={() => navigation.goBack()}
+        title={categoryName}
+        // onPressSearch={}
+      />
 
       {/* поиск внутри подкатегории */}
       {/* <Search /> */}
