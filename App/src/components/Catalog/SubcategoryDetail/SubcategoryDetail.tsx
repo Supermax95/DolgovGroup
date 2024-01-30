@@ -75,7 +75,7 @@ const SubcategoryDetail = ({ route }: any) => {
       <UniversalHeader
         onPress={() => navigation.goBack()}
         title={categoryName}
-        // onPressSearch={}
+        onPressSearch={() => navigation.navigate('Search')}
       />
 
       {/* поиск внутри подкатегории */}

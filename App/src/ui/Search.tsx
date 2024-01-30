@@ -16,6 +16,7 @@ import ProductCard from './ProductCard';
 import { PORT, IP } from '@env';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from 'navigation/types';
+import UniversalHeader from './UniversalHeader';
 
 export interface IProduct {
   id: number;
@@ -95,6 +96,11 @@ const Search = () =>
       <SafeAreaView
         className={`flex-1 items-center justify-start py-2 bg-[#ffff] `}
       >
+       <UniversalHeader
+        onPress={() => navigation.goBack()}
+        title={'Поиск'}
+        // onPressSearch={() => navigation.navigate('Search')}
+      />
         <View className={`flex-row items-center justify-between w-full p-4`}>
           <View className={`flex-row flex-1`}>
             <View
