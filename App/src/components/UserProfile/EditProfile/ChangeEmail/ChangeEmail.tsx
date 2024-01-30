@@ -7,6 +7,8 @@ import FieldInput from 'ui/FieldInput';
 import Button from 'ui/Button';
 import Padding from 'ui/Padding';
 import profileChangeEmail from 'Redux/thunks/Profile/profileChangeEmail.api';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import UniversalHeader from 'ui/UniversalHeader';
 
 interface IChangeEmail {
   newEmail: string;
@@ -81,7 +83,11 @@ const ChangeEmail: FC = () => {
   };
 
   return (
-    <View className="bg-white h-full">
+    <SafeAreaView className="bg-white h-full flex-1">
+      <UniversalHeader
+        onPress={() => navigation.goBack()}
+        title="Изменение профиля"
+      />
       <Padding>
         <Padding>
           <FieldInput
@@ -99,7 +105,7 @@ const ChangeEmail: FC = () => {
           <Button onPress={handlerSubmitFullName} title="Сохранить" />
         </Padding>
       </Padding>
-    </View>
+    </SafeAreaView>
   );
 };
 

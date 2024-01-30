@@ -9,6 +9,8 @@ import Button from 'ui/Button';
 import profileChangeBirthDate from 'Redux/thunks/Profile/profileChangeBirthDate.api';
 import Padding from 'ui/Padding';
 import refreshToken from 'Redux/thunks/User/refresh.api';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import UniversalHeader from 'ui/UniversalHeader';
 
 export const ChangeBirthDate: FC = () => {
   const dispatch = useAppDispatch();
@@ -73,7 +75,11 @@ export const ChangeBirthDate: FC = () => {
   };
 
   return (
-    <View className="bg-white h-full">
+    <SafeAreaView className="bg-white h-full flex-1">
+      <UniversalHeader
+        onPress={() => navigation.goBack()}
+        title="Изменение профиля"
+      />
       <Padding>
         <Padding>
           <View>
@@ -88,7 +94,7 @@ export const ChangeBirthDate: FC = () => {
           <Button onPress={handleSubmit} title="Сохранить" />
         </Padding>
       </Padding>
-    </View>
+    </SafeAreaView>
   );
 };
 

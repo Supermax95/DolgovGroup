@@ -12,6 +12,7 @@ import RenderHtml from 'react-native-render-html';
 import { useWindowDimensions } from 'react-native';
 import currentPromotion from 'Redux/thunks/Promotion/getcurrentPromotion.api';
 import SinglePromo from 'ui/SinglePromo';
+import ArrowGoBack from 'ui/ArrowGoBack';
 
 export interface IPromotion {
   id: number;
@@ -71,6 +72,8 @@ const PromoDetails = ({ route }: any) => {
 
   return (
     <SafeAreaView className={`flex-1 items-center justify-start bg-[#ffff] `}>
+      <ArrowGoBack />
+
       {/* Scrollable container start */}
       <ScrollView style={{ flex: 1, width: '100%' }}>
         <View className="flex-col flex-wrap justify-center">
