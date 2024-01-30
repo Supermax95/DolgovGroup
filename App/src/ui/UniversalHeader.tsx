@@ -53,7 +53,7 @@ import React, { FC } from 'react';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 interface IUniversalHeader {
-  onPress: () => void;
+  onPress?: () => void | undefined;
   title?: string | undefined;
   onPressSearch?: () => void | undefined;
 }
@@ -64,27 +64,47 @@ const UniversalHeader: FC<IUniversalHeader> = ({
   onPressSearch,
 }) => {
   return (
-    <View style={styles.container}>
-      <Pressable onPress={onPress} style={styles.chevronContainer}>
-        <MaterialCommunityIcons name="chevron-left" size={36} color="#71716F" />
-      </Pressable>
-
-      {title ? (
-        <View style={styles.titleContainer}>
-          <Text style={styles.titleText}>{title}</Text>
+    <>
+      {onPress && title && onPressSearch ? (
+        <View style={styles.container}>
+          <Pressable onPress={onPress} style={styles.chevronContainer}>
+            <MaterialCommunityIcons
+              name="chevron-left"
+              size={36}
+              color="#71716F"
+            />
+          </Pressable>
+          <View style={styles.titleContainer}>
+            <Text style={styles.titleText}>{title}</Text>
+          </View>
+          <Pressable onPress={onPressSearch} style={styles.searchContainer}>
+            <MaterialCommunityIcons name="magnify" size={26} color="#71716F" />
+          </Pressable>
         </View>
-      ) : null}
-
-      {onPressSearch ? (
-        <Pressable onPress={onPressSearch} style={styles.searchContainer}>
-          <MaterialCommunityIcons name="magnify" size={26} color="#71716F" />
-        </Pressable>
+      ) : onPress && title ? (
+        <View style={styles.container}>
+          <Pressable onPress={onPress} style={styles.chevronContainer}>
+            <MaterialCommunityIcons
+              name="chevron-left"
+              size={36}
+              color="#71716F"
+            />
+          </Pressable>
+          <View style={styles.titleContainer}>
+            <Text style={styles.titleText}>{title}</Text>
+          </View>
+          <Pressable onPress={onPressSearch} style={styles.searchContainer}>
+            <View className="w-10"></View>
+          </Pressable>
+        </View>
       ) : (
-        <Pressable onPress={onPressSearch} style={styles.searchContainer}>
-          <View className="w-10"></View>
-        </Pressable>
+        <View style={styles.container}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.titleText}>{title}</Text>
+          </View>
+        </View>
       )}
-    </View>
+    </>
   );
 };
 

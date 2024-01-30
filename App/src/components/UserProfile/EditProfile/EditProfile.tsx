@@ -6,6 +6,8 @@ import { StackNavigationProp } from 'navigation/types';
 import { format } from 'date-fns';
 import Padding from 'ui/Padding';
 import FieldEditProfile from 'ui/FieldEditProfile';
+import UniversalHeader from 'ui/UniversalHeader';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const EditProfile: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
@@ -18,7 +20,12 @@ const EditProfile: FC = () => {
   }>((state) => state.profileSlice);
 
   return (
-    <View className="bg-white h-full">
+    <SafeAreaView className="bg-white h-full flex-1">
+      <UniversalHeader
+        onPress={() => navigation.goBack()}
+        title="Личные данные"
+      />
+
       <Padding>
         <FieldEditProfile
           onPress={() => navigation.navigate('ChangeFullName')}
@@ -47,7 +54,7 @@ const EditProfile: FC = () => {
           Изменить пароль
         </FieldEditProfile>
       </Padding>
-    </View>
+    </SafeAreaView>
   );
 };
 

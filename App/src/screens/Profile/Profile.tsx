@@ -7,6 +7,8 @@ import Padding from 'ui/Padding';
 import FieldDetail from 'ui/FieldDetail';
 import userLogout from 'Redux/thunks/User/logout.api';
 import getProfileInfo from 'Redux/thunks/Profile/profileInfo.api';
+import UniversalHeader from 'ui/UniversalHeader';
+import { SafeAreaView } from 'react-native-safe-area-context'; // Обновленный импорт
 
 const Profile: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
@@ -35,7 +37,7 @@ const Profile: FC = () => {
   };
 
   return (
-    <View className="bg-white h-full">
+    <SafeAreaView className="bg-white h-full flex-1">
       <Padding>
         <View className="mt-4 mb-2">
           <Text className="text-center text-xl font-bold text-zinc-500">
@@ -69,7 +71,7 @@ const Profile: FC = () => {
           isLast={true}
         />
       </Padding>
-    </View>
+    </SafeAreaView>
   );
 };
 

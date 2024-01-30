@@ -8,6 +8,8 @@ import FieldInput from 'ui/FieldInput';
 import Button from 'ui/Button';
 import changeProfilePass from 'Redux/thunks/Profile/profileChangePass.api';
 import Padding from 'ui/Padding';
+import UniversalHeader from 'ui/UniversalHeader';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface PasswordChangeData {
   oldPassword: string;
@@ -70,10 +72,7 @@ const ChangePassword: FC = () => {
           })
         );
         if (result.meta.requestStatus === 'rejected') {
-          Alert.alert(
-            'Ошибка',
-            result.payload
-          );
+          Alert.alert('Ошибка', result.payload);
         } else if (result.meta.requestStatus === 'fulfilled') {
           Alert.alert(
             'Пароль успешно изменен',
@@ -98,7 +97,11 @@ const ChangePassword: FC = () => {
   };
 
   return (
-    <View className="bg-white h-full">
+    <SafeAreaView className="bg-white h-full flex-1">
+      <UniversalHeader
+        onPress={() => navigation.goBack()}
+        title="Изменение профиля"
+      />
       <Padding>
         <Padding>
           <View className="flex-row items-center">
@@ -184,7 +187,7 @@ const ChangePassword: FC = () => {
           <Button onPress={handleSubmit} title="Сохранить" />
         </Padding>
       </Padding>
-    </View>
+    </SafeAreaView>
   );
 };
 

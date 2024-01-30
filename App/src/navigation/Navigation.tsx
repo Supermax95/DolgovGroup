@@ -144,7 +144,8 @@ export const AppNavigator: FC = () => {
       <Stack.Screen
         name="EditProfile"
         component={EditProfile}
-        options={{ title: 'Редактирование данных' }}
+        // options={{ title: 'Редактирование данных' }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="AccumulatedUserPoints"
@@ -164,22 +165,23 @@ export const AppNavigator: FC = () => {
       <Stack.Screen
         name="ChangeFullName"
         component={ChangeFullName}
-        options={{ title: 'Изменение профиля' }}
+        // options={{ title: 'Изменение профиля' }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="ChangeBirthDate"
         component={ChangeBirthDate}
-        options={{ title: 'Изменение профиля' }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="ChangeEmail"
         component={ChangeEmail}
-        options={{ title: 'Изменение профиля' }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="ChangePassword"
         component={ChangePassword}
-        options={{ title: 'Изменение профиля' }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="ShopsList"
@@ -189,34 +191,29 @@ export const AppNavigator: FC = () => {
       <Stack.Screen
         name="SubcategoryDetail"
         component={SubcategoryDetail}
-        // options={{ title: '' }}
         options={{ headerShown: false }}
       />
       <Stack.Screen
         name="ProductsCards"
         component={ProductsCards}
-        // options={{ title: 'Тайтл выбранной Подкатегории' }}
         options={{ headerShown: false }}
       />
       <Stack.Screen
         name="SingleProduct"
         component={SingleProduct}
-        // options={{ title: 'Карточка одного продукта' }}
         options={{ headerShown: false }}
       />
       <Stack.Screen
         name="PromoDetails"
         component={PromoDetails}
-        // options={{ title: 'Конкретная акция' }}
         options={{ headerShown: false }}
       />
       <Stack.Screen
         name="Search"
         component={Search}
-        // options={{ title: 'Поиск' }}
         options={{ headerShown: false }}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="SingleLaw"
         component={SingleLaw}
         // options={{ title: 'Поиск' }}
@@ -294,7 +291,7 @@ export const FooterTabs: FC = () => {
         name="Home"
         component={Home}
         options={{
-          title: 'Главная',
+          // title: 'Главная',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               name="credit-card-outline"
@@ -302,6 +299,7 @@ export const FooterTabs: FC = () => {
               size={27}
             />
           ),
+          headerShown: false,
         }}
       />
 
@@ -309,7 +307,7 @@ export const FooterTabs: FC = () => {
         name="Catalog"
         component={Catalog}
         options={{
-          title: 'Каталог',
+          // title: 'Каталог',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               name="text-box-search-outline"
@@ -317,6 +315,7 @@ export const FooterTabs: FC = () => {
               size={25}
             />
           ),
+          headerShown: false,
         }}
       />
       <Tab.Screen
@@ -331,6 +330,7 @@ export const FooterTabs: FC = () => {
               size={25}
             />
           ),
+          // headerShown: false,
         }}
       />
       <Tab.Screen
@@ -351,7 +351,7 @@ export const FooterTabs: FC = () => {
         name="Profile"
         component={Profile}
         options={{
-          title: 'Профиль',
+          // title: 'Профиль',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               name="account-outline"
@@ -359,6 +359,7 @@ export const FooterTabs: FC = () => {
               size={25}
             />
           ),
+          headerShown: false,
         }}
       />
     </Tab.Navigator>
