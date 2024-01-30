@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Pressable,
@@ -7,10 +8,10 @@ import {
   Switch,
   ScrollView,
   SafeAreaView,
+  Animated,
+  PanResponder,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-// import { isPast, isToday, parseISO } from 'date-fns';
 import { useAppSelector } from 'Redux/hooks';
 import ProductCard from './ProductCard';
 import { PORT, IP } from '@env';
@@ -36,129 +37,187 @@ export interface IProduct {
   invisible: boolean;
 }
 
-const Search = () =>
-  // { route }: any
-  {
-    // const { products } = route.params;
-    const [searchText, setSearchText] = useState('');
-    const [isFilterModalVisible, setFilterModalVisible] = useState(false);
-    const [showNew, setShowNew] = useState(false);
-    const [showDiscounted, setShowDiscounted] = useState(false);
-    const [minPrice, setMinPrice] = useState(0);
-    const [maxPrice, setMaxPrice] = useState(0);
-    const [initialRender, setInitialRender] = useState(true);
+const Search = () => {
+  const [searchText, setSearchText] = useState('');
+  const [isFilterModalVisible, setFilterModalVisible] = useState(false);
+  const [showNew, setShowNew] = useState(false);
+  const [showDiscounted, setShowDiscounted] = useState(false);
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(0);
+  const [initialRender, setInitialRender] = useState(true);
+  const [modalOffset, setModalOffset] = useState(new Animated.Value(0));
 
-    const navigation = useNavigation<StackNavigationProp>();
+  const navigation = useNavigation<StackNavigationProp>();
 
-    const products = useAppSelector<IProduct>(
-      (state) => state.productSlice.data
+  const products = useAppSelector<IProduct>(
+    (state) => state.productSlice.data
+  );
+
+  const navigateToSingleProduct = (productId: number): void => {
+    navigation.navigate('SingleProduct', { productId });
+  };
+
+  const maxProductOriginalPrice = Math.max(
+    ...products.map((product: IProduct) => product.originalPrice),
+    0
+  );
+
+  const applyFilters = () => {
+    let filtered: IProduct[] = Array.isArray(products) ? products : [];
+
+    if (showNew) {
+      filtered = filtered.filter((product) => product.isNew === true);
+    }
+
+    if (showDiscounted) {
+      filtered = filtered.filter((product) => product.isDiscounted === true);
+    }
+
+    if (searchText !== '') {
+      filtered = filtered.filter((product) => {
+        const productFields = [
+          String(product.productName),
+          String(product.promoStartDate),
+          String(product.promoEndDate),
+          String(product.article),
+        ];
+
+        const searchTerms = searchText.toLowerCase().split(' ');
+
+        return searchTerms.every((term) =>
+          productFields.some((field) => field.toLowerCase().includes(term))
+        );
+      });
+    }
+
+    filtered = filtered.filter(
+      (product) =>
+        product.originalPrice >= minPrice && product.originalPrice <= maxPrice
     );
 
-    const navigateToSingleProduct = (
-      productId: number
-      // categoryName: string
-    ): void => {
-      navigation.navigate('SingleProduct', { productId });
-    };
-    const maxProductOriginalPrice = Math.max(
-      ...products.map((product: IProduct) => product.originalPrice),
-      0
-    );
+    return filtered;
+  };
 
-    const applyFilters = () => {
-      // let filtered = products;
-      let filtered: IProduct[] = Array.isArray(products) ? products : [];
+  useEffect(() => {
+    if (initialRender) {
+      setMaxPrice(maxProductOriginalPrice);
+      setInitialRender(false);
+    }
+  }, [initialRender, maxProductOriginalPrice]);
 
-      if (showNew) {
-        filtered = filtered.filter((product) => product.isNew === true);
+  const panResponder = PanResponder.create({
+    onStartShouldSetPanResponder: () => true,
+    onMoveShouldSetPanResponder: (_, gestureState) => gestureState.dy > 10,
+    onPanResponderMove: (_, gestureState) => {
+      if (gestureState.dy > 0) {
+        Animated.event([null, { dy: modalOffset }], {
+          useNativeDriver: false,
+        })(_, gestureState);
       }
-
-      if (showDiscounted) {
-        filtered = filtered.filter((product) => product.isDiscounted === true);
-      }
-
-      if (searchText !== '') {
-        filtered = filtered.filter((product) => {
-          const productFields = [
-            String(product.productName),
-            String(product.promoStartDate),
-            String(product.promoEndDate),
-            String(product.article),
-          ];
-
-          const searchTerms = searchText.toLowerCase().split(' ');
-
-          return searchTerms.every((term) =>
-            productFields.some((field) => field.toLowerCase().includes(term))
-          );
+    },
+    onPanResponderRelease: (_, gestureState) => {
+      if (gestureState.dy > 50) {
+        Animated.timing(modalOffset, {
+          toValue: 400, // Изменено на 400, но может потребоваться другое значение
+          duration: 200,
+          useNativeDriver: false,
+        }).start(() => {
+          applyFilters();
+          setFilterModalVisible(false);
+          setModalOffset(new Animated.Value(0)); // Сброс смещения
         });
+      } else {
+        Animated.timing(modalOffset, {
+          toValue: 0,
+          duration: 200,
+          useNativeDriver: false,
+        }).start();
       }
-      filtered = filtered.filter(
-        (product) =>
-          product.originalPrice >= minPrice && product.originalPrice <= maxPrice
-      );
+    },
+  });
 
-      return filtered;
-    };
+  const displayedProducts = applyFilters();
 
-
-    useEffect(() => {
-      if (initialRender) {
-        setMaxPrice(maxProductOriginalPrice);
-        setInitialRender(false);
-      }
-    }, [initialRender, maxProductOriginalPrice]);
-
-    const displayedProducts = applyFilters();
-    console.log('displayedProducts', displayedProducts);
-
-    return (
-      //  <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-      <SafeAreaView
-        className={`flex-1 items-center justify-start py-2 bg-[#ffff] `}
+  return (
+    <SafeAreaView
+      style={{
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        paddingTop: 16,
+        backgroundColor: '#fff',
+      }}
+    >
+      <UniversalHeader
+        onPress={() => navigation.goBack()}
+        title={'Поиск'}
+      />
+      <View
+        style={{
+          flexDirection: 'row',
+          width: '100%',
+          padding: 16,
+        }}
       >
-        <UniversalHeader
-          onPress={() => navigation.goBack()}
-          title={'Поиск'}
-          // onPressSearch={() => navigation.navigate('Search')}
-        />
-        <View className={`flex-row items-center justify-between w-full p-4`}>
-          <View className={`flex-row flex-1`}>
-            <View
-              className={`px-4 py-2 bg-gray-100 rounded-xl flex-row items-center justify-center mr-2`}
-            >
-              <MaterialCommunityIcons
-                name="magnify"
-                size={23}
-                color="#7f7f7f"
-              />
-              <TextInput
-                className={`text-md font-normal flex-1 px-2 py-1`}
-                placeholderTextColor="#555"
-                placeholder="Найти продукты"
-                value={searchText}
-                onChangeText={(text) => {
-                  setSearchText(text);
-                  applyFilters();
-                }}
-              />
-            </View>
-          </View>
-
-          <Pressable
-            onPress={() => setFilterModalVisible(true)}
-            className={`w-12 h-12 rounded-xl flex items-center justify-center bg-gray-100`}
+        <View style={{ flex: 1 }}>
+          <View
+            style={{
+              paddingHorizontal: 16,
+              paddingVertical: 8,
+              backgroundColor: '#f0f0f0',
+              borderRadius: 16,
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}
           >
-            <MaterialCommunityIcons name="filter" size={24} color="#7f7f7f" />
-          </Pressable>
+            <MaterialCommunityIcons
+              name="magnify"
+              size={23}
+              color="#7f7f7f"
+              style={{ marginRight: 8 }}
+            />
+            <TextInput
+              style={{ flex: 1, fontSize: 16 }}
+              placeholderTextColor="#555"
+              placeholder="Найти продукты"
+              value={searchText}
+              onChangeText={(text) => {
+                setSearchText(text);
+                applyFilters();
+              }}
+            />
+          </View>
         </View>
-        <Modal
-          visible={isFilterModalVisible}
-          animationType="slide"
-          transparent={true}
-          onRequestClose={() => {
-            applyFilters();
-            setFilterModalVisible(false);
+        <Pressable
+          onPress={() => setFilterModalVisible(true)}
+          style={{
+            width: 48,
+            height: 48,
+            borderRadius: 24,
+            backgroundColor: '#f0f0f0',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginLeft: 8,
+          }}
+        >
+          <MaterialCommunityIcons name="filter" size={24} color="#7f7f7f" />
+        </Pressable>
+      </View>
+      <Modal
+        visible={isFilterModalVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => {
+          applyFilters();
+          setFilterModalVisible(false);
+        }}
+      >
+        <Animated.View
+          {...panResponder.panHandlers}
+          style={{
+            flex: 1,
+            backgroundColor: 'rgba(0,0,0,0.0)',
+            transform: [{ translateY: modalOffset }],
           }}
         >
           <View
@@ -190,8 +249,15 @@ const Search = () =>
             >
               <Pressable
                 onPress={() => {
-                  applyFilters();
-                  setFilterModalVisible(false);
+                  Animated.timing(modalOffset, {
+                    toValue: 0,
+                    duration: 200,
+                    useNativeDriver: false,
+                  }).start(() => {
+                    applyFilters();
+                    setFilterModalVisible(false);
+                    setModalOffset(new Animated.Value(0)); // Сброс смещения
+                  });
                 }}
                 style={{
                   position: 'absolute',
@@ -203,7 +269,6 @@ const Search = () =>
               >
                 <MaterialCommunityIcons name="close" size={24} color="black" />
               </Pressable>
-              {/* <Text style={{ fontSize: 18, marginBottom: 10 }}>Фильтры</Text> */}
               <View
                 style={{
                   flexDirection: 'row',
@@ -249,41 +314,58 @@ const Search = () =>
                   maximumValue={maxProductOriginalPrice}
                   step={10}
                   value={maxPrice}
-                  minimumTrackTintColor="#a7f3d0" 
+                  minimumTrackTintColor="#a7f3d0"
                   onValueChange={(value) => setMaxPrice(value)}
                 />
               </View>
             </View>
           </View>
-        </Modal>
-        <ScrollView style={{ flex: 1, width: '100%' }}>
-          <View className="flex-row flex-wrap justify-center">
-            {displayedProducts.length ? (
-              displayedProducts.map((product) => (
-                <ProductCard
-                  onPress={() => {
-                    navigateToSingleProduct(product.id);
-                  }}
-                  key={product.id}
-                  productName={product.productName}
-                  originalPrice={product.originalPrice}
-                  isDiscount={product.isDiscounted}
-                  discountedPrice={255}
-                  discountPercentage={15}
-                  isNew={product.isNew}
-                  imageProduct={`http://${IP}:${PORT}${product.photo}`}
-                />
-              ))
-            ) : (
-              <View className="flex-row flex-wrap justify-center mt-4">
-                <Text className="text-gray-600 font-medium text-lg">
-                  Продуктов нет
-                </Text>
-              </View>
-            )}
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    );
-  };
+        </Animated.View>
+      </Modal>
+      <ScrollView style={{ flex: 1, width: '100%' }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+          }}
+        >
+          {displayedProducts.length ? (
+            displayedProducts.map((product) => (
+              <ProductCard
+                onPress={() => {
+                  navigateToSingleProduct(product.id);
+                }}
+                key={product.id}
+                productName={product.productName}
+                originalPrice={product.originalPrice}
+                isDiscount={product.isDiscounted}
+                discountedPrice={255}
+                discountPercentage={15}
+                isNew={product.isNew}
+                imageProduct={`http://${IP}:${PORT}${product.photo}`}
+              />
+            ))
+          ) : (
+            <View
+              style={{
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+                justifyContent: 'center',
+                marginTop: 16,
+              }}
+            >
+              <Text
+                style={{ color: 'gray', fontWeight: 'bold', fontSize: 16 }}
+              >
+                Продуктов нет
+              </Text>
+            </View>
+          )}
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
+
 export default Search;
