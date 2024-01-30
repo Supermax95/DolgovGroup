@@ -16,6 +16,7 @@ import Heading from 'ui/Heading';
 import Search from 'ui/Search';
 import ProductCard from 'ui/ProductCard';
 import { PORT, IP } from '@env';
+import UniversalHeader from 'ui/UniversalHeader';
 
 export interface IProduct {
   id: number;
@@ -35,9 +36,8 @@ export interface IProduct {
 }
 
 const ProductsCards = ({ route }: any) => {
-  const { subcategoryIdArray, subcategoryId, subcategoryName } = route.params;
-
-  // console.log('subcategoryIdArray', subcategoryIdArray);
+  const { subcategoryIdArray, subcategoryId, subcategoryName, categoryName } =
+    route.params;
 
   const navigation = useNavigation<StackNavigationProp>();
   const dispatch = useAppDispatch();
@@ -52,6 +52,8 @@ const ProductsCards = ({ route }: any) => {
       (prod.subcategoryId === subcategoryId ||
         subcategoryIdArray?.includes(prod.subcategoryId))
   );
+
+  // const categoryName = products.
 
   // console.log('productsCArds', products);
 
@@ -95,7 +97,13 @@ const ProductsCards = ({ route }: any) => {
     <SafeAreaView
       className={`flex-1 items-center justify-start py-2 bg-[#ffff] `}
     >
-      <Heading title={subcategoryName} />
+      <UniversalHeader
+        onPress={() => navigation.goBack()}
+        title={subcategoryName ? subcategoryName : categoryName}
+        // onPressSearch={}
+      />
+
+      {/* <Heading title={subcategoryName} /> */}
       {/* <Search /> */}
       {/* Scrollable container start */}
       <ScrollView style={{ flex: 1, width: '100%' }}>
