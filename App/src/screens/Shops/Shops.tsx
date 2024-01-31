@@ -16,14 +16,14 @@ const Shops: FC = () => {
   const [showMap, setShowMap] = useState(true);
 
   return (
-    <SafeAreaView className="flex-1">
+    <SafeAreaView className="flex-1 bg-white">
       <UniversalHeader title="Магазины" />
 
       <View className="justify-center items-center py-2">
-        <View className="flex-row items-center justify-center w-[90%] h-8 bg-slate-200 rounded-lg">
+        <View className="flex-row items-center justify-center w-[90%] h-8 bg-gray-100 rounded-lg">
           <Pressable
             className={`rounded-lg w-[50%] h-[96%] justify-center items-center ${
-              showMap ? 'bg-slate-200' : 'bg-emerald-600'
+              showMap ? 'bg-gray-100' : 'bg-emerald-700'
             }`}
             onPress={() => setShowMap(false)}
           >
@@ -37,7 +37,7 @@ const Shops: FC = () => {
           </Pressable>
           <Pressable
             className={`rounded-lg w-[50%] h-[96%] justify-center items-center ${
-              showMap ? 'bg-emerald-600' : 'bg-slate-200'
+              showMap ? 'bg-emerald-700' : 'bg-gray-100'
             }`}
             onPress={() => setShowMap(true)}
           >

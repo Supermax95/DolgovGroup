@@ -5,11 +5,14 @@ import {
   View,
   FlatList,
   Text,
-  TouchableHighlight,
+  Pressable,
   StyleSheet,
+  TextInput,
 } from 'react-native';
 import FieldInput from 'ui/FieldInput';
 import { useAppSelector } from 'Redux/hooks';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import Padding from 'ui/Padding';
 
 interface ISelectedShop {
   id: number;
@@ -34,36 +37,71 @@ const ShopsList: FC = () => {
   const handleShopSelected = (selectedShop: ISelectedShop) => {
     navigation.navigate('Shops', { selectedShop1: selectedShop } as any);
   };
+  // const tailwindClass = isLast ? '' : 'border-b-[1px] border-zinc-200';
 
   return (
-    <View>
-      <FieldInput
-        placeholder="Поиск магазина"
-        value={searchText}
-        onChange={setSearchText}
-      />
+    <View className="">
+      {/* Search */}
+      <View className="py-2 items-center justify-between w-full">
+        <View className="px-4 bg-gray-100 w-[90%] h-8  rounded-lg flex-row items-center justify-center">
+          <MaterialCommunityIcons name="magnify" size={23} color="#7f7f7f" />
+          <TextInput
+            className="text-md font-normal flex-1 px-2 py-1"
+            placeholderTextColor="#555"
+            placeholder="Найти магазин"
+            value={searchText}
+            onChangeText={setSearchText}
+          />
+        </View>
+      </View>
+
+      {/* List Market */}
       <FlatList
         data={filteredLocations}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
-          <TouchableHighlight onPress={() => handleShopSelected(item)}>
-            <View>
-              <Text>
-                <Text style={styles.boldText}>{item.city},</Text> {item.address}
-                , {item.hours}
-              </Text>
-            </View>
-          </TouchableHighlight>
+          <Padding>
+            <Padding>
+              <Pressable
+                onPress={() => handleShopSelected(item)}
+                className="py-4 flex-row border-b-[1px] border-zinc-200"
+              >
+                <View className="w-9 mt-1">
+                  <MaterialCommunityIcons
+                    name="store-marker-outline"
+                    size={26}
+                    color="#047857"
+                  />
+                </View>
+                <View className="flex-col">
+                  <View>
+                    <Text className="text-base font-normal text-gray-700">
+                      {item.city}
+                    </Text>
+                    <Text className="text-md font-normal text-gray-700">
+                      {item.address}
+                    </Text>
+                  </View>
+                  <View className="flex-row justify-center items-center">
+                    {/* <View className="w-5">
+                      <MaterialCommunityIcons
+                        name="clock-outline"
+                        size={15}
+                        color="gray"
+                      />
+                    </View> */}
+                    <Text className="text-md font-normal text-gray-500">
+                      {item.hours}
+                    </Text>
+                  </View>
+                </View>
+              </Pressable>
+            </Padding>
+          </Padding>
         )}
       />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  boldText: {
-    fontWeight: 'bold',
-  },
-});
 
 export default ShopsList;
