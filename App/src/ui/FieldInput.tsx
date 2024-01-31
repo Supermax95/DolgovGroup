@@ -8,7 +8,8 @@ interface IFieldInput {
   isSecure?: boolean;
   autoCapitalize?: TextInputProps['autoCapitalize'];
   keyboardType?: TextInputProps['keyboardType'];
-  style?: TextInputProps['style']; 
+  style?: TextInputProps['style'];
+  multiline?: boolean;
 }
 
 const FieldInput: FC<IFieldInput> = ({
@@ -19,6 +20,7 @@ const FieldInput: FC<IFieldInput> = ({
   autoCapitalize,
   keyboardType,
   style,
+  multiline,
 }) => {
   return (
     <TextInput 
@@ -28,14 +30,11 @@ const FieldInput: FC<IFieldInput> = ({
       secureTextEntry={isSecure}
       autoCapitalize={autoCapitalize}
       keyboardType={keyboardType}
+      multiline={multiline} // Устанавливаем параметр multiline
       className="rounded-xl bg-gray-100 mt-3 p-3 w-full"
       style={style}
-      multiline
     />
   );
 };
 
 export default FieldInput;
-
-
-

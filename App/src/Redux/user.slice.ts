@@ -6,12 +6,14 @@ import userActivate from './thunks/User/activated.api';
 import resetPassword from './thunks/User/newPassword.api';
 import refreshToken from './thunks/User/refresh.api';
 import getCheck from './thunks/User/check.api';
+import checkEmployee from './thunks/Support/checkEmployee.api';
 
 type User = {
   email: string;
   firstName: string;
   id: number | undefined;
   isActivated: boolean | undefined;
+  userStatus: string | undefined;
 };
 
 type IToken =
@@ -37,6 +39,7 @@ const initialState: UserState = {
   },
   user: {
     email: '',
+    userStatus: '',
     firstName: '',
     id: 0 || undefined,
     isActivated: null || undefined,
@@ -99,6 +102,7 @@ const userSlice = createSlice({
           firstName: '',
           id: 0,
           isActivated: false,
+          userStatus: '',
         };
         state.isAuth = false;
       })
@@ -152,14 +156,37 @@ const userSlice = createSlice({
       })
       .addCase(getCheck.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.user.id = action.payload;
-        state.user.isActivated = action.payload || undefined;
+        state.user.id = action.payload.id;
+        state.user.isActivated = action.payload.isActivated || undefined;
+        state.user.userStatus = action.payload.userStatus || undefined;
+        console.log(' state.usergetCheck=======>', state.user);
+        
       })
+      // .addCase(getCheck.fulfilled, (state, action) => {
+      //   state.isLoading = false;
+      //   state.user.id = action.payload;
+      //   state.user.isActivated = action.payload || undefined;
+      // })
       .addCase(getCheck.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       })
       .addCase(getCheck.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(checkEmployee.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user.id = action.payload.updatedUser.id;
+        state.user.isActivated =
+          action.payload.updatedUser.isActivated || undefined;
+        state.user.userStatus =
+          action.payload.updatedUser.userStatus || undefined;
+      })
+      .addCase(checkEmployee.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      .addCase(checkEmployee.pending, (state) => {
         state.isLoading = true;
       });
   },

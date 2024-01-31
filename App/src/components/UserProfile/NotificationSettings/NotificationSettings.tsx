@@ -79,13 +79,14 @@ const NotificationSettings: FC = () => {
         onPress={() => navigation.goBack()}
         title="Настройка уведомлений"
       />
+            <View className="bg-white h-full justify-center flex-1">
       {/* <View className="mt-4 mb-2">
         <Text className="text-center text-xl font-bold text-zinc-800">
           Маркетинговые рассылки
         </Text>
       </View> */}
       <Padding>
-        <View className="mb-2">
+        <View className="mb-2 ">
           <Text className="text-lg font-molmal text-zinc-500">
             Своевременно информируем о персональных предложениях, изменениях
             уровня лояльности и лучших товарах.
@@ -118,9 +119,10 @@ const NotificationSettings: FC = () => {
               />
             </View>
           </View>
-          <Button title="Сохранить" onPress={handleSaveSettings} />
         </Padding>
       </Padding>
+      </View>
+          <Button title="Сохранить" onPress={handleSaveSettings} />
     </SafeAreaView>
   );
 };
