@@ -91,7 +91,8 @@ const SupportMessage: FC = () => {
           placeholder="Текст"
           onChange={(value) => handleFieldChange('message', value)}
           autoCapitalize="none"
-        />
+          style={{ height: '20%', textAlignVertical: 'top'}}
+          />
       </View>
       <Padding>
         <Button title="Отправить" onPress={handleSubmit} />
