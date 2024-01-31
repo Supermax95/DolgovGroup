@@ -1,54 +1,4 @@
-// import { View, Text, Pressable, Platform } from 'react-native';
-// import React, { FC } from 'react';
-// import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-
-// interface IUniversalHeader {
-//   onPress: () => void;
-//   title: string;
-//   onPressSearch: () => void;
-// }
-
-// const UniversalHeader: FC<IUniversalHeader> = ({
-//   onPress,
-//   title,
-//   onPressSearch,
-// }) => {
-//   return (
-//     <View
-//       style={{
-//         flexDirection: 'row',
-//         alignItems: 'center',
-//         justifyContent: 'space-between',
-//         paddingVertical: 2,
-//         paddingHorizontal: 4,
-//         marginTop: Platform.OS === 'android' ? 26 : 0, // Добавляем mt-6 только на Android
-//         width: '100%',
-//       }}
-//     >
-//       <Pressable onPress={onPress}>
-//         <View className="w-7">
-//           <MaterialCommunityIcons
-//             name="chevron-left"
-//             size={36}
-//             color="#71716F"
-//           />
-//         </View>
-//       </Pressable>
-//       <View className="px-5 flex flex-row justify-start">
-//         <Text className="text-lg font-bold text-slate-800">{title}</Text>
-//       </View>
-//       <Pressable onPress={onPressSearch}>
-//         <View className="w-10">
-//           <MaterialCommunityIcons name="magnify" size={26} color="#71716F" />
-//         </View>
-//       </Pressable>
-//     </View>
-//   );
-// };
-
-// export default UniversalHeader;
-
-import { View, Text, Pressable, StyleSheet, Platform } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import React, { FC } from 'react';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
@@ -66,75 +16,55 @@ const UniversalHeader: FC<IUniversalHeader> = ({
   return (
     <>
       {onPress && title && onPressSearch ? (
-        <View style={styles.container}>
-          <Pressable onPress={onPress} style={styles.chevronContainer}>
+        <View className="flex-row items-center justify-between p-2 w-full h-12">
+          <Pressable onPress={onPress} className="w-10">
             <MaterialCommunityIcons
               name="chevron-left"
               size={36}
               color="#71716F"
             />
           </Pressable>
-          <View style={styles.titleContainer}>
-            <Text style={styles.titleText}>{title}</Text>
+          <View className="flex-1 px-3 flex-row justify-center">
+            <Text className="text-lg font-bold text-emerald-700">{title}</Text>
           </View>
-          <Pressable onPress={onPressSearch} style={styles.searchContainer}>
+          <Pressable onPress={onPressSearch} className="w-10">
             <MaterialCommunityIcons name="magnify" size={26} color="#71716F" />
           </Pressable>
         </View>
       ) : onPress && title ? (
-        <View style={styles.container}>
-          <Pressable onPress={onPress} style={styles.chevronContainer}>
+        <View className="flex-row items-center justify-between p-2 w-full h-12">
+          <Pressable onPress={onPress} className="w-10">
             <MaterialCommunityIcons
               name="chevron-left"
               size={36}
               color="#71716F"
             />
           </Pressable>
-          <View style={styles.titleContainer}>
-            <Text style={styles.titleText}>{title}</Text>
+          <View className="flex-1 px-3 flex-row justify-center">
+            <Text className="text-lg font-bold text-emerald-700">{title}</Text>
           </View>
-          <Pressable onPress={onPressSearch} style={styles.searchContainer}>
+          <Pressable onPress={onPressSearch} className="w-10">
             <View className="w-10"></View>
           </Pressable>
         </View>
+      ) : title && onPressSearch ? (
+        <View className="flex-row items-center justify-between p-2 w-full h-12">
+          <View className="flex-1 px-3 flex-row justify-start">
+            <Text className="text-lg font-bold text-emerald-700">{title}</Text>
+          </View>
+          <Pressable onPress={onPressSearch} className="w-10">
+            <MaterialCommunityIcons name="magnify" size={26} color="#71716F" />
+          </Pressable>
+        </View>
       ) : (
-        <View style={styles.container}>
-          <View style={styles.titleContainer}>
-            <Text style={styles.titleText}>{title}</Text>
+        <View className="flex-row items-center justify-between p-2 w-full h-12">
+          <View className="flex-1 px-3 flex-row justify-center">
+            <Text className="text-lg font-bold text-emerald-700">{title}</Text>
           </View>
         </View>
       )}
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 2,
-    paddingHorizontal: 4,
-    width: '100%',
-    height: 55,
-  },
-  chevronContainer: {
-    padding: 8,
-  },
-  titleContainer: {
-    flex: 1,
-    paddingLeft: 5,
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  titleText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  searchContainer: {
-    padding: 8,
-  },
-});
 
 export default UniversalHeader;
