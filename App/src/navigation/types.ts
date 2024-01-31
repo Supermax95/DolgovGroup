@@ -25,6 +25,7 @@ type RootStackParamList = {
   SingleLaw: undefined;
   SupportMessage: undefined;
   Support: undefined;
+  EmployeeConfirm:undefined;
 };
 
 type IMaterialCommunityIcons = keyof typeof MaterialCommunityIcons.glyphMap;

@@ -5,12 +5,11 @@ module.exports = class UserDto {
 
   id;
 
-  // firstName;
-
+  userStatus;
   constructor(model) {
     // this.email = model.email;
     this.id = model.id;
     this.isActivated = model.isActivated;
-    // this.firstName = model.firstName;
+    this.userStatus = model.userStatus;
   }
 };

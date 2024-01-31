@@ -1,36 +1,39 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios, { AxiosResponse } from 'axios';
+import type { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { PORT, IP } from '@env';
 
 interface RequestData {
-  userData: {
-    password: string;
-    email: string;
-  };
+  token: string | undefined;
 }
 
 interface ResponseData {
-  accessToken: string;
-  refreshToken?: string;
-  user: {
+  updatedUser: {
     email: string;
     firstName: string;
     id: number;
     isActivated: boolean;
-    userStatus:string;
+    userStatus: string;
   };
 }
 
-const userLogin = createAsyncThunk<ResponseData, RequestData>(
-  'api/login',
-  async ({ userData }, { rejectWithValue }) => {
+const checkEmployee = createAsyncThunk<ResponseData, RequestData>(
+  'api/checkEmployee',
+  async ({ token }, { rejectWithValue }) => {
+
     try {
       const response: AxiosResponse = await axios.post(
-        `http://${IP}:${PORT}/api/login`,
-        userData
+        `http://${IP}:${PORT}/checkEmployee`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
       );
+      console.log(response.data);
       return response.data;
-      
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         // console.error(error.response.data.message);
@@ -42,4 +45,4 @@ const userLogin = createAsyncThunk<ResponseData, RequestData>(
   }
 );
 
-export default userLogin;
+export default checkEmployee;

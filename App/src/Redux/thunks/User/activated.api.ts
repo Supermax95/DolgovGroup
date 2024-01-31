@@ -14,6 +14,7 @@ interface IPropsActivateResponse {
     firstName: string;
     id?: number | undefined;
     isActivated: boolean;
+    userStatus:string;
   };
 }
 
@@ -46,6 +47,7 @@ const checkActivation = createAsyncThunk<
           firstName: data.user.firstName,
           id: data.user.id,
           isActivated: data.user.isActivated,
+          userStatus:data.user.userStatus,
         },
       };
       return activatedInfo;

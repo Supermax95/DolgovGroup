@@ -13,12 +13,14 @@ interface ICheckRequest {
 interface ICheckResponse {
   id: number | undefined;
   isActivated: boolean | undefined;
+  userStatus:string | undefined;
   message: string;
 }
 
 const getCheck = createAsyncThunk<ICheckResponse, ICheckRequest>(
   'api/checkUser',
   async ({ token }) => {
+    
     try {
       const response: AxiosResponse<ICheckResponse> = await axios.get(
         `http://${IP}:${PORT}/checkUser`,
@@ -31,7 +33,7 @@ const getCheck = createAsyncThunk<ICheckResponse, ICheckRequest>(
       );
 
       // Проверяем, существует ли свойство 'id' в ответе
-      if (response.data && response.data.id !== undefined && response.data.isActivated !== undefined) {
+      if (response.data && response.data.id !== undefined && response.data.isActivated !== undefined && response.data.userStatus !== undefined ) {        
         return response.data;
       } else {
         // Обрабатываем случай, когда 'id' отсутствует или undefined
@@ -41,6 +43,7 @@ const getCheck = createAsyncThunk<ICheckResponse, ICheckRequest>(
         return {
           id: undefined,
           isActivated:undefined,
+          userStatus:undefined,
           message:
             'Ошибка: свойство "id" отсутствует или имеет значение undefined',
         };

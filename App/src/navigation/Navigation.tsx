@@ -39,6 +39,7 @@ import PromoDetails from 'components/Promotion/PromoDetails';
 import Search from 'ui/Search';
 import SingleLaw from 'components/UserProfile/AboutApplication/SingleLaw';
 import SupportMessage from 'screens/Support/SupportMessage/SupportMessage';
+import EmployeeConfirm from 'screens/Support/EmployeeConfirm/EmployeeConfirm';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabNavigatorOptions>();
@@ -220,6 +221,11 @@ export const AppNavigator: FC = () => {
          <Stack.Screen
         name="SupportMessage"
         component={SupportMessage}
+        options={{ headerShown: false }}
+      />
+            <Stack.Screen
+        name="EmployeeConfirm"
+        component={EmployeeConfirm}
         options={{ headerShown: false }}
       />
       {/* <Stack.Screen

@@ -19,6 +19,11 @@ const Support: FC = () => {
           icon="account"
           title="Связаться с поддержкой"
         />
+           <FieldDetail
+          onPress={() => navigation.navigate('EmployeeConfirm')}
+          icon="account"
+          title="Получить доступ сотрудника"
+        />
       </Padding>
     </SafeAreaView>
   );
