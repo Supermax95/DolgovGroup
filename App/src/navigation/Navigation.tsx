@@ -32,7 +32,7 @@ import ProductsCards from 'components/Catalog/ProductsCards/ProductsCards';
 import SubcategoryDetail from 'components/Catalog/SubcategoryDetail/SubcategoryDetail';
 import SingleProduct from 'components/Catalog/ProductsCards/SingleProduct/SingleProduct';
 import * as Notifications from 'expo-notifications';
-import { Alert } from 'react-native';
+import { Alert, Dimensions } from 'react-native';
 import getProfileInfo from 'Redux/thunks/Profile/profileInfo.api';
 import getPromotions from 'Redux/thunks/Promotion/getPromotion.api';
 import PromoDetails from 'components/Promotion/PromoDetails';
@@ -218,7 +218,7 @@ export const AppNavigator: FC = () => {
         component={SingleLaw}
         options={{ headerShown: false }}
       />
-         <Stack.Screen
+      <Stack.Screen
         name="SupportMessage"
         component={SupportMessage}
         options={{ headerShown: false }}
@@ -277,15 +277,7 @@ export const AppNavigator: FC = () => {
 
 export const FooterTabs: FC = () => {
   return (
-    <Tab.Navigator
-      screenOptions={{
-        tabBarStyle: {
-          height: 55,
-          paddingTop: 5,
-          paddingBottom: 10,
-        },
-      }}
-    >
+    <Tab.Navigator>
       <Tab.Screen
         name="Auth"
         component={Auth}
@@ -300,7 +292,7 @@ export const FooterTabs: FC = () => {
         name="Home"
         component={Home}
         options={{
-          // title: 'Главная',
+          title: 'Главная',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               name="credit-card-outline"
@@ -316,7 +308,7 @@ export const FooterTabs: FC = () => {
         name="Catalog"
         component={Catalog}
         options={{
-          // title: 'Каталог',
+          title: 'Каталог',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               name="text-box-search-outline"
@@ -331,6 +323,7 @@ export const FooterTabs: FC = () => {
         name="Shops"
         component={Shops}
         options={{
+          title: 'Магазины',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               name="map-marker-outline"
@@ -359,7 +352,7 @@ export const FooterTabs: FC = () => {
         name="Profile"
         component={Profile}
         options={{
-          // title: 'Профиль',
+          title: 'Профиль',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               name="account-outline"
