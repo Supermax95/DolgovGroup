@@ -1,4 +1,4 @@
-import { View, Text, Switch, Button, Alert } from 'react-native';
+import { View, Text, Switch, Alert } from 'react-native';
 import React, { FC, useState, useEffect } from 'react';
 import Padding from 'ui/Padding';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from 'navigation/types';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import UniversalHeader from 'ui/UniversalHeader';
+import Button from 'ui/Button';
 
 const NotificationSettings: FC = () => {
   const dispatch = useAppDispatch();
@@ -79,14 +80,13 @@ const NotificationSettings: FC = () => {
         onPress={() => navigation.goBack()}
         title="Настройка уведомлений"
       />
-            <View className="bg-white h-full justify-center flex-1">
       {/* <View className="mt-4 mb-2">
         <Text className="text-center text-xl font-bold text-zinc-800">
           Маркетинговые рассылки
         </Text>
       </View> */}
       <Padding>
-        <View className="mb-2 ">
+        <View className="mb-2 px-2">
           <Text className="text-lg font-molmal text-zinc-500">
             Своевременно информируем о персональных предложениях, изменениях
             уровня лояльности и лучших товарах.
@@ -119,10 +119,9 @@ const NotificationSettings: FC = () => {
               />
             </View>
           </View>
+          <Button onPress={handleSaveSettings} title="Сохранить" />
         </Padding>
       </Padding>
-      </View>
-          <Button title="Сохранить" onPress={handleSaveSettings} />
     </SafeAreaView>
   );
 };
