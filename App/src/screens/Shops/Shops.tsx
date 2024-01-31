@@ -7,6 +7,8 @@ import Button from 'ui/Button';
 import * as Location from 'expo-location';
 import getUserLocations from 'Redux/thunks/Shops/locationsUser.api';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
+import UniversalHeader from 'ui/UniversalHeader';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface ISelectedShop {
   id: number;
@@ -32,9 +34,9 @@ const Shops: FC = () => {
   const token = useAppSelector<string | undefined>(
     (state) => state.userSlice.token?.refreshToken
   );
-  
+
   useEffect(() => {
-    dispatch(getUserLocations({token}));
+    dispatch(getUserLocations({ token }));
   }, [dispatch]);
 
   useEffect(() => {
@@ -78,8 +80,8 @@ const Shops: FC = () => {
   //     });
   //   }
   // };
-  
-//? Сейчас навешан форс для того чтобы актуализировать данные от админа
+
+  //? Сейчас навешан форс для того чтобы актуализировать данные от админа
   const showMyLocation = () => {
     if (userLocation && mapRef.current) {
       mapRef.current.animateToRegion(
@@ -91,13 +93,12 @@ const Shops: FC = () => {
         },
         1000
       );
-  
+
       setTimeout(() => {
         dispatch(getUserLocations({ force: true }));
       }, 1000);
     }
   };
-  
 
   const initialRegion = selectedShop
     ? {
@@ -114,24 +115,36 @@ const Shops: FC = () => {
         longitudeDelta: 0.005,
       }
     : {
-        latitude: 54.725607, 
-        longitude: 20.5382, 
+        latitude: 54.725607,
+        longitude: 20.5382,
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
       };
 
   return (
-    <View style={styles.container}>
-      <Button
+    <SafeAreaView className="bg-white h-full flex-1">
+      <UniversalHeader title="Магазины" />
+      {/* <Button
         title="Список магазинов"
         onPress={() => navigation.navigate('ShopsList')}
-      />
-      <RNButton title="Показать моё местоположение" onPress={showMyLocation} />
+      /> */}
+      {/* <Button title="Показать моё местоположение" onPress={showMyLocation} /> */}
       <MapView
         ref={mapRef}
         provider={PROVIDER_GOOGLE}
         style={styles.map}
         initialRegion={initialRegion}
+        showsUserLocation={true}
+        followsUserLocation={true}
+        showsMyLocationButton={true}
+        toolbarEnabled={true}
+        rotateEnabled={true}
+        mapType={'standard'}
+        showsCompass={true}
+        showsScale={true}
+        showsIndoors={true}
+        zoomEnabled={true}
+        loadingEnabled={true}
       >
         {locations.map((shop, index) => (
           <Marker
@@ -162,18 +175,18 @@ const Shops: FC = () => {
           />
         )}
       </MapView>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   map: {
     width: '100%',
-    height: '100%',
+    height: '98%',
   },
 });
 
 export default Shops;
+
+//* https://github.com/react-native-maps/react-native-maps/blob/master/docs/mapview.md
+//* документация по карте

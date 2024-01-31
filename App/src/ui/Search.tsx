@@ -49,9 +49,7 @@ const Search = () => {
 
   const navigation = useNavigation<StackNavigationProp>();
 
-  const products = useAppSelector<IProduct>(
-    (state) => state.productSlice.data
-  );
+  const products = useAppSelector<IProduct>((state) => state.productSlice.data);
 
   const navigateToSingleProduct = (productId: number): void => {
     navigation.navigate('SingleProduct', { productId });
@@ -139,19 +137,8 @@ const Search = () => {
   const displayedProducts = applyFilters();
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        paddingTop: 16,
-        backgroundColor: '#fff',
-      }}
-    >
-      <UniversalHeader
-        onPress={() => navigation.goBack()}
-        title={'Поиск'}
-      />
+    <SafeAreaView className="bg-white h-full flex-1">
+      <UniversalHeader onPress={() => navigation.goBack()} title={'Поиск'} />
       <View
         style={{
           flexDirection: 'row',
@@ -355,9 +342,7 @@ const Search = () => {
                 marginTop: 16,
               }}
             >
-              <Text
-                style={{ color: 'gray', fontWeight: 'bold', fontSize: 16 }}
-              >
+              <Text style={{ color: 'gray', fontWeight: 'bold', fontSize: 16 }}>
                 Продуктов нет
               </Text>
             </View>

@@ -145,7 +145,6 @@ export const AppNavigator: FC = () => {
       <Stack.Screen
         name="EditProfile"
         component={EditProfile}
-        // options={{ title: 'Редактирование данных' }}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -326,7 +325,6 @@ export const FooterTabs: FC = () => {
         name="Shops"
         component={Shops}
         options={{
-          title: 'Магазины поблизости',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               name="map-marker-outline"
@@ -334,7 +332,7 @@ export const FooterTabs: FC = () => {
               size={25}
             />
           ),
-          // headerShown: false,
+          headerShown: false,
         }}
       />
       <Tab.Screen

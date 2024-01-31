@@ -1,22 +1,12 @@
 import React, { FC, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { StackNavigationProp } from 'navigation/types';
-import {
-  View,
-  Text,
-  Pressable,
-  ActivityIndicator,
-  Image,
-  SafeAreaView,
-  ScrollView,
-  TextInput,
-} from 'react-native';
+import { View, Text, SafeAreaView, ScrollView } from 'react-native';
 import CardCategory from 'ui/CardCategory';
 import Heading from 'ui/Heading';
-import Search from 'ui/Search';
 import CardsNoCarusel from 'components/Promotion/CardsNoCarusel';
+import UniversalHeader from 'ui/UniversalHeader';
 
 export interface ICategory {
   id: number;
@@ -52,25 +42,15 @@ function CategoryDetail() {
   const handleSearchPress = () => {
     navigation.navigate('Search');
   };
-  return (
-<SafeAreaView className={`flex-1 items-center justify-start py-2 bg-[#ffff] `}>
-  <View className={`flex-row items-center`}>
-    <Pressable
-      onPress={handleSearchPress}
-      className={`w-full px-4 py-2 bg-gray-100 rounded-xl flex-row items-center justify-between mr-2`}
-    >
-      <View className={`flex-row items-center`}>
-        <MaterialCommunityIcons name="magnify" size={24} color="#7f7f7f" />
-        <Pressable onPress={handleSearchPress}>
-          <Text className={`text-md font-normal px-2 py-1`}>
-            Поиск
-          </Text>
-        </Pressable>
-      </View>
-        <MaterialCommunityIcons name="filter" size={24} color="#7f7f7f" />
-    </Pressable>
 
-      </View>
+  return (
+    <SafeAreaView className="bg-white h-full flex-1">
+      <UniversalHeader
+        //* что возможно можно в шторке прокинуть навигейт на Магазины рядом
+        title="Каталог"
+        onPressSearch={handleSearchPress}
+      />
+
       {/* Scrollable container start */}
       <ScrollView style={{ flex: 1, width: '100%' }}>
         {/* акции вне карусели */}

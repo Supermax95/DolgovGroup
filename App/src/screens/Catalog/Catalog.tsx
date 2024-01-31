@@ -15,7 +15,6 @@ const Catalog: FC = () => {
   return (
     <>
       <CategoryDetail />
-      {/* <SingleProduct /> */}
     </>
   );
 };
