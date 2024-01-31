@@ -11,10 +11,26 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import ShopsList from './ShopsList';
 import MarketMap from './MarketMap';
 
+
+interface ISelectedShop {
+  id: number;
+  city: string;
+  address: string;
+  latitude: string;
+  longitude: string;
+  hours: string;
+}
+
 const Shops: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
   const [showMap, setShowMap] = useState(true);
+  const [selectedShop, setSelectedShop] = useState<ISelectedShop | null>(null);
 
+  const handleShopSelected = (shop: ISelectedShop) => {
+    setSelectedShop(shop);
+  };
+  console.log('======>',selectedShop);
+  
   return (
     <SafeAreaView className="flex-1 bg-white">
       <UniversalHeader title="Магазины" />
@@ -51,7 +67,7 @@ const Shops: FC = () => {
           </Pressable>
         </View>
       </View>
-      {showMap ? <MarketMap /> : <ShopsList />}
+      {showMap ? <MarketMap selectedShop={selectedShop} />  : <ShopsList onShopSelected={handleShopSelected} />}
     </SafeAreaView>
   );
 };

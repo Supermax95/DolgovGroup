@@ -23,7 +23,17 @@ interface ISelectedShop {
   hours: string;
 }
 
-const ShopsList: FC = () => {
+interface ShopsListProps {
+  onShopSelected: (selectedShop: ISelectedShop) => void;
+}
+
+const ShopsList: FC<ShopsListProps> = ({ onShopSelected }) => {
+  const handleShopSelected = (selectedShop: ISelectedShop) => {
+    onShopSelected(selectedShop);
+    navigation.navigate('MarketMap', selectedShop);
+  };
+
+  // ..
   const navigation = useNavigation<TabScreenNavigationProp>();
   const [searchText, setSearchText] = useState<string>('');
   const locations = useAppSelector<ISelectedShop[]>(
@@ -34,9 +44,9 @@ const ShopsList: FC = () => {
     shop.address.toLowerCase().includes(searchText.toLowerCase())
   );
 
-  const handleShopSelected = (selectedShop: ISelectedShop) => {
-    navigation.navigate('Shops', { selectedShop1: selectedShop } as any);
-  };
+  // const handleShopSelected = (selectedShop: ISelectedShop) => {
+  //   navigation.navigate('Shops', { selectedShop1: selectedShop } as any);
+  // };
   // const tailwindClass = isLast ? '' : 'border-b-[1px] border-zinc-200';
 
   return (

@@ -40,6 +40,7 @@ import Search from 'ui/Search';
 import SingleLaw from 'components/UserProfile/AboutApplication/SingleLaw';
 import SupportMessage from 'screens/Support/SupportMessage/SupportMessage';
 import EmployeeConfirm from 'screens/Support/EmployeeConfirm/EmployeeConfirm';
+import MarketMap from 'screens/Shops/MarketMap';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabNavigatorOptions>();
@@ -223,9 +224,14 @@ export const AppNavigator: FC = () => {
         component={SupportMessage}
         options={{ headerShown: false }}
       />
-            <Stack.Screen
+      <Stack.Screen
         name="EmployeeConfirm"
         component={EmployeeConfirm}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="MarketMap"
+        component={MarketMap}
         options={{ headerShown: false }}
       />
       {/* <Stack.Screen

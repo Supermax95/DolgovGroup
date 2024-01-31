@@ -32,17 +32,18 @@ const SupportMessage: FC = () => {
     if (lastSentTime) {
       const currentTime = Date.now();
       const timeDifference = currentTime - parseInt(lastSentTime, 10);
-      const hoursPassed = timeDifference / (1000 * 60 * 60);
-
-      if (hoursPassed < 2) {
-        // Если прошло менее двух часов, блокируем повторную отправку
+      const minutesPassed = timeDifference / (1000 * 60);
+  
+      if (minutesPassed < 3) {
+        // Если прошло менее трех минут, блокируем повторную отправку
         setResendDisabled(true);
-        const remainingTime = Math.ceil(2 - hoursPassed) * 60 * 60; // Оставшееся время в секундах
+        const remainingTime = Math.ceil(3 - minutesPassed) * 60; // Оставшееся время в секундах
         setSecondsRemaining(remainingTime);
         startResendTimer();
       }
     }
   };
+  
 
   const startResendTimer = () => {
     const interval = setInterval(() => {
@@ -56,6 +57,7 @@ const SupportMessage: FC = () => {
       });
     }, 1000);
   };
+  
 
   const handleFieldChange = (field: string, value: string) => {
     setData((prevData) => ({

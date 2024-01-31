@@ -17,13 +17,19 @@ interface ISelectedShop {
   hours: string;
 }
 
-const MarketMap = () => {
+interface MarketMapProps {
+  selectedShop: ISelectedShop | null;
+}
+
+const MarketMap: FC<MarketMapProps> = ({ selectedShop }) => {
+  console.log('MarketMap======>',selectedShop);
+  
   const navigation = useNavigation<StackNavigationProp>();
   const dispatch = useAppDispatch();
 
   const mapRef = useRef<MapView | null>(null);
   const route = useRoute();
-  const selectedShop = route.params?.selectedShop1 as ISelectedShop | undefined;
+  // const selectedShop = route.params?.selectedShop as ISelectedShop | undefined;
   const [userLocation, setUserLocation] =
     useState<Location.LocationObject | null>(null);
   const locations = useAppSelector<ISelectedShop[]>(
