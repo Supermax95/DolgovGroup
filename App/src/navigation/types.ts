@@ -23,6 +23,8 @@ type RootStackParamList = {
   PromoDetails: undefined;
   Search: undefined;
   SingleLaw: undefined;
+  SupportMessage: undefined;
+  Support: undefined;
 };
 
 type IMaterialCommunityIcons = keyof typeof MaterialCommunityIcons.glyphMap;

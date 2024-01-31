@@ -38,6 +38,7 @@ import getPromotions from 'Redux/thunks/Promotion/getPromotion.api';
 import PromoDetails from 'components/Promotion/PromoDetails';
 import Search from 'ui/Search';
 import SingleLaw from 'components/UserProfile/AboutApplication/SingleLaw';
+import SupportMessage from 'screens/Support/SupportMessage/SupportMessage';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabNavigatorOptions>();
@@ -215,6 +216,11 @@ export const AppNavigator: FC = () => {
       <Stack.Screen
         name="SingleLaw"
         component={SingleLaw}
+        options={{ headerShown: false }}
+      />
+         <Stack.Screen
+        name="SupportMessage"
+        component={SupportMessage}
         options={{ headerShown: false }}
       />
       {/* <Stack.Screen

@@ -15,6 +15,7 @@ const userProfileRouter = require('./srcNative/routes/userProfileRouter');
 const locationUserRouter = require('./srcNative/routes/locationsUserRouter');
 const checkUserNative = require('./srcNative/routes/checkRouter');
 const sendNewActivationLink = require('./srcNative/routes/sendActivationLinkRouter');
+const supportNodemailerRouter = require('./srcNative/routes/supportNodemailerRouter');
 // ? Require Routes React
 const locationRouter = require('./srcClient/routes/locationsRouter');
 const portalRouter = require('./srcClient/routes/portalRouter');
@@ -75,6 +76,7 @@ app.use('/', userProfileRouter);
 app.use('/', locationUserRouter);
 app.use('/', checkUserNative);
 app.use('/', sendNewActivationLink);
+app.use('/', supportNodemailerRouter);
 app.use(errorMiddleware);
 
 // ? Routes React
