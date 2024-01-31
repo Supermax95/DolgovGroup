@@ -11,7 +11,9 @@ import nodemailerSend from 'Redux/thunks/Support/supportNodemailer.api';
 const SupportMessage: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
   const dispatch = useAppDispatch();
-  const token = useAppSelector<string | undefined>((state) => state.userSlice.token?.refreshToken);
+  const token = useAppSelector<string | undefined>(
+    (state) => state.userSlice.token?.refreshToken
+  );
 
   const [data, setData] = useState({
     titleMessage: '',
@@ -30,7 +32,7 @@ const SupportMessage: FC = () => {
       Alert.alert('Поля не заполнены', 'Пожалуйста, заполните все поля');
       return;
     }
-  
+
     const result = await dispatch(
       nodemailerSend({
         token,
@@ -38,9 +40,12 @@ const SupportMessage: FC = () => {
         message: data.message,
       })
     );
-  
+
     if (result.meta.requestStatus === 'rejected') {
-      Alert.alert('Ошибка', 'Произошла ошибка при отправке обращения, попробуйте повторить позже');
+      Alert.alert(
+        'Ошибка',
+        'Произошла ошибка при отправке обращения, попробуйте повторить позже'
+      );
     } else {
       // Успешная отправка
       Alert.alert('Ваше обращение успешно отправлено');
@@ -50,30 +55,47 @@ const SupportMessage: FC = () => {
 
   return (
     <SafeAreaView className="bg-white h-full flex-1">
-      <UniversalHeader onPress={() => navigation.goBack()} title={'Обращение в службу поддержки'} />
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
-      <Text style={{ textAlign: 'center', color: 'gray', fontSize: 20, fontWeight: 'bold', marginVertical: 2 }}>
-        Заполните поля
-      </Text>
-
-      <FieldInput
-        value={data.titleMessage}
-        placeholder="Тема обращения"
-        onChange={(value) => handleFieldChange('titleMessage', value)}
-        autoCapitalize="words"
+      <UniversalHeader
+        onPress={() => navigation.goBack()}
+        title={'Обращение в службу поддержки'}
       />
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'white',
+        }}
+      >
+        <Text
+          style={{
+            textAlign: 'center',
+            color: 'gray',
+            fontSize: 20,
+            fontWeight: 'bold',
+            marginVertical: 2,
+          }}
+        >
+          Заполните поля
+        </Text>
 
-      <FieldInput
-        value={data.message}
-        placeholder="Текст"
-        onChange={(value) => handleFieldChange('message', value)}
-        autoCapitalize="words"
-      />
+        <FieldInput
+          value={data.titleMessage}
+          placeholder="Тема обращения"
+          onChange={(value) => handleFieldChange('titleMessage', value)}
+          autoCapitalize="none"
+        />
 
+        <FieldInput
+          value={data.message}
+          placeholder="Текст"
+          onChange={(value) => handleFieldChange('message', value)}
+          autoCapitalize="none"
+        />
+      </View>
       <Padding>
         <Button title="Отправить" onPress={handleSubmit} />
       </Padding>
-    </View>
     </SafeAreaView>
   );
 };

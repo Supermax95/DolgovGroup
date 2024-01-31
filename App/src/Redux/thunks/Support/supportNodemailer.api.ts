@@ -31,7 +31,7 @@ const nodemailerSend = createAsyncThunk<ResponseData, RequestData>(
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        console.error(error.response.data.message);
+        // console.error(error.response.data.message);
         throw rejectWithValue(error.response.data.message);
       } else {
         throw error;
