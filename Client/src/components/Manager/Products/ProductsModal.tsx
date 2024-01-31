@@ -201,6 +201,8 @@ const ProductsModal: FC<ProductsModalProps> = ({
     );
 
     if (currentStep === 1) {
+      console.log('Я на первом шаге модалки ProductModal');
+
       if (
         !selectedSubcategory ||
         selectedSubcategory.subcategoryName === 'Выберите категорию'
@@ -220,10 +222,15 @@ const ProductsModal: FC<ProductsModalProps> = ({
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           result2 = await onSaveEdit(editedProduct as IProduct);
+          console.log(
+            'Я заканчиваю первый шаг  ProductModal, отправляю данные на бек'
+          );
         }
       }
 
       if (typeof result2 !== 'string') {
+        console.log('я иду на второй шаг ProductModal');
+
         setCurrentStep(2);
         setUpload(true);
       }
@@ -232,10 +239,12 @@ const ProductsModal: FC<ProductsModalProps> = ({
         setUpload(true);
       }
     } else if (currentStep === 2) {
+      console.log('я иду на втором шаге ProductModal');
       const fileInput = document.getElementById(
         'fileInput'
       ) as HTMLInputElement;
       const file = fileInput?.files?.[0];
+      console.log('я принимаю ID', id);
 
       await uploadFile(
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -244,10 +253,13 @@ const ProductsModal: FC<ProductsModalProps> = ({
         id,
         isAddingMode
       );
+      console.log('я закончил второй шаг');
     }
   };
 
-  const handleFileInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
+  const handleFileInputChangeModal = (
+    e: ChangeEvent<HTMLInputElement>
+  ): void => {
     const file = e.target.files?.[0] || null;
 
     uploadFile(
@@ -721,8 +733,9 @@ const ProductsModal: FC<ProductsModalProps> = ({
             <>
               <div className="flex items-center justify-center mt-2">
                 <label
-                  htmlFor="dropzone-file"
+                  htmlFor="dropzone-file-productModal"
                   className="flex flex-col items-center justify-center w-full h-22 border-2 border-slate-300 border-dashed rounded-lg cursor-pointer bg-slate-50 dark:hover:bg-bray-800 dark:bg-slate-700 hover:bg-slate-100 dark:border-slate-600 dark:hover:border-slate-500 dark:hover:bg-slate-600"
+                  onClick={(e) => e.stopPropagation()}
                 >
                   {' '}
                   {/* <div className="text-center my-2">
@@ -744,10 +757,10 @@ const ProductsModal: FC<ProductsModalProps> = ({
                     </p>
                   </div>
                   <input
-                    id="dropzone-file"
+                    id="dropzone-file-productModal"
                     type="file"
                     className="hidden"
-                    onChange={handleFileInputChange}
+                    onChange={handleFileInputChangeModal}
                   />
                   <div className="text-center my-2">
                     <p className="text-xs font-medium text-slate-500 dark:text-slate-400">

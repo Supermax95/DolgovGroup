@@ -262,11 +262,15 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     // setDataCategory('');
   };
   //Загрузка изображения категории
-  const uploadFile = async (file: File, id: number | 0): Promise<void> => {
+
+  const uploadCategoryFile = async (
+    file: File,
+    id: number | 0
+  ): Promise<void> => {
     if (file && id) {
       const formData = new FormData();
       formData.append('file', file);
-      console.log('==========>', id);
+      console.log('==========>uploadCategoryFile', id);
 
       try {
         await axios.put(`${VITE_URL}/categoryImg/${id}`, formData, {
@@ -286,12 +290,12 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     id: number
   ): Promise<void> => {
     try {
-      console.log('===========>handleFileInputChange');
+      console.log('===========>Sidebar-handleFileInputChange');
 
       const file = e.target.files?.[0] || null;
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      await uploadFile(file, id);
+      await uploadCategoryFile(file, id);
       await dispatch(getCategory());
     } catch (error) {
       console.error('Error in handleFileInputChange:', error);
@@ -838,20 +842,21 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                               </span>
                             </li>
                             <li
-                              onClick={(e) => handleFileInputChange(e, item.id)}
                               className="flex items-center px-4 py-2 space-x-2 hover:bg-slate-100"
                             >
                               <div>
                                 <CloudArrowUpIcon className="w-4 h-4 text-slate-600" />
                               </div>
                               <label
-                                htmlFor="dropzone-file"
+                                htmlFor="dropzone-file-sidebar"
                                 className="w-full cursor-pointer"
+                                onClick={(e) => e.stopPropagation()}
+
                               >
                                 <span className="text-slate-600 text-xs font-normal">
                                   Загрузить обложку
                                   <input
-                                    id="dropzone-file"
+                                    id="dropzone-file-sidebar"
                                     type="file"
                                     className="hidden"
                                     onChange={(e) =>
