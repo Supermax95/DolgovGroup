@@ -13,10 +13,10 @@ const Subcategory: FC<ISubcategory> = ({ onPress, title }) => {
     <Padding>
       <Pressable
         onPress={onPress}
-        className={`px-2 py-3 flex-row justify-between border-b-[1px] border-gray-100`}
+        className="px-2 py-3 flex-row justify-between border-b-[1px] border-gray-100"
       >
         <View>
-          <Text className="text-gray-800 font-medium text-md">{title}</Text>
+          <Text className="text-zinc-800 font-medium text-md">{title}</Text>
         </View>
         <View className="w-7">
           <MaterialCommunityIcons

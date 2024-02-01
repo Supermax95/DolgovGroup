@@ -20,10 +20,10 @@ const FieldEditProfile: FC<IFieldEditProfile> = ({
         className="py-4 flex-row border-b-[1px] border-zinc-200 justify-between"
       >
         <View>
-          <Text>{title}</Text>
+          <Text className="text-zinc-800 font-medium text-md">{title}</Text>
         </View>
         <View>
-          <Text className="text-zinc-500">{children}</Text>
+          <Text className="text-zinc-500 font-medium text-md">{children}</Text>
         </View>
       </Pressable>
     </Padding>

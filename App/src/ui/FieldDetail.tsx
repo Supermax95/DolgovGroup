@@ -24,7 +24,7 @@ const FieldDetail: FC<IFieldDetail> = ({
           <MaterialCommunityIcons name={icon} size={19} color="gray" />
         </View>
         <View>
-          <Text>{title}</Text>
+          <Text className="text-zinc-800 font-medium text-md">{title}</Text>
         </View>
       </Pressable>
     </Padding>
