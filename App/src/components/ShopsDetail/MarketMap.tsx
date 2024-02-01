@@ -25,6 +25,7 @@ const MarketMap: FC<MarketMapProps> = ({ selectedShop }) => {
   const dispatch = useAppDispatch();
   const mapRef = useRef<MapView | null>(null);
 
+
   useEffect(() => {
     dispatch(getUserLocations({ token }));
   }, [dispatch]);
