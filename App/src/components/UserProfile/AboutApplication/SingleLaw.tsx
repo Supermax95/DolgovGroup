@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   Linking,
   TouchableOpacity,
   Pressable,
+  ActivityIndicator,
 } from 'react-native';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import RenderHtml from 'react-native-render-html';
@@ -33,6 +34,7 @@ const SingleLaw = ({ route }: any) => {
   const dispatch = useAppDispatch();
   const { width } = Dimensions.get('window');
   const navigation = useNavigation<StackNavigationProp>();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,7 +60,6 @@ const SingleLaw = ({ route }: any) => {
       enableExperimentalMarginCollapsing={true}
     />
   ) : null;
-  // console.log(desc);
 
   const openDocumentLink = () => {
     if (currentLawOpen.documentLink) {
@@ -80,37 +81,56 @@ const SingleLaw = ({ route }: any) => {
   const truncated = truncateText(currentLawOpen.title, maxLength);
   const truncatedDoc = truncateText(currentLawOpen.title, maxLengthDoc);
 
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, []);
+
   return (
     <SafeAreaView className="bg-white h-full flex-1">
-      <UniversalHeader onPress={() => navigation.goBack()} title={truncated} />
-      <ScrollView style={{ flex: 1, width: '100%' }}>
-        <Padding>
-          <Padding>
-            {currentLawOpen.documentLink && (
-              <Pressable
-                onPress={openDocumentLink}
-                className="flex-row justify-center items-center py-2 border-b-[1px] border-zinc-200"
-              >
-                <View className="w-7">
-                  <MaterialCommunityIcons
-                    name="file-document-outline"
-                    size={23}
-                    color="#059669"
-                  />
+      {isLoading ? (
+        <View className="flex-1 items-center justify-center">
+          <ActivityIndicator size="large" color="green" />
+        </View>
+      ) : (
+        <>
+          <UniversalHeader
+            onPress={() => navigation.goBack()}
+            title={truncated}
+          />
+          <ScrollView style={{ flex: 1, width: '100%' }}>
+            <Padding>
+              <Padding>
+                {currentLawOpen.documentLink && (
+                  <Pressable
+                    onPress={openDocumentLink}
+                    className="flex-row justify-center items-center py-2 border-b-[1px] border-zinc-200"
+                  >
+                    <View className="w-7">
+                      <MaterialCommunityIcons
+                        name="file-document-outline"
+                        size={23}
+                        color="#047857"
+                      />
+                    </View>
+                    <Text className="text-zinc-700 font-medium text-md">
+                      {truncatedDoc}
+                    </Text>
+                  </Pressable>
+                )}
+                <View className="flex-1 flex-col items-center justify-center">
+                  <View className="flex items-start justify-start w-full">
+                    {desc}
+                  </View>
                 </View>
-                <Text className="text-zinc-700 font-medium text-md">
-                  {truncatedDoc}
-                </Text>
-              </Pressable>
-            )}
-            <View className="flex-1 flex-col items-center justify-center">
-              <View className="flex items-start justify-start w-full">
-                {desc}
-              </View>
-            </View>
-          </Padding>
-        </Padding>
-      </ScrollView>
+              </Padding>
+            </Padding>
+          </ScrollView>
+        </>
+      )}
     </SafeAreaView>
   );
 };

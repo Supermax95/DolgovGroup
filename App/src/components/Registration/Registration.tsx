@@ -144,7 +144,9 @@ export const Registration: FC = () => {
   return (
     <ScrollView contentContainerStyle={{ minHeight: '100%' }}>
       {isLoading ? (
-        <ActivityIndicator size="large" color="green" />
+        <View className="flex-1 items-center justify-center">
+          <ActivityIndicator size="large" color="green" />
+        </View>
       ) : (
         <View className="h-full w-full bg-white">
           <View className="mx-1 justify-center items-center h-full">
