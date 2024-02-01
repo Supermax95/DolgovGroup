@@ -25,7 +25,7 @@ export interface IPromotion {
   photo?: string;
 }
 
-const PromoDetails = ({ route }: any) => {
+const PromoDetail = ({ route }: any) => {
   const { promotionId } = route.params;
   const { width } = useWindowDimensions();
 
@@ -108,4 +108,4 @@ const PromoDetails = ({ route }: any) => {
   );
 };
 
-export default PromoDetails;
+export default PromoDetail;

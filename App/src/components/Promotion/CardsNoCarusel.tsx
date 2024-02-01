@@ -39,7 +39,7 @@ export default function CardsNoCarusel() {
   console.log('promotionspromotionspromotions', promotions);
 
   const navigateToPromoDetail = (promotionId: number): void => {
-    navigation.navigate('PromoDetails', { promotionId });
+    navigation.navigate('PromoDetail', { promotionId });
   };
 
   //! возможно, нужны другие карточки под акции вне карусели, более квадратные
