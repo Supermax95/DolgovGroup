@@ -41,7 +41,7 @@ const EmployeeConfirm: FC = () => {
     <SafeAreaView className="bg-white h-full flex-1">
       <UniversalHeader
         onPress={() => navigation.goBack()}
-        title={'Получение доступа работнику'}
+        title={'Доступ сотрудника'}
       />
       <View
         style={{

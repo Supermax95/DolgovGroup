@@ -6,7 +6,6 @@ import {
   ScrollView,
   Dimensions,
   Linking,
-  TouchableOpacity,
   Pressable,
   ActivityIndicator,
 } from 'react-native';
@@ -79,7 +78,7 @@ const SingleLaw = ({ route }: any) => {
   const maxLengthDoc = 30;
 
   const truncated = truncateText(currentLawOpen.title, maxLength);
-  const truncatedDoc = truncateText(currentLawOpen.title, maxLengthDoc);
+  // const truncatedDoc = truncateText(currentLawOpen.title, maxLengthDoc);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -104,6 +103,15 @@ const SingleLaw = ({ route }: any) => {
           <ScrollView style={{ flex: 1, width: '100%' }}>
             <Padding>
               <Padding>
+                {/* Если отсутсвует документ и текст */}
+                {!currentLawOpen.documentLink && !desc && (
+                  <View className="items-center justify-center w-full mt-4">
+                    <Text className="text-lg font-normal text-zinc-500">
+                      Информация отсутствует
+                    </Text>
+                  </View>
+                )}
+
                 {currentLawOpen.documentLink && (
                   <Pressable
                     onPress={openDocumentLink}
@@ -117,7 +125,8 @@ const SingleLaw = ({ route }: any) => {
                       />
                     </View>
                     <Text className="text-zinc-700 font-medium text-md">
-                      {truncatedDoc}
+                      {/* {truncatedDoc} */}
+                      Документ (скачать)
                     </Text>
                   </Pressable>
                 )}
