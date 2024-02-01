@@ -30,6 +30,7 @@ const categoryRouter = require('./srcClient/routes/categoryRouter');
 const subcategoryRouter = require('./srcClient/routes/sucategoryRouter');
 const promotionRouter = require('./srcClient/routes/promotionsRouter');
 const lawsRouter = require('./srcClient/routes/lawsRouter');
+const questionRouter = require('./srcClient/routes/quesionRouter')
 // middleware
 const errorMiddleware = require('./srcNative/middlewares/error-middleware');
 
@@ -93,6 +94,7 @@ app.use('/', categoryRouter);
 app.use('/', subcategoryRouter);
 app.use('/', promotionRouter);
 app.use('/', lawsRouter);
+app.use('/',questionRouter);
 
 app.listen(PORT, () => {
   console.log(`Сервер крутится на ${PORT} порту`);
