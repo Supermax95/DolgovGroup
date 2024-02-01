@@ -297,6 +297,8 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
       // @ts-ignore
       await uploadCategoryFile(file, id);
       await dispatch(getCategory());
+      setActionMenuForCategory(false);
+      setActionMenuForSub(false);
     } catch (error) {
       console.error('Error in handleFileInputChange:', error);
     }
@@ -312,6 +314,8 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
       try {
         dispatch(deleteCategoryPhoto(categoryId));
         // setShowNotificationDelPick(true);
+        setActionMenuForCategory(false);
+        setActionMenuForSub(false);
       } catch (error) {
         console.error('Произошла ошибка при удалении:', error);
       }
@@ -841,9 +845,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                                 Создать подкатегорию
                               </span>
                             </li>
-                            <li
-                              className="flex items-center px-4 py-2 space-x-2 hover:bg-slate-100"
-                            >
+                            <li className="flex items-center px-4 py-2 space-x-2 hover:bg-slate-100">
                               <div>
                                 <CloudArrowUpIcon className="w-4 h-4 text-slate-600" />
                               </div>
@@ -851,7 +853,6 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                                 htmlFor="dropzone-file-sidebar"
                                 className="w-full cursor-pointer"
                                 onClick={(e) => e.stopPropagation()}
-
                               >
                                 <span className="text-slate-600 text-xs font-normal">
                                   Загрузить обложку
