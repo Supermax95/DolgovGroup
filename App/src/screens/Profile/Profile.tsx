@@ -60,6 +60,11 @@ const Profile: FC = () => {
           title="Настройка уведомлений"
         />
         <FieldDetail
+          onPress={() => navigation.navigate('Support')}
+          icon="chat-question"
+          title="Служба поддержки"
+        />
+        <FieldDetail
           onPress={() => navigation.navigate('AboutApplication')}
           icon="information"
           title="О приложении"

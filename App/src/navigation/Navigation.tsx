@@ -234,7 +234,11 @@ export const AppNavigator: FC = () => {
         component={EmployeeConfirm}
         options={{ headerShown: false }}
       />
-
+      <Stack.Screen
+        name="Support"
+        component={Support}
+        options={{ headerShown: false }}
+      />
 
       {/* <Stack.Screen
         name="CheckMail"
@@ -342,11 +346,11 @@ export const FooterTabs: FC = () => {
           headerShown: false,
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Support"
         component={Support}
         options={{
-          title: 'Помощь',
+          title: 'Служба поддержки',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               name="chat-question-outline"
@@ -354,8 +358,9 @@ export const FooterTabs: FC = () => {
               size={25}
             />
           ),
+          headerShown: false,
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Profile"
         component={Profile}
