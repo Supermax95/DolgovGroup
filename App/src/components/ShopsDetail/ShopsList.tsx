@@ -47,7 +47,6 @@ const ShopsList: FC = () => {
     (location) => location.invisible === false
   );
 
-  console.log('filteredLocations========================>', filteredLocations);
 
   const filterLocations = () => {
     let filtered = filteredLocations;
