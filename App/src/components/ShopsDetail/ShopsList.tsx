@@ -37,7 +37,7 @@ const ShopsList: FC = () => {
 
   const handleShopSelected = (selectedShop: ISelectedShop) => {
     setSelectedShop(selectedShop);
-    navigation.navigate('MarketMap', { selectedShop });
+    navigation.navigate('Shops', { selectedShop });
   };
   const locations = useAppSelector<ISelectedShop[]>(
     (state) => state.locationsUserSlice.data
