@@ -94,6 +94,7 @@ const Law: FC = () => {
         year: 'numeric',
       }),
     });
+
     setEditorOpen(true);
     setLoading(true);
     setTimeout(() => {
