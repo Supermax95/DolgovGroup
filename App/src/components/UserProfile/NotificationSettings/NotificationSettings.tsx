@@ -95,7 +95,9 @@ const NotificationSettings: FC = () => {
         <Padding>
           <View className="py-2 flex-row border-b-[1px] border-zinc-200 items-center justify-between">
             <View>
-              <Text className="text-sm">PUSH-уведомления</Text>
+              <Text className="text-zinc-800 font-medium text-md">
+                PUSH-уведомления
+              </Text>
             </View>
             <Switch
               trackColor={{ false: '#d6d3d1', true: '#a7f3d0' }}
@@ -107,7 +109,9 @@ const NotificationSettings: FC = () => {
           </View>
           <View className="py-2 flex-row border-b-[1px] border-zinc-200 items-center justify-between">
             <View>
-              <Text className="text-sm">Получать E-mail письма</Text>
+              <Text className="text-zinc-800 font-medium text-md">
+                Получать E-mail письма
+              </Text>
             </View>
             <View>
               <Switch

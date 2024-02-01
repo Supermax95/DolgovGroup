@@ -1,13 +1,13 @@
 import React, { FC, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { useNavigation } from '@react-navigation/native';
-import { View, Text } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import { StackNavigationProp } from 'navigation/types';
 import getLaws from 'Redux/thunks/Law/getLaws.api';
 import Padding from 'ui/Padding';
-import FieldDetail from 'ui/FieldDetail';
 import UniversalHeader from 'ui/UniversalHeader';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 const AboutApplication: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
@@ -33,14 +33,29 @@ const AboutApplication: FC = () => {
         title="О приложении"
       />
       <Padding>
-        {laws &&
-          laws.map((law) => (
-            <FieldDetail
-              key={law.id}
-              onPress={() => navigateToSingleLaw(law.id)}
-              title={law.title}
-            />
-          ))}
+        <Padding>
+          {laws &&
+            laws.map((law) => (
+              <Pressable
+                key={law.id}
+                onPress={() => navigateToSingleLaw(law.id)}
+                className="px-2 py-3 flex-row justify-between border-b-[1px] border-gray-100"
+              >
+                <View>
+                  <Text className="text-zinc-800 font-medium text-md">
+                    {law.title}
+                  </Text>
+                </View>
+                <View className="w-7">
+                  <MaterialCommunityIcons
+                    name="chevron-right"
+                    size={26}
+                    color="#b7b7b6"
+                  />
+                </View>
+              </Pressable>
+            ))}
+        </Padding>
       </Padding>
     </SafeAreaView>
   );
