@@ -33,7 +33,7 @@ const SupportMessage: FC = () => {
       const currentTime = Date.now();
       const timeDifference = currentTime - parseInt(lastSentTime, 10);
       const minutesPassed = timeDifference / (1000 * 60);
-  
+
       if (minutesPassed < 3) {
         // Если прошло менее трех минут, блокируем повторную отправку
         setResendDisabled(true);
@@ -43,7 +43,6 @@ const SupportMessage: FC = () => {
       }
     }
   };
-  
 
   const startResendTimer = () => {
     const interval = setInterval(() => {
@@ -57,7 +56,6 @@ const SupportMessage: FC = () => {
       });
     }, 1000);
   };
-  
 
   const handleFieldChange = (field: string, value: string) => {
     setData((prevData) => ({
@@ -97,7 +95,7 @@ const SupportMessage: FC = () => {
     <SafeAreaView className="bg-white h-full flex-1">
       <UniversalHeader
         onPress={() => navigation.goBack()}
-        title={'Обращение в службу поддержки'}
+        title={'Поддержка'}
       />
       <View
         style={{

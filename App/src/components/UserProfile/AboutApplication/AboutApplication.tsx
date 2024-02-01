@@ -1,13 +1,12 @@
 import React, { FC, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { useNavigation } from '@react-navigation/native';
-import { View, Text, Pressable } from 'react-native';
 import { StackNavigationProp } from 'navigation/types';
 import getLaws from 'Redux/thunks/Law/getLaws.api';
 import Padding from 'ui/Padding';
 import UniversalHeader from 'ui/UniversalHeader';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import FieldDetailArrow from 'ui/FieldDetailArrow';
 
 const AboutApplication: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
@@ -45,25 +44,12 @@ const AboutApplication: FC = () => {
         <Padding>
           {laws &&
             laws.map((law) => (
-              <Pressable
+              <FieldDetailArrow
                 key={law.id}
                 onPress={() => navigateToSingleLaw(law.id)}
-                className="py-3 flex-row items-center justify-between border-b-[1px] border-gray-100"
-              >
-                <View>
-                  <Text className="text-zinc-800 font-medium text-md">
-                    {/* {law.title} */}
-                    {truncateText(law.title, maxLength)}
-                  </Text>
-                </View>
-                <View className="w-7">
-                  <MaterialCommunityIcons
-                    name="chevron-right"
-                    size={26}
-                    color="#b7b7b6"
-                  />
-                </View>
-              </Pressable>
+                icon="file-document-outline"
+                title={truncateText(law.title, maxLength)}
+              />
             ))}
         </Padding>
       </Padding>

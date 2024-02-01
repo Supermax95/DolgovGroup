@@ -47,7 +47,6 @@ const ShopsList: FC = () => {
     (location) => location.invisible === false
   );
 
-
   const filterLocations = () => {
     let filtered = filteredLocations;
 
@@ -138,7 +137,7 @@ const ShopsList: FC = () => {
         ListEmptyComponent={
           <View className="flex-row justify-center items-center mt-4">
             <Text className="text-lg font-normal text-zinc-500">
-              Ничего не найдено
+              Информация отсутствует
             </Text>
           </View>
         }
