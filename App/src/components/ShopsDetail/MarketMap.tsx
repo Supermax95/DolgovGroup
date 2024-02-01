@@ -22,14 +22,13 @@ interface ISelectedShop {
 // }
 
 const MarketMap: FC = () => {
-  
   const navigation = useNavigation<StackNavigationProp>();
   const dispatch = useAppDispatch();
-  
+
   const mapRef = useRef<MapView | null>(null);
   const route = useRoute();
   const selectedShop = route.params?.selectedShop as ISelectedShop | null;
-  console.log('MarketMap======>',selectedShop);
+  console.log('MarketMap======>', selectedShop);
 
   const [userLocation, setUserLocation] =
     useState<Location.LocationObject | null>(null);
