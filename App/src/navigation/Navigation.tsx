@@ -235,6 +235,7 @@ export const AppNavigator: FC = () => {
         options={{ headerShown: false }}
       />
 
+
       {/* <Stack.Screen
         name="CheckMail"
         component={CheckMail}
