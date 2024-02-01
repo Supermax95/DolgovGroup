@@ -23,18 +23,17 @@ interface ISelectedShop {
   hours: string;
 }
 
-interface ShopsListProps {
-  onShopSelected: (selectedShop: ISelectedShop) => void;
-}
+// interface ShopsListProps {
+//   onShopSelected: (selectedShop: ISelectedShop) => void;
+// }
 
-const ShopsList: FC<ShopsListProps> = ({ onShopSelected }) => {
-  const handleShopSelected = (selectedShop: ISelectedShop) => {
-    onShopSelected(selectedShop);
-    navigation.navigate('MarketMap', selectedShop);
-  };
-
-  // ..
+const ShopsList: FC = () => {
+  const [selectedShop, setSelectedShop] = useState<ISelectedShop | null>(null);
   const navigation = useNavigation<TabScreenNavigationProp>();
+  const handleShopSelected = (selectedShop: ISelectedShop) => {
+    setSelectedShop(selectedShop);
+    navigation.navigate('MarketMap', { selectedShop });
+  };
   const [searchText, setSearchText] = useState<string>('');
   const locations = useAppSelector<ISelectedShop[]>(
     (state) => state.locationsUserSlice.data
