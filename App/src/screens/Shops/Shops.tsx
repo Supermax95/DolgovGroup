@@ -114,6 +114,10 @@ const Shops: FC = () => {
     console.log('======>', selectedShop);
   };
 
+  const handleShowMap = () => {
+    setShowMap(true);
+  };
+
   useEffect(() => {
     if (selectedShop) {
       setShowMap(true);
@@ -144,7 +148,7 @@ const Shops: FC = () => {
             className={`rounded-lg w-[50%] h-[96%] justify-center items-center ${
               showMap ? 'bg-emerald-700' : 'bg-gray-100'
             }`}
-            onPress={handleShowList}
+            onPress={handleShowMap}
           >
             <Text
               className={`text-md font-medium ${
