@@ -20,11 +20,20 @@ const AboutApplication: FC = () => {
   const laws = useAppSelector<string | undefined>(
     (state) => state.lawSlice.data
   );
-  console.log('laws', laws);
 
   const navigateToSingleLaw = (lawId: number): void => {
     navigation.navigate('SingleLaw', { lawId });
   };
+
+  function truncateText(text: string, maxLength: number) {
+    if (text && text.length > maxLength) {
+      return text.substring(0, maxLength) + '...';
+    } else {
+      return text;
+    }
+  }
+
+  const maxLength = 35;
 
   return (
     <SafeAreaView className="bg-white h-full flex-1">
@@ -39,11 +48,12 @@ const AboutApplication: FC = () => {
               <Pressable
                 key={law.id}
                 onPress={() => navigateToSingleLaw(law.id)}
-                className="px-2 py-3 flex-row justify-between border-b-[1px] border-gray-100"
+                className="py-3 flex-row items-center justify-between border-b-[1px] border-gray-100"
               >
                 <View>
                   <Text className="text-zinc-800 font-medium text-md">
-                    {law.title}
+                    {/* {law.title} */}
+                    {truncateText(law.title, maxLength)}
                   </Text>
                 </View>
                 <View className="w-7">

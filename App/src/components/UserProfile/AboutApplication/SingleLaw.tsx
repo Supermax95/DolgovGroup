@@ -7,6 +7,7 @@ import {
   Dimensions,
   Linking,
   TouchableOpacity,
+  Pressable,
 } from 'react-native';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import RenderHtml from 'react-native-render-html';
@@ -15,6 +16,8 @@ import { PORT, IP } from '@env';
 import UniversalHeader from 'ui/UniversalHeader';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from 'navigation/types';
+import Padding from 'ui/Padding';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 export interface ILaw {
   id: number;
@@ -45,7 +48,6 @@ const SingleLaw = ({ route }: any) => {
 
   const currentLawOpen =
     useAppSelector<ILaw>((state) => state.lawSlice.currentLaw) || ({} as ILaw);
-  console.log(currentLawOpen);
 
   const desc = currentLawOpen.description ? (
     <RenderHtml
@@ -56,7 +58,7 @@ const SingleLaw = ({ route }: any) => {
       enableExperimentalMarginCollapsing={true}
     />
   ) : null;
-  console.log(desc);
+  // console.log(desc);
 
   const openDocumentLink = () => {
     if (currentLawOpen.documentLink) {
@@ -64,43 +66,50 @@ const SingleLaw = ({ route }: any) => {
     }
   };
 
-  return (
-    // <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start', backgroundColor: '#ffff' }}>
+  function truncateText(text: string, maxLength: number) {
+    if (text && text.length > maxLength) {
+      return text.substring(0, maxLength) + '...';
+    } else {
+      return text;
+    }
+  }
 
+  const maxLength = 25;
+  const maxLengthDoc = 30;
+
+  const truncated = truncateText(currentLawOpen.title, maxLength);
+  const truncatedDoc = truncateText(currentLawOpen.title, maxLengthDoc);
+
+  return (
     <SafeAreaView className="bg-white h-full flex-1">
-      <UniversalHeader
-        onPress={() => navigation.goBack()}
-        title={currentLawOpen.title}
-      />
+      <UniversalHeader onPress={() => navigation.goBack()} title={truncated} />
       <ScrollView style={{ flex: 1, width: '100%' }}>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          {/* <Text style={{ marginTop: 16, fontSize: 20, fontWeight: 'bold' }}>
-            {currentLawOpen.title}
-          </Text> */}
-          <View className={`flex items-start justify-start w-full`}>
-            {desc}
-          </View>
-          {currentLawOpen.documentLink && (
-            <TouchableOpacity onPress={openDocumentLink}>
-              <Text
-                style={{
-                  color: 'blue',
-                  textDecorationLine: 'underline',
-                  marginTop: 8,
-                }}
+        <Padding>
+          <Padding>
+            {currentLawOpen.documentLink && (
+              <Pressable
+                onPress={openDocumentLink}
+                className="flex-row justify-center items-center py-2 border-b-[1px] border-zinc-200"
               >
-                Открыть документ
-              </Text>
-            </TouchableOpacity>
-          )}
-        </View>
+                <View className="w-7">
+                  <MaterialCommunityIcons
+                    name="file-document-outline"
+                    size={23}
+                    color="#059669"
+                  />
+                </View>
+                <Text className="text-zinc-700 font-medium text-md">
+                  {truncatedDoc}
+                </Text>
+              </Pressable>
+            )}
+            <View className="flex-1 flex-col items-center justify-center">
+              <View className="flex items-start justify-start w-full">
+                {desc}
+              </View>
+            </View>
+          </Padding>
+        </Padding>
       </ScrollView>
     </SafeAreaView>
   );
