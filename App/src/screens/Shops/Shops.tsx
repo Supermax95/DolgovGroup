@@ -8,8 +8,8 @@ import { View, Pressable, Text } from 'react-native';
 
 import UniversalHeader from 'ui/UniversalHeader';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import ShopsList from './ShopsList';
-import MarketMap from './MarketMap';
+import ShopsList from '../../components/ShopsDetail/ShopsList';
+import MarketMap from '../../components/ShopsDetail/MarketMap';
 
 
 interface ISelectedShop {

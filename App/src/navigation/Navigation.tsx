@@ -18,7 +18,6 @@ import NotificationSettings from 'components/UserProfile/NotificationSettings/No
 import AboutApplication from 'components/UserProfile/AboutApplication/AboutApplication';
 import { ResetPassword } from 'components/SignIn/ResetPassword';
 import ChangeFullName from 'components/UserProfile/EditProfile/ChangeFullName/ChangeFullName';
-import ShopsList from 'screens/Shops/ShopsList';
 import ChangeBirthDate from 'components/UserProfile/EditProfile/ChangeBirthDate/ChangeBirthDate';
 import ChangeEmail from 'components/UserProfile/EditProfile/ChangeEmail/ChangeEmail';
 import ChangePassword from 'components/UserProfile/EditProfile/ChangePassword/ChangePassword';
@@ -32,15 +31,16 @@ import ProductsCards from 'components/Catalog/ProductsCards/ProductsCards';
 import SubcategoryDetail from 'components/Catalog/SubcategoryDetail/SubcategoryDetail';
 import SingleProduct from 'components/Catalog/ProductsCards/SingleProduct/SingleProduct';
 import * as Notifications from 'expo-notifications';
-import { Alert, Dimensions } from 'react-native';
+import { Alert } from 'react-native';
 import getProfileInfo from 'Redux/thunks/Profile/profileInfo.api';
 import getPromotions from 'Redux/thunks/Promotion/getPromotion.api';
-import PromoDetails from 'components/Promotion/PromoDetails';
 import Search from 'ui/Search';
 import SingleLaw from 'components/UserProfile/AboutApplication/SingleLaw';
-import SupportMessage from 'screens/Support/SupportMessage/SupportMessage';
-import EmployeeConfirm from 'screens/Support/EmployeeConfirm/EmployeeConfirm';
-import MarketMap from 'screens/Shops/MarketMap';
+import PromoDetail from 'components/Promotion/PromoDetail';
+import ShopsList from 'components/ShopsDetail/ShopsList';
+import MarketMap from 'components/ShopsDetail/MarketMap';
+import SupportMessage from 'components/SupportDetail/SupportMessage/SupportMessage';
+import EmployeeConfirm from 'components/SupportDetail/EmployeeConfirm/EmployeeConfirm';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabNavigatorOptions>();
@@ -190,6 +190,11 @@ export const AppNavigator: FC = () => {
         options={{ title: 'Список магазинов' }}
       />
       <Stack.Screen
+        name="MarketMap"
+        component={MarketMap}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
         name="SubcategoryDetail"
         component={SubcategoryDetail}
         options={{ headerShown: false }}
@@ -205,8 +210,8 @@ export const AppNavigator: FC = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="PromoDetails"
-        component={PromoDetails}
+        name="PromoDetail"
+        component={PromoDetail}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -229,11 +234,7 @@ export const AppNavigator: FC = () => {
         component={EmployeeConfirm}
         options={{ headerShown: false }}
       />
-      <Stack.Screen
-        name="MarketMap"
-        component={MarketMap}
-        options={{ headerShown: false }}
-      />
+
       {/* <Stack.Screen
         name="CheckMail"
         component={CheckMail}
