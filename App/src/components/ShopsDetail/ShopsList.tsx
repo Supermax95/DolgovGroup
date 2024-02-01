@@ -32,7 +32,7 @@ const ShopsList: FC = () => {
   const navigation = useNavigation<TabScreenNavigationProp>();
   const handleShopSelected = (selectedShop: ISelectedShop) => {
     setSelectedShop(selectedShop);
-    navigation.navigate('MarketMap', { selectedShop });
+    navigation.navigate('Shops', { selectedShop });
   };
   const [searchText, setSearchText] = useState<string>('');
   const locations = useAppSelector<ISelectedShop[]>(

@@ -1,12 +1,11 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { useRoute, useNavigation } from '@react-navigation/native';
+import {  useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from 'navigation/types';
-import { View, StyleSheet, Button as RNButton, Platform } from 'react-native';
+import { View, StyleSheet, Platform } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
 import getUserLocations from 'Redux/thunks/Shops/locationsUser.api';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
-import Button from 'ui/Button';
 
 interface ISelectedShop {
   id: number;
@@ -17,22 +16,19 @@ interface ISelectedShop {
   hours: string;
 }
 
-// interface MarketMapProps {
-//   selectedShop: ISelectedShop | null;
-// }
+interface MarketMapProps {
+  selectedShop?: ISelectedShop | null;
+}
 
-const MarketMap: FC = () => {
-  
+const MarketMap: FC<MarketMapProps> = ({ selectedShop }) => {
   const navigation = useNavigation<StackNavigationProp>();
   const dispatch = useAppDispatch();
-  
   const mapRef = useRef<MapView | null>(null);
-  const route = useRoute();
-  const selectedShop = route.params?.selectedShop as ISelectedShop | null;
-  console.log('MarketMap======>',selectedShop);
 
-  const [userLocation, setUserLocation] =
-    useState<Location.LocationObject | null>(null);
+  useEffect(() => {
+    dispatch(getUserLocations({ token }));
+  }, [dispatch]);
+
   const locations = useAppSelector<ISelectedShop[]>(
     (state) => state.locationsUserSlice.data
   );
@@ -41,19 +37,41 @@ const MarketMap: FC = () => {
     (state) => state.userSlice.token?.refreshToken
   );
 
-  useEffect(() => {
-    dispatch(getUserLocations({ token }));
-  }, [dispatch]);
+  const [initialRegion, setInitialRegion] = useState({
+    latitude: 54.725607,
+    longitude: 20.5382,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  });
+
 
   useEffect(() => {
-    (async () => {
+    const fetchInitialLocation = async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status === 'granted') {
         let userLocation = await Location.getCurrentPositionAsync({});
-        if (userLocation) {
-          setUserLocation(userLocation);
-          if (mapRef.current) {
+        if (userLocation && mapRef.current) {
+          if (selectedShop) {
             mapRef.current.animateToRegion({
+              latitude: parseFloat(selectedShop.latitude),
+              longitude: parseFloat(selectedShop.longitude),
+              latitudeDelta: 0.005,
+              longitudeDelta: 0.005,
+            });
+            setInitialRegion({
+              latitude: parseFloat(selectedShop.latitude),
+              longitude: parseFloat(selectedShop.longitude),
+              latitudeDelta: 0.005,
+              longitudeDelta: 0.005,
+            });
+          } else {
+            mapRef.current.animateToRegion({
+              latitude: userLocation.coords.latitude,
+              longitude: userLocation.coords.longitude,
+              latitudeDelta: 0.005,
+              longitudeDelta: 0.005,
+            });
+            setInitialRegion({
               latitude: userLocation.coords.latitude,
               longitude: userLocation.coords.longitude,
               latitudeDelta: 0.005,
@@ -62,74 +80,14 @@ const MarketMap: FC = () => {
           }
         }
       }
-    })();
-  }, []);
-
-  useEffect(() => {
-    if (selectedShop && mapRef.current) {
-      mapRef.current.animateToRegion({
-        latitude: parseFloat(selectedShop.latitude),
-        longitude: parseFloat(selectedShop.longitude),
-        latitudeDelta: 0.005,
-        longitudeDelta: 0.005,
-      });
-    }
+    };
+  
+    fetchInitialLocation();
   }, [selectedShop]);
-
-  // const showMyLocation = () => {
-  //   if (userLocation && mapRef.current) {
-  //     mapRef.current.animateToRegion({
-  //       latitude: userLocation.coords.latitude,
-  //       longitude: userLocation.coords.longitude,
-  //       latitudeDelta: 0.005,
-  //       longitudeDelta: 0.005,
-  //     });
-  //   }
-  // };
-
-  //? Сейчас навешан форс для того чтобы актуализировать данные от админа
-  // const showMyLocation = () => {
-  //   if (userLocation && mapRef.current) {
-  //     mapRef.current.animateToRegion(
-  //       {
-  //         latitude: userLocation.coords.latitude,
-  //         longitude: userLocation.coords.longitude,
-  //         latitudeDelta: 0.005,
-  //         longitudeDelta: 0.005,
-  //       },
-  //       1000
-  //     );
-
-  //     setTimeout(() => {
-  //       dispatch(getUserLocations({ force: true }));
-  //     }, 1000);
-  //   }
-  // };
-
-  const initialRegion = selectedShop
-    ? {
-        latitude: parseFloat(selectedShop.latitude),
-        longitude: parseFloat(selectedShop.longitude),
-        latitudeDelta: 0.005,
-        longitudeDelta: 0.005,
-      }
-    : userLocation
-    ? {
-        latitude: userLocation.coords.latitude,
-        longitude: userLocation.coords.longitude,
-        latitudeDelta: 0.005,
-        longitudeDelta: 0.005,
-      }
-    : {
-        latitude: 54.725607,
-        longitude: 20.5382,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
-      };
+  
 
   return (
-    <View className="bg-white flex-1">
-      {/* <Button title="Показать моё местоположение" onPress={showMyLocation} /> */}
+    <View style={styles.container}>
       <MapView
         ref={mapRef}
         provider={PROVIDER_GOOGLE}
@@ -156,23 +114,19 @@ const MarketMap: FC = () => {
             }}
             title={shop.city}
             description={`${shop.address}, ${shop.hours}`}
-            pinColor={
-              selectedShop &&
-              selectedShop.latitude === shop.latitude &&
-              selectedShop.longitude === shop.longitude
-                ? 'blue'
-                : 'green'
-            }
+            pinColor="green"
+            
           />
         ))}
-        {userLocation && (
+        {selectedShop && (
           <Marker
             coordinate={{
-              latitude: userLocation.coords.latitude,
-              longitude: userLocation.coords.longitude,
+              latitude: parseFloat(selectedShop.latitude),
+              longitude: parseFloat(selectedShop.longitude),
             }}
-            title="Ваше местоположение"
-            pinColor="red"
+            title={selectedShop.city}
+            description={`${selectedShop.address}, ${selectedShop.hours}`}
+            pinColor="green"
           />
         )}
       </MapView>
@@ -181,6 +135,10 @@ const MarketMap: FC = () => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
   map: {
     flex: 1,
     marginBottom: Platform.OS === 'android' ? 0 : -35,
@@ -188,3 +146,4 @@ const styles = StyleSheet.create({
 });
 
 export default MarketMap;
+
