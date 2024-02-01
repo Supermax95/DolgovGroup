@@ -80,11 +80,6 @@ const NotificationSettings: FC = () => {
         onPress={() => navigation.goBack()}
         title="Настройка уведомлений"
       />
-      {/* <View className="mt-4 mb-2">
-        <Text className="text-center text-xl font-bold text-zinc-800">
-          Маркетинговые рассылки
-        </Text>
-      </View> */}
       <Padding>
         <View className="mb-2 px-2">
           <Text className="text-lg font-molmal text-zinc-500">
@@ -95,7 +90,7 @@ const NotificationSettings: FC = () => {
         <Padding>
           <View className="py-2 flex-row border-b-[1px] border-zinc-200 items-center justify-between">
             <View>
-              <Text className="text-zinc-800 font-medium text-md">
+              <Text className="text-zinc-700 font-normal text-md">
                 PUSH-уведомления
               </Text>
             </View>
@@ -109,7 +104,7 @@ const NotificationSettings: FC = () => {
           </View>
           <View className="py-2 flex-row border-b-[1px] border-zinc-200 items-center justify-between">
             <View>
-              <Text className="text-zinc-800 font-medium text-md">
+              <Text className="text-zinc-700 font-normal text-md">
                 Получать E-mail письма
               </Text>
             </View>

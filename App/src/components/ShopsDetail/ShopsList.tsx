@@ -79,7 +79,7 @@ const ShopsList: FC = () => {
     <View style={{ height: '95%' }}>
       {/* Search */}
       <View className="py-2 items-center justify-between w-full">
-        <View className="px-4 bg-gray-100 w-[90%] h-8  rounded-lg flex-row items-center justify-center">
+        <View className="px-4 bg-zinc-100 w-[90%] h-8  rounded-lg flex-row items-center justify-center">
           <MaterialCommunityIcons name="magnify" size={23} color="#7f7f7f" />
           <TextInput
             className="text-md font-normal flex-1 px-2 py-1"
@@ -112,10 +112,10 @@ const ShopsList: FC = () => {
                 </View>
                 <View className="flex-col">
                   <View>
-                    <Text className="text-base font-normal text-gray-700">
+                    <Text className="text-zinc-700 font-normal text-base">
                       {item.city}
                     </Text>
-                    <Text className="text-md font-normal text-gray-700">
+                    <Text className="text-zinc-700 font-normal text-md">
                       {item.address}
                     </Text>
                   </View>
@@ -124,10 +124,10 @@ const ShopsList: FC = () => {
                       <MaterialCommunityIcons
                         name="clock-outline"
                         size={15}
-                        color="gray"
+                        color="zinc"
                       />
                     </View> */}
-                    <Text className="text-md font-normal text-gray-500">
+                    <Text className="text-zinc-500 font-normal text-md">
                       {item.hours}
                     </Text>
                   </View>
@@ -138,7 +138,7 @@ const ShopsList: FC = () => {
         )}
         ListEmptyComponent={
           <View className="flex-row justify-center items-center mt-4">
-            <Text className="text-lg font-normal text-gray-500">
+            <Text className="text-lg font-normal text-zinc-500">
               Ничего не найдено
             </Text>
           </View>
