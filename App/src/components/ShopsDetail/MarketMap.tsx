@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
-import {  useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from 'navigation/types';
 import { View, StyleSheet, Platform } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
@@ -24,7 +24,7 @@ const MarketMap: FC<MarketMapProps> = ({ selectedShop }) => {
   const navigation = useNavigation<StackNavigationProp>();
   const dispatch = useAppDispatch();
   const mapRef = useRef<MapView | null>(null);
-
+  const [userLocation, setUserLocation] = useState(null);
 
   useEffect(() => {
     dispatch(getUserLocations({ token }));
@@ -45,14 +45,24 @@ const MarketMap: FC<MarketMapProps> = ({ selectedShop }) => {
     longitudeDelta: 0.0421,
   });
 
-
   useEffect(() => {
+    console.log('я в юзееффекте');
+
     const fetchInitialLocation = async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status === 'granted') {
-        let userLocation = await Location.getCurrentPositionAsync({});
-        if (userLocation && mapRef.current) {
+        console.log('я прошел дальше');
+        const startTimestamp = Date.now();
+        let userLocation = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.Low,
+        });
+                const endTimestamp = Date.now();
+        const elapsedTime = endTimestamp - startTimestamp;
+        console.log('userLocation',userLocation);
+        console.log('Время выполнения getCurrentPositionAsync():', elapsedTime, 'мс');
+         if (userLocation && mapRef.current) {
           if (selectedShop) {
+            console.log('у меня есть selectedShop');
             mapRef.current.animateToRegion({
               latitude: parseFloat(selectedShop.latitude),
               longitude: parseFloat(selectedShop.longitude),
@@ -82,10 +92,9 @@ const MarketMap: FC<MarketMapProps> = ({ selectedShop }) => {
         }
       }
     };
-  
+
     fetchInitialLocation();
   }, [selectedShop]);
-  
 
   return (
     <View style={styles.container}>
@@ -116,7 +125,6 @@ const MarketMap: FC<MarketMapProps> = ({ selectedShop }) => {
             title={shop.city}
             description={`${shop.address}, ${shop.hours}`}
             pinColor="green"
-            
           />
         ))}
         {selectedShop && (
@@ -147,4 +155,3 @@ const styles = StyleSheet.create({
 });
 
 export default MarketMap;
-
