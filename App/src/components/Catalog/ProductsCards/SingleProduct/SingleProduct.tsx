@@ -1,24 +1,15 @@
-import {
-  View,
-  Text,
-  SafeAreaView,
-  ScrollView,
-  TouchableOpacity,
-  Pressable,
-  Platform,
-} from 'react-native';
+import { View, Text, SafeAreaView, ScrollView } from 'react-native';
 import React, { useEffect } from 'react';
 import SingleProductCard from 'ui/SingleProductCard';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { PORT, IP } from '@env';
 import currentProduct from 'Redux/thunks/Catalog/getcurrentProduct';
 import RenderHtml from 'react-native-render-html';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useWindowDimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import UniversalHeader from 'ui/UniversalHeader';
 import { StackNavigationProp } from 'navigation/types';
-import ArrowGoBack from 'ui/ArrowGoBack';
+// import ArrowGoBack from 'ui/ArrowGoBack';
 
 export interface IProduct {
   id: number;
@@ -75,7 +66,8 @@ const SingleProduct = ({ route }: any) => {
     <SafeAreaView
       className={`relative flex-1 items-center justify-start bg-[#ffff] `}
     >
-      <ArrowGoBack />
+      <UniversalHeader onPress={() => navigation.goBack()} />
+      {/* <ArrowGoBack /> */}
 
       {/* Scrollable container start */}
       <ScrollView style={{ flex: 1, width: '100%' }}>

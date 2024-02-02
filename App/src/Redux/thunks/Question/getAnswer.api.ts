@@ -1,25 +1,20 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios, { AxiosResponse } from 'axios';
 import { PORT, IP } from '@env';
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import type { AxiosResponse } from 'axios';
+import axios from 'axios';
 
 interface ResponseData {
   id: number;
   title: string;
   description: string;
-  dateStart: string;
-  dateEnd: string;
-  photo: string;
-  carousel: boolean;
-  invisible: boolean;
 }
 
-const currentPromotion = createAsyncThunk<ResponseData, number>(
-  'api/curentPromotion',
-
-  async (promotionId, { rejectWithValue }) => {
+const getAnswers = createAsyncThunk<ResponseData, number>(
+  'api/getAnswers',
+  async (questionId, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axios.get(
-        `http://${IP}:${PORT}/admin/currentpromotion/${promotionId}`
+        `http://${IP}:${PORT}/admin/questions/${questionId}`
       );
 
       return response.data;
@@ -34,4 +29,4 @@ const currentPromotion = createAsyncThunk<ResponseData, number>(
   }
 );
 
-export default currentPromotion;
+export default getAnswers;

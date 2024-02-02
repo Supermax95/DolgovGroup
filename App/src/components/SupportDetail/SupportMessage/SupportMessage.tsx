@@ -6,9 +6,9 @@ import {
   Text,
   Alert,
   SafeAreaView,
-  ScrollView,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StackNavigationProp } from 'navigation/types';
@@ -153,6 +153,8 @@ const SupportMessage: FC = () => {
                   <Text className="text-xs font-molmal text-zinc-500">
                     Подробное описание позволит нам предоставить ответ в
                     кратчайшие сроки без уточнения дополнительной информации...
+                    Ответ придёт на вашу электронную почту, которая указана в
+                    ЛК...
                   </Text>
                 </View>
 

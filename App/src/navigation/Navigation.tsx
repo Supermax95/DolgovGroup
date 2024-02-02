@@ -41,6 +41,8 @@ import ShopsList from 'components/ShopsDetail/ShopsList';
 import MarketMap from 'components/ShopsDetail/MarketMap';
 import SupportMessage from 'components/SupportDetail/SupportMessage/SupportMessage';
 import EmployeeConfirm from 'components/SupportDetail/EmployeeConfirm/EmployeeConfirm';
+import getQuestions from 'Redux/thunks/Question/getQuestions.api';
+import QuestionAndAnswer from 'components/SupportDetail/PopularQuestions/QuestionAndAnswer';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabNavigatorOptions>();
@@ -135,6 +137,10 @@ export const AppNavigator: FC = () => {
     dispatch(getPromotions());
   }, [dispatch]);
 
+  useEffect(() => {
+    dispatch(getQuestions());
+  }, [dispatch]);
+
   const user = useAppSelector((state) => state.userSlice.user.isActivated);
 
   const renderLoggedInUserScreens = () => (
@@ -195,13 +201,13 @@ export const AppNavigator: FC = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="SubcategoryDetail"
-        component={SubcategoryDetail}
+        name="ProductsCards"
+        component={ProductsCards}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="ProductsCards"
-        component={ProductsCards}
+        name="SubcategoryDetail"
+        component={SubcategoryDetail}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -225,6 +231,11 @@ export const AppNavigator: FC = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
+        name="Support"
+        component={Support}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
         name="SupportMessage"
         component={SupportMessage}
         options={{ headerShown: false }}
@@ -235,8 +246,8 @@ export const AppNavigator: FC = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Support"
-        component={Support}
+        name="QuestionAndAnswer"
+        component={QuestionAndAnswer}
         options={{ headerShown: false }}
       />
 

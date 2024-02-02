@@ -12,7 +12,10 @@ import RenderHtml from 'react-native-render-html';
 import { useWindowDimensions } from 'react-native';
 import currentPromotion from 'Redux/thunks/Promotion/getcurrentPromotion.api';
 import SinglePromo from 'ui/SinglePromo';
-import ArrowGoBack from 'ui/ArrowGoBack';
+// import ArrowGoBack from 'ui/ArrowGoBack';
+import UniversalHeader from 'ui/UniversalHeader';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from 'navigation/types';
 
 export interface IPromotion {
   id: number;
@@ -28,6 +31,7 @@ export interface IPromotion {
 const PromoDetail = ({ route }: any) => {
   const { promotionId } = route.params;
   const { width } = useWindowDimensions();
+  const navigation = useNavigation<StackNavigationProp>();
 
   const dispatch = useAppDispatch();
 
@@ -72,7 +76,8 @@ const PromoDetail = ({ route }: any) => {
 
   return (
     <SafeAreaView className={`flex-1 items-center justify-start bg-[#ffff] `}>
-      <ArrowGoBack />
+      {/* <ArrowGoBack /> */}
+      <UniversalHeader onPress={() => navigation.goBack()} />
 
       {/* Scrollable container start */}
       <ScrollView style={{ flex: 1, width: '100%' }}>
