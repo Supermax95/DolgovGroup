@@ -1,4 +1,9 @@
-import { TextInput, TextInputProps } from 'react-native';
+import {
+  NativeSyntheticEvent,
+  TextInput,
+  TextInputFocusEventData,
+  TextInputProps,
+} from 'react-native';
 import React, { FC } from 'react';
 
 interface IFieldInput {
@@ -10,6 +15,7 @@ interface IFieldInput {
   keyboardType?: TextInputProps['keyboardType'];
   style?: TextInputProps['style'];
   multiline?: boolean;
+  onFocus?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
 }
 
 const FieldInput: FC<IFieldInput> = ({
@@ -21,19 +27,23 @@ const FieldInput: FC<IFieldInput> = ({
   keyboardType,
   style,
   multiline,
+  onFocus,
 }) => {
   return (
-    <TextInput 
-      onChangeText={onChange}
-      placeholder={placeholder}
-      value={value}
-      secureTextEntry={isSecure}
-      autoCapitalize={autoCapitalize}
-      keyboardType={keyboardType}
-      multiline={multiline} // Устанавливаем параметр multiline
-      className="rounded-xl bg-gray-100 mt-3 p-3 w-full"
-      style={style}
-    />
+    <>
+      <TextInput
+        onChangeText={onChange}
+        placeholder={placeholder}
+        value={value}
+        secureTextEntry={isSecure}
+        autoCapitalize={autoCapitalize}
+        keyboardType={keyboardType}
+        multiline={multiline} // Устанавливаем параметр multiline
+        className="rounded-xl bg-gray-100 mt-3 p-3 w-full"
+        style={style}
+        onFocus={onFocus}
+      />
+    </>
   );
 };
 

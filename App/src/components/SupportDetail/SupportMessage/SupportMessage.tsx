@@ -1,13 +1,26 @@
 import React, { FC, useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { useNavigation } from '@react-navigation/native';
-import { View, Text, Button, Alert, SafeAreaView } from 'react-native';
+import {
+  View,
+  Text,
+  Alert,
+  SafeAreaView,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StackNavigationProp } from 'navigation/types';
 import Padding from 'ui/Padding';
 import FieldInput from 'ui/FieldInput';
 import UniversalHeader from 'ui/UniversalHeader';
 import nodemailerSend from 'Redux/thunks/Support/supportNodemailer.api';
+import Button from 'ui/Button';
+import {
+  KeyboardAccessoryNavigation,
+  KeyboardAccessoryView,
+} from 'react-native-keyboard-accessory';
 
 const SupportMessage: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
@@ -90,6 +103,7 @@ const SupportMessage: FC = () => {
       AsyncStorage.setItem('lastSentTime', Date.now().toString());
     }
   };
+  const [isShowKeyboard, setIsShowKeyboard] = useState<boolean>(false);
 
   return (
     <SafeAreaView className="bg-white h-full flex-1">
@@ -97,56 +111,71 @@ const SupportMessage: FC = () => {
         onPress={() => navigation.goBack()}
         title={'Поддержка'}
       />
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: 'white',
-        }}
+
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
-        <Text
-          style={{
-            textAlign: 'center',
-            color: 'gray',
-            fontSize: 20,
-            fontWeight: 'bold',
-            marginVertical: 2,
-          }}
-        >
-          Заполните поля
-        </Text>
+        <ScrollView>
+          <Padding>
+            <Padding>
+              <View
+                className="w-full pt-2 pb-8"
+                style={{ marginBottom: isShowKeyboard ? 30 : 100 }}
+              >
+                <FieldInput
+                  value={data.titleMessage}
+                  placeholder="Тема обращения"
+                  onChange={(value) => handleFieldChange('titleMessage', value)}
+                  autoCapitalize="words"
+                />
 
-        <FieldInput
-          value={data.titleMessage}
-          placeholder="Тема обращения"
-          onChange={(value) => handleFieldChange('titleMessage', value)}
-          autoCapitalize="none"
-        />
+                <FieldInput
+                  value={data.message}
+                  placeholder="Текст"
+                  onChange={(value) => handleFieldChange('message', value)}
+                  autoCapitalize="words"
+                  style={{ height: 200, textAlignVertical: 'top' }}
+                  multiline
+                  onFocus={() => setIsShowKeyboard(true)}
+                />
 
-        <FieldInput
-          value={data.message}
-          placeholder="Текст"
-          onChange={(value) => handleFieldChange('message', value)}
-          autoCapitalize="none"
-          style={{ height: '20%', textAlignVertical: 'top' }}
-          multiline
-        />
-      </View>
-      <Padding>
-        {isResendDisabled && (
-          <Text style={{ color: 'gray' }}>
-            Повторная отправка будет доступна через{' '}
-            {Math.floor(secondsRemaining / 60)} минут {secondsRemaining % 60}{' '}
-            секунд
-          </Text>
-        )}
-        <Button
-          title="Отправить"
-          onPress={handleSubmit}
-          disabled={isResendDisabled}
-        />
-      </Padding>
+                {/* //*  здесь были жалкие попытки добавить закрытие клавиатуры  
+                //* было принято решение пока задать фиксированную высоту инпута для текста,  style={{ height: 200, textAlignVertical: 'top' }}
+                //* т.к. полностью решить проблему с прокруткой и исчезновением клавы на iOS не получается */}
+                {/* <KeyboardAccessoryNavigation
+                  doneHidden={true}
+                  // nextHidden={true}
+                  // previousHidden={true}
+                /> */}
+
+                <View className="px-2 mt-2">
+                  <Text className="text-xs font-molmal text-zinc-500">
+                    Подробное описание позволит нам предоставить ответ в
+                    кратчайшие сроки без уточнения дополнительной информации...
+                  </Text>
+                </View>
+                <Button
+                  title="Отправить"
+                  onPress={handleSubmit}
+                  disabled={isResendDisabled}
+                />
+              </View>
+            </Padding>
+          </Padding>
+
+          {/* Если письмо уже отправлено */}
+          <Padding>
+            {isResendDisabled && (
+              <Text style={{ color: 'gray' }}>
+                Повторная отправка будет доступна через{' '}
+                {Math.floor(secondsRemaining / 60)} минут{' '}
+                {secondsRemaining % 60} секунд
+              </Text>
+            )}
+          </Padding>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
