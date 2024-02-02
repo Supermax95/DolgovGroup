@@ -65,6 +65,12 @@ const Navbar: FC = () => {
       href: '/admin/laws',
       isActive: location.pathname === '/admin/laws',
     },
+    {
+      id: 7,
+      name: 'Вопросы',
+      href: '/questions',
+      isActive: location.pathname === '/questions',
+    },
   ];
 
   //! не удалять

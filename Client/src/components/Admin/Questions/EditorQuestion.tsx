@@ -12,9 +12,7 @@ import 'quill/dist/quill.snow.css';
 import { Toaster } from 'sonner';
 import PopUpNotification from '../../../ui/PopUpNotification';
 import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
-import getQuestions from '../../../Redux/thunks/Question/getQuestions.api';
 import deleteQuestion from '../../../Redux/thunks/Question/deleteQuestion.api';
-import { unwrapResult } from '@reduxjs/toolkit';
 
 interface EditorQuestionProps {
   isOpen: boolean;
@@ -30,12 +28,7 @@ interface EditorQuestionProps {
   >;
   axiosError: string | null;
   resetAxiosError: () => void;
-  currentStep: number;
-  setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
-  setAddingMode: React.Dispatch<React.SetStateAction<boolean>>;
-  setSelectedLaw: React.Dispatch<React.SetStateAction<IQuestion | null>>;
   openAddEditor: () => void;
-  openEditEditor: (question: IQuestion | undefined) => void;
 }
 
 const EditorQuestion: FC<EditorQuestionProps> = ({
@@ -46,14 +39,8 @@ const EditorQuestion: FC<EditorQuestionProps> = ({
   isAddingMode,
   editedQuestion,
   setEditedQuestion,
-  resetAxiosError,
-  setAddingMode,
   openAddEditor,
-  openEditEditor,
 }) => {
-  const questions = useAppSelector<IQuestion[]>(
-    (state) => state.questionsSlice.data
-  );
   const dispatch = useAppDispatch();
   const [errorNotification, setErrorNotification] = useState<string | null>(
     null
@@ -87,25 +74,18 @@ const EditorQuestion: FC<EditorQuestionProps> = ({
         id: 0,
         title: '',
         description: '',
+        updatedAt: new Date().toLocaleDateString('ru-RU', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+        }),
       });
     }
   }, [isAddingMode, setEditedQuestion]);
 
-  const handleCancel = () => {
-    dispatch(getQuestions());
-    const question = questions.find((p) => p.id === editedQuestion?.id);
-    setEditedQuestion(undefined);
-    openEditEditor(question);
-    setAddingMode(false);
-    resetAxiosError();
-  };
-
   useEffect(() => {
     if (showNotificationDelQuestion) {
-      handleCancel();
-      setTimeout(() => {
-        handleCancel();
-      }, 50);
+      setTimeout(() => {}, 50);
     }
   }, [showNotificationDelQuestion]);
 
@@ -117,15 +97,10 @@ const EditorQuestion: FC<EditorQuestionProps> = ({
 
     if (isConfirmed) {
       try {
-        let result = '';
         if (isAddingMode) {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          result = await onSaveAdd(editedQuestion as IQuestion);
+          onSaveAdd(editedQuestion as IQuestion);
         } else {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          result = await onSaveEdit(editedQuestion as IQuestion);
+          await onSaveEdit(editedQuestion as IQuestion);
         }
       } catch (error) {
         console.error('Ошибка при сохранении:', error);
@@ -145,7 +120,6 @@ const EditorQuestion: FC<EditorQuestionProps> = ({
       try {
         const resultAction = await dispatch(deleteQuestion(questionId));
         setShowNotificationDelQuestion(true);
-
         if (deleteQuestion.fulfilled.match(resultAction)) {
           const response = resultAction.payload;
           if (response.length === 0) {
@@ -162,7 +136,6 @@ const EditorQuestion: FC<EditorQuestionProps> = ({
       }
     }
   };
-
 
   if (!isOpen || !editedQuestion) {
     return null;
@@ -206,9 +179,6 @@ const EditorQuestion: FC<EditorQuestionProps> = ({
 
           <form onSubmit={handleFormSubmit}>
             <div className="flex justify-center items-center">
-              <div className="w-8 text-gray-600">
-                <DocumentTextIcon className="w-6 h-6 text-slate-400" />
-              </div>
               <h1 className="text-lime-600 text-lg font-bold tracking-normal leading-tight">
                 {isAddingMode ? 'Новый вопрос' : 'Редактирование вопроса'}
               </h1>
@@ -240,37 +210,28 @@ const EditorQuestion: FC<EditorQuestionProps> = ({
                   </label>
                 </div>
 
-                <div className="py-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
-                  <div className="text-center my-4">
-                    <label
-                      htmlFor="description"
-                      className="text-slate-600 text-md font-normal"
-                    >
-                      Содержание вопроса
-                    </label>
-                    <div className="text-center">
-                      <span className="text-xs text-orange-500 font-normal">
-                        Вы можете внести содержание вопроса вручную или
-                        использовать кнопку "Сохранить", чтобы загрузить
-                        содержание.
-                      </span>
-                    </div>
-                    <div className="mb-2"></div>
+                <div className="text-center my-4">
+                  <label
+                    htmlFor="description"
+                    className="text-slate-600 text-md font-normal"
+                  >
+                    Содержание вопроса
+                  </label>
+                  <div className="mb-2"></div>
 
-                    <div id="editor-container h-[60vh] resize-y overflow-auto">
-                      <ReactQuill
-                        theme="snow"
-                        value={editedQuestion?.description}
-                        onChange={(value) =>
-                          setEditedQuestion({
-                            ...editedQuestion,
-                            description: value,
-                          })
-                        }
-                        modules={quillModules}
-                        className="w-full h-[50vh]"
-                      />
-                    </div>
+                  <div id="editor-container h-[60vh] resize-y overflow-auto">
+                    <ReactQuill
+                      theme="snow"
+                      value={editedQuestion?.description}
+                      onChange={(value) =>
+                        setEditedQuestion({
+                          ...editedQuestion,
+                          description: value,
+                        })
+                      }
+                      modules={quillModules}
+                      className="w-full h-[50vh]"
+                    />
                   </div>
                 </div>
               </>

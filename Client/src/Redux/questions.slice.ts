@@ -8,6 +8,7 @@ interface Question {
   id: number;
   title: string;
   description: string;
+  updatedAt: Date;
 }
 
 interface QuestionState {
@@ -50,7 +51,7 @@ const questionsSlice = createSlice({
       })
       .addCase(editQuestion.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.data = action.payload.questions;
+        state.data = action.payload;
       })
       .addCase(editQuestion.rejected, (state, action) => {
         state.isLoading = false;
@@ -75,7 +76,7 @@ const questionsSlice = createSlice({
       })
       .addCase(newQuestion.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.data = action.payload.questions;
+        state.data = action.payload;
       })
       .addCase(newQuestion.rejected, (state, action) => {
         state.isLoading = false;

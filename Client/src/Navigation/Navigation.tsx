@@ -19,6 +19,7 @@ import NotFound from '../components/404/NotFound';
 import { useAppSelector } from '../Redux/hooks';
 import Law from '../components/Admin/Laws/Laws';
 import LoadingAnimation from '../components/Admin/Laws/Loading';
+import Questions from '../components/Admin/Questions/Questions';
 
 const Navigation: FC = () => {
   const manager = useAppSelector((state) => state.managerSlice.manager);
@@ -26,19 +27,35 @@ const Navigation: FC = () => {
   const navigate = useNavigate();
 
 
+  // useEffect(() => {
+  //   const navigateToLocations = () => {
+  //     navigate('/locations');
+  //     setLoading(false);
+  //   };
+
+  //   if (manager.email && window.location.pathname.includes('/portal')) {
+  //     setLoading(true);
+  //     setTimeout(navigateToLocations, 1000);
+  //   } else if (!manager.email) {
+  //     navigate('/portal');
+  //   }
+  // }, [manager.email, navigate]);
+
   useEffect(() => {
     const navigateToLocations = () => {
       navigate('/locations');
       setLoading(false);
     };
 
-    if (manager.email && window.location.pathname.includes('/portal')) {
+    const isRegistrationSuccessPage = location.pathname.includes('/registration/success');
+
+    if (!isRegistrationSuccessPage && manager.email && window.location.pathname.includes('/portal')) {
       setLoading(true);
       setTimeout(navigateToLocations, 1000);
-    } else if (!manager.email) {
+    } else if (!manager.email && !isRegistrationSuccessPage) {
       navigate('/portal');
     }
-  }, [manager.email, navigate]);
+  }, [manager.email, navigate, location.pathname]);
 
   return (
     <>
@@ -147,6 +164,10 @@ const Navigation: FC = () => {
             <Route
               path="/promotions/nocarousel"
               element={manager.email ? <Nocarousel /> : <Portal />}
+            />
+            <Route
+              path="/questions"
+              element={manager.email ? <Questions /> : <Portal />}
             />
             <Route
               path="/admin/laws"

@@ -29,7 +29,7 @@ const SidebarQuestion: FC<SidebarLawProps<IQuestion>> = ({
           >
             <div className="flex items-center justify-center ml-6">
               <span className="text-lime-600 text-sm font-medium">
-                Добавить документ
+                Добавить вопрос
               </span>
             </div>
             <div className="flex items-center ml-auto">
