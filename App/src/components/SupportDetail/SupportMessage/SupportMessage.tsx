@@ -16,11 +16,11 @@ import Padding from 'ui/Padding';
 import FieldInput from 'ui/FieldInput';
 import UniversalHeader from 'ui/UniversalHeader';
 import nodemailerSend from 'Redux/thunks/Support/supportNodemailer.api';
-import Button from 'ui/Button';
 import {
   KeyboardAccessoryNavigation,
   KeyboardAccessoryView,
 } from 'react-native-keyboard-accessory';
+import ButtonWithDisable from 'ui/ButtonWithDisable';
 
 const SupportMessage: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
@@ -149,31 +149,32 @@ const SupportMessage: FC = () => {
                   // previousHidden={true}
                 /> */}
 
-                <View className="px-2 mt-2">
+                <View className="mt-2 justify-center items-center">
                   <Text className="text-xs font-molmal text-zinc-500">
                     Подробное описание позволит нам предоставить ответ в
                     кратчайшие сроки без уточнения дополнительной информации...
                   </Text>
                 </View>
-                <Button
+
+                <ButtonWithDisable
                   title="Отправить"
                   onPress={handleSubmit}
                   disabled={isResendDisabled}
                 />
+                {isResendDisabled && (
+                  <View className="mt-2 justify-center items-center">
+                    <Text className="text-xs font-molmal text-zinc-500">
+                      Возможность повторной отправки через{' '}
+                      {Math.floor(secondsRemaining / 60)} минут{' '}
+                      {secondsRemaining % 60} секунд
+                    </Text>
+                  </View>
+                )}
               </View>
             </Padding>
           </Padding>
 
           {/* Если письмо уже отправлено */}
-          <Padding>
-            {isResendDisabled && (
-              <Text style={{ color: 'gray' }}>
-                Повторная отправка будет доступна через{' '}
-                {Math.floor(secondsRemaining / 60)} минут{' '}
-                {secondsRemaining % 60} секунд
-              </Text>
-            )}
-          </Padding>
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
