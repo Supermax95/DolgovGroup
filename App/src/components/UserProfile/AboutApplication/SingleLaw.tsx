@@ -4,7 +4,6 @@ import {
   Text,
   SafeAreaView,
   ScrollView,
-  Dimensions,
   Linking,
   Pressable,
   ActivityIndicator,
@@ -18,6 +17,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from 'navigation/types';
 import Padding from 'ui/Padding';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { useWindowDimensions } from 'react-native';
 
 export interface ILaw {
   id: number;
@@ -30,10 +30,22 @@ export interface ILaw {
 
 const SingleLaw = ({ route }: any) => {
   const { lawId } = route.params;
+  const { width } = useWindowDimensions();
   const dispatch = useAppDispatch();
-  const { width } = Dimensions.get('window');
   const navigation = useNavigation<StackNavigationProp>();
+
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const currentLawOpen =
+    useAppSelector<ILaw>((state) => state.lawSlice.currentLaw) || ({} as ILaw);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,9 +58,6 @@ const SingleLaw = ({ route }: any) => {
 
     fetchData();
   }, [dispatch, lawId]);
-
-  const currentLawOpen =
-    useAppSelector<ILaw>((state) => state.lawSlice.currentLaw) || ({} as ILaw);
 
   const desc = currentLawOpen.description ? (
     <RenderHtml
@@ -80,14 +89,6 @@ const SingleLaw = ({ route }: any) => {
   const truncated = truncateText(currentLawOpen.title, maxLength);
   // const truncatedDoc = truncateText(currentLawOpen.title, maxLengthDoc);
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-
-    return () => clearTimeout(timeout);
-  }, []);
-
   return (
     <SafeAreaView className="bg-white h-full flex-1">
       {isLoading ? (
@@ -100,7 +101,7 @@ const SingleLaw = ({ route }: any) => {
             onPress={() => navigation.goBack()}
             title={truncated}
           />
-          <ScrollView style={{ flex: 1, width: '100%' }}>
+          <ScrollView style={{ flex: 1, width: '100%' }} bounces={false}>
             <Padding>
               <Padding>
                 {/* Если отсутсвует документ и текст */}
@@ -133,6 +134,9 @@ const SingleLaw = ({ route }: any) => {
                 <View className="flex-1 flex-col items-center justify-center">
                   <View className="flex items-start justify-start w-full">
                     {desc}
+                    {/* <Text className="text-base font-normal text-zinc-700">
+                      {currentLawOpen.description}
+                    </Text> */}
                   </View>
                 </View>
               </Padding>

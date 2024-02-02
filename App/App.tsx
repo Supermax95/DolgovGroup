@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context'; // Обновленный импорт
@@ -16,8 +15,6 @@ import { store, persistor } from './src/Redux/store';
 //   .catch((error) => {
 //     console.error('Ошибка сброса состояния:', error);
 //   });
-
-
 
 export default function App() {
   return (

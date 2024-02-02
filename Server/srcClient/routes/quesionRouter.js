@@ -18,6 +18,25 @@ router.get('/admin/questions', async (req, res) => {
   }
 });
 
+// router.get('/admin/questions/:id', async (req, res) => {
+//   const questionId = req.params.id;
+
+//   try {
+//     const question = await Question.findByPk(questionId, {
+//       raw: true,
+//     });
+
+//     if (!question) {
+//       return res.status(404).json({ error: 'Вопрос/ответ не найдены' });
+//     }
+//     res.json(question);
+//   } catch (error) {
+//     console.error('Ошибка при получении данных из базы данных', error);
+//     res.status(500).json({
+//       error: 'Произошла ошибка на сервере при получении данных из базы',
+//     });
+//   }
+// });
 
 router.post('/admin/questions', async (req, res) => {
   const { newQuestion } = req.body;
