@@ -7,24 +7,19 @@ interface RequestData {
     id: number;
     title: string;
     description: string;
+    updatedAt: Date | string;
   };
 }
 
-interface ResponseDataQ {
-    id: number;
-    title: string;
-    description: string;
-}
-
 interface ResponseData {
-  questions: ResponseDataQ[];
+  id: number;
+  title: string;
+  description: string;
+  updatedAt: Date;
 }
 
-
-
-const editQuestion = createAsyncThunk<ResponseData, RequestData>(
+const editQuestion = createAsyncThunk<ResponseData[], RequestData>(
   'admin/editQuestion',
-
 
   async ({ newInfo }, { rejectWithValue }) => {
     try {
@@ -32,6 +27,7 @@ const editQuestion = createAsyncThunk<ResponseData, RequestData>(
         `${VITE_URL}/admin/questions`,
         { newInfo }
       );
+
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
@@ -43,6 +39,5 @@ const editQuestion = createAsyncThunk<ResponseData, RequestData>(
     }
   }
 );
-
 
 export default editQuestion;

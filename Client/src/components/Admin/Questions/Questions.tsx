@@ -15,6 +15,7 @@ export interface IQuestion {
   id: number;
   title: string;
   description: string;
+  updatedAt: Date | string;
 }
 
 const Questions: FC = () => {
@@ -74,6 +75,11 @@ const Questions: FC = () => {
       id: 0,
       title: '',
       description: '',
+      updatedAt: new Date().toLocaleDateString('ru-RU', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+      }),
     });
     setEditorOpen(true);
     setLoading(true);
@@ -112,6 +118,7 @@ const Questions: FC = () => {
     setSelectedQuestion(null);
     setEditedQuestion(null);
     setEditorOpen(false);
+    dispatch(getQuestions());
   };
 
   const resetAxiosError = () => {
@@ -224,6 +231,8 @@ const Questions: FC = () => {
               setEditedQuestion={setEditedQuestion}
               axiosError={axiosError}
               resetAxiosError={resetAxiosError}
+              openAddEditor={openAddEditor}
+              // openEditEditor={openEditEditor}
             />
           )
         )}

@@ -39,7 +39,6 @@ router.post('/admin/questions', async (req, res) => {
 
     const questions = await Question.findAll({
       order: [['title', 'ASC']],
-      attributes: { exclude: ['description'] },
       raw: true,
     });
 
@@ -60,7 +59,6 @@ router.delete('/admin/questions/:id', async (req, res) => {
     });
     const questions = await Question.findAll({
       order: [['title', 'ASC']],
-      attributes: { exclude: ['description'] },
       raw: true,
     });
 
@@ -98,7 +96,6 @@ router.put('/admin/questions', async (req, res) => {
 
     const questions = await Question.findAll({
       order: [['title', 'ASC']],
-      attributes: { exclude: ['description'] },
       raw: true,
     });
 
