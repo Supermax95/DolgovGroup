@@ -135,7 +135,6 @@ const Editor: FC<LawEditorProps> = ({
     resetAxiosError();
   };
 
-
   const uploadFile = async (file: File, id: number | 0): Promise<void> => {
     if (file && id) {
       const formData = new FormData();
@@ -302,6 +301,7 @@ const Editor: FC<LawEditorProps> = ({
               bodyText={errorNotification}
             />
           )}
+
           <form onSubmit={handleFormSubmit}>
             <div className="flex justify-center items-center">
               <div className="w-8 text-gray-600">
@@ -311,6 +311,7 @@ const Editor: FC<LawEditorProps> = ({
                 {isAddingMode ? 'Новый документ' : 'Редактирование документа'}
               </h1>
             </div>
+
             {currentStep === 1 && (
               <div className="py-8">
                 <>

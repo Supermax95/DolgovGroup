@@ -185,77 +185,76 @@ const EditorQuestion: FC<EditorQuestionProps> = ({
             </div>
 
             <div className="py-8">
-              <>
-                <div className="relative">
-                  <input
-                    id="title"
-                    name="title"
-                    type="text"
-                    value={editedQuestion?.title}
-                    onChange={(e) =>
+              <div className="relative">
+                <input
+                  id="title"
+                  name="title"
+                  type="text"
+                  value={editedQuestion?.title}
+                  onChange={(e) =>
+                    setEditedQuestion({
+                      ...editedQuestion,
+                      title: e.target.value,
+                    })
+                  }
+                  placeholder=""
+                  className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
+                  required={true}
+                />
+                <label
+                  htmlFor="title"
+                  className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-slate-400 peer-focus:text-sm"
+                >
+                  Наименование вопроса
+                </label>
+              </div>
+
+              <div className="text-center my-4">
+                <label
+                  htmlFor="description"
+                  className="text-slate-600 text-md font-normal"
+                >
+                  Содержание вопроса
+                </label>
+                <div className="mb-2"></div>
+
+                <div id="editor-container h-[60vh] resize-y overflow-auto">
+                  <ReactQuill
+                    theme="snow"
+                    value={editedQuestion?.description}
+                    onChange={(value) =>
                       setEditedQuestion({
                         ...editedQuestion,
-                        title: e.target.value,
+                        description: value,
                       })
                     }
-                    placeholder=""
-                    className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
-                    required={true}
+                    modules={quillModules}
+                    className="w-full h-[50vh]"
                   />
-                  <label
-                    htmlFor="title"
-                    className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-slate-400 peer-focus:text-sm"
-                  >
-                    Наименование вопроса
-                  </label>
                 </div>
-
-                <div className="text-center my-4">
-                  <label
-                    htmlFor="description"
-                    className="text-slate-600 text-md font-normal"
-                  >
-                    Содержание вопроса
-                  </label>
-                  <div className="mb-2"></div>
-
-                  <div id="editor-container h-[60vh] resize-y overflow-auto">
-                    <ReactQuill
-                      theme="snow"
-                      value={editedQuestion?.description}
-                      onChange={(value) =>
-                        setEditedQuestion({
-                          ...editedQuestion,
-                          description: value,
-                        })
-                      }
-                      modules={quillModules}
-                      className="w-full h-[50vh]"
-                    />
-                  </div>
-                </div>
-              </>
-
-              <div className="mt-8"></div>
-              <div className="flex items-center justify-center w-full">
-                <Button
-                  type="submit"
-                  icon={<HandThumbUpIcon className="w-4 h-4 text-slate-50" />}
-                  title="Сохранить"
-                />
-
-                {!isAddingMode && (
-                  <Button
-                    type="button"
-                    onClick={handleDelete}
-                    styleCSSButton={
-                      'w-full flex items-center justify-center w-1/2 px-5 py-2 mr-2 text-sm transition-colors duration-200 p-0.5 group bg-gradient-to-br from-red-500 to-rose-400 hover:bg-gradient-to-bl from-red-500 to-rose-400 rounded-lg gap-x-2 sm:w-auto'
-                    }
-                    icon={<TrashIcon className="w-4 h-4 text-slate-50" />}
-                    title="Удалить"
-                  />
-                )}
               </div>
+            </div>
+
+            {/* кнопки здесь */}
+            <div className="mt-8"></div>
+            <div className="flex items-center justify-center w-full">
+              <Button
+                type="submit"
+                icon={<HandThumbUpIcon className="w-4 h-4 text-slate-50" />}
+                title="Сохранить"
+              />
+
+              {!isAddingMode && (
+                <Button
+                  type="button"
+                  onClick={handleDelete}
+                  styleCSSButton={
+                    'w-full flex items-center justify-center w-1/2 px-5 py-2 mr-2 text-sm transition-colors duration-200 p-0.5 group bg-gradient-to-br from-red-500 to-rose-400 hover:bg-gradient-to-bl from-red-500 to-rose-400 rounded-lg gap-x-2 sm:w-auto'
+                  }
+                  icon={<TrashIcon className="w-4 h-4 text-slate-50" />}
+                  title="Удалить"
+                />
+              )}
             </div>
           </form>
         </div>
