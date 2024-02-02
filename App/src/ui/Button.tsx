@@ -1,4 +1,4 @@
-import { Text, TouchableHighlight, Pressable } from 'react-native';
+import { Text, Pressable, TouchableHighlight } from 'react-native';
 import React, { FC } from 'react';
 
 interface IButton {
@@ -12,17 +12,15 @@ const Button: FC<IButton> = ({
   onPress,
   title,
   colors = ['bg-green-300', 'bg-green-400'],
-  disabled,
 }) => {
   return (
-    <Pressable
+    <TouchableHighlight
       onPress={onPress}
-      // underlayColor={colors[1]}
-      disabled={disabled}
-      className={`text-gray-800 rounded-xl w-full mt-3 py-3 ${colors[0]}`}
+      underlayColor={colors[1]}
+      className={`first-letter:text-gray-800 rounded-xl w-full mt-3 py-3 ${colors[0]}`}
     >
       <Text className="text-center text-base">{title}</Text>
-    </Pressable>
+    </TouchableHighlight>
   );
 };
 
