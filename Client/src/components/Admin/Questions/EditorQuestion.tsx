@@ -205,7 +205,7 @@ const EditorQuestion: FC<EditorQuestionProps> = ({
                   htmlFor="title"
                   className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-slate-400 peer-focus:text-sm"
                 >
-                  Наименование вопроса
+                  Популярный вопрос у пользователей
                 </label>
               </div>
 
@@ -214,7 +214,7 @@ const EditorQuestion: FC<EditorQuestionProps> = ({
                   htmlFor="description"
                   className="text-slate-600 text-md font-normal"
                 >
-                  Содержание вопроса
+                  Решение
                 </label>
                 <div className="mb-2"></div>
 
