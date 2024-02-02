@@ -92,7 +92,7 @@ const Navbar: FC = () => {
   const filteredNavigation = manager.isAdmin
     ? navigation
     : navigation.filter((item) =>
-        ['Магазины', 'Продукты', 'Маркетинговые акции'].includes(item.name)
+        ['Магазины', 'Продукты', 'Маркетинговые акции', 'Вопросы'].includes(item.name)
       );
 
   return (
