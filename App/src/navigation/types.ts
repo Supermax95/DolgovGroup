@@ -14,6 +14,7 @@ type RootStackParamList = {
   ResetPassword: undefined;
   ChangeFullName: undefined;
   ChangeBirthDate: undefined;
+  ChangePhoneNumber:undefined;
   ChangeEmail: undefined;
   ChangePassword: undefined;
   ShopsList: undefined;

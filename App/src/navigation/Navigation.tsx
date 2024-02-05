@@ -44,6 +44,7 @@ import EmployeeConfirm from 'components/SupportDetail/EmployeeConfirm/EmployeeCo
 import getQuestions from 'Redux/thunks/Question/getQuestions.api';
 import QuestionAndAnswer from 'components/SupportDetail/PopularQuestions/QuestionAndAnswer';
 import SearchProduct from 'components/Catalog/ProductsCards/SearchProduct/SearchProduct';
+import ChangePhoneNumber from 'components/UserProfile/EditProfile/ChangePhoneNumber/ChangePhoneNumber';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabNavigatorOptions>();
@@ -189,6 +190,11 @@ export const AppNavigator: FC = () => {
       <Stack.Screen
         name="ChangePassword"
         component={ChangePassword}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ChangePhoneNumber"
+        component={ChangePhoneNumber}
         options={{ headerShown: false }}
       />
       <Stack.Screen

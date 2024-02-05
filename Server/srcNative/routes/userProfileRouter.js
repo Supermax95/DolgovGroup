@@ -9,6 +9,7 @@ module.exports = router
       const token = req.headers.authorization.split(' ')[1];
       const user = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
       const dataUser = await DiscountCard.findOne({ where: { id: user.id } });
+      console.log(dataUser);
       res.json(dataUser);
     } catch (error) {
       console.error(error);
@@ -161,6 +162,43 @@ module.exports = router
     }
   })
 
+  .put('/changePhoneNumber', async (req, res) => {
+    try {
+      const { newPhoneNumber } = req.body;
+      const token = req.headers.authorization.split(' ')[1];
+      const user = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+
+      const userData = await DiscountCard.findOne({ where: { id: user.id } });
+
+      if (!userData) {
+        return res.status(404).json({ error: 'Пользователь не найден' });
+      }
+
+      const cleanedPhoneNumber = newPhoneNumber.replace(/\D/g, '');
+
+      const trimmedPhoneNumber = cleanedPhoneNumber.substring(1);
+
+      const userByPhoneNumber = await DiscountCard.findOne({
+        where: { phoneNumber: trimmedPhoneNumber },
+      });
+      if (userByPhoneNumber) {
+        return res
+          .status(404)
+          .json({ error: `${newPhoneNumber} уже существует` });
+      }
+
+      await userData.update({ phoneNumber: trimmedPhoneNumber });
+
+      res.status(200).json({
+        phoneNumber: trimmedPhoneNumber,
+        message: 'Номер телефона успешно изменен',
+      });
+    } catch (error) {
+      console.error('Произошла ошибка при изменении номера телефона:', error);
+      res.status(500).json({ error: 'Произошла ошибка' });
+    }
+  })
+
   .put('/notification', async (req, res) => {
     try {
       const { notificationEmail, notificationPush } = req.body;
@@ -181,9 +219,11 @@ module.exports = router
         notificationPush,
       });
 
-      return res
-        .status(200)
-        .json({notificationEmail,notificationPush, message: 'Настройки уведомлений успешно обновлены' });
+      return res.status(200).json({
+        notificationEmail,
+        notificationPush,
+        message: 'Настройки уведомлений успешно обновлены',
+      });
     } catch (error) {
       console.error('Ошибка при обновлении настроек уведомлений:', error);
       return res.status(500).json({ error: 'Внутренняя ошибка сервера' });

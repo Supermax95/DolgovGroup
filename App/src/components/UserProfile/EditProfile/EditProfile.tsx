@@ -17,6 +17,7 @@ const EditProfile: FC = () => {
     middleName?: string;
     birthDate?: Date | null | string;
     email?: string;
+    phoneNumber?: string;
   }>((state) => state.profileSlice);
 
   return (
@@ -52,6 +53,12 @@ const EditProfile: FC = () => {
           title="Пароль"
         >
           Изменить пароль
+        </FieldEditProfile>
+        <FieldEditProfile
+          onPress={() => navigation.navigate('ChangePhoneNumber')}
+          title="Телефонный номер"
+        >
+          `+7{profile.phoneNumber}`
         </FieldEditProfile>
       </Padding>
     </SafeAreaView>

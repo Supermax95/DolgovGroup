@@ -5,12 +5,14 @@ import profileChangeBirthDate from './thunks/Profile/profileChangeBirthDate.api'
 import profileChangeFullName from './thunks/Profile/profileChangeFullName.api';
 import profileChangeEmail from './thunks/Profile/profileChangeEmail.api';
 import profileNotification from './thunks/Profile/profileNotificationUpdate.api';
+import profileChangePhoneNumber from './thunks/Profile/profileChangePhoneNumber.api';
 
 interface IUser {
   lastName: string;
   firstName: string;
   middleName: string;
   birthDate: Date | null | string;
+  phoneNumber: string | null;
   email: string;
   notificationPush: boolean;
   notificationEmail: boolean;
@@ -27,6 +29,7 @@ const initialState: IUser = {
   middleName: '',
   birthDate: null || '',
   email: '',
+  phoneNumber: '',
   notificationPush: false,
   notificationEmail: false,
   isLoading: false,
@@ -52,6 +55,7 @@ const profileSlice = createSlice({
           middleName,
           birthDate,
           email,
+          phoneNumber,
           notificationEmail,
           notificationPush,
         } = action.payload as {
@@ -60,6 +64,7 @@ const profileSlice = createSlice({
           middleName: string;
           birthDate: Date | null | string;
           email: string;
+          phoneNumber: string;
           notificationPush: boolean;
           notificationEmail: boolean;
         };
@@ -68,8 +73,11 @@ const profileSlice = createSlice({
         state.middleName = middleName;
         state.birthDate = birthDate;
         state.email = email;
+        state.phoneNumber = phoneNumber;
         state.notificationPush = notificationPush;
         state.notificationEmail = notificationEmail;
+        console.log('=======>', action.payload);
+        
       })
       .addCase(getProfileInfo.rejected, (state, action) => {
         state.isLoading = false;
@@ -146,6 +154,20 @@ const profileSlice = createSlice({
       .addCase(profileNotification.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
+      })
+      .addCase(profileChangePhoneNumber.rejected, (state) => {
+        state.isLoading = false;
+        state.error = null;
+      })
+      .addCase(profileChangePhoneNumber.pending, (state) => {
+        /** email */
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(profileChangePhoneNumber.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.phoneNumber = action.payload.phoneNumber;
+        state.successMessage=action.payload.message
       });
   },
 });
