@@ -5,7 +5,7 @@ import { StackNavigationProp } from 'navigation/types';
 import { View, Text, Alert } from 'react-native';
 import Button from 'ui/Button';
 import Padding from 'ui/Padding';
-import profileChangePhoneNumber from 'Redux/thunks/Profile/profileChangePhoneNumber.api';  // Correct import
+import profileChangePhoneNumber from 'Redux/thunks/Profile/profileChangePhoneNumber.api'; // Correct import
 import { TextInputMask } from 'react-native-masked-text';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import UniversalHeader from 'ui/UniversalHeader';
@@ -20,21 +20,28 @@ const ChangePhoneNumber: FC = () => {
   const token = useAppSelector<string | undefined>(
     (state) => state.userSlice.token?.refreshToken
   );
-  const phoneProfile = useAppSelector<string>(
+  const reduxPhoneProfile = useAppSelector<string>(
     (state) => state.profileSlice.phoneNumber
   );
 
+  const phoneProfile = `+7 (${reduxPhoneProfile.substring(
+    0,
+    3
+  )}) ${reduxPhoneProfile.substring(3, 6)}-${reduxPhoneProfile.substring(
+    6,
+    8
+  )}-${reduxPhoneProfile.substring(8, 10)}`;
+
   const validatePhoneNumber = (): boolean => {
     const phoneRegex = /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/;
-    return phoneRegex.test(data.newPhoneNumber); 
+    return phoneRegex.test(data.newPhoneNumber);
   };
 
   const [data, setData] = useState<IChangePhone>({
     newPhoneNumber: phoneProfile || '',
   });
 
-  console.log(data);
-  
+
   const [errorMessages, setErrorMessages] = useState<IChangePhone>({
     newPhoneNumber: '',
   });
@@ -66,10 +73,10 @@ const ChangePhoneNumber: FC = () => {
         if (result.meta.requestStatus === 'rejected') {
           Alert.alert(
             'Ошибка',
-            'Пользователь с таким номером телефона уже существует' 
+            'Пользователь с таким номером телефона уже существует'
           );
         } else if (result.meta.requestStatus === 'fulfilled') {
-          Alert.alert('Ваш номер телефона успешно обновлен', '', [ 
+          Alert.alert('Ваш номер телефона успешно обновлен', '', [
             {
               text: 'OK',
               onPress: () => {
@@ -101,10 +108,8 @@ const ChangePhoneNumber: FC = () => {
             options={{
               mask: '+7 (999) 999-99-99',
             }}
-            value={data.newPhoneNumber}  
-            onChangeText={(text) =>
-              handleFieldChange('newPhoneNumber', text)  
-            }
+            value={data.newPhoneNumber}
+            onChangeText={(text) => handleFieldChange('newPhoneNumber', text)}
             placeholder="+7 (___) ___-__-__"
             keyboardType="number-pad"
           />
