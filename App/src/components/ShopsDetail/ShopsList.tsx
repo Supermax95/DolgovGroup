@@ -14,6 +14,7 @@ import FieldInput from 'ui/FieldInput';
 import { useAppSelector } from 'Redux/hooks';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Padding from 'ui/Padding';
+import SearchAndFilter from 'ui/SearchAndFilter';
 
 interface ISelectedShop {
   id: number;
@@ -75,19 +76,11 @@ const ShopsList: FC = () => {
 
   return (
     <View style={{ height: '95%' }}>
-      {/* Search */}
-      <View className="py-2 items-center justify-between w-full">
-        <View className="px-4 bg-zinc-100 w-[90%] h-8  rounded-lg flex-row items-center justify-center">
-          <MaterialCommunityIcons name="magnify" size={23} color="#7f7f7f" />
-          <TextInput
-            className="text-md font-normal flex-1 px-2 py-1"
-            placeholderTextColor="#555"
-            placeholder="Найти магазин"
-            value={searchText}
-            onChangeText={setSearchText}
-          />
-        </View>
-      </View>
+      <SearchAndFilter
+        placeholder="Найти магазин"
+        value={searchText}
+        onChangeText={setSearchText}
+      />
 
       {/* //! Попробовать через скролл сделать подрузку, прокинуть элемент загрузки. Через сиды сделать 300 штук локаций */}
       {/* List Market */}
@@ -108,8 +101,8 @@ const ShopsList: FC = () => {
                     color="#047857"
                   />
                 </View>
-                <View className="flex-col">
-                  <View>
+                <View className="flex-col space-y-1">
+                  <View className="flex-col space-y-1">
                     <Text className="text-zinc-700 font-normal text-base">
                       {item.city}
                     </Text>
@@ -117,18 +110,18 @@ const ShopsList: FC = () => {
                       {item.address}
                     </Text>
                   </View>
-                  <View className="flex-row justify-center items-center">
-                    {/* <View className="w-5 items-center justify-center">
+                  {/* <View className="flex-row justify-center items-center"> */}
+                  {/* <View className="w-5 items-center justify-center">
                       <MaterialCommunityIcons
                         name="clock-outline"
                         size={15}
                         color="zinc"
                       />
                     </View> */}
-                    <Text className="text-zinc-500 font-normal text-md">
-                      {item.hours}
-                    </Text>
-                  </View>
+                  <Text className="text-zinc-500 font-normal text-md">
+                    {item.hours}
+                  </Text>
+                  {/* </View> */}
                 </View>
               </Pressable>
             </Padding>

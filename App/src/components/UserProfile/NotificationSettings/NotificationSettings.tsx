@@ -1,4 +1,4 @@
-import { View, Text, Switch, Alert } from 'react-native';
+import { View, Text, Switch, Alert, Platform } from 'react-native';
 import React, { FC, useState, useEffect } from 'react';
 import Padding from 'ui/Padding';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
@@ -88,12 +88,14 @@ const NotificationSettings: FC = () => {
           </Text>
         </View>
         <Padding>
-          <View className="py-2 flex-row border-b-[1px] border-zinc-200 items-center justify-between">
-            <View>
-              <Text className="text-zinc-700 font-normal text-md">
-                PUSH-уведомления
-              </Text>
-            </View>
+          <View
+            className={`flex-row border-b-[1px] border-zinc-200 items-center justify-between
+              ${Platform.OS === 'android' ? 'py-0' : 'py-2'}`}
+          >
+            <Text className="text-zinc-700 font-normal text-md">
+              PUSH-уведомления
+            </Text>
+
             <Switch
               trackColor={{ false: '#d6d3d1', true: '#a7f3d0' }}
               thumbColor={isEnabledPush ? '#22c55e' : '#f5f5f4'}
@@ -102,22 +104,24 @@ const NotificationSettings: FC = () => {
               value={isEnabledPush}
             />
           </View>
-          <View className="py-2 flex-row border-b-[1px] border-zinc-200 items-center justify-between">
-            <View>
-              <Text className="text-zinc-700 font-normal text-md">
-                Получать E-mail письма
-              </Text>
-            </View>
-            <View>
-              <Switch
-                trackColor={{ false: '#d6d3d1', true: '#a7f3d0' }}
-                thumbColor={isEnabledEmail ? '#22c55e' : '#f5f5f4'}
-                ios_backgroundColor="#d6d3d1"
-                onValueChange={toggleSwitchEmail}
-                value={isEnabledEmail}
-              />
-            </View>
+
+          <View
+            className={`flex-row border-b-[1px] border-zinc-200 items-center justify-between
+              ${Platform.OS === 'android' ? 'py-0' : 'py-2'}`}
+          >
+            <Text className="text-zinc-700 font-normal text-md">
+              Получать E-mail письма
+            </Text>
+
+            <Switch
+              trackColor={{ false: '#d6d3d1', true: '#a7f3d0' }}
+              thumbColor={isEnabledEmail ? '#22c55e' : '#f5f5f4'}
+              ios_backgroundColor="#d6d3d1"
+              onValueChange={toggleSwitchEmail}
+              value={isEnabledEmail}
+            />
           </View>
+
           <Button onPress={handleSaveSettings} title="Сохранить" />
         </Padding>
       </Padding>

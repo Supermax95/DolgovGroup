@@ -34,7 +34,7 @@ import * as Notifications from 'expo-notifications';
 import { Alert } from 'react-native';
 import getProfileInfo from 'Redux/thunks/Profile/profileInfo.api';
 import getPromotions from 'Redux/thunks/Promotion/getPromotion.api';
-import Search from 'ui/Search';
+// import Search from 'ui/Search';
 import SingleLaw from 'components/UserProfile/AboutApplication/SingleLaw';
 import PromoDetail from 'components/Promotion/PromoDetail';
 import ShopsList from 'components/ShopsDetail/ShopsList';
@@ -43,6 +43,7 @@ import SupportMessage from 'components/SupportDetail/SupportMessage/SupportMessa
 import EmployeeConfirm from 'components/SupportDetail/EmployeeConfirm/EmployeeConfirm';
 import getQuestions from 'Redux/thunks/Question/getQuestions.api';
 import QuestionAndAnswer from 'components/SupportDetail/PopularQuestions/QuestionAndAnswer';
+import SearchProduct from 'components/Catalog/ProductsCards/SearchProduct/SearchProduct';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabNavigatorOptions>();
@@ -221,8 +222,8 @@ export const AppNavigator: FC = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Search"
-        component={Search}
+        name="SearchProduct"
+        component={SearchProduct}
         options={{ headerShown: false }}
       />
       <Stack.Screen
