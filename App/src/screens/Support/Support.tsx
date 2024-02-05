@@ -1,5 +1,4 @@
 import React, { FC, useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from 'navigation/types';
 import Padding from 'ui/Padding';

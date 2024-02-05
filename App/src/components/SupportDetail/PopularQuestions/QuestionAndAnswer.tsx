@@ -83,10 +83,6 @@ const QuestionAndAnswer = ({ route }: any) => {
                     </Text>
                   </View>
                   <View className="mt-2 items-start justify-start w-full">
-                    {/* //! здесь случился какой-то magic, который не случился на laws */}
-                    {/* <Text className="text-base font-normal text-zinc-700">
-                      {answer?.description}
-                    </Text> */}
                     {answerDesk}
                   </View>
                 </View>

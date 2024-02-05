@@ -40,7 +40,7 @@ function CategoryDetail() {
   };
 
   const handleSearchPress = () => {
-    navigation.navigate('Search');
+    navigation.navigate('SearchProduct');
   };
 
   return (

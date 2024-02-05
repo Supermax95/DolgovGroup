@@ -21,7 +21,7 @@ type RootStackParamList = {
   ProductsCards: undefined;
   SingleProduct: undefined;
   PromoDetail: undefined;
-  Search: undefined;
+  SearchProduct: undefined;
   SingleLaw: undefined;
   SupportMessage: undefined;
   Support: undefined;

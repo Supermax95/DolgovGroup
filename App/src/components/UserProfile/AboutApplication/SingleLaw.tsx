@@ -104,14 +104,16 @@ const SingleLaw = ({ route }: any) => {
           <ScrollView style={{ flex: 1, width: '100%' }} bounces={false}>
             <Padding>
               <Padding>
-                {/* Если отсутсвует документ и текст */}
-                {!currentLawOpen.documentLink && !desc && (
+                {/* Если отсутсвует документ. Невозможно сделать проверку на отсутствие текста,
+                 т.к. остаются теги в бд после удаления него */}
+
+                {/* {!currentLawOpen.documentLink && (
                   <View className="items-center justify-center w-full mt-4">
                     <Text className="text-lg font-normal text-zinc-500">
                       Информация отсутствует
                     </Text>
                   </View>
-                )}
+                )} */}
 
                 {currentLawOpen.documentLink && (
                   <Pressable
@@ -134,9 +136,6 @@ const SingleLaw = ({ route }: any) => {
                 <View className="flex-1 flex-col items-center justify-center">
                   <View className="flex items-start justify-start w-full">
                     {desc}
-                    {/* <Text className="text-base font-normal text-zinc-700">
-                      {currentLawOpen.description}
-                    </Text> */}
                   </View>
                 </View>
               </Padding>

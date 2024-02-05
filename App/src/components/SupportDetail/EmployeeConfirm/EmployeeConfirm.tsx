@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { useNavigation } from '@react-navigation/native';
-import { View, Text, Button, Alert, SafeAreaView } from 'react-native';
+import { View, Text, Button, Alert, SafeAreaView, Modal } from 'react-native';
 import { StackNavigationProp } from 'navigation/types';
 import Padding from 'ui/Padding';
 import FieldInput from 'ui/FieldInput';
@@ -39,22 +39,38 @@ const EmployeeConfirm: FC = () => {
 
   return (
     <SafeAreaView className="bg-white h-full flex-1">
-      <UniversalHeader
+      {/* <UniversalHeader
         onPress={() => navigation.goBack()}
         title={'Доступ сотрудника'}
-      />
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: 'white',
-        }}
-      >
+      /> */}
+
+      <Modal
+        // visible={isFilterModalVisible}
+        animationType="slide"
+        transparent={true}
+        // onRequestClose={() => {
+        //   applyFilters();
+        //   setFilterModalVisible(false);
+        // }}
+      ></Modal>
+      <View className="flex-1 justify-center items-center">
         {userStatus === 'Новый сотрудник' ? (
           <Text>Ваш запрос еще обрабатывается</Text>
+        ) : userStatus === 'Сотрудник' ? (
+          <View className="flex-row justify-center items-center mt-4">
+            <Text className="text-lg font-normal text-zinc-500">
+              Вы являетесь сотрудником компании
+            </Text>
+          </View>
         ) : (
           <Padding>
+            <View className="flex-row justify-center items-center mt-4">
+              <Text className="text-lg font-normal text-zinc-500">
+                Если вы являетесь сотрудником компании, для изменения своего
+                статуса в личном кабинете и получения необходимого доступа,
+                пожалуйста, воспользуйтесь кнопкой "Запросить проверку".
+              </Text>
+            </View>
             <Button title="Запросить проверку" onPress={handleSubmit} />
           </Padding>
         )}

@@ -13,8 +13,6 @@ import {
 } from 'react-native';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
-import Heading from 'ui/Heading';
-import Search from 'ui/Search';
 import Subcategory from 'ui/Subcategory';
 import Padding from 'ui/Padding';
 import UniversalHeader from 'ui/UniversalHeader';
@@ -75,11 +73,10 @@ const SubcategoryDetail = ({ route }: any) => {
       <UniversalHeader
         onPress={() => navigation.goBack()}
         title={categoryName}
-        onPressSearch={() => navigation.navigate('Search')}
+        onPressSearch={() => navigation.navigate('SearchProduct')}
       />
 
       {/* поиск внутри подкатегории */}
-      {/* <Search /> */}
 
       {/* Scrollable container для подкатегорий */}
       <ScrollView style={{ flex: 1, width: '100%' }}>
