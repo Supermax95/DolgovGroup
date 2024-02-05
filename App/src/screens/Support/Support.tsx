@@ -1,12 +1,22 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from 'navigation/types';
 import Padding from 'ui/Padding';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import UniversalHeader from 'ui/UniversalHeader';
-import { Linking, Pressable, ScrollView, Text, View } from 'react-native';
+import {
+  Alert,
+  Linking,
+  Modal,
+  Platform,
+  Pressable,
+  ScrollView,
+  Text,
+  View,
+} from 'react-native';
 import FieldDetailArrow from 'ui/FieldDetailArrow';
 import PopularQuestions from 'components/SupportDetail/PopularQuestions/PopularQuestions';
+import EmployeeConfirm from 'components/SupportDetail/EmployeeConfirm/EmployeeConfirm';
 
 const makePhoneCall = () => {
   Linking.openURL('tel:+7 800 700-00-00');
@@ -14,6 +24,7 @@ const makePhoneCall = () => {
 
 const Support: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
+  const [isModalVisible, setModalVisible] = useState<boolean>(false);
 
   return (
     <SafeAreaView className="bg-white h-full flex-1">
@@ -41,8 +52,10 @@ const Support: FC = () => {
             icon="phone-in-talk"
             title="Горячая линия"
           />
+
+          {/* можно поставить проверку, что если уже сотрудник, то либо не отображается, либо написано, что вы являетесь сотрудником */}
           <FieldDetailArrow
-            onPress={() => navigation.navigate('EmployeeConfirm')}
+            onPress={() => setModalVisible(true)}
             icon="account"
             title="Получить доступ сотрудника"
           />
@@ -50,6 +63,11 @@ const Support: FC = () => {
           <PopularQuestions />
         </Padding>
       </ScrollView>
+
+      <EmployeeConfirm
+        visible={isModalVisible}
+        setModalVisible={setModalVisible}
+      />
     </SafeAreaView>
   );
 };

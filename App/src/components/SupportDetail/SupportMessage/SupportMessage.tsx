@@ -35,7 +35,6 @@ const SupportMessage: FC = () => {
   });
   const [isResendDisabled, setResendDisabled] = useState<boolean>(false);
   const [secondsRemaining, setSecondsRemaining] = useState<number>(0);
-  
 
   useEffect(() => {
     checkResendAvailability();
@@ -43,21 +42,20 @@ const SupportMessage: FC = () => {
 
   const checkResendAvailability = async () => {
     const lastSentTime = await AsyncStorage.getItem('lastSentTime');
-    console.log('lastSentTime',lastSentTime);
+    console.log('lastSentTime', lastSentTime);
     if (lastSentTime) {
       const currentTime = Date.now();
-      
-      const timeDifference = currentTime - parseInt(lastSentTime, 10)
-      ;
+
+      const timeDifference = currentTime - parseInt(lastSentTime, 10);
       const minutesPassed = timeDifference / (1000 * 60);
-      console.log('minutesPassed',minutesPassed);
+      console.log('minutesPassed', minutesPassed);
 
       if (minutesPassed < 3) {
         // Если прошло менее трех минут, блокируем повторную отправку
         setResendDisabled(true);
         const remainingTime = Math.ceil(3 - minutesPassed) * 60;
         console.log('remainingTime', remainingTime);
-         // Оставшееся время в секундах
+        // Оставшееся время в секундах
         setSecondsRemaining(remainingTime);
         startResendTimer();
       }

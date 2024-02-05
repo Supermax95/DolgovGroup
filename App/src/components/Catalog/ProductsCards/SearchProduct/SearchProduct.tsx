@@ -41,18 +41,20 @@ export interface IProduct {
 }
 
 const SearchProduct = () => {
-  const [searchText, setSearchText] = useState('');
-  const [isFilterModalVisible, setFilterModalVisible] = useState(false);
-  const [showNew, setShowNew] = useState(false);
-  const [showDiscounted, setShowDiscounted] = useState(false);
-  const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(0);
-  const [initialRender, setInitialRender] = useState(true);
-  // const [modalOffset, setModalOffset] = useState(new Animated.Value(0));
-
   const navigation = useNavigation<StackNavigationProp>();
 
-  const products = useAppSelector<IProduct>((state) => state.productSlice.data);
+  const [searchText, setSearchText] = useState<string>('');
+  const [isFilterModalVisible, setFilterModalVisible] =
+    useState<boolean>(false);
+  const [showNew, setShowNew] = useState<boolean>(false);
+  const [showDiscounted, setShowDiscounted] = useState<boolean>(false);
+  const [minPrice, setMinPrice] = useState<number>(0);
+  const [maxPrice, setMaxPrice] = useState<number>(0);
+  const [initialRender, setInitialRender] = useState<boolean>(true);
+
+  const products = useAppSelector<IProduct[]>(
+    (state) => state.productSlice.data
+  );
 
   const navigateToSingleProduct = (productId: number): void => {
     navigation.navigate('SingleProduct', { productId });
@@ -110,7 +112,7 @@ const SearchProduct = () => {
 
   return (
     <SafeAreaView className="bg-white h-full flex-1">
-      <UniversalHeader onPress={() => navigation.goBack()} title={'Поиск'} />
+      <UniversalHeader onPress={() => navigation.goBack()} title="Поиск" />
 
       {/* Поиск и фильтр */}
       <SearchAndFilter
@@ -140,13 +142,7 @@ const SearchProduct = () => {
       />
 
       <ScrollView style={{ flex: 1, width: '100%' }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-          }}
-        >
+        <View className="flex-row flex-wrap justify-center">
           {displayedProducts.length ? (
             displayedProducts.map((product) => (
               <ProductCard
@@ -164,15 +160,8 @@ const SearchProduct = () => {
               />
             ))
           ) : (
-            <View
-              style={{
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-                justifyContent: 'center',
-                marginTop: 16,
-              }}
-            >
-              <Text style={{ color: 'gray', fontWeight: 'bold', fontSize: 16 }}>
+            <View className="flex-row flex-wrap justify-center mt-4">
+              <Text className="text-gray-600 font-medium text-lg">
                 Продуктов нет
               </Text>
             </View>

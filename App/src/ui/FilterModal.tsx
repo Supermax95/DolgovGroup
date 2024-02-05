@@ -121,7 +121,6 @@ const FilterModal: FC<FilterModalProps> = ({
                 color="#71716F"
               />
             </Pressable>
-            {/* <Text style={{ fontSize: 18, marginBottom: 10 }}>Фильтры</Text> */}
             <View
               className={`flex-row border-b-[1px] border-zinc-200 items-center justify-between
           ${Platform.OS === 'android' ? 'py-0' : 'py-2'}`}

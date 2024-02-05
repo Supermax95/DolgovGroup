@@ -49,12 +49,16 @@ const ProductsCards = ({ route }: any) => {
 
   const navigation = useNavigation<StackNavigationProp>();
   const dispatch = useAppDispatch();
-  const [isFilterModalVisible, setFilterModalVisible] = useState(false);
-  const [showNew, setShowNew] = useState(false);
-  const [showDiscounted, setShowDiscounted] = useState(false);
-  const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(0);
-  const [initialRender, setInitialRender] = useState(true);
+
+  const [searchText, setSearchText] = useState<string>('');
+  const [isFilterModalVisible, setFilterModalVisible] =
+    useState<boolean>(false);
+  const [showNew, setShowNew] = useState<boolean>(false);
+  const [showDiscounted, setShowDiscounted] = useState<boolean>(false);
+  const [minPrice, setMinPrice] = useState<number>(0);
+  const [maxPrice, setMaxPrice] = useState<number>(0);
+  const [initialRender, setInitialRender] = useState<boolean>(true);
+
   const allProducts = useAppSelector<IProduct[]>(
     (state) => state.productSlice.data
   );
@@ -71,10 +75,7 @@ const ProductsCards = ({ route }: any) => {
     0
   );
 
-  // const [modalOffset, setModalOffset] = useState(new Animated.Value(0));
-
   const applyFilters = () => {
-    // let filtered = products;
     let filtered: IProduct[] = Array.isArray(products) ? products : [];
 
     if (showNew) {
@@ -84,6 +85,24 @@ const ProductsCards = ({ route }: any) => {
     if (showDiscounted) {
       filtered = filtered.filter((product) => product.isDiscounted === true);
     }
+
+    if (searchText !== '') {
+      filtered = filtered.filter((product) => {
+        const productFields = [
+          String(product.productName),
+          String(product.promoStartDate),
+          String(product.promoEndDate),
+          String(product.article),
+        ];
+
+        const searchTerms = searchText.toLowerCase().split(' ');
+
+        return searchTerms.every((term) =>
+          productFields.some((field) => field.toLowerCase().includes(term))
+        );
+      });
+    }
+
     filtered = filtered.filter(
       (product) =>
         product.originalPrice >= minPrice && product.originalPrice <= maxPrice
@@ -102,10 +121,7 @@ const ProductsCards = ({ route }: any) => {
   const displayedProducts = applyFilters();
   console.log('displayedProducts', displayedProducts);
 
-  const navigateToSingleProduct = (
-    productId: number
-    // categoryName: string
-  ): void => {
+  const navigateToSingleProduct = (productId: number): void => {
     navigation.navigate('SingleProduct', { productId });
   };
 
@@ -114,13 +130,21 @@ const ProductsCards = ({ route }: any) => {
       <UniversalHeader
         onPress={() => navigation.goBack()}
         title={subcategoryName ? subcategoryName : categoryName}
-        onPressSearch={() => navigation.navigate('SearchProduct')}
       />
 
-      {/* Иконка фильтра */}
+      {/* Поиск и фильтр */}
+      <SearchAndFilter
+        value={searchText}
+        placeholder="  Найти
+        продукт"
+        onChangeText={(text) => {
+          setSearchText(text);
+          applyFilters();
+        }}
+        onPressFilter={() => setFilterModalVisible(true)}
+      />
 
-      <SearchAndFilter onPressFilter={() => setFilterModalVisible(true)} />
-
+      {/* модальное окно фильтра */}
       <FilterModal
         isVisible={isFilterModalVisible}
         onClose={setFilterModalVisible}
@@ -137,7 +161,6 @@ const ProductsCards = ({ route }: any) => {
 
       {/* Scrollable container start */}
       <ScrollView style={{ flex: 1, width: '100%' }}>
-        {/* <View className=""> */}
         <View className="flex-row flex-wrap justify-center">
           {displayedProducts.length ? (
             displayedProducts.map((product) => (
@@ -164,17 +187,7 @@ const ProductsCards = ({ route }: any) => {
               </Text>
             </View>
           )}
-          {/* </View> */}
         </View>
-        {/* {isLoading ? (
-      <View className={`flex-1 h-80 items-center justify-center`}>
-        <ActivityIndicator size={'large'} color={'teal'} />
-      </View>
-    ) : ( */}
-
-        {/* // feeds={filtered || filtered?.length > 0 ? filtered : feeds?.feeds}
-    // />
-    )} */}
       </ScrollView>
     </SafeAreaView>
   );
