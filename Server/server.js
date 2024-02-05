@@ -16,6 +16,7 @@ const locationUserRouter = require('./srcNative/routes/locationsUserRouter');
 const checkUserNative = require('./srcNative/routes/checkRouter');
 const sendNewActivationLink = require('./srcNative/routes/sendActivationLinkRouter');
 const supportNodemailerRouter = require('./srcNative/routes/supportNodemailerRouter');
+const barcodeRouter = require('./srcNative/routes/barcodeRouter');
 // ? Require Routes React
 const locationRouter = require('./srcClient/routes/locationsRouter');
 const portalRouter = require('./srcClient/routes/portalRouter');
@@ -30,7 +31,7 @@ const categoryRouter = require('./srcClient/routes/categoryRouter');
 const subcategoryRouter = require('./srcClient/routes/sucategoryRouter');
 const promotionRouter = require('./srcClient/routes/promotionsRouter');
 const lawsRouter = require('./srcClient/routes/lawsRouter');
-const questionRouter = require('./srcClient/routes/quesionRouter')
+const questionRouter = require('./srcClient/routes/quesionRouter');
 // middleware
 const errorMiddleware = require('./srcNative/middlewares/error-middleware');
 
@@ -78,6 +79,7 @@ app.use('/', locationUserRouter);
 app.use('/', checkUserNative);
 app.use('/', sendNewActivationLink);
 app.use('/', supportNodemailerRouter);
+app.use('/', barcodeRouter);
 app.use(errorMiddleware);
 
 // ? Routes React
@@ -94,7 +96,7 @@ app.use('/', categoryRouter);
 app.use('/', subcategoryRouter);
 app.use('/', promotionRouter);
 app.use('/', lawsRouter);
-app.use('/',questionRouter);
+app.use('/', questionRouter);
 
 app.listen(PORT, () => {
   console.log(`Сервер крутится на ${PORT} порту`);
