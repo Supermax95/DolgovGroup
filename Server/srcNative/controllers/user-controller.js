@@ -6,7 +6,7 @@ const { FRONTPORT, IP } = process.env;
 class UserController {
   async registration(req, res, next) {
     try {
-      const { lastName, firstName, middleName, email, birthDate, password } =
+      const { lastName, firstName, middleName, email, birthDate, password, phoneNumber } =
         req.body;
       const userData = await userService.registration(
         lastName,
@@ -14,7 +14,8 @@ class UserController {
         middleName,
         email,
         birthDate,
-        password
+        password,
+        phoneNumber,
       );
       // req.session.userId = userData.user.id;
       // res.cookie('refreshToken', userData.refreshToken, {

@@ -20,14 +20,19 @@ const ChangeEmail: FC = () => {
   const token = useAppSelector<string | undefined>(
     (state) => state.userSlice.token?.refreshToken
   );
-  // const userId = useAppSelector<number>((state) => state.userSlice.user.id);
   const emailProfile = useAppSelector<string>(
     (state) => state.profileSlice.email
   );
+  
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 
   const [data, setData] = useState<IChangeEmail>({
     newEmail: emailProfile || '',
   });
+  
   const [errorMessages, setErrorMessages] = useState<IChangeEmail>({
     newEmail: '',
   });
@@ -40,10 +45,10 @@ const ChangeEmail: FC = () => {
     setErrorMessages((prevErrors) => ({ ...prevErrors, [field]: '' }));
   };
 
-  const handlerSubmitFullName = async (): Promise<void> => {
-    if (!data.newEmail) {
+  const handlerSubmitEmail = async (): Promise<void> => {
+    if (!data.newEmail || !validateEmail(data.newEmail)) {
       setErrorMessages({
-        newEmail: !data.newEmail ? 'Введите почту' : '',
+        newEmail: !data.newEmail ? 'Введите почту' : 'Введите корректный адрес электронной почты',
       });
     } else {
       try {
@@ -62,7 +67,7 @@ const ChangeEmail: FC = () => {
         } else if (result.meta.requestStatus === 'fulfilled') {
           Alert.alert(
             'Ваша почта успешно обновлена',
-            'Ваша почта успешно обновлена',
+            '',
             [
               {
                 text: 'OK',
@@ -102,7 +107,7 @@ const ChangeEmail: FC = () => {
               {errorMessages.newEmail}
             </Text>
           )}
-          <Button onPress={handlerSubmitFullName} title="Сохранить" />
+          <Button onPress={handlerSubmitEmail} title="Сохранить" />
         </Padding>
       </Padding>
     </SafeAreaView>

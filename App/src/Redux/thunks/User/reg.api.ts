@@ -6,6 +6,7 @@ import { PORT, IP } from '@env';
 interface RequestData {
   birthDate?: Date | null | string;
   email?: string;
+  phoneNumber?: string;
   firstName?: string;
   lastName?: string;
   middleName?: string;
@@ -24,6 +25,8 @@ interface ResponseData {
 const userRegister = createAsyncThunk<ResponseData, RequestData>(
   'api/register',
   async (user,{ rejectWithValue }) => {
+    console.log('user',user);
+    
     try {
       const response: AxiosResponse = await axios.post(
         `http://${IP}:${PORT}/api/registration`,

@@ -18,12 +18,26 @@ class UserService {
     middleName,
     email,
     birthDate,
-    password
+    password,
+    phoneNumber
   ) {
-    const userReg = await DiscountCard.findOne({ where: { email } });
-    if (userReg) {
+    const userByEmail = await DiscountCard.findOne({ where: { email } });
+    if (userByEmail) {
       throw `Пользователь с такой электронной почтой ${email} уже существует`;
     }
+
+    const cleanedPhoneNumber = phoneNumber.replace(/\D/g, '');
+
+    // Удаление первой цифры "7" из номера телефона
+    const trimmedPhoneNumber = cleanedPhoneNumber.substring(1);
+
+    const userByPhoneNumber = await DiscountCard.findOne({
+      where: { phoneNumber: trimmedPhoneNumber },
+    });
+    if (userByPhoneNumber) {
+      throw `Пользователь с таким номером телефона ${phoneNumber} уже существует`;
+    }
+
     const hash = await bcrypt.hash(password, 10);
 
     const activationLink = uuid.v4();
@@ -35,6 +49,7 @@ class UserService {
       birthDate,
       password: hash,
       activationLink,
+      phoneNumber: trimmedPhoneNumber,
     });
     await MailService.sendActivationMail(
       email,

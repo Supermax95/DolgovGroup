@@ -19,9 +19,7 @@ interface IFullName {
 const ChangeFullName: FC = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<StackNavigationProp>();
-  const token = useAppSelector<string | undefined>(
-    (state) => state.userSlice.token?.refreshToken
-  );
+  const token = useAppSelector<string | undefined>((state) => state.userSlice.token?.refreshToken);
   const userId = useAppSelector<number>((state) => state.userSlice.user.id);
 
   const dateProfile = useAppSelector<{
@@ -42,6 +40,11 @@ const ChangeFullName: FC = () => {
     newMiddleName: '',
   });
 
+  const validateCyrillicName = (name: string): boolean => {
+    const cyrillicRegex = /^[А-Яа-яЁё]+$/;
+    return cyrillicRegex.test(name);
+  };
+
   const handleFieldChange = (field: keyof IFullName, value: string): void => {
     setData((prevData) => ({ ...prevData, [field]: value }));
     setErrorMessages((prevErrors) => ({ ...prevErrors, [field]: '' }));
@@ -53,6 +56,12 @@ const ChangeFullName: FC = () => {
         newLastName: !data.newLastName ? 'Введите свою фамилию' : '',
         newFirstName: !data.newFirstName ? 'Введите свое имя' : '',
         newMiddleName: !data.newMiddleName ? 'Введите своё отчество' : '',
+      });
+    } else if (!validateCyrillicName(data.newLastName) || !validateCyrillicName(data.newFirstName) || !validateCyrillicName(data.newMiddleName)) {
+      setErrorMessages({
+        newLastName: !validateCyrillicName(data.newLastName) ? 'Фамилия должна содержать только кириллические символы' : '',
+        newFirstName: !validateCyrillicName(data.newFirstName) ? 'Имя должно содержать только кириллические символы' : '',
+        newMiddleName: !validateCyrillicName(data.newMiddleName) ? 'Отчество должно содержать только кириллические символы' : '',
       });
     } else {
       try {
@@ -91,10 +100,7 @@ const ChangeFullName: FC = () => {
 
   return (
     <SafeAreaView className="bg-white h-full flex-1">
-      <UniversalHeader
-        onPress={() => navigation.goBack()}
-        title="Изменение профиля"
-      />
+      <UniversalHeader onPress={() => navigation.goBack()} title="Изменение профиля" />
 
       <Padding>
         <Padding>
@@ -105,9 +111,7 @@ const ChangeFullName: FC = () => {
             autoCapitalize="words"
           />
           {errorMessages.newLastName && (
-            <Text className="text-red-500 ml-1 mt-1 text-xs">
-              {errorMessages.newLastName}
-            </Text>
+            <Text className="text-red-500 ml-1 mt-1 text-xs">{errorMessages.newLastName}</Text>
           )}
           <FieldInput
             value={data.newFirstName}
@@ -116,9 +120,7 @@ const ChangeFullName: FC = () => {
             autoCapitalize="words"
           />
           {errorMessages.newFirstName && (
-            <Text className="text-red-500 ml-1 mt-1 text-xs">
-              {errorMessages.newFirstName}
-            </Text>
+            <Text className="text-red-500 ml-1 mt-1 text-xs">{errorMessages.newFirstName}</Text>
           )}
           <FieldInput
             value={data.newMiddleName}
@@ -127,9 +129,7 @@ const ChangeFullName: FC = () => {
             autoCapitalize="words"
           />
           {errorMessages.newMiddleName && (
-            <Text className="text-red-500 ml-1 mt-1 text-xs">
-              {errorMessages.newMiddleName}
-            </Text>
+            <Text className="text-red-500 ml-1 mt-1 text-xs">{errorMessages.newMiddleName}</Text>
           )}
           <Button onPress={handlerSubmitFullName} title="Сохранить" />
         </Padding>

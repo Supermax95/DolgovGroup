@@ -20,6 +20,9 @@ module.exports = {
       birthDate: {
         type: Sequelize.DATEONLY,
       },
+      phoneNumber: {
+        type: Sequelize.STRING,
+      },
       email: {
         type: Sequelize.STRING,
       },

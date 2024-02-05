@@ -23,11 +23,13 @@ const ChangePassword: FC = () => {
   const token = useAppSelector<string | undefined>(
     (state) => state.userSlice.token?.refreshToken
   );
+
   const [data, setData] = useState<PasswordChangeData>({
     oldPassword: '',
     newPassword: '',
     confirmPassword: '',
   });
+
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const [errorMessages, setErrorMessages] = useState<PasswordChangeData>({
@@ -36,6 +38,11 @@ const ChangePassword: FC = () => {
     confirmPassword: '',
   });
 
+  const validatePassword = (password: string): boolean => {
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z].*[a-z].*[a-z])(?=.*\d).{6,}$/;
+    return passwordRegex.test(password);
+  };
+  
   const toggleShowPassword = (): void => {
     setShowPassword(!showPassword);
   };
@@ -60,7 +67,12 @@ const ChangePassword: FC = () => {
     } else if (data.newPassword !== data.confirmPassword) {
       setErrorMessages((prevErrors) => ({
         ...prevErrors,
-        newPassword: 'Пароли не совпадают',
+        confirmPassword: 'Пароли не совпадают',
+      }));
+    } else if (!validatePassword(data.newPassword)) {
+      setErrorMessages((prevErrors) => ({
+        ...prevErrors,
+        newPassword: 'Пароль должен содержать минимум 6 символов, включая заглавные и строчные буквы, а также цифры.',
       }));
     } else {
       try {
@@ -75,8 +87,8 @@ const ChangePassword: FC = () => {
           Alert.alert('Ошибка', result.payload);
         } else if (result.meta.requestStatus === 'fulfilled') {
           Alert.alert(
-            'Пароль успешно изменен',
             'Ваш пароль был успешно изменен.',
+            '',
             [
               {
                 text: 'OK',
@@ -174,11 +186,6 @@ const ChangePassword: FC = () => {
               }}
             />
           </View>
-          {errorMessages.newPassword && (
-            <Text className="text-red-500 ml-1 mt-1 text-xs">
-              {errorMessages.newPassword}
-            </Text>
-          )}
           {errorMessages.confirmPassword && (
             <Text className="text-red-500 ml-1 mt-1 text-xs">
               {errorMessages.confirmPassword}

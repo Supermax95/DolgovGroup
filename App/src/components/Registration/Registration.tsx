@@ -8,9 +8,11 @@ import Button from 'ui/Button';
 import FieldInput from 'ui/FieldInput';
 import Calendar from '../Calendar/Calendar';
 import userRegister from 'Redux/thunks/User/reg.api';
+import { TextInputMask } from 'react-native-masked-text';
 
 interface IData {
   email?: string;
+  phoneNumber?: string;
   password?: string;
   firstName?: string;
   lastName?: string;
@@ -26,18 +28,21 @@ export const Registration: FC = () => {
   const [step, setStep] = useState<number>(1);
   const [data, setData] = useState<IData>({
     email: '',
+    phoneNumber: '',
     password: '',
     firstName: '',
     lastName: '',
     middleName: '',
     birthDate: null || '',
   });
+  console.log(data);
 
   const [passwordCheck, setPasswordCheck] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showPasswordRepeat, setShowPasswordRepeat] = useState<boolean>(false);
   const [errorMessages, setErrorMessages] = useState<IData>({
     email: '',
+    phoneNumber: '',
     password: '',
     firstName: '',
     lastName: '',
@@ -62,59 +67,110 @@ export const Registration: FC = () => {
     setErrorMessages((prevErrors) => ({ ...prevErrors, [field]: '' }));
   };
 
+  const validateEmail = (): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(data.email || '');
+  };
+
+  const validatePhoneNumber = (): boolean => {
+    const phoneRegex = /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/;
+    return phoneRegex.test(data.phoneNumber || '');
+  };
+
+  const validatePassword = (): boolean => {
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z].*[a-z].*[a-z])(?=.*\d).{6,}$/;
+    return passwordRegex.test(data.password || '');
+  };
+
+  const validateCyrillicName = (name: string): boolean => {
+    const cyrillicRegex = /^[А-Яа-яЁё]+$/;
+    return cyrillicRegex.test(name);
+  };
+
   const handleSubmit = async (): Promise<void> => {
     if (step === 2) {
-      if (!data.email || !data.password || !passwordCheck) {
+      if (
+        !validateEmail() ||
+        !validatePhoneNumber() ||
+        !validatePassword() ||
+        data.password !== passwordCheck
+      ) {
         setErrorMessages({
-          ...errorMessages,
-          email: !data.email ? 'Заполните email' : '',
-          password: !data.password ? 'Заполните пароль' : '',
-          passwordCheck: !passwordCheck ? 'Подтвердите пароль' : '',
+          email: !validateEmail() ? 'Введите корректный email' : '',
+          phoneNumber: !validatePhoneNumber()
+            ? 'Введите корректный телефон'
+            : '',
+          password: !validatePassword()
+            ? 'Пароль должен содержать минимум 6 символов, включая заглавные и строчные буквы, а также цифры.'
+            : '',
+          passwordCheck:
+            data.password !== passwordCheck ? 'Пароли не совпадают' : '',
         });
-        return;
-      } else if (data.password !== passwordCheck) {
-        setErrorMessages({ ...errorMessages, password: 'Пароли не совпадают' });
         return;
       } else {
         setErrorMessages({});
       }
     }
-
-    try {
-      setIsLoading(true);
-      const result = await dispatch(userRegister(data));
-      if (result.meta.requestStatus === 'rejected') {
-        setTimeout(() => {
-          setIsLoading(false);
-          Alert.alert('Ошибка', result.payload);
-        }, 2000);
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 2000);
-      } else if (result.meta.requestStatus === 'fulfilled') {
-        setTimeout(() => {
-          setIsLoading(false);
-          navigation.navigate('CheckMail');
-        }, 2000);
-      }
-    } catch (error) {
-      console.error('Произошла ошибка при отправке запроса:', error);
-    }
+    console.log('я перед алертом'); // Добавлено для отладки
+    Alert.alert(
+      'Подтверждение',
+      'Вы уверены, что ввели свои данные корректно?',
+      [
+        {
+          text: 'Нет',
+          style: 'cancel',
+        },
+        {
+          text: 'Да',
+          onPress: async () => {
+            try {
+              setIsLoading(true);
+              const result = await dispatch(userRegister(data));
+              if (result.meta.requestStatus === 'rejected') {
+                setTimeout(() => {
+                  setIsLoading(false);
+                  Alert.alert('Ошибка', result.payload);
+                }, 2000);
+                setTimeout(() => {
+                  setIsLoading(false);
+                }, 2000);
+              } else if (result.meta.requestStatus === 'fulfilled') {
+                setTimeout(() => {
+                  setIsLoading(false);
+                  navigation.navigate('CheckMail');
+                }, 2000);
+              }
+            } catch (error) {
+              setIsLoading(false);
+              console.error('Произошла ошибка при отправке запроса:', error);
+            }
+          },
+        },
+      ]
+    );
+    console.log('я после алерта'); // Добавлено для отладки
   };
+  
+
 
   const handleNextStep = (): void => {
     if (step === 1) {
       if (
-        !data.firstName ||
-        !data.lastName ||
-        !data.middleName ||
+        !validateCyrillicName(data.firstName) ||
+        !validateCyrillicName(data.lastName) ||
+        !validateCyrillicName(data.middleName) ||
         !data.birthDate
       ) {
         setErrorMessages({
-          ...errorMessages,
-          firstName: !data.firstName ? 'Заполните имя' : '',
-          lastName: !data.lastName ? 'Заполните фамилию' : '',
-          middleName: !data.middleName ? 'Заполните отчество' : '',
+          firstName: !validateCyrillicName(data.firstName)
+            ? 'Имя должно содержать только кириллические символы'
+            : '',
+          lastName: !validateCyrillicName(data.lastName)
+            ? 'Фамилия должна содержать только кириллические символы'
+            : '',
+          middleName: !validateCyrillicName(data.middleName)
+            ? 'Отчество должно содержать только кириллические символы'
+            : '',
           birthDate: !data.birthDate ? 'Введите дату рождения' : '',
         });
       } else {
@@ -122,15 +178,23 @@ export const Registration: FC = () => {
         setStep(step + 1);
       }
     } else if (step === 2) {
-      if (!data.email || !data.password || !passwordCheck) {
+      if (
+        !validateEmail() ||
+        !validatePhoneNumber() ||
+        !validatePassword() ||
+        data.password !== passwordCheck
+      ) {
         setErrorMessages({
-          ...errorMessages,
-          email: !data.email ? 'Заполните email' : '',
-          password: !data.password ? 'Заполните пароль' : '',
-          passwordCheck: !passwordCheck ? 'Подтвердите пароль' : '',
+          email: !validateEmail() ? 'Введите корректный email' : '',
+          phoneNumber: !validatePhoneNumber()
+            ? 'Введите корректный телефон'
+            : '',
+          password: !validatePassword()
+            ? 'Пароль должен содержать цифры, строчные и заглавные буквы, не менее 8 символов'
+            : '',
+          passwordCheck:
+            data.password !== passwordCheck ? 'Пароли не совпадают' : '',
         });
-      } else if (data.password !== passwordCheck) {
-        setErrorMessages({ ...errorMessages, password: 'Пароли не совпадают' });
       } else {
         setErrorMessages({});
       }
@@ -154,7 +218,7 @@ export const Registration: FC = () => {
               {step === 1 && (
                 <>
                   <Text className="text-center text-gray-800 text-2xl font-bold mb-2">
-                    Заполните поля
+                    Первый шаг регистрации
                   </Text>
                   <FieldInput
                     value={data.lastName}
@@ -208,7 +272,7 @@ export const Registration: FC = () => {
               {step === 2 && (
                 <>
                   <Text className="text-center text-gray-800 text-2xl font-bold mb-2">
-                    Заполните еще раз поля
+                    Осталось еще чуть-чуть
                   </Text>
                   <FieldInput
                     value={data.email}
@@ -222,6 +286,27 @@ export const Registration: FC = () => {
                       {errorMessages.email}
                     </Text>
                   )}
+                  <View className="flex-row items-center">
+                    <TextInputMask
+                      className="rounded-xl bg-gray-100 mt-3 p-3 w-full"
+                      type={'custom'}
+                      options={{
+                        mask: '+7 (999) 999-99-99',
+                      }}
+                      value={data.phoneNumber}
+                      onChangeText={(text) =>
+                        handleFieldChange('phoneNumber', text)
+                      }
+                      placeholder="+7 (___) ___-__-__"
+                      keyboardType="number-pad"
+                    />
+                  </View>
+                  {errorMessages.phoneNumber && (
+                    <Text className="text-red-500 ml-1 mt-1 text-xs">
+                      {errorMessages.phoneNumber}
+                    </Text>
+                  )}
+
                   <View className="flex-row items-center">
                     <FieldInput
                       value={data.password}
@@ -278,9 +363,14 @@ export const Registration: FC = () => {
                       {errorMessages.password}
                     </Text>
                   )}
+                  {errorMessages.passwordCheck && (
+                    <Text className="text-red-500 ml-1 mt-1 text-xs">
+                      {errorMessages.passwordCheck}
+                    </Text>
+                  )}
                   <View className="mt-2">
                     <Text className=" text-gray-800 ml-1 text-xs font-normal">
-                      Регестрируясь вы соглашаетесь продать душу дьяволу
+                      Регистрируясь вы соглашаетесь продать душу дьяволу
                     </Text>
                   </View>
                   <Button

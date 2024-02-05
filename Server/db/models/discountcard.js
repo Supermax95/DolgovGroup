@@ -13,6 +13,7 @@ module.exports = (sequelize) => {
       firstName: DataTypes.STRING,
       middleName: DataTypes.STRING,
       birthDate: DataTypes.DATEONLY,
+      phoneNumber: DataTypes.STRING,
       email: DataTypes.STRING,
       password: DataTypes.STRING,
       photo: DataTypes.STRING,
@@ -23,8 +24,8 @@ module.exports = (sequelize) => {
       userStatus: DataTypes.STRING,
       isActivated: DataTypes.BOOLEAN,
       activationLink: DataTypes.STRING,
-      notificationPush:DataTypes.BOOLEAN,
-      notificationEmail:DataTypes.BOOLEAN,
+      notificationPush: DataTypes.BOOLEAN,
+      notificationEmail: DataTypes.BOOLEAN,
     },
     {
       sequelize,
@@ -34,6 +35,7 @@ module.exports = (sequelize) => {
           discountCard.lastName = discountCard.lastName?.trim();
           discountCard.firstName = discountCard.firstName?.trim();
           discountCard.middleName = discountCard.middleName?.trim();
+          discountCard.phoneNumber = discountCard.phoneNumber?.trim();
           discountCard.email = discountCard.email?.trim();
           discountCard.password = discountCard.password?.trim();
           discountCard.cardType = discountCard.cardType?.trim();
@@ -46,6 +48,7 @@ module.exports = (sequelize) => {
           discountCard.lastName = discountCard.lastName?.trim();
           discountCard.firstName = discountCard.firstName?.trim();
           discountCard.middleName = discountCard.middleName?.trim();
+          discountCard.phoneNumber = discountCard.phoneNumber?.trim();
           discountCard.email = discountCard.email?.trim();
           discountCard.password = discountCard.password?.trim();
           discountCard.cardType = discountCard.cardType?.trim();
