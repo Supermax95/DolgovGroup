@@ -109,7 +109,7 @@ class UserService {
         return (
           // user.lastName === dataUser.lastName &&
           // user.firstName === dataUser.firstName &&
-          user.phoneNumber === dataUser.cardInfo[0].phoneNumber
+          user.phoneNumber === dataUser.cardInfo[0].phoneNumber.substring(1)
         );
       });
       
