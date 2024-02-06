@@ -11,10 +11,12 @@ import {
   Platform,
   Animated,
   PanResponder,
+  StyleSheet,
+  Image,
+  Dimensions,
 } from 'react-native';
 import { StackNavigationProp } from 'navigation/types';
-import Padding from 'ui/Padding';
-import UniversalHeader from 'ui/UniversalHeader';
+
 import checkEmployee from 'Redux/thunks/Support/checkEmployee.api';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Button from 'ui/Button';
@@ -50,9 +52,11 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
         'Ошибка',
         'Произошла ошибка при отправке запроса, попробуйте повторить позже'
       );
+      setModalVisible(false);
     } else {
-      Alert.alert('Ваше обращение успешно отправлено, ожидайте подтверждения ');
-      navigation.navigate('Support');
+      Alert.alert('Ваше обращение успешно отправлено. Ожидайте подтверждения.');
+      // navigation.navigate('Support');
+      setModalVisible(false);
     }
   };
 
@@ -85,74 +89,148 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
       }
     },
   });
+  const screenWidth = Math.round(Dimensions.get('window').width);
+
+  const cardWidth = screenWidth / 2 - 20;
 
   return (
-    <Modal
-      visible={visible}
-      animationType="slide"
-      transparent={true}
-      onRequestClose={() => {
-        setModalVisible(false);
-      }}
-    >
-      <Animated.View
-        {...panResponder.panHandlers}
-        style={{
-          flex: 1,
-          backgroundColor: 'rgba(0,0,0,0.0)',
-          transform: [{ translateY: modalOffset }],
+    <>
+      {visible && (
+        <View
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.5)', // Черный цвет с прозрачностью 50%
+          }}
+        />
+      )}
+
+      <Modal
+        visible={visible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => {
+          setModalVisible(false);
         }}
       >
-        <View className="absolute h-[35%] bottom-0 left-0 right-0">
-          <View
-            style={{
-              backgroundColor: 'white',
-              borderTopLeftRadius: 20,
-              borderTopRightRadius: 20,
-              padding: 20,
-              width: '100%',
-              height: '100%',
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 0,
-                height: -2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.84,
-              elevation: 5,
-            }}
-          >
-            <Pressable
-              onPress={() => {
-                setModalVisible(false);
+        <Animated.View
+          {...panResponder.panHandlers}
+          style={{
+            flex: 1,
+            backgroundColor: 'rgba(0,0,0,0.0)',
+            transform: [{ translateY: modalOffset }],
+          }}
+        >
+          <View className="flex-1 justify-end items-center">
+            <View
+              className="h-[35%] w-full m-0 p-8 rounded-t-2xl bg-white"
+              style={{
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 4,
+                elevation: 21,
               }}
             >
-              <MaterialCommunityIcons
-                name="close"
-                size={Platform.OS === 'android' ? 20 : 23}
-                color="#71716F"
-              />
-            </Pressable>
+              {/* кнопка закрытия */}
+              <Pressable
+                onPress={() => {
+                  setModalVisible(false);
+                }}
+                className="absolute left-5 top-5"
+              >
+                <MaterialCommunityIcons
+                  name="close"
+                  size={Platform.OS === 'android' ? 20 : 23}
+                  color="#71716F"
+                />
+              </Pressable>
 
-            <View className="w-full justify-center items-center">
               {userStatus === 'Новый сотрудник' ? (
-                <Text>Ваш запрос еще обрабатывается</Text>
-              ) : userStatus === 'Сотрудник' ? (
-                <View className="flex-row justify-center items-center mt-4">
-                  <Text className="text-lg font-normal text-zinc-500">
-                    Вы являетесь сотрудником компании
-                  </Text>
-                </View>
-              ) : (
-                <View className="w-full space-y-4">
-                  <View className="flex-row justify-center items-center mt-4">
-                    <Text className="text-md font-normal text-zinc-500">
-                      Если вы являетесь сотрудником компании, для изменения
-                      своего статуса в личном кабинете и получения необходимого
-                      доступа, пожалуйста, воспользуйтесь кнопкой "Запросить
-                      проверку".
+                <View
+                  className={`justify-center items-center ${
+                    Platform.OS === 'android' ? 'py-0' : 'py-2'
+                  }`}
+                >
+                  <View className="items-center my-4">
+                    <Text
+                      className={`text-zinc-700 font-medium  ${
+                        Platform.OS === 'android' ? 'text-md' : 'text-na'
+                      }
+                        `}
+                    >
+                      Запрос на подтверждение обрабатывается
                     </Text>
                   </View>
+
+                  {/* картинка */}
+                  <View
+                    style={{ width: cardWidth }}
+                    className="justify-center items-center"
+                  >
+                    <Image
+                      source={{
+                        uri: 'https://dolgovagro.ru/bitrix/templates/dolgov/images/cow.png',
+                      }}
+                      resizeMode="contain"
+                      className="h-32 w-36 mt-6"
+                    />
+                  </View>
+                </View>
+              ) : userStatus === 'Сотрудник' ? (
+                <View
+                  className={`justify-center items-center ${
+                    Platform.OS === 'android' ? 'py-0' : 'py-2'
+                  }`}
+                >
+                  <View className="items-center my-4">
+                    <Text
+                      className={`text-zinc-700 font-medium  ${
+                        Platform.OS === 'android' ? 'text-md' : 'text-na'
+                      }
+                        `}
+                    >
+                      Профиль успешно прошёл проверку.
+                    </Text>
+                  </View>
+
+                  {/* картинка */}
+                  <View
+                    style={{ width: cardWidth }}
+                    className="justify-center items-center"
+                  >
+                    <Image
+                      source={{
+                        uri: 'https://dolgovagro.ru/bitrix/templates/dolgov/images/cow.png',
+                      }}
+                      resizeMode="contain"
+                      className="h-32 w-36 mt-6"
+                    />
+                  </View>
+                </View>
+              ) : (
+                <View
+                  className={`${Platform.OS === 'android' ? 'py-0' : 'py-2'}`}
+                >
+                  <View className="items-center my-4">
+                    <Text
+                      className={`text-zinc-700 font-medium  ${
+                        Platform.OS === 'android' ? 'text-md' : 'text-md'
+                      }
+                        `}
+                    >
+                      Если вы являетесь сотрудником компании, для изменения
+                      своего статуса в личном кабинете и получения необходимого
+                      доступа, воспользуйтесь функцией запроса проверки
+                    </Text>
+                  </View>
+
                   <View>
                     <Button title="Запросить проверку" onPress={handleSubmit} />
                   </View>
@@ -160,9 +238,9 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
               )}
             </View>
           </View>
-        </View>
-      </Animated.View>
-    </Modal>
+        </Animated.View>
+      </Modal>
+    </>
   );
 };
 
