@@ -2,27 +2,10 @@ import React, { FC, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { StackNavigationProp } from 'navigation/types';
-import {
-  View,
-  Text,
-  Pressable,
-  ActivityIndicator,
-  Image,
-  SafeAreaView,
-  ScrollView,
-  Animated,
-  Modal,
-  Switch,
-  Platform,
-  PanResponder,
-} from 'react-native';
-
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import Slider from '@react-native-community/slider';
+import { View, Text, SafeAreaView, ScrollView } from 'react-native';
 import ProductCard from 'ui/ProductCard';
 import { PORT, IP } from '@env';
 import UniversalHeader from 'ui/UniversalHeader';
-import FilterProduct from 'ui/FilterProduct';
 import FilterModal from 'ui/FilterModal';
 import SearchAndFilter from 'ui/SearchAndFilter';
 
@@ -43,7 +26,7 @@ export interface IProduct {
   invisible: boolean;
 }
 
-const ProductsCards = ({ route }: any) => {
+const ProductsCards: FC = ({ route }: any) => {
   const { subcategoryIdArray, subcategoryId, subcategoryName, categoryName } =
     route.params;
 
@@ -144,21 +127,6 @@ const ProductsCards = ({ route }: any) => {
         onPressFilter={() => setFilterModalVisible(true)}
       />
 
-      {/* модальное окно фильтра */}
-      <FilterModal
-        isVisible={isFilterModalVisible}
-        onClose={setFilterModalVisible}
-        onApply={applyFilters}
-        showNew={showNew}
-        setShowNew={setShowNew}
-        showDiscounted={showDiscounted}
-        setShowDiscounted={setShowDiscounted}
-        minPrice={minPrice}
-        maxPrice={maxPrice}
-        setMaxPrice={setMaxPrice}
-        maxProductOriginalPrice={maxProductOriginalPrice}
-      />
-
       {/* Scrollable container start */}
       <ScrollView style={{ flex: 1, width: '100%' }}>
         <View className="flex-row flex-wrap justify-center">
@@ -189,6 +157,21 @@ const ProductsCards = ({ route }: any) => {
           )}
         </View>
       </ScrollView>
+
+      {/* модальное окно фильтра */}
+      <FilterModal
+        isVisible={isFilterModalVisible}
+        onClose={setFilterModalVisible}
+        onApply={applyFilters}
+        showNew={showNew}
+        setShowNew={setShowNew}
+        showDiscounted={showDiscounted}
+        setShowDiscounted={setShowDiscounted}
+        minPrice={minPrice}
+        maxPrice={maxPrice}
+        setMaxPrice={setMaxPrice}
+        maxProductOriginalPrice={maxProductOriginalPrice}
+      />
     </SafeAreaView>
   );
 };

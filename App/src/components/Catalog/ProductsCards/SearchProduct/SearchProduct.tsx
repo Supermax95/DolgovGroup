@@ -12,10 +12,8 @@ import {
   PanResponder,
   Platform,
 } from 'react-native';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useAppSelector } from 'Redux/hooks';
 import { PORT, IP } from '@env';
-import Slider from '@react-native-community/slider';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from 'navigation/types';
 import UniversalHeader from 'ui/UniversalHeader';
@@ -126,21 +124,6 @@ const SearchProduct = () => {
         onPressFilter={() => setFilterModalVisible(true)}
       />
 
-      {/* модальное окно фильтра */}
-      <FilterModal
-        isVisible={isFilterModalVisible}
-        onClose={setFilterModalVisible}
-        onApply={applyFilters}
-        showNew={showNew}
-        setShowNew={setShowNew}
-        showDiscounted={showDiscounted}
-        setShowDiscounted={setShowDiscounted}
-        minPrice={minPrice}
-        maxPrice={maxPrice}
-        setMaxPrice={setMaxPrice}
-        maxProductOriginalPrice={maxProductOriginalPrice}
-      />
-
       <ScrollView style={{ flex: 1, width: '100%' }}>
         <View className="flex-row flex-wrap justify-center">
           {displayedProducts.length ? (
@@ -168,6 +151,21 @@ const SearchProduct = () => {
           )}
         </View>
       </ScrollView>
+
+      {/* модальное окно фильтра */}
+      <FilterModal
+        isVisible={isFilterModalVisible}
+        onClose={setFilterModalVisible}
+        onApply={applyFilters}
+        showNew={showNew}
+        setShowNew={setShowNew}
+        showDiscounted={showDiscounted}
+        setShowDiscounted={setShowDiscounted}
+        minPrice={minPrice}
+        maxPrice={maxPrice}
+        setMaxPrice={setMaxPrice}
+        maxProductOriginalPrice={maxProductOriginalPrice}
+      />
     </SafeAreaView>
   );
 };

@@ -73,129 +73,143 @@ const FilterModal: FC<FilterModalProps> = ({
   });
 
   return (
-    <Modal
-      visible={isVisible}
-      animationType="slide"
-      transparent={true}
-      onRequestClose={() => {
-        onApply();
-        onClose(false);
-      }}
-    >
-      <Animated.View
-        {...panResponder.panHandlers}
-        style={{
-          flex: 1,
-          backgroundColor: 'rgba(0,0,0,0.0)',
-          transform: [{ translateY: modalOffset }],
+    <>
+      {/*     затемнение компонента при появлении модалки   */}
+      {isVisible && (
+        <View
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.5)', // Черный цвет с прозрачностью 50%
+          }}
+        />
+      )}
+
+      {/* модальное окно и его содержимое */}
+      <Modal
+        visible={isVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => {
+          onApply();
+          onClose(false);
         }}
       >
-        <View className="absolute h-[40%] bottom-0 left-0 right-0">
-          <View
-            style={{
-              backgroundColor: 'white',
-              borderTopLeftRadius: 20,
-              borderTopRightRadius: 20,
-              padding: 20,
-              width: '100%',
-              height: '100%',
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 0,
-                height: -2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.84,
-              elevation: 5,
-            }}
-          >
-            <Pressable
-              onPress={() => {
-                onApply();
-                onClose(false);
+        <Animated.View
+          {...panResponder.panHandlers}
+          style={{
+            flex: 1,
+            backgroundColor: 'rgba(0,0,0,0.0)',
+            transform: [{ translateY: modalOffset }],
+          }}
+        >
+          <View className="flex-1 justify-end items-center">
+            <View
+              className="h-[40%] w-full m-0 p-6 rounded-t-2xl bg-white"
+              style={{
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 4,
+                elevation: 21,
               }}
             >
-              <MaterialCommunityIcons
-                name="close"
-                size={Platform.OS === 'android' ? 20 : 23}
-                color="#71716F"
-              />
-            </Pressable>
-            <View
-              className={`flex-row border-b-[1px] border-zinc-200 items-center justify-between
-          ${Platform.OS === 'android' ? 'py-0' : 'py-2'}`}
-            >
-              <Text
-                className={`text-zinc-700 font-medium ${
-                  Platform.OS === 'android' ? 'text-base' : 'text-md'
-                }`}
+              <Pressable
+                onPress={() => {
+                  onApply();
+                  onClose(false);
+                }}
+                className="absolute left-5 top-5"
               >
-                Новые продукты
-              </Text>
-              <Switch
-                trackColor={{ false: '#d6d3d1', true: '#a7f3d0' }}
-                thumbColor={showNew ? '#22c55e' : '#f5f5f4'}
-                ios_backgroundColor="#d6d3d1"
-                onValueChange={() => setShowNew(!showNew)}
-                value={showNew}
-              />
-            </View>
-            <View
-              className={`flex-row border-b-[1px] border-zinc-200 items-center justify-between
-          ${Platform.OS === 'android' ? 'py-0' : 'py-2'}`}
-            >
-              <Text
-                className={`text-zinc-700 font-medium ${
-                  Platform.OS === 'android' ? 'text-base' : 'text-md'
-                }`}
-              >
-                Только со скидками
-              </Text>
-              <Switch
-                trackColor={{ false: '#d6d3d1', true: '#a7f3d0' }}
-                thumbColor={showDiscounted ? '#22c55e' : '#f5f5f4'}
-                ios_backgroundColor="#d6d3d1"
-                onValueChange={() => setShowDiscounted(!showDiscounted)}
-                value={showDiscounted}
-              />
-            </View>
+                <MaterialCommunityIcons
+                  name="close"
+                  size={Platform.OS === 'android' ? 20 : 23}
+                  color="#71716F"
+                />
+              </Pressable>
 
-            <View
-              className={`flex-col  justify-between
-          ${Platform.OS === 'android' ? 'py-0' : 'py-2'}`}
-            >
-              <View className="flex-row justify-between items-center my-4">
+              <View
+                className={`flex-row border-b-[1px] border-zinc-200 items-center justify-between mt-4
+          ${Platform.OS === 'android' ? 'py-0' : 'py-4'}`}
+              >
                 <Text
                   className={`text-zinc-700 font-medium ${
                     Platform.OS === 'android' ? 'text-base' : 'text-md'
                   }`}
                 >
-                  Цена:
+                  Новые продукты
                 </Text>
-
+                <Switch
+                  trackColor={{ false: '#d6d3d1', true: '#a7f3d0' }}
+                  thumbColor={showNew ? '#22c55e' : '#f5f5f4'}
+                  ios_backgroundColor="#d6d3d1"
+                  onValueChange={() => setShowNew(!showNew)}
+                  value={showNew}
+                />
+              </View>
+              <View
+                className={`flex-row border-b-[1px] border-zinc-200 items-center justify-between
+          ${Platform.OS === 'android' ? 'py-0' : 'py-2'}`}
+              >
                 <Text
                   className={`text-zinc-700 font-medium ${
                     Platform.OS === 'android' ? 'text-base' : 'text-md'
                   }`}
                 >
-                  {minPrice}&#8381; - {maxPrice}&#8381;
+                  Только со скидками
                 </Text>
+                <Switch
+                  trackColor={{ false: '#d6d3d1', true: '#a7f3d0' }}
+                  thumbColor={showDiscounted ? '#22c55e' : '#f5f5f4'}
+                  ios_backgroundColor="#d6d3d1"
+                  onValueChange={() => setShowDiscounted(!showDiscounted)}
+                  value={showDiscounted}
+                />
               </View>
 
-              <Slider
-                style={{ width: '100%', height: 40 }}
-                minimumValue={0}
-                maximumValue={maxProductOriginalPrice}
-                step={10}
-                value={maxPrice}
-                minimumTrackTintColor="#a7f3d0"
-                onValueChange={(value) => setMaxPrice(value)}
-              />
+              <View
+                className={`flex-col  justify-between
+          ${Platform.OS === 'android' ? 'py-0' : 'py-2'}`}
+              >
+                <View className="flex-row justify-between items-center my-4">
+                  <Text
+                    className={`text-zinc-700 font-medium ${
+                      Platform.OS === 'android' ? 'text-base' : 'text-md'
+                    }`}
+                  >
+                    Цена:
+                  </Text>
+
+                  <Text
+                    className={`text-zinc-700 font-medium ${
+                      Platform.OS === 'android' ? 'text-base' : 'text-md'
+                    }`}
+                  >
+                    {minPrice}&#8381; - {maxPrice}&#8381;
+                  </Text>
+                </View>
+
+                <Slider
+                  style={{ width: '100%', height: 40 }}
+                  minimumValue={0}
+                  maximumValue={maxProductOriginalPrice}
+                  step={10}
+                  value={maxPrice}
+                  minimumTrackTintColor="#a7f3d0"
+                  onValueChange={(value) => setMaxPrice(value)}
+                />
+              </View>
             </View>
           </View>
-        </View>
-      </Animated.View>
-    </Modal>
+        </Animated.View>
+      </Modal>
+    </>
   );
 };
 
