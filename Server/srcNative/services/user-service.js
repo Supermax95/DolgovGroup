@@ -10,6 +10,8 @@ const UserDto = require('../dtos/user-dto');
 const { DiscountCard } = require('../../db/models');
 const ApiError = require('../middlewares/error-middleware');
 const tokenService = require('./token-service');
+const path = require('path');
+const fs = require('fs').promises;
 
 class UserService {
   async registration(
@@ -61,14 +63,83 @@ class UserService {
     };
   }
 
+  // async activate(activationLink) {
+  //   const user = await DiscountCard.findOne({ where: { activationLink } });
+  //   console.log('activate user'user)
+  //   if (!user) {
+  //     throw 'Некорректная ссылка активации';
+  //   }
+  //   else 
+  //   user.isActivated = true;
+  //   await user.save();
+  // }
+
+
   async activate(activationLink) {
-    const user = await DiscountCard.findOne({ where: { activationLink } });
-    if (!user) {
-      throw 'Некорректная ссылка активации';
+    try {
+      const user = await DiscountCard.findOne({ where: { activationLink } });
+  
+      if (!user) {
+        throw 'Некорректная ссылка активации';
+      }
+  
+      const userDataFile = path.join(__dirname, '../../userCards/data.json');
+      console.log('======>', userDataFile);
+      const userData = JSON.parse(await fs.readFile(userDataFile, 'utf8'));
+  
+      async function generateUniqueBarcode() {
+        const minBarcode = 3200000000001;
+        const maxBarcode = 3200000999999;
+        const newBarcode = Math.floor(Math.random() * (maxBarcode - minBarcode + 1)) + minBarcode;
+        return newBarcode.toString();
+      }
+  
+      async function barcodeExists(barcode, users) {
+        return users.some(user => user.cardInfo[0].barcode === barcode);
+      }
+  
+      async function isBarcodeInDatabase(barcode) {
+        const userWithBarcode = await DiscountCard.findOne({ where: { barcode } });
+        return userWithBarcode !== null;
+      }
+  
+      console.time('activate'); // Начало таймера
+
+      const matchingUser = userData.find(dataUser => {
+        return (
+          // user.lastName === dataUser.lastName &&
+          // user.firstName === dataUser.firstName &&
+          user.phoneNumber === dataUser.cardInfo[0].phoneNumber
+        );
+      });
+      
+      console.timeEnd('activate');
+      console.log('======>', matchingUser);
+      
+  
+      if (matchingUser) {
+        // Преобразовываем в строки перед сравнением
+        if (user.barcode.toString() !== matchingUser.cardInfo[0].barcode.toString()) {
+          user.barcode = matchingUser.cardInfo[0].barcode.toString();
+        }
+      } else {
+        let uniqueBarcode;
+        do {
+          uniqueBarcode = await generateUniqueBarcode();
+        } while (await barcodeExists(uniqueBarcode, userData) || await isBarcodeInDatabase(uniqueBarcode));
+  
+        user.barcode = uniqueBarcode;
+      }
+  
+      user.isActivated = true;
+      await user.save();
+    } catch (error) {
+      console.error(`Ошибка активации: ${error}`);
+      throw 'Произошла ошибка при активации пользователя';
     }
-    user.isActivated = true;
-    await user.save();
   }
+  
+  
 
   async login(email, password) {
     const user = await DiscountCard.findOne({ where: { email } });
