@@ -31,7 +31,6 @@ const Home: FC = () => {
   const barcode = useAppSelector<string | undefined>(
     (state) => state.userSlice.user.barcode
   );
-  console.log('========>',barcode);
   
   function formatPoints(numberPoints: number) {
     if (numberPoints === 0) {
@@ -87,7 +86,7 @@ const Home: FC = () => {
             {numberPoints}
           </Text>
               <Svg>
-                <Barcode value={barcode} format="EAN13" />
+                <Barcode value={barcode} format="CODE39" />
               </Svg>
             </View>
           </View>

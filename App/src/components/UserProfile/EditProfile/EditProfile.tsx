@@ -66,7 +66,7 @@ const EditProfile: FC = () => {
           onPress={() => navigation.navigate('ChangePhoneNumber')}
           title="Телефонный номер"
         >
-          `{formattedPhoneNumber}`
+          {formattedPhoneNumber}
         </FieldEditProfile>
       </Padding>
     </SafeAreaView>
