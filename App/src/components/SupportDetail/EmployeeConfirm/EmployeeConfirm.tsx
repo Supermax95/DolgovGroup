@@ -12,6 +12,8 @@ import {
   Animated,
   PanResponder,
   StyleSheet,
+  Image,
+  Dimensions,
 } from 'react-native';
 import { StackNavigationProp } from 'navigation/types';
 
@@ -50,9 +52,11 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
         'Ошибка',
         'Произошла ошибка при отправке запроса, попробуйте повторить позже'
       );
+      setModalVisible(false);
     } else {
-      Alert.alert('Ваше обращение успешно отправлено, ожидайте подтверждения ');
-      navigation.navigate('Support');
+      Alert.alert('Ваше обращение успешно отправлено. Ожидайте подтверждения.');
+      // navigation.navigate('Support');
+      setModalVisible(false);
     }
   };
 
@@ -85,6 +89,9 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
       }
     },
   });
+  const screenWidth = Math.round(Dimensions.get('window').width);
+
+  const cardWidth = screenWidth / 2 - 20;
 
   return (
     <>
@@ -131,6 +138,7 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
                 elevation: 21,
               }}
             >
+              {/* кнопка закрытия */}
               <Pressable
                 onPress={() => {
                   setModalVisible(false);
@@ -144,42 +152,90 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
                 />
               </Pressable>
 
-              <View className="w-full justify-center items-center">
-                {userStatus === 'Новый сотрудник' ? (
-                  <Text>Ваш запрос еще обрабатывается</Text>
-                ) : userStatus === 'Сотрудник' ? (
-                  <View className="flex-row justify-center items-center mt-4">
-                    <Text className="text-lg font-normal text-zinc-500">
-                      Вы являетесь сотрудником компании
+              {userStatus === 'Новый сотрудник' ? (
+                <View
+                  className={`justify-center items-center ${
+                    Platform.OS === 'android' ? 'py-0' : 'py-2'
+                  }`}
+                >
+                  <View className="items-center my-4">
+                    <Text
+                      className={`text-zinc-700 font-medium  ${
+                        Platform.OS === 'android' ? 'text-md' : 'text-na'
+                      }
+                        `}
+                    >
+                      Запрос на подтверждение обрабатывается
                     </Text>
                   </View>
-                ) : (
-                  <>
-                    <View
-                      className={`${
-                        Platform.OS === 'android' ? 'py-0' : 'py-2'
-                      }`}
-                    >
-                      <View className="items-center my-4">
-                        <Text
-                          className={`text-zinc-700 font-medium  ${
-                            Platform.OS === 'android' ? 'text-md' : 'text-md'
-                          }
-                        `}
-                        >
-                          Если вы являетесь сотрудником компании, для изменения
-                          своего статуса в личном кабинете и получения
-                          необходимого доступа воспользуйтесь функцией запроса
-                          проверки.
-                        </Text>
-                      </View>
 
-                      <View></View>
-                    </View>
+                  {/* картинка */}
+                  <View
+                    style={{ width: cardWidth }}
+                    className="justify-center items-center"
+                  >
+                    <Image
+                      source={{
+                        uri: 'https://dolgovagro.ru/bitrix/templates/dolgov/images/cow.png',
+                      }}
+                      resizeMode="contain"
+                      className="h-32 w-36 mt-6"
+                    />
+                  </View>
+                </View>
+              ) : userStatus === 'Сотрудник' ? (
+                <View
+                  className={`justify-center items-center ${
+                    Platform.OS === 'android' ? 'py-0' : 'py-2'
+                  }`}
+                >
+                  <View className="items-center my-4">
+                    <Text
+                      className={`text-zinc-700 font-medium  ${
+                        Platform.OS === 'android' ? 'text-md' : 'text-na'
+                      }
+                        `}
+                    >
+                      Профиль успешно прошёл проверку.
+                    </Text>
+                  </View>
+
+                  {/* картинка */}
+                  <View
+                    style={{ width: cardWidth }}
+                    className="justify-center items-center"
+                  >
+                    <Image
+                      source={{
+                        uri: 'https://dolgovagro.ru/bitrix/templates/dolgov/images/cow.png',
+                      }}
+                      resizeMode="contain"
+                      className="h-32 w-36 mt-6"
+                    />
+                  </View>
+                </View>
+              ) : (
+                <View
+                  className={`${Platform.OS === 'android' ? 'py-0' : 'py-2'}`}
+                >
+                  <View className="items-center my-4">
+                    <Text
+                      className={`text-zinc-700 font-medium  ${
+                        Platform.OS === 'android' ? 'text-md' : 'text-md'
+                      }
+                        `}
+                    >
+                      Если вы являетесь сотрудником компании, для изменения
+                      своего статуса в личном кабинете и получения необходимого
+                      доступа, воспользуйтесь функцией запроса проверки
+                    </Text>
+                  </View>
+
+                  <View>
                     <Button title="Запросить проверку" onPress={handleSubmit} />
-                  </>
-                )}
-              </View>
+                  </View>
+                </View>
+              )}
             </View>
           </View>
         </Animated.View>
