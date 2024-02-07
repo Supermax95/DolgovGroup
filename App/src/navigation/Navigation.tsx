@@ -88,7 +88,7 @@ async function sendPushNotification() {
     // ../src/assets/images/adaptive-icon.png
     await Notifications.scheduleNotificationAsync({
       content: message,
-      trigger: { seconds: 172800, repeats: false },
+      trigger: { seconds: 86400, repeats: false },
     });
   }
 }

@@ -56,8 +56,6 @@ const ShopsList: FC = () => {
         const locationFields = [
           String(location.city),
           String(location.address),
-          String(location.latitude),
-          String(location.longitude),
           String(location.hours),
         ];
 

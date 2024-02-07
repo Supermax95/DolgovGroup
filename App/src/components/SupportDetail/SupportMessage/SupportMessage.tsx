@@ -132,14 +132,14 @@ const SupportMessage: FC = () => {
                   value={data.titleMessage}
                   placeholder="Тема обращения"
                   onChange={(value) => handleFieldChange('titleMessage', value)}
-                  autoCapitalize="words"
+                  autoCapitalize="sentences"
                 />
 
                 <FieldInput
                   value={data.message}
                   placeholder="Текст"
                   onChange={(value) => handleFieldChange('message', value)}
-                  autoCapitalize="words"
+                  autoCapitalize="sentences"
                   style={{ height: 200, textAlignVertical: 'top' }}
                   multiline
                   onFocus={() => setIsShowKeyboard(true)}
