@@ -58,46 +58,80 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
     }
   }, [dispatch]);
 
+
   useEffect(() => {
-    checkResendAvailability();
-  }, []);
-
-  const checkResendAvailability = async () => {
-    console.log('===>');
-
-    const lastSentUser = await AsyncStorage.getItem('lastSentUser');
-    console.log('lastSentUser', lastSentUser);
-    if (lastSentUser) {
-      const currentTime = Date.now();
-      console.log('currentTime', currentTime);
-
-      const timeDifference = currentTime - parseInt(lastSentUser, 10);
-      const minutesPassed = timeDifference / (1000 * 60);
-      if (minutesPassed < 3) {
-        // Если прошло менее трех минут, блокируем повторную отправку
-        setResendDisabled(true);
-        const remainingTime = Math.floor((3 - minutesPassed) * 60);
-        console.log('remainingTime', remainingTime);
-
-        // Оставшееся время в секундах
-        setSecondsRemaining(remainingTime);
-        startResendTimer();
-      }
-    }
-  };
-
-  const startResendTimer = () => {
-    const interval = setInterval(() => {
-      setSecondsRemaining((prevSeconds) => {
-        if (prevSeconds === 1) {
-          clearInterval(interval);
-          setResendDisabled(false);
-          AsyncStorage.removeItem('lastSentUser');
+    let interval: number;
+      
+    const checkResendAvailability = async () => {
+      const lastSentUser = await AsyncStorage.getItem('lastSentUser');
+      if (lastSentUser) {
+        const currentTime = Date.now();
+        const timeDifference = currentTime - parseInt(lastSentUser, 10);
+        const minutesPassed = timeDifference / (1000 * 60);
+        if (minutesPassed < 3) {
+          setResendDisabled(true);
+          const remainingTime = Math.floor((3 - minutesPassed) * 60);
+          setSecondsRemaining(remainingTime);
+          startResendTimer();
         }
-        return prevSeconds - 1;
-      });
-    }, 1000);
-  };
+      }
+    };
+  
+    const startResendTimer = () => {
+      interval = setInterval(() => {
+        setSecondsRemaining((prevSeconds) => {
+          if (prevSeconds === 1) {
+            clearInterval(interval);
+            setResendDisabled(false);
+            AsyncStorage.removeItem('lastSentUser');
+          }
+          return prevSeconds - 1;
+        });
+      }, 1000);
+    };
+  
+    checkResendAvailability();
+  
+    // Очищаем таймер при размонтировании компонента
+    return () => clearInterval(interval);
+  }, [visible]);
+
+  // useEffect(() => {
+  //   console.log('======>');
+  //   checkResendAvailability();
+  // }, [visible])
+  
+
+  // const checkResendAvailability = async () => {
+
+  //   const lastSentUser = await AsyncStorage.getItem('lastSentUser');
+  //   if (lastSentUser) {
+  //     const currentTime = Date.now();
+  //     const timeDifference = currentTime - parseInt(lastSentUser, 10);
+  //     const minutesPassed = timeDifference / (1000 * 60);
+  //     if (minutesPassed < 3) {
+  //       // Если прошло менее трех минут, блокируем повторную отправку
+  //       setResendDisabled(true);
+  //       const remainingTime = Math.floor((3 - minutesPassed) * 60);
+  //       // Оставшееся время в секундах
+  //       setSecondsRemaining(remainingTime);
+  //       startResendTimer();
+  //     }
+  //   }
+  // };
+
+  // const startResendTimer = () => {
+  //   const interval = setInterval(() => {
+  //     setSecondsRemaining((prevSeconds) => {
+  //       if (prevSeconds === 1) {
+  //         clearInterval(interval);
+  //         setResendDisabled(false);
+  //         AsyncStorage.removeItem('lastSentUser');
+  //       }
+  //       return prevSeconds - 1;
+  //     });
+  //   }, 1000);
+  // };
 
   // useEffect(() => {
   //   const intervalId = setInterval(async () => {
@@ -162,12 +196,12 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
         'Ошибка',
         'Произошла ошибка при отправке запроса, попробуйте повторить позже'
       );
-      setTimeout(() => setModalVisible(false), 5000);
+      setTimeout(() => setModalVisible(false), 1000);
     } else {
       Alert.alert(
         'Ваше обращение успешно отправлено. Ожидайте письмо на почту.'
       );
-      setTimeout(() => setModalVisible(false), 5000);
+      setTimeout(() => setModalVisible(false), 1000);
     }
   };
 
@@ -181,11 +215,11 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
           'Ошибка',
           'Произошла ошибка при отправке запроса, попробуйте повторить позже'
         );
-        setTimeout(() => setModalVisible(false), 5000);
+        setTimeout(() => setModalVisible(false), 1000);
       } else {
         AsyncStorage.setItem('lastSentUser', Date.now().toString());
         Alert.alert('Данные обновлены.');
-        setTimeout(() => setModalVisible(false), 5000);
+        setTimeout(() => setModalVisible(false), 1000);
         // handleRefreshStatusTimer();
       }
     } catch (error) {
