@@ -17,6 +17,7 @@ import {
 import FieldDetailArrow from 'ui/FieldDetailArrow';
 import PopularQuestions from 'components/SupportDetail/PopularQuestions/PopularQuestions';
 import EmployeeConfirm from 'components/SupportDetail/EmployeeConfirm/EmployeeConfirm';
+import { useAppSelector } from 'Redux/hooks';
 
 const makePhoneCall = () => {
   Linking.openURL('tel:+7 800 700-00-00');
@@ -24,6 +25,11 @@ const makePhoneCall = () => {
 
 const Support: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
+
+  const userStatus = useAppSelector<string | undefined>(
+    (state) => state.userSlice.user.userStatus
+  );
+
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
 
   return (
@@ -53,14 +59,28 @@ const Support: FC = () => {
             title="Горячая линия"
           />
 
-          {/* можно поставить проверку, что если уже сотрудник, то либо не отображается, либо написано, что вы являетесь сотрудником */}
-          <FieldDetailArrow
-            onPress={() => setModalVisible(true)}
-            icon="account"
-            title="Получить доступ сотрудника"
-          />
-
           <PopularQuestions />
+
+          <View className="mt-6">
+            <Text className="text-lg font-bold text-emerald-700 px-2">
+              Доступ сотрудника
+            </Text>
+            {userStatus === 'Сотрудник' ? (
+              <FieldDetailArrow icon="account" title="Сотрудник компании" />
+            ) : userStatus === 'Новый сотрудник' ? (
+              <FieldDetailArrow
+                // onPress={() => setModalVisible(true)}
+                icon="account-clock"
+                title="Запрос находится в обработке"
+              />
+            ) : (
+              <FieldDetailArrow
+                onPress={() => setModalVisible(true)}
+                icon="account"
+                title="Получить доступ сотрудника"
+              />
+            )}
+          </View>
         </Padding>
       </ScrollView>
 

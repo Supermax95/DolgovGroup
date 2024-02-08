@@ -36,15 +36,22 @@ const FieldDetailArrow: FC<IFieldDetailArrow> = ({ onPress, icon, title }) => {
             className="py-3 flex-row items-center justify-between border-b-[1px] border-zinc-200"
           >
             <View className="flex-row items-center justify-center space-x-3">
-              <MaterialCommunityIcons name={icon} size={19} color="#71716F" />
+              {title === 'Сотрудник компании' ? (
+                <MaterialCommunityIcons name={icon} size={19} color="#047857" />
+              ) : (
+                <MaterialCommunityIcons name={icon} size={19} color="#71716F" />
+              )}
               <Text className="text-zinc-700 font-normal text-md">{title}</Text>
             </View>
 
-            <MaterialCommunityIcons
-              name="chevron-right"
-              size={26}
-              color="#b7b7b6"
-            />
+            {title === 'Сотрудник компании' ||
+            title === 'Запрос находится в обработке' ? null : (
+              <MaterialCommunityIcons
+                name="chevron-right"
+                size={26}
+                color="#b7b7b6"
+              />
+            )}
           </Pressable>
         </Padding>
       )}

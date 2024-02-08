@@ -54,8 +54,9 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
       );
       setModalVisible(false);
     } else {
-      Alert.alert('Ваше обращение успешно отправлено. Ожидайте подтверждения.');
-      // navigation.navigate('Support');
+      Alert.alert(
+        'Ваше обращение успешно отправлено. Ожидайте письмо на почту.'
+      );
       setModalVisible(false);
     }
   };
@@ -152,71 +153,11 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
                 />
               </Pressable>
 
-              {userStatus === 'Новый сотрудник' ? (
+              {userStatus === 'Клиент' ? (
                 <View
-                  className={`justify-center items-center ${
+                  className={`mt-4 ${
                     Platform.OS === 'android' ? 'py-0' : 'py-2'
                   }`}
-                >
-                  <View className="items-center my-4">
-                    <Text
-                      className={`text-zinc-700 font-medium  ${
-                        Platform.OS === 'android' ? 'text-md' : 'text-na'
-                      }
-                        `}
-                    >
-                      Запрос на подтверждение обрабатывается
-                    </Text>
-                  </View>
-
-                  {/* картинка */}
-                  <View
-                    style={{ width: cardWidth }}
-                    className="justify-center items-center"
-                  >
-                    <Image
-                      source={{
-                        uri: 'https://dolgovagro.ru/bitrix/templates/dolgov/images/cow.png',
-                      }}
-                      resizeMode="contain"
-                      className="h-32 w-36 mt-6"
-                    />
-                  </View>
-                </View>
-              ) : userStatus === 'Сотрудник' ? (
-                <View
-                  className={`justify-center items-center ${
-                    Platform.OS === 'android' ? 'py-0' : 'py-2'
-                  }`}
-                >
-                  <View className="items-center my-4">
-                    <Text
-                      className={`text-zinc-700 font-medium  ${
-                        Platform.OS === 'android' ? 'text-md' : 'text-na'
-                      }
-                        `}
-                    >
-                      Профиль успешно прошёл проверку.
-                    </Text>
-                  </View>
-
-                  {/* картинка */}
-                  <View
-                    style={{ width: cardWidth }}
-                    className="justify-center items-center"
-                  >
-                    <Image
-                      source={{
-                        uri: 'https://dolgovagro.ru/bitrix/templates/dolgov/images/cow.png',
-                      }}
-                      resizeMode="contain"
-                      className="h-32 w-36 mt-6"
-                    />
-                  </View>
-                </View>
-              ) : (
-                <View
-                  className={`${Platform.OS === 'android' ? 'py-0' : 'py-2'}`}
                 >
                   <View className="items-center my-4">
                     <Text
@@ -235,7 +176,7 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
                     <Button title="Запросить проверку" onPress={handleSubmit} />
                   </View>
                 </View>
-              )}
+              ) : null}
             </View>
           </View>
         </Animated.View>
