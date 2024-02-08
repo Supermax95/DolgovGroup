@@ -8,11 +8,12 @@ import refreshToken from './thunks/User/refresh.api';
 import getCheck from './thunks/User/check.api';
 import checkEmployee from './thunks/Support/checkEmployee.api';
 import getBarcode from './thunks/User/barcode.api';
+import getUserStatus from './thunks/User/userStatus.api';
 
 type User = {
-  email: string;
-  firstName: string;
   id: number | undefined;
+  firstName: string;
+  email: string;
   isActivated: boolean | undefined;
   userStatus: string | undefined;
   barcode: string | undefined;
@@ -89,7 +90,7 @@ const userSlice = createSlice({
       })
       .addCase(userRegister.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload;
+        // state.error = action.payload;
       })
       .addCase(userLogout.pending, (state) => {
         state.isLoading = true;
@@ -106,6 +107,7 @@ const userSlice = createSlice({
           id: 0,
           isActivated: false,
           userStatus: '',
+          barcode: '',
         };
         state.isAuth = false;
       })
@@ -194,13 +196,26 @@ const userSlice = createSlice({
       .addCase(getBarcode.fulfilled, (state, action) => {
         state.isLoading = false;
         state.user.barcode = action.payload.barcode;
-        console.log(' state.getBarcode=======>',  state.user.barcode);
+        console.log(' state.getBarcode=======>', state.user.barcode);
       })
       .addCase(getBarcode.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       })
       .addCase(getBarcode.pending, (state) => {
+        state.isLoading = true;
+      })
+      // userStatus
+      .addCase(getUserStatus.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user.userStatus = action.payload.userStatus || undefined;
+        console.log(' state.usergetCheck=======>', state.user);
+      })
+      .addCase(getUserStatus.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      .addCase(getUserStatus.pending, (state) => {
         state.isLoading = true;
       });
   },

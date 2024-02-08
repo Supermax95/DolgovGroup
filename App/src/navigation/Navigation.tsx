@@ -99,13 +99,16 @@ export const AppNavigator: FC = () => {
   const notificationPush = useAppSelector<boolean>(
     (state) => state.profileSlice.notificationPush
   );
+
   const token = useAppSelector<string | undefined>(
     (state) => state.userSlice.token?.refreshToken
   );
+
   useEffect(() => {
     if (token) {
       dispatch(getProfileInfo({ token }));
     }
+
     const timeoutId = setTimeout(() => {
       if (notificationPush) {
         console.log('======>через 3 дня будет уведомление');

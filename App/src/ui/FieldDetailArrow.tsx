@@ -44,8 +44,7 @@ const FieldDetailArrow: FC<IFieldDetailArrow> = ({ onPress, icon, title }) => {
               <Text className="text-zinc-700 font-normal text-md">{title}</Text>
             </View>
 
-            {title === 'Сотрудник компании' ||
-            title === 'Запрос находится в обработке' ? null : (
+            {title === 'Сотрудник компании' ? null : (
               <MaterialCommunityIcons
                 name="chevron-right"
                 size={26}

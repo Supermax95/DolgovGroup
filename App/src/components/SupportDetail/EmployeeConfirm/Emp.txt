@@ -1,3 +1,7 @@
+  const screenWidth = Math.round(Dimensions.get('window').width);
+
+  const cardWidth = screenWidth / 2 - 20;  
+  
   {userStatus === 'Новый сотрудник' ? (
                 <View
                   className={`justify-center items-center ${

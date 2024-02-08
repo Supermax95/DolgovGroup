@@ -4,20 +4,11 @@ import { StackNavigationProp } from 'navigation/types';
 import Padding from 'ui/Padding';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import UniversalHeader from 'ui/UniversalHeader';
-import {
-  Alert,
-  Linking,
-  Modal,
-  Platform,
-  Pressable,
-  ScrollView,
-  Text,
-  View,
-} from 'react-native';
+import { Linking, ScrollView, Text, View } from 'react-native';
 import FieldDetailArrow from 'ui/FieldDetailArrow';
 import PopularQuestions from 'components/SupportDetail/PopularQuestions/PopularQuestions';
 import EmployeeConfirm from 'components/SupportDetail/EmployeeConfirm/EmployeeConfirm';
-import { useAppSelector } from 'Redux/hooks';
+import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 
 const makePhoneCall = () => {
   Linking.openURL('tel:+7 800 700-00-00');
@@ -25,6 +16,7 @@ const makePhoneCall = () => {
 
 const Support: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
+  const dispatch = useAppDispatch();
 
   const userStatus = useAppSelector<string | undefined>(
     (state) => state.userSlice.user.userStatus
@@ -69,7 +61,7 @@ const Support: FC = () => {
               <FieldDetailArrow icon="account" title="Сотрудник компании" />
             ) : userStatus === 'Новый сотрудник' ? (
               <FieldDetailArrow
-                // onPress={() => setModalVisible(true)}
+                onPress={() => setModalVisible(true)}
                 icon="account-clock"
                 title="Запрос находится в обработке"
               />
