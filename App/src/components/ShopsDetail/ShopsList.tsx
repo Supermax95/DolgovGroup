@@ -99,7 +99,7 @@ const ShopsList: FC = () => {
                     color="#047857"
                   />
                 </View>
-                <View className="flex-col space-y-1">
+                <View className="flex-col space-y-1 w-[90%]">
                   <View className="flex-col space-y-1">
                     <Text className="text-zinc-700 font-normal text-base">
                       {item.city}
@@ -116,9 +116,12 @@ const ShopsList: FC = () => {
                         color="zinc"
                       />
                     </View> */}
-                  <Text className="text-zinc-500 font-normal text-md">
+                  <Text
+                    className="text-zinc-500 font-normal text-md"
+                  >
                     {item.hours}
                   </Text>
+
                   {/* </View> */}
                 </View>
               </Pressable>
