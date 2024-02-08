@@ -48,6 +48,7 @@ const ClientsModal: React.FC<UsersModalProps> = ({
   const [errorNotification, setErrorNotification] = useState<string | null>(
     null
   );
+  const [isLoading, setIsLoading] = useState(false)
 
   const [
     showErrorNotificationActivationSend,

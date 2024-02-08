@@ -27,7 +27,6 @@ const checkActivation = createAsyncThunk<
   IPropsActivateResponse | undefined,
   IPropsActivateRequest
 >('api/activate', async ({userId}) => {
-  console.log(userId);
   
   try {
     const response: AxiosResponse = await axios.get(
