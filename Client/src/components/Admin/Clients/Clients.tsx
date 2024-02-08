@@ -11,6 +11,7 @@ import UsersModal from './ClientsModal';
 import { unwrapResult } from '@reduxjs/toolkit';
 import PopUpNotification from '../../../ui/PopUpNotification';
 import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
+import LoadingAnimation from '../Laws/Loading';
 
 export interface IUserTable {
   id: number;
@@ -51,6 +52,7 @@ const Clients: FC = () => {
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
   const [searchText, setSearchText] = useState('');
   const [isModalOpen, setModalOpen] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   //* уведомления
   const [showNotificationEditUser, setShowNotificationEditUser] =
@@ -155,6 +157,7 @@ const Clients: FC = () => {
 
   const handleSaveEdit = async (editedUser: IUserTable) => {
     try {
+      setLoading(true);
       if (selectedUser) {
         const resultAction = await dispatch(
           editClients({
@@ -169,6 +172,7 @@ const Clients: FC = () => {
       setTimeout(() => {
         closeEditModal();
       }, 50);
+      setLoading(false);
     } catch (error) {
       console.error('Произошла ошибка при редактировании:', error);
       setErrorNotification(error as string | null);
@@ -225,6 +229,14 @@ const Clients: FC = () => {
               totalPages={totalPages}
               onPageChange={setCurrentPage}
             />
+            {isLoading && (
+              <div className="fixed inset-0 z-20 backdrop-blur-lg flex items-center justify-center ">
+                {/* <div className="bg-white p-1 rounded-sm shadow-xs  "> */}
+                <div className="bg-white p-1 rounded-sm z-10 py-20 bg-opacity-70 fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center ">
+                  <LoadingAnimation />
+                </div>
+              </div>
+            )}
             {isModalOpen && selectedUser && (
               <UsersModal
                 isOpen={isModalOpen}

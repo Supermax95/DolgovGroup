@@ -1,6 +1,13 @@
 import React, { FC, useState } from 'react';
 import { useAppDispatch } from 'Redux/hooks';
-import { View, Text, ScrollView, Alert, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  Alert,
+  ActivityIndicator,
+  TouchableOpacity,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from 'navigation/types';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
@@ -35,7 +42,6 @@ export const Registration: FC = () => {
     middleName: '',
     birthDate: null || '',
   });
-  console.log(data);
 
   const [passwordCheck, setPasswordCheck] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -58,7 +64,6 @@ export const Registration: FC = () => {
   const toggleShowPasswordRepeat = (): void => {
     setShowPasswordRepeat(!showPasswordRepeat);
   };
-
 
   const handleLegalPolicyPress = () => {
     navigation.navigate('AboutApplication');
@@ -92,9 +97,6 @@ export const Registration: FC = () => {
     return cyrillicRegex.test(name);
   };
 
-
-
-
   const handleSubmit = async (): Promise<void> => {
     if (step === 2) {
       if (
@@ -119,7 +121,6 @@ export const Registration: FC = () => {
         setErrorMessages({});
       }
     }
-    console.log('я перед алертом'); // Добавлено для отладки
     Alert.alert(
       'Подтверждение',
       'Вы уверены, что ввели свои данные корректно?',
@@ -156,10 +157,7 @@ export const Registration: FC = () => {
         },
       ]
     );
-    console.log('я после алерта'); // Добавлено для отладки
   };
-  
-
 
   const handleNextStep = (): void => {
     if (step === 1) {
@@ -376,17 +374,16 @@ export const Registration: FC = () => {
                       {errorMessages.passwordCheck}
                     </Text>
                   )}
- <View className="mt-2 flex flex-row items-center">
-  <Text className="text-lime-600 text-xs font-normal ml-1 underline">
-    Регистрируясь, вы соглашаетесь с{' '}
-  </Text>
-  <TouchableOpacity onPress={handleLegalPolicyPress}>
-    <Text className="text-lime-600 text-xs font-normal underline">
-      правовой политикой компании
-    </Text>
-  </TouchableOpacity>
-</View>
-
+                  <View className="mt-2">
+                    <Text className="text-grey-800 text-xs font-normal ml-1 ">
+                      Регистрируясь, вы соглашаетесь с{' '}
+                    </Text>
+                    <TouchableOpacity onPress={handleLegalPolicyPress}>
+                      <Text className="text-lime-600 text-xs font-normal ml-1 underline">
+                      правовой политикой компании
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
 
                   <Button
                     onPress={handlePrevStep}

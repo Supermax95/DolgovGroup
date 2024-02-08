@@ -24,9 +24,7 @@ interface ResponseData {
 
 const userRegister = createAsyncThunk<ResponseData, RequestData>(
   'api/register',
-  async (user,{ rejectWithValue }) => {
-    console.log('user',user);
-    
+  async (user,{ rejectWithValue }) => {    
     try {
       const response: AxiosResponse = await axios.post(
         `http://${IP}:${PORT}/api/registration`,
