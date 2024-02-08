@@ -93,9 +93,9 @@ fs.readFile('./data.json', 'utf8', (err, data) => {
   // После чтения файла вызываем функцию buildIndexes с прочитанными данными
   const indexes = buildIndexes(records);
   const query = {
-    // lastName: 'Могтюнина',
-    // firstName: 'Ольга',
-    phoneNumber: '9219458686',
+    lastName: 'Могтюнина',
+    firstName: 'Ольга',
+    phoneNumber: '89189076889',
   };
   console.time('activate'); // Начало таймера
 
