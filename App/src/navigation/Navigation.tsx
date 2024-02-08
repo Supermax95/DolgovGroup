@@ -274,7 +274,7 @@ export const AppNavigator: FC = () => {
       <Stack.Screen
         name="SignIn"
         component={SignIn}
-        options={{ title: 'Вход' }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="Registration"
