@@ -5,7 +5,6 @@ import {
   View,
   Text,
   Alert,
-  SafeAreaView,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -21,6 +20,7 @@ import {
   KeyboardAccessoryView,
 } from 'react-native-keyboard-accessory';
 import ButtonWithDisable from 'ui/ButtonWithDisable';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const SupportMessage: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();

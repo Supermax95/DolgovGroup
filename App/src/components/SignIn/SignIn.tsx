@@ -3,13 +3,23 @@ import {
   CompositeNavigationProp,
   useNavigation,
 } from '@react-navigation/native';
-import { Alert, Pressable, Text, View } from 'react-native';
+import {
+  Alert,
+  Pressable,
+  Text,
+  View,
+  Animated,
+  StyleSheet,
+} from 'react-native';
 import { useAppSelector, useAppDispatch } from 'Redux/hooks';
 import { StackNavigationProp, TabScreenNavigationProp } from 'navigation/types';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import userLogin from 'Redux/thunks/User/login.api';
 import Button from 'ui/Button';
 import FieldInput from 'ui/FieldInput';
+import UniversalHeader from 'ui/UniversalHeader';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { LinearGradient } from 'expo-linear-gradient';
 
 interface IData {
   email: string;
@@ -82,55 +92,94 @@ const SignIn: FC = () => {
     }
   };
 
+  const handleLegalPolicyPress = () => {
+    navigation.navigate('AboutApplication');
+  };
+
+  const AnimatedLinearGradient =
+    Animated.createAnimatedComponent(LinearGradient);
+
   return (
-    <View className={styleCenter}>
-      <View className="mx-1 justify-center items-center h-full">
-        <Text className="text-center text-gray-800 text-2xl font-bold mb-2">
-          Авторизация
-        </Text>
-        <View className="w-10/12">
-          <FieldInput
-            value={data.email}
-            placeholder="Введите email"
-            autoCapitalize="none"
-            keyboardType="email-address"
-            onChange={(value) => setData({ ...data, email: value })}
-          />
-          <View className="flex-row items-center">
+    <>
+      {/* <SafeAreaView className="bg-[#f0fdf4] h-full flex-1"> */}
+      <SafeAreaView className="bg-white h-full flex-1">
+        {/* <LinearGradient
+          colors={['#f0fdf4', '#fafaf9', '#a7f3d0']}
+          style={styles.linearGradient}
+        > */}
+        {/* <UniversalHeader title="Вход" /> */}
+        <View className="mx-1 justify-center items-center h-full">
+          <Text className="text-center text-gray-800 text-2xl font-bold mb-2">
+            Авторизация
+          </Text>
+          <View className="w-10/12">
             <FieldInput
-              value={data.password}
-              placeholder="Введите пароль"
+              value={data.email}
+              placeholder="Введите email"
               autoCapitalize="none"
-              onChange={(value) => setData({ ...data, password: value })}
-              isSecure={!showPassword}
+              keyboardType="email-address"
+              onChange={(value) => setData({ ...data, email: value })}
             />
-            <MaterialCommunityIcons
-              name={showPassword ? 'eye' : 'eye-off'}
-              size={25}
-              color="gray"
-              onPress={toggleShowPassword}
-              style={{
-                position: 'absolute',
-                right: 15,
-                transform: [{ translateY: 5 }],
-              }}
+            <View className="flex-row items-center">
+              <FieldInput
+                value={data.password}
+                placeholder="Введите пароль"
+                autoCapitalize="none"
+                onChange={(value) => setData({ ...data, password: value })}
+                isSecure={!showPassword}
+              />
+              <MaterialCommunityIcons
+                name={showPassword ? 'eye' : 'eye-off'}
+                size={25}
+                color="gray"
+                onPress={toggleShowPassword}
+                style={{
+                  position: 'absolute',
+                  right: 15,
+                  transform: [{ translateY: 5 }],
+                }}
+              />
+            </View>
+
+            <Button
+              onPress={authHandler}
+              title={`Войти`}
+              disabled={isLoading}
             />
+
+            <Pressable onPress={() => navigation.navigate('ResetPassword')}>
+              <Text className="text-gray-800 mt-4 opacity-50 text-sm text-center">
+                Забыли пароль?
+              </Text>
+            </Pressable>
+            <Pressable onPress={() => navigation.navigate('Registration')}>
+              <Text className="text-gray-800 mt-4 opacity-50 text-sm text-center">
+                Зарегистрироваться
+              </Text>
+            </Pressable>
           </View>
-          <Button onPress={authHandler} title={`Войти`} disabled={isLoading} />
-          <Pressable onPress={() => navigation.navigate('ResetPassword')}>
-            <Text className="text-gray-800 mt-4 opacity-50 text-sm text-center">
-              Забыли пароль?
-            </Text>
-          </Pressable>
-          <Pressable onPress={() => navigation.navigate('Registration')}>
-            <Text className="text-gray-800 mt-4 opacity-50 text-sm text-center">
-              Зарегистрироваться
-            </Text>
-          </Pressable>
         </View>
-      </View>
-    </View>
+        {/* </LinearGradient> */}
+      </SafeAreaView>
+    </>
   );
 };
+
+var styles = StyleSheet.create({
+  linearGradient: {
+    flex: 1,
+    paddingLeft: 15,
+    paddingRight: 15,
+    borderRadius: 5,
+  },
+  buttonText: {
+    fontSize: 18,
+    fontFamily: 'Gill Sans',
+    textAlign: 'center',
+    margin: 10,
+    color: '#ffffff',
+    backgroundColor: 'transparent',
+  },
+});
 
 export default SignIn;
