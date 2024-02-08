@@ -185,7 +185,7 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
       } else {
         AsyncStorage.setItem('lastSentUser', Date.now().toString());
         Alert.alert('Данные обновлены.');
-        setTimeout(() => setModalVisible(false), 4000);
+        setTimeout(() => setModalVisible(false), 5000);
         // handleRefreshStatusTimer();
       }
     } catch (error) {
