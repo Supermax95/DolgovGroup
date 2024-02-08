@@ -52,48 +52,63 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
   const [isResendDisabled, setResendDisabled] = useState<boolean>(false);
   const [secondsRemaining, setSecondsRemaining] = useState<number>(0);
 
-  const checkResendAvailability = async () => {
-    const lastSentTimeStatus = await AsyncStorage.getItem(
-      'lastSentTimeStatusStatus'
-    );
-    console.log('lastSentTimeStatusStatus', lastSentTimeStatus);
-    if (lastSentTimeStatus) {
-      const currentTime = Date.now();
-
-      const timeDifference = currentTime - parseInt(lastSentTimeStatus, 10);
-      const minutesPassed = timeDifference / (1000 * 60);
-      console.log('minutesPassed', minutesPassed);
-
-      if (minutesPassed < 3) {
-        // Если прошло менее трех минут, блокируем повторную отправку
-        setResendDisabled(true);
-        const remainingTime = Math.ceil(3 - minutesPassed) * 60;
-        console.log('remainingTime', remainingTime);
-        // Оставшееся время в секундах
-        setSecondsRemaining(remainingTime);
-        startResendTimer();
-      }
-    }
-  };
-
-  const startResendTimer = () => {
-    const interval = setInterval(() => {
-      setSecondsRemaining((prevSeconds) => {
-        if (prevSeconds === 1) {
-          clearInterval(interval);
-          setResendDisabled(false);
-          AsyncStorage.removeItem('lastSentTimeStatusStatus');
-        }
-        return prevSeconds - 1;
-      });
-    }, 1000);
-  };
-
   useEffect(() => {
     if (token) {
       dispatch(getUserStatus({ token }));
     }
   }, [dispatch]);
+
+  // useEffect(() => {
+  //   const intervalId = setInterval(async () => {
+  //     // Получаем время начала истечения срока действия кнопки из AsyncStorage
+  //     const disableUntil = await AsyncStorage.getItem('disableButtonUntil');
+  //     if (disableUntil) {
+  //       // Вычисляем оставшееся время
+  //       const currentTime = Date.now();
+  //       const remainingTime = parseInt(disableUntil) - currentTime;
+
+  //       // Обновляем состояние секунд
+  //       setSecondsRemaining(
+  //         remainingTime > 0 ? Math.ceil(remainingTime / 1000) : 0
+  //       );
+  //     }
+  //   }, 1000); // Проверяем каждую секунду
+
+  //   return () => clearInterval(intervalId);
+  // }, []);
+
+  // const handleRefreshStatusTimer = async () => {
+  //   // Здесь вы можете добавить логику обработки нажатия кнопки
+
+  //   // Получаем текущее время в миллисекундах
+  //   const currentTime = Date.now();
+
+  //   // Сохраняем время начала истечения срока действия кнопки в AsyncStorage
+  //   await AsyncStorage.setItem(
+  //     'disableButtonUntil',
+  //     (currentTime + 180000).toString()
+  //   );
+
+  //   // Делаем кнопку недоступной
+  //   setResendDisabled(true);
+
+  //   // Устанавливаем таймер на 3 минуты (180000 миллисекунд)
+  //   setTimeout(async () => {
+  //     // Получаем время начала истечения срока действия кнопки из AsyncStorage
+  //     const disableUntil = await AsyncStorage.getItem('disableButtonUntil');
+
+  //     // Проверяем, прошло ли уже 3 минуты
+  //     if (disableUntil && currentTime > parseInt(disableUntil)) {
+  //       // Если прошло 3 минуты, делаем кнопку снова доступной и удаляем данные из AsyncStorage
+  //       await AsyncStorage.removeItem('disableButtonUntil');
+  //       setResendDisabled(false);
+  //     }
+  //   }, 180000); // 3 минуты в миллисекундах
+  //   // После завершения таймера делаем кнопку снова доступной
+  //   // setTimeout(() => {
+  //   //   setResendDisabled(false);
+  //   // }, 180000); // 3 минуты в миллисекундах
+  // };
 
   const handleSubmit = async () => {
     const result = await dispatch(
@@ -115,6 +130,7 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
     }
   };
 
+  //*обновление статуса
   const handleRefreshStatus = async (): Promise<void> => {
     try {
       const result = await dispatch(getUserStatus({ token }));
@@ -126,11 +142,10 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
         );
         setModalVisible(false);
       } else {
-        Alert.alert(
-          'Данные обновлены. Если запрос по-прежнему в обработке - дождитесь ответа'
-        );
+        Alert.alert('Данные обновлены.');
         setModalVisible(false);
-        AsyncStorage.setItem('lastSentTimeStatus', Date.now().toString());
+        // AsyncStorage.setItem('lastSentTimeStatus', Date.now().toString());
+        handleRefreshStatusTimer();
       }
     } catch (error) {
       console.error(
@@ -237,7 +252,7 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
                 >
                   <View className="items-center my-4">
                     <Text
-                      className={`text-zinc-700 font-medium  ${
+                      className={`w-full text-zinc-700 font-medium  ${
                         Platform.OS === 'android' ? 'text-md' : 'text-md'
                       }
                         `}
@@ -260,13 +275,23 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
                 >
                   <View className="items-center my-4">
                     <Text
-                      className={`text-zinc-700 font-medium  ${
+                      className={`w-full text-zinc-700 font-medium  ${
                         Platform.OS === 'android' ? 'text-md' : 'text-md'
                       }
                       `}
                     >
-                      Запрос на подтверждение обрабатывается
+                      Для проверки статуса сотрудника воспользуйтесь функцией,
+                      позволяющей обновить данные в режиме реального времени.
                     </Text>
+                    {/* <Text
+                      className={`w-full text-zinc-700 font-medium  ${
+                        Platform.OS === 'android' ? 'text-md' : 'text-md'
+                      }
+                      `}
+                    >
+                      Если запрос по-прежнему находится в обработке, то
+                      отправьте повторный запрос попозже.
+                    </Text> */}
                   </View>
 
                   <View>
