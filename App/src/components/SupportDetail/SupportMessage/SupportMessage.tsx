@@ -46,16 +46,12 @@ const SupportMessage: FC = () => {
     console.log('lastSentTime', lastSentTime);
     if (lastSentTime) {
       const currentTime = Date.now();
-
       const timeDifference = currentTime - parseInt(lastSentTime, 10);
       const minutesPassed = timeDifference / (1000 * 60);
-      console.log('minutesPassed', minutesPassed);
-
       if (minutesPassed < 3) {
         // Если прошло менее трех минут, блокируем повторную отправку
         setResendDisabled(true);
-        const remainingTime = Math.ceil(3 - minutesPassed) * 60;
-        console.log('remainingTime', remainingTime);
+        const remainingTime = Math.floor((3 - minutesPassed) * 60);
         // Оставшееся время в секундах
         setSecondsRemaining(remainingTime);
         startResendTimer();
