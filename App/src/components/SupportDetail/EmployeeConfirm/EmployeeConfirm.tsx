@@ -12,15 +12,11 @@ import {
   View,
   Text,
   Alert,
-  SafeAreaView,
   Modal,
   Pressable,
   Platform,
   Animated,
   PanResponder,
-  StyleSheet,
-  Image,
-  Dimensions,
 } from 'react-native';
 import { StackNavigationProp } from 'navigation/types';
 
@@ -58,10 +54,9 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
     }
   }, [dispatch]);
 
-
   useEffect(() => {
     let interval: number;
-      
+
     const checkResendAvailability = async () => {
       const lastSentUser = await AsyncStorage.getItem('lastSentUser');
       if (lastSentUser) {
@@ -76,7 +71,7 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
         }
       }
     };
-  
+
     const startResendTimer = () => {
       interval = setInterval(() => {
         setSecondsRemaining((prevSeconds) => {
@@ -89,101 +84,12 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
         });
       }, 1000);
     };
-  
+
     checkResendAvailability();
-  
+
     // Очищаем таймер при размонтировании компонента
     return () => clearInterval(interval);
   }, [visible]);
-
-  // useEffect(() => {
-  //   console.log('======>');
-  //   checkResendAvailability();
-  // }, [visible])
-  
-
-  // const checkResendAvailability = async () => {
-
-  //   const lastSentUser = await AsyncStorage.getItem('lastSentUser');
-  //   if (lastSentUser) {
-  //     const currentTime = Date.now();
-  //     const timeDifference = currentTime - parseInt(lastSentUser, 10);
-  //     const minutesPassed = timeDifference / (1000 * 60);
-  //     if (minutesPassed < 3) {
-  //       // Если прошло менее трех минут, блокируем повторную отправку
-  //       setResendDisabled(true);
-  //       const remainingTime = Math.floor((3 - minutesPassed) * 60);
-  //       // Оставшееся время в секундах
-  //       setSecondsRemaining(remainingTime);
-  //       startResendTimer();
-  //     }
-  //   }
-  // };
-
-  // const startResendTimer = () => {
-  //   const interval = setInterval(() => {
-  //     setSecondsRemaining((prevSeconds) => {
-  //       if (prevSeconds === 1) {
-  //         clearInterval(interval);
-  //         setResendDisabled(false);
-  //         AsyncStorage.removeItem('lastSentUser');
-  //       }
-  //       return prevSeconds - 1;
-  //     });
-  //   }, 1000);
-  // };
-
-  // useEffect(() => {
-  //   const intervalId = setInterval(async () => {
-  //     // Получаем время начала истечения срока действия кнопки из AsyncStorage
-  //     const disableUntil = await AsyncStorage.getItem('disableButtonUntil');
-  //     if (disableUntil) {
-  //       // Вычисляем оставшееся время
-  //       const currentTime = Date.now();
-  //       const remainingTime = parseInt(disableUntil) - currentTime;
-
-  //       // Обновляем состояние секунд
-  //       setSecondsRemaining(
-  //         remainingTime > 0 ? Math.ceil(remainingTime / 1000) : 0
-  //       );
-  //     }
-  //   }, 1000); // Проверяем каждую секунду
-
-  //   return () => clearInterval(intervalId);
-  // }, []);
-
-  // const handleRefreshStatusTimer = async () => {
-  //   // Здесь вы можете добавить логику обработки нажатия кнопки
-
-  //   // Получаем текущее время в миллисекундах
-  //   const currentTime = Date.now();
-
-  //   // Сохраняем время начала истечения срока действия кнопки в AsyncStorage
-  //   await AsyncStorage.setItem(
-  //     'disableButtonUntil',
-  //     (currentTime + 180000).toString()
-  //   );
-
-  //   // Делаем кнопку недоступной
-  //   setResendDisabled(true);
-
-  //   // Устанавливаем таймер на 3 минуты (180000 миллисекунд)
-  //   setTimeout(async () => {
-  //     // Получаем время начала истечения срока действия кнопки из AsyncStorage
-  //     const disableUntil = await AsyncStorage.getItem('disableButtonUntil');
-
-  //     // Проверяем, прошло ли уже 3 минуты
-  //     if (disableUntil && currentTime > parseInt(disableUntil)) {
-  //       // Если прошло 3 минуты, делаем кнопку снова доступной и удаляем данные из AsyncStorage
-  //       await AsyncStorage.removeItem('disableButtonUntil');
-  //       setResendDisabled(false);
-  //     }
-  //   }, 180000); // 3 минуты в миллисекундах
-  //   // После завершения таймера делаем кнопку снова доступной
-  //   // setTimeout(() => {
-  //   //   setResendDisabled(false);
-  //   // }, 180000); // 3 минуты в миллисекундах
-  // };
 
   const handleSubmit = async () => {
     const result = await dispatch(
@@ -196,12 +102,12 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
         'Ошибка',
         'Произошла ошибка при отправке запроса, попробуйте повторить позже'
       );
-      setTimeout(() => setModalVisible(false), 1000);
+      setModalVisible(false);
     } else {
       Alert.alert(
         'Ваше обращение успешно отправлено. Ожидайте письмо на почту.'
       );
-      setTimeout(() => setModalVisible(false), 1000);
+      setModalVisible(false);
     }
   };
 
@@ -215,12 +121,11 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
           'Ошибка',
           'Произошла ошибка при отправке запроса, попробуйте повторить позже'
         );
-        setTimeout(() => setModalVisible(false), 1000);
+        setModalVisible(false);
       } else {
         AsyncStorage.setItem('lastSentUser', Date.now().toString());
         Alert.alert('Данные обновлены.');
-        setTimeout(() => setModalVisible(false), 1000);
-        // handleRefreshStatusTimer();
+        setModalVisible(false);
       }
     } catch (error) {
       console.error(
