@@ -250,11 +250,11 @@ export const AppNavigator: FC = () => {
         component={SupportMessage}
         options={{ headerShown: false }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="EmployeeConfirm"
         component={EmployeeConfirm}
         options={{ headerShown: false }}
-      />
+      /> */}
       <Stack.Screen
         name="QuestionAndAnswer"
         component={QuestionAndAnswer}
