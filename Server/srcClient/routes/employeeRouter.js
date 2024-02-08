@@ -3,7 +3,6 @@ const { Op } = require('sequelize');
 const { DiscountCard } = require('../../db/models');
 const nodemailer = require('nodemailer');
 
-
 const transporter = nodemailer.createTransport({
   port: 465,
   host: 'smtp.gmail.com',
@@ -13,7 +12,6 @@ const transporter = nodemailer.createTransport({
   },
   secure: true,
 });
-
 
 router.get('/admin/employees', async (req, res) => {
   try {
@@ -61,6 +59,11 @@ router.put('/admin/employees/:id', async (req, res) => {
 
     if (newInfo.userStatus !== employee.userStatus) {
       const { email, firstName, middleName, userStatus } = newInfo;
+      const isEmployee = newInfo.userStatus === 'Сотрудник';
+
+      const additionalText = isEmployee
+        ? '<p style="font-size: 16px; color: #555; text-align: center;">В приложении перейдите во вкладку "Служба поддержки", чтобы статус стал активным.</p>'
+        : '';
 
       const mailData = {
         from: process.env.EMAIL,
@@ -72,6 +75,7 @@ router.put('/admin/employees/:id', async (req, res) => {
             <h2 style="color: #333; text-align: center;">Уважаемый(ая), ${firstName} ${middleName}!</h2>
             <p style="font-size: 16px; color: #555; text-align: center;">Ваш статус в приложении: <strong>${userStatus}</strong></p>
             </div>
+            ${additionalText}
             <p style="font-size: 16px; color: #555; text-align: center;">Желаем вам хорошего дня!</p>
           </div>
         `,
@@ -103,4 +107,3 @@ router.put('/admin/employees/:id', async (req, res) => {
 });
 
 module.exports = router;
-

@@ -56,6 +56,11 @@ router.put('/admin/clients/:id', async (req, res) => {
 
     if (newInfo.userStatus !== client.userStatus) {
       const { email, firstName, middleName, userStatus } = newInfo; 
+      const isEmployee = newInfo.userStatus === 'Сотрудник';
+
+      const additionalText = isEmployee
+        ? '<p style="font-size: 16px; color: #555; text-align: center;">Перейдите во вкладку "Служба поддержки", чтобы статус стал активным.</p>'
+        : '';
 
       const mailData = {
         from: process.env.EMAIL,
@@ -67,6 +72,7 @@ router.put('/admin/clients/:id', async (req, res) => {
             <h2 style="color: #333; text-align: center;">Уважаемый(ая), ${firstName} ${middleName}!</h2>
             <p style="font-size: 16px; color: #555; text-align: center;">Ваш статус в приложении: <strong>${userStatus}</strong></p>
             </div>
+            ${additionalText}
             <p style="font-size: 16px; color: #555; text-align: center;">Желаем вам хорошего дня!</p>
           </div>
         `,
