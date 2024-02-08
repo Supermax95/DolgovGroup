@@ -63,19 +63,22 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
   }, []);
 
   const checkResendAvailability = async () => {
-    const lastSentTimeForUserStatus = await AsyncStorage.getItem(
-      'lastSentTimeForUserStatus'
-    );
-    console.log('lastSentTimeForUserStatus', lastSentTimeForUserStatus);
-    if (lastSentTimeForUserStatus) {
+    console.log('===>');
+
+    const lastSentUser = await AsyncStorage.getItem('lastSentUser');
+    console.log('lastSentUser', lastSentUser);
+    if (lastSentUser) {
       const currentTime = Date.now();
-      const timeDifference =
-        currentTime - parseInt(lastSentTimeForUserStatus, 10);
+      console.log('currentTime', currentTime);
+
+      const timeDifference = currentTime - parseInt(lastSentUser, 10);
       const minutesPassed = timeDifference / (1000 * 60);
       if (minutesPassed < 3) {
         // Если прошло менее трех минут, блокируем повторную отправку
         setResendDisabled(true);
         const remainingTime = Math.floor((3 - minutesPassed) * 60);
+        console.log('remainingTime', remainingTime);
+
         // Оставшееся время в секундах
         setSecondsRemaining(remainingTime);
         startResendTimer();
@@ -89,7 +92,7 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
         if (prevSeconds === 1) {
           clearInterval(interval);
           setResendDisabled(false);
-          AsyncStorage.removeItem('lastSentTimeForUserStatus');
+          AsyncStorage.removeItem('lastSentUser');
         }
         return prevSeconds - 1;
       });
@@ -159,12 +162,12 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
         'Ошибка',
         'Произошла ошибка при отправке запроса, попробуйте повторить позже'
       );
-      setModalVisible(false);
+      setTimeout(() => setModalVisible(false), 5000);
     } else {
       Alert.alert(
         'Ваше обращение успешно отправлено. Ожидайте письмо на почту.'
       );
-      setModalVisible(false);
+      setTimeout(() => setModalVisible(false), 5000);
     }
   };
 
@@ -178,14 +181,11 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
           'Ошибка',
           'Произошла ошибка при отправке запроса, попробуйте повторить позже'
         );
-        setModalVisible(false);
+        setTimeout(() => setModalVisible(false), 5000);
       } else {
+        AsyncStorage.setItem('lastSentUser', Date.now().toString());
         Alert.alert('Данные обновлены.');
-        setModalVisible(false);
-        AsyncStorage.setItem(
-          'lastSentTimeForUserStatusStatus',
-          Date.now().toString()
-        );
+        setTimeout(() => setModalVisible(false), 4000);
         // handleRefreshStatusTimer();
       }
     } catch (error) {

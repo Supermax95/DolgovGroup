@@ -11,7 +11,7 @@ import EmployeeConfirm from 'components/SupportDetail/EmployeeConfirm/EmployeeCo
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 
 const makePhoneCall = () => {
-  Linking.openURL('tel:+7 800 700-00-00');
+  Linking.openURL('tel:89219458686');
 };
 
 const Support: FC = () => {
