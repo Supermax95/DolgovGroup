@@ -266,24 +266,24 @@ class UserService {
     return token;
   }
 
-  async refresh(refreshToken) {
-    if (!refreshToken) {
-      throw ApiError.UnauthorizedError();
-    }
-    const userData = tokenService.validateRefreshToken(refreshToken);
-    const tokenFromBd = await tokenService.findToken(refreshToken);
-    if (!userData || !tokenFromBd) {
-      throw ApiError.UnauthorizedError();
-    }
-    const user = await DiscountCard.findById(userData.id);
-    const userDto = new UserDto(user);
-    const tokens = tokenService.generateTokens({ ...userDto });
-    await tokenService.saveToken(userDto.id, tokens.refreshToken);
-    return {
-      ...tokens,
-      user: userDto,
-    };
-  }
+  // async refresh(refreshToken) {
+  //   if (!refreshToken) {
+  //     throw ApiError.UnauthorizedError();
+  //   }
+  //   const userData = tokenService.validateRefreshToken(refreshToken);
+  //   const tokenFromBd = await tokenService.findToken(refreshToken);
+  //   if (!userData || !tokenFromBd) {
+  //     throw ApiError.UnauthorizedError();
+  //   }
+  //   const user = await DiscountCard.findById(userData.id);
+  //   const userDto = new UserDto(user);
+  //   const tokens = tokenService.generateTokens({ ...userDto });
+  //   await tokenService.saveToken(userDto.id, tokens.refreshToken);
+  //   return {
+  //     ...tokens,
+  //     user: userDto,
+  //   };
+  // }
 
   async newPassword(email) {
     function generateNewPassword(length = 6) {

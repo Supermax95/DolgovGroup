@@ -2,19 +2,19 @@ const router = require('express').Router();
 const jwt = require('jsonwebtoken');
 const { DiscountCard } = require('../../db/models');
 
-module.exports = router.get('/checkUser', async (req, res) => {
+module.exports = router.get('/userStatus', async (req, res) => {
   try {
     const token = req.headers.authorization.split(' ')[1];
     if (!token) {
       res.status(401).json({ message: 'Пользователь не авторизован' });
     }
+
     const user = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+
     const userData = await DiscountCard.findOne({ where: { id: user.id } });
-    console.log('userData', userData);
+
     res.json({
-      message: 'Проверка авторизации прошла успешно!',
-      id: userData.id,
-      isActivated: userData.isActivated,
+      message: 'Статус отправлен.',
       userStatus: userData.userStatus,
     });
   } catch (error) {

@@ -1,6 +1,13 @@
-import React, { Dispatch, FC, SetStateAction, useState } from 'react';
+import React, {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   View,
   Text,
@@ -20,6 +27,8 @@ import { StackNavigationProp } from 'navigation/types';
 import checkEmployee from 'Redux/thunks/Support/checkEmployee.api';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Button from 'ui/Button';
+import getUserStatus from 'Redux/thunks/User/userStatus.api';
+import ButtonWithDisable from 'ui/ButtonWithDisable';
 
 interface EmployeeConfirmProps {
   visible: boolean;
@@ -40,6 +49,51 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
   );
 
   const [modalOffset, setModalOffset] = useState(new Animated.Value(0));
+  const [isResendDisabled, setResendDisabled] = useState<boolean>(false);
+  const [secondsRemaining, setSecondsRemaining] = useState<number>(0);
+
+  const checkResendAvailability = async () => {
+    const lastSentTimeStatus = await AsyncStorage.getItem(
+      'lastSentTimeStatusStatus'
+    );
+    console.log('lastSentTimeStatusStatus', lastSentTimeStatus);
+    if (lastSentTimeStatus) {
+      const currentTime = Date.now();
+
+      const timeDifference = currentTime - parseInt(lastSentTimeStatus, 10);
+      const minutesPassed = timeDifference / (1000 * 60);
+      console.log('minutesPassed', minutesPassed);
+
+      if (minutesPassed < 3) {
+        // Если прошло менее трех минут, блокируем повторную отправку
+        setResendDisabled(true);
+        const remainingTime = Math.ceil(3 - minutesPassed) * 60;
+        console.log('remainingTime', remainingTime);
+        // Оставшееся время в секундах
+        setSecondsRemaining(remainingTime);
+        startResendTimer();
+      }
+    }
+  };
+
+  const startResendTimer = () => {
+    const interval = setInterval(() => {
+      setSecondsRemaining((prevSeconds) => {
+        if (prevSeconds === 1) {
+          clearInterval(interval);
+          setResendDisabled(false);
+          AsyncStorage.removeItem('lastSentTimeStatusStatus');
+        }
+        return prevSeconds - 1;
+      });
+    }, 1000);
+  };
+
+  useEffect(() => {
+    if (token) {
+      dispatch(getUserStatus({ token }));
+    }
+  }, [dispatch]);
 
   const handleSubmit = async () => {
     const result = await dispatch(
@@ -54,9 +108,35 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
       );
       setModalVisible(false);
     } else {
-      Alert.alert('Ваше обращение успешно отправлено. Ожидайте подтверждения.');
-      // navigation.navigate('Support');
+      Alert.alert(
+        'Ваше обращение успешно отправлено. Ожидайте письмо на почту.'
+      );
       setModalVisible(false);
+    }
+  };
+
+  const handleRefreshStatus = async (): Promise<void> => {
+    try {
+      const result = await dispatch(getUserStatus({ token }));
+
+      if (result.meta.requestStatus === 'rejected') {
+        Alert.alert(
+          'Ошибка',
+          'Произошла ошибка при отправке запроса, попробуйте повторить позже'
+        );
+        setModalVisible(false);
+      } else {
+        Alert.alert(
+          'Данные обновлены. Если запрос по-прежнему в обработке - дождитесь ответа'
+        );
+        setModalVisible(false);
+        AsyncStorage.setItem('lastSentTimeStatus', Date.now().toString());
+      }
+    } catch (error) {
+      console.error(
+        'Ошибка при обновлении токена и получении статуса пользователя:',
+        error
+      );
     }
   };
 
@@ -89,9 +169,6 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
       }
     },
   });
-  const screenWidth = Math.round(Dimensions.get('window').width);
-
-  const cardWidth = screenWidth / 2 - 20;
 
   return (
     <>
@@ -152,71 +229,11 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
                 />
               </Pressable>
 
-              {userStatus === 'Новый сотрудник' ? (
+              {userStatus === 'Клиент' ? (
                 <View
-                  className={`justify-center items-center ${
+                  className={`mt-4 ${
                     Platform.OS === 'android' ? 'py-0' : 'py-2'
                   }`}
-                >
-                  <View className="items-center my-4">
-                    <Text
-                      className={`text-zinc-700 font-medium  ${
-                        Platform.OS === 'android' ? 'text-md' : 'text-na'
-                      }
-                        `}
-                    >
-                      Запрос на подтверждение обрабатывается
-                    </Text>
-                  </View>
-
-                  {/* картинка */}
-                  <View
-                    style={{ width: cardWidth }}
-                    className="justify-center items-center"
-                  >
-                    <Image
-                      source={{
-                        uri: 'https://dolgovagro.ru/bitrix/templates/dolgov/images/cow.png',
-                      }}
-                      resizeMode="contain"
-                      className="h-32 w-36 mt-6"
-                    />
-                  </View>
-                </View>
-              ) : userStatus === 'Сотрудник' ? (
-                <View
-                  className={`justify-center items-center ${
-                    Platform.OS === 'android' ? 'py-0' : 'py-2'
-                  }`}
-                >
-                  <View className="items-center my-4">
-                    <Text
-                      className={`text-zinc-700 font-medium  ${
-                        Platform.OS === 'android' ? 'text-md' : 'text-na'
-                      }
-                        `}
-                    >
-                      Профиль успешно прошёл проверку.
-                    </Text>
-                  </View>
-
-                  {/* картинка */}
-                  <View
-                    style={{ width: cardWidth }}
-                    className="justify-center items-center"
-                  >
-                    <Image
-                      source={{
-                        uri: 'https://dolgovagro.ru/bitrix/templates/dolgov/images/cow.png',
-                      }}
-                      resizeMode="contain"
-                      className="h-32 w-36 mt-6"
-                    />
-                  </View>
-                </View>
-              ) : (
-                <View
-                  className={`${Platform.OS === 'android' ? 'py-0' : 'py-2'}`}
                 >
                   <View className="items-center my-4">
                     <Text
@@ -233,6 +250,41 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
 
                   <View>
                     <Button title="Запросить проверку" onPress={handleSubmit} />
+                  </View>
+                </View>
+              ) : (
+                <View
+                  className={`mt-4 ${
+                    Platform.OS === 'android' ? 'py-0' : 'py-2'
+                  }`}
+                >
+                  <View className="items-center my-4">
+                    <Text
+                      className={`text-zinc-700 font-medium  ${
+                        Platform.OS === 'android' ? 'text-md' : 'text-md'
+                      }
+                      `}
+                    >
+                      Запрос на подтверждение обрабатывается
+                    </Text>
+                  </View>
+
+                  <View>
+                    <ButtonWithDisable
+                      title="Проверить статус"
+                      onPress={handleRefreshStatus}
+                      disabled={isResendDisabled}
+                    />
+
+                    {isResendDisabled && (
+                      <View className="mt-2 justify-center items-center">
+                        <Text className="text-xs font-molmal text-zinc-500">
+                          Возможность повторной отправки через{' '}
+                          {Math.floor(secondsRemaining / 60)} минут{' '}
+                          {secondsRemaining % 60} секунд
+                        </Text>
+                      </View>
+                    )}
                   </View>
                 </View>
               )}
