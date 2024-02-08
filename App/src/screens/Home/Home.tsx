@@ -81,14 +81,14 @@ const Home: FC = () => {
             style={{ ...BOX_SHADOW }}
             className="bg-white rounded-2xl p-4 mt-6 w-[97%] h-56 mx-auto"
           >
-            <View className="text-center mb-4">
-              <Text className="ml-1 text-2xl font-extrabold text-lime-600">
-            {numberPoints}
-          </Text>
-              <Svg>
+            <View className="align-items-center">
+          <Svg style={{ transform: [{ scale: 0.6 }] }}>
                 <Barcode value={barcode} format="CODE39" />
               </Svg>
             </View>
+              <Text className="ml-1 text-2xl font-extrabold text-lime-600">
+            {numberPoints}
+          </Text>
           </View>
 
           {/* Example of CODE128 barcode */}
