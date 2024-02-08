@@ -58,6 +58,44 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
     }
   }, [dispatch]);
 
+  useEffect(() => {
+    checkResendAvailability();
+  }, []);
+
+  const checkResendAvailability = async () => {
+    const lastSentTimeForUserStatus = await AsyncStorage.getItem(
+      'lastSentTimeForUserStatus'
+    );
+    console.log('lastSentTimeForUserStatus', lastSentTimeForUserStatus);
+    if (lastSentTimeForUserStatus) {
+      const currentTime = Date.now();
+      const timeDifference =
+        currentTime - parseInt(lastSentTimeForUserStatus, 10);
+      const minutesPassed = timeDifference / (1000 * 60);
+      if (minutesPassed < 3) {
+        // Если прошло менее трех минут, блокируем повторную отправку
+        setResendDisabled(true);
+        const remainingTime = Math.floor((3 - minutesPassed) * 60);
+        // Оставшееся время в секундах
+        setSecondsRemaining(remainingTime);
+        startResendTimer();
+      }
+    }
+  };
+
+  const startResendTimer = () => {
+    const interval = setInterval(() => {
+      setSecondsRemaining((prevSeconds) => {
+        if (prevSeconds === 1) {
+          clearInterval(interval);
+          setResendDisabled(false);
+          AsyncStorage.removeItem('lastSentTimeForUserStatus');
+        }
+        return prevSeconds - 1;
+      });
+    }, 1000);
+  };
+
   // useEffect(() => {
   //   const intervalId = setInterval(async () => {
   //     // Получаем время начала истечения срока действия кнопки из AsyncStorage
@@ -144,8 +182,11 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
       } else {
         Alert.alert('Данные обновлены.');
         setModalVisible(false);
-        // AsyncStorage.setItem('lastSentTimeStatus', Date.now().toString());
-        handleRefreshStatusTimer();
+        AsyncStorage.setItem(
+          'lastSentTimeForUserStatusStatus',
+          Date.now().toString()
+        );
+        // handleRefreshStatusTimer();
       }
     } catch (error) {
       console.error(
