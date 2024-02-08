@@ -59,6 +59,11 @@ export const Registration: FC = () => {
     setShowPasswordRepeat(!showPasswordRepeat);
   };
 
+
+  const handleLegalPolicyPress = () => {
+    navigation.navigate('AboutApplication');
+  };
+
   const handleFieldChange = (
     field: keyof IData,
     value: string | Date
@@ -86,6 +91,9 @@ export const Registration: FC = () => {
     const cyrillicRegex = /^[А-Яа-яЁё]+$/;
     return cyrillicRegex.test(name);
   };
+
+
+
 
   const handleSubmit = async (): Promise<void> => {
     if (step === 2) {
@@ -368,11 +376,18 @@ export const Registration: FC = () => {
                       {errorMessages.passwordCheck}
                     </Text>
                   )}
-                  <View className="mt-2">
-                    <Text className=" text-gray-800 ml-1 text-xs font-normal">
-                      Регистрируясь вы соглашаетесь продать душу дьяволу
-                    </Text>
-                  </View>
+ <View className="mt-2 flex flex-row items-center">
+  <Text className="text-lime-600 text-xs font-normal ml-1 underline">
+    Регистрируясь, вы соглашаетесь с{' '}
+  </Text>
+  <TouchableOpacity onPress={handleLegalPolicyPress}>
+    <Text className="text-lime-600 text-xs font-normal underline">
+      правовой политикой компании
+    </Text>
+  </TouchableOpacity>
+</View>
+
+
                   <Button
                     onPress={handlePrevStep}
                     title="Назад"
