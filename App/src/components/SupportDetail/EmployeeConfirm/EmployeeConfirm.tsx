@@ -56,6 +56,7 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
 
   useEffect(() => {
     let interval: number;
+console.log('========>');
 
     const checkResendAvailability = async () => {
       const lastSentUser = await AsyncStorage.getItem('lastSentUser');

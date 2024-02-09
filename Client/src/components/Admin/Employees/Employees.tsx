@@ -24,6 +24,7 @@ interface User {
   isActivated: boolean;
   bonusProgram: string;
   balance: number;
+  phoneNumber: string;
 }
 
 interface IColumnsDefaultName {
@@ -178,6 +179,7 @@ const Employees: FC = () => {
       console.error('Произошла ошибка при редактировании:', error);
       setErrorNotification(error as string | null);
       setShowErrorNotificationEditUser(true);
+      setLoading(false);
     }
   };
 

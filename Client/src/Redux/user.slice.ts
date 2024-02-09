@@ -17,6 +17,7 @@ interface User {
   isActivated: boolean;
   bonusProgram: string;
   balance: number;
+  phoneNumber:string;
 }
 
 interface UserState {

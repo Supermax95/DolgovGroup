@@ -21,6 +21,13 @@ router.post('/supportNodemailerRouter', async (req, res) => {
     console.log(token);
     const user = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
     const dataUser = await DiscountCard.findOne({ where: { id: user.id } });
+    const formattedPhoneNumber = `+7(${dataUser.phoneNumber.substring(
+      0,
+      3
+    )})${dataUser.phoneNumber.substring(3, 6)}-${dataUser.phoneNumber.substring(
+      6,
+      8
+    )}-${dataUser.phoneNumber.substring(8, 10)}`;
 
     const mailData = {
       from: process.env.EMAIL,
@@ -28,22 +35,9 @@ router.post('/supportNodemailerRouter', async (req, res) => {
       subject: `Обращение в службу поддержки`,
       text: '',
       html: `
-      <style>
-        body {
-          font-size: 18px; /* Размер шрифта для основного текста */
-        }
-        b {
-          font-size: 20px; /* Размер шрифта для жирного текста */
-        }
-        i {
-          font-size: 16px; /* Размер шрифта для курсива */
-        }
-        p {
-          font-size: 18px; /* Размер шрифта для абзаца */
-        }
-      </style>
       <p> Пользователь приложения <b>${dataUser.lastName} ${dataUser.firstName} ${dataUser.middleName} </b> оставил обращение. </p>
       <br>Почта пользователя: <b>${dataUser.email}</b>
+      <br>Телефон пользователя: <b>${formattedPhoneNumber}</b>
       <br>Тема обращения: <b>${titleMessage}</b>
       <br>Текст обращения: <i>${message}</i>
     `,
@@ -55,20 +49,7 @@ router.post('/supportNodemailerRouter', async (req, res) => {
       subject: `Статус вашего заявления`,
       text: '',
       html: `
-        <style>
-          body {
-            font-size: 18px; /* Размер шрифта для основного текста */
-          }
-          b {
-            font-size: 20px; /* Размер шрифта для жирного текста */
-          }
-          i {
-            font-size: 16px; /* Размер шрифта для курсива */
-          }
-          p {
-            font-size: 18px; /* Размер шрифта для абзаца */
-          }
-        </style>
+     
         <b>Уважаемый ${dataUser.firstName} ${dataUser.middleName},</b>
         <br>
         <p>Ваш обращение по теме: "<b>${titleMessage}</b>" принято. В ближайшем времени, мы его рассмотрим.</p>
@@ -99,6 +80,14 @@ router.post('/checkEmployee', async (req, res) => {
       { where: { id: user.id } }
     );
     const updatedUser = await DiscountCard.findOne({ where: { id: user.id } });
+    const formattedPhoneNumber = `+7(${dataUser.phoneNumber.substring(
+      0,
+      3
+    )})${dataUser.phoneNumber.substring(3, 6)}-${dataUser.phoneNumber.substring(
+      6,
+      8
+    )}-${dataUser.phoneNumber.substring(8, 10)}`;
+
 
     const mailData = {
       from: process.env.EMAIL,
@@ -106,22 +95,9 @@ router.post('/checkEmployee', async (req, res) => {
       subject: `Проверка является ли пользователь сотрудником`,
       text: '',
       html: `
-        <style>
-          body {
-            font-size: 18px; /* Размер шрифта для основного текста */
-          }
-          b {
-            font-size: 20px; /* Размер шрифта для жирного текста */
-          }
-          i {
-            font-size: 16px; /* Размер шрифта для курсива */
-          }
-          p {
-            font-size: 18px; /* Размер шрифта для абзаца */
-          }
-        </style>
         <b> Посетитель сайта ${dataUser.lastName} ${dataUser.firstName} ${dataUser.middleName} перемещен в статус нового сотрудника. </b>
         <br>Почта пользователя: <b>${dataUser.email}</b>
+        <br>Телефон пользователя: <b>${formattedPhoneNumber}</b>
         <br>Текст обращения: <i>Проверьте является ли ${dataUser.firstName} ${dataUser.middleName} сотрудником компании.Если является предоставьте доступ</i>
       `,
     };
@@ -132,20 +108,6 @@ router.post('/checkEmployee', async (req, res) => {
       subject: `Статус вашего заявления`,
       text: '',
       html: `
-        <style>
-          body {
-            font-size: 18px; /* Размер шрифта для основного текста */
-          }
-          b {
-            font-size: 20px; /* Размер шрифта для жирного текста */
-          }
-          i {
-            font-size: 16px; /* Размер шрифта для курсива */
-          }
-          p {
-            font-size: 18px; /* Размер шрифта для абзаца */
-          }
-        </style>
         <b>Уважаемый ${dataUser.firstName} ${dataUser.middleName},</b>
         <br>
         <p>Ваш запрос рассматривается. В скором времени мы примем решение по вашему статусу.</p>

@@ -34,6 +34,7 @@
     "react-native": "0.72.6",
     "react-native-barcode-svg": "^0.0.15",
     "react-native-dotenv": "^3.4.9",
+    "react-native-element-dropdown": "^2.10.1",
     "react-native-gesture-handler": "~2.12.0",
     "react-native-keyboard-accessory": "^0.1.16",
     "react-native-maps": "1.7.1",

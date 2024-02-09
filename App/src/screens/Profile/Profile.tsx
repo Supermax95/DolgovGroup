@@ -49,11 +49,11 @@ const Profile: FC = () => {
           icon="account"
           title="Редактирование данных"
         />
-        <FieldDetail
+        {/* <FieldDetail
           onPress={() => navigation.navigate('AccumulatedUserPoints')}
           icon="receipt"
           title="Накопленные баллы"
-        />
+        /> */}
         <FieldDetail
           onPress={() => navigation.navigate('NotificationSettings')}
           icon="bell"

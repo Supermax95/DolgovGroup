@@ -20,13 +20,13 @@ const EditProfile: FC = () => {
     phoneNumber?: string;
   }>((state) => state.profileSlice);
 
-  const formattedPhoneNumber = `+7(${profile.phoneNumber.substring(
+  const formattedPhoneNumber = `+7(${profile.phoneNumber?.substring(
     0,
     3
-  )})${profile.phoneNumber.substring(3, 6)}-${profile.phoneNumber.substring(
+  )})${profile.phoneNumber?.substring(3, 6)}-${profile.phoneNumber?.substring(
     6,
     8
-  )}-${profile.phoneNumber.substring(8, 10)}`;
+  )}-${profile.phoneNumber?.substring(8, 10)}`;
 
   return (
     <SafeAreaView className="bg-white h-full flex-1">

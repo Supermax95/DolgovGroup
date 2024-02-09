@@ -10,9 +10,9 @@ import PopularQuestions from 'components/SupportDetail/PopularQuestions/PopularQ
 import EmployeeConfirm from 'components/SupportDetail/EmployeeConfirm/EmployeeConfirm';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 
-const makePhoneCall = () => {
-  Linking.openURL('tel:89219458686');
-};
+// const makePhoneCall = () => {
+//   Linking.openURL('tel:89219458686');
+// };
 
 const Support: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
@@ -45,11 +45,11 @@ const Support: FC = () => {
             title="Связаться с поддержкой"
           />
 
-          <FieldDetailArrow
+          {/* <FieldDetailArrow
             onPress={makePhoneCall}
             icon="phone-in-talk"
             title="Горячая линия"
-          />
+          /> */}
 
           <PopularQuestions />
 

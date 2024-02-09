@@ -15,6 +15,7 @@ interface RequestData {
     isActivated: boolean;
     bonusProgram: string;
     balance: number;
+    phoneNumber: string;
   };
 }
 
@@ -29,6 +30,7 @@ interface ResponseData {
   isActivated: boolean;
   bonusProgram: string;
   balance: number;
+  phoneNumber: string;
 }
 
 type ArrayResponseData = Array<ResponseData>;

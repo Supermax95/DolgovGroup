@@ -73,7 +73,7 @@ async function sendPushNotification() {
     const message = {
       sound: 'default',
       title: 'Уважаемый покупатель!',
-      body: 'Ты давно не заходил в приложение ',
+      body: 'Вы давно не заходили в приложение.Не пропустите акции! ',
       data: { someData: '' },
       vibrate: [0, 250, 250, 250],
       // attachments: [

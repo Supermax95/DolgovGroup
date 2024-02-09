@@ -12,6 +12,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StackNavigationProp } from 'navigation/types';
 import Padding from 'ui/Padding';
+import { Dropdown } from 'react-native-element-dropdown';
 import FieldInput from 'ui/FieldInput';
 import UniversalHeader from 'ui/UniversalHeader';
 import nodemailerSend from 'Redux/thunks/Support/supportNodemailer.api';
@@ -33,6 +34,7 @@ const SupportMessage: FC = () => {
     titleMessage: '',
     message: '',
   });
+  const [selectedOption, setSelectedOption] = useState<string>('');
   const [isResendDisabled, setResendDisabled] = useState<boolean>(false);
   const [secondsRemaining, setSecondsRemaining] = useState<number>(0);
   const [isShowKeyboard, setIsShowKeyboard] = useState<boolean>(false);
@@ -84,7 +86,6 @@ const SupportMessage: FC = () => {
       Alert.alert('Поля не заполнены', 'Пожалуйста, заполните все поля');
       return;
     }
-
     const result = await dispatch(
       nodemailerSend({
         token,
@@ -106,6 +107,15 @@ const SupportMessage: FC = () => {
     }
   };
 
+  const dropdownOptions = [
+    { label: 'Выберите тему обращения', value: '' },
+    { label: 'Качество продукции', value: 'Качество продукции' },
+    { label: 'Обслуживание в магазине', value: 'Обслуживание в магазине' },
+    { label: 'Функционал приложения', value: 'Функционал приложения' },
+    { label: 'Программа лояльности', value: 'Программа лояльности' },
+    { label: 'Прочее', value: 'Прочее' },
+  ];
+
   return (
     <SafeAreaView className="bg-white h-full flex-1">
       <UniversalHeader
@@ -124,12 +134,27 @@ const SupportMessage: FC = () => {
                 className="w-full pt-2 pb-8"
                 style={{ marginBottom: isShowKeyboard ? 30 : 100 }}
               >
-                <FieldInput
-                  value={data.titleMessage}
-                  placeholder="Тема обращения"
-                  onChange={(value) => handleFieldChange('titleMessage', value)}
-                  autoCapitalize="sentences"
-                />
+                <Dropdown
+                  value={selectedOption}
+                  data={dropdownOptions}
+                  onChange={(item) => {
+                    setSelectedOption(item.value);
+                    if (item.value === 'Прочее') {
+                      handleFieldChange('titleMessage', '');
+                    } else {
+                      handleFieldChange('titleMessage', item.value);
+                    }
+                  } } labelField={'label'} valueField={'value'}                />
+                {selectedOption === 'Прочее' && (
+                  <FieldInput
+                    value={data.titleMessage}
+                    placeholder="Другая тема обращения"
+                    onChange={(value) =>
+                      handleFieldChange('titleMessage', value)
+                    }
+                    autoCapitalize="sentences"
+                  />
+                )}
 
                 <FieldInput
                   value={data.message}
@@ -140,15 +165,6 @@ const SupportMessage: FC = () => {
                   multiline
                   onFocus={() => setIsShowKeyboard(true)}
                 />
-
-                {/* //*  здесь были жалкие попытки добавить закрытие клавиатуры  
-                //* было принято решение пока задать фиксированную высоту инпута для текста,  style={{ height: 200, textAlignVertical: 'top' }}
-                //* т.к. полностью решить проблему с прокруткой и исчезновением клавы на iOS не получается */}
-                {/* <KeyboardAccessoryNavigation
-                  doneHidden={true}
-                  // nextHidden={true}
-                  // previousHidden={true}
-                /> */}
 
                 <View className="mt-2 justify-center items-center">
                   <Text className="text-xs font-molmal text-zinc-500">
@@ -176,8 +192,6 @@ const SupportMessage: FC = () => {
               </View>
             </Padding>
           </Padding>
-
-          {/* Если письмо уже отправлено */}
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

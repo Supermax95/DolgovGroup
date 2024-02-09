@@ -24,6 +24,7 @@ export interface IUserTable {
   isActivated: boolean;
   bonusProgram: string;
   balance: number;
+  phoneNumber: string;
 }
 
 interface IColumnsDefaultName {
@@ -177,6 +178,7 @@ const Clients: FC = () => {
       console.error('Произошла ошибка при редактировании:', error);
       setErrorNotification(error as string | null);
       setShowErrorNotificationEditUser(true);
+      setLoading(false);
     }
   };
 

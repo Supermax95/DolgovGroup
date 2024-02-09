@@ -83,9 +83,30 @@ router.put('/admin/employees/:id', async (req, res) => {
 
       await transporter.sendMail(mailData);
     }
+    if (newInfo.phoneNumber !== employee.phoneNumber) {
+      const cleanedPhoneNumber = newInfo.phoneNumber.replace(/\D/g, '');
+      const trimmedPhoneNumber = cleanedPhoneNumber.substring(1);
 
-    await DiscountCard.update(newInfo, { where: { id: employeeId } });
+      const existingEmployeeByPhone = await DiscountCard.findOne({
+        where: {
+          phoneNumber: trimmedPhoneNumber,
+          id: { [Op.not]: employeeId },
+        },
+      });
 
+      if (existingEmployeeByPhone) {
+        return res.status(400).json({
+          error: 'Пользователь с таким номером телефона уже существует',
+        });
+      }
+
+      await DiscountCard.update(
+        { ...newInfo, phoneNumber: trimmedPhoneNumber },
+        { where: { id: employeeId } }
+      );
+    } else {
+      await DiscountCard.update(newInfo, { where: { id: employeeId } });
+    }
     const employees = await DiscountCard.findAll({
       where: {
         userStatus: {

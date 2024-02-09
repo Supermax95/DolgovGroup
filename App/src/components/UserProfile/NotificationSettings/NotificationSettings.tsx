@@ -105,7 +105,7 @@ const NotificationSettings: FC = () => {
             />
           </View>
 
-          <View
+          {/* <View
             className={`flex-row border-b-[1px] border-zinc-200 items-center justify-between
               ${Platform.OS === 'android' ? 'py-0' : 'py-2'}`}
           >
@@ -120,7 +120,7 @@ const NotificationSettings: FC = () => {
               onValueChange={toggleSwitchEmail}
               value={isEnabledEmail}
             />
-          </View>
+          </View> */}
 
           <Button onPress={handleSaveSettings} title="Сохранить" />
         </Padding>

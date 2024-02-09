@@ -3,7 +3,6 @@ const { Op } = require('sequelize');
 const { DiscountCard } = require('../../db/models');
 const nodemailer = require('nodemailer');
 
-
 const transporter = nodemailer.createTransport({
   port: 465,
   host: 'smtp.gmail.com',
@@ -46,7 +45,9 @@ router.put('/admin/clients/:id', async (req, res) => {
     });
 
     if (existingClient) {
-      return res.status(400).json({ error: 'Пользователь с таким email уже существует' });
+      return res
+        .status(400)
+        .json({ error: 'Пользователь с таким email уже существует' });
     }
 
     const client = await DiscountCard.findOne({
@@ -55,7 +56,7 @@ router.put('/admin/clients/:id', async (req, res) => {
     });
 
     if (newInfo.userStatus !== client.userStatus) {
-      const { email, firstName, middleName, userStatus } = newInfo; 
+      const { email, firstName, middleName, userStatus } = newInfo;
       const isEmployee = newInfo.userStatus === 'Сотрудник';
 
       const additionalText = isEmployee
@@ -81,9 +82,28 @@ router.put('/admin/clients/:id', async (req, res) => {
       // Отправка электронного письма
       await transporter.sendMail(mailData);
     }
+    if (newInfo.phoneNumber !== client.phoneNumber) {
+      const cleanedPhoneNumber = newInfo.phoneNumber.replace(/\D/g, '');
+      const trimmedPhoneNumber = cleanedPhoneNumber.substring(1);
+      const existingClientPhone = await DiscountCard.findOne({
+        where: {
+          phoneNumber: trimmedPhoneNumber,
+          id: { [Op.not]: employeeId },
+        },
+      });
 
-    await DiscountCard.update(newInfo, { where: { id: clientId } });
-
+      if (existingClientPhone) {
+        return res.status(400).json({
+          error: 'Пользователь с таким номером телефона уже существует',
+        });
+      }
+      await DiscountCard.update(
+        { ...newInfo, phoneNumber: trimmedPhoneNumber },
+        { where: { id: clientId } }
+      );
+    } else {
+      await DiscountCard.update(newInfo, { where: { id: clientId } });
+    }
     const clients = await DiscountCard.findAll({
       where: {
         userStatus: 'Клиент',
@@ -101,6 +121,5 @@ router.put('/admin/clients/:id', async (req, res) => {
     res.status(500).json({ error: 'Произошла ошибка на сервере' });
   }
 });
-
 
 module.exports = router;

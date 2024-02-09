@@ -21,6 +21,7 @@ interface IUser {
   bonusProgram: string;
   balance: number;
   isActivated: boolean;
+  phoneNumber: string;
 }
 
 interface UsersModalProps {
@@ -74,6 +75,7 @@ const ClientsModal: React.FC<UsersModalProps> = ({
     email: '',
     barcode: '',
     userStatus: '',
+    phoneNumber:'',
     birthDate: undefined,
     bonusProgram: '',
     balance: 0,
@@ -257,8 +259,7 @@ const ClientsModal: React.FC<UsersModalProps> = ({
         }
       },
       required: true,
-    },
-
+    }, 
     {
       id: 'bonusProgram',
       name: 'bonusProgram',
@@ -278,6 +279,26 @@ const ClientsModal: React.FC<UsersModalProps> = ({
       },
       disabled: true,
     },
+    {
+      id: 'phone',
+      name: 'phone',
+      type: 'tel',
+      value: editedUser.phoneNumber,
+      placeholder: '',
+      autoComplete: 'off',
+      title: 'Телефон',
+      htmlFor: 'phone',
+      onChange: (value: string | boolean | number | Date) => {
+        if (typeof value === 'string') {
+          setEditedUser({
+            ...editedUser,
+            phoneNumber: value,
+          });
+        }
+      },
+      required: true,
+      pattern: '\\+7 \\(\\d{3}\\) \\d{3}-\\d{2}-\\d{2}',
+    }, 
     {
       id: 'userStatus',
       name: 'userStatus',
