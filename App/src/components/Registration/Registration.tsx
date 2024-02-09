@@ -7,6 +7,9 @@ import {
   Alert,
   ActivityIndicator,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from 'navigation/types';
@@ -16,6 +19,8 @@ import FieldInput from 'ui/FieldInput';
 import Calendar from '../Calendar/Calendar';
 import userRegister from 'Redux/thunks/User/reg.api';
 import { TextInputMask } from 'react-native-masked-text';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import UniversalHeader from 'ui/UniversalHeader';
 
 interface IData {
   email?: string;
@@ -212,19 +217,29 @@ export const Registration: FC = () => {
   };
 
   return (
-    <ScrollView contentContainerStyle={{ minHeight: '100%' }}>
+    <SafeAreaView className="bg-white h-full flex-1">
+      <UniversalHeader
+        onPress={() => navigation.goBack()}
+        title="Регистрация"
+      />
+
       {isLoading ? (
         <View className="flex-1 items-center justify-center">
           <ActivityIndicator size="large" color="green" />
         </View>
       ) : (
-        <View className="h-full w-full bg-white">
-          <View className="mx-1 justify-center items-center h-full">
+        <KeyboardAvoidingView
+          className="flex-1"
+          behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 10 : -200}
+        >
+          {/* <ScrollView bounces={false} className="h-full"> */}
+          <View className="justify-center items-center h-full">
             <View className="w-10/12">
               {step === 1 && (
                 <>
-                  <Text className="text-center text-gray-800 text-2xl font-bold mb-2">
-                    Первый шаг регистрации
+                  <Text className="text-center text-gray-800 text-lg font-normal mb-2">
+                    Создание аккаунта
                   </Text>
                   <FieldInput
                     value={data.lastName}
@@ -272,14 +287,36 @@ export const Registration: FC = () => {
                         : ''}
                     </Text>
                   )}
-                  <Button onPress={handleNextStep} title="Далее" />
+                  <View className="mt-1">
+                    <Button onPress={handleNextStep} title="Далее" />
+                  </View>
                 </>
               )}
+
               {step === 2 && (
                 <>
-                  <Text className="text-center text-gray-800 text-2xl font-bold mb-2">
-                    Осталось еще чуть-чуть
+                  <Text className="text-center text-gray-800 text-lg font-normal mb-2">
+                    Осталось ещё чуть-чуть
                   </Text>
+
+                  {/* вернуться назад */}
+                  <View>
+                    <Pressable
+                      className="mx-2 my-1 flex-row items-center justify-center"
+                      onPress={handlePrevStep}
+                    >
+                      <MaterialCommunityIcons
+                        name="arrow-left"
+                        size={15}
+                        color="#71716F"
+                      />
+
+                      <Text className="mx-2 text-gray-800 opacity-70 text-sm text-center">
+                        Вернуться на шаг назад
+                      </Text>
+                    </Pressable>
+                  </View>
+
                   <FieldInput
                     value={data.email}
                     placeholder="Email"
@@ -374,29 +411,30 @@ export const Registration: FC = () => {
                       {errorMessages.passwordCheck}
                     </Text>
                   )}
-                  <View className="mt-2">
-                    <Text className="text-grey-800 text-xs font-normal ml-1 ">
-                      Регистрируясь, вы соглашаетесь с{' '}
-                    </Text>
-                    <TouchableOpacity onPress={handleLegalPolicyPress}>
-                      <Text className="text-lime-600 text-xs font-normal ml-1 underline">
-                      правовой политикой компании
-                      </Text>
-                    </TouchableOpacity>
+                  <View className="mt-1">
+                    <Button
+                      onPress={handleSubmit}
+                      title={`Зарегистрироваться`}
+                    />
                   </View>
 
-                  <Button
-                    onPress={handlePrevStep}
-                    title="Назад"
-                    colors={['bg-red-200', 'bg-lime-300']}
-                  />
-                  <Button onPress={handleSubmit} title={`Зарегистрироваться`} />
+                  <View className="mx-2 mt-4 flex-col items-start">
+                    <Text className="text-gray-800 opacity-60 text-sm font-normal ml-1 ">
+                      Регистрируясь, я соглашаюсь c
+                    </Text>
+                    <Pressable onPress={handleLegalPolicyPress}>
+                      <Text className="text-green-600 text-sm font-normal ml-1 underline">
+                        правовой политикой компании
+                      </Text>
+                    </Pressable>
+                  </View>
                 </>
               )}
             </View>
           </View>
-        </View>
+          {/* </ScrollView> */}
+        </KeyboardAvoidingView>
       )}
-    </ScrollView>
+    </SafeAreaView>
   );
 };
