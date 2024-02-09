@@ -40,7 +40,7 @@ const CheckMail: FC = () => {
   }, []);
 
   const startResendTimer = () => {
-    setSecondsRemaining(15);
+    setSecondsRemaining(180);
     const interval = setInterval(() => {
       setSecondsRemaining((prevSeconds) => {
         if (prevSeconds === 1) {
