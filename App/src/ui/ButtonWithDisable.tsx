@@ -11,7 +11,7 @@ interface IButtonWithDisable {
 const ButtonWithDisable: FC<IButtonWithDisable> = ({
   onPress,
   title,
-  colors = ['bg-green-300', 'bg-gray-300'],
+  colors = ['bg-green-500', 'bg-gray-300'],
   disabled,
 }) => {
   return (
@@ -22,7 +22,7 @@ const ButtonWithDisable: FC<IButtonWithDisable> = ({
         disabled ? colors[1] : colors[0]
       }`}
     >
-      <Text className="text-center text-base">{title}</Text>
+      <Text className="text-white text-center text-base">{title}</Text>
     </Pressable>
   );
 };

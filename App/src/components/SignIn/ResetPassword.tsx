@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -10,10 +10,11 @@ import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch } from 'Redux/hooks';
 import { StackNavigationProp } from 'navigation/types';
 import resetPassword from 'Redux/thunks/User/newPassword.api';
-import Button from 'ui/Button';
 import FieldInput from 'ui/FieldInput';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import UniversalHeader from 'ui/UniversalHeader';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import ButtonWithDisable from 'ui/ButtonWithDisable';
 
 const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
 
@@ -28,6 +29,10 @@ export const ResetPassword: FC = () => {
   const [data, setData] = useState<IResetPassword>({
     email: '',
   });
+
+  const [isResendDisabled, setResendDisabled] = useState<boolean>(false);
+  const [secondsRemaining, setSecondsRemaining] = useState<number>(0);
+
   const handleResetPassword = async (): Promise<void> => {
     if (!data.email) {
       Alert.alert('Ошибка', 'Введите email');
@@ -50,6 +55,7 @@ export const ResetPassword: FC = () => {
             },
           },
         ]);
+        AsyncStorage.setItem('lastSentResetPass', Date.now().toString());
       }
     } catch (error) {
       Alert.alert(
@@ -57,6 +63,41 @@ export const ResetPassword: FC = () => {
         'Данного пользователя не существует или произошла ошибка'
       );
     }
+  };
+
+  useEffect(() => {
+    checkResendAvailability();
+  }, []);
+
+  const checkResendAvailability = async () => {
+    const lastSentResetPass = await AsyncStorage.getItem('lastSentResetPass');
+    console.log('lastSentResetPass', lastSentResetPass);
+    if (lastSentResetPass) {
+      const currentTime = Date.now();
+      const timeDifference = currentTime - parseInt(lastSentResetPass, 10);
+      const minutesPassed = timeDifference / (1000 * 60);
+      if (minutesPassed < 3) {
+        // Если прошло менее трех минут, блокируем повторную отправку
+        setResendDisabled(true);
+        const remainingTime = Math.floor((3 - minutesPassed) * 60);
+        // Оставшееся время в секундах
+        setSecondsRemaining(remainingTime);
+        startResendTimer();
+      }
+    }
+  };
+
+  const startResendTimer = () => {
+    const interval = setInterval(() => {
+      setSecondsRemaining((prevSeconds) => {
+        if (prevSeconds === 1) {
+          clearInterval(interval);
+          setResendDisabled(false);
+          AsyncStorage.removeItem('lastSentResetPass');
+        }
+        return prevSeconds - 1;
+      });
+    }, 1000);
   };
 
   return (
@@ -82,7 +123,21 @@ export const ResetPassword: FC = () => {
               onChange={(value) => setData({ ...data, email: value })}
               keyboardType="email-address"
             />
-            <Button onPress={handleResetPassword} title={`Сбросить пароль`} />
+
+            <ButtonWithDisable
+              title="Сбросить пароль"
+              onPress={handleResetPassword}
+              disabled={isResendDisabled}
+            />
+            {isResendDisabled && (
+              <View className="mt-2 justify-center items-center">
+                <Text className="text-xs font-molmal text-zinc-500">
+                  Возможность повторной отправки через{' '}
+                  {Math.floor(secondsRemaining / 60)} минут{' '}
+                  {secondsRemaining % 60} секунд
+                </Text>
+              </View>
+            )}
           </View>
         </View>
       </KeyboardAvoidingView>
