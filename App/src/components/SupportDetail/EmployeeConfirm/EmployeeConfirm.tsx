@@ -263,15 +263,6 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
                       Для проверки статуса сотрудника воспользуйтесь функцией,
                       позволяющей обновить данные в режиме реального времени.
                     </Text>
-                    {/* <Text
-                      className={`w-full text-zinc-700 font-medium  ${
-                        Platform.OS === 'android' ? 'text-md' : 'text-md'
-                      }
-                      `}
-                    >
-                      Если запрос по-прежнему находится в обработке, то
-                      отправьте повторный запрос попозже.
-                    </Text> */}
                   </View>
 
                   <View>

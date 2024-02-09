@@ -39,18 +39,6 @@ const QuestionAndAnswer = ({ route }: any) => {
     return () => clearTimeout(timeout);
   }, []);
 
-  //   useEffect(() => {
-  //     const fetchData = async () => {
-  //       try {
-  //         await dispatch(getAnswer(questionId));
-  //       } catch (error) {
-  //         console.error(error);
-  //       }
-  //     };
-
-  //     fetchData();
-  //   }, [dispatch, questionId]);
-
   const answerDesk = answer?.description ? (
     <RenderHtml
       source={{

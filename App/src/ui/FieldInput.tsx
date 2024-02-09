@@ -1,5 +1,6 @@
 import {
   NativeSyntheticEvent,
+  Platform,
   TextInput,
   TextInputFocusEventData,
   TextInputProps,
@@ -38,8 +39,9 @@ const FieldInput: FC<IFieldInput> = ({
         secureTextEntry={isSecure}
         autoCapitalize={autoCapitalize}
         keyboardType={keyboardType}
-        multiline={multiline} 
-        className="rounded-xl bg-gray-100 mt-3 p-3 w-full"
+        multiline={multiline}
+        className={`rounded-xl bg-gray-100 mt-3 w-full
+        ${Platform.OS === 'android' ? 'p-2' : 'p-4'}`}
         style={style}
         onFocus={onFocus}
       />

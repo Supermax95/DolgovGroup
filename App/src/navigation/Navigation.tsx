@@ -279,7 +279,7 @@ export const AppNavigator: FC = () => {
       <Stack.Screen
         name="Registration"
         component={Registration}
-        options={{ title: 'Регистрация' }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="AboutApplication"
@@ -289,12 +289,12 @@ export const AppNavigator: FC = () => {
       <Stack.Screen
         name="ResetPassword"
         component={ResetPassword}
-        options={{ title: 'Сброс пароля' }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="CheckMail"
         component={CheckMail}
-        options={{ title: 'Проверка активации' }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="SingleLaw"

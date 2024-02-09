@@ -30,7 +30,7 @@ const Support: FC = () => {
         onPress={() => navigation.goBack()}
         title="Служба поддержки"
       />
-      <ScrollView style={{ flex: 1, width: '100%' }}>
+      <ScrollView style={{ flex: 1, width: '100%' }} bounces={false}>
         <Padding>
           <View className="mb-2 px-2">
             <Text className="text-base font-molmal text-zinc-500">
