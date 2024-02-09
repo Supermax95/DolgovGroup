@@ -16,14 +16,6 @@ import Button from 'ui/Button';
 import sendActivationLink from 'Redux/thunks/User/sendActivationLink.api';
 import UniversalHeader from 'ui/UniversalHeader';
 import { SafeAreaView } from 'react-native-safe-area-context';
-const styleCenter = 'h-full w-full bg-white ';
-
-type IToken =
-  | {
-      accessToken: string;
-      refreshToken: string;
-    }
-  | undefined;
 
 const CheckMail: FC = () => {
   const navigation = useNavigation<TabScreenNavigationProp>();
@@ -44,7 +36,6 @@ const CheckMail: FC = () => {
 
   useEffect(() => {
     setResendDisabled(true);
-    console.log('startResendTimer', isResendDisabled);
     startResendTimer();
   }, []);
 
