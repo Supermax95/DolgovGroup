@@ -10,11 +10,6 @@ import {
 } from 'react-native';
 import { PORT, IP } from '@env';
 
-// export interface ICategory {
-//   id: number;
-//   categoryName: string;
-// }
-
 interface ICardCategory {
   onPress: () => void;
   categoryName: string;

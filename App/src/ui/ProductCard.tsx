@@ -8,9 +8,6 @@ import {
   Dimensions,
   StyleSheet,
 } from 'react-native';
-import { BOX_SHADOW } from 'styles';
-
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 interface IProductCard {
   onPress: () => void;

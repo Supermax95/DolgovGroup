@@ -1,7 +1,6 @@
 import {
   View,
   Text,
-  Image,
   Platform,
   Pressable,
   ActivityIndicator,
@@ -12,21 +11,25 @@ import { Feather } from '@expo/vector-icons';
 import { Svg } from 'react-native-svg';
 import Barcode from 'react-native-barcode-svg';
 
-interface ILargeCard {
-  numberPoints: string;
+interface IBonusCard {
+  onPressBonuses: () => void;
+  onPressBrightness: () => void;
+  numberPoints: number | null;
   barcode: string | undefined;
   isResendDisabled: boolean;
   secondsRemaining: number;
+  isLoading: boolean;
 }
 
-const LargeCard: FC<ILargeCard> = ({
+const BonusCard: FC<IBonusCard> = ({
+  onPressBonuses,
+  onPressBrightness,
   numberPoints,
   barcode,
   isResendDisabled,
   secondsRemaining,
+  isLoading,
 }) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  s;
   return (
     <View
       style={{ ...BOX_SHADOW }}
@@ -63,7 +66,7 @@ const LargeCard: FC<ILargeCard> = ({
               ${Platform.OS === 'android' ? 'right-20' : 'right-24'}`}
         >
           <Pressable
-            onPress={handleGetClientBonuses}
+            onPress={onPressBonuses}
             disabled={isResendDisabled}
             className="text-gray-800 rounded-xl w-full"
           >
@@ -85,7 +88,7 @@ const LargeCard: FC<ILargeCard> = ({
       ></View>
 
       <Pressable
-        onPress={increaseBrightness}
+        onPress={onPressBrightness}
         className="absolute bottom-14 right-24 flex-row space-x-2 items-center  "
       >
         <Text className="text-green-700 font-normal text-sm">
@@ -97,4 +100,4 @@ const LargeCard: FC<ILargeCard> = ({
   );
 };
 
-export default LargeCard;
+export default BonusCard;
