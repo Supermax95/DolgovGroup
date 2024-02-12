@@ -163,6 +163,7 @@ const HomeDetail: FC = () => {
     }
   }, [token, barcode]);
 
+
   // const numberPointsRub = formatPoints(numberPoints || 0);
 
   const insets = useSafeAreaInsets();
@@ -204,28 +205,6 @@ const HomeDetail: FC = () => {
         showsVerticalScrollIndicator={false}
         style={{ flex: 1, width: '100%' }}
       >
-        {/* {isLoading ? (
-          <View className="flex-1 items-center justify-center">
-            <ActivityIndicator size="large" color="green" />
-          </View>
-        ) : (
-          <>
-            <ButtonWithDisable
-              title="Обновить балланс"
-              onPress={handleGetClientBonuses}
-              disabled={isResendDisabled}
-            />
-            {isResendDisabled && (
-              <View className="mt-2 justify-center items-center">
-                <Text className="text-xs font-molmal text-zinc-500">
-                  Возможность повторного обновления через{' '}
-                  {secondsRemaining % 60} секунд
-                </Text>
-              </View>
-            )}
-          </>
-        )}
-
         {/* Бонусная карта */}
         <Padding>
           <View
@@ -249,45 +228,37 @@ const HomeDetail: FC = () => {
               </Text>
             </View>
 
-            {/* {isLoading ? (
-              <View className="flex-1 items-center justify-center">
-                <ActivityIndicator size="large" color="green" />
+            {isResendDisabled ? (
+              <View className="absolute bottom-5 left-12">
+                <Text className="text-xs font-molmal text-zinc-500">
+                  Повторно обновить возмонжо через {secondsRemaining % 60}{' '}
+                  секунд
+                </Text>
               </View>
-            ) : ( */}
-            <>
-              {/* <ButtonWithDisable
-                  title="Обновить балланс"
+            ) : isLoading ? (
+              <View className="absolute bottom-5 right-40">
+                <ActivityIndicator size={25} color="green" />
+              </View>
+            ) : (
+              <View
+                className={`absolute bottom-5
+              ${Platform.OS === 'android' ? 'right-20' : 'right-24'}`}
+              >
+                <Pressable
                   onPress={handleGetClientBonuses}
                   disabled={isResendDisabled}
-                /> */}
-
-              {isResendDisabled ? (
-                <View className="absolute bottom-5 left-12">
-                  <Text className="text-xs font-molmal text-zinc-500">
-                    Повторно обновить возмонжо через {secondsRemaining % 60}{' '}
-                    секунд
-                  </Text>
-                </View>
-              ) : (
-                <View className="absolute bottom-5 right-24">
-                  <Pressable
-                    onPress={handleGetClientBonuses}
-                    disabled={isResendDisabled}
-                    className={`text-gray-800 rounded-xl w-full 
-                `}
+                  className="text-gray-800 rounded-xl w-full"
+                >
+                  <Text
+                    className={` ${
+                      isResendDisabled ? 'text-green-800' : 'text-gray-500'
+                    } text-center text-base`}
                   >
-                    <Text
-                      className={` ${
-                        isResendDisabled ? 'text-green-800' : 'text-gray-500'
-                      } text-center text-base`}
-                    >
-                      Обновить баланс карты
-                    </Text>
-                  </Pressable>
-                </View>
-              )}
-            </>
-            {/* )} */}
+                    Обновить баланс карты
+                  </Text>
+                </Pressable>
+              </View>
+            )}
 
             <View
               className={`
