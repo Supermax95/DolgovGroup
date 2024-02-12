@@ -1,5 +1,5 @@
 import { ScrollView, Text, View } from 'react-native';
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Padding from 'ui/Padding';
 import LargeCard from 'ui/LargeCard';
 import Heading from 'ui/Heading';
@@ -13,11 +13,13 @@ import Barcode from 'react-native-barcode-svg';
 import { BOX_SHADOW } from 'styles';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import getBarcode from 'Redux/thunks/User/barcode.api';
-
+import axios from 'axios';
+import { encode } from 'base-64';
 
 const Home: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
   const dispatch = useAppDispatch();
+  const [numberPoints, setNumberPoints] = useState<number | null>(null);
   const token = useAppSelector<string | undefined>(
     (state) => state.userSlice.token?.refreshToken
   );
@@ -31,7 +33,8 @@ const Home: FC = () => {
   const barcode = useAppSelector<string | undefined>(
     (state) => state.userSlice.user.barcode
   );
-  
+  console.log('=======>', typeof barcode);
+
   function formatPoints(numberPoints: number) {
     if (numberPoints === 0) {
       return '0 баллов';
@@ -50,10 +53,36 @@ const Home: FC = () => {
       return `${numberPoints} баллов`;
     }
   }
+  
+  const handleGetClientBonuses = async () => {
+    const credentials = 'Exchange:Exchange';
+    const base64Credentials = encode(`${credentials}`);
+    try {
+      const response = await axios.get(
+        `http://retail.dolgovagro.ru/rtnagaev/hs/loyaltyservice/getclientbonuses?ClientCardID=${barcode}`,
+        {
+          headers: {
+            Authorization: `Basic ${base64Credentials}`,
+          },
+        }
+      );
 
-  const numberPoints = 15;
+      const bonusCount = response.data?.BonusCount || 0;
+      setNumberPoints(bonusCount);
+      console.log('Ответ на запрос бонусов клиента:=====>', bonusCount);
+    } catch (error) {
+      console.error('Ошибка при запросе бонусов:', error.message);
+    }
+  };
 
-  const numberPointsRub = formatPoints(numberPoints);
+  useEffect(() => {
+    if (token && barcode) {
+      handleGetClientBonuses();
+    }
+  }, [token, barcode]);
+
+  const numberPointsRub = formatPoints(numberPoints || 0);
+
   //console.log(numberPointsRub);
 
   //* боже, хз, что это за код. наверное, надо его пересмотреть и скрол и хединг и пр.
@@ -82,13 +111,15 @@ const Home: FC = () => {
             className="bg-white rounded-2xl p-4 mt-6 w-[97%] h-56 mx-auto"
           >
             <View className="align-items-center">
-          <Svg style={{ transform: [{ scale: 0.6 }] }}>
-                <Barcode value={barcode} format="CODE39" />
+              <Svg
+              // style={{ transform: [{ scale: 0.6 }] }}
+              >
+                <Barcode value={'3200000694903' || ''} format="EAN13" />
               </Svg>
             </View>
-              <Text className="ml-1 text-2xl font-extrabold text-lime-600">
-            {numberPoints}
-          </Text>
+            <Text className="ml-1 text-2xl font-extrabold text-lime-600">
+              {numberPoints}
+            </Text>
           </View>
 
           {/* Example of CODE128 barcode */}

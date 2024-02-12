@@ -196,7 +196,6 @@ const userSlice = createSlice({
       .addCase(getBarcode.fulfilled, (state, action) => {
         state.isLoading = false;
         state.user.barcode = action.payload.barcode;
-        console.log(' state.getBarcode=======>', state.user.barcode);
       })
       .addCase(getBarcode.rejected, (state, action) => {
         state.isLoading = false;
