@@ -14,14 +14,14 @@ type RootStackParamList = {
   ResetPassword: undefined;
   ChangeFullName: undefined;
   ChangeBirthDate: undefined;
-  ChangePhoneNumber:undefined;
+  ChangePhoneNumber: undefined;
   ChangeEmail: undefined;
   ChangePassword: undefined;
   ShopsList: undefined;
   SubcategoryDetail: undefined;
   ProductsCards: undefined;
   SingleProduct: undefined;
-  PromoDetail: undefined;
+  PromoOneDetail: undefined;
   SearchProduct: undefined;
   SingleLaw: undefined;
   SupportMessage: undefined;
