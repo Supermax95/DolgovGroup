@@ -44,8 +44,6 @@ const PromoOneDetail = ({ route }: any) => {
       (state) => state.promotiosSlice.currentPromotion
     ) || ({} as IPromotion);
 
-  console.log('currentPromotionOpen', currentPromotionOpen);
-
   const desc = (
     <RenderHtml
       source={{
@@ -55,7 +53,6 @@ const PromoOneDetail = ({ route }: any) => {
       enableExperimentalMarginCollapsing={true}
     />
   );
-  console.log('desc', desc);
 
   return (
     // <SafeAreaView className={`flex-1 items-center justify-start bg-[#ffff] `}>

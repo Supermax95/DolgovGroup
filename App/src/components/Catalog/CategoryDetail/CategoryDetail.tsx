@@ -28,10 +28,6 @@ function CategoryDetail() {
     (state) => state.categorySlice.data
   );
 
-  // console.log('categoriesCatDet===========>', categories);
-
-  // console.log('subcategoriesCATALDet***********************', subcategories);
-
   const navigateToSubcategoryDetail = (
     categoryId: number,
     categoryName: string

@@ -1,8 +1,16 @@
-import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Platform,
+  Pressable,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, { FC, useEffect, useState } from 'react';
 import Padding from 'ui/Padding';
 import Heading from 'ui/Heading';
-import NewGoods from 'screens/NewGoods/NewGoods';
+import { Feather } from '@expo/vector-icons';
 import UniversalHeader from 'ui/UniversalHeader';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from 'navigation/types';
@@ -30,6 +38,7 @@ const HomeDetail: FC = () => {
     null
   );
   const [secondsRemaining, setSecondsRemaining] = useState<number>(0);
+
   const token = useAppSelector<string | undefined>(
     (state) => state.userSlice.token?.refreshToken
   );
@@ -68,24 +77,27 @@ const HomeDetail: FC = () => {
     (state) => state.userSlice.user.barcode
   );
 
-  function formatPoints(numberPoints: number) {
-    if (numberPoints === 0) {
-      return '0 баллов';
-    }
+  //*функция склоняет баллы
+  //   function formatPoints(numberPoints: number) {
+  //     if (numberPoints === 0) {
+  //       return '0 баллов';
+  //     }
 
-    const lastDigit = numberPoints % 10;
-    const lastTwoDigits = numberPoints % 100;
+  //     const lastDigit = numberPoints % 10;
+  //     const lastTwoDigits = numberPoints % 100;
 
-    if (lastTwoDigits >= 11 && lastTwoDigits <= 19) {
-      return `${numberPoints} баллов`;
-    } else if (lastDigit === 1) {
-      return `${numberPoints} балл`;
-    } else if (lastDigit >= 2 && lastDigit <= 4) {
-      return `${numberPoints} балла`;
-    } else {
-      return `${numberPoints} баллов`;
-    }
-  }
+  //     if (lastTwoDigits >= 11 && lastTwoDigits <= 19) {
+  //       return `${numberPoints} баллов`;
+  //     } else if (lastDigit === 1) {
+  //       return `${numberPoints} балл`;
+  //     } else if (lastDigit >= 2 && lastDigit <= 4) {
+  //       return `${numberPoints} балла`;
+  //     } else {
+  //       return `${numberPoints} баллов`;
+  //     }
+  //   }
+
+  //   const numberPointsRub = formatPoints(numberPoints || 0);
 
   const checkResendAvailability = async () => {
     const lastSentTime = await AsyncStorage.getItem('bonusCheck');
@@ -148,10 +160,8 @@ const HomeDetail: FC = () => {
     }
   }, [token, barcode]);
 
-  const numberPointsRub = formatPoints(numberPoints || 0);
-
   return (
-    <SafeAreaView className="bg-[#f3f4f6] h-full flex-1">
+    <SafeAreaView className="bg-[#f3f4f6]  flex-1">
       <UniversalHeader
         title="Главная"
         // onPressSearch={handleSearchPress}
@@ -163,7 +173,7 @@ const HomeDetail: FC = () => {
         showsVerticalScrollIndicator={false}
         style={{ flex: 1, width: '100%' }}
       >
-        {isLoading ? (
+        {/* {isLoading ? (
           <View className="flex-1 items-center justify-center">
             <ActivityIndicator size="large" color="green" />
           </View>
@@ -183,27 +193,86 @@ const HomeDetail: FC = () => {
               </View>
             )}
           </>
-        )}
-        <TouchableOpacity onPress={increaseBrightness}>
-          <Text>Увеличить яркость</Text>
-        </TouchableOpacity>
+        )} */}
 
         {/* Бонусная карта */}
         <Padding>
           <View
             style={{ ...BOX_SHADOW }}
-            className="bg-white rounded-2xl p-4 mt-6 w-[97%] h-56 mx-auto"
+            className="bg-white rounded-2xl p-4 my-6 w-[95%] h-56 mx-auto relative"
           >
-            <View className="align-items-center">
-              <Svg
-              // style={{ transform: [{ scale: 0.6 }] }}
-              >
+            <View className="mx-2">
+              <Text className=" text-2xl font-extrabold text-lime-600">
+                {numberPoints} ₽
+              </Text>
+            </View>
+
+            <View className="absolute top-5 right-5">
+              <Svg>
                 <Barcode value={barcode || ''} format="EAN13" />
               </Svg>
             </View>
-            <Text className="ml-1 text-2xl font-extrabold text-lime-600">
-              {numberPoints}
-            </Text>
+            <View className="absolute bottom-20 right-6">
+              <Text className={`text-gray-700 text-center text-base`}>
+                {barcode}
+              </Text>
+            </View>
+
+            {/* {isLoading ? (
+              <View className="flex-1 items-center justify-center">
+                <ActivityIndicator size="large" color="green" />
+              </View>
+            ) : ( */}
+            <>
+              {/* <ButtonWithDisable
+                  title="Обновить балланс"
+                  onPress={handleGetClientBonuses}
+                  disabled={isResendDisabled}
+                /> */}
+
+              {isResendDisabled ? (
+                <View className="absolute bottom-5 left-12">
+                  <Text className="text-xs font-molmal text-zinc-500">
+                    Повторно обновить возмонжо через {secondsRemaining % 60}{' '}
+                    секунд
+                  </Text>
+                </View>
+              ) : (
+                <View className="absolute bottom-5 right-24">
+                  <Pressable
+                    onPress={handleGetClientBonuses}
+                    disabled={isResendDisabled}
+                    className={`text-gray-800 rounded-xl w-full 
+                `}
+                  >
+                    <Text
+                      className={` ${
+                        isResendDisabled ? 'text-green-800' : 'text-gray-500'
+                      } text-center text-base`}
+                    >
+                      Обновить баланс карты
+                    </Text>
+                  </Pressable>
+                </View>
+              )}
+            </>
+            {/* )} */}
+
+            <View
+              className={`
+              ${Platform.OS === 'android' ? 'mt-[35%]' : 'mt-[30%]'}
+               py-3 border-b-[1px] border-zinc-200`}
+            ></View>
+
+            <Pressable
+              onPress={increaseBrightness}
+              className="absolute bottom-14 right-24 flex-row space-x-2 items-center  "
+            >
+              <Text className="text-green-700 font-normal text-sm">
+                Увеличить яркость
+              </Text>
+              <Feather name="sun" size={19} color="green" />
+            </Pressable>
           </View>
         </Padding>
 

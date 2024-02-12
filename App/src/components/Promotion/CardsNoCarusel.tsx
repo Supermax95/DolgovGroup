@@ -36,13 +36,10 @@ export default function CardsNoCarusel() {
   const promotions = promotionsAll.filter(
     (promotion) => promotion.carousel === false && promotion.invisible === false
   );
-  console.log('promotionspromotionspromotions', promotions);
 
   const navigateToPromoDetail = (promotionId: number): void => {
     navigation.navigate('PromoOneDetail', { promotionId });
   };
-
-  //! возможно, нужны другие карточки под акции вне карусели, более квадратные
 
   return (
     <ScrollView

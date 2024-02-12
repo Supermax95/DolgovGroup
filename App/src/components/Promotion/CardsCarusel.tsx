@@ -40,7 +40,6 @@ const CardsCarusel = () => {
   const promotions = promotionsAll.filter(
     (promotion) => promotion.carousel === true && promotion.invisible === false
   );
-  console.log('promotionspromotionspromotions', promotions);
 
   const navigateToPromoDetail = (promotionId: number): void => {
     navigation.navigate('PromoOneDetail', { promotionId });
