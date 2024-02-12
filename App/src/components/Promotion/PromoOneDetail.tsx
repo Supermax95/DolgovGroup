@@ -1,18 +1,10 @@
-import {
-  View,
-  Text,
-  SafeAreaView,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Text, SafeAreaView, ScrollView } from 'react-native';
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
-import { PORT, IP } from '@env';
 import RenderHtml from 'react-native-render-html';
 import { useWindowDimensions } from 'react-native';
 import currentPromotion from 'Redux/thunks/Promotion/getcurrentPromotion.api';
 import SinglePromo from 'ui/SinglePromo';
-// import ArrowGoBack from 'ui/ArrowGoBack';
 import UniversalHeader from 'ui/UniversalHeader';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from 'navigation/types';
@@ -28,7 +20,7 @@ export interface IPromotion {
   photo?: string;
 }
 
-const PromoDetail = ({ route }: any) => {
+const PromoOneDetail = ({ route }: any) => {
   const { promotionId } = route.params;
   const { width } = useWindowDimensions();
   const navigation = useNavigation<StackNavigationProp>();
@@ -65,18 +57,9 @@ const PromoDetail = ({ route }: any) => {
   );
   console.log('desc', desc);
 
-  // const reverseDate = (dateString: string): string => {
-  //   if (!dateString) {
-  //     return ''; // or handle the case when dateString is undefined
-  //   }
-
-  //   const [year, month, day] = dateString.split('-');
-  //   return `${day}.${month}.${year}`;
-  // };
-
   return (
-    <SafeAreaView className={`flex-1 items-center justify-start bg-[#ffff] `}>
-      {/* <ArrowGoBack /> */}
+    // <SafeAreaView className={`flex-1 items-center justify-start bg-[#ffff] `}>
+    <SafeAreaView className="bg-[#f3f4f6] h-full flex-1">
       <UniversalHeader onPress={() => navigation.goBack()} />
 
       {/* Scrollable container start */}
@@ -90,6 +73,7 @@ const PromoDetail = ({ route }: any) => {
               description={desc}
               dateStart={currentPromotionOpen.dateStart}
               dateEnd={currentPromotionOpen.dateEnd}
+              carusel={currentPromotionOpen.carousel}
             />
           ) : (
             <View className="flex-row flex-wrap justify-center mt-4">
@@ -99,18 +83,9 @@ const PromoDetail = ({ route }: any) => {
             </View>
           )}
         </View>
-        {/* {isLoading ? (
-    <View className={`flex-1 h-80 items-center justify-center`}>
-      <ActivityIndicator size={'large'} color={'teal'} />
-    </View>
-  ) : ( */}
-
-        {/* // feeds={filtered || filtered?.length > 0 ? filtered : feeds?.feeds}
-  // />
-  )} */}
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-export default PromoDetail;
+export default PromoOneDetail;

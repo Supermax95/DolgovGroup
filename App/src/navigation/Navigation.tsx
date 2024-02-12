@@ -36,7 +36,7 @@ import getProfileInfo from 'Redux/thunks/Profile/profileInfo.api';
 import getPromotions from 'Redux/thunks/Promotion/getPromotion.api';
 // import Search from 'ui/Search';
 import SingleLaw from 'components/UserProfile/AboutApplication/SingleLaw';
-import PromoDetail from 'components/Promotion/PromoDetail';
+import PromoOneDetail from 'components/Promotion/PromoOneDetail';
 import ShopsList from 'components/ShopsDetail/ShopsList';
 import MarketMap from 'components/ShopsDetail/MarketMap';
 import SupportMessage from 'components/SupportDetail/SupportMessage/SupportMessage';
@@ -226,8 +226,8 @@ export const AppNavigator: FC = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="PromoDetail"
-        component={PromoDetail}
+        name="PromoOneDetail"
+        component={PromoOneDetail}
         options={{ headerShown: false }}
       />
       <Stack.Screen

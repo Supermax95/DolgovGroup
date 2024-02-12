@@ -52,10 +52,14 @@ function CategoryDetail() {
       />
 
       {/* Scrollable container start */}
-      <ScrollView style={{ flex: 1, width: '100%' }}>
+      <ScrollView
+        alwaysBounceVertical
+        showsVerticalScrollIndicator={false}
+        style={{ flex: 1, width: '100%' }}
+      >
         {/* акции вне карусели */}
         <View className="bg-green-100">
-          <Heading title="Рекомендуем" />
+          <Heading title="Акции вне карусели" />
           <CardsNoCarusel />
         </View>
 
