@@ -44,7 +44,6 @@ const PromoOneDetail = ({ route }: any) => {
       (state) => state.promotiosSlice.currentPromotion
     ) || ({} as IPromotion);
 
-  console.log('currentPromotionOpen', currentPromotionOpen);
 
   const desc = (
     <RenderHtml
