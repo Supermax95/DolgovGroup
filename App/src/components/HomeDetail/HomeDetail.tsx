@@ -27,6 +27,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import * as Brightness from 'expo-brightness';
 import { encode } from 'base-64';
+import { StatusBar } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const HomeDetail: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
@@ -160,8 +163,30 @@ const HomeDetail: FC = () => {
     }
   }, [token, barcode]);
 
+
+  const numberPointsRub = formatPoints(numberPoints || 0);
+
+  const insets = useSafeAreaInsets();
+
   return (
-    <SafeAreaView className="bg-[#f3f4f6]  flex-1">
+    // <SafeAreaView className="bg-[#f3f4f6] h-full flex-1" >
+  //   <View
+  //   style={{
+  //     flex: 1,
+  //     backgroundColor: '#f3f4f6',
+  //     paddingBottom: Platform.OS === 'ios' ? 0 : insets.bottom,
+  //   }}
+  // >
+      <LinearGradient
+        colors={['#00FF00', '#FFFFFF']}
+        style={{
+          flex: 1,
+          paddingBottom: Platform.OS === 'ios' ? 0 : insets.bottom,
+        }}
+      >
+          <StatusBar backgroundColor='#f3f4f6' barStyle="dark-content" />
+
+    {Platform.OS === 'ios' && <SafeAreaView style={{ flex: 0, backgroundColor: '#f3f4f6' }} />}
       <UniversalHeader
         title="Главная"
         // onPressSearch={handleSearchPress}
@@ -193,7 +218,7 @@ const HomeDetail: FC = () => {
               </View>
             )}
           </>
-        )} */}
+        )}
 
         {/* Бонусная карта */}
         <Padding>
@@ -293,7 +318,8 @@ const HomeDetail: FC = () => {
           <CardsNoCarusel />
         </View>
       </ScrollView>
-    </SafeAreaView>
+      </LinearGradient>
+      // </View>
   );
 };
 

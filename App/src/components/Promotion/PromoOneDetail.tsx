@@ -44,6 +44,7 @@ const PromoOneDetail = ({ route }: any) => {
       (state) => state.promotiosSlice.currentPromotion
     ) || ({} as IPromotion);
 
+
   const desc = (
     <RenderHtml
       source={{
