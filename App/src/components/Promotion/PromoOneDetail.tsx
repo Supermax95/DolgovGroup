@@ -54,7 +54,6 @@ const PromoOneDetail = ({ route }: any) => {
       enableExperimentalMarginCollapsing={true}
     />
   );
-  console.log('desc', desc);
 
   return (
     // <SafeAreaView className={`flex-1 items-center justify-start bg-[#ffff] `}>
