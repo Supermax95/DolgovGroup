@@ -28,6 +28,7 @@ import * as Brightness from 'expo-brightness';
 import { encode } from 'base-64';
 import { StatusBar } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const HomeDetail: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
@@ -163,13 +164,20 @@ const HomeDetail: FC = () => {
 
   return (
     // <SafeAreaView className="bg-[#f3f4f6] h-full flex-1" >
-    <View
-    style={{
-      flex: 1,
-      backgroundColor: '#f3f4f6',
-      paddingBottom: Platform.OS === 'ios' ? 0 : insets.bottom,
-    }}
-  >
+  //   <View
+  //   style={{
+  //     flex: 1,
+  //     backgroundColor: '#f3f4f6',
+  //     paddingBottom: Platform.OS === 'ios' ? 0 : insets.bottom,
+  //   }}
+  // >
+      <LinearGradient
+        colors={['#00FF00', '#FFFFFF']}
+        style={{
+          flex: 1,
+          paddingBottom: Platform.OS === 'ios' ? 0 : insets.bottom,
+        }}
+      >
           <StatusBar backgroundColor='#f3f4f6' barStyle="dark-content" />
 
     {Platform.OS === 'ios' && <SafeAreaView style={{ flex: 0, backgroundColor: '#f3f4f6' }} />}
@@ -205,9 +213,6 @@ const HomeDetail: FC = () => {
             )}
           </>
         )}
-        <TouchableOpacity onPress={increaseBrightness}>
-          <Text>Увеличить яркость</Text>
-        </TouchableOpacity>
 
         {/* Бонусная карта */}
         <Padding>
@@ -215,6 +220,7 @@ const HomeDetail: FC = () => {
             style={{ ...BOX_SHADOW }}
             className="bg-white rounded-2xl p-4 mt-6 w-[97%] h-56 mx-auto"
           >
+ 
             <View className="align-items-center">
               <Svg
               // style={{ transform: [{ scale: 0.6 }] }}
@@ -245,7 +251,8 @@ const HomeDetail: FC = () => {
           <CardsNoCarusel />
         </View>
       </ScrollView>
-      </View>
+      </LinearGradient>
+      // </View>
   );
 };
 
