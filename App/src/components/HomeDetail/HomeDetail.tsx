@@ -163,30 +163,36 @@ const HomeDetail: FC = () => {
     }
   }, [token, barcode]);
 
-
-  const numberPointsRub = formatPoints(numberPoints || 0);
+  // const numberPointsRub = formatPoints(numberPoints || 0);
 
   const insets = useSafeAreaInsets();
 
   return (
     // <SafeAreaView className="bg-[#f3f4f6] h-full flex-1" >
-  //   <View
-  //   style={{
-  //     flex: 1,
-  //     backgroundColor: '#f3f4f6',
-  //     paddingBottom: Platform.OS === 'ios' ? 0 : insets.bottom,
-  //   }}
-  // >
-      <LinearGradient
-        colors={['#00FF00', '#FFFFFF']}
-        style={{
-          flex: 1,
-          paddingBottom: Platform.OS === 'ios' ? 0 : insets.bottom,
-        }}
-      >
-          <StatusBar backgroundColor='#f3f4f6' barStyle="dark-content" />
+    //   <View
+    //   style={{
+    //     flex: 1,
+    //     backgroundColor: '#f3f4f6',
+    //     paddingBottom: Platform.OS === 'ios' ? 0 : insets.bottom,
+    //   }}
+    // >
+    <LinearGradient
+    colors={['#C0FFA0', '#FFFFFF', '#FFFFFF', '#C0FFA0']}  // Увеличено значение зеленого цвета
+    start={{ x: 0, y: 0 }}
+    end={{ x: 1, y: 1 }}
+    locations={[0, 0.25, 0.75, 1]} // Настроены распределение цветов
+    style={{
+      alignItems: 'center',
+      justifyContent: 'center',
+      flex: 1,
+      paddingBottom: Platform.OS === 'ios' ? 0 : insets.bottom,
+    }}
+  >
+      <StatusBar backgroundColor="#f3f4f6" barStyle="dark-content" />
 
-    {Platform.OS === 'ios' && <SafeAreaView style={{ flex: 0, backgroundColor: '#f3f4f6' }} />}
+      {Platform.OS === 'ios' && (
+        <SafeAreaView style={{ flex: 0, backgroundColor: '#f3f4f6' }} />
+      )}
       <UniversalHeader
         title="Главная"
         // onPressSearch={handleSearchPress}
@@ -318,8 +324,8 @@ const HomeDetail: FC = () => {
           <CardsNoCarusel />
         </View>
       </ScrollView>
-      </LinearGradient>
-      // </View>
+    </LinearGradient>
+    // </View>
   );
 };
 
