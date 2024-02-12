@@ -12,6 +12,7 @@ const ApiError = require('../middlewares/error-middleware');
 const tokenService = require('./token-service');
 const axios = require('axios');
 const path = require('path');
+const { log } = require('console');
 const fs = require('fs').promises;
 
 class UserService {
@@ -160,13 +161,44 @@ class UserService {
       }
 
       // Функция для генерации уникального штрихкода
+      // async function generateUniqueBarcode() {
+      //   const minBarcode = 3200000000001;
+      //   const maxBarcode = 3200000999999;
+      //   const newBarcode =
+      //     Math.floor(Math.random() * (maxBarcode - minBarcode + 1)) +
+      //     minBarcode;
+      //   return newBarcode.toString();
+      // }
+
       async function generateUniqueBarcode() {
-        const minBarcode = 3200000000001;
-        const maxBarcode = 3200000999999;
+        const minBarcode = 320000000000;
+        const maxBarcode = 320000099999;
+
+        // Генерируем случайный штрихкод в основном диапазоне
         const newBarcode =
           Math.floor(Math.random() * (maxBarcode - minBarcode + 1)) +
           minBarcode;
-        return newBarcode.toString();
+
+        // Преобразовываем штрихкод в строку и добавляем контрольную цифру
+        const barcodeWithChecksum = `${newBarcode}${calculateEAN13Checksum(
+          newBarcode
+        )}`;
+
+        return barcodeWithChecksum;
+      }
+
+      // Функция для расчета контрольной цифры EAN-13
+      function calculateEAN13Checksum(barcode) {
+        const digits = barcode.toString().split('').map(Number);
+
+        let sum = 0;
+        for (let i = digits.length - 1; i >= 0; i--) {
+          sum += i % 2 === 0 ? digits[i] : digits[i] * 3;
+        }
+
+        const checksum = (10 - (sum % 10)) % 10;
+
+        return checksum;
       }
 
       // Функция для проверки существования штрихкода в массиве пользователей
@@ -231,8 +263,22 @@ class UserService {
         user.barcode = uniqueBarcode;
       }
       user.isActivated = true;
-      //!!!ЭТО 1С не трогать 
-      //{retailServer}/{retailDatabase}/hs/loyaltyservice/issueclientcard?Phone={phoneNumber}&Email={email}&Client={clientFullName}&DateOfBirth={dateOfBirth}&ClientCardID={barcode}
+
+      //!!!ЭТО 1С не трогать
+      // {retailServer}/{retailDatabase}/hs/loyaltyservice/issueclientcard?Phone={phoneNumber}&Email={email}&Client={clientFullName}&DateOfBirth={dateOfBirth}&ClientCardID={barcode}
+      function formatBirthDate(inputDate) {
+        const dateParts = inputDate.split('-');
+        if (dateParts.length === 3) {
+          const [year, month, day] = dateParts;
+          const formattedDate = `${day}.${month}.${year}`;
+          return formattedDate;
+        } else {
+          throw new Error('Некорректный формат даты.');
+        }
+      }
+
+      const formattedBirthDate = formatBirthDate(user.birthDate);
+
       // const credentials = 'Exchange:Exchange';
       // const base64Credentials = Buffer.from(credentials).toString('base64');
       // await axios.post(
@@ -240,7 +286,7 @@ class UserService {
       //     '+7' + user.phoneNumber
       //   }&Email=${user.email}&Client=${encodeURIComponent(
       //     `${user.lastName} ${user.firstName} ${user.middleName}`
-      //   )}&DateOfBirth=${encodeURIComponent(user.birthDate)}&ClientCardID=${
+      //   )}&DateOfBirth=${encodeURIComponent(formattedBirthDate)}&ClientCardID=${
       //     user.barcode
       //   }`,
       //   {},
