@@ -71,7 +71,7 @@ const Home: FC = () => {
       setNumberPoints(bonusCount);
       console.log('Ответ на запрос бонусов клиента:=====>', bonusCount);
     } catch (error) {
-      console.error('Ошибка при запросе бонусов:', error.message);
+      console.error('Ошибка при запросе бонусов');
     }
   };
 
