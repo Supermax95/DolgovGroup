@@ -59,31 +59,29 @@ const PromoOneDetail = ({ route }: any) => {
 
   return (
     // <SafeAreaView className={`flex-1 items-center justify-start bg-[#ffff] `}>
-    <SafeAreaView className="bg-[#f3f4f6] h-full flex-1">
+    <SafeAreaView className="bg-white h-full flex-1">
       <UniversalHeader onPress={() => navigation.goBack()} />
 
       {/* Scrollable container start */}
-      <ScrollView style={{ flex: 1, width: '100%' }}>
-        <View className="flex-col flex-wrap justify-center">
-          {currentPromotionOpen ? (
-            <SinglePromo
-              key={currentPromotionOpen.id}
-              title={currentPromotionOpen.title}
-              image={currentPromotionOpen.photo}
-              description={desc}
-              dateStart={currentPromotionOpen.dateStart}
-              dateEnd={currentPromotionOpen.dateEnd}
-              carusel={currentPromotionOpen.carousel}
-            />
-          ) : (
-            <View className="flex-row flex-wrap justify-center mt-4">
-              <Text className="text-gray-600 font-medium text-lg">
-                Продукт отсутстует
-              </Text>
-            </View>
-          )}
+      {currentPromotionOpen ? (
+        <ScrollView style={{ flex: 1, width: '100%' }}>
+          <SinglePromo
+            key={currentPromotionOpen.id}
+            title={currentPromotionOpen.title}
+            image={currentPromotionOpen.photo}
+            description={desc}
+            dateStart={currentPromotionOpen.dateStart}
+            dateEnd={currentPromotionOpen.dateEnd}
+            carusel={currentPromotionOpen.carousel}
+          />
+        </ScrollView>
+      ) : (
+        <View className="flex-row flex-wrap justify-center mt-4">
+          <Text className="text-gray-600 font-medium text-lg">
+            Продукт отсутстует
+          </Text>
         </View>
-      </ScrollView>
+      )}
     </SafeAreaView>
   );
 };

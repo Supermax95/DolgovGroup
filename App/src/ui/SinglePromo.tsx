@@ -94,17 +94,12 @@ const SinglePromo: FC<ISinglePromo> = ({
                 </Text>
               </View>
             )}
-            <View className="space-y-2">
-              <View className={`flex items-start justify-start w-full`}>
-                <Text className={`text-lg font-bold text-gray-800`}>
-                  {title}
-                </Text>
-              </View>
+
+            <View className={`flex items-start justify-start w-full`}>
+              <Text className={`text-lg font-bold text-gray-800`}>{title}</Text>
             </View>
 
-            <SafeAreaView
-              className={`mt-6 flex-col items-center justify-between w-full`}
-            >
+            <SafeAreaView className="flex-col items-center justify-between w-full">
               <View className={`flex items-start justify-start w-full`}>
                 {description}
               </View>
@@ -163,17 +158,12 @@ const SinglePromo: FC<ISinglePromo> = ({
                 </Text>
               </View>
             )}
-            <View className="space-y-2">
-              <View className={`flex items-start justify-start w-full`}>
-                <Text className={`text-lg font-bold text-gray-800`}>
-                  {title}
-                </Text>
-              </View>
+
+            <View className={`flex items-start justify-start w-full`}>
+              <Text className={`text-lg font-bold text-gray-800`}>{title}</Text>
             </View>
 
-            <SafeAreaView
-              className={`mt-6 flex-col items-center justify-between w-full`}
-            >
+            <SafeAreaView className="flex-col items-center justify-between w-full">
               <View className={`flex items-start justify-start w-full`}>
                 {description}
               </View>

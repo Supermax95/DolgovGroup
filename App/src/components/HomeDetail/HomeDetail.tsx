@@ -17,7 +17,7 @@ import CardsCarusel from 'components/Promotion/CardsCarusel';
 import ButtonWithDisable from 'ui/ButtonWithDisable';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-// import { encode } from 'base-64';
+import { encode } from 'base-64';
 
 const HomeDetail: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
