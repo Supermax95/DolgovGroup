@@ -279,23 +279,23 @@ class UserService {
 
       const formattedBirthDate = formatBirthDate(user.birthDate);
 
-      // const credentials = 'Exchange:Exchange';
-      // const base64Credentials = Buffer.from(credentials).toString('base64');
-      // await axios.post(
-      //   `http://retail.dolgovagro.ru/rtnagaev/hs/loyaltyservice/issueclientcard?Phone=${
-      //     '+7' + user.phoneNumber
-      //   }&Email=${user.email}&Client=${encodeURIComponent(
-      //     `${user.lastName} ${user.firstName} ${user.middleName}`
-      //   )}&DateOfBirth=${encodeURIComponent(formattedBirthDate)}&ClientCardID=${
-      //     user.barcode
-      //   }`,
-      //   {},
-      //   {
-      //     headers: {
-      //       Authorization: `Basic ${base64Credentials}`,
-      //     },
-      //   }
-      // );
+      const credentials = 'Exchange:Exchange';
+      const base64Credentials = Buffer.from(credentials).toString('base64');
+      await axios.post(
+        `http://retail.dolgovagro.ru/rtnagaev/hs/loyaltyservice/issueclientcard?Phone=${
+          '+7' + user.phoneNumber
+        }&Email=${user.email}&Client=${encodeURIComponent(
+          `${user.lastName} ${user.firstName} ${user.middleName}`
+        )}&DateOfBirth=${encodeURIComponent(formattedBirthDate)}&ClientCardID=${
+          user.barcode
+        }`,
+        {},
+        {
+          headers: {
+            Authorization: `Basic ${base64Credentials}`,
+          },
+        }
+      );
 
       await user.save();
     } catch (error) {
