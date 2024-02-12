@@ -1,4 +1,4 @@
-import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
+import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import React, { FC, useEffect, useState } from 'react';
 import Padding from 'ui/Padding';
 import Heading from 'ui/Heading';
@@ -17,6 +17,7 @@ import CardsCarusel from 'components/Promotion/CardsCarusel';
 import ButtonWithDisable from 'ui/ButtonWithDisable';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import * as Brightness from 'expo-brightness';
 import { encode } from 'base-64';
 
 const HomeDetail: FC = () => {
@@ -25,10 +26,37 @@ const HomeDetail: FC = () => {
   const [numberPoints, setNumberPoints] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isResendDisabled, setResendDisabled] = useState<boolean>(false);
+  const [originalBrightness, setOriginalBrightness] = useState<number | null>(
+    null
+  );
   const [secondsRemaining, setSecondsRemaining] = useState<number>(0);
   const token = useAppSelector<string | undefined>(
     (state) => state.userSlice.token?.refreshToken
   );
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await Brightness.requestPermissionsAsync();
+      if (status === 'granted') {
+        const initialBrightness = await Brightness.getSystemBrightnessAsync();
+        setOriginalBrightness(initialBrightness);
+      }
+    })();
+  }, []);
+
+  const increaseBrightness = async () => {
+    const { status } = await Brightness.requestPermissionsAsync();
+    if (status === 'granted') {
+      try {
+        await Brightness.setBrightnessAsync(1.0);
+        setTimeout(async () => {
+          await Brightness.setBrightnessAsync(originalBrightness || 0.5);
+        }, 10000);
+      } catch (error) {
+        console.error('Ошибка при установке яркости:', error);
+      }
+    }
+  };
 
   useEffect(() => {
     if (token) {
@@ -156,6 +184,9 @@ const HomeDetail: FC = () => {
             )}
           </>
         )}
+        <TouchableOpacity onPress={increaseBrightness}>
+          <Text>Увеличить яркость</Text>
+        </TouchableOpacity>
 
         {/* Бонусная карта */}
         <Padding>
