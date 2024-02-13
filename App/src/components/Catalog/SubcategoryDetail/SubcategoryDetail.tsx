@@ -90,8 +90,7 @@ const SubcategoryDetail = ({ route }: any) => {
             <Padding>
               <Pressable
                 onPress={() => navigateToProductDetailAll(subcategoryIdArray)}
-                // className={`py-4 flex-row justify-between ${tailwindClass}`}
-                className={`px-2 py-3 flex-row border-b-[1px] border-gray-100`}
+                className="px-2 py-3 flex-row border-b-[1px] border-gray-100"
               >
                 <View className="w-7">
                   <MaterialCommunityIcons
