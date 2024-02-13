@@ -178,18 +178,18 @@ const HomeDetail: FC = () => {
     //   }}
     // >
     <LinearGradient
-      colors={['#C0FFA0', '#FFFFFF', '#FFFFFF', '#C0FFA0']} // Увеличено значение зеленого цвета
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-      locations={[0, 0.25, 0.75, 1]} // Настроены распределение цветов
-      style={{
-        alignItems: 'center',
-        justifyContent: 'center',
-        flex: 1,
-        paddingBottom: Platform.OS === 'ios' ? 0 : insets.bottom,
-      }}
-    >
-      <StatusBar backgroundColor="#f3f4f6" barStyle="dark-content" />
+    colors={['#f3f4f6', '#808080']}
+    start={{ x: 0, y: 0 }}
+    end={{ x: 1, y: 1 }}
+    style={{
+      alignItems: 'center',
+      justifyContent: 'center',
+      flex: 1,
+      height: '100%',
+      paddingBottom: Platform.OS === 'ios' ? 0 : insets.bottom,
+    }}
+  >
+      {/* <StatusBar backgroundColor="#FFFF" barStyle="dark-content" /> */}
 
       {Platform.OS === 'ios' && (
         <SafeAreaView style={{ flex: 0, backgroundColor: '#f3f4f6' }} />
