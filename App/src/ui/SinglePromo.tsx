@@ -20,7 +20,7 @@ interface ISinglePromo {
 }
 
 const screenWidth = Math.round(Dimensions.get('window').width);
-const cardWidth = screenWidth - 50;
+const cardWidth = screenWidth - 40;
 const cardHeight = 200;
 
 const SinglePromo: FC<ISinglePromo> = ({
@@ -48,7 +48,7 @@ const SinglePromo: FC<ISinglePromo> = ({
         <>
           <View
             style={{
-              marginLeft: 25,
+              marginLeft: 20,
               marginTop: 44,
             }}
           >

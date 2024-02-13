@@ -12,6 +12,7 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   Platform,
+  ImageBackground,
 } from 'react-native';
 import { useAppSelector, useAppDispatch } from 'Redux/hooks';
 import { StackNavigationProp, TabScreenNavigationProp } from 'navigation/types';
@@ -22,6 +23,7 @@ import FieldInput from 'ui/FieldInput';
 import UniversalHeader from 'ui/UniversalHeader';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Image } from 'react-native-svg';
 
 interface IData {
   email: string;
@@ -103,7 +105,14 @@ const SignIn: FC = () => {
 
   return (
     <>
-      <SafeAreaView className="bg-white h-full flex-1">
+      {/* <ImageBackground
+        // source={require('../../assets/absrac.jpg')}
+        source={{
+          uri: 'https://i.pinimg.com/564x/cb/31/f3/cb31f356e257de14263e93dbb72ff319.jpg',
+        }}
+        style={{ width: '100%', height: '100%' }}
+      > */}
+      <SafeAreaView className="z-50  flex-1">
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
@@ -177,6 +186,7 @@ const SignIn: FC = () => {
           {/* </LinearGradient> */}
         </KeyboardAvoidingView>
       </SafeAreaView>
+      {/* </ImageBackground> */}
     </>
   );
 };

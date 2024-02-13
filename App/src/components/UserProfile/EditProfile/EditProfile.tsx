@@ -42,6 +42,7 @@ const EditProfile: FC = () => {
         >
           {profile.lastName} {profile.firstName} {profile.middleName}
         </FieldEditProfile>
+
         <FieldEditProfile
           onPress={() => navigation.navigate('ChangeBirthDate')}
           title="Дата рождения"
@@ -50,23 +51,26 @@ const EditProfile: FC = () => {
             ? format(new Date(profile.birthDate), 'dd.MM.yyyy')
             : 'Не указана'}
         </FieldEditProfile>
+
+        <FieldEditProfile
+          onPress={() => navigation.navigate('ChangePhoneNumber')}
+          title="Телефонный номер"
+        >
+          {formattedPhoneNumber}
+        </FieldEditProfile>
+
         <FieldEditProfile
           onPress={() => navigation.navigate('ChangeEmail')}
           title="Email"
         >
           {profile.email}
         </FieldEditProfile>
+
         <FieldEditProfile
           onPress={() => navigation.navigate('ChangePassword')}
           title="Пароль"
         >
           Изменить пароль
-        </FieldEditProfile>
-        <FieldEditProfile
-          onPress={() => navigation.navigate('ChangePhoneNumber')}
-          title="Телефонный номер"
-        >
-          {formattedPhoneNumber}
         </FieldEditProfile>
       </Padding>
     </SafeAreaView>

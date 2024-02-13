@@ -13,7 +13,6 @@ import { SafeAreaView } from 'react-native-safe-area-context'; // Обновле
 const Profile: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
   const dispatch = useAppDispatch();
-  const userId = useAppSelector<number>((state) => state.userSlice.user.id);
   const firstName = useAppSelector<string>(
     (state) => state.profileSlice.firstName
   );
@@ -38,9 +37,11 @@ const Profile: FC = () => {
 
   return (
     <SafeAreaView className="bg-white h-full flex-1">
+      <UniversalHeader title="Профиль" />
+
       <Padding>
         <View className="mt-4 mb-2">
-          <Text className="text-center text-xl font-bold text-zinc-500">
+          <Text className="text-center text-lg font-bold text-zinc-500">
             Добро пожаловать, {firstName}!
           </Text>
         </View>
