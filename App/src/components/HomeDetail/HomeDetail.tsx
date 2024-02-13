@@ -1,40 +1,26 @@
-import {
-  ActivityIndicator,
-  Animated,
-  Platform,
-  Pressable,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { ActivityIndicator, Platform, ScrollView, View } from 'react-native';
 import React, { FC, useEffect, useState } from 'react';
 import Padding from 'ui/Padding';
 import Heading from 'ui/Heading';
-import { Feather } from '@expo/vector-icons';
 import UniversalHeader from 'ui/UniversalHeader';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from 'navigation/types';
+// import { useNavigation } from '@react-navigation/native';
+// import { StackNavigationProp } from 'navigation/types';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Svg } from 'react-native-svg';
-import Barcode from 'react-native-barcode-svg';
-import { BOX_SHADOW } from 'styles';
+
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import getBarcode from 'Redux/thunks/User/barcode.api';
 import CardsNoCarusel from 'components/Promotion/CardsNoCarusel';
 import CardsCarusel from 'components/Promotion/CardsCarusel';
-import ButtonWithDisable from 'ui/ButtonWithDisable';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import * as Brightness from 'expo-brightness';
 import { encode } from 'base-64';
-import { StatusBar } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import BonusCard from 'ui/BonusCard';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const HomeDetail: FC = () => {
-  const navigation = useNavigation<StackNavigationProp>();
+  // const navigation = useNavigation<StackNavigationProp>();
   const dispatch = useAppDispatch();
   const [numberPoints, setNumberPoints] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -168,8 +154,6 @@ const HomeDetail: FC = () => {
   // const numberPointsRub = formatPoints(numberPoints || 0);
 
   const insets = useSafeAreaInsets();
-  // const AnimatedLinearGradient =
-  //   Animated.createAnimatedComponent(LinearGradient);
 
   return (
     <>

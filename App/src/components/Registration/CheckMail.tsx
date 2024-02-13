@@ -1,13 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Alert,
-  KeyboardAvoidingView,
-  Platform,
-  Pressable,
-} from 'react-native';
+import { View, Text, Alert, Pressable } from 'react-native';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { TabScreenNavigationProp } from 'navigation/types';
 import userActivate from 'Redux/thunks/User/activated.api';
@@ -56,7 +48,7 @@ const CheckMail: FC = () => {
     try {
       const result = await dispatch(userActivate({ userId, force: true }));
       if (result.meta.requestStatus === 'fulfilled') {
-        navigation.navigate('FooterTabs');
+        navigation.navigate('Home');
       } else {
         Alert.alert('Аккаунт не активирован');
         // setActivationMessage('Аккаунт не активирован, проверьте почту/спам.');
