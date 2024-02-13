@@ -29,7 +29,7 @@ const Profile: FC = () => {
   const handleLogout = async (): Promise<void> => {
     try {
       await dispatch(userLogout({ token }));
-      navigation.navigate('Auth');
+      navigation.navigate('SignIn');
     } catch (error) {
       console.error('Ошибка при выходе:', error);
     }
