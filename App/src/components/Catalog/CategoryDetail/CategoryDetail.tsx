@@ -7,6 +7,7 @@ import CardCategory from 'ui/CardCategory';
 import Heading from 'ui/Heading';
 import CardsNoCarusel from 'components/Promotion/CardsNoCarusel';
 import UniversalHeader from 'ui/UniversalHeader';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export interface ICategory {
   id: number;
@@ -47,59 +48,51 @@ function CategoryDetail() {
         onPressSearch={handleSearchPress}
       />
 
-      {/* Scrollable container start */}
-      <ScrollView
-        alwaysBounceVertical
-        showsVerticalScrollIndicator={false}
-        style={{ flex: 1, width: '100%' }}
+      <LinearGradient
+        colors={['#FAF9F9', '#FAFAFA', '##F5F5F5']}
+        className="flex-1"
       >
-        {/* акции вне карусели */}
-        <View className="bg-green-100">
-          <Heading title="Акции вне карусели" />
-          <CardsNoCarusel />
-        </View>
-
-        {/* Каталог */}
-        <View>
-          <Heading title="Каталог" />
-          {categories.length ? (
-            <View className="flex-row flex-wrap justify-center">
-              {categories.map((category) => (
-                <CardCategory
-                  key={category.id}
-                  onPress={() =>
-                    navigateToSubcategoryDetail(
-                      category.id,
-                      category.categoryName
-                    )
-                  }
-                  categoryName={category.categoryName}
-                  imageCategory={category.img}
-                />
-              ))}
-            </View>
-          ) : (
-            <View className="flex-row flex-wrap justify-center">
-              <Text className="text-gray-600 font-medium text-lg mt-4">
-                Каталог пуст
-              </Text>
-            </View>
-          )}
-        </View>
-        {/* <View className="flex-row flex-wrap justify-center">
-            <CardCategory categoryName imageProduct />
+        {/* Scrollable container start */}
+        <ScrollView
+          alwaysBounceVertical
+          showsVerticalScrollIndicator={false}
+          style={{ flex: 1, width: '100%' }}
+        >
+          {/* акции вне карусели */}
+          <View className="py-2">
+            <Heading title="Акции вне карусели" />
+            <CardsNoCarusel />
           </View>
-        </View> */}
-        {/* {isLoading ? (
-      <View className={`flex-1 h-80 items-center justify-center`}>
-        <ActivityIndicator size={'large'} color={'teal'} />
-      </View>
-    ) : ( */}
 
-        {/* // feeds={filtered || filtered?.length > 0 ? filtered : feeds?.feeds}
-    // />
-    )} */}
-      </ScrollView>
+          {/* Каталог */}
+          <View className="my-4 py-4 flex-1 rounded-3xl bg-white">
+            <Heading title="Каталог" />
+            {categories.length ? (
+              <View className="flex-row flex-wrap justify-center">
+                {categories.map((category) => (
+                  <CardCategory
+                    key={category.id}
+                    onPress={() =>
+                      navigateToSubcategoryDetail(
+                        category.id,
+                        category.categoryName
+                      )
+                    }
+                    categoryName={category.categoryName}
+                    imageCategory={category.img}
+                  />
+                ))}
+              </View>
+            ) : (
+              <View className="flex-row flex-wrap justify-center">
+                <Text className="text-gray-600 font-medium text-lg mt-4">
+                  Каталог пуст
+                </Text>
+              </View>
+            )}
+          </View>
+        </ScrollView>
+      </LinearGradient>
     </SafeAreaView>
   );
 }

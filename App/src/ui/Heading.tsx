@@ -8,7 +8,7 @@ interface IHeading {
 const Heading: FC<IHeading> = ({ title }) => {
   return (
     <View className="px-5 flex flex-row justify-start">
-      <Text className="text-lg font-bold text-slate-800">{title}</Text>
+      <Text className="text-base font-bold text-slate-800">{title}</Text>
     </View>
   );
 };

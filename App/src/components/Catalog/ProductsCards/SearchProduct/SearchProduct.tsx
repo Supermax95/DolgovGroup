@@ -1,17 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Pressable,
-  TextInput,
-  Modal,
-  Text,
-  Switch,
-  ScrollView,
-  SafeAreaView,
-  Animated,
-  PanResponder,
-  Platform,
-} from 'react-native';
+import { View, Text, ScrollView, SafeAreaView } from 'react-native';
 import { useAppSelector } from 'Redux/hooks';
 import { PORT, IP } from '@env';
 import { useNavigation } from '@react-navigation/native';
@@ -20,6 +8,7 @@ import UniversalHeader from 'ui/UniversalHeader';
 import ProductCard from 'ui/ProductCard';
 import FilterModal from 'ui/FilterModal';
 import SearchAndFilter from 'ui/SearchAndFilter';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export interface IProduct {
   id: number;
@@ -124,33 +113,45 @@ const SearchProduct = () => {
         onPressFilter={() => setFilterModalVisible(true)}
       />
 
-      <ScrollView style={{ flex: 1, width: '100%' }}>
-        <View className="flex-row flex-wrap justify-center">
-          {displayedProducts.length ? (
-            displayedProducts.map((product) => (
-              <ProductCard
-                onPress={() => {
-                  navigateToSingleProduct(product.id);
-                }}
-                key={product.id}
-                productName={product.productName}
-                originalPrice={product.originalPrice}
-                isDiscount={product.isDiscounted}
-                discountedPrice={255}
-                discountPercentage={15}
-                isNew={product.isNew}
-                imageProduct={`http://${IP}:${PORT}${product.photo}`}
-              />
-            ))
-          ) : (
-            <View className="flex-row flex-wrap justify-center mt-4">
-              <Text className="text-gray-600 font-medium text-lg">
-                Продуктов нет
-              </Text>
+      <View className="flex-1 bg-[#EBEBEB]">
+        <ScrollView
+          alwaysBounceVertical
+          showsVerticalScrollIndicator={false}
+          style={{ flex: 1, width: '100%' }}
+          bounces={false}
+        >
+          <LinearGradient
+            colors={['#FAF9F9', '#FAFAFA', '#F5F5F5']}
+            className="mb-4 py-4 flex-1 rounded-b-3xl"
+          >
+            <View className="flex-row flex-wrap justify-center">
+              {displayedProducts.length ? (
+                displayedProducts.map((product) => (
+                  <ProductCard
+                    onPress={() => {
+                      navigateToSingleProduct(product.id);
+                    }}
+                    key={product.id}
+                    productName={product.productName}
+                    originalPrice={product.originalPrice}
+                    isDiscount={product.isDiscounted}
+                    discountedPrice={255}
+                    discountPercentage={15}
+                    isNew={product.isNew}
+                    imageProduct={`http://${IP}:${PORT}${product.photo}`}
+                  />
+                ))
+              ) : (
+                <View className="flex-row flex-wrap justify-center mt-4">
+                  <Text className="text-gray-600 font-medium text-lg">
+                    Продуктов нет
+                  </Text>
+                </View>
+              )}
             </View>
-          )}
-        </View>
-      </ScrollView>
+          </LinearGradient>
+        </ScrollView>
+      </View>
 
       {/* модальное окно фильтра */}
       <FilterModal

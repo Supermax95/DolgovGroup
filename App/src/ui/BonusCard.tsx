@@ -147,6 +147,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderRadius: 16,
     backgroundColor: 'white',
+    elevation: 5,
   },
   image: {
     width: cardWidth,
