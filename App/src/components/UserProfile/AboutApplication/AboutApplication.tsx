@@ -31,7 +31,7 @@ const AboutApplication: FC = () => {
     navigation.navigate('SingleLaw', { lawId });
   };
 
-  function truncateText(text: string, maxLength: number) {
+  function truncateText(text: string, maxLength: number): string {
     if (text && text.length > maxLength) {
       return text.substring(0, maxLength) + '...';
     } else {

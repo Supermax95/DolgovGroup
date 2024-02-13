@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from 'navigation/types';
+// import { useNavigation } from '@react-navigation/native';
+// import { StackNavigationProp } from 'navigation/types';
 import { View, StyleSheet, Platform } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
@@ -21,10 +21,9 @@ interface MarketMapProps {
 }
 
 const MarketMap: FC<MarketMapProps> = ({ selectedShop }) => {
-  const navigation = useNavigation<StackNavigationProp>();
+  // const navigation = useNavigation<StackNavigationProp>();
   const dispatch = useAppDispatch();
   const mapRef = useRef<MapView | null>(null);
-  const [userLocation, setUserLocation] = useState(null);
 
   useEffect(() => {
     dispatch(getUserLocations({ token }));
@@ -56,11 +55,15 @@ const MarketMap: FC<MarketMapProps> = ({ selectedShop }) => {
         let userLocation = await Location.getCurrentPositionAsync({
           accuracy: Location.Accuracy.Low,
         });
-                const endTimestamp = Date.now();
+        const endTimestamp = Date.now();
         const elapsedTime = endTimestamp - startTimestamp;
-        console.log('userLocation',userLocation);
-        console.log('Время выполнения getCurrentPositionAsync():', elapsedTime, 'мс');
-         if (userLocation && mapRef.current) {
+        console.log('userLocation', userLocation);
+        console.log(
+          'Время выполнения getCurrentPositionAsync():',
+          elapsedTime,
+          'мс'
+        );
+        if (userLocation && mapRef.current) {
           if (selectedShop) {
             console.log('у меня есть selectedShop');
             mapRef.current.animateToRegion({

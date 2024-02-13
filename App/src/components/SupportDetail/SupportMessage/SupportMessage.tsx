@@ -43,7 +43,7 @@ const SupportMessage: FC = () => {
     checkResendAvailability();
   }, []);
 
-  const checkResendAvailability = async () => {
+  const checkResendAvailability = async (): Promise<void> => {
     const lastSentTime = await AsyncStorage.getItem('lastSentTime');
     console.log('lastSentTime', lastSentTime);
     if (lastSentTime) {
@@ -61,7 +61,7 @@ const SupportMessage: FC = () => {
     }
   };
 
-  const startResendTimer = () => {
+  const startResendTimer = (): void => {
     const interval = setInterval(() => {
       setSecondsRemaining((prevSeconds) => {
         if (prevSeconds === 1) {
@@ -74,14 +74,14 @@ const SupportMessage: FC = () => {
     }, 1000);
   };
 
-  const handleFieldChange = (field: string, value: string) => {
+  const handleFieldChange = (field: string, value: string): void => {
     setData((prevData) => ({
       ...prevData,
       [field]: value,
     }));
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (): Promise<void> => {
     if (!data.titleMessage || !data.message) {
       Alert.alert('Поля не заполнены', 'Пожалуйста, заполните все поля');
       return;
@@ -144,7 +144,10 @@ const SupportMessage: FC = () => {
                     } else {
                       handleFieldChange('titleMessage', item.value);
                     }
-                  } } labelField={'label'} valueField={'value'}                />
+                  }}
+                  labelField={'label'}
+                  valueField={'value'}
+                />
                 {selectedOption === 'Прочее' && (
                   <FieldInput
                     value={data.titleMessage}
