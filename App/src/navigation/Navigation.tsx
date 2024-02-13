@@ -316,7 +316,7 @@ export const AppNavigator: FC = () => {
 export const FooterTabs: FC = () => {
   return (
     <Tab.Navigator>
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Auth"
         component={Auth}
         options={{
@@ -325,7 +325,7 @@ export const FooterTabs: FC = () => {
             <MaterialCommunityIcons name="account" color={color} size={size} />
           ),
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Home"
         component={Home}
