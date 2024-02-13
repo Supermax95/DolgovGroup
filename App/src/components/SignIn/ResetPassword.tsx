@@ -87,7 +87,7 @@ export const ResetPassword: FC = () => {
     }
   };
 
-  const startResendTimer = () => {
+  const startResendTimer = (): void => {
     const interval = setInterval(() => {
       setSecondsRemaining((prevSeconds) => {
         if (prevSeconds === 1) {

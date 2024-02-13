@@ -21,7 +21,6 @@ const QuestionAndAnswer = ({ route }: any) => {
   const { width } = useWindowDimensions();
 
   const navigation = useNavigation<StackNavigationProp>();
-  const dispatch = useAppDispatch();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
 

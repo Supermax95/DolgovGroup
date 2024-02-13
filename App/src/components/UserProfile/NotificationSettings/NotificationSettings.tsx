@@ -36,7 +36,7 @@ const NotificationSettings: FC = () => {
   // const toggleSwitchEmail = (): void =>
   //   setIsEnabledEmail((previousStateEmail) => !previousStateEmail);
 
-  const handleSaveSettings = () => {
+  const handleSaveSettings = (): void => {
     Alert.alert(
       'Подтверждение',
       'Вы уверены, что хотите сохранить данные настройки?',

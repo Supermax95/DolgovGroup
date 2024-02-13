@@ -19,8 +19,10 @@ interface IFullName {
 const ChangeFullName: FC = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<StackNavigationProp>();
-  const token = useAppSelector<string | undefined>((state) => state.userSlice.token?.refreshToken);
-  const userId = useAppSelector<number>((state) => state.userSlice.user.id);
+  const token = useAppSelector<string | undefined>(
+    (state) => state.userSlice.token?.refreshToken
+  );
+  // const userId = useAppSelector<number>((state) => state.userSlice.user.id);
 
   const dateProfile = useAppSelector<{
     lastName?: string;
@@ -57,11 +59,21 @@ const ChangeFullName: FC = () => {
         newFirstName: !data.newFirstName ? 'Введите свое имя' : '',
         newMiddleName: !data.newMiddleName ? 'Введите своё отчество' : '',
       });
-    } else if (!validateCyrillicName(data.newLastName) || !validateCyrillicName(data.newFirstName) || !validateCyrillicName(data.newMiddleName)) {
+    } else if (
+      !validateCyrillicName(data.newLastName) ||
+      !validateCyrillicName(data.newFirstName) ||
+      !validateCyrillicName(data.newMiddleName)
+    ) {
       setErrorMessages({
-        newLastName: !validateCyrillicName(data.newLastName) ? 'Фамилия должна содержать только кириллические символы' : '',
-        newFirstName: !validateCyrillicName(data.newFirstName) ? 'Имя должно содержать только кириллические символы' : '',
-        newMiddleName: !validateCyrillicName(data.newMiddleName) ? 'Отчество должно содержать только кириллические символы' : '',
+        newLastName: !validateCyrillicName(data.newLastName)
+          ? 'Фамилия должна содержать только кириллические символы'
+          : '',
+        newFirstName: !validateCyrillicName(data.newFirstName)
+          ? 'Имя должно содержать только кириллические символы'
+          : '',
+        newMiddleName: !validateCyrillicName(data.newMiddleName)
+          ? 'Отчество должно содержать только кириллические символы'
+          : '',
       });
     } else {
       try {
@@ -100,7 +112,10 @@ const ChangeFullName: FC = () => {
 
   return (
     <SafeAreaView className="bg-white h-full flex-1">
-      <UniversalHeader onPress={() => navigation.goBack()} title="Изменение профиля" />
+      <UniversalHeader
+        onPress={() => navigation.goBack()}
+        title="Изменение профиля"
+      />
 
       <Padding>
         <Padding>
@@ -111,7 +126,9 @@ const ChangeFullName: FC = () => {
             autoCapitalize="words"
           />
           {errorMessages.newLastName && (
-            <Text className="text-red-500 ml-1 mt-1 text-xs">{errorMessages.newLastName}</Text>
+            <Text className="text-red-500 ml-1 mt-1 text-xs">
+              {errorMessages.newLastName}
+            </Text>
           )}
           <FieldInput
             value={data.newFirstName}
@@ -120,7 +137,9 @@ const ChangeFullName: FC = () => {
             autoCapitalize="words"
           />
           {errorMessages.newFirstName && (
-            <Text className="text-red-500 ml-1 mt-1 text-xs">{errorMessages.newFirstName}</Text>
+            <Text className="text-red-500 ml-1 mt-1 text-xs">
+              {errorMessages.newFirstName}
+            </Text>
           )}
           <FieldInput
             value={data.newMiddleName}
@@ -129,7 +148,9 @@ const ChangeFullName: FC = () => {
             autoCapitalize="words"
           />
           {errorMessages.newMiddleName && (
-            <Text className="text-red-500 ml-1 mt-1 text-xs">{errorMessages.newMiddleName}</Text>
+            <Text className="text-red-500 ml-1 mt-1 text-xs">
+              {errorMessages.newMiddleName}
+            </Text>
           )}
           <Button onPress={handlerSubmitFullName} title="Сохранить" />
         </Padding>

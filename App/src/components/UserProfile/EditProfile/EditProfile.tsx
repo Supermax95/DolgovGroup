@@ -11,6 +11,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 const EditProfile: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
+
   const profile = useAppSelector<{
     lastName?: string;
     firstName?: string;

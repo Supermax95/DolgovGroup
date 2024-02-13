@@ -13,6 +13,7 @@ type NavigationParams = {
   subcategoryIdArray?: number[];
   selectedShop?: ISelectedShop;
   questionId?: number;
+  lawId?: number;
 };
 
 type RootStackParamList = {

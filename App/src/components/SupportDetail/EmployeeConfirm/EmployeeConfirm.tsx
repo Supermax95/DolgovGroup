@@ -73,7 +73,7 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
       }
     };
 
-    const startResendTimer = () => {
+    const startResendTimer = (): void => {
       interval = setInterval(() => {
         setSecondsRemaining((prevSeconds) => {
           if (prevSeconds === 1) {
@@ -92,7 +92,7 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
     return () => clearInterval(interval);
   }, [visible]);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (): Promise<void> => {
     const result = await dispatch(
       checkEmployee({
         token,
@@ -119,7 +119,7 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
 
       if (result.meta.requestStatus === 'rejected') {
         Alert.alert(
-          'Ошибка',
+          'Ошибка',void
           'Произошла ошибка при отправке запроса, попробуйте повторить позже'
         );
         setModalVisible(false);

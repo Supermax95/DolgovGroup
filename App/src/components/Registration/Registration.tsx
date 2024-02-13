@@ -68,7 +68,7 @@ export const Registration: FC = () => {
     setShowPasswordRepeat(!showPasswordRepeat);
   };
 
-  const handleLegalPolicyPress = () => {
+  const handleLegalPolicyPress = (): void => {
     navigation.navigate('AboutApplication');
   };
 

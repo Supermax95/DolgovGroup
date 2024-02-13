@@ -31,7 +31,7 @@ const CheckMail: FC = () => {
     startResendTimer();
   }, []);
 
-  const startResendTimer = () => {
+  const startResendTimer = (): void => {
     setSecondsRemaining(180);
     const interval = setInterval(() => {
       setSecondsRemaining((prevSeconds) => {
@@ -44,7 +44,7 @@ const CheckMail: FC = () => {
     }, 1000);
   };
 
-  const handleCheckActivation = async () => {
+  const handleCheckActivation = async (): Promise<void> => {
     try {
       const result = await dispatch(userActivate({ userId, force: true }));
       if (result.meta.requestStatus === 'fulfilled') {
@@ -59,7 +59,7 @@ const CheckMail: FC = () => {
     }
   };
 
-  const handleSendActivation = async () => {
+  const handleSendActivation = async (): Promise<void> => {
     try {
       setResendDisabled(true);
       startResendTimer();

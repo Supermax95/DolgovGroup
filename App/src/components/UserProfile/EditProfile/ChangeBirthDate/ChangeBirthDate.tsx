@@ -8,7 +8,6 @@ import Calendar from '../../../Calendar/Calendar';
 import Button from 'ui/Button';
 import profileChangeBirthDate from 'Redux/thunks/Profile/profileChangeBirthDate.api';
 import Padding from 'ui/Padding';
-import refreshToken from 'Redux/thunks/User/refresh.api';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import UniversalHeader from 'ui/UniversalHeader';
 
@@ -23,10 +22,9 @@ export const ChangeBirthDate: FC = () => {
   const token = useAppSelector<string | undefined>(
     (state) => state.userSlice.token?.refreshToken
   );
-  const email = useAppSelector<null | string>(
-    (state) => state.userSlice.user.email
-  );
-
+  // const email = useAppSelector<null | string>(
+  //   (state) => state.userSlice.user.email
+  // );
   //  const refreshResult = dispatch(refreshToken());
 
   const userDateAsDate =
