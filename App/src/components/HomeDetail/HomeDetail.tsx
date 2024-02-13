@@ -178,17 +178,17 @@ const HomeDetail: FC = () => {
     //   }}
     // >
     <LinearGradient
-    colors={['#f3f4f6', '#808080']}
-    start={{ x: 0, y: 0 }}
-    end={{ x: 1, y: 1 }}
-    style={{
-      alignItems: 'center',
-      justifyContent: 'center',
-      flex: 1,
-      height: '100%',
-      paddingBottom: Platform.OS === 'ios' ? 0 : insets.bottom,
-    }}
-  >
+      colors={['#f3f4f6', '#808080']}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={{
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1,
+        height: '100%',
+        paddingBottom: Platform.OS === 'ios' ? 0 : insets.bottom,
+      }}
+    >
       {/* <StatusBar backgroundColor="#FFFF" barStyle="dark-content" /> */}
 
       {Platform.OS === 'ios' && (
@@ -204,15 +204,17 @@ const HomeDetail: FC = () => {
       >
         {/* Бонусная карта */}
         <Padding>
-          <BonusCard
-            onPressBonuses={handleGetClientBonuses}
-            onPressBrightness={increaseBrightness}
-            numberPoints={numberPoints}
-            barcode={barcode}
-            isResendDisabled={isResendDisabled}
-            secondsRemaining={secondsRemaining}
-            isLoading={isLoading}
-          />
+          <View className="flex justify-center items-center">
+            <BonusCard
+              onPressBonuses={handleGetClientBonuses}
+              onPressBrightness={increaseBrightness}
+              numberPoints={numberPoints}
+              barcode={barcode}
+              isResendDisabled={isResendDisabled}
+              secondsRemaining={secondsRemaining}
+              isLoading={isLoading}
+            />
+          </View>
         </Padding>
 
         {/* акции вне карусели */}
