@@ -51,9 +51,10 @@ const BonusCard: FC<IBonusCard> = ({
       </View>
 
       {isResendDisabled ? (
-        <View className="absolute bottom-5 left-12">
+        <View  className={`
+        ${Platform.OS === 'android' ? 'right-12 absolute bottom-1' : 'absolute bottom-5 left-12'}`}>
           <Text className="text-xs font-molmal text-zinc-500">
-            Повторно обновить возмонжо через {secondsRemaining % 60} секунд
+            Повторно обновить возможно через {secondsRemaining % 60} секунд
           </Text>
         </View>
       ) : isLoading ? (
@@ -62,8 +63,8 @@ const BonusCard: FC<IBonusCard> = ({
         </View>
       ) : (
         <View
-          className={`absolute bottom-5
-              ${Platform.OS === 'android' ? 'right-20' : 'right-24'}`}
+          className={`
+              ${Platform.OS === 'android' ? 'right-24 absolute bottom-1' : 'absolute bottom-3 right-24'}`}
         >
           <Pressable
             onPress={onPressBonuses}
