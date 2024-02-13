@@ -85,13 +85,13 @@ export default function CardsNoCarusel() {
 const styles = StyleSheet.create({
   cardContainer: {
     shadowColor: '#000',
+    shadowRadius: 4,
+    shadowOpacity: 0.15,
     shadowOffset: {
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.15,
-    shadowRadius: 5,
-    elevation: 5,
+    elevation: 3,
     //
     position: 'relative',
     padding: 2,

@@ -26,7 +26,7 @@ export interface IPromotion {
 }
 
 const screenWidth = Math.round(Dimensions.get('window').width);
-const cardWidth = screenWidth - 50;
+const cardWidth = screenWidth - 40;
 const cardHeight = 200;
 const cardWidthSpacing = cardWidth + 24;
 
