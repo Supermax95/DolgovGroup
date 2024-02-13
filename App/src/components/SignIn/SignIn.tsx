@@ -34,22 +34,10 @@ type HomeAndPropResetPassword = CompositeNavigationProp<
   StackNavigationProp,
   TabScreenNavigationProp
 >;
-type IToken =
-  | {
-      accessToken: string;
-      refreshToken: string;
-    }
-  | undefined;
-
-const styleCenter = 'h-full w-full bg-white';
 
 const SignIn: FC = () => {
   const navigation = useNavigation<HomeAndPropResetPassword>();
   const dispatch = useAppDispatch();
-  // const userToken = useAppSelector<IToken | undefined>(
-  //   (state) => state.userSlice.token
-  // );
-
   const isLoading = useAppSelector<boolean>(
     (state) => state.userSlice.isLoading
   );
@@ -107,19 +95,16 @@ const SignIn: FC = () => {
     <>
       {/* <ImageBackground
         // source={require('../../assets/absrac.jpg')}
+         //! чтобы было видно картинку, нужно убрать из  SafeAreaView bg-white  
         source={{
           uri: 'https://i.pinimg.com/564x/cb/31/f3/cb31f356e257de14263e93dbb72ff319.jpg',
         }}
         style={{ width: '100%', height: '100%' }}
       > */}
-      <SafeAreaView className="z-50  flex-1">
+      <SafeAreaView className="bg-white flex-1">
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
-          {/* <LinearGradient
-          colors={['#f0fdf4', '#fafaf9', '#a7f3d0']}
-          style={styles.linearGradient}
-        > */}
           <View className="justify-center items-center h-full">
             <View className="w-10/12">
               <Text className="text-center text-gray-800 text-lg font-normal mb-2">
@@ -183,29 +168,11 @@ const SignIn: FC = () => {
               </View>
             </View>
           </View>
-          {/* </LinearGradient> */}
         </KeyboardAvoidingView>
       </SafeAreaView>
       {/* </ImageBackground> */}
     </>
   );
 };
-
-var styles = StyleSheet.create({
-  linearGradient: {
-    // flex: 1,
-    // paddingLeft: 15,
-    // paddingRight: 15,
-    // borderRadius: 5,
-  },
-  // buttonText: {
-  //   fontSize: 18,
-  //   fontFamily: 'Gill Sans',
-  //   textAlign: 'center',
-  //   margin: 10,
-  //   color: '#ffffff',
-  //   backgroundColor: 'transparent',
-  // },
-});
 
 export default SignIn;
