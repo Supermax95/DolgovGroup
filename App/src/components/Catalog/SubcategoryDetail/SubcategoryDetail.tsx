@@ -62,7 +62,7 @@ const SubcategoryDetail = ({ route }: any) => {
     navigation.navigate('ProductsCards', { subcategoryId, subcategoryName });
   };
 
-  const navigateToProductDetailAll = (subcategoryIdArray: number): void => {
+  const navigateToProductDetailAll = (subcategoryIdArray: number[]): void => {
     navigation.navigate('ProductsCards', { subcategoryIdArray, categoryName });
   };
 

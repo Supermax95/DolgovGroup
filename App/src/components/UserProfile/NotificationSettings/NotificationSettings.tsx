@@ -4,14 +4,14 @@ import Padding from 'ui/Padding';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import profileNotification from 'Redux/thunks/Profile/profileNotificationUpdate.api';
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from 'navigation/types';
+import { TabScreenNavigationProp } from 'navigation/types';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import UniversalHeader from 'ui/UniversalHeader';
 import Button from 'ui/Button';
 
 const NotificationSettings: FC = () => {
   const dispatch = useAppDispatch();
-  const navigation = useNavigation<StackNavigationProp>();
+  const navigation = useNavigation<TabScreenNavigationProp>();
   const notificationPush = useAppSelector<boolean>(
     (state) => state.profileSlice.notificationPush
   );
@@ -33,8 +33,8 @@ const NotificationSettings: FC = () => {
   const toggleSwitchPush = (): void =>
     setIsEnabledPush((previousStatePush) => !previousStatePush);
 
-  const toggleSwitchEmail = (): void =>
-    setIsEnabledEmail((previousStateEmail) => !previousStateEmail);
+  // const toggleSwitchEmail = (): void =>
+  //   setIsEnabledEmail((previousStateEmail) => !previousStateEmail);
 
   const handleSaveSettings = () => {
     Alert.alert(

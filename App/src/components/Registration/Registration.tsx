@@ -3,10 +3,8 @@ import { useAppDispatch } from 'Redux/hooks';
 import {
   View,
   Text,
-  ScrollView,
   Alert,
   ActivityIndicator,
-  TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -23,14 +21,14 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import UniversalHeader from 'ui/UniversalHeader';
 
 interface IData {
-  email?: string;
-  phoneNumber?: string;
-  password?: string;
-  firstName?: string;
-  lastName?: string;
-  middleName?: string;
+  email?: string | undefined;
+  phoneNumber?: string | undefined;
+  password?: string | undefined;
+  firstName?: string | undefined;
+  lastName?: string | undefined;
+  middleName?: string | undefined;
   birthDate?: Date | null | string;
-  passwordCheck?: string;
+  passwordCheck?: string | undefined;
 }
 
 export const Registration: FC = () => {
@@ -167,19 +165,19 @@ export const Registration: FC = () => {
   const handleNextStep = (): void => {
     if (step === 1) {
       if (
-        !validateCyrillicName(data.firstName) ||
-        !validateCyrillicName(data.lastName) ||
-        !validateCyrillicName(data.middleName) ||
+        !validateCyrillicName(data.firstName || '') ||
+        !validateCyrillicName(data.lastName || '') ||
+        !validateCyrillicName(data.middleName || '') ||
         !data.birthDate
       ) {
         setErrorMessages({
-          firstName: !validateCyrillicName(data.firstName)
+          firstName: !validateCyrillicName(data.firstName || '')
             ? 'Имя должно содержать только кириллические символы'
             : '',
-          lastName: !validateCyrillicName(data.lastName)
+          lastName: !validateCyrillicName(data.lastName || '')
             ? 'Фамилия должна содержать только кириллические символы'
             : '',
-          middleName: !validateCyrillicName(data.middleName)
+          middleName: !validateCyrillicName(data.middleName || '')
             ? 'Отчество должно содержать только кириллические символы'
             : '',
           birthDate: !data.birthDate ? 'Введите дату рождения' : '',

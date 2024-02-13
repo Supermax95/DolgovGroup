@@ -1,22 +1,13 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { TabScreenNavigationProp } from 'navigation/types';
-import {
-  View,
-  FlatList,
-  Text,
-  Pressable,
-  StyleSheet,
-  TextInput,
-  Platform,
-} from 'react-native';
-import FieldInput from 'ui/FieldInput';
+import { View, FlatList, Text, Pressable, Platform } from 'react-native';
 import { useAppSelector } from 'Redux/hooks';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Padding from 'ui/Padding';
 import SearchAndFilter from 'ui/SearchAndFilter';
 
-interface ISelectedShop {
+export interface ISelectedShop {
   id: number;
   city: string;
   address: string;
@@ -25,10 +16,6 @@ interface ISelectedShop {
   hours: string;
   invisible: boolean;
 }
-
-// interface ShopsListProps {
-//   onShopSelected: (selectedShop: ISelectedShop) => void;
-// }
 
 const ShopsList: FC = () => {
   const [selectedShop, setSelectedShop] = useState<ISelectedShop | null>(null);
@@ -116,9 +103,7 @@ const ShopsList: FC = () => {
                         color="zinc"
                       />
                     </View> */}
-                  <Text
-                    className="text-zinc-500 font-normal text-md"
-                  >
+                  <Text className="text-zinc-500 font-normal text-md">
                     {item.hours}
                   </Text>
 
