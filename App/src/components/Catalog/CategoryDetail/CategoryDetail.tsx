@@ -49,7 +49,7 @@ function CategoryDetail() {
       />
 
       <LinearGradient
-        colors={['#FAF9F9', '#FAFAFA', '##F5F5F5']}
+        colors={['#FAF9F9', '#FAFAFA', '#EBEBEB']}
         className="flex-1"
       >
         {/* Scrollable container start */}
