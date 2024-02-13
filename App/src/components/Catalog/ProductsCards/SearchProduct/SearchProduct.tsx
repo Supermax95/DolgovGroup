@@ -102,16 +102,18 @@ const SearchProduct = () => {
       <UniversalHeader onPress={() => navigation.goBack()} title="Поиск" />
 
       {/* Поиск и фильтр */}
-      <SearchAndFilter
-        value={searchText}
-        placeholder="  Найти
+      <View className="bg-[#FAF9F9] pb-0.2">
+        <SearchAndFilter
+          value={searchText}
+          placeholder="  Найти
         продукт"
-        onChangeText={(text) => {
-          setSearchText(text);
-          applyFilters();
-        }}
-        onPressFilter={() => setFilterModalVisible(true)}
-      />
+          onChangeText={(text) => {
+            setSearchText(text);
+            applyFilters();
+          }}
+          onPressFilter={() => setFilterModalVisible(true)}
+        />
+      </View>
 
       <View className="flex-1 bg-[#EBEBEB]">
         <ScrollView
