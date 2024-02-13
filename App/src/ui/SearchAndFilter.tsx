@@ -19,7 +19,7 @@ const SearchAndFilter: FC<SearchAndFilterProps> = ({
   return (
     <>
       {onChangeText && onPressFilter ? (
-        <View className="bg-red-100 py-2 px-4 flex-row items-center justify-between w-full rounded-lg">
+        <View className="bg-white py-2 px-4 flex-row items-center justify-between w-full rounded-lg">
           <View className="flex-row items-center mr-10">
             <View
               className={`px-4 bg-zinc-100  rounded-xl flex-row items-center justify-center mr-2

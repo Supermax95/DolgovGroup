@@ -76,7 +76,7 @@ const Support: FC = () => {
         </Padding>
       </ScrollView>
 
-      {/* модальное окно с подтверждением */}
+      {/* модальное окно */}
       <EmployeeConfirm
         visible={isModalVisible}
         setModalVisible={setModalVisible}

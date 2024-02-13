@@ -1,5 +1,6 @@
 import {
   ActivityIndicator,
+  Animated,
   Platform,
   Pressable,
   ScrollView,
@@ -29,8 +30,8 @@ import * as Brightness from 'expo-brightness';
 import { encode } from 'base-64';
 import { StatusBar } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
 import BonusCard from 'ui/BonusCard';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const HomeDetail: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
@@ -167,74 +168,65 @@ const HomeDetail: FC = () => {
   // const numberPointsRub = formatPoints(numberPoints || 0);
 
   const insets = useSafeAreaInsets();
+  // const AnimatedLinearGradient =
+  //   Animated.createAnimatedComponent(LinearGradient);
 
   return (
-    // <SafeAreaView className="bg-[#f3f4f6] h-full flex-1" >
-    //   <View
-    //   style={{
-    //     flex: 1,
-    //     backgroundColor: '#f3f4f6',
-    //     paddingBottom: Platform.OS === 'ios' ? 0 : insets.bottom,
-    //   }}
-    // >
-    <LinearGradient
-      colors={['#f3f4f6', '#808080']}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-      style={{
-        alignItems: 'center',
-        justifyContent: 'center',
-        flex: 1,
-        height: '100%',
-        paddingBottom: Platform.OS === 'ios' ? 0 : insets.bottom,
-      }}
-    >
-      {/* <StatusBar backgroundColor="#FFFF" barStyle="dark-content" /> */}
-
-      {Platform.OS === 'ios' && (
-        <SafeAreaView style={{ flex: 0, backgroundColor: '#f3f4f6' }} />
-      )}
-      <UniversalHeader title="Главная" />
-
-      {/* Scrollable container start */}
-      <ScrollView
-        alwaysBounceVertical
-        showsVerticalScrollIndicator={false}
-        style={{ flex: 1, width: '100%' }}
+    <>
+      <SafeAreaView
+        className="bg-white h-full flex-1"
+        style={{ paddingBottom: Platform.OS === 'ios' ? -100 : 0 }}
       >
-        {/* Бонусная карта */}
-        <Padding>
-          <View className="flex justify-center items-center">
-            <BonusCard
-              onPressBonuses={handleGetClientBonuses}
-              onPressBrightness={increaseBrightness}
-              numberPoints={numberPoints}
-              barcode={barcode}
-              isResendDisabled={isResendDisabled}
-              secondsRemaining={secondsRemaining}
-              isLoading={isLoading}
-            />
-          </View>
-        </Padding>
+        <UniversalHeader title="Главная" />
 
-        {/* акции вне карусели */}
-        <View>
-          <Heading title="Акции вне карусели" />
-          <CardsNoCarusel />
-        </View>
+        {/* Scrollable container start */}
+        <LinearGradient
+          colors={['#FAF9F9', '#FAFAFA', '#EBEBEB']}
+          className="flex-1"
+        >
+          <ScrollView
+            alwaysBounceVertical
+            showsVerticalScrollIndicator={false}
+            style={{ flex: 1, width: '100%' }}
+          >
+            {/* Бонусная карта */}
+            <View className="mb-4 py-4 flex-1 rounded-b-3xl ">
+              <Padding>
+                <View className="pt-4 flex justify-center items-center">
+                  <BonusCard
+                    onPressBonuses={handleGetClientBonuses}
+                    onPressBrightness={increaseBrightness}
+                    numberPoints={numberPoints}
+                    barcode={barcode}
+                    isResendDisabled={isResendDisabled}
+                    secondsRemaining={secondsRemaining}
+                    isLoading={isLoading}
+                  />
+                </View>
+              </Padding>
+            </View>
 
-        {/* акции В карусели */}
-        <View>
-          {/* <Heading title="Акции в карусели" /> */}
-          <CardsCarusel />
-        </View>
+            {/* акции вне карусели */}
+            <View className="py-2">
+              <Heading title="Акции вне карусели" />
+              <CardsNoCarusel />
+            </View>
 
-        <View>
-          <Heading title="Акции вне карусели" />
-          <CardsNoCarusel />
-        </View>
-      </ScrollView>
-    </LinearGradient>
+            {/* акции В карусели */}
+            <View>
+              {/* <Heading title="Акции в карусели" /> */}
+              <CardsCarusel />
+            </View>
+
+            <View>
+              <Heading title="Акции вне карусели" />
+              <CardsNoCarusel />
+            </View>
+          </ScrollView>
+        </LinearGradient>
+      </SafeAreaView>
+    </>
+    // </LinearGradient>
     // </View>
   );
 };

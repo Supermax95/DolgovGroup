@@ -58,7 +58,7 @@ const ProductCard: FC<IProductCard> = ({
         <View className="h-19 w-full space-y-1 mt-2 px-1">
           <View
             // style={styles.textContainer}
-            className="flex-col items-start justify-start w-full h-8"
+            className="flex-col items-start justify-start w-[95%] h-8"
           >
             <Text className="text-xs text-gray-700 font-medium">
               {productName}
