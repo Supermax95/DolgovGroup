@@ -21,9 +21,9 @@ export interface ISubcategory {
   categoryId: number;
 }
 
-function CategoryDetail() {
+const CategoryDetail: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
   const categories = useAppSelector<ICategory[]>(
     (state) => state.categorySlice.data
@@ -65,7 +65,19 @@ function CategoryDetail() {
           </View>
 
           {/* Каталог */}
-          <View className="my-4 py-4 flex-1 rounded-3xl bg-white">
+          <View
+            className="my-4 py-4 flex-1 rounded-3xl bg-white"
+            style={{
+              shadowColor: '#000',
+              shadowRadius: 4,
+              shadowOpacity: 0.1,
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              elevation: 6,
+            }}
+          >
             <Heading title="Каталог" />
             {categories.length ? (
               <View className="flex-row flex-wrap justify-center">
@@ -95,6 +107,6 @@ function CategoryDetail() {
       </LinearGradient>
     </SafeAreaView>
   );
-}
+};
 
 export default CategoryDetail;
