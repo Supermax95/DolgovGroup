@@ -116,7 +116,7 @@ const ChangeEmail: FC = () => {
             </Text>
           )}
 
-          {newEmailProfile !== '' ? (
+          {newEmailProfile ? (
             <View className="w-full justify-center mt-1 px-1">
               <Text className="text-xs font-molmal text-rose-500">
                 Новая почта не подтверждена {newEmailProfile}
