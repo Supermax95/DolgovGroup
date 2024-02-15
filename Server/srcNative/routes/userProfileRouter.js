@@ -219,9 +219,20 @@ router
         newEmail: '',
       });
 
-      res.status(200).json({
-        message: 'Email успешно подтвержден и обновлен',
-      });
+
+      const credentials = 'Exchange:Exchange';
+      const base64Credentials = Buffer.from(credentials).toString('base64');
+      await axios.post(
+        `http://retail.dolgovagro.ru/rtnagaev/hs/loyaltyservice/updateclientcard?ClientCardID=${userData.barcode}&Email=${userData.email}
+      `,
+        {},
+        {
+          headers: {
+            Authorization: `Basic ${base64Credentials}`,
+          },
+        }
+      );
+      return res.redirect(`http://${IP}:${FRONTPORT}/email/success`);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Произошла ошибка на сервере' });
