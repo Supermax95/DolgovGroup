@@ -8,6 +8,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Keyboard,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StackNavigationProp } from 'navigation/types';
@@ -124,10 +125,15 @@ const SupportMessage: FC = () => {
       />
 
       <KeyboardAvoidingView
-        style={{ flex: 1 }}
+        className="flex-1"
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
       >
-        <ScrollView>
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          keyboardShouldPersistTaps="handled"
+          onScrollBeginDrag={() => Keyboard.dismiss()}
+        >
           <Padding>
             <Padding>
               <View
@@ -165,6 +171,7 @@ const SupportMessage: FC = () => {
                   onChange={(value) => handleFieldChange('message', value)}
                   autoCapitalize="sentences"
                   style={{ height: 200, textAlignVertical: 'top' }}
+                  // style={{ minHeight: 200, textAlignVertical: 'top' }}
                   multiline
                   onFocus={() => setIsShowKeyboard(true)}
                 />

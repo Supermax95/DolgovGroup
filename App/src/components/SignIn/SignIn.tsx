@@ -13,6 +13,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   ImageBackground,
+  Keyboard,
+  ScrollView,
 } from 'react-native';
 import { useAppSelector, useAppDispatch } from 'Redux/hooks';
 import { StackNavigationProp, TabScreenNavigationProp } from 'navigation/types';
@@ -20,10 +22,9 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import userLogin from 'Redux/thunks/User/login.api';
 import Button from 'ui/Button';
 import FieldInput from 'ui/FieldInput';
-import UniversalHeader from 'ui/UniversalHeader';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Image } from 'react-native-svg';
+import UniversalHeader from 'ui/UniversalHeader';
 
 interface IData {
   email: string;
@@ -101,73 +102,88 @@ const SignIn: FC = () => {
         }}
         style={{ width: '100%', height: '100%' }}
       > */}
-      <SafeAreaView className="bg-white flex-1">
+      <SafeAreaView className="bg-white h-full flex-1">
+        {/* <UniversalHeader
+          // onPress={() => navigation.goBack()}
+          title="Вход"
+        /> */}
         <KeyboardAvoidingView
+          className="flex-1"
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
-          <View className="justify-center items-center h-full">
-            <View className="w-10/12">
-              <Text className="text-center text-gray-800 text-lg font-normal mb-2">
-                Вход
-              </Text>
-              <FieldInput
-                value={data.email}
-                placeholder="Введите email"
-                autoCapitalize="none"
-                keyboardType="email-address"
-                onChange={(value) => setData({ ...data, email: value })}
-              />
-              <View className="flex-row items-center">
+          <ScrollView
+            contentContainerStyle={{ flexGrow: 1 }}
+            keyboardShouldPersistTaps="handled"
+            onScrollBeginDrag={() => Keyboard.dismiss()}
+          >
+            <View className="justify-center items-center h-full">
+              <View className="w-10/12">
+                <Text className="text-center text-gray-800 text-lg font-normal mb-2">
+                  Вход
+                </Text>
                 <FieldInput
-                  value={data.password}
-                  placeholder="Введите пароль"
+                  value={data.email}
+                  placeholder="Введите email"
                   autoCapitalize="none"
-                  onChange={(value) => setData({ ...data, password: value })}
-                  isSecure={!showPassword}
+                  keyboardType="email-address"
+                  onChange={(value) => setData({ ...data, email: value })}
                 />
-                <MaterialCommunityIcons
-                  name={showPassword ? 'eye' : 'eye-off'}
-                  size={25}
-                  color="gray"
-                  onPress={toggleShowPassword}
-                  style={{
-                    position: 'absolute',
-                    right: 15,
-                    transform: [{ translateY: 5 }],
-                  }}
-                />
-              </View>
+                <View className="flex-row items-center">
+                  <FieldInput
+                    value={data.password}
+                    placeholder="Введите пароль"
+                    autoCapitalize="none"
+                    onChange={(value) => setData({ ...data, password: value })}
+                    isSecure={!showPassword}
+                  />
+                  <MaterialCommunityIcons
+                    name={showPassword ? 'eye' : 'eye-off'}
+                    size={25}
+                    color="gray"
+                    onPress={toggleShowPassword}
+                    style={{
+                      position: 'absolute',
+                      right: 15,
+                      transform: [{ translateY: 5 }],
+                    }}
+                  />
+                </View>
 
-              {/* Восстановление пароля  */}
-              <View className="mx-2 my-2 flex-row items-center justify-start">
-                <Pressable onPress={() => navigation.navigate('ResetPassword')}>
-                  <Text className="text-gray-800 opacity-50 text-sm text-center">
-                    Забыли пароль?
-                  </Text>
-                </Pressable>
-              </View>
+                {/* Восстановление пароля  */}
+                <View className="mx-2 my-2 flex-row items-center justify-start">
+                  <Pressable
+                    onPress={() => navigation.navigate('ResetPassword')}
+                  >
+                    <Text className="text-gray-800 opacity-50 text-sm text-center">
+                      Забыли пароль?
+                    </Text>
+                  </Pressable>
+                </View>
 
-              <Button
-                onPress={authHandler}
-                title={`Войти`}
-                disabled={isLoading}
-              />
+                <Button
+                  onPress={authHandler}
+                  title={`Войти`}
+                  disabled={isLoading}
+                />
 
-              <View className="mt-6 flex-row items-center justify-center">
-                <View
-                  style={{ flex: 1, height: 1.5, backgroundColor: '#d1d5db' }}
-                />
-                <Pressable onPress={() => navigation.navigate('Registration')}>
-                  <Text className="mx-3 text-gray-800 opacity-50 text-sm text-center">
-                    Зарегистрироваться
-                  </Text>
-                </Pressable>
-                <View
-                  style={{ flex: 1, height: 1.5, backgroundColor: '#d1d5db' }}
-                />
+                <View className="mt-6 flex-row items-center justify-center">
+                  <View
+                    style={{ flex: 1, height: 1.5, backgroundColor: '#d1d5db' }}
+                  />
+                  <Pressable
+                    onPress={() => navigation.navigate('Registration')}
+                  >
+                    <Text className="mx-3 text-gray-800 opacity-50 text-sm text-center">
+                      Зарегистрироваться
+                    </Text>
+                  </Pressable>
+                  <View
+                    style={{ flex: 1, height: 1.5, backgroundColor: '#d1d5db' }}
+                  />
+                </View>
               </View>
             </View>
-          </View>
+          </ScrollView>
         </KeyboardAvoidingView>
       </SafeAreaView>
       {/* </ImageBackground> */}
