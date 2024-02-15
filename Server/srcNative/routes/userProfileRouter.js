@@ -183,16 +183,13 @@ router
         });
       }
 
-      // Генерация кода подтверждения (вместо токена)
       const confirmationCode = uuid.v4();
 
-      // Сохранение кода подтверждения и нового email в БД
       await userData.update({
         emailConfirmationCode: confirmationCode,
         newEmail: `не подтверждена ${newEmail}`,
       });
 
-      // Отправка письма с кодом подтверждения
       sendConfirmationEmail(newEmail, confirmationCode);
 
       res.status(200).json({

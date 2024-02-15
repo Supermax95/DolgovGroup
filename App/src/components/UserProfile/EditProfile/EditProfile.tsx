@@ -1,16 +1,26 @@
-import React, { FC } from 'react';
-import { Text, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { useAppSelector } from 'Redux/hooks';
+import React, { FC, useState } from 'react';
+import { Text, View, ScrollView, RefreshControl } from 'react-native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { StackNavigationProp } from 'navigation/types';
 import { format } from 'date-fns';
 import Padding from 'ui/Padding';
 import FieldEditProfile from 'ui/FieldEditProfile';
 import UniversalHeader from 'ui/UniversalHeader';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import getProfileInfo from 'Redux/thunks/Profile/profileInfo.api';
 
 const EditProfile: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
+  const dispatch = useAppDispatch();
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await dispatch(getProfileInfo({ token }));
+    setRefreshing(false);
+  };
 
   const profile = useAppSelector<{
     lastName?: string;
@@ -29,6 +39,16 @@ const EditProfile: FC = () => {
     6,
     8
   )}-${profile.phoneNumber?.substring(8, 10)}`;
+
+  const token = useAppSelector<string | undefined>(
+    (state) => state.userSlice.token?.refreshToken
+  );
+
+  useFocusEffect(
+    React.useCallback(() => {
+      dispatch(getProfileInfo({ token }));
+    }, [dispatch, token])
+  );
 
   return (
     <SafeAreaView className="bg-white h-full flex-1">
