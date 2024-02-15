@@ -299,6 +299,20 @@ router
       }
 
       await userData.update({ phoneNumber: trimmedPhoneNumber });
+      const credentials = 'Exchange:Exchange';
+      const base64Credentials = Buffer.from(credentials).toString('base64');
+      await axios.post(
+        `http://retail.dolgovagro.ru/rtnagaev/hs/loyaltyservice/updateclientcard?ClientCardID=${
+          userData.barcode
+        }&Phone=${'+7' + trimmedPhoneNumber}
+      `,
+        {},
+        {
+          headers: {
+            Authorization: `Basic ${base64Credentials}`,
+          },
+        }
+      );
 
       res.status(200).json({
         phoneNumber: trimmedPhoneNumber,
