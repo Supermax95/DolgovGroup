@@ -283,9 +283,9 @@ class UserService {
       await axios.post(
         `http://retail.dolgovagro.ru/rtnagaev/hs/loyaltyservice/issueclientcard?Phone=${
           '+7' + user.phoneNumber
-        }&Email=${user.email}&Client=${encodeURIComponent(
+        }&Email=${user.email}&Client=${(
           `${user.lastName} ${user.firstName} ${user.middleName}`
-        )}&DateOfBirth=${encodeURIComponent(formattedBirthDate)}&ClientCardID=${
+        )}&DateOfBirth=${(formattedBirthDate)}&ClientCardID=${
           user.barcode
         }`,
         {},
