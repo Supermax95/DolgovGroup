@@ -20,6 +20,7 @@ import { useAppSelector } from '../Redux/hooks';
 import Law from '../components/Admin/Laws/Laws';
 import LoadingAnimation from '../components/Admin/Laws/Loading';
 import Questions from '../components/Admin/Questions/Questions';
+import EmailSuccess from '../components/Success/EmailSucces';
 
 const Navigation: FC = () => {
   const manager = useAppSelector((state) => state.managerSlice.manager);
@@ -47,12 +48,12 @@ const Navigation: FC = () => {
       setLoading(false);
     };
 
-    const isRegistrationSuccessPage = location.pathname.includes('/registration/success');
+    const SuccessPage = location.pathname.includes('/registration/success')|| location.pathname.includes('/email/success');
 
-    if (!isRegistrationSuccessPage && manager.email && window.location.pathname.includes('/portal')) {
+    if (!SuccessPage && manager.email && window.location.pathname.includes('/portal')) {
       setLoading(true);
       setTimeout(navigateToLocations, 1000);
-    } else if (!manager.email && !isRegistrationSuccessPage) {
+    } else if (!manager.email && !SuccessPage) {
       navigate('/portal');
     }
   }, [manager.email, navigate, location.pathname]);
@@ -183,7 +184,7 @@ const Navigation: FC = () => {
             />
 
             <Route path="/registration/success" element={<Success />} />
-
+            <Route path="/email/success" element={<EmailSuccess/>} />
             <Route path="*" element={<NotFound />} />
             <Route />
           </Route>
