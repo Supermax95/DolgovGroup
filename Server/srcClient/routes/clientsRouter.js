@@ -2,6 +2,7 @@ const router = require('express').Router();
 const { Op } = require('sequelize');
 const { DiscountCard } = require('../../db/models');
 const nodemailer = require('nodemailer');
+const axios = require('axios');
 
 const transporter = nodemailer.createTransport({
   port: 465,
@@ -82,13 +83,27 @@ router.put('/admin/clients/:id', async (req, res) => {
       // Отправка электронного письма
       await transporter.sendMail(mailData);
     }
+    if (newInfo.email !== client.email) {
+      const credentials = 'Exchange:Exchange';
+      const base64Credentials = Buffer.from(credentials).toString('base64');
+      await axios.post(
+        `http://retail.dolgovagro.ru/rtnagaev/hs/loyaltyservice/updateclientcard?ClientCardID=${newInfo.barcode}&Email=${newInfo.email}`,
+        {},
+        {
+          headers: {
+            Authorization: `Basic ${base64Credentials}`,
+          },
+        }
+      );
+    }
+
     if (newInfo.phoneNumber !== client.phoneNumber) {
       const cleanedPhoneNumber = newInfo.phoneNumber.replace(/\D/g, '');
       const trimmedPhoneNumber = cleanedPhoneNumber.substring(1);
       const existingClientPhone = await DiscountCard.findOne({
         where: {
           phoneNumber: trimmedPhoneNumber,
-          id: { [Op.not]: employeeId },
+          id: { [Op.not]: clientId },
         },
       });
 
@@ -100,6 +115,21 @@ router.put('/admin/clients/:id', async (req, res) => {
       await DiscountCard.update(
         { ...newInfo, phoneNumber: trimmedPhoneNumber },
         { where: { id: clientId } }
+      );
+      const credentials = 'Exchange:Exchange';
+      const base64Credentials = Buffer.from(credentials).toString('base64');
+      console.log(' newInfo.barcode', newInfo.barcode ,trimmedPhoneNumber);
+      await axios.post(
+        `http://retail.dolgovagro.ru/rtnagaev/hs/loyaltyservice/updateclientcard?ClientCardID=${
+          newInfo.barcode
+        }&Phone=${'+7' + trimmedPhoneNumber}
+      `,
+        {},
+        {
+          headers: {
+            Authorization: `Basic ${base64Credentials}`,
+          },
+        }
       );
     } else {
       await DiscountCard.update(newInfo, { where: { id: clientId } });

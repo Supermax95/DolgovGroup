@@ -10,9 +10,12 @@ import {
   Text,
   Pressable,
   TouchableOpacity,
+  RefreshControl,
 } from 'react-native';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-
+import getCategory from 'Redux/thunks/Catalog/categoryGet.api';
+import getProducts from 'Redux/thunks/Catalog/productGet.api';
+import getSubcategory from 'Redux/thunks/Catalog/subcategoryGet.api';
 import Subcategory from 'ui/Subcategory';
 import Padding from 'ui/Padding';
 import UniversalHeader from 'ui/UniversalHeader';
@@ -43,10 +46,18 @@ export interface IProduct {
 const SubcategoryDetail = ({ route }: any) => {
   const { categoryId, categoryName } = route.params;
   const navigation = useNavigation<StackNavigationProp>();
+  const dispatch = useAppDispatch();
 
   const subcategories = useAppSelector<ISubcategory[]>(
     (state) => state.subcategorySlice.data
   );
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await dispatch(getProducts(), getCategory(), getSubcategory());
+    setRefreshing(false);
+  };
 
   //* все подкатегории по определённой категории
   const subOfCat = subcategories.filter(
@@ -82,7 +93,10 @@ const SubcategoryDetail = ({ route }: any) => {
           alwaysBounceVertical
           showsVerticalScrollIndicator={false}
           style={{ flex: 1, width: '100%' }}
-          bounces={false}
+          // bounces={false}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
         >
           <View className="mb-4 py-6 flex-1 rounded-b-3xl bg-white">
             {/* мб, в это компонент Все товары категории сделать в виле UI и прокинуть реактпропс типа принимает готовый UI */}

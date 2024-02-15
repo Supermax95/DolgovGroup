@@ -2,6 +2,8 @@ const router = require('express').Router();
 const { Op } = require('sequelize');
 const { DiscountCard } = require('../../db/models');
 const nodemailer = require('nodemailer');
+const axios = require('axios');
+
 
 const transporter = nodemailer.createTransport({
   port: 465,
@@ -83,6 +85,20 @@ router.put('/admin/employees/:id', async (req, res) => {
 
       await transporter.sendMail(mailData);
     }
+    if (newInfo.email !== employee.email) {
+      const credentials = 'Exchange:Exchange';
+      const base64Credentials = Buffer.from(credentials).toString('base64');
+      await axios.post(
+        `http://retail.dolgovagro.ru/rtnagaev/hs/loyaltyservice/updateclientcard?ClientCardID=${newInfo.barcode}&Email=${newInfo.email}`,
+        {},
+        {
+          headers: {
+            Authorization: `Basic ${base64Credentials}`,
+          },
+        }
+      );
+    }
+
     if (newInfo.phoneNumber !== employee.phoneNumber) {
       const cleanedPhoneNumber = newInfo.phoneNumber.replace(/\D/g, '');
       const trimmedPhoneNumber = cleanedPhoneNumber.substring(1);
@@ -103,6 +119,20 @@ router.put('/admin/employees/:id', async (req, res) => {
       await DiscountCard.update(
         { ...newInfo, phoneNumber: trimmedPhoneNumber },
         { where: { id: employeeId } }
+      );
+      const credentials = 'Exchange:Exchange';
+      const base64Credentials = Buffer.from(credentials).toString('base64');
+      await axios.post(
+        `http://retail.dolgovagro.ru/rtnagaev/hs/loyaltyservice/updateclientcard?ClientCardID=${
+          newInfo.barcode
+        }&Phone=${'+7' + trimmedPhoneNumber}
+      `,
+        {},
+        {
+          headers: {
+            Authorization: `Basic ${base64Credentials}`,
+          },
+        }
       );
     } else {
       await DiscountCard.update(newInfo, { where: { id: employeeId } });

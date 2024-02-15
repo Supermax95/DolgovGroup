@@ -2,13 +2,16 @@ import React, { FC, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { StackNavigationProp } from 'navigation/types';
-import { View, Text, SafeAreaView, ScrollView } from 'react-native';
+import { View, Text, SafeAreaView, ScrollView, RefreshControl } from 'react-native';
 import ProductCard from 'ui/ProductCard';
 import { PORT, IP } from '@env';
 import UniversalHeader from 'ui/UniversalHeader';
 import FilterModal from 'ui/FilterModal';
 import SearchAndFilter from 'ui/SearchAndFilter';
 import { LinearGradient } from 'expo-linear-gradient';
+import getCategory from 'Redux/thunks/Catalog/categoryGet.api';
+import getProducts from 'Redux/thunks/Catalog/productGet.api';
+import getSubcategory from 'Redux/thunks/Catalog/subcategoryGet.api';
 
 export interface IProduct {
   id: number;
@@ -42,6 +45,13 @@ const ProductsCards: FC = ({ route }: any) => {
   const [minPrice, setMinPrice] = useState<number>(0);
   const [maxPrice, setMaxPrice] = useState<number>(0);
   const [initialRender, setInitialRender] = useState<boolean>(true);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await dispatch(getProducts(), getCategory(), getSubcategory());
+    setRefreshing(false);
+  };
 
   const allProducts = useAppSelector<IProduct[]>(
     (state) => state.productSlice.data
@@ -136,7 +146,10 @@ const ProductsCards: FC = ({ route }: any) => {
           alwaysBounceVertical
           showsVerticalScrollIndicator={false}
           style={{ flex: 1, width: '100%' }}
-          bounces={false}
+          // bounces={false}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
         >
           {/* <View className="mb-4 py-4 flex-1 rounded-b-3xl bg-white"> */}
           <LinearGradient
