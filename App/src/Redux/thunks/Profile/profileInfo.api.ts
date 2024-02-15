@@ -13,6 +13,7 @@ interface IProfileInfoResponse {
   middleName: string;
   birthDate: Date | null | string;
   email: string;
+  newEmail:string;
   phoneNumber: string;
   notificationPush: boolean;
   notificationEmail: boolean;
@@ -51,6 +52,7 @@ const getProfileInfo = createAsyncThunk<
         middleName: data.middleName,
         birthDate: data.birthDate,
         email: data.email,
+        newEmail:data.newEmail,
         phoneNumber: data.phoneNumber,
         notificationPush: data.notificationPush,
         notificationEmail: data.notificationEmail,

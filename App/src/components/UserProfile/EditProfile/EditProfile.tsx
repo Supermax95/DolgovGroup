@@ -1,16 +1,26 @@
-import React, { FC } from 'react';
-import { Text, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { useAppSelector } from 'Redux/hooks';
+import React, { FC, useState } from 'react';
+import { Text, View, ScrollView, RefreshControl } from 'react-native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { StackNavigationProp } from 'navigation/types';
 import { format } from 'date-fns';
 import Padding from 'ui/Padding';
 import FieldEditProfile from 'ui/FieldEditProfile';
 import UniversalHeader from 'ui/UniversalHeader';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import getProfileInfo from 'Redux/thunks/Profile/profileInfo.api';
 
 const EditProfile: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
+  const dispatch = useAppDispatch();
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await dispatch(getProfileInfo({ token }));
+    setRefreshing(false);
+  };
 
   const profile = useAppSelector<{
     lastName?: string;
@@ -30,6 +40,16 @@ const EditProfile: FC = () => {
     8
   )}-${profile.phoneNumber?.substring(8, 10)}`;
 
+  const token = useAppSelector<string | undefined>(
+    (state) => state.userSlice.token?.refreshToken
+  );
+
+  useFocusEffect(
+    React.useCallback(() => {
+      dispatch(getProfileInfo({ token }));
+    }, [dispatch, token])
+  );
+
   return (
     <SafeAreaView className="bg-white h-full flex-1">
       <UniversalHeader
@@ -37,57 +57,63 @@ const EditProfile: FC = () => {
         title="Личные данные"
       />
 
-      <Padding>
-        <FieldEditProfile
-          onPress={() => navigation.navigate('ChangeFullName')}
-          title="Имя"
-        >
-          {profile.lastName} {profile.firstName} {profile.middleName}
-        </FieldEditProfile>
-
-        <FieldEditProfile
-          onPress={() => navigation.navigate('ChangeBirthDate')}
-          title="Дата рождения"
-        >
-          {profile.birthDate
-            ? format(new Date(profile.birthDate), 'dd.MM.yyyy')
-            : 'Не указана'}
-        </FieldEditProfile>
-
-        <FieldEditProfile
-          onPress={() => navigation.navigate('ChangePhoneNumber')}
-          title="Телефонный номер"
-        >
-          {formattedPhoneNumber}
-        </FieldEditProfile>
-
-      
-        {profile.newEmail !== '' ? (
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        <Padding>
           <FieldEditProfile
-            onPress={() => navigation.navigate('ChangeEmail')}
-            title="Email"
+            onPress={() => navigation.navigate('ChangeFullName')}
+            title="Имя"
           >
-            <View style={{ flexDirection: 'column' }}>
-              <Text style={{ fontSize: 12 }}>{profile.email}</Text>
-              <Text style={{ fontSize: 10 }}>{profile.newEmail}</Text>
-            </View>
+            {profile.lastName} {profile.firstName} {profile.middleName}
           </FieldEditProfile>
-        ) : (
-          <FieldEditProfile
-            onPress={() => navigation.navigate('ChangeEmail')}
-            title="Email"
-          >
-            {profile.email}
-          </FieldEditProfile>
-        )}
 
-        <FieldEditProfile
-          onPress={() => navigation.navigate('ChangePassword')}
-          title="Пароль"
-        >
-          Изменить пароль
-        </FieldEditProfile>
-      </Padding>
+          <FieldEditProfile
+            onPress={() => navigation.navigate('ChangeBirthDate')}
+            title="Дата рождения"
+          >
+            {profile.birthDate
+              ? format(new Date(profile.birthDate), 'dd.MM.yyyy')
+              : 'Не указана'}
+          </FieldEditProfile>
+
+          <FieldEditProfile
+            onPress={() => navigation.navigate('ChangePhoneNumber')}
+            title="Телефонный номер"
+          >
+            {formattedPhoneNumber}
+          </FieldEditProfile>
+
+          {profile.newEmail !== '' ? (
+            <FieldEditProfile
+              onPress={() => navigation.navigate('ChangeEmail')}
+              title="Email"
+            >
+              <View style={{ flexDirection: 'column' }}>
+                <Text style={{ fontSize: 12 }}>{profile.email}</Text>
+                <Text style={{ fontSize: 10 }}>{profile.newEmail}</Text>
+              </View>
+            </FieldEditProfile>
+          ) : (
+            <FieldEditProfile
+              onPress={() => navigation.navigate('ChangeEmail')}
+              title="Email"
+            >
+              {profile.email}
+            </FieldEditProfile>
+          )}
+
+          <FieldEditProfile
+            onPress={() => navigation.navigate('ChangePassword')}
+            title="Пароль"
+          >
+            Изменить пароль
+          </FieldEditProfile>
+        </Padding>
+      </ScrollView>
     </SafeAreaView>
   );
 };

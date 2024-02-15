@@ -60,6 +60,7 @@ const profileSlice = createSlice({
           phoneNumber,
           notificationEmail,
           notificationPush,
+          newEmail,
         } = action.payload as {
           lastName: string;
           firstName: string;
@@ -69,6 +70,7 @@ const profileSlice = createSlice({
           phoneNumber: string;
           notificationPush: boolean;
           notificationEmail: boolean;
+          newEmail:string;
         };
         state.lastName = lastName;
         state.firstName = firstName;
@@ -77,6 +79,7 @@ const profileSlice = createSlice({
         state.email = email;
         state.phoneNumber = phoneNumber;
         state.notificationPush = notificationPush;
+        state.newEmail = newEmail;
         state.notificationEmail = notificationEmail;
         console.log('=======>', action.payload);
       })
