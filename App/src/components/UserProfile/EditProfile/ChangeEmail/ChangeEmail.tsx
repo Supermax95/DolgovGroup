@@ -66,8 +66,8 @@ const ChangeEmail: FC = () => {
           );
         } else if (result.meta.requestStatus === 'fulfilled') {
           Alert.alert(
-            'Ваша почта успешно обновлена',
-            '',
+            'На новую почту было отправлено письмо',
+            'Подтвердите новую почту',
             [
               {
                 text: 'OK',
@@ -102,6 +102,11 @@ const ChangeEmail: FC = () => {
             autoCapitalize="none"
             keyboardType="email-address"
           />
+                <View className="w-full justify-center items-center mt-2 px-2">
+              <Text className="text-xs font-molmal text-zinc-500">
+                Если вы не подтвердите новую почту, то почта не изменится
+              </Text>
+            </View>
           {errorMessages.newEmail && (
             <Text className="text-red-500 ml-1 mt-1 text-xs">
               {errorMessages.newEmail}

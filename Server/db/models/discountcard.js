@@ -23,7 +23,9 @@ module.exports = (sequelize) => {
       balance: DataTypes.INTEGER,
       userStatus: DataTypes.STRING,
       isActivated: DataTypes.BOOLEAN,
+      newEmail: DataTypes.STRING,
       activationLink: DataTypes.STRING,
+      emailConfirmationCode: DataTypes.STRING,
       notificationPush: DataTypes.BOOLEAN,
       notificationEmail: DataTypes.BOOLEAN,
     },
@@ -42,7 +44,10 @@ module.exports = (sequelize) => {
           discountCard.barcode = discountCard.barcode?.trim();
           discountCard.bonusProgram = discountCard.bonusProgram?.trim();
           discountCard.userStatus = discountCard.userStatus?.trim();
+          discountCard.newEmail = discountCard.newEmail?.trim();
           discountCard.activationLink = discountCard.activationLink?.trim();
+          discountCard.emailConfirmationCode = discountCard.emailConfirmationCode?.trim();
+
         },
         beforeUpdate: (discountCard) => {
           discountCard.lastName = discountCard.lastName?.trim();
@@ -55,7 +60,9 @@ module.exports = (sequelize) => {
           discountCard.barcode = discountCard.barcode?.trim();
           discountCard.bonusProgram = discountCard.bonusProgram?.trim();
           discountCard.userStatus = discountCard.userStatus?.trim();
+          discountCard.newEmail = discountCard.newEmail?.trim();
           discountCard.activationLink = discountCard.activationLink?.trim();
+          discountCard.emailConfirmationCode = discountCard.emailConfirmationCode?.trim();
         },
       },
     }
