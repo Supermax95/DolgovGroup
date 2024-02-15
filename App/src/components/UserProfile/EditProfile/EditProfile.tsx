@@ -86,7 +86,7 @@ const EditProfile: FC = () => {
             {formattedPhoneNumber}
           </FieldEditProfile>
 
-          {profile.newEmail !== '' ? (
+          {profile.newEmail ? (
             <FieldEditProfile
               onPress={() => navigation.navigate('ChangeEmail')}
               title="Email"
