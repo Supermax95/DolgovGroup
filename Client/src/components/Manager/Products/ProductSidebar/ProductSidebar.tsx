@@ -67,8 +67,6 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     (state) => state.categorySlice.data
   );
 
-  // console.log('allCategories', allCategories);
-
   const allSubcategories = useAppSelector(
     (state) => state.subcategorySlice.data
   );
@@ -419,15 +417,36 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   };
 
   // ? вывод подкатегорий в сайдбаре и их скрытие
-  const subcategoryOutput = (id: number): void => {
-    const subcategory = allSubcategories.filter((sub) => sub.categoryId === id);
+  const subcategoryOutput = (id: number, adding = false): void => {
+    const subcategory = allSubcategories.filter(
+      (sub: ISubcategory) => sub.categoryId === id
+    );
     setSelectedSubcategoryData(subcategory);
-    //* используется для обновления состояния подкатегории
-    setSubcategoryStates((prevState) => ({
-      ...prevState,
-      [id]: !prevState[id],
-    }));
+
+    if (adding) {
+      setSubcategoryStates((prevState) => ({
+        ...prevState,
+        [id]: true,
+      }));
+    } else {
+      setSubcategoryStates((prevState) => ({
+        ...prevState,
+        [id]: !prevState[id],
+      }));
+    }
   };
+
+  // //* вывод подкатегорий для добавлении подкатегории
+  // const OpenCategorynAddingSubcategory = (id: number): void => {
+  //   const subcategory = allSubcategories.filter(
+  //     (sub: ISubcategory) => sub.categoryId === id
+  //   );
+  //   setSelectedSubcategoryData(subcategory);
+  //   setSubcategoryStates((prevState) => ({
+  //     ...prevState,
+  //     [id]: true, // Всегда устанавливаем в true, чтобы список всегда открывался
+  //   }));
+  // };
 
   // ? логика добавления ПОДкатегории
   const startAddingSubcategory = (id: number): void => {
@@ -459,7 +478,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
         setErrorNotification(null);
         setShowNotificationAddSubcategory(true);
         //* при лобавлении подкатегории открывается тут же список в категории
-        subcategoryOutput(selectedCategoryIdForSubcategory);
+        subcategoryOutput(selectedCategoryIdForSubcategory, true);
         setTitleNotification(dataSubcategory.subcategoryName);
       }
     } catch (error) {
