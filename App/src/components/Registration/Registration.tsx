@@ -93,9 +93,10 @@ export const Registration: FC = () => {
   };
 
   const validatePassword = (): boolean => {
-    const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z].*[a-z].*[a-z])(?=.*\d).{6,}$/;
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{6,}$/;
     return passwordRegex.test(data.password || '');
-  };
+};
+
 
   const validateCyrillicName = (name: string): boolean => {
     const cyrillicRegex = /^[А-Яа-яЁё]+$/;
@@ -116,7 +117,7 @@ export const Registration: FC = () => {
             ? 'Введите корректный телефон'
             : '',
           password: !validatePassword()
-            ? 'Пароль должен содержать минимум 6 символов, включая заглавные и строчные буквы, а также цифры.'
+            ? 'Пароль должен содержать минимум 6 символов, включая заглавную и строчную букву, а также одну цифру.'
             : '',
           passwordCheck:
             data.password !== passwordCheck ? 'Пароли не совпадают' : '',
