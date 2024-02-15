@@ -50,7 +50,7 @@ router.post('/supportNodemailerRouter', async (req, res) => {
       text: '',
       html: `
      
-        <b>Уважаемый ${dataUser.firstName} ${dataUser.middleName},</b>
+        <b>Уважаемый(ая), ${dataUser.firstName} ${dataUser.middleName},</b>
         <br>
         <p>Ваш обращение по теме: "<b>${titleMessage}</b>" принято. В ближайшем времени, мы его рассмотрим.</p>
       `,
@@ -108,7 +108,7 @@ router.post('/checkEmployee', async (req, res) => {
       subject: `Статус вашего заявления`,
       text: '',
       html: `
-        <b>Уважаемый ${dataUser.firstName} ${dataUser.middleName},</b>
+        <b>Уважаемый(ая), ${dataUser.firstName} ${dataUser.middleName},</b>
         <br>
         <p>Ваш запрос рассматривается. В скором времени мы примем решение по вашему статусу.</p>
       `,
