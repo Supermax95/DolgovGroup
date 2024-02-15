@@ -1,10 +1,13 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useAppDispatch } from '../../../Redux/hooks';
 import Wrapper from '../../../ui/Wrapper';
 import InputModal, { InputField } from '../../../ui/InputModal';
 import ModalUser from '../../../ui/ModalUser';
 import nodemailerActivationSend from '../../../Redux/thunks/Nodemailer/nodemailerActivation.api';
 import nodemailerCodeSend from '../../../Redux/thunks/Nodemailer/nodemailerCodeSend.api';
+import { unwrapResult } from '@reduxjs/toolkit';
+import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
+import PopUpNotification from '../../../ui/PopUpNotification';
 
 interface IUser {
   id: number;
@@ -40,6 +43,29 @@ const EmployeesModal: FC<UsersModalProps> = ({
 }) => {
   const dispatch = useAppDispatch();
 
+  const [showNotificationActivationSend, setShowNotificationActivationSend] =
+    useState<boolean>(false);
+
+  const [errorNotification, setErrorNotification] = useState<string | null>(
+    null
+  );
+
+  const [
+    showErrorNotificationActivationSend,
+    setShowErrorNotificationActivationSend,
+  ] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (showNotificationActivationSend || showErrorNotificationActivationSend) {
+      const timeoutId = setTimeout(() => {
+        setShowNotificationActivationSend(false);
+        setShowErrorNotificationActivationSend(false);
+      });
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [showNotificationActivationSend, showErrorNotificationActivationSend]);
+
   const userToSave = editedUser || {
     id: 0,
     lastName: '',
@@ -48,7 +74,7 @@ const EmployeesModal: FC<UsersModalProps> = ({
     email: '',
     barcode: '',
     userStatus: '',
-    phoneNumber:'',
+    phoneNumber: '',
     birthDate: undefined,
     bonusProgram: '',
     balance: 0,
@@ -70,7 +96,28 @@ const EmployeesModal: FC<UsersModalProps> = ({
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSaveEdit(userToSave);
+
+    const isConfirmed = window.confirm(
+      'Вы уверены, что хотите внести изменения?'
+    );
+    if (isConfirmed) {
+      onSaveEdit(userToSave);
+    }
+  };
+
+  const handleActivationSend = () => {
+    try {
+      if (editedUser) {
+        const result = dispatch(nodemailerActivationSend(editedUser));
+
+        unwrapResult(result);
+        setShowNotificationActivationSend(true);
+      }
+    } catch (error) {
+      console.error('Произошла ошибка при отправке:', error);
+      setErrorNotification(error as string | null);
+      setShowErrorNotificationActivationSend(true);
+    }
   };
 
   if (!isOpen || !editedUser) {
@@ -136,20 +183,39 @@ const EmployeesModal: FC<UsersModalProps> = ({
       },
       required: true,
     },
+    // {
+    //   id: 'balance',
+    //   name: 'balance',
+    //   type: 'number',
+    //   value: editedUser.balance.toString(),
+    //   placeholder: '',
+    //   autoComplete: 'off',
+    //   title: 'Баланс',
+    //   htmlFor: 'balance',
+    //   onChange: (value: string | boolean | number | Date) => {
+    //     if (typeof value === 'string') {
+    //       setEditedUser({
+    //         ...editedUser,
+    //         balance: parseFloat(value),
+    //       });
+    //     }
+    //   },
+    //   disabled: true,
+    // },
     {
-      id: 'balance',
-      name: 'balance',
-      type: 'number',
-      value: editedUser.balance.toString(),
+      id: 'birthdate',
+      name: 'birthdate',
+      type: 'date',
+      value: editedUser.birthDate,
       placeholder: '',
       autoComplete: 'off',
-      title: 'Баланс',
-      htmlFor: 'balance',
+      title: 'Дата рождения',
+      htmlFor: 'birthdate',
       onChange: (value: string | boolean | number | Date) => {
-        if (typeof value === 'string') {
+        if (value instanceof Date) {
           setEditedUser({
             ...editedUser,
-            balance: parseFloat(value),
+            birthDate: value,
           });
         }
       },
@@ -175,25 +241,6 @@ const EmployeesModal: FC<UsersModalProps> = ({
       required: true,
     },
     {
-      id: 'birthdate',
-      name: 'birthdate',
-      type: 'date',
-      value: editedUser.birthDate,
-      placeholder: '',
-      autoComplete: 'off',
-      title: 'Дата рождения',
-      htmlFor: 'birthdate',
-      onChange: (value: string | boolean | number | Date) => {
-        if (value instanceof Date) {
-          setEditedUser({
-            ...editedUser,
-            birthDate: value,
-          });
-        }
-      },
-      disabled: true,
-    },
-    {
       id: 'email',
       name: 'email',
       type: 'email',
@@ -211,26 +258,26 @@ const EmployeesModal: FC<UsersModalProps> = ({
         }
       },
       required: true,
-    },  
-    {
-      id: 'bonusProgram',
-      name: 'bonusProgram',
-      type: 'text',
-      value: editedUser.bonusProgram,
-      placeholder: '',
-      autoComplete: 'off',
-      title: 'Бонусная программа',
-      htmlFor: 'bonusProgram',
-      onChange: (value: string | boolean | number | Date) => {
-        if (typeof value === 'string') {
-          setEditedUser({
-            ...editedUser,
-            bonusProgram: value,
-          });
-        }
-      },
-      disabled: true,
     },
+    // {
+    //   id: 'bonusProgram',
+    //   name: 'bonusProgram',
+    //   type: 'text',
+    //   value: editedUser.bonusProgram,
+    //   placeholder: '',
+    //   autoComplete: 'off',
+    //   title: 'Бонусная программа',
+    //   htmlFor: 'bonusProgram',
+    //   onChange: (value: string | boolean | number | Date) => {
+    //     if (typeof value === 'string') {
+    //       setEditedUser({
+    //         ...editedUser,
+    //         bonusProgram: value,
+    //       });
+    //     }
+    //   },
+    //   disabled: true,
+    // },
     {
       id: 'phone',
       name: 'phone',
@@ -250,7 +297,7 @@ const EmployeesModal: FC<UsersModalProps> = ({
       },
       required: true,
       pattern: '\\+7 \\(\\d{3}\\) \\d{3}-\\d{2}-\\d{2}',
-    },  
+    },
     {
       id: 'userStatus',
       name: 'userStatus',
@@ -288,24 +335,37 @@ const EmployeesModal: FC<UsersModalProps> = ({
   ];
 
   return (
-    <Wrapper>
-      <form onSubmit={handleFormSubmit}>
-        <ModalUser modalTitle={modalTitle} onCancelСlick={handleCancel}>
-          <InputModal
-            containerClassName={
-              'py-8 grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'
-            }
-            inputFields={inputFieldsDate}
-            codeSend={() =>
-              editedUser && dispatch(nodemailerCodeSend(editedUser))
-            }
-            activationSend={() =>
-              editedUser && dispatch(nodemailerActivationSend(editedUser))
-            }
-          />
-        </ModalUser>
-      </form>
-    </Wrapper>
+    <>
+      {showNotificationActivationSend && (
+        <PopUpNotification
+          titleText={'Ссылка для активации аккаунта выслана на почту:'}
+          email={editedUser.email}
+        />
+      )}
+      {/* //!уведомления об ошибках */}
+      {showErrorNotificationActivationSend && (
+        <PopUpErrorNotification
+          titleText={'Ошибка'}
+          bodyText={errorNotification}
+        />
+      )}
+      <Wrapper>
+        <form onSubmit={handleFormSubmit}>
+          <ModalUser modalTitle={modalTitle} onCancelСlick={handleCancel}>
+            <InputModal
+              containerClassName={
+                'py-8 grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'
+              }
+              inputFields={inputFieldsDate}
+              // codeSend={() =>
+              //   editedUser && dispatch(nodemailerCodeSend(editedUser))
+              // }
+              activationSend={handleActivationSend}
+            />
+          </ModalUser>
+        </form>
+      </Wrapper>
+    </>
   );
 };
 

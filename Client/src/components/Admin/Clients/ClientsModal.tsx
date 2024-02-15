@@ -4,7 +4,6 @@ import Wrapper from '../../../ui/Wrapper';
 import InputModal, { InputField } from '../../../ui/InputModal';
 import ModalUser from '../../../ui/ModalUser';
 import nodemailerActivationSend from '../../../Redux/thunks/Nodemailer/nodemailerActivation.api';
-import nodemailerCodeSend from '../../../Redux/thunks/Nodemailer/nodemailerCodeSend.api';
 import PopUpNotification from '../../../ui/PopUpNotification';
 import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
 import { unwrapResult } from '@reduxjs/toolkit';
@@ -49,7 +48,6 @@ const ClientsModal: React.FC<UsersModalProps> = ({
   const [errorNotification, setErrorNotification] = useState<string | null>(
     null
   );
-  const [isLoading, setIsLoading] = useState(false)
 
   const [
     showErrorNotificationActivationSend,
@@ -75,7 +73,7 @@ const ClientsModal: React.FC<UsersModalProps> = ({
     email: '',
     barcode: '',
     userStatus: '',
-    phoneNumber:'',
+    phoneNumber: '',
     birthDate: undefined,
     bonusProgram: '',
     balance: 0,
@@ -184,20 +182,39 @@ const ClientsModal: React.FC<UsersModalProps> = ({
       },
       required: true,
     },
+    // {
+    //   id: 'balance',
+    //   name: 'balance',
+    //   type: 'number',
+    //   value: editedUser.balance.toString(),
+    //   placeholder: '',
+    //   autoComplete: 'off',
+    //   title: 'Баланс',
+    //   htmlFor: 'balance',
+    //   onChange: (value: string | boolean | number | Date) => {
+    //     if (typeof value === 'string') {
+    //       setEditedUser({
+    //         ...editedUser,
+    //         balance: parseFloat(value),
+    //       });
+    //     }
+    //   },
+    //   disabled: true,
+    // },
     {
-      id: 'balance',
-      name: 'balance',
-      type: 'number',
-      value: editedUser.balance.toString(),
+      id: 'birthdate',
+      name: 'birthdate',
+      type: 'date',
+      value: editedUser.birthDate,
       placeholder: '',
       autoComplete: 'off',
-      title: 'Баланс',
-      htmlFor: 'balance',
+      title: 'Дата рождения',
+      htmlFor: 'birthdate',
       onChange: (value: string | boolean | number | Date) => {
-        if (typeof value === 'string') {
+        if (value instanceof Date) {
           setEditedUser({
             ...editedUser,
-            balance: parseFloat(value),
+            birthDate: value,
           });
         }
       },
@@ -222,25 +239,7 @@ const ClientsModal: React.FC<UsersModalProps> = ({
       },
       required: true,
     },
-    {
-      id: 'birthdate',
-      name: 'birthdate',
-      type: 'date',
-      value: editedUser.birthDate,
-      placeholder: '',
-      autoComplete: 'off',
-      title: 'Дата рождения',
-      htmlFor: 'birthdate',
-      onChange: (value: string | boolean | number | Date) => {
-        if (value instanceof Date) {
-          setEditedUser({
-            ...editedUser,
-            birthDate: value,
-          });
-        }
-      },
-      disabled: true,
-    },
+
     {
       id: 'email',
       name: 'email',
@@ -259,26 +258,26 @@ const ClientsModal: React.FC<UsersModalProps> = ({
         }
       },
       required: true,
-    }, 
-    {
-      id: 'bonusProgram',
-      name: 'bonusProgram',
-      type: 'text',
-      value: editedUser.bonusProgram,
-      placeholder: '',
-      autoComplete: 'off',
-      title: 'Бонусная программа',
-      htmlFor: 'bonusProgram',
-      onChange: (value: string | boolean | number | Date) => {
-        if (typeof value === 'string') {
-          setEditedUser({
-            ...editedUser,
-            bonusProgram: value,
-          });
-        }
-      },
-      disabled: true,
     },
+    // {
+    //   id: 'bonusProgram',
+    //   name: 'bonusProgram',
+    //   type: 'text',
+    //   value: editedUser.bonusProgram,
+    //   placeholder: '',
+    //   autoComplete: 'off',
+    //   title: 'Бонусная программа',
+    //   htmlFor: 'bonusProgram',
+    //   onChange: (value: string | boolean | number | Date) => {
+    //     if (typeof value === 'string') {
+    //       setEditedUser({
+    //         ...editedUser,
+    //         bonusProgram: value,
+    //       });
+    //     }
+    //   },
+    //   disabled: true,
+    // },
     {
       id: 'phone',
       name: 'phone',
@@ -298,7 +297,7 @@ const ClientsModal: React.FC<UsersModalProps> = ({
       },
       required: true,
       pattern: '\\+7 \\(\\d{3}\\) \\d{3}-\\d{2}-\\d{2}',
-    }, 
+    },
     {
       id: 'userStatus',
       name: 'userStatus',
@@ -358,9 +357,6 @@ const ClientsModal: React.FC<UsersModalProps> = ({
               //   editedUser && dispatch(nodemailerCodeSend(editedUser))
               // }
               activationSend={handleActivationSend}
-              // activationSend={() =>
-              //   editedUser && dispatch(nodemailerActivationSend(editedUser))
-              // }
             />
           </ModalUser>
         </form>
