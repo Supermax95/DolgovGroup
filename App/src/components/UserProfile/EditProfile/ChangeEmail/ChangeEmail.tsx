@@ -25,9 +25,9 @@ const ChangeEmail: FC = () => {
     (state) => state.profileSlice.email
   );
 
-  const newEmailProfile = useAppSelector<{
-    newEmail?: string | undefined;
-  }>((state) => state.profileSlice.newEmail);
+  const newEmailProfile = useAppSelector<string>(
+    (state) => state.profileSlice.newEmail
+  );
 
   const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -116,13 +116,13 @@ const ChangeEmail: FC = () => {
             </Text>
           )}
 
-          {data.newEmail !== '' && (
+          {newEmailProfile !== '' ? (
             <View className="w-full justify-center mt-1 px-1">
               <Text className="text-xs font-molmal text-rose-500">
                 Новая почта не подтверждена {newEmailProfile}
               </Text>
             </View>
-          )}
+          ) : null}
 
           <View className="w-full justify-center mt-2 px-1">
             <Text className="text-xs font-molmal text-zinc-500">

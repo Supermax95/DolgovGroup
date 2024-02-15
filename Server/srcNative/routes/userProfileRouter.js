@@ -5,7 +5,7 @@ const { DiscountCard } = require('../../db/models');
 const axios = require('axios');
 const nodemailer = require('nodemailer');
 const uuid = require('uuid');
-const { PORT, IP, FRONTPORT } = process.env;
+const { PORT, IP } = process.env;
 
 module.exports = router
   .get('/edit', async (req, res) => {
@@ -147,16 +147,7 @@ const sendConfirmationEmail = async (newEmail, confirmationCode) => {
     from: process.env.EMAIL,
     to: newEmail,
     subject: 'Подтверждение нового email',
-    html: `
-      <div style="font-family: 'Arial', sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; text-align: center;">
-        <h2 style="color: #333;">Для обновления почты пройдите по ссылке</h2>
-        <p style="font-size: 16px; color: #555;">
-          <a href="http://${IP}:${PORT}/confirm-email/${confirmationCode}/${newEmail}" style="text-decoration: none; color: #fff; background-color: #4caf50; padding: 10px 20px; border-radius: 5px; display: inline-block;">
-            Подтвердить почту
-          </a>
-        </p>
-      </div>
-    `,
+    html: `Пожалуйста, введите следующий код для подтверждения нового email: http://${IP}:${PORT}/confirm-email/${confirmationCode}/${newEmail}`,
   };
 
   try {
@@ -208,7 +199,6 @@ router
       });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: 'Произошла ошибка на сервере' });
     }
   })
 
@@ -228,6 +218,7 @@ router
         emailConfirmationCode: '',
         newEmail: '',
       });
+
 
       const credentials = 'Exchange:Exchange';
       const base64Credentials = Buffer.from(credentials).toString('base64');
