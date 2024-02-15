@@ -23,7 +23,7 @@ const ChangeEmail: FC = () => {
   const emailProfile = useAppSelector<string>(
     (state) => state.profileSlice.email
   );
-  
+
   const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -32,7 +32,7 @@ const ChangeEmail: FC = () => {
   const [data, setData] = useState<IChangeEmail>({
     newEmail: emailProfile || '',
   });
-  
+
   const [errorMessages, setErrorMessages] = useState<IChangeEmail>({
     newEmail: '',
   });
@@ -48,7 +48,9 @@ const ChangeEmail: FC = () => {
   const handlerSubmitEmail = async (): Promise<void> => {
     if (!data.newEmail || !validateEmail(data.newEmail)) {
       setErrorMessages({
-        newEmail: !data.newEmail ? 'Введите почту' : 'Введите корректный адрес электронной почты',
+        newEmail: !data.newEmail
+          ? 'Введите почту'
+          : 'Введите корректный адрес электронной почты',
       });
     } else {
       try {
@@ -102,11 +104,31 @@ const ChangeEmail: FC = () => {
             autoCapitalize="none"
             keyboardType="email-address"
           />
-                <View className="w-full justify-center items-center mt-2 px-2">
-              <Text className="text-xs font-molmal text-zinc-500">
-                Если вы не подтвердите новую почту, то почта не изменится
-              </Text>
-            </View>
+
+          {data.newEmail !== '' ? (
+            <>
+              <View className="w-full justify-center mt-1 px-2">
+                <Text className="text-xs font-molmal text-rose-500">
+                  {/* Почта не подтверждена {data.email} */}
+                </Text>
+              </View>
+            </>
+          ) : (
+            <FieldInput
+              value={data.newEmail}
+              placeholder="Email"
+              onChange={(value) => handleFieldChange('newEmail', value)}
+              autoCapitalize="none"
+              keyboardType="email-address"
+            />
+          )}
+
+          <View className="w-full justify-center mt-2 px-2">
+            <Text className="text-xs font-molmal text-zinc-500">
+              Если вы не подтвердите адрес электронной почты, то изменения не
+              будут внесены
+            </Text>
+          </View>
           {errorMessages.newEmail && (
             <Text className="text-red-500 ml-1 mt-1 text-xs">
               {errorMessages.newEmail}

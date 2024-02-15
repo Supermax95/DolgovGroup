@@ -57,63 +57,54 @@ const EditProfile: FC = () => {
         title="Личные данные"
       />
 
-      <ScrollView
-        contentContainerStyle={{ flexGrow: 1 }}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      >
-        <Padding>
-          <FieldEditProfile
-            onPress={() => navigation.navigate('ChangeFullName')}
-            title="Имя"
-          >
-            {profile.lastName} {profile.firstName} {profile.middleName}
-          </FieldEditProfile>
+      <Padding>
+        <FieldEditProfile
+          onPress={() => navigation.navigate('ChangeFullName')}
+          title="Имя"
+        >
+          {profile.lastName} {profile.firstName} {profile.middleName}
+        </FieldEditProfile>
 
-          <FieldEditProfile
-            onPress={() => navigation.navigate('ChangeBirthDate')}
-            title="Дата рождения"
-          >
-            {profile.birthDate
-              ? format(new Date(profile.birthDate), 'dd.MM.yyyy')
-              : 'Не указана'}
-          </FieldEditProfile>
+        <FieldEditProfile
+          onPress={() => navigation.navigate('ChangeBirthDate')}
+          title="Дата рождения"
+        >
+          {profile.birthDate
+            ? format(new Date(profile.birthDate), 'dd.MM.yyyy')
+            : 'Не указана'}
+        </FieldEditProfile>
 
-          <FieldEditProfile
-            onPress={() => navigation.navigate('ChangePhoneNumber')}
-            title="Телефонный номер"
-          >
-            {formattedPhoneNumber}
-          </FieldEditProfile>
+        <FieldEditProfile
+          onPress={() => navigation.navigate('ChangePhoneNumber')}
+          title="Телефонный номер"
+        >
+          {formattedPhoneNumber}
+        </FieldEditProfile>
 
-          {profile.newEmail !== '' ? (
-            <FieldEditProfile
-              onPress={() => navigation.navigate('ChangeEmail')}
-              title="Email"
-            >
-              <View style={{ flexDirection: 'column' }}>
-                <Text style={{ fontSize: 12 }}>{profile.email}</Text>
-                <Text style={{ fontSize: 10 }}>{profile.newEmail}</Text>
-              </View>
-            </FieldEditProfile>
-          ) : (
-            <FieldEditProfile
-              onPress={() => navigation.navigate('ChangeEmail')}
-              title="Email"
-            >
-              {profile.email}
-            </FieldEditProfile>
-          )}
-
+        {profile.newEmail !== '' ? (
           <FieldEditProfile
-            onPress={() => navigation.navigate('ChangePassword')}
-            title="Пароль"
+            onPress={() => navigation.navigate('ChangeEmail')}
+            title="Email"
+            warningIcon="exclamationcircleo"
           >
-            Изменить пароль
+            {profile.email}
           </FieldEditProfile>
-        </Padding>
-      </ScrollView>
+        ) : (
+          <FieldEditProfile
+            onPress={() => navigation.navigate('ChangeEmail')}
+            title="Email"
+          >
+            {profile.email}
+          </FieldEditProfile>
+        )}
+
+        <FieldEditProfile
+          onPress={() => navigation.navigate('ChangePassword')}
+          title="Пароль"
+        >
+          Изменить пароль
+        </FieldEditProfile>
+      </Padding>
     </SafeAreaView>
   );
 };
