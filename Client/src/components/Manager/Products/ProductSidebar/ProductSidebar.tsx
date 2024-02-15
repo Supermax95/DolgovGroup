@@ -436,18 +436,6 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     }
   };
 
-  // //* вывод подкатегорий для добавлении подкатегории
-  // const OpenCategorynAddingSubcategory = (id: number): void => {
-  //   const subcategory = allSubcategories.filter(
-  //     (sub: ISubcategory) => sub.categoryId === id
-  //   );
-  //   setSelectedSubcategoryData(subcategory);
-  //   setSubcategoryStates((prevState) => ({
-  //     ...prevState,
-  //     [id]: true, // Всегда устанавливаем в true, чтобы список всегда открывался
-  //   }));
-  // };
-
   // ? логика добавления ПОДкатегории
   const startAddingSubcategory = (id: number): void => {
     setSelectedCategoryIdForSubcategory(id);
