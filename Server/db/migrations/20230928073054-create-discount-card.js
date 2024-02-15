@@ -64,6 +64,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       newEmail: {
+        defaultValue: '',
         type: Sequelize.STRING,
       },
       notificationPush: {
