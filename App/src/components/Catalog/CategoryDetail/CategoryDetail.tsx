@@ -1,13 +1,16 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { StackNavigationProp } from 'navigation/types';
-import { View, Text, SafeAreaView, ScrollView } from 'react-native';
+import { View, Text, SafeAreaView, ScrollView, RefreshControl } from 'react-native';
 import CardCategory from 'ui/CardCategory';
 import Heading from 'ui/Heading';
 import CardsNoCarusel from 'components/Promotion/CardsNoCarusel';
 import UniversalHeader from 'ui/UniversalHeader';
 import { LinearGradient } from 'expo-linear-gradient';
+import getCategory from 'Redux/thunks/Catalog/categoryGet.api';
+import getProducts from 'Redux/thunks/Catalog/productGet.api';
+import getSubcategory from 'Redux/thunks/Catalog/subcategoryGet.api';
 
 export interface ICategory {
   id: number;
@@ -23,7 +26,7 @@ export interface ISubcategory {
 
 const CategoryDetail: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
-  // const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
   const categories = useAppSelector<ICategory[]>(
     (state) => state.categorySlice.data
@@ -38,6 +41,12 @@ const CategoryDetail: FC = () => {
 
   const handleSearchPress = () => {
     navigation.navigate('SearchProduct');
+  };
+  const [refreshing, setRefreshing] = useState(false);
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await dispatch(getProducts(), getCategory(), getSubcategory());
+    setRefreshing(false);
   };
 
   return (
@@ -54,10 +63,13 @@ const CategoryDetail: FC = () => {
       >
         {/* Scrollable container start */}
         <ScrollView
-          alwaysBounceVertical
-          showsVerticalScrollIndicator={false}
-          style={{ flex: 1, width: '100%' }}
-        >
+            alwaysBounceVertical
+            showsVerticalScrollIndicator={false}
+            style={{ flex: 1, width: '100%' }}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          >
           {/* акции вне карусели */}
           <View className="py-2">
             <Heading title="Акции вне карусели" />

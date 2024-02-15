@@ -1,4 +1,4 @@
-import { ActivityIndicator, Platform, ScrollView, View } from 'react-native';
+import { ActivityIndicator, Platform, RefreshControl, ScrollView, View } from 'react-native';
 import React, { FC, useEffect, useState } from 'react';
 import Padding from 'ui/Padding';
 import Heading from 'ui/Heading';
@@ -18,6 +18,9 @@ import { encode } from 'base-64';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import BonusCard from 'ui/BonusCard';
 import { LinearGradient } from 'expo-linear-gradient';
+import getCategory from 'Redux/thunks/Catalog/categoryGet.api';
+import getProducts from 'Redux/thunks/Catalog/productGet.api';
+import getSubcategory from 'Redux/thunks/Catalog/subcategoryGet.api';
 
 const HomeDetail: FC = () => {
   // const navigation = useNavigation<StackNavigationProp>();
@@ -33,6 +36,14 @@ const HomeDetail: FC = () => {
   const token = useAppSelector<string | undefined>(
     (state) => state.userSlice.token?.refreshToken
   );
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await dispatch(getProducts(), getCategory(), getSubcategory());
+    setRefreshing(false);
+  };
 
   useEffect(() => {
     (async () => {
@@ -172,6 +183,9 @@ const HomeDetail: FC = () => {
             alwaysBounceVertical
             showsVerticalScrollIndicator={false}
             style={{ flex: 1, width: '100%' }}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
           >
             {/* Бонусная карта */}
             <View className="mb-4 py-4 flex-1 rounded-b-3xl ">

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, SafeAreaView } from 'react-native';
-import { useAppSelector } from 'Redux/hooks';
+import { View, Text, ScrollView, SafeAreaView, RefreshControl } from 'react-native';
+import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { PORT, IP } from '@env';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from 'navigation/types';
@@ -9,6 +9,9 @@ import ProductCard from 'ui/ProductCard';
 import FilterModal from 'ui/FilterModal';
 import SearchAndFilter from 'ui/SearchAndFilter';
 import { LinearGradient } from 'expo-linear-gradient';
+import getCategory from 'Redux/thunks/Catalog/categoryGet.api';
+import getProducts from 'Redux/thunks/Catalog/productGet.api';
+import getSubcategory from 'Redux/thunks/Catalog/subcategoryGet.api';
 
 export interface IProduct {
   id: number;
@@ -29,7 +32,7 @@ export interface IProduct {
 
 const SearchProduct = () => {
   const navigation = useNavigation<StackNavigationProp>();
-
+  const dispatch = useAppDispatch();
   const [searchText, setSearchText] = useState<string>('');
   const [isFilterModalVisible, setFilterModalVisible] =
     useState<boolean>(false);
@@ -38,6 +41,13 @@ const SearchProduct = () => {
   const [minPrice, setMinPrice] = useState<number>(0);
   const [maxPrice, setMaxPrice] = useState<number>(0);
   const [initialRender, setInitialRender] = useState<boolean>(true);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await dispatch(getProducts(), getCategory(), getSubcategory());
+    setRefreshing(false);
+  };
 
   const products = useAppSelector<IProduct[]>(
     (state) => state.productSlice.data
@@ -120,7 +130,10 @@ const SearchProduct = () => {
           alwaysBounceVertical
           showsVerticalScrollIndicator={false}
           style={{ flex: 1, width: '100%' }}
-          bounces={false}
+          // bounces={false}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
         >
           <LinearGradient
             colors={['#FAF9F9', '#FAFAFA', '#F5F5F5']}
