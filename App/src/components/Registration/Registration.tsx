@@ -8,6 +8,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   Pressable,
+  ScrollView,
+  Keyboard,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from 'navigation/types';
@@ -231,206 +233,216 @@ export const Registration: FC = () => {
           behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}
           keyboardVerticalOffset={Platform.OS === 'ios' ? 10 : -200}
         >
-          {/* <ScrollView bounces={false} className="h-full"> */}
-          <View className="justify-center items-center h-full">
-            <View className="w-10/12">
-              {step === 1 && (
-                <>
-                  <Text className="text-center text-gray-800 text-lg font-normal mb-2">
-                    Создание аккаунта
-                  </Text>
-                  <FieldInput
-                    value={data.lastName}
-                    placeholder="Фамилия"
-                    onChange={(value) => handleFieldChange('lastName', value)}
-                    autoCapitalize="words"
-                  />
-                  {errorMessages.lastName && (
-                    <Text className="text-red-500 ml-1 mt-1 text-xs">
-                      {errorMessages.lastName}
+          <ScrollView
+            contentContainerStyle={{ flexGrow: 1 }}
+            keyboardShouldPersistTaps="handled"
+            onScrollBeginDrag={() => Keyboard.dismiss()}
+          >
+            <View className="pb-14 justify-center items-center h-full">
+              <View className="w-10/12">
+                {step === 1 && (
+                  <>
+                    <Text className="text-center text-gray-800 text-lg font-normal mb-2">
+                      Создание аккаунта
                     </Text>
-                  )}
-                  <FieldInput
-                    value={data.firstName}
-                    placeholder="Имя"
-                    onChange={(value) => handleFieldChange('firstName', value)}
-                    autoCapitalize="words"
-                  />
-                  {errorMessages.firstName && (
-                    <Text className="text-red-500 ml-1 mt-1 text-xs">
-                      {errorMessages.firstName}
-                    </Text>
-                  )}
-                  <FieldInput
-                    value={data.middleName}
-                    placeholder="Отчество"
-                    onChange={(value) => handleFieldChange('middleName', value)}
-                    autoCapitalize="words"
-                  />
-                  {errorMessages.middleName && (
-                    <Text className="text-red-500 ml-1 mt-1 text-xs">
-                      {errorMessages.middleName}
-                    </Text>
-                  )}
-                  <Calendar
-                    onDateChange={(selectedDate) =>
-                      handleFieldChange('birthDate', selectedDate)
-                    }
-                  />
-
-                  {errorMessages.birthDate && (
-                    <Text className="text-red-500 ml-1 mt-1 text-xs">
-                      {errorMessages.birthDate
-                        ? errorMessages.birthDate.toLocaleString()
-                        : ''}
-                    </Text>
-                  )}
-                  <View className="mt-1">
-                    <Button onPress={handleNextStep} title="Далее" />
-                  </View>
-                </>
-              )}
-
-              {step === 2 && (
-                <>
-                  <Text className="text-center text-gray-800 text-lg font-normal mb-2">
-                    Осталось ещё чуть-чуть
-                  </Text>
-
-                  {/* вернуться назад */}
-                  <View>
-                    <Pressable
-                      className="mx-2 my-1 flex-row items-center justify-center"
-                      onPress={handlePrevStep}
-                    >
-                      <MaterialCommunityIcons
-                        name="arrow-left"
-                        size={15}
-                        color="#71716F"
-                      />
-
-                      <Text className="mx-2 text-gray-800 opacity-70 text-sm text-center">
-                        Вернуться на шаг назад
+                    <FieldInput
+                      value={data.lastName}
+                      placeholder="Фамилия"
+                      onChange={(value) => handleFieldChange('lastName', value)}
+                      autoCapitalize="words"
+                    />
+                    {errorMessages.lastName && (
+                      <Text className="text-red-500 ml-1 mt-1 text-xs">
+                        {errorMessages.lastName}
                       </Text>
-                    </Pressable>
-                  </View>
-
-                  <FieldInput
-                    value={data.email}
-                    placeholder="Email"
-                    onChange={(value) => handleFieldChange('email', value)}
-                    autoCapitalize="none"
-                    keyboardType="email-address"
-                  />
-                  {errorMessages.email && (
-                    <Text className="text-red-500 ml-1 mt-1 text-xs">
-                      {errorMessages.email}
-                    </Text>
-                  )}
-                  <View className="flex-row items-center">
-                    <TextInputMask
-                      className="rounded-xl bg-gray-100 mt-3 p-3 w-full"
-                      type={'custom'}
-                      options={{
-                        mask: '+7 (999) 999-99-99',
-                      }}
-                      value={data.phoneNumber}
-                      onChangeText={(text) =>
-                        handleFieldChange('phoneNumber', text)
+                    )}
+                    <FieldInput
+                      value={data.firstName}
+                      placeholder="Имя"
+                      onChange={(value) =>
+                        handleFieldChange('firstName', value)
                       }
-                      placeholder="+7 (___) ___-__-__"
-                      keyboardType="number-pad"
+                      autoCapitalize="words"
                     />
-                  </View>
-                  {errorMessages.phoneNumber && (
-                    <Text className="text-red-500 ml-1 mt-1 text-xs">
-                      {errorMessages.phoneNumber}
-                    </Text>
-                  )}
-
-                  <View className="flex-row items-center">
-                    <FieldInput
-                      value={data.password}
-                      placeholder="Пароль"
-                      onChange={(value) => handleFieldChange('password', value)}
-                      isSecure={!showPassword}
-                      autoCapitalize="none"
-                    />
-                    <MaterialCommunityIcons
-                      name={showPassword ? 'eye' : 'eye-off'}
-                      size={25}
-                      color="gray"
-                      onPress={toggleShowPassword}
-                      style={{
-                        position: 'absolute',
-                        right: 15,
-                        transform: [{ translateY: 5 }],
-                      }}
-                    />
-                  </View>
-                  {errorMessages.password && (
-                    <Text className="text-red-500 ml-1 mt-1 text-xs">
-                      {errorMessages.password}
-                    </Text>
-                  )}
-                  <View className="flex-row items-center">
-                    <FieldInput
-                      value={passwordCheck}
-                      placeholder="Подтвердите пароль"
-                      onChange={(value) => {
-                        setPasswordCheck(value);
-                        setErrorMessages((prevErrors) => ({
-                          ...prevErrors,
-                          password: '',
-                        }));
-                      }}
-                      isSecure={!showPasswordRepeat}
-                      autoCapitalize="none"
-                    />
-                    <MaterialCommunityIcons
-                      name={showPasswordRepeat ? 'eye' : 'eye-off'}
-                      size={25}
-                      color="gray"
-                      onPress={toggleShowPasswordRepeat}
-                      style={{
-                        position: 'absolute',
-                        right: 15,
-                        transform: [{ translateY: 5 }],
-                      }}
-                    />
-                  </View>
-                  {errorMessages.password && (
-                    <Text className="text-red-500 ml-1 mt-1 text-xs">
-                      {errorMessages.password}
-                    </Text>
-                  )}
-                  {errorMessages.passwordCheck && (
-                    <Text className="text-red-500 ml-1 mt-1 text-xs">
-                      {errorMessages.passwordCheck}
-                    </Text>
-                  )}
-                  <View className="mt-1">
-                    <Button
-                      onPress={handleSubmit}
-                      title={`Зарегистрироваться`}
-                    />
-                  </View>
-
-                  <View className="mx-2 mt-4 flex-col items-start">
-                    <Text className="text-gray-800 opacity-60 text-sm font-normal ml-1 ">
-                      Регистрируясь, я соглашаюсь c
-                    </Text>
-                    <Pressable onPress={handleLegalPolicyPress}>
-                      <Text className="text-green-600 text-sm font-normal ml-1 underline">
-                        правовой политикой компании
+                    {errorMessages.firstName && (
+                      <Text className="text-red-500 ml-1 mt-1 text-xs">
+                        {errorMessages.firstName}
                       </Text>
-                    </Pressable>
-                  </View>
-                </>
-              )}
+                    )}
+                    <FieldInput
+                      value={data.middleName}
+                      placeholder="Отчество"
+                      onChange={(value) =>
+                        handleFieldChange('middleName', value)
+                      }
+                      autoCapitalize="words"
+                    />
+                    {errorMessages.middleName && (
+                      <Text className="text-red-500 ml-1 mt-1 text-xs">
+                        {errorMessages.middleName}
+                      </Text>
+                    )}
+                    <Calendar
+                      onDateChange={(selectedDate) =>
+                        handleFieldChange('birthDate', selectedDate)
+                      }
+                    />
+
+                    {errorMessages.birthDate && (
+                      <Text className="text-red-500 ml-1 mt-1 text-xs">
+                        {errorMessages.birthDate
+                          ? errorMessages.birthDate.toLocaleString()
+                          : ''}
+                      </Text>
+                    )}
+                    <View className="mt-1">
+                      <Button onPress={handleNextStep} title="Далее" />
+                    </View>
+                  </>
+                )}
+
+                {step === 2 && (
+                  <>
+                    {/* <Text className="text-center text-gray-800 text-lg font-normal mb-2">
+                      Осталось ещё чуть-чуть
+                    </Text> */}
+
+                    {/* вернуться назад */}
+                    <View>
+                      <Pressable
+                        className="mx-2 my-1 flex-row items-center justify-center"
+                        onPress={handlePrevStep}
+                      >
+                        <MaterialCommunityIcons
+                          name="arrow-left"
+                          size={15}
+                          color="#71716F"
+                        />
+
+                        <Text className="mx-2 text-gray-800 opacity-70 text-sm text-center">
+                          Вернуться на шаг назад
+                        </Text>
+                      </Pressable>
+                    </View>
+
+                    <FieldInput
+                      value={data.email}
+                      placeholder="Email"
+                      onChange={(value) => handleFieldChange('email', value)}
+                      autoCapitalize="none"
+                      keyboardType="email-address"
+                    />
+                    {errorMessages.email && (
+                      <Text className="text-red-500 ml-1 mt-1 text-xs">
+                        {errorMessages.email}
+                      </Text>
+                    )}
+                    <View className="flex-row items-center">
+                      <TextInputMask
+                        className="rounded-xl bg-gray-100 mt-3 p-3 w-full"
+                        type={'custom'}
+                        options={{
+                          mask: '+7 (999) 999-99-99',
+                        }}
+                        value={data.phoneNumber}
+                        onChangeText={(text) =>
+                          handleFieldChange('phoneNumber', text)
+                        }
+                        placeholder="+7 (___) ___-__-__"
+                        keyboardType="number-pad"
+                      />
+                    </View>
+                    {errorMessages.phoneNumber && (
+                      <Text className="text-red-500 ml-1 mt-1 text-xs">
+                        {errorMessages.phoneNumber}
+                      </Text>
+                    )}
+
+                    <View className="flex-row items-center">
+                      <FieldInput
+                        value={data.password}
+                        placeholder="Пароль"
+                        onChange={(value) =>
+                          handleFieldChange('password', value)
+                        }
+                        isSecure={!showPassword}
+                        autoCapitalize="none"
+                      />
+                      <MaterialCommunityIcons
+                        name={showPassword ? 'eye' : 'eye-off'}
+                        size={25}
+                        color="gray"
+                        onPress={toggleShowPassword}
+                        style={{
+                          position: 'absolute',
+                          right: 15,
+                          transform: [{ translateY: 5 }],
+                        }}
+                      />
+                    </View>
+                    {errorMessages.password && (
+                      <Text className="text-red-500 ml-1 mt-1 text-xs">
+                        {errorMessages.password}
+                      </Text>
+                    )}
+                    <View className="flex-row items-center">
+                      <FieldInput
+                        value={passwordCheck}
+                        placeholder="Подтвердите пароль"
+                        onChange={(value) => {
+                          setPasswordCheck(value);
+                          setErrorMessages((prevErrors) => ({
+                            ...prevErrors,
+                            password: '',
+                          }));
+                        }}
+                        isSecure={!showPasswordRepeat}
+                        autoCapitalize="none"
+                      />
+                      <MaterialCommunityIcons
+                        name={showPasswordRepeat ? 'eye' : 'eye-off'}
+                        size={25}
+                        color="gray"
+                        onPress={toggleShowPasswordRepeat}
+                        style={{
+                          position: 'absolute',
+                          right: 15,
+                          transform: [{ translateY: 5 }],
+                        }}
+                      />
+                    </View>
+                    {errorMessages.password && (
+                      <Text className="text-red-500 ml-1 mt-1 text-xs">
+                        {errorMessages.password}
+                      </Text>
+                    )}
+                    {errorMessages.passwordCheck && (
+                      <Text className="text-red-500 ml-1 mt-1 text-xs">
+                        {errorMessages.passwordCheck}
+                      </Text>
+                    )}
+                    <View className="mt-1">
+                      <Button
+                        onPress={handleSubmit}
+                        title={`Зарегистрироваться`}
+                      />
+                    </View>
+
+                    <View className="mx-2 mt-4 flex-col items-start">
+                      <Text className="text-gray-800 opacity-60 text-sm font-normal ml-1 ">
+                        Регистрируясь, я соглашаюсь c
+                      </Text>
+                      <Pressable onPress={handleLegalPolicyPress}>
+                        <Text className="text-green-600 text-sm font-normal ml-1 underline">
+                          правовой политикой компании
+                        </Text>
+                      </Pressable>
+                    </View>
+                  </>
+                )}
+              </View>
             </View>
-          </View>
-          {/* </ScrollView> */}
+          </ScrollView>
         </KeyboardAvoidingView>
       )}
     </SafeAreaView>

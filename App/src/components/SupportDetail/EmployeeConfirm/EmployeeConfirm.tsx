@@ -119,8 +119,8 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
 
       if (result.meta.requestStatus === 'rejected') {
         Alert.alert(
-          'Ошибка',void
-          'Произошла ошибка при отправке запроса, попробуйте повторить позже'
+          'Ошибка',
+          void 'Произошла ошибка при отправке запроса, попробуйте повторить позже'
         );
         setModalVisible(false);
       } else {
@@ -271,6 +271,7 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
                       title="Проверить статус"
                       onPress={handleRefreshStatus}
                       disabled={isResendDisabled}
+                      colors={['bg-teal-500', 'bg-gray-300']}
                     />
 
                     {isResendDisabled && (

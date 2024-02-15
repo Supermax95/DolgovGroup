@@ -16,7 +16,6 @@ import EditProfile from 'components/UserProfile/EditProfile/EditProfile';
 import AccumulatedUserPoints from 'components/UserProfile/AccumulatedUserPoints/AccumulatedUserPoints';
 import NotificationSettings from 'components/UserProfile/NotificationSettings/NotificationSettings';
 import AboutApplication from 'components/UserProfile/AboutApplication/AboutApplication';
-import { ResetPassword } from 'components/SignIn/ResetPassword';
 import ChangeFullName from 'components/UserProfile/EditProfile/ChangeFullName/ChangeFullName';
 import ChangeBirthDate from 'components/UserProfile/EditProfile/ChangeBirthDate/ChangeBirthDate';
 import ChangeEmail from 'components/UserProfile/EditProfile/ChangeEmail/ChangeEmail';
@@ -45,6 +44,7 @@ import getQuestions from 'Redux/thunks/Question/getQuestions.api';
 import QuestionAndAnswer from 'components/SupportDetail/PopularQuestions/QuestionAndAnswer';
 import SearchProduct from 'components/Catalog/ProductsCards/SearchProduct/SearchProduct';
 import ChangePhoneNumber from 'components/UserProfile/EditProfile/ChangePhoneNumber/ChangePhoneNumber';
+import { ResetPassword } from 'components/SignIn/ResetPassword/ResetPassword';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabNavigatorOptions>();

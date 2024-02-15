@@ -5,6 +5,8 @@ import {
   Alert,
   KeyboardAvoidingView,
   Platform,
+  Keyboard,
+  ScrollView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch } from 'Redux/hooks';
@@ -107,39 +109,46 @@ export const ResetPassword: FC = () => {
         title="Восстановление доступа"
       />
       <KeyboardAvoidingView
+        className="flex-1"
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
       >
-        <View className="justify-center items-center h-[90%]">
-          <View className="w-10/12">
-            <Text className="text-center text-gray-800 text-md font-normal mb-2">
-              Укажите адрес электронной почты, связанный с вашим аккаунтом,
-              чтобы мы могли помочь вам восстановить доступ.
-            </Text>
-            <FieldInput
-              value={data.email}
-              placeholder="Введите email"
-              autoCapitalize="none"
-              onChange={(value) => setData({ ...data, email: value })}
-              keyboardType="email-address"
-            />
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          keyboardShouldPersistTaps="handled"
+          onScrollBeginDrag={() => Keyboard.dismiss()}
+        >
+          <View className="justify-center items-center h-[90%]">
+            <View className="w-10/12">
+              <Text className="text-center text-gray-800 text-md font-normal mb-2">
+                Укажите адрес электронной почты, связанный с вашим аккаунтом,
+                чтобы мы могли помочь вам восстановить доступ.
+              </Text>
+              <FieldInput
+                value={data.email}
+                placeholder="Введите email"
+                autoCapitalize="none"
+                onChange={(value) => setData({ ...data, email: value })}
+                keyboardType="email-address"
+              />
 
-            <ButtonWithDisable
-              title="Сбросить пароль"
-              onPress={handleResetPassword}
-              disabled={isResendDisabled}
-            />
-            {isResendDisabled && (
-              <View className="mt-2 justify-center items-center">
-                <Text className="text-xs font-molmal text-zinc-500">
-                  Возможность повторной отправки через{' '}
-                  {Math.floor(secondsRemaining / 60)} минут{' '}
-                  {secondsRemaining % 60} секунд
-                </Text>
-              </View>
-            )}
+              <ButtonWithDisable
+                title="Сбросить пароль"
+                onPress={handleResetPassword}
+                disabled={isResendDisabled}
+              />
+              {isResendDisabled && (
+                <View className="mt-2 justify-center items-center">
+                  <Text className="text-xs font-molmal text-zinc-500">
+                    Возможность повторной отправки через{' '}
+                    {Math.floor(secondsRemaining / 60)} минут{' '}
+                    {secondsRemaining % 60} секунд
+                  </Text>
+                </View>
+              )}
+            </View>
           </View>
-        </View>
+        </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
