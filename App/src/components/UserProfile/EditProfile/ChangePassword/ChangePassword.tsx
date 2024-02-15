@@ -39,7 +39,7 @@ const ChangePassword: FC = () => {
   });
 
   const validatePassword = (password: string): boolean => {
-    const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z].*[a-z].*[a-z])(?=.*\d).{6,}$/;
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{6,}$/;
     return passwordRegex.test(password);
   };
   
@@ -72,7 +72,7 @@ const ChangePassword: FC = () => {
     } else if (!validatePassword(data.newPassword)) {
       setErrorMessages((prevErrors) => ({
         ...prevErrors,
-        newPassword: 'Пароль должен содержать минимум 6 символов, включая заглавные и строчные буквы, а также цифры.',
+        newPassword: 'Пароль должен содержать минимум 6 символов, включая заглавную и строчную букву, а также одну цифру.',
       }));
     } else {
       try {
