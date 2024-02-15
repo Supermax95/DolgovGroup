@@ -17,6 +17,7 @@ interface IUser {
   notificationPush: boolean;
   notificationEmail: boolean;
   isLoading: boolean;
+  newEmail:string;
   error: any; //* указать конкретный тип для ошибок, если он известен
   successMessage: any; //* указать конкретный тип для ошибок, если он известен
   // error?: string | null;
@@ -29,6 +30,7 @@ const initialState: IUser = {
   middleName: '',
   birthDate: null || '',
   email: '',
+  newEmail:'',
   phoneNumber: '',
   notificationPush: false,
   notificationEmail: false,
@@ -77,7 +79,6 @@ const profileSlice = createSlice({
         state.notificationPush = notificationPush;
         state.notificationEmail = notificationEmail;
         console.log('=======>', action.payload);
-        
       })
       .addCase(getProfileInfo.rejected, (state, action) => {
         state.isLoading = false;
@@ -119,8 +120,9 @@ const profileSlice = createSlice({
       })
       .addCase(profileChangeEmail.fulfilled, (state, action) => {
         state.isLoading = false;
-        const { email } = action.payload;
+        const { email, newEmail } = action.payload;
         state.email = email;
+        state.newEmail = newEmail;
       })
       .addCase(profileChangeEmail.rejected, (state, action) => {
         state.isLoading = false;
@@ -167,7 +169,7 @@ const profileSlice = createSlice({
       .addCase(profileChangePhoneNumber.fulfilled, (state, action) => {
         state.isLoading = false;
         state.phoneNumber = action.payload.phoneNumber;
-        state.successMessage=action.payload.message
+        state.successMessage = action.payload.message;
       });
   },
 });

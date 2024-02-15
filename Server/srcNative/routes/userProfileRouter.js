@@ -2,6 +2,10 @@ const router = require('express').Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { DiscountCard } = require('../../db/models');
+const axios = require('axios');
+const nodemailer = require('nodemailer');
+const uuid = require('uuid');
+const { PORT, IP } = process.env;
 
 module.exports = router
   .get('/edit', async (req, res) => {
@@ -88,8 +92,74 @@ module.exports = router
       console.error(error);
       res.status(500).json({ message: 'Произошла ошибка на сервере' });
     }
-  })
+  });
 
+// .put('/email', async (req, res) => {
+//   try {
+//     const { newEmail } = req.body;
+
+//     const token = req.headers.authorization.split(' ')[1];
+//     const user = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+
+//     const userData = await DiscountCard.findOne({ where: { id: user.id } });
+
+//     if (!userData) {
+//       return res.status(404).json({ error: 'Пользователь не найден' });
+//     }
+
+//     const searchEmail = await DiscountCard.findOne({
+//       where: { email: newEmail },
+//     });
+
+//     if (searchEmail) {
+//       return res.status(409).json({
+//         message: 'Пользователь с такой электронной почтой уже существует',
+//       });
+//     }
+
+//     const emailUpdate = await userData.update({
+//       email: newEmail,
+//     });
+//     console.log('emailUpdate', emailUpdate);
+
+//     res.status(200).json({
+//       email: newEmail,
+//       message: 'Email успешно изменен',
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: 'Произошла ошибка на сервере' });
+//   }
+// })
+
+const sendConfirmationEmail = async (newEmail, confirmationCode) => {
+  const transporter = nodemailer.createTransport({
+    port: 465,
+    host: 'smtp.gmail.com',
+    auth: {
+      user: process.env.EMAIL,
+      pass: process.env.PASSWORD,
+    },
+    secure: true,
+  });
+
+  const mailOptions = {
+    from: process.env.EMAIL,
+    to: newEmail,
+    subject: 'Подтверждение нового email',
+    html: `Пожалуйста, введите следующий код для подтверждения нового email: http://${IP}:${PORT}/confirm-email/${confirmationCode}/${newEmail}`,
+  };
+
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Email sent: ' + info.response);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+router
   .put('/email', async (req, res) => {
     try {
       const { newEmail } = req.body;
@@ -113,14 +183,48 @@ module.exports = router
         });
       }
 
-      const emailUpdate = await userData.update({
-        email: newEmail,
+      // Генерация кода подтверждения (вместо токена)
+      const confirmationCode = uuid.v4();
+
+      // Сохранение кода подтверждения и нового email в БД
+      await userData.update({
+        emailConfirmationCode: confirmationCode,
+        newEmail: `не подтверждена ${newEmail}`,
       });
-      console.log('emailUpdate', emailUpdate);
+
+      // Отправка письма с кодом подтверждения
+      sendConfirmationEmail(newEmail, confirmationCode);
 
       res.status(200).json({
+        newEmail: userData.newEmail,
+        message: 'Письмо с кодом подтверждения отправлено на новый email',
+        email: userData.email,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Произошла ошибка на сервере' });
+    }
+  })
+
+  .get('/confirm-email/:confirmationCode/:newEmail', async (req, res) => {
+    try {
+      const { confirmationCode, newEmail } = req.params;
+      const userData = await DiscountCard.findOne({
+        where: { emailConfirmationCode: confirmationCode },
+      });
+
+      if (!userData) {
+        return res.status(404).json({ error: 'Пользователь не найден' });
+      }
+
+      await userData.update({
         email: newEmail,
-        message: 'Email успешно изменен',
+        emailConfirmationCode: '',
+        newEmail: '',
+      });
+
+      res.status(200).json({
+        message: 'Email успешно подтвержден и обновлен',
       });
     } catch (error) {
       console.error(error);

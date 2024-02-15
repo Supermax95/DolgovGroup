@@ -11,6 +11,7 @@ interface IProfileChangeEmailRequest {
 interface IProfileChangeEmailResponse {
   email: string;
   message: string;
+  newEmail:string;
 }
 
 const profileChangeEmail = createAsyncThunk<

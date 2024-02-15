@@ -60,6 +60,12 @@ module.exports = {
       activationLink: {
         type: Sequelize.STRING,
       },
+      emailConfirmationCode: {
+        type: Sequelize.STRING,
+      },
+      newEmail: {
+        type: Sequelize.STRING,
+      },
       notificationPush: {
         defaultValue: true,
         type: Sequelize.BOOLEAN,

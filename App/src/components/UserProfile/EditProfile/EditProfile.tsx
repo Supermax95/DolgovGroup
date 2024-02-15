@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { View } from 'react-native';
+import { Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAppSelector } from 'Redux/hooks';
 import { StackNavigationProp } from 'navigation/types';
@@ -19,6 +19,7 @@ const EditProfile: FC = () => {
     birthDate?: Date | null | string;
     email?: string;
     phoneNumber?: string;
+    newEmail?: string;
   }>((state) => state.profileSlice);
 
   const formattedPhoneNumber = `+7(${profile.phoneNumber?.substring(
@@ -60,12 +61,25 @@ const EditProfile: FC = () => {
           {formattedPhoneNumber}
         </FieldEditProfile>
 
-        <FieldEditProfile
-          onPress={() => navigation.navigate('ChangeEmail')}
-          title="Email"
-        >
-          {profile.email}
-        </FieldEditProfile>
+      
+        {profile.newEmail !== '' ? (
+          <FieldEditProfile
+            onPress={() => navigation.navigate('ChangeEmail')}
+            title="Email"
+          >
+            <View style={{ flexDirection: 'column' }}>
+              <Text style={{ fontSize: 12 }}>{profile.email}</Text>
+              <Text style={{ fontSize: 10 }}>{profile.newEmail}</Text>
+            </View>
+          </FieldEditProfile>
+        ) : (
+          <FieldEditProfile
+            onPress={() => navigation.navigate('ChangeEmail')}
+            title="Email"
+          >
+            {profile.email}
+          </FieldEditProfile>
+        )}
 
         <FieldEditProfile
           onPress={() => navigation.navigate('ChangePassword')}

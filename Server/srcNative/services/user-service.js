@@ -12,7 +12,6 @@ const ApiError = require('../middlewares/error-middleware');
 const tokenService = require('./token-service');
 const axios = require('axios');
 const path = require('path');
-const { log } = require('console');
 const fs = require('fs').promises;
 
 class UserService {
