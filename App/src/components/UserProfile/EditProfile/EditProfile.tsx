@@ -61,16 +61,13 @@ const EditProfile: FC = () => {
           {formattedPhoneNumber}
         </FieldEditProfile>
 
-      
         {profile.newEmail !== '' ? (
           <FieldEditProfile
             onPress={() => navigation.navigate('ChangeEmail')}
             title="Email"
+            warningIcon="exclamationcircleo"
           >
-            <View style={{ flexDirection: 'column' }}>
-              <Text style={{ fontSize: 12 }}>{profile.email}</Text>
-              <Text style={{ fontSize: 10 }}>{profile.newEmail}</Text>
-            </View>
+            {profile.email}
           </FieldEditProfile>
         ) : (
           <FieldEditProfile
