@@ -196,7 +196,7 @@ router
 
       await userData.update({
         emailConfirmationCode: confirmationCode,
-        newEmail: `не подтверждена ${newEmail}`,
+        newEmail,
       });
 
       sendConfirmationEmail(newEmail, confirmationCode);
