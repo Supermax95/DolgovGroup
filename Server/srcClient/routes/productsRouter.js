@@ -1,9 +1,9 @@
 const router = require('express').Router();
 const { isPast, parseISO, addDays, subDays } = require('date-fns');
 const { Op } = require('sequelize');
-const { Product } = require('../../db/models');
 const path = require('path');
 const fsPromises = require('fs').promises;
+const { Product } = require('../../db/models');
 
 router.get('/admin/products', async (req, res) => {
   try {

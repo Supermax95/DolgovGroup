@@ -84,7 +84,7 @@ const NotificationSettings: FC = () => {
         <View className="mb-2 px-2">
           <Text className="text-base font-molmal text-zinc-500">
             Своевременно информируем о персональных предложениях, изменениях
-            уровня лояльности и лучших товарах.
+            уровня лояльности и лучших товарах
           </Text>
         </View>
         <Padding>
