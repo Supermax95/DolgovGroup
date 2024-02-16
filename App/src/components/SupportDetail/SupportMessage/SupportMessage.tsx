@@ -17,10 +17,6 @@ import { Dropdown } from 'react-native-element-dropdown';
 import FieldInput from 'ui/FieldInput';
 import UniversalHeader from 'ui/UniversalHeader';
 import nodemailerSend from 'Redux/thunks/Support/supportNodemailer.api';
-import {
-  KeyboardAccessoryNavigation,
-  KeyboardAccessoryView,
-} from 'react-native-keyboard-accessory';
 import ButtonWithDisable from 'ui/ButtonWithDisable';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -176,12 +172,12 @@ const SupportMessage: FC = () => {
                   onFocus={() => setIsShowKeyboard(true)}
                 />
 
-                <View className="mt-2 justify-center items-center">
+                <View className="mt-2 justify-center items-center w-full">
                   <Text className="text-xs font-molmal text-zinc-500">
                     Подробное описание позволит нам предоставить ответ в
-                    кратчайшие сроки без уточнения дополнительной информации...
-                    Ответ придёт на вашу электронную почту, которая указана в
-                    ЛК...
+                    кратчайшие сроки без уточнения дополнительной информации.
+                    Письмо с ответом будет направлено на ваш адрес электронной
+                    почты, указанный в вашем профиле.
                   </Text>
                 </View>
 
