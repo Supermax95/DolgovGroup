@@ -59,6 +59,7 @@ router.post('/nodemailerCodeSend/:id', async (req, res) => {
       </div>
       <p style="font-size: 16px; color: #555; text-align: center;">Желаем вам хорошего дня!</p>
     </div>
+    
   `,
   };
 
