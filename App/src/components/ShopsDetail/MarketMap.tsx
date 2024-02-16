@@ -15,7 +15,8 @@ import * as Location from 'expo-location';
 import getUserLocations from 'Redux/thunks/Shops/locationsUser.api';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import Button from 'ui/Button';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import CustomMarkerView from './CustomMarkerView';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 interface ISelectedShop {
   id: number;
@@ -146,9 +147,18 @@ const MarketMap: FC<MarketMapProps> = ({ selectedShop, onMarkerPress }) => {
             }}
             title={shop.city}
             description={`${shop.address}, ${shop.hours}`}
-            pinColor="#047857"
+
             onPress={() => onMarkerPress?.(shop)}
-          />
+          >
+            <CustomMarkerView>
+              <MaterialCommunityIcons
+                name="store-marker-outline"
+                size={35}
+                color="#047857"
+              />
+            </CustomMarkerView>
+          </Marker>
+
         ))}
         {selectedShop && (
           <Marker
@@ -158,8 +168,15 @@ const MarketMap: FC<MarketMapProps> = ({ selectedShop, onMarkerPress }) => {
             }}
             title={selectedShop.city}
             description={`${selectedShop.address}, ${selectedShop.hours}`}
-            pinColor="#047857"
-          />
+          >
+            <CustomMarkerView>
+              <MaterialCommunityIcons
+                name="store-marker-outline"
+                size={35}
+                color="#047857"
+              />
+            </CustomMarkerView>
+          </Marker>
         )}
       </MapView>
       {Platform.OS === 'ios' && selectedShop ? (
