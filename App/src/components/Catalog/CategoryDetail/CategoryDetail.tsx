@@ -2,7 +2,13 @@ import React, { FC, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { StackNavigationProp } from 'navigation/types';
-import { View, Text, SafeAreaView, ScrollView, RefreshControl } from 'react-native';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  ScrollView,
+  RefreshControl,
+} from 'react-native';
 import CardCategory from 'ui/CardCategory';
 import Heading from 'ui/Heading';
 import CardsNoCarusel from 'components/Promotion/CardsNoCarusel';
@@ -63,16 +69,16 @@ const CategoryDetail: FC = () => {
       >
         {/* Scrollable container start */}
         <ScrollView
-            alwaysBounceVertical
-            showsVerticalScrollIndicator={false}
-            style={{ flex: 1, width: '100%' }}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-          >
+          alwaysBounceVertical
+          showsVerticalScrollIndicator={false}
+          style={{ flex: 1, width: '100%' }}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
           {/* акции вне карусели */}
           <View className="py-2">
-            <Heading title="Акции вне карусели" />
+            <Heading title="Рекомендуем" />
             <CardsNoCarusel />
           </View>
 

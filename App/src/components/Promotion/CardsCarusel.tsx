@@ -26,7 +26,7 @@ export interface IPromotion {
 }
 
 const screenWidth = Math.round(Dimensions.get('window').width);
-const cardWidth = screenWidth - 40;
+const cardWidth = screenWidth - 60;
 const cardHeight = 200;
 const cardWidthSpacing = cardWidth + 24;
 
@@ -55,7 +55,7 @@ const CardsCarusel = () => {
         <Pressable
           key={item.id}
           onPress={() => navigateToPromoDetail(item.id)}
-          className="ml-3"
+          className="ml-8"
           style={{
             marginLeft: 24,
             marginRight: index === promotions.length - 1 ? 24 : 0,

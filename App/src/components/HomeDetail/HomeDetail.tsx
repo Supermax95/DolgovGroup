@@ -1,4 +1,10 @@
-import { ActivityIndicator, Platform, RefreshControl, ScrollView, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Platform,
+  RefreshControl,
+  ScrollView,
+  View,
+} from 'react-native';
 import React, { FC, useEffect, useState } from 'react';
 import Padding from 'ui/Padding';
 import Heading from 'ui/Heading';
@@ -162,10 +168,6 @@ const HomeDetail: FC = () => {
     }
   }, [token, barcode]);
 
-  // const numberPointsRub = formatPoints(numberPoints || 0);
-
-  const insets = useSafeAreaInsets();
-
   return (
     <>
       <SafeAreaView
@@ -188,7 +190,7 @@ const HomeDetail: FC = () => {
             }
           >
             {/* Бонусная карта */}
-            <View className="mb-4 py-4 flex-1 rounded-b-3xl ">
+            <View className="py-4 flex-1 rounded-b-3xl ">
               <Padding>
                 <View className="pt-4 flex justify-center items-center">
                   <BonusCard
@@ -205,27 +207,20 @@ const HomeDetail: FC = () => {
             </View>
 
             {/* акции вне карусели */}
-            <View className="py-2">
-              <Heading title="Акции вне карусели" />
+            <View className="pb-4">
+              <Heading title="Рекомендуем" />
               <CardsNoCarusel />
             </View>
 
             {/* акции В карусели */}
-            <View>
-              {/* <Heading title="Акции в карусели" /> */}
+            <View className="pb-4">
+              {/* <Heading title="Рекомендуем" /> */}
               <CardsCarusel />
-            </View>
-
-            <View>
-              <Heading title="Акции вне карусели" />
-              <CardsNoCarusel />
             </View>
           </ScrollView>
         </LinearGradient>
       </SafeAreaView>
     </>
-    // </LinearGradient>
-    // </View>
   );
 };
 

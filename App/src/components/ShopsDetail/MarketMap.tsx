@@ -162,10 +162,6 @@ const MarketMap: FC<MarketMapProps> = ({ selectedShop }) => {
           <Button title="Построить маршрут" onPress={handleDirections} />
         </View>
       ) : null}
-
-      {/* <TouchableOpacity style={styles.button} onPress={handleDirections}>
-        <Text style={styles.buttonText}>Построить маршрут</Text>
-      </TouchableOpacity> */}
     </View>
   );
 };

@@ -95,11 +95,11 @@ const SinglePromo: FC<ISinglePromo> = ({
               </View>
             )}
 
-            <View className={`flex items-start justify-start w-full`}>
-              <Text className={`text-lg font-bold text-gray-800`}>{title}</Text>
+            <View className="mt-2 flex items-start justify-start w-full">
+              <Text className="text-lg font-bold text-gray-800">{title}</Text>
             </View>
 
-            <SafeAreaView className="flex-col items-center justify-between w-full">
+            <SafeAreaView className="mt-4 flex-col items-center justify-between w-full">
               <View className={`flex items-start justify-start w-full`}>
                 {description}
               </View>
@@ -127,9 +127,7 @@ const SinglePromo: FC<ISinglePromo> = ({
             </View>
           </SafeAreaView>
 
-          <View
-            className={`w-full flex-1 h-full bg-white rounded-t-3xl px-6 py-2`}
-          >
+          <View className="w-full flex-1 h-full bg-white rounded-t-3xl px-6 py-2">
             {dateStart && dateEnd ? (
               isToday(parseISO(dateEnd)) ? (
                 <>
@@ -159,11 +157,11 @@ const SinglePromo: FC<ISinglePromo> = ({
               </View>
             )}
 
-            <View className={`flex items-start justify-start w-full`}>
-              <Text className={`text-lg font-bold text-gray-800`}>{title}</Text>
+            <View className="mt-2 flex items-start justify-start w-full">
+              <Text className="text-lg font-bold text-gray-800">{title}</Text>
             </View>
 
-            <SafeAreaView className="flex-col items-center justify-between w-full">
+            <SafeAreaView className="mt-4 flex-col items-center justify-between w-full">
               <View className={`flex items-start justify-start w-full`}>
                 {description}
               </View>
