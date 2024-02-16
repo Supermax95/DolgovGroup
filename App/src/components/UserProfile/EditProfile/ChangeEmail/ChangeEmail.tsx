@@ -158,6 +158,7 @@ const ChangeEmail: FC = () => {
           <Button onPress={handlerSubmitEmail} title="Сохранить" />
           {newEmailProfile !== '' ? (
             <Button
+              colors={['bg-zinc-400', 'bg-zinc-400']}
               onPress={handlerCancelEmail}
               title="Отменить изменение почты"
             />
