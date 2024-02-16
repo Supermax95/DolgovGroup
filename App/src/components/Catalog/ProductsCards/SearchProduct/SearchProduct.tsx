@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, SafeAreaView, RefreshControl } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  SafeAreaView,
+  RefreshControl,
+} from 'react-native';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { PORT, IP } from '@env';
 import { useNavigation } from '@react-navigation/native';
@@ -30,6 +36,8 @@ export interface IProduct {
   invisible: boolean;
 }
 
+
+
 const SearchProduct = () => {
   const navigation = useNavigation<StackNavigationProp>();
   const dispatch = useAppDispatch();
@@ -46,12 +54,16 @@ const SearchProduct = () => {
   const onRefresh = async () => {
     setRefreshing(true);
     await dispatch(
-      getProducts(), 
-    // getCategory(),
-    //  getSubcategory()
-     );
+      getProducts()
+      // getCategory(),
+      //  getSubcategory()
+    );
     setRefreshing(false);
   };
+
+  const userStatus = useAppSelector<string>(
+    (state) => state.userSlice.user.userStatus
+  );
 
   const products = useAppSelector<IProduct[]>(
     (state) => state.productSlice.data
@@ -154,9 +166,20 @@ const SearchProduct = () => {
                     productName={product.productName}
                     originalPrice={product.originalPrice}
                     isDiscount={product.isDiscounted}
-                    discountedPrice={255}
-                    discountPercentage={15}
                     isNew={product.isNew}
+                    discountedPrice={
+                      userStatus === 'Сотрудник'
+                        ? product.employeePrice
+                        : product.customerPrice
+                    }
+                    discountPercentage={Math.round(
+                      product.originalPrice -
+                      ((userStatus === 'Сотрудник'
+                        ? product.employeePrice
+                        : product.customerPrice) /
+                        product.originalPrice) *
+                        100
+                    )}
                     imageProduct={`http://${IP}:${PORT}${product.photo}`}
                   />
                 ))

@@ -33,7 +33,9 @@ const SingleProduct = ({ route }: any) => {
   const dispatch = useAppDispatch();
   const { width } = useWindowDimensions();
   const navigation = useNavigation<StackNavigationProp>();
-
+  const userStatus = useAppSelector<string>(
+    (state) => state.userSlice.user.userStatus
+  );
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -79,8 +81,19 @@ const SingleProduct = ({ route }: any) => {
               productName={currentProductOpen.productName}
               originalPrice={currentProductOpen.originalPrice}
               isDiscount={currentProductOpen.isDiscounted}
-              discountedPrice={299}
-              discountPercentage={15}
+              discountedPrice={
+                userStatus === 'Сотрудник'
+                  ? currentProductOpen.employeePrice
+                  : currentProductOpen.customerPrice
+              }
+              discountPercentage={Math.round(
+                currentProductOpen.originalPrice -
+                ((userStatus === 'Сотрудник'
+                  ? currentProductOpen.employeePrice
+                  : currentProductOpen.customerPrice) /
+                  currentProductOpen.originalPrice) *
+                  100
+              )}
               isNew={currentProductOpen.isNew}
               image={`http://${IP}:${PORT}${currentProductOpen.photo}`}
               // description={desc}
