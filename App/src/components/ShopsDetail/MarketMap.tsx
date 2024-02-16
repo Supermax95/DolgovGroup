@@ -128,7 +128,7 @@ const MarketMap: FC<MarketMapProps> = ({ selectedShop, onMarkerPress }) => {
         showsUserLocation={true}
         followsUserLocation={true}
         showsMyLocationButton={true}
-        // toolbarEnabled={true}
+        toolbarEnabled={true}
         rotateEnabled={true}
         mapType={'standard'}
         showsCompass={true}
@@ -146,7 +146,8 @@ const MarketMap: FC<MarketMapProps> = ({ selectedShop, onMarkerPress }) => {
             }}
             title={shop.city}
             description={`${shop.address}, ${shop.hours}`}
-            onPress={() => onMarkerPress?.(shop)} // Переместите onPress вне CustomMarkerView
+
+            onPress={() => onMarkerPress?.(shop)}
           >
             <CustomMarkerView>
               <MaterialCommunityIcons
@@ -156,6 +157,7 @@ const MarketMap: FC<MarketMapProps> = ({ selectedShop, onMarkerPress }) => {
               />
             </CustomMarkerView>
           </Marker>
+
         ))}
         {selectedShop && (
           <Marker
