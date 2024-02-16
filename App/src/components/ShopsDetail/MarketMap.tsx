@@ -8,12 +8,14 @@ import {
   Linking,
   TouchableOpacity,
   Text,
+  Pressable,
 } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
 import getUserLocations from 'Redux/thunks/Shops/locationsUser.api';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import Button from 'ui/Button';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 interface ISelectedShop {
   id: number;
@@ -161,8 +163,34 @@ const MarketMap: FC<MarketMapProps> = ({ selectedShop, onMarkerPress }) => {
         )}
       </MapView>
       {Platform.OS === 'ios' && selectedShop ? (
-        <View className="w-[50%] flex-1 absolute bottom-[-20px] right-20">
-          <Button title="Построить маршрут" onPress={handleDirections} />
+        // <View className="w-[50%] flex-1 absolute bottom-[-20px] right-20">
+        //   <Button title="Построить маршрут" onPress={handleDirections} />
+        // </View>
+        <View
+          className="w-[10%] flex-1 absolute bottom-[-20px] right-20"
+          style={{
+            shadowColor: '#000',
+            shadowRadius: 4,
+            shadowOpacity: 0.2,
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+          }}
+        >
+          <Pressable
+            onPress={handleDirections}
+            className="text-gray-800 rounded-sm h-10 w-10 p-2 bg-blue-500 
+             "
+          >
+            <View className="bg-blue-500 items-center justify-center">
+              <MaterialCommunityIcons
+                name="map-marker-path"
+                size={25}
+                color="white"
+              />
+            </View>
+          </Pressable>
         </View>
       ) : null}
     </View>
