@@ -29,10 +29,7 @@ interface MarketMapProps {
   onMarkerPress?: (shop: ISelectedShop) => void;
 }
 
-const MarketMap: FC<MarketMapProps> = ({
-  selectedShop,
-  onMarkerPress,
-}) => {
+const MarketMap: FC<MarketMapProps> = ({ selectedShop, onMarkerPress }) => {
   // const navigation = useNavigation<StackNavigationProp>();
   const dispatch = useAppDispatch();
   const mapRef = useRef<MapView | null>(null);
@@ -159,7 +156,7 @@ const MarketMap: FC<MarketMapProps> = ({
             }}
             title={selectedShop.city}
             description={`${selectedShop.address}, ${selectedShop.hours}`}
-            pinColor="green"
+            pinColor="#047857"
           />
         )}
       </MapView>
@@ -168,10 +165,6 @@ const MarketMap: FC<MarketMapProps> = ({
           <Button title="Построить маршрут" onPress={handleDirections} />
         </View>
       ) : null}
-
-      {/* <TouchableOpacity style={styles.button} onPress={handleDirections}>
-        <Text style={styles.buttonText}>Построить маршрут</Text>
-      </TouchableOpacity> */}
     </View>
   );
 };
@@ -187,146 +180,4 @@ const styles = StyleSheet.create({
   },
 });
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: 'white',
-//   },
-//   map: {
-//     flex: 1,
-//   },
-//   button: {
-//     position: 'absolute',
-//     bottom: 20,
-//     left: 20,
-//     backgroundColor: '#007bff',
-//     paddingVertical: 10,
-//     paddingHorizontal: 20,
-//     borderRadius: 5,
-//   },
-//   buttonText: {
-//     color: 'white',
-//     fontSize: 16,
-//   },
-// });
-
 export default MarketMap;
-
-// import React, { FC } from 'react';
-// import {
-//   View,
-//   StyleSheet,
-//   Platform,
-//   TouchableOpacity,
-//   Text,
-//   Linking,
-// } from 'react-native';
-// import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-// import Button from 'ui/Button';
-
-// interface ISelectedShop {
-//   id: number;
-//   city: string;
-//   address: string;
-//   latitude: string;
-//   longitude: string;
-//   hours: string;
-// }
-
-// interface MarketMapProps {
-//   selectedShop?: ISelectedShop | null;
-// }
-
-// const MarketMap: FC<MarketMapProps> = ({ selectedShop }) => {
-//   const initialRegion = {
-//     latitude: 54.725607,
-//     longitude: 20.5382,
-//     latitudeDelta: 0.0922,
-//     longitudeDelta: 0.0421,
-//   };
-
-//   const locations: ISelectedShop[] = []; // Замените на ваш массив магазинов
-//   const mapRef = React.useRef<MapView>(null);
-
-//   const handleDirections = () => {
-//     if (selectedShop) {
-//       const url = `https://www.google.com/maps/dir/?api=1&destination=${selectedShop.latitude},${selectedShop.longitude}`;
-//       Linking.openURL(url);
-//     }
-//   };
-
-//   return (
-//     <View style={styles.container}>
-//       <MapView
-//         ref={mapRef}
-//         provider={PROVIDER_GOOGLE}
-//         style={styles.map}
-//         initialRegion={initialRegion}
-//         showsUserLocation={true}
-//         followsUserLocation={true}
-//         rotateEnabled={true}
-//         mapType={'standard'}
-//         showsCompass={true}
-//         showsScale={true}
-//         showsIndoors={true}
-//         zoomEnabled={true}
-//         loadingEnabled={true}
-//       >
-//         {locations.map((shop, index) => (
-//           <Marker
-//             key={index}
-//             coordinate={{
-//               latitude: parseFloat(shop.latitude) || 0,
-//               longitude: parseFloat(shop.longitude) || 0,
-//             }}
-//             title={shop.city}
-//             description={`${shop.address}, ${shop.hours}`}
-//             pinColor="green"
-//           />
-//         ))}
-//         {selectedShop && (
-//           <Marker
-//             coordinate={{
-//               latitude: parseFloat(selectedShop.latitude),
-//               longitude: parseFloat(selectedShop.longitude),
-//             }}
-//             title={selectedShop.city}
-//             description={`${selectedShop.address}, ${selectedShop.hours}`}
-//             pinColor="green"
-//           />
-//         )}
-//       </MapView>
-//       {Platform.OS === 'ios' && selectedShop ? (
-//         // <TouchableOpacity style={styles.button} onPress={handleDirections}>
-//         //   <Text style={styles.buttonText}>Построить маршрут</Text>
-//         // </TouchableOpacity>
-//         <Button title="Построить маршрут" onPress={handleDirections} />
-//       ) : null}
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: 'white',
-//   },
-//   map: {
-//     flex: 1,
-//   },
-//   button: {
-//     position: 'absolute',
-//     bottom: 20,
-//     left: 20,
-//     backgroundColor: '#007bff',
-//     paddingVertical: 10,
-//     paddingHorizontal: 20,
-//     borderRadius: 5,
-//   },
-//   buttonText: {
-//     color: 'white',
-//     fontSize: 16,
-//   },
-// });
-
-// export default MarketMap;

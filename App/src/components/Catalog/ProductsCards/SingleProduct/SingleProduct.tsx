@@ -87,13 +87,13 @@ const SingleProduct = ({ route }: any) => {
                   : currentProductOpen.customerPrice
               }
               discountPercentage={Math.round(
-                currentProductOpen.originalPrice -
-                ((userStatus === 'Сотрудник'
-                  ? currentProductOpen.employeePrice
-                  : currentProductOpen.customerPrice) /
-                  currentProductOpen.originalPrice) *
-                  100
-              )}
+                ((currentProductOpen.originalPrice -
+                  (userStatus === 'Сотрудник'
+                    ? currentProductOpen.employeePrice
+                    : currentProductOpen.customerPrice)) /
+                    currentProductOpen.originalPrice) *
+                100
+          )}
               isNew={currentProductOpen.isNew}
               image={`http://${IP}:${PORT}${currentProductOpen.photo}`}
               description={desc}

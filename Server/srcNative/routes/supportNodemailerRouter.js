@@ -44,7 +44,6 @@ router.post('/supportNodemailerRouter', async (req, res) => {
         Содержание обращения: <br>
         ${message}
       </li>
-    </ul>
     `,
     };
 

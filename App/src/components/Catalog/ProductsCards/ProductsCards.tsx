@@ -178,19 +178,19 @@ const ProductsCards: FC = ({ route }: any) => {
                     productName={product.productName}
                     originalPrice={product.originalPrice}
                     isDiscount={product.isDiscounted}
-                   discountedPrice={
+                    discountedPrice={
                       userStatus === 'Сотрудник'
                         ? product.employeePrice
                         : product.customerPrice
                     }
                     discountPercentage={Math.round(
-                      product.originalPrice -
-                      ((userStatus === 'Сотрудник'
-                        ? product.employeePrice
-                        : product.customerPrice) /
+                      ((product.originalPrice -
+                        (userStatus === 'Сотрудник'
+                          ? product.employeePrice
+                          : product.customerPrice)) /
                         product.originalPrice) *
-                        100
-                    )}
+                      100
+                )}
                     isNew={product.isNew}
                     imageProduct={`http://${IP}:${PORT}${product.photo}`}
                   />

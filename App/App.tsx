@@ -53,10 +53,8 @@ export default function App() {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <LinearGradient
-          colors={['#f3f4f6', '#808080']}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={{ flex: 1 }}
+          colors={['#FAF9F9', '#FAFAFA', '#EBEBEB']}
+          className="flex-1"
         >
           <SafeAreaView style={{ flex: 1 }}>
             <AppNavigator />

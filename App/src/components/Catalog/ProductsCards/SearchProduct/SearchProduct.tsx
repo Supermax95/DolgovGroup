@@ -36,8 +36,6 @@ export interface IProduct {
   invisible: boolean;
 }
 
-
-
 const SearchProduct = () => {
   const navigation = useNavigation<StackNavigationProp>();
   const dispatch = useAppDispatch();
@@ -173,10 +171,10 @@ const SearchProduct = () => {
                         : product.customerPrice
                     }
                     discountPercentage={Math.round(
-                      product.originalPrice -
-                      ((userStatus === 'Сотрудник'
-                        ? product.employeePrice
-                        : product.customerPrice) /
+                      ((product.originalPrice -
+                        (userStatus === 'Сотрудник'
+                          ? product.employeePrice
+                          : product.customerPrice)) /
                         product.originalPrice) *
                         100
                     )}
