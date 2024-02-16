@@ -31,6 +31,10 @@ const Shops: FC = () => {
     console.log('======>', selectedShop);
   };
 
+  const handleMarkerPress = (shop: ISelectedShop) => {
+    navigation.setParams({ selectedShop: shop });
+  };
+
   const handleShowMap = () => {
     setShowMap(true);
   };
@@ -77,7 +81,14 @@ const Shops: FC = () => {
           </Pressable>
         </View>
       </View>
-      {showMap ? <MarketMap selectedShop={selectedShop} /> : <ShopsList />}
+      {showMap ? (
+        <MarketMap
+          onMarkerPress={handleMarkerPress}
+          selectedShop={selectedShop}
+        />
+      ) : (
+        <ShopsList />
+      )}
     </SafeAreaView>
   );
 };

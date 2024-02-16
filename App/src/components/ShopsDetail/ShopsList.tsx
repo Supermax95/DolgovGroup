@@ -27,6 +27,8 @@ const ShopsList: FC = () => {
     setSelectedShop(selectedShop);
     navigation.navigate('Shops', { selectedShop });
   };
+
+  
   const locations = useAppSelector<ISelectedShop[]>(
     (state) => state.locationsUserSlice.data
   );
