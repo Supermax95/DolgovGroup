@@ -1,11 +1,11 @@
+const { PORT, IP } = process.env;
+const uuid = require('uuid');
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { DiscountCard } = require('../../db/models');
 const axios = require('axios');
 const nodemailer = require('nodemailer');
-const uuid = require('uuid');
-const { PORT, IP } = process.env;
+const { DiscountCard } = require('../../db/models');
 
 module.exports = router
   .get('/edit', async (req, res) => {
@@ -27,33 +27,23 @@ module.exports = router
       const token = req.headers.authorization.split(' ')[1];
       const user = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
 
-      console.log('Пришедшие данные:', {
-        newLastName,
-        newFirstName,
-        newMiddleName,
-      });
-
       const userData = await DiscountCard.findOne({ where: { id: user.id } });
 
       if (!userData) {
         return res.status(404).json({ error: 'Пользователь не найден' });
       }
 
-      const lastNameUpdate = await userData.update({
+      await userData.update({
         lastName: newLastName,
       });
-      console.log('================>lastNameUpdate', lastNameUpdate);
 
-      const firstNameUpdate = await userData.update({
+      await userData.update({
         firstName: newFirstName,
       });
-      console.log('===========>firstNameUpdate', firstNameUpdate);
 
-      const middleNameUpdate = await userData.update({
+      await userData.update({
         middleName: newMiddleName,
       });
-
-      console.log('====>middleNameUpdate', middleNameUpdate);
 
       res.status(200).json({
         lastName: newLastName,
@@ -74,7 +64,6 @@ module.exports = router
 
       const user = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
 
-      console.log('Пришедшие данные newBirthDate:', newBirthDate);
       const userData = await DiscountCard.findOne({ where: { id: user.id } });
 
       if (!userData) {
@@ -94,44 +83,6 @@ module.exports = router
     }
   });
 
-// .put('/email', async (req, res) => {
-//   try {
-//     const { newEmail } = req.body;
-
-//     const token = req.headers.authorization.split(' ')[1];
-//     const user = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
-
-//     const userData = await DiscountCard.findOne({ where: { id: user.id } });
-
-//     if (!userData) {
-//       return res.status(404).json({ error: 'Пользователь не найден' });
-//     }
-
-//     const searchEmail = await DiscountCard.findOne({
-//       where: { email: newEmail },
-//     });
-
-//     if (searchEmail) {
-//       return res.status(409).json({
-//         message: 'Пользователь с такой электронной почтой уже существует',
-//       });
-//     }
-
-//     const emailUpdate = await userData.update({
-//       email: newEmail,
-//     });
-//     console.log('emailUpdate', emailUpdate);
-
-//     res.status(200).json({
-//       email: newEmail,
-//       message: 'Email успешно изменен',
-//     });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: 'Произошла ошибка на сервере' });
-//   }
-// })
-
 const sendConfirmationEmail = async (newEmail, confirmationCode) => {
   const transporter = nodemailer.createTransport({
     port: 465,
@@ -143,11 +94,24 @@ const sendConfirmationEmail = async (newEmail, confirmationCode) => {
     secure: true,
   });
 
+  const activeLinkForNewEmail = `http://${IP}:${PORT}/confirm-email/${confirmationCode}/${newEmail}`;
+
   const mailOptions = {
     from: process.env.EMAIL,
     to: newEmail,
-    subject: 'Подтверждение нового email',
-    html: `Пожалуйста, введите следующий код для подтверждения нового email: http://${IP}:${PORT}/confirm-email/${confirmationCode}/${newEmail}`,
+    subject: 'Подтверждение адреса электронной почты',
+    html: `
+    <div style="font-family: 'Arial', sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; text-align: center;">
+    <h2 style="color: #333;">Для подтверждения адреса вашей электронной почты, пожалуйста, перейдите по ссылке:</h2>
+    <p style="font-size: 16px; color: #555;">
+      <a href="${activeLinkForNewEmail}" style="text-decoration: none; color: #fff; background-color: #4caf50; padding: 10px 20px; border-radius: 5px; display: inline-block;">
+      Подтвердить email
+      </a>
+    </p>
+    <p>Если это письмо пришло вам по ошибке, просто проигнорируйте его.</p>
+
+  </div>
+  `,
   };
 
   try {
@@ -218,7 +182,6 @@ router
         emailConfirmationCode: '',
         newEmail: '',
       });
-
 
       const credentials = 'Exchange:Exchange';
       const base64Credentials = Buffer.from(credentials).toString('base64');

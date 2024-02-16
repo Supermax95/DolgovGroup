@@ -1,3 +1,4 @@
+const { PORT, IP } = process.env;
 const router = require('express').Router();
 const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
@@ -16,9 +17,7 @@ const transporter = nodemailer.createTransport({
 router.post('/supportNodemailerRouter', async (req, res) => {
   try {
     const { titleMessage, message } = req.body;
-    console.log(req.headers);
     const token = req.headers.authorization.split(' ')[1];
-    console.log(token);
     const user = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
     const dataUser = await DiscountCard.findOne({ where: { id: user.id } });
     const formattedPhoneNumber = `+7(${dataUser.phoneNumber.substring(
@@ -47,22 +46,20 @@ router.post('/supportNodemailerRouter', async (req, res) => {
     `,
     };
 
+    //!проблема с гугл-почтой
+    // const imagePath = `public/adaptive-icon2.svg`;
+    // const rrr = `http://${IP}:${PORT}/${imagePath}`;
+    // console.log('🚀 ~ router.post ~ rrr:', rrr);
+
     const userMailData = {
       from: process.env.EMAIL,
       to: dataUser.email,
       subject: `Статус вашего заявления по теме: ${titleMessage}`,
       text: '',
       html: `
-     
-
   <p>Уважаемый(ая) ${dataUser.firstName} ${dataUser.middleName}, Ваше обращение принято. В ближайшее время мы его рассмотрим.</p>
-  
   <p style="font-weight: bold; color: #555;">С уважением,</p>
   <p style="font-weight: bold; color: #555;">ООО "ДОЛГОВ ГРУПП"</p>
-
-  <div class="logo">
-      <img src="adaptive-icon2.png" alt="Логотип">
-  </div>
       `,
     };
 
@@ -80,11 +77,9 @@ router.post('/supportNodemailerRouter', async (req, res) => {
 
 router.post('/checkEmployee', async (req, res) => {
   try {
-    console.log(req.headers);
     const token = req.headers.authorization.split(' ')[1];
     const user = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
     const dataUser = await DiscountCard.findOne({ where: { id: user.id } });
-    console.log(dataUser);
     await DiscountCard.update(
       { userStatus: 'Новый сотрудник' },
       { where: { id: user.id } }
@@ -101,25 +96,31 @@ router.post('/checkEmployee', async (req, res) => {
     const mailData = {
       from: process.env.EMAIL,
       to: process.env.EMAIL,
-      subject: `Проверка является ли пользователь сотрудником`,
+      subject: `Проверка нового сотрудника - ${dataUser.lastName} ${dataUser.firstName} ${dataUser.middleName} `,
       text: '',
       html: `
-        <b> Посетитель сайта ${dataUser.lastName} ${dataUser.firstName} ${dataUser.middleName} перемещен в статус нового сотрудника. </b>
-        <br>Почта пользователя: <b>${dataUser.email}</b>
-        <br>Телефон пользователя: <b>${formattedPhoneNumber}</b>
-        <br>Текст обращения: <i>Проверьте является ли ${dataUser.firstName} ${dataUser.middleName} сотрудником компании.Если является предоставьте доступ</i>
-      `,
+        <p> Пользователь запросил доступ сотрудника.</p>
+        <ul> 
+        <li>ФИО: <strong>${dataUser.lastName} ${dataUser.firstName} ${dataUser.middleName}</strong></li>
+        <li>Почта пользователя: <strong>${dataUser.email}</strong></li>
+        <li>Телефон пользователя: <strong>${formattedPhoneNumber}</strong></li>
+        </ul> 
+        <p>Необходимо проверить, включен ли пользователь в список сотрудников компании, и если да, предоставить ему соответствующие права доступа.</p>
+        `,
     };
 
     const userMailData = {
       from: process.env.EMAIL,
       to: dataUser.email,
-      subject: `Статус вашего заявления`,
+      subject: 'Заявление на смену статуса в приложении принято',
       text: '',
       html: `
-        <b>Уважаемый(ая), ${dataUser.firstName} ${dataUser.middleName},</b>
-        <br>
-        <p>Ваш запрос рассматривается. В скором времени мы примем решение по вашему статусу.</p>
+        <p>Уважаемый(ая) ${dataUser.firstName} ${dataUser.middleName},</p>
+        <p>Ваш запрос о предоставлении прав доступа сотрудника находится в процессе рассмотрения. 
+        Ожидайте уведомления о результате рассмотрения.</p>
+
+        <p style="font-weight: bold; color: #555;">С уважением,</p>
+        <p style="font-weight: bold; color: #555;">ООО "ДОЛГОВ ГРУПП"</p>
       `,
     };
 
