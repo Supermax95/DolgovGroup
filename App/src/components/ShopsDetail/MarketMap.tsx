@@ -144,7 +144,7 @@ const MarketMap: FC<MarketMapProps> = ({ selectedShop, onMarkerPress }) => {
             }}
             title={shop.city}
             description={`${shop.address}, ${shop.hours}`}
-            pinColor="green"
+            pinColor="#047857"
             onPress={() => onMarkerPress?.(shop)}
           />
         ))}
