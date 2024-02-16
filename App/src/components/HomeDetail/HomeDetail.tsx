@@ -170,56 +170,62 @@ const HomeDetail: FC = () => {
 
   return (
     <>
-      <SafeAreaView
-        className="bg-white h-full flex-1"
-        style={{ paddingBottom: Platform.OS === 'ios' ? -100 : 0 }}
-      >
-        <UniversalHeader title="Главная" />
-
-        {/* Scrollable container start */}
-        <LinearGradient
-          colors={['#FAF9F9', '#FAFAFA', '#EBEBEB']}
-          className="flex-1"
+      {isLoading ? (
+        <View className="flex-1 items-center justify-center">
+          <ActivityIndicator size="large" color="green" />
+        </View>
+      ) : (
+        <SafeAreaView
+          className="bg-white h-full flex-1"
+          style={{ paddingBottom: Platform.OS === 'ios' ? -100 : 0 }}
         >
-          <ScrollView
-            alwaysBounceVertical
-            showsVerticalScrollIndicator={false}
-            style={{ flex: 1, width: '100%' }}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
+          <UniversalHeader title="Главная" />
+
+          {/* Scrollable container start */}
+          <LinearGradient
+            colors={['#FAF9F9', '#FAFAFA', '#EBEBEB']}
+            className="flex-1"
           >
-            {/* Бонусная карта */}
-            <View className="py-4 flex-1 rounded-b-3xl ">
-              <Padding>
-                <View className="pt-4 flex justify-center items-center">
-                  <BonusCard
-                    onPressBonuses={handleGetClientBonuses}
-                    onPressBrightness={increaseBrightness}
-                    numberPoints={numberPoints}
-                    barcode={barcode}
-                    isResendDisabled={isResendDisabled}
-                    secondsRemaining={secondsRemaining}
-                    isLoading={isLoading}
-                  />
-                </View>
-              </Padding>
-            </View>
+            <ScrollView
+              alwaysBounceVertical
+              showsVerticalScrollIndicator={false}
+              style={{ flex: 1, width: '100%' }}
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }
+            >
+              {/* Бонусная карта */}
+              <View className="py-4 flex-1 rounded-b-3xl ">
+                <Padding>
+                  <View className="pt-4 flex justify-center items-center">
+                    <BonusCard
+                      onPressBonuses={handleGetClientBonuses}
+                      onPressBrightness={increaseBrightness}
+                      numberPoints={numberPoints}
+                      barcode={barcode}
+                      isResendDisabled={isResendDisabled}
+                      secondsRemaining={secondsRemaining}
+                      isLoading={isLoading}
+                    />
+                  </View>
+                </Padding>
+              </View>
 
-            {/* акции вне карусели */}
-            <View className="pb-4">
-              <Heading title="Рекомендуем" />
-              <CardsNoCarusel />
-            </View>
+              {/* акции вне карусели */}
+              <View className="pb-4">
+                <Heading title="Рекомендуем" />
+                <CardsNoCarusel />
+              </View>
 
-            {/* акции В карусели */}
-            <View className="pb-4">
-              {/* <Heading title="Рекомендуем" /> */}
-              <CardsCarusel />
-            </View>
-          </ScrollView>
-        </LinearGradient>
-      </SafeAreaView>
+              {/* акции В карусели */}
+              <View className="pb-4">
+                {/* <Heading title="Рекомендуем" /> */}
+                <CardsCarusel />
+              </View>
+            </ScrollView>
+          </LinearGradient>
+        </SafeAreaView>
+      )}
     </>
   );
 };
