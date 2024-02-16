@@ -45,7 +45,11 @@ const SearchProduct = () => {
 
   const onRefresh = async () => {
     setRefreshing(true);
-    await dispatch(getProducts(), getCategory(), getSubcategory());
+    await dispatch(
+      getProducts(), 
+    // getCategory(),
+    //  getSubcategory()
+     );
     setRefreshing(false);
   };
 

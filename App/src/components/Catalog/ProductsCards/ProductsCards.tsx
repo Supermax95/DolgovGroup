@@ -2,7 +2,13 @@ import React, { FC, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { StackNavigationProp } from 'navigation/types';
-import { View, Text, SafeAreaView, ScrollView, RefreshControl } from 'react-native';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  ScrollView,
+  RefreshControl,
+} from 'react-native';
 import ProductCard from 'ui/ProductCard';
 import { PORT, IP } from '@env';
 import UniversalHeader from 'ui/UniversalHeader';
@@ -49,7 +55,11 @@ const ProductsCards: FC = ({ route }: any) => {
 
   const onRefresh = async () => {
     setRefreshing(true);
-    await dispatch(getProducts(), getCategory(), getSubcategory());
+    await dispatch(
+      getProducts()
+      //  getCategory(),
+      // getSubcategory()
+    );
     setRefreshing(false);
   };
 

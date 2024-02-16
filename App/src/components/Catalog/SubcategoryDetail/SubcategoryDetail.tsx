@@ -55,7 +55,10 @@ const SubcategoryDetail = ({ route }: any) => {
 
   const onRefresh = async () => {
     setRefreshing(true);
-    await dispatch(getProducts(), getCategory(), getSubcategory());
+    await dispatch(getProducts(),
+    //  getCategory(),
+      getSubcategory()
+     );
     setRefreshing(false);
   };
 
