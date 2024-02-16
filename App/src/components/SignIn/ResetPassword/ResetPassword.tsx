@@ -7,6 +7,7 @@ import {
   Platform,
   Keyboard,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch } from 'Redux/hooks';
@@ -34,6 +35,7 @@ export const ResetPassword: FC = () => {
 
   const [isResendDisabled, setResendDisabled] = useState<boolean>(false);
   const [secondsRemaining, setSecondsRemaining] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleResetPassword = async (): Promise<void> => {
     if (!data.email) {
@@ -45,21 +47,31 @@ export const ResetPassword: FC = () => {
         Alert.alert('Ошибка', 'Введите корректный email');
         return;
       }
+
+      setIsLoading(true);
+
       const result = await dispatch(resetPassword({ email: data.email }));
       if (result.meta.requestStatus === 'rejected') {
-        Alert.alert('Ошибка', result.payload);
+        setTimeout(() => {
+          setIsLoading(false);
+          Alert.alert('Ошибка', result.payload);
+        }, 1000);
       } else if (result.meta.requestStatus === 'fulfilled') {
         Alert.alert('Пароль выслан на вашу почту', '', [
           {
             text: 'OK',
             onPress: () => {
-              navigation.navigate('SignIn');
+              setTimeout(() => {
+                setIsLoading(false);
+                navigation.navigate('SignIn');
+              }, 1000);
             },
           },
         ]);
         AsyncStorage.setItem('lastSentResetPass', Date.now().toString());
       }
     } catch (error) {
+      setIsLoading(false);
       Alert.alert(
         'Ошибка',
         'Данного пользователя не существует или произошла ошибка'
@@ -108,48 +120,55 @@ export const ResetPassword: FC = () => {
         onPress={() => navigation.goBack()}
         title="Восстановление доступа"
       />
-      <KeyboardAvoidingView
-        className="flex-1"
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
-      >
-        <ScrollView
-          contentContainerStyle={{ flexGrow: 1 }}
-          keyboardShouldPersistTaps="handled"
-          onScrollBeginDrag={() => Keyboard.dismiss()}
-        >
-          <View className="justify-center items-center h-[90%]">
-            <View className="w-10/12">
-              <Text className="text-center text-gray-800 text-md font-normal mb-2">
-                Укажите адрес электронной почты, связанный с вашим аккаунтом,
-                чтобы мы могли помочь вам восстановить доступ.
-              </Text>
-              <FieldInput
-                value={data.email}
-                placeholder="Введите email"
-                autoCapitalize="none"
-                onChange={(value) => setData({ ...data, email: value })}
-                keyboardType="email-address"
-              />
 
-              <ButtonWithDisable
-                title="Отправить"
-                onPress={handleResetPassword}
-                disabled={isResendDisabled}
-              />
-              {isResendDisabled && (
-                <View className="mt-2 justify-center items-center">
-                  <Text className="text-xs font-molmal text-zinc-500">
-                    Возможность повторной отправки через{' '}
-                    {Math.floor(secondsRemaining / 60)} минут{' '}
-                    {secondsRemaining % 60} секунд
-                  </Text>
-                </View>
-              )}
+      {isLoading ? (
+        <View className="flex-1 items-center justify-center">
+          <ActivityIndicator size="large" color="green" />
+        </View>
+      ) : (
+        <KeyboardAvoidingView
+          className="flex-1"
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
+        >
+          <ScrollView
+            contentContainerStyle={{ flexGrow: 1 }}
+            keyboardShouldPersistTaps="handled"
+            onScrollBeginDrag={() => Keyboard.dismiss()}
+          >
+            <View className="justify-center items-center h-[90%]">
+              <View className="w-10/12">
+                <Text className="text-center text-gray-800 text-md font-normal mb-2">
+                  Укажите адрес электронной почты, связанный с вашим аккаунтом,
+                  чтобы мы могли помочь вам восстановить доступ.
+                </Text>
+                <FieldInput
+                  value={data.email}
+                  placeholder="Введите email"
+                  autoCapitalize="none"
+                  onChange={(value) => setData({ ...data, email: value })}
+                  keyboardType="email-address"
+                />
+
+                <ButtonWithDisable
+                  title="Отправить"
+                  onPress={handleResetPassword}
+                  disabled={isResendDisabled}
+                />
+                {isResendDisabled && (
+                  <View className="mt-2 justify-center items-center">
+                    <Text className="text-xs font-molmal text-zinc-500">
+                      Возможность повторной отправки через{' '}
+                      {Math.floor(secondsRemaining / 60)} минут{' '}
+                      {secondsRemaining % 60} секунд
+                    </Text>
+                  </View>
+                )}
+              </View>
             </View>
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      )}
     </SafeAreaView>
   );
 };
