@@ -68,6 +68,7 @@ const SingleLaw = ({ route }: any) => {
       enableExperimentalMarginCollapsing={true}
     />
   ) : null;
+  console.log(desc);
 
   const openDocumentLink = () => {
     if (currentLawOpen.documentLink) {
@@ -133,11 +134,19 @@ const SingleLaw = ({ route }: any) => {
                     </Text>
                   </Pressable>
                 )}
-                <View className="flex-1 flex-col items-center justify-center">
-                  <View className="flex items-start justify-start w-full">
-                    {desc}
+                {currentLawOpen.description === '<p><br></p>' ? (
+                  <View className="items-center justify-center w-full mt-4">
+                    <Text className="text-lg font-normal text-zinc-500">
+                      Информация отсутствует
+                    </Text>
                   </View>
-                </View>
+                ) : (
+                  <View className="flex-1 flex-col items-center justify-center">
+                    <View className="flex items-start justify-start w-full">
+                      {desc}
+                    </View>
+                  </View>
+                )}
               </Padding>
             </Padding>
           </ScrollView>
