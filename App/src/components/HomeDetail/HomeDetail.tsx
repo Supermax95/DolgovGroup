@@ -33,6 +33,7 @@ const HomeDetail: FC = () => {
   const dispatch = useAppDispatch();
   const [numberPoints, setNumberPoints] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoadingPage, setIsLoadingPage] = useState<boolean>(true);
   const [isResendDisabled, setResendDisabled] = useState<boolean>(false);
   const [originalBrightness, setOriginalBrightness] = useState<number | null>(
     null
@@ -78,8 +79,22 @@ const HomeDetail: FC = () => {
   useEffect(() => {
     if (token) {
       dispatch(getBarcode({ token }));
+
     }
   }, [dispatch]);
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setTimeout(() => {
+        setIsLoadingPage(false);
+      }, 1000);
+    };
+  
+    fetchData();
+  }, []);
+  
+
 
   const barcode = useAppSelector<string | undefined>(
     (state) => state.userSlice.user.barcode
@@ -170,7 +185,7 @@ const HomeDetail: FC = () => {
 
   return (
     <>
-      {isLoading ? (
+      {isLoadingPage ? (
         <View className="flex-1 items-center justify-center">
           <ActivityIndicator size="large" color="green" />
         </View>

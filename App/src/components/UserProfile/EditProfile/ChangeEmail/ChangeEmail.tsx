@@ -9,6 +9,7 @@ import Padding from 'ui/Padding';
 import profileChangeEmail from 'Redux/thunks/Profile/profileChangeEmail.api';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import UniversalHeader from 'ui/UniversalHeader';
+import profileCancelEmail from 'Redux/thunks/Profile/profileCancelNewEmail.api';
 
 interface IChangeEmail {
   newEmail: string;
@@ -94,6 +95,29 @@ const ChangeEmail: FC = () => {
     }
   };
 
+  const handlerCancelEmail = async (): Promise<void> => {
+    try {
+      const result = await dispatch(
+        profileCancelEmail({
+          token,
+        })
+      );
+
+      if (result.meta.requestStatus === 'rejected') {
+        Alert.alert('Ошибка');
+      } else if (result.meta.requestStatus === 'fulfilled') {
+        Alert.alert('Сброс прошел успешно');
+        navigation.navigate('EditProfile');
+      }
+    } catch (error) {
+      console.error(error);
+      Alert.alert(
+        'Ошибка',
+        'Данного пользователя не существует или произошла ошибка'
+      );
+    }
+  };
+
   return (
     <SafeAreaView className="bg-white h-full flex-1">
       <UniversalHeader
@@ -132,6 +156,12 @@ const ChangeEmail: FC = () => {
           </View>
 
           <Button onPress={handlerSubmitEmail} title="Сохранить" />
+          {newEmailProfile !== '' ? (
+            <Button
+              onPress={handlerCancelEmail}
+              title="Отменить изменение почты"
+            />
+          ) : null}
         </Padding>
       </Padding>
     </SafeAreaView>

@@ -6,6 +6,7 @@ import profileChangeFullName from './thunks/Profile/profileChangeFullName.api';
 import profileChangeEmail from './thunks/Profile/profileChangeEmail.api';
 import profileNotification from './thunks/Profile/profileNotificationUpdate.api';
 import profileChangePhoneNumber from './thunks/Profile/profileChangePhoneNumber.api';
+import profileCancelEmail from './thunks/Profile/profileCancelNewEmail.api';
 
 interface IUser {
   lastName: string;
@@ -128,6 +129,20 @@ const profileSlice = createSlice({
         state.newEmail = newEmail;
       })
       .addCase(profileChangeEmail.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      .addCase(profileCancelEmail.pending, (state) => {
+        /** email */
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(profileCancelEmail.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const { email } = action.payload;
+        state.email = email;
+      })
+      .addCase(profileCancelEmail.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       })
