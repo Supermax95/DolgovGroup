@@ -126,7 +126,7 @@ const MarketMap: FC<MarketMapProps> = ({ selectedShop, onMarkerPress }) => {
         showsUserLocation={true}
         followsUserLocation={true}
         showsMyLocationButton={true}
-        // toolbarEnabled={true}
+        toolbarEnabled={true}
         rotateEnabled={true}
         mapType={'standard'}
         showsCompass={true}
