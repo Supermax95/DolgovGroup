@@ -48,7 +48,7 @@ const SingleProductCard: FC<ISingleProductCard> = ({
         {discountPercentage && isDiscount ? (
           <View className="px-2 py-2 bg-amber-400 rounded-full absolute justify-start items-center bottom-10 left-4">
             <Text className="text-sm text-gray-700 font-normal">
-              -{discountPercentage}%
+              {discountPercentage}%
             </Text>
           </View>
         ) : (

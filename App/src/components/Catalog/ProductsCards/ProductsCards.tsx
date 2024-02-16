@@ -66,6 +66,9 @@ const ProductsCards: FC = ({ route }: any) => {
   const allProducts = useAppSelector<IProduct[]>(
     (state) => state.productSlice.data
   );
+  const userStatus = useAppSelector<string>(
+    (state) => state.userSlice.user.userStatus
+  );
 
   const products = allProducts.filter(
     (prod) =>
@@ -175,12 +178,19 @@ const ProductsCards: FC = ({ route }: any) => {
                     productName={product.productName}
                     originalPrice={product.originalPrice}
                     isDiscount={product.isDiscounted}
-                    discountedPrice={255}
-                    discountPercentage={15}
-                    // discountPercentage={calculateDiscountPercentageWithCents(
-                    //   product.originalPrice,
-                    //   product.employeePrice
-                    // )}
+                   discountedPrice={
+                      userStatus === 'Сотрудник'
+                        ? product.employeePrice
+                        : product.customerPrice
+                    }
+                    discountPercentage={Math.round(
+                      product.originalPrice -
+                      ((userStatus === 'Сотрудник'
+                        ? product.employeePrice
+                        : product.customerPrice) /
+                        product.originalPrice) *
+                        100
+                    )}
                     isNew={product.isNew}
                     imageProduct={`http://${IP}:${PORT}${product.photo}`}
                   />
