@@ -133,7 +133,7 @@ export const ResetPassword: FC = () => {
               />
 
               <ButtonWithDisable
-                title="Сбросить пароль"
+                title="Отправить"
                 onPress={handleResetPassword}
                 disabled={isResendDisabled}
               />
