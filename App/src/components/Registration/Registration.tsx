@@ -95,8 +95,7 @@ export const Registration: FC = () => {
   const validatePassword = (): boolean => {
     const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{6,}$/;
     return passwordRegex.test(data.password || '');
-};
-
+  };
 
   const validateCyrillicName = (name: string): boolean => {
     const cyrillicRegex = /^[А-Яа-яЁё]+$/;
@@ -146,9 +145,9 @@ export const Registration: FC = () => {
                   setIsLoading(false);
                   Alert.alert('Ошибка', result.payload);
                 }, 2000);
-                setTimeout(() => {
-                  setIsLoading(false);
-                }, 2000);
+                // setTimeout(() => {
+                //   setIsLoading(false);
+                // }, 2000);
               } else if (result.meta.requestStatus === 'fulfilled') {
                 setTimeout(() => {
                   setIsLoading(false);
