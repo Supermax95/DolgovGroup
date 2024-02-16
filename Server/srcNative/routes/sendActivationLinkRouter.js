@@ -1,7 +1,5 @@
-const express = require('express');
-
-const router = express.Router();
 const { PORT, IP } = process.env;
+const router = require('express').Router();
 const uuid = require('uuid');
 const { DiscountCard } = require('../../db/models');
 const MailService = require('../services/mail-service');

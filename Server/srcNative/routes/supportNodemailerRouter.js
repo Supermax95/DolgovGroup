@@ -32,27 +32,38 @@ router.post('/supportNodemailerRouter', async (req, res) => {
     const mailData = {
       from: process.env.EMAIL,
       to: process.env.EMAIL,
-      subject: `Обращение в службу поддержки`,
+      subject: `Обращение в службу поддержки от ${dataUser.lastName} ${dataUser.firstName} ${dataUser.middleName}`,
       text: '',
       html: `
-      <p> Пользователь приложения <b>${dataUser.lastName} ${dataUser.firstName} ${dataUser.middleName} </b> оставил обращение. </p>
-      <br>Почта пользователя: <b>${dataUser.email}</b>
-      <br>Телефон пользователя: <b>${formattedPhoneNumber}</b>
-      <br>Тема обращения: <b>${titleMessage}</b>
-      <br>Текст обращения: <i>${message}</i>
+      <p>В приложении было получено обращение от пользователя с именем ${dataUser.lastName} ${dataUser.firstName} ${dataUser.middleName}.</p>
+      <ul> 
+      <li>Электронная почта пользователя: ${dataUser.email}</li>
+      <li>Телефон пользователя: ${formattedPhoneNumber}</li>
+      <li>Тема обращения: <strong>${titleMessage}</strong></li>
+      <li>
+        Содержание обращения: <br>
+        ${message}
+      </li>
+    </ul>
     `,
     };
 
     const userMailData = {
       from: process.env.EMAIL,
       to: dataUser.email,
-      subject: `Статус вашего заявления`,
+      subject: `Статус вашего заявления по теме: ${titleMessage}`,
       text: '',
       html: `
      
-        <b>Уважаемый(ая), ${dataUser.firstName} ${dataUser.middleName},</b>
-        <br>
-        <p>Ваш обращение по теме: "<b>${titleMessage}</b>" принято. В ближайшем времени, мы его рассмотрим.</p>
+
+  <p>Уважаемый(ая) ${dataUser.firstName} ${dataUser.middleName}, Ваше обращение принято. В ближайшее время мы его рассмотрим.</p>
+  
+  <p style="font-weight: bold; color: #555;">С уважением,</p>
+  <p style="font-weight: bold; color: #555;">ООО "ДОЛГОВ ГРУПП"</p>
+
+  <div class="logo">
+      <img src="adaptive-icon2.png" alt="Логотип">
+  </div>
       `,
     };
 
@@ -87,7 +98,6 @@ router.post('/checkEmployee', async (req, res) => {
       6,
       8
     )}-${dataUser.phoneNumber.substring(8, 10)}`;
-
 
     const mailData = {
       from: process.env.EMAIL,

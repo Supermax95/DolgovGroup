@@ -85,7 +85,7 @@ const CheckMail: FC = () => {
           <View className="w-11/12">
             <View className="w-full justify-center items-center">
               <Text className="text-center text-zinc-800 text-lg font-normal mb-2">
-                Мы отправили вам письмо на указанный адрес электронной почты.
+                Мы отправили вам письмо на указанный адрес электронной почты
               </Text>
             </View>
 
@@ -96,8 +96,8 @@ const CheckMail: FC = () => {
 
             <View className="w-full justify-center items-center mt-2 px-2">
               <Text className="text-xs font-molmal text-zinc-500">
-                Если вы не получили его, пожалуйста, проверьте папку "Спам" или
-                запросите отправку письма повторно.
+                Если вы не получили письмо, пожалуйста, проверьте папку "Спам"
+                или запросите отправку письма повторно
               </Text>
             </View>
 
