@@ -202,6 +202,32 @@ router
     }
   })
 
+  .put('/cancelEmail', async (req, res) => {
+    try {
+      const token = req.headers.authorization.split(' ')[1];
+      const user = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+      const userData = await DiscountCard.findOne({ where: { id: user.id } });
+
+      if (!userData) {
+        return res.status(404).json({ error: 'Пользователь не найден' });
+      }
+
+      await userData.update({
+        emailConfirmationCode: '',
+        newEmail: '',
+      });
+
+      return res.status(200).json({
+        newEmail: '',
+        message: 'Успешный сброс новой почты',
+        email: userData.email,
+      });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: 'Внутренняя ошибка сервера' });
+    }
+  })
+
   .get('/confirm-email/:confirmationCode/:newEmail', async (req, res) => {
     try {
       const { confirmationCode, newEmail } = req.params;
@@ -218,7 +244,6 @@ router
         emailConfirmationCode: '',
         newEmail: '',
       });
-
 
       const credentials = 'Exchange:Exchange';
       const base64Credentials = Buffer.from(credentials).toString('base64');
