@@ -96,7 +96,6 @@ const SingleProduct = ({ route }: any) => {
               )}
               isNew={currentProductOpen.isNew}
               image={`http://${IP}:${PORT}${currentProductOpen.photo}`}
-              // description={desc}
               description={desc}
             />
           ) : (

@@ -26,12 +26,17 @@ interface ISelectedShop {
 
 interface MarketMapProps {
   selectedShop?: ISelectedShop | null;
+  onMarkerPress?: (shop: ISelectedShop) => void;
 }
 
-const MarketMap: FC<MarketMapProps> = ({ selectedShop }) => {
+const MarketMap: FC<MarketMapProps> = ({
+  selectedShop,
+  onMarkerPress,
+}) => {
   // const navigation = useNavigation<StackNavigationProp>();
   const dispatch = useAppDispatch();
   const mapRef = useRef<MapView | null>(null);
+  console.log('selectedShop', selectedShop);
 
   useEffect(() => {
     dispatch(getUserLocations({ token }));
@@ -143,6 +148,7 @@ const MarketMap: FC<MarketMapProps> = ({ selectedShop }) => {
             title={shop.city}
             description={`${shop.address}, ${shop.hours}`}
             pinColor="green"
+            onPress={() => onMarkerPress?.(shop)}
           />
         ))}
         {selectedShop && (
@@ -162,6 +168,10 @@ const MarketMap: FC<MarketMapProps> = ({ selectedShop }) => {
           <Button title="Построить маршрут" onPress={handleDirections} />
         </View>
       ) : null}
+
+      {/* <TouchableOpacity style={styles.button} onPress={handleDirections}>
+        <Text style={styles.buttonText}>Построить маршрут</Text>
+      </TouchableOpacity> */}
     </View>
   );
 };
