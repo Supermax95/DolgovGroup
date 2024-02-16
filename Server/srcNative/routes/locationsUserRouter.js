@@ -15,6 +15,7 @@ router.get('/userlocations', async (req, res) => {
       ],
       raw: true,
     });
+
     res.json(locations);
   } catch (error) {
     console.error('Ошибка при получении данных из базы данных', error);

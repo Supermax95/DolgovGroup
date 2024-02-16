@@ -13,25 +13,6 @@ class MailService {
     });
   }
 
-  // async sendActivationMail(to, link) {
-  //   try {
-  //     await this.transporter.sendMail({
-  //       from: process.env.EMAIL,
-  //       to,
-  //       subject: 'Подтверждение почты',
-  //       text: '',
-  //       html: `
-  //         <div>
-  //           <h1>Для активации перейдите по ссылке</h1>
-  //           <a href="${link}">Активировать аккаунт</a>
-  //         </div>
-  //       `,
-  //     });
-  //     console.log('Письмо успешно отправлено');
-  //   } catch (error) {
-  //     console.error('Ошибка отправки письма: ', error);
-  //   }
-  // }
   async sendActivationMail(to, link) {
     try {
       await this.transporter.sendMail({
@@ -47,6 +28,7 @@ class MailService {
             Активировать аккаунт
           </a>
         </p>
+        <p>Если это письмо пришло вам по ошибке, просто проигнорируйте его.</p>
       </div>
       `,
       });
@@ -56,25 +38,6 @@ class MailService {
     }
   }
 
-  // async sendNewPasswordMail(to, newPassword) {
-  //   try {
-  //     await this.transporter.sendMail({
-  //       from: process.env.EMAIL,
-  //       to,
-  //       subject: 'Изменение пароля',
-  //       text: `Ваш новый временный пароль: ${newPassword}`,
-  //       html: `
-  //         <div>
-  //           <h1>Ваш новый временный пароль</h1>
-  //           <p>Ваш временный пароль: ${newPassword}</p>
-  //         </div>
-  //       `,
-  //     });
-  //     console.log('Письмо успешно отправлено');
-  //   } catch (error) {
-  //     console.error('Ошибка отправки письма: ', error);
-  //   }
-  // }
   async sendNewPasswordMail(to, newPassword) {
     try {
       await this.transporter.sendMail({
@@ -84,11 +47,10 @@ class MailService {
         text: '',
         html: `
         <div style="font-family: 'Arial', sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
-        <p style="font-size: 18px; color: #333; text-align: center;">Ваш новый временный пароль</p>
+        <p style="font-size: 18px; color: #333; text-align: center;">Ваш временный пароль:</p>
         <div style="text-align: center; background-color: #f5f5f5; padding: 10px; border-radius: 5px;">
           <span style="font-size: 2em; font-weight: bold; display: block;">${newPassword}</span>
         </div>
-        <p style="font-size: 16px; color: #555; text-align: center; margin-top: 20px;">С уважением, DolgovGroup!</p>
       </div>
       `,
       });

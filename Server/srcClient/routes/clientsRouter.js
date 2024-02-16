@@ -1,8 +1,8 @@
 const router = require('express').Router();
-const { Op } = require('sequelize');
-const { DiscountCard } = require('../../db/models');
 const nodemailer = require('nodemailer');
 const axios = require('axios');
+const { Op } = require('sequelize');
+const { DiscountCard } = require('../../db/models');
 
 const transporter = nodemailer.createTransport({
   port: 465,
@@ -118,7 +118,7 @@ router.put('/admin/clients/:id', async (req, res) => {
       );
       const credentials = 'Exchange:Exchange';
       const base64Credentials = Buffer.from(credentials).toString('base64');
-      console.log(' newInfo.barcode', newInfo.barcode ,trimmedPhoneNumber);
+      console.log(' newInfo.barcode', newInfo.barcode, trimmedPhoneNumber);
       await axios.post(
         `http://retail.dolgovagro.ru/rtnagaev/hs/loyaltyservice/updateclientcard?ClientCardID=${
           newInfo.barcode
