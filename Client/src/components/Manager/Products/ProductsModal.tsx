@@ -169,7 +169,8 @@ const ProductsModal: FC<ProductsModalProps> = ({
             withCredentials: true,
           }
         );
-
+         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
         unwrapResult(response);
         setShowNotificationPicture(true);
 
@@ -507,6 +508,38 @@ const ProductsModal: FC<ProductsModalProps> = ({
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
               customerPrice: sanitizedValue,
+            });
+          }
+        }
+      },
+      required: true,
+    },
+    {
+      id: 'percentage',
+      name: 'percentage',
+      type: 'text',
+      value: (
+        ((editedProduct.originalPrice - editedProduct.customerPrice) /
+          editedProduct.originalPrice) *
+        100
+      )
+        .toFixed(2)
+        .toString(),
+      autoComplete: 'off',
+      placeholder: '',
+      title: 'Процент скидки',
+      htmlFor: 'percentage',
+      onChange: (value: string | boolean | number | Date) => {
+        if (typeof value === 'string') {
+          const newValue = value.replace(/[^\d.]/g, '');
+    
+          if (!isNaN(+newValue)) {
+            const discountedPrice =
+              (editedProduct.originalPrice * (100 - +newValue)) / 100;
+    
+            setEditedProduct({
+              ...editedProduct,
+              customerPrice: discountedPrice,
             });
           }
         }
