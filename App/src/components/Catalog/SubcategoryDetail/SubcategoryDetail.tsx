@@ -55,11 +55,15 @@ const SubcategoryDetail = ({ route }: any) => {
 
   const onRefresh = async () => {
     setRefreshing(true);
-    await dispatch(getProducts(),
-    //  getCategory(),
-      getSubcategory()
-     );
-    setRefreshing(false);
+  
+    try {
+      await dispatch(getProducts());
+      await dispatch(getSubcategory());
+    } catch (error) {
+      console.error("Ошибка при обновлении данных:", error);
+    } finally {
+      setRefreshing(false);
+    }
   };
 
   //* все подкатегории по определённой категории

@@ -73,7 +73,9 @@ const ProductCard: FC<IProductCard> = ({
             )}
           </View>
 
-          {isDiscount ? (
+          {/* {isDiscount ? ( */}
+          
+           { discountedPrice !== originalPrice ? (
             <View className="flex-row items-center space-x-1">
               <Text className="text-lg font-medium text-red-600">
                 {discountedPrice}₽
@@ -82,13 +84,13 @@ const ProductCard: FC<IProductCard> = ({
                 {originalPrice}₽
               </Text>
             </View>
-          ) : (
-            <View className="flex-row items-center">
+           ) : (
+           <View className="flex-row items-center">
               <Text className="text-lg font-medium text-gray-800">
                 {originalPrice}₽
-              </Text>
+               </Text>
             </View>
-          )}
+          )} 
         </View>
       </Pressable>
     </>

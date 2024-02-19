@@ -19,7 +19,9 @@ router.get('/admin/products', async (req, res) => {
         isPast(addDays(parseISO(product.promoEndDate), 1))
       ) {
         await Product.update(
-          { isDiscounted: false },
+          { isDiscounted: false ,
+            customerPrice: product.originalPrice 
+          },
           { where: { id: product.id } }
         );
       }
