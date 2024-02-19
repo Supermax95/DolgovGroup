@@ -724,6 +724,35 @@ const ProductsModal: FC<ProductsModalProps> = ({
                 </span>
               </div>
               <div className="pt-4 pb-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
+              <div className="my-4">
+  <label htmlFor="percentage" className="block text-sm font-medium text-gray-700">
+    Процент скидки
+  </label>
+  <input
+    type="range"
+    min="0"
+    max="100"
+    step="0.01"
+    value={((editedProduct.originalPrice - editedProduct.customerPrice) /
+      editedProduct.originalPrice) * 100}
+    onChange={(e) => {
+      const newValue = e.target.value;
+      const discountedPrice =
+        (editedProduct.originalPrice * (100 - +newValue)) / 100;
+
+      setEditedProduct({
+        ...editedProduct,
+        customerPrice: discountedPrice,
+      });
+    }}
+    className="block w-full mt-1 bg-gray-300 rounded-md appearance-none focus:outline-none focus:ring focus:border-blue-300"
+  />
+  <span className="text-xs text-gray-500">{(((editedProduct.originalPrice - editedProduct.customerPrice) /
+      editedProduct.originalPrice) * 100).toFixed(2)}%
+      </span>
+</div>
+
+
                 <div className="relative">
                   <input
                     id="promoStartDate"
