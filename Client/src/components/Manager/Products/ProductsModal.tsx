@@ -514,6 +514,38 @@ const ProductsModal: FC<ProductsModalProps> = ({
       required: true,
     },
     {
+      id: 'percentage',
+      name: 'percentage',
+      type: 'text',
+      value: +(
+        ((editedProduct.originalPrice - editedProduct.customerPrice) /
+          editedProduct.originalPrice) *
+        100
+      )
+        .toFixed(2)
+        .toString(),
+      autoComplete: 'off',
+      placeholder: '',
+      title: 'Процент скидки',
+      htmlFor: 'percentage',
+      onChange: (value: string | boolean | number | Date) => {
+        if (typeof value === 'string') {
+          const newValue = value.replace(/[^\d.]/g, '');
+
+          if (!isNaN(+newValue)) {
+            const discountedPrice =
+              (editedProduct.originalPrice * (100 - +newValue)) / 100;
+
+            setEditedProduct({
+              ...editedProduct,
+              customerPrice: discountedPrice,
+            });
+          }
+        }
+      },
+      required: true,
+    },
+    {
       id: 'employeePrice',
       name: 'employeePrice',
       type: 'text',
