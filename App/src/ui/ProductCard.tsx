@@ -60,16 +60,8 @@ const ProductCard: FC<IProductCard> = ({
             // style={styles.textContainer}
             className="flex-col items-start justify-start w-[95%] h-8"
           >
-            {/* <Text className="text-xs text-gray-700 font-medium">
-              {productName.length > 48
-                ? productName.substring(0, 48) + '...'
-                : productName}
-            </Text> */}
-            <Text
-              className="text-xs text-gray-700 font-medium"
-              numberOfLines={2}
-              ellipsizeMode="tail"
-            >
+            <Text className="text-xs text-gray-700 font-medium"
+            numberOfLines={2} ellipsizeMode="tail">
               {productName}
             </Text>
           </View>
