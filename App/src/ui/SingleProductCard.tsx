@@ -31,13 +31,6 @@ const SingleProductCard: FC<ISingleProductCard> = ({
       <SafeAreaView className={`w-full relative`}>
         {/* Image Section */}
 
-        {/* <View
-          style={[{ height: screenHeight / 2.5 }]}
-          className="w-full flex items-center justify-center relative"
-        > */}
-        {/* <View
-            className={`w-full h-full top-0 left-0 flex items-center justify-center`}
-          > */}
         <Image
           source={{ uri: image }}
           resizeMode="contain"
@@ -54,18 +47,16 @@ const SingleProductCard: FC<ISingleProductCard> = ({
         ) : (
           <></>
         )}
-        {/* </View> */}
-        {/* </View> */}
       </SafeAreaView>
 
       <View className={`w-full flex-1 h-full bg-white rounded-t-3xl px-6 py-2`}>
         {/* //! артикул */}
         <View className="space-y-2">
-          <View className={`flex items-end w-full`}>
+          {/* <View className={`flex items-end w-full`}>
             <Text className={`text-xs font-normal text-gray-500`}>
               Арт. {article}
             </Text>
-          </View>
+          </View> */}
 
           <View className={`flex items-start justify-start w-full`}>
             <Text className={`text-lg font-bold text-gray-800`}>
@@ -73,7 +64,7 @@ const SingleProductCard: FC<ISingleProductCard> = ({
             </Text>
           </View>
 
-          { discountedPrice !== originalPrice ? (
+          {discountedPrice !== originalPrice ? (
             <View className="flex-row items-center space-x-1">
               <Text className="text-2xl font-medium text-red-600">
                 {discountedPrice}₽

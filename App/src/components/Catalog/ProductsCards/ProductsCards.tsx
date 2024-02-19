@@ -148,48 +148,55 @@ const ProductsCards: FC = ({ route }: any) => {
         />
       </View>
 
-      {/* <View className="flex-1 bg-[#EBEBEB]"> */}
-      {/* Scrollable container start */}
-      <LinearGradient
-            colors={['#FAF9F9', '#FAFAFA', '#F5F5F5']}
-            className="mb-4 py-4 flex-1 rounded-b-3xl"
-          >
-        <FlatList
-          data={displayedProducts}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <ProductCard
-              onPress={() => navigateToSingleProduct(item.id)}
-              key={item.id}
-              productName={item.productName}
-              originalPrice={item.originalPrice}
-              isDiscount={item.isDiscounted}
-              discountedPrice={
-                userStatus === 'Сотрудник'
-                  ? item.employeePrice
-                  : item.customerPrice
-              }
-              discountPercentage={Math.round(
-                ((item.originalPrice -
-                  (userStatus === 'Сотрудник'
+      <View className="flex-1 bg-[#F5F5F5] ">
+        {/* Scrollable container start */}
+        <LinearGradient colors={['#FAF9F9', '#FAFAFA', '#F5F5F5']}>
+          <FlatList
+            data={displayedProducts}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+              <ProductCard
+                onPress={() => navigateToSingleProduct(item.id)}
+                key={item.id}
+                productName={item.productName}
+                originalPrice={item.originalPrice}
+                isDiscount={item.isDiscounted}
+                discountedPrice={
+                  userStatus === 'Сотрудник'
                     ? item.employeePrice
-                    : item.customerPrice)) /
-                  item.originalPrice) *
-                  100
-              )}
-              isNew={item.isNew}
-              imageProduct={`http://${IP}:${PORT}${item.photo}`}
-            />
-          )}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-          numColumns={2}
-          columnWrapperStyle={{ marginLeft: 7.5, width: '100%' }}
-          extraData={displayedProducts.length}
-        />
-      </LinearGradient>
-      {/* </View> */}
+                    : item.customerPrice
+                }
+                discountPercentage={Math.round(
+                  ((item.originalPrice -
+                    (userStatus === 'Сотрудник'
+                      ? item.employeePrice
+                      : item.customerPrice)) /
+                    item.originalPrice) *
+                    100
+                )}
+                isNew={item.isNew}
+                imageProduct={`http://${IP}:${PORT}${item.photo}`}
+              />
+            )}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+            numColumns={2}
+            columnWrapperStyle={{ marginLeft: 7.5, width: '100%' }}
+            extraData={displayedProducts.length}
+            contentContainerStyle={{
+              paddingVertical: 15,
+            }}
+            ListEmptyComponent={
+              <View className="flex-row justify-center items-center mt-4">
+                <Text className="text-lg font-normal text-zinc-500">
+                  Ничего не найдено
+                </Text>
+              </View>
+            }
+          />
+        </LinearGradient>
+      </View>
 
       {/* модальное окно фильтра */}
       <FilterModal
