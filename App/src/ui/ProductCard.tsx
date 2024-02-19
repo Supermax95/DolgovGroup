@@ -60,9 +60,17 @@ const ProductCard: FC<IProductCard> = ({
             // style={styles.textContainer}
             className="flex-col items-start justify-start w-[95%] h-8"
           >
-            <Text className="text-xs text-gray-700 font-medium">
-            {/* {productName} */}
-            {productName.length > 48 ? productName.substring(0, 48) + '...' : productName}
+            {/* <Text className="text-xs text-gray-700 font-medium">
+              {productName.length > 48
+                ? productName.substring(0, 48) + '...'
+                : productName}
+            </Text> */}
+            <Text
+              className="text-xs text-gray-700 font-medium"
+              numberOfLines={2}
+              ellipsizeMode="tail"
+            >
+              {productName}
             </Text>
           </View>
 
@@ -76,7 +84,7 @@ const ProductCard: FC<IProductCard> = ({
 
           {/* {isDiscount ? ( */}
 
-           { discountedPrice !== originalPrice ? (
+          {discountedPrice !== originalPrice ? (
             <View className="flex-row items-center space-x-1">
               <Text className="text-lg font-medium text-red-600">
                 {discountedPrice}₽
@@ -85,13 +93,13 @@ const ProductCard: FC<IProductCard> = ({
                 {originalPrice}₽
               </Text>
             </View>
-           ) : (
-           <View className="flex-row items-center">
+          ) : (
+            <View className="flex-row items-center">
               <Text className="text-lg font-medium text-gray-800">
                 {originalPrice}₽
-               </Text>
+              </Text>
             </View>
-          )} 
+          )}
         </View>
       </Pressable>
     </>
