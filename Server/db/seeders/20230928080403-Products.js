@@ -159,7 +159,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     const seedData = [];
 
-    for (let i = 1; i <= 100; i++) {
+    for (let i = 1; i <= 500; i++) {
       const seed = {
         id: i,
         article: `article_${i}`,
