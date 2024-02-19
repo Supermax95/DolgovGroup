@@ -8,6 +8,8 @@ import {
   SafeAreaView,
   ScrollView,
   RefreshControl,
+  FlatList,
+  VirtualizedList,
 } from 'react-native';
 import ProductCard from 'ui/ProductCard';
 import { PORT, IP } from '@env';
@@ -55,11 +57,7 @@ const ProductsCards: FC = ({ route }: any) => {
 
   const onRefresh = async () => {
     setRefreshing(true);
-    await dispatch(
-      getProducts()
-      //  getCategory(),
-      // getSubcategory()
-    );
+    await dispatch(getProducts());
     setRefreshing(false);
   };
 

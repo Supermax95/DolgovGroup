@@ -27,6 +27,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import getCategory from 'Redux/thunks/Catalog/categoryGet.api';
 import getProducts from 'Redux/thunks/Catalog/productGet.api';
 import getSubcategory from 'Redux/thunks/Catalog/subcategoryGet.api';
+import getPromotions from 'Redux/thunks/Promotion/getPromotion.api';
 
 const HomeDetail: FC = () => {
   // const navigation = useNavigation<StackNavigationProp>();
@@ -48,7 +49,10 @@ const HomeDetail: FC = () => {
 
   const onRefresh = async () => {
     setRefreshing(true);
-    await dispatch(getProducts(), getCategory(), getSubcategory());
+    await dispatch(getPromotions());
+    await dispatch(getProducts());
+    await dispatch(getCategory());
+    await dispatch(getSubcategory());
     setRefreshing(false);
   };
 
@@ -79,10 +83,8 @@ const HomeDetail: FC = () => {
   useEffect(() => {
     if (token) {
       dispatch(getBarcode({ token }));
-
     }
   }, [dispatch]);
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -90,11 +92,9 @@ const HomeDetail: FC = () => {
         setIsLoadingPage(false);
       }, 1000);
     };
-  
+
     fetchData();
   }, []);
-  
-
 
   const barcode = useAppSelector<string | undefined>(
     (state) => state.userSlice.user.barcode

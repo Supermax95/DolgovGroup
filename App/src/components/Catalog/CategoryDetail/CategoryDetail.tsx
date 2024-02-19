@@ -17,6 +17,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import getCategory from 'Redux/thunks/Catalog/categoryGet.api';
 import getProducts from 'Redux/thunks/Catalog/productGet.api';
 import getSubcategory from 'Redux/thunks/Catalog/subcategoryGet.api';
+import getPromotions from 'Redux/thunks/Promotion/getPromotion.api';
 
 export interface ICategory {
   id: number;
@@ -51,7 +52,10 @@ const CategoryDetail: FC = () => {
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = async () => {
     setRefreshing(true);
-    await dispatch(getProducts(), getCategory(), getSubcategory());
+    await dispatch(getPromotions());
+    await dispatch(getProducts());
+    await dispatch(getCategory());
+    await dispatch(getSubcategory());
     setRefreshing(false);
   };
 
