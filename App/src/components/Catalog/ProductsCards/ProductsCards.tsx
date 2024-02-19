@@ -151,9 +151,9 @@ const ProductsCards: FC = ({ route }: any) => {
       {/* <View className="flex-1 bg-[#EBEBEB]"> */}
       {/* Scrollable container start */}
       <LinearGradient
-        colors={['#FAF9F9', '#FAFAFA', '#FAF9F9']}
-        className="mb-4 py-4 flex-1 rounded-b-3xl"
-      >
+            colors={['#FAF9F9', '#FAFAFA', '#F5F5F5']}
+            className="mb-4 py-4 flex-1 rounded-b-3xl"
+          >
         <FlatList
           data={displayedProducts}
           keyExtractor={(item) => item.id.toString()}

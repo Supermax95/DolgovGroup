@@ -61,7 +61,8 @@ const ProductCard: FC<IProductCard> = ({
             className="flex-col items-start justify-start w-[95%] h-8"
           >
             <Text className="text-xs text-gray-700 font-medium">
-              {productName}
+            {/* {productName} */}
+            {productName.length > 48 ? productName.substring(0, 48) + '...' : productName}
             </Text>
           </View>
 
