@@ -4,10 +4,8 @@ import { useAppSelector } from 'Redux/hooks';
 import { StackNavigationProp } from 'navigation/types';
 import React from 'react';
 import {
-  ScrollView,
   Image,
   View,
-  Text,
   Pressable,
   Dimensions,
   StyleSheet,

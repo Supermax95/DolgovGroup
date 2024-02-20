@@ -68,7 +68,7 @@ const Profile: FC = () => {
         <FieldDetail
           onPress={() => navigation.navigate('AboutApplication')}
           icon="information"
-          title="О приложении"
+          title="Правовая информация"
         />
         <FieldDetail
           onPress={handleLogout}

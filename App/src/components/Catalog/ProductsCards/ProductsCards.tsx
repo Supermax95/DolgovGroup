@@ -95,7 +95,6 @@ const ProductsCards: FC = ({ route }: any) => {
           String(product.productName),
           String(product.promoStartDate),
           String(product.promoEndDate),
-          // String(product.article),
         ];
 
         const searchTerms = searchText.toLowerCase().split(' ');
@@ -122,7 +121,6 @@ const ProductsCards: FC = ({ route }: any) => {
   }, [initialRender, maxProductOriginalPrice]);
 
   const displayedProducts = applyFilters();
-  console.log('displayedProducts', displayedProducts);
 
   const navigateToSingleProduct = (productId: number): void => {
     navigation.navigate('SingleProduct', { productId });

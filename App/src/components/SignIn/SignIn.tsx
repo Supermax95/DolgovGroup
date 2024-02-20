@@ -9,10 +9,8 @@ import {
   Text,
   View,
   Animated,
-  StyleSheet,
   KeyboardAvoidingView,
   Platform,
-  ImageBackground,
   Keyboard,
   ScrollView,
 } from 'react-native';
@@ -24,7 +22,6 @@ import Button from 'ui/Button';
 import FieldInput from 'ui/FieldInput';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import UniversalHeader from 'ui/UniversalHeader';
 
 interface IData {
   email: string;
@@ -85,12 +82,6 @@ const SignIn: FC = () => {
     }
   };
 
-  const handleLegalPolicyPress = () => {
-    navigation.navigate('AboutApplication');
-  };
-
-  const AnimatedLinearGradient =
-    Animated.createAnimatedComponent(LinearGradient);
 
   return (
     <>

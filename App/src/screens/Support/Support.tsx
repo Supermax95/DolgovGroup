@@ -8,7 +8,7 @@ import { Linking, ScrollView, Text, View } from 'react-native';
 import FieldDetailArrow from 'ui/FieldDetailArrow';
 import PopularQuestions from 'components/SupportDetail/PopularQuestions/PopularQuestions';
 import EmployeeConfirm from 'components/SupportDetail/EmployeeConfirm/EmployeeConfirm';
-import { useAppDispatch, useAppSelector } from 'Redux/hooks';
+import { useAppSelector } from 'Redux/hooks';
 
 // const makePhoneCall = () => {
 //   Linking.openURL('tel:89219458686');
@@ -16,7 +16,6 @@ import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 
 const Support: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
-  const dispatch = useAppDispatch();
 
   const userStatus = useAppSelector<string | undefined>(
     (state) => state.userSlice.user.userStatus

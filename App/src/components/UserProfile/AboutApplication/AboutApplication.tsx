@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from 'navigation/types';
@@ -7,7 +7,13 @@ import Padding from 'ui/Padding';
 import UniversalHeader from 'ui/UniversalHeader';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import FieldDetailArrow from 'ui/FieldDetailArrow';
-import { View, Text } from 'react-native';
+import {
+  View,
+  Text,
+  ActivityIndicator,
+  RefreshControl,
+  ScrollView,
+} from 'react-native';
 
 interface ILaw {
   id: number;
@@ -19,11 +25,20 @@ interface ILaw {
 
 const AboutApplication: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
+  const [isLoadingPage, setIsLoadingPage] = useState<boolean>(true);
   const dispatch = useAppDispatch();
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     dispatch(getLaws());
+    setIsLoadingPage(false);
   }, [dispatch]);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    dispatch((getLaws()));
+    setRefreshing(false);
+  };
 
   const laws = useAppSelector<ILaw[]>((state) => state.lawSlice.data);
 
@@ -42,32 +57,49 @@ const AboutApplication: FC = () => {
   const maxLength = 35;
 
   return (
-    <SafeAreaView className="bg-white h-full flex-1">
-      <UniversalHeader
-        onPress={() => navigation.goBack()}
-        title="О приложении"
-      />
-      <Padding>
-        <Padding>
-          {laws.length ? (
-            laws.map((law) => (
-              <FieldDetailArrow
-                key={law.id}
-                onPress={() => navigateToSingleLaw(law.id)}
-                icon="file-document-outline"
-                title={truncateText(law.title, maxLength)}
-              />
-            ))
-          ) : (
-            <View className="items-center justify-center w-full mt-4">
-              <Text className="text-lg font-normal text-zinc-500">
-                Информация отсутствует
-              </Text>
-            </View>
-          )}
-        </Padding>
-      </Padding>
-    </SafeAreaView>
+    <>
+      {isLoadingPage ? (
+        <View className="flex-1 items-center justify-center">
+          <ActivityIndicator size="large" color="green" />
+        </View>
+      ) : (
+        <SafeAreaView className="bg-white h-full flex-1">
+          <UniversalHeader
+            onPress={() => navigation.goBack()}
+            title="Правовая информация"
+          />
+          <ScrollView
+            alwaysBounceVertical
+            showsVerticalScrollIndicator={false}
+            style={{ flex: 1, width: '100%' }}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          >
+            <Padding>
+              <Padding>
+                {laws.length ? (
+                  laws.map((law) => (
+                    <FieldDetailArrow
+                      key={law.id}
+                      onPress={() => navigateToSingleLaw(law.id)}
+                      icon="file-document-outline"
+                      title={truncateText(law.title, maxLength)}
+                    />
+                  ))
+                ) : (
+                  <View className="items-center justify-center w-full mt-4">
+                    <Text className="text-lg font-normal text-zinc-500">
+                      Информация отсутствует
+                    </Text>
+                  </View>
+                )}
+              </Padding>
+            </Padding>
+          </ScrollView>
+        </SafeAreaView>
+      )}
+    </>
   );
 };
 

@@ -1,5 +1,6 @@
 import {
   ActivityIndicator,
+  Alert,
   Platform,
   RefreshControl,
   ScrollView,
@@ -9,8 +10,6 @@ import React, { FC, useEffect, useState } from 'react';
 import Padding from 'ui/Padding';
 import Heading from 'ui/Heading';
 import UniversalHeader from 'ui/UniversalHeader';
-// import { useNavigation } from '@react-navigation/native';
-// import { StackNavigationProp } from 'navigation/types';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
@@ -21,7 +20,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import * as Brightness from 'expo-brightness';
 import { encode } from 'base-64';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import BonusCard from 'ui/BonusCard';
 import { LinearGradient } from 'expo-linear-gradient';
 import getCategory from 'Redux/thunks/Catalog/categoryGet.api';
@@ -75,7 +73,7 @@ const HomeDetail: FC = () => {
           await Brightness.setBrightnessAsync(originalBrightness || 0.5);
         }, 10000);
       } catch (error) {
-        console.error('Ошибка при установке яркости:', error);
+        Alert.alert('Ошибка при установке яркости:');
       }
     }
   };
@@ -100,27 +98,6 @@ const HomeDetail: FC = () => {
     (state) => state.userSlice.user.barcode
   );
 
-  //*функция склоняет баллы
-  //   function formatPoints(numberPoints: number) {
-  //     if (numberPoints === 0) {
-  //       return '0 баллов';
-  //     }
-
-  //     const lastDigit = numberPoints % 10;
-  //     const lastTwoDigits = numberPoints % 100;
-
-  //     if (lastTwoDigits >= 11 && lastTwoDigits <= 19) {
-  //       return `${numberPoints} баллов`;
-  //     } else if (lastDigit === 1) {
-  //       return `${numberPoints} балл`;
-  //     } else if (lastDigit >= 2 && lastDigit <= 4) {
-  //       return `${numberPoints} балла`;
-  //     } else {
-  //       return `${numberPoints} баллов`;
-  //     }
-  //   }
-
-  //   const numberPointsRub = formatPoints(numberPoints || 0);
 
   const checkResendAvailability = async () => {
     const lastSentTime = await AsyncStorage.getItem('bonusCheck');
@@ -130,7 +107,6 @@ const HomeDetail: FC = () => {
       const timeDifference = currentTime - parseInt(lastSentTime, 10);
       const minutesPassed = timeDifference / (1000 * 60);
       if (minutesPassed < 1) {
-        // Если прошло менее одной минуты, блокируем повторную отправку
         setResendDisabled(true);
         const remainingTime = Math.floor((1 - minutesPassed) * 60); // Изменилось с 3 на 1
         // Оставшееся время в секундах

@@ -156,7 +156,7 @@ export const Registration: FC = () => {
               }
             } catch (error) {
               setIsLoading(false);
-              console.error('Произошла ошибка при отправке запроса:', error);
+              Alert.alert('Произошла ошибка при отправке запроса:');
             }
           },
         },

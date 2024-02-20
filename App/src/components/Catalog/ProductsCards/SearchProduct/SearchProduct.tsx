@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
-  ScrollView,
   SafeAreaView,
   RefreshControl,
   FlatList,
+  ActivityIndicator,
 } from 'react-native';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { PORT, IP } from '@env';
@@ -16,9 +16,7 @@ import ProductCard from 'ui/ProductCard';
 import FilterModal from 'ui/FilterModal';
 import SearchAndFilter from 'ui/SearchAndFilter';
 import { LinearGradient } from 'expo-linear-gradient';
-import getCategory from 'Redux/thunks/Catalog/categoryGet.api';
 import getProducts from 'Redux/thunks/Catalog/productGet.api';
-import getSubcategory from 'Redux/thunks/Catalog/subcategoryGet.api';
 
 export interface IProduct {
   id: number;
@@ -45,18 +43,14 @@ const SearchProduct = () => {
     useState<boolean>(false);
   const [showNew, setShowNew] = useState<boolean>(false);
   const [showDiscounted, setShowDiscounted] = useState<boolean>(false);
-  const [minPrice, setMinPrice] = useState<number>(0);
+  const [minPrice] = useState<number>(0);
   const [maxPrice, setMaxPrice] = useState<number>(0);
   const [initialRender, setInitialRender] = useState<boolean>(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = async () => {
     setRefreshing(true);
-    await dispatch(
-      getProducts()
-      // getCategory(),
-      //  getSubcategory()
-    );
+    await dispatch(getProducts());
     setRefreshing(false);
   };
 

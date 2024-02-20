@@ -7,6 +7,7 @@ import {
   Linking,
   Pressable,
   ActivityIndicator,
+  RefreshControl,
 } from 'react-native';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import RenderHtml from 'react-native-render-html';
@@ -33,8 +34,8 @@ const SingleLaw = ({ route }: any) => {
   const { width } = useWindowDimensions();
   const dispatch = useAppDispatch();
   const navigation = useNavigation<StackNavigationProp>();
-
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [refreshing, setRefreshing] = useState(false);
 
   const currentLawOpen =
     useAppSelector<ILaw>((state) => state.lawSlice.currentLaw) || ({} as ILaw);
@@ -58,6 +59,12 @@ const SingleLaw = ({ route }: any) => {
 
     fetchData();
   }, [dispatch, lawId]);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    dispatch(currentLaw(lawId));
+    setRefreshing(false);
+  };
 
   const desc = currentLawOpen.description ? (
     <RenderHtml
@@ -102,7 +109,12 @@ const SingleLaw = ({ route }: any) => {
             onPress={() => navigation.goBack()}
             title={truncated}
           />
-          <ScrollView style={{ flex: 1, width: '100%' }} bounces={false}>
+          <ScrollView
+            style={{ flex: 1, width: '100%' }}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          >
             <Padding>
               <Padding>
                 {/* Если отсутсвует документ. Невозможно сделать проверку на отсутствие текста,

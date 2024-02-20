@@ -1,11 +1,19 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { TabScreenNavigationProp } from 'navigation/types';
-import { View, FlatList, Text, Pressable, Platform } from 'react-native';
-import { useAppSelector } from 'Redux/hooks';
+import {
+  View,
+  FlatList,
+  Text,
+  Pressable,
+  Platform,
+  RefreshControl,
+} from 'react-native';
+import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Padding from 'ui/Padding';
 import SearchAndFilter from 'ui/SearchAndFilter';
+import getUserLocations from 'Redux/thunks/Shops/locationsUser.api';
 
 export interface ISelectedShop {
   id: number;
@@ -20,15 +28,23 @@ export interface ISelectedShop {
 const ShopsList: FC = () => {
   const [selectedShop, setSelectedShop] = useState<ISelectedShop | null>(null);
   const navigation = useNavigation<TabScreenNavigationProp>();
-
+  const [refreshing, setRefreshing] = useState(false);
   const [searchText, setSearchText] = useState<string>('');
-
+  const dispatch = useAppDispatch();
   const handleShopSelected = (selectedShop: ISelectedShop) => {
     setSelectedShop(selectedShop);
     navigation.navigate('Shops', { selectedShop });
   };
+  const token = useAppSelector<string | undefined>(
+    (state) => state.userSlice.token?.refreshToken
+  );
 
-  
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await dispatch(getUserLocations({ token }));
+    setRefreshing(false);
+  };
+
   const locations = useAppSelector<ISelectedShop[]>(
     (state) => state.locationsUserSlice.data
   );
@@ -97,14 +113,6 @@ const ShopsList: FC = () => {
                       {item.address}
                     </Text>
                   </View>
-                  {/* <View className="flex-row justify-center items-center"> */}
-                  {/* <View className="w-5 items-center justify-center">
-                      <MaterialCommunityIcons
-                        name="clock-outline"
-                        size={15}
-                        color="zinc"
-                      />
-                    </View> */}
                   <Text className="text-zinc-500 font-normal text-md">
                     {item.hours}
                   </Text>
@@ -115,6 +123,13 @@ const ShopsList: FC = () => {
             </Padding>
           </Padding>
         )}
+        refreshControl=
+        {
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
+        }
         ListEmptyComponent={
           <View className="flex-row justify-center items-center mt-4">
             <Text className="text-lg font-normal text-zinc-500">
