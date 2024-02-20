@@ -158,10 +158,10 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     const seedData = [];
 
-    for (let i = 1; i <= 10; i++) {
+    for (let i = 0; i <= 100; i++) {
       const seed = {
         id: i,
-        article: `article_${i}`,
+        article: `ПГ000000901`,
         productName: `Йогурт питьевой Нежинская лесная ягода 2,5% БЗМЖ 275 г ${i}`,
         promoStartDate: '2024-02-18',
         promoEndDate: '2024-02-18',

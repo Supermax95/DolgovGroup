@@ -1,18 +1,16 @@
 const router = require('express').Router();
 const { Category } = require('../../db/models');
 const path = require('path');
+const { Op } = require('sequelize');
 const fsPromises = require('fs').promises;
 
 router.get('/admin/category', async (req, res) => {
   try {
     await Category.update(
       { img: '/uploads/noPhoto/null.png' },
-      { where: { img: null } }
+      { where: { [Op.or]: [{ img: null }, { img: '' }] } }
     );
-    await Category.update(
-      { photo: '/uploads/noPhoto/null.png' },
-      { where: { img: '' } }
-    );
+
     const updatedCategories = await Category.findAll({
       order: [['categoryName', 'ASC']],
       raw: true,

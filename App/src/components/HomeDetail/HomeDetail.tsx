@@ -163,9 +163,8 @@ const HomeDetail: FC = () => {
           headers: {
             Authorization: `Basic ${base64Credentials}`,
           },
-        }
-      );
-
+        }   
+        );
       const bonusCount = response.data?.BonusCount || 0;
       AsyncStorage.setItem('bonusCheck', Date.now().toString());
       setNumberPoints(bonusCount);

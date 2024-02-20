@@ -424,7 +424,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
       value: editedProduct.article,
       autoComplete: 'off',
       placeholder: '',
-      title: 'Артикул',
+      title: 'Код номенклатуры',
       htmlFor: 'productName',
       onChange: (value: string | boolean | number | Date) => {
         if (typeof value === 'string') {
@@ -732,7 +732,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
     type="range"
     min="0"
     max="100"
-    step="0.01"
+    step="1"
     value={((editedProduct.originalPrice - editedProduct.customerPrice) /
       editedProduct.originalPrice) * 100}
     onChange={(e) => {

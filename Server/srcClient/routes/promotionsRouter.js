@@ -27,12 +27,7 @@ router.get('/admin/promotions', async (req, res) => {
 
     await Promotion.update(
       { photo: '/uploads/noPhoto/null.png' },
-      { where: { photo: null } }
-    );
-
-    await Promotion.update(
-      { photo: '/uploads/noPhoto/null.png' },
-      { where: { photo: '' } }
+      { where: { [Op.or]: [{ photo: null }, { photo: '' }] } }
     );
 
     const updatedPromotions = await Promotion.findAll({
