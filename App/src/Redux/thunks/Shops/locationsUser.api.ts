@@ -17,6 +17,10 @@ interface ResponseDataLocation {
 
 type ResponseData = Array<ResponseDataLocation>;
 
+// interface ResponseData {
+//   data: any; 
+// }
+
 const getUserLocations = createAsyncThunk<ResponseData, Request>(
   'api/getuserlocations',
   async ({ token }) => {

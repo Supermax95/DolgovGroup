@@ -18,15 +18,18 @@ interface ISelectedShop {
   longitude: string;
   hours: string;
 }
-interface IRouteParams {
-  selectedShop?: ISelectedShop | null;
-}
+
+// interface IRouteParams {
+//   selectedShop?: ISelectedShop | null;
+// }
 
 const Shops: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
   const [showMap, setShowMap] = useState(true);
   const route = useRoute();
-  const { selectedShop } = route.params as IRouteParams;
+  const selectedShop = route.params?.selectedShop as ISelectedShop | null;
+  // const  selectedShop  = route.params as IRouteParams;
+
 
   const handleShowList = () => {
     setShowMap(false);
