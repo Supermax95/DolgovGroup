@@ -431,7 +431,7 @@ const Products: FC = () => {
 
       <div className="p-4">
         {showNotificationArticle && (
-          <div className="fixed top-24 left-1/2 transform -translate-x-1/2 bg-opacity-75 animate-pulse h-10 w-56 z-10 bg-slate-600 p-4 rounded-md">
+          <div className="fixed top-24 left-1/2 transform -translate-x-1/2 bg-opacity-75 animate-pulse h-10 w-80 z-10 bg-slate-600 p-4 rounded-md">
             <span
               className="text-slate-100 font-medium flex items-center"
               style={{ marginTop: '-0.5rem' }}
@@ -441,10 +441,6 @@ const Products: FC = () => {
             </span>
           </div>
         )}
-        {/* 
-        <h1 className="text-xl text-lime-600 font-medium text-center">
-          Продукты
-        </h1> */}
 
         <div className="flex items-center space-x-1">
           <span className="text-slate-600 text-sm font-normal my-2">

@@ -1,11 +1,11 @@
 const router = require('express').Router();
+const path = require('path');
 const { isPast, parseISO, addDays, subDays } = require('date-fns');
 const { Op } = require('sequelize');
-const path = require('path');
 const fsPromises = require('fs').promises;
-const { Product } = require('../../db/models');
 const axios = require('axios');
 const cron = require('node-cron');
+const { Product } = require('../../db/models');
 
 router.get('/admin/products', async (req, res) => {
   try {
@@ -58,7 +58,6 @@ router.get('/admin/products', async (req, res) => {
     });
   }
 });
-
 
 const task = cron.schedule('05 00 * * *', async () => {
   try {
