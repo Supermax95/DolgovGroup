@@ -51,10 +51,6 @@ const CategoryDetail: FC = () => {
     navigation.navigate('SearchProduct');
   };
 
-  const token = useAppSelector<string | undefined>(
-    (state) => state.userSlice.token?.refreshToken
-  );
-
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = async () => {
     setRefreshing(true);
@@ -62,7 +58,6 @@ const CategoryDetail: FC = () => {
     await dispatch(getProducts());
     await dispatch(getCategory());
     await dispatch(getSubcategory());
-    await dispatch(getUserLocations({ token }));
     setRefreshing(false);
   };
 
