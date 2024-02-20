@@ -18,6 +18,7 @@ import getCategory from 'Redux/thunks/Catalog/categoryGet.api';
 import getProducts from 'Redux/thunks/Catalog/productGet.api';
 import getSubcategory from 'Redux/thunks/Catalog/subcategoryGet.api';
 import getPromotions from 'Redux/thunks/Promotion/getPromotion.api';
+import getUserLocations from 'Redux/thunks/Shops/locationsUser.api';
 
 export interface ICategory {
   id: number;
@@ -49,6 +50,11 @@ const CategoryDetail: FC = () => {
   const handleSearchPress = () => {
     navigation.navigate('SearchProduct');
   };
+
+  const token = useAppSelector<string | undefined>(
+    (state) => state.userSlice.token?.refreshToken
+  );
+
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = async () => {
     setRefreshing(true);
@@ -56,6 +62,7 @@ const CategoryDetail: FC = () => {
     await dispatch(getProducts());
     await dispatch(getCategory());
     await dispatch(getSubcategory());
+    await dispatch(getUserLocations({ token }));
     setRefreshing(false);
   };
 
