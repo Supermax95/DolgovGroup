@@ -527,7 +527,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
         .toString(),
       autoComplete: 'off',
       placeholder: '',
-      title: 'Процент скидки',
+      title: 'Процент скидки для сотрудника',
       htmlFor: 'percentageEmployee',
       onChange: (value: string | boolean | number | Date) => {
         if (typeof value === 'string') {
@@ -660,9 +660,13 @@ const ProductsModal: FC<ProductsModalProps> = ({
                   Если скидка не имеет конкретного срока действия, оставьте
                   пустыми поля "Начало" и "Окончание".
                 </span>
+                <br />
+                <span className="text-xs text-green-500 font-normal">
+                  Цена для клиента возвращается к оригинальной стоимости после
+                  завершения акции.
+                </span>
               </div>
               <div className="pt-4 pb-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
-
                 <div className="relative">
                   <input
                     id="promoStartDate"
@@ -791,7 +795,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
                     htmlFor="percentageCustomer"
                     className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-slate-400 peer-focus:text-sm"
                   >
-                    Процент скидки
+                    Процент скидки для клиента
                   </label>
                 </div>
               </div>
