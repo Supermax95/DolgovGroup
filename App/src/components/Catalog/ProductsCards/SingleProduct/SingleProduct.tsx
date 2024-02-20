@@ -66,8 +66,9 @@ const SingleProduct = ({ route }: any) => {
   };
 
   const currentProductOpen =
-    useAppSelector<IProduct | null >((state) => state.productSlice.currentProduct) ||
-    ({} as IProduct);
+    useAppSelector<IProduct | null>(
+      (state) => state.productSlice.currentProduct
+    ) || ({} as IProduct);
 
   const desc = currentProductOpen.description ? (
     <RenderHtml
@@ -141,6 +142,10 @@ const SingleProduct = ({ route }: any) => {
             {/* // feeds={filtered || filtered?.length > 0 ? filtered : feeds?.feeds}
   // />
   )} */}
+          <Text className="text-gray-600 font-medium text-xs italic">
+                Цены и акции могут варьироваться,
+                уточняйте актуальную информацию в магазине
+              </Text>
           </ScrollView>
         </SafeAreaView>
       )}

@@ -1,4 +1,12 @@
-import { View, Text, SafeAreaView, ScrollView, Alert, ActivityIndicator, RefreshControl } from 'react-native';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  ScrollView,
+  Alert,
+  ActivityIndicator,
+  RefreshControl,
+} from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import RenderHtml from 'react-native-render-html';
@@ -47,12 +55,10 @@ const PromoOneDetail = ({ route }: any) => {
     setRefreshing(false);
   };
 
-
   const currentPromotionOpen =
     useAppSelector<IPromotion | null>(
       (state) => state.promotiosSlice.currentPromotion
     ) || ({} as IPromotion);
-
 
   const desc = (
     <RenderHtml
@@ -66,38 +72,44 @@ const PromoOneDetail = ({ route }: any) => {
 
   return (
     <>
-    {isLoadingPage ? (
-      <View className="flex-1 items-center justify-center">
-        <ActivityIndicator size="large" color="green" />
-      </View>
-    ) : (
-    <SafeAreaView className="bg-white h-full flex-1">
-      <UniversalHeader onPress={() => navigation.goBack()} />
-      {currentPromotionOpen ? (
-        <ScrollView style={{ flex: 1, width: '100%' }}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }>
-          <SinglePromo
-            key={currentPromotionOpen.id}
-            title={currentPromotionOpen.title}
-            image={currentPromotionOpen.photo}
-            description={desc}
-            dateStart={currentPromotionOpen.dateStart}
-            dateEnd={currentPromotionOpen.dateEnd}
-            carusel={currentPromotionOpen.carousel}
-          />
-        </ScrollView>
-      ) : (
-        <View className="flex-row flex-wrap justify-center mt-4">
-          <Text className="text-gray-600 font-medium text-lg">
-            Продукт отсутстует
-          </Text>
+      {isLoadingPage ? (
+        <View className="flex-1 items-center justify-center">
+          <ActivityIndicator size="large" color="green" />
         </View>
-      )}
-    </SafeAreaView>
+      ) : (
+        <SafeAreaView className="bg-white h-full flex-1">
+          <UniversalHeader onPress={() => navigation.goBack()} />
+          {currentPromotionOpen ? (
+            <ScrollView
+              style={{ flex: 1, width: '100%' }}
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }
+            >
+              <SinglePromo
+                key={currentPromotionOpen.id}
+                title={currentPromotionOpen.title}
+                image={currentPromotionOpen.photo}
+                description={desc}
+                dateStart={currentPromotionOpen.dateStart}
+                dateEnd={currentPromotionOpen.dateEnd}
+                carusel={currentPromotionOpen.carousel}
+              />
+            </ScrollView>
+          ) : (
+            <View className="flex-row flex-wrap justify-center mt-4">
+              <Text className="text-gray-600 font-medium text-lg">
+                Продукт отсутстует
+              </Text>
+            </View>
           )}
-          </>
+          <Text className="text-gray-600 font-medium text-xs italic">
+            Цены и акции могут варьироваться, уточняйте актуальную информацию в
+            магазине
+          </Text>
+        </SafeAreaView>
+      )}
+    </>
   );
 };
 
