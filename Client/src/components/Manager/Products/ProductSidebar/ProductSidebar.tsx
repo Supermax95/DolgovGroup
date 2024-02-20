@@ -30,10 +30,15 @@ import getCategory from '../../../../Redux/thunks/Category/getCategory.api';
 import deleteCategoryPhoto from '../../../../Redux/thunks/Category/deleteCategoryPhoto.api';
 
 interface ICategory {
-  //Продукты.tsx ругаются на эти вопросы
-  id?: number;
-  categoryName?: string;
-  img?: string;
+  id?: number | undefined;
+  categoryName?: string | undefined;
+  img?: string | undefined;
+}
+
+interface ICategoryForProd {
+  id: number;
+  categoryName: string;
+  img: string;
 }
 
 interface ISubcategory {
@@ -45,9 +50,9 @@ interface ISubcategory {
 interface ProductSidebarProps {
   categories: ICategory[];
   addModal: () => void | undefined;
-  onCategorySelect: (category: ICategory | null) => void;
+  onCategorySelect: (category: ICategoryForProd | null) => void;
   onSubcategorySelect: (subcategory: ISubcategory | null) => void;
-  onActiveCategory: (category: ICategory | null) => void;
+  onActiveCategory: (category: ICategoryForProd | null) => void;
   onActiveSubcategory: (subcategory: ISubcategory | null) => void;
   resetFirstComponentState: () => void | undefined;
 }
@@ -100,11 +105,13 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   >(null);
 
   //* рендерит  выпадающий список для категорий
-  const [selectedCategoryDataId, setSelectedCategoryDataId] =
-    useState<number>(0);
+  const [selectedCategoryDataId, setSelectedCategoryDataId] = useState<
+    number | null
+  >(0);
   //* рендерит  выпадающий список для ПОДкатегорий
-  const [selectedSubcategoryDataId, setSelectedSubcategoryDataId] =
-    useState<number>(0);
+  const [selectedSubcategoryDataId, setSelectedSubcategoryDataId] = useState<
+    number | null
+  >(0);
 
   //! вывод подкатегории в сайдбаре - запоминает id и булевое - открыто/закрыто
   const [subcategoryStates, setSubcategoryStates] = useState<{
@@ -194,7 +201,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   ]);
 
   // показывает все продукты
-  const handleAll = () => {
+  const handleAll = (): void => {
     onCategorySelect(null);
     onSubcategorySelect(null);
     onActiveCategory(null);
@@ -417,7 +424,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   };
 
   // ? вывод подкатегорий в сайдбаре и их скрытие
-  const subcategoryOutput = (id: number, adding = false): void => {
+  const subcategoryOutput = (id: number | null, adding = false): void => {
     const subcategory = allSubcategories.filter(
       (sub: ISubcategory) => sub.categoryId === id
     );
@@ -479,7 +486,9 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   // ? логика редактирования ПОДкатегории
   const startEditingSubcategory = (id: number): void => {
     setEditingSubcategory(id);
-    const subcategoryToEdit = allSubcategories.find((sub) => sub.id === id);
+    const subcategoryToEdit = allSubcategories.find(
+      (sub: ISubcategory) => sub.id === id
+    );
 
     setActionMenuForSub(false);
     setDataEditSubcategory(subcategoryToEdit || null);
@@ -564,7 +573,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   //! рендерит карточки подкатегорий
   const handleSubcategoryClick = (selectedSubcategory: number): void => {
     const currentSubcategory = allSubcategories.find(
-      (sub) => sub.id === selectedSubcategory
+      (sub: ISubcategory) => sub.id === selectedSubcategory
     );
 
     // Находим соответствующую категорию

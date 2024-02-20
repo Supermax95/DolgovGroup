@@ -253,7 +253,7 @@ const Products: FC = () => {
   const totalPages = Math.ceil(totalMatches / itemsPerPage);
   // const totalPages = Math.ceil(filterProducts().length / itemsPerPage);
 
-  const openAddModal = () => {
+  const openAddModal = (): void => {
     setAddingMode(true);
     setEditedProduct({
       id: 0,
@@ -274,14 +274,14 @@ const Products: FC = () => {
     setModalOpen(true);
   };
 
-  const closeAddModal = () => {
+  const closeAddModal = (): void => {
     setSelectedProduct(null);
     setEditedProduct(null);
     setModalOpen(false);
     dispatch(getProducts());
   };
 
-  const openEditModal = async (product: IProduct) => {
+  const openEditModal = async (product: IProduct): Promise<void> => {
     const productId = product.id;
     const res = await dispatch(currentProduct(productId));
     const result = unwrapResult(res);
@@ -302,7 +302,7 @@ const Products: FC = () => {
     dispatch(getProducts());
   };
 
-  const handleSaveAdd = async () => {
+  const handleSaveAdd = async (): Promise<void> => {
     let add = {} as any;
     try {
       if (editedProduct) {
@@ -325,7 +325,7 @@ const Products: FC = () => {
     return add;
   };
 
-  const handleSaveEdit = async (editedProduct: IProduct) => {
+  const handleSaveEdit = async (editedProduct: IProduct): Promise<void> => {
     let add = {} as any;
     try {
       if (selectedProduct) {
@@ -353,7 +353,7 @@ const Products: FC = () => {
     return `${day}.${month}.${year}`;
   };
 
-  const handleCopyToClipboard = (text: string) => {
+  const handleCopyToClipboard = (text: string): void => {
     navigator.clipboard
       .writeText(text)
       .then(() => {
@@ -393,7 +393,6 @@ const Products: FC = () => {
   };
 
   return (
-    
     <Wrapper>
       {showNotificationAddProduct && (
         <PopUpNotification
