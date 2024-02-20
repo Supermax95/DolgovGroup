@@ -197,42 +197,6 @@ const Law: FC = () => {
     }),
   }));
 
-  //   return (
-  //     <Wrapper>
-  //       <SidebarLaw
-  //         data={formattedLaws}
-  //         title="Документы"
-  //         onAddClick={openAddEditor}
-  //         onEditClick={openEditEditor}
-  //       />
-  //       <div className={`p-4 ${isLoading ? 'blur' : ''}`}>
-  //         {isLoading || isEditorOpen ? (
-  //           <Editor
-  //             isOpen={isEditorOpen}
-  //             law={selectedLaw}
-  //             onSaveEdit={handleSaveEdit}
-  //             onSaveAdd={handleSaveAdd}
-  //             onCloseAddEditor={closeAddEditor}
-  //             onCloseEditEditor={closeEditEditor}
-  //             isAddingMode={isAddingMode}
-  //             editedLaw={editedLaw}
-  //             setEditedLaw={setEditedLaw}
-  //             axiosError={axiosError}
-  //             resetAxiosError={resetAxiosError}
-  //             currentStep={currentStep}
-  //             setCurrentStep={setCurrentStep}
-  //             setAddingMode={setAddingMode}
-  //             setSelectedLaw={setSelectedLaw}
-  //             openAddEditor={openAddEditor}
-  //             openEditEditor={openEditEditor}
-  //           />
-  //         ) : null}
-  //       </div>
-  //     </Wrapper>
-  //   );
-  // };
-  // export default Law;
-
   return (
     <Wrapper>
       {showNotificationAddLaw && (

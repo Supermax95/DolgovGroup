@@ -6,8 +6,6 @@ import addProduct from './thunks/Products/addProduct.api';
 import deleteProductPhoto from './thunks/Products/deleteProductPhoto.api';
 import currentProduct from './thunks/Products/getcurrentProduct';
 
-// import uploadFile from './thunks/Multer/multer.api';
-
 interface Product {
   id: number;
   article: string;
@@ -32,7 +30,7 @@ interface ProductState {
   error: string | null;
   status: number | null;
   message: string | null;
-  currentProduct: Product | null; 
+  currentProduct: Product | null;
 }
 
 const initialState: ProductState = {
@@ -114,7 +112,8 @@ const productSlice = createSlice({
       })
       .addCase(deleteProductPhoto.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message || 'Произошла ошибка при удалении изображения';
+        state.error =
+          action.error.message || 'Произошла ошибка при удалении изображения';
       })
       .addCase(currentProduct.pending, (state) => {
         state.isLoading = true;
@@ -126,7 +125,8 @@ const productSlice = createSlice({
       })
       .addCase(currentProduct.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message || 'Произошла ошибка при открытии продукта';
+        state.error =
+          action.error.message || 'Произошла ошибка при открытии продукта';
       });
   },
 });

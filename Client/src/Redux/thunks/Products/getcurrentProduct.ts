@@ -3,23 +3,21 @@ import axios, { AxiosResponse } from 'axios';
 import { VITE_URL } from '../../../VITE_URL';
 
 interface ResponseData {
-    id: number;
-    article: string;
-    productName: string;
-    promoStartDate: string;
-    promoEndDate: string;
-    originalPrice: number;
-    customerPrice: number;
-    employeePrice: number;
-    isNew: boolean;
-    isDiscounted: boolean;
-    description: string;
-    photo: string;
-    subcategoryId: number;
-    invisible: boolean;
-  }
-
-
+  id: number;
+  article: string;
+  productName: string;
+  promoStartDate: string;
+  promoEndDate: string;
+  originalPrice: number;
+  customerPrice: number;
+  employeePrice: number;
+  isNew: boolean;
+  isDiscounted: boolean;
+  description: string;
+  photo: string;
+  subcategoryId: number;
+  invisible: boolean;
+}
 
 const currentProduct = createAsyncThunk<ResponseData, number>(
   'admin/curentProduct',

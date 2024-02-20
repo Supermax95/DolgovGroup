@@ -11,7 +11,6 @@ import Search from '../../../ui/Search';
 import PromotionsModal from './PromotionsModal';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import Button from '../../../ui/Button';
 import { PencilSquareIcon } from '@heroicons/react/24/outline';
 import PromotionSidebar from './PromotionSidebar';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -58,9 +57,7 @@ const Carousel: FC = () => {
   const [editedPromotion, setEditedPromotion] = useState<
     Promotion | null | undefined
   >(null);
-  // const openPromotion = useAppSelector(
-  //   (state) => state.promotionSlice.currentPromotion
-  // );
+
   const [searchText, setSearchText] = useState('');
 
   const [showNotificationAddPromo, setShowNotificationAddPromo] =
@@ -139,10 +136,6 @@ const Carousel: FC = () => {
 
   const displayedPromotions = filterPromotions().slice(startIndex, endIndex);
 
-  // const resetAxiosError = () => {
-  //   setErrorNotification(null);
-  // };
-
   const openAddModal = () => {
     setAddingMode(true);
     setEditedPromotion({
@@ -186,6 +179,7 @@ const Carousel: FC = () => {
   };
 
   const handleSaveAdd = async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let add = {} as any;
     try {
       if (editedPromotion) {
@@ -209,6 +203,7 @@ const Carousel: FC = () => {
   };
 
   const handleSaveEdit = async (editedPromotion: Promotion) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let add = {} as any;
 
     try {

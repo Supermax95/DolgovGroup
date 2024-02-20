@@ -2,11 +2,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
 import { VITE_URL } from '../../../VITE_URL';
 
-// interface RequestData {
-//   locationId: number;
-// }
-// ?Почему-то не дает так протипизировать
-
 interface ResponseData {
   id: number;
   city: string;

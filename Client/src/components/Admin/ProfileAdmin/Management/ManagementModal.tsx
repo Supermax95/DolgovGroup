@@ -28,8 +28,6 @@ interface ManagersModalProps {
   setEditedManager: React.Dispatch<
     React.SetStateAction<IManager | null | undefined>
   >;
-
-  // showError: React.ReactNode;
 }
 
 const ManagementModal: FC<ManagersModalProps> = ({
@@ -37,7 +35,7 @@ const ManagementModal: FC<ManagersModalProps> = ({
   manager,
   onSaveEdit,
   onSaveAdd,
-  onCloseAddModal,
+  // onCloseAddModal,
   onCloseEditModal,
   isAddingMode,
   editedManager,
