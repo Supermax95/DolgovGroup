@@ -423,7 +423,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
       value: editedProduct.article,
       autoComplete: 'off',
       placeholder: '',
-      title: 'Артикул',
+      title: 'Код номенклатуры',
       htmlFor: 'productName',
       onChange: (value: string | boolean | number | Date) => {
         if (typeof value === 'string') {
@@ -662,6 +662,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
                 </span>
               </div>
               <div className="pt-4 pb-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
+
                 <div className="relative">
                   <input
                     id="promoStartDate"

@@ -4,6 +4,8 @@ const { Op } = require('sequelize');
 const path = require('path');
 const fsPromises = require('fs').promises;
 const { Product } = require('../../db/models');
+const axios = require('axios');
+const cron = require('node-cron');
 
 router.get('/admin/products', async (req, res) => {
   try {
@@ -19,23 +21,26 @@ router.get('/admin/products', async (req, res) => {
         isPast(addDays(parseISO(product.promoEndDate), 1))
       ) {
         await Product.update(
-          { isDiscounted: false ,
-            customerPrice: product.originalPrice 
-          },
+          { isDiscounted: false, customerPrice: product.originalPrice },
           { where: { id: product.id } }
         );
       }
     }
 
     // Обновить поле photo, если оно равно null
-    await Product.update(
-      { photo: '/uploads/noPhoto/null.png' },
-      { where: { photo: null } }
-    );
+    // await Product.update(
+    //   { photo: '/uploads/noPhoto/null.png' },
+    //   { where: { photo: null } }
+    // );
+
+    // await Product.update(
+    //   { photo: '/uploads/noPhoto/null.png' },
+    //   { where: { photo: '' } }
+    // );
 
     await Product.update(
       { photo: '/uploads/noPhoto/null.png' },
-      { where: { photo: '' } }
+      { where: { [Op.or]: [{ photo: null }, { photo: '' }] } }
     );
 
     // Получить обновленные продукты
@@ -53,6 +58,51 @@ router.get('/admin/products', async (req, res) => {
     });
   }
 });
+
+
+const task = cron.schedule('05 00 * * *', async () => {
+  try {
+    const products = await Product.findAll({
+      attributes: { exclude: ['description'] },
+      order: [['productName', 'ASC']],
+      raw: true,
+    });
+
+    for (const product of products) {
+      const credentials = 'Exchange:Exchange';
+      const base64Credentials = Buffer.from(credentials).toString('base64');
+      const response = await axios.get(
+        `http://retail.dolgovagro.ru/rtnagaev/hs/loyaltyservice/getprices?Code=${product.article}`,
+        {
+          headers: {
+            Authorization: `Basic ${base64Credentials}`,
+          },
+        }
+      );
+
+      const newOriginalPrice = parseFloat(
+        response.data.Price.replace(',', '.')
+      );
+      console.log('newOriginalPrice', newOriginalPrice);
+
+      if (!isNaN(newOriginalPrice)) {
+        // Только если newOriginalPrice является числом, выполнить обновление
+        await Product.update(
+          {
+            originalPrice: newOriginalPrice,
+          },
+          { where: { article: product.article } }
+        );
+      } else {
+        console.error('Ошибка: newOriginalPrice не является числом.');
+      }
+    }
+    // Дополнительные обновления (например, обновление поля photo)
+  } catch (error) {
+    console.error('Ошибка при выполнении плановой задачи', error);
+  }
+});
+task.start();
 
 router.get('/admin/currentproduct/:id', async (req, res) => {
   const productId = req.params.id;
