@@ -35,7 +35,6 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
   visible,
   setModalVisible,
 }) => {
-  const navigation = useNavigation<StackNavigationProp>();
   const dispatch = useAppDispatch();
   const token = useAppSelector<string | undefined>(
     (state) => state.userSlice.token?.refreshToken
@@ -56,8 +55,6 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
 
   useEffect(() => {
     let interval: number;
-    console.log('========>');
-
     const checkResendAvailability = async () => {
       const lastSentUser = await AsyncStorage.getItem('lastSentUser');
       if (lastSentUser) {

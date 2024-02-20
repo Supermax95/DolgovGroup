@@ -16,7 +16,6 @@ const CheckMail: FC = () => {
     (state) => state.userSlice.user?.id
   );
 
-  const [activationMessage, setActivationMessage] = useState<string>('');
   const [isResendDisabled, setResendDisabled] = useState<boolean>(false);
   const [secondsRemaining, setSecondsRemaining] = useState<number>(0);
 
@@ -51,11 +50,9 @@ const CheckMail: FC = () => {
         navigation.navigate('Home');
       } else {
         Alert.alert('Аккаунт не активирован');
-        // setActivationMessage('Аккаунт не активирован, проверьте почту/спам.');
       }
     } catch (error) {
-      console.error('Ошибка при проверке активации:', error);
-      setActivationMessage('Произошла ошибка при проверке активации.');
+      Alert.alert('Произошла ошибка при проверке активации.');
     }
   };
 

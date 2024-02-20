@@ -14,7 +14,6 @@ import UniversalHeader from 'ui/UniversalHeader';
 export const ChangeBirthDate: FC = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<StackNavigationProp>();
-  const userId = useAppSelector<number>((state) => state.userSlice.user.id);
   const userDate = useAppSelector<Date | null | string>(
     (state) => state.profileSlice.birthDate
   );

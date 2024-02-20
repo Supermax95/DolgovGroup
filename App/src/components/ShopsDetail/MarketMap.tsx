@@ -6,15 +6,13 @@ import {
   StyleSheet,
   Platform,
   Linking,
-  TouchableOpacity,
-  Text,
   Pressable,
+  ActivityIndicator,
 } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
 import getUserLocations from 'Redux/thunks/Shops/locationsUser.api';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
-import Button from 'ui/Button';
 import CustomMarkerView from './CustomMarkerView';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
@@ -35,19 +33,19 @@ interface MarketMapProps {
 const MarketMap: FC<MarketMapProps> = ({ selectedShop, onMarkerPress }) => {
   // const navigation = useNavigation<StackNavigationProp>();
   const dispatch = useAppDispatch();
+  const [isLoadingPage, setIsLoadingPage] = useState<boolean>(true);
   const mapRef = useRef<MapView | null>(null);
-  console.log('selectedShop', selectedShop);
 
+  const token = useAppSelector<string | undefined>(
+    (state) => state.userSlice.token?.refreshToken
+  );
   useEffect(() => {
     dispatch(getUserLocations({ token }));
+    setIsLoadingPage(false);
   }, [dispatch]);
 
   const locations = useAppSelector<ISelectedShop[]>(
     (state) => state.locationsUserSlice.data
-  );
-
-  const token = useAppSelector<string | undefined>(
-    (state) => state.userSlice.token?.refreshToken
   );
 
   const [initialRegion, setInitialRegion] = useState({
@@ -58,19 +56,15 @@ const MarketMap: FC<MarketMapProps> = ({ selectedShop, onMarkerPress }) => {
   });
 
   useEffect(() => {
-    console.log('я в юзееффекте');
-
     const fetchInitialLocation = async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status === 'granted') {
-        console.log('я прошел дальше');
         const startTimestamp = Date.now();
         let userLocation = await Location.getCurrentPositionAsync({
           accuracy: Location.Accuracy.Low,
         });
         const endTimestamp = Date.now();
         const elapsedTime = endTimestamp - startTimestamp;
-        console.log('userLocation', userLocation);
         console.log(
           'Время выполнения getCurrentPositionAsync():',
           elapsedTime,
@@ -78,7 +72,6 @@ const MarketMap: FC<MarketMapProps> = ({ selectedShop, onMarkerPress }) => {
         );
         if (userLocation && mapRef.current) {
           if (selectedShop) {
-            console.log('у меня есть selectedShop');
             mapRef.current.animateToRegion({
               latitude: parseFloat(selectedShop.latitude),
               longitude: parseFloat(selectedShop.longitude),
@@ -120,97 +113,103 @@ const MarketMap: FC<MarketMapProps> = ({ selectedShop, onMarkerPress }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <MapView
-        ref={mapRef}
-        provider={PROVIDER_GOOGLE}
-        style={styles.map}
-        initialRegion={initialRegion}
-        showsUserLocation={true}
-        followsUserLocation={true}
-        showsMyLocationButton={true}
-        toolbarEnabled={true}
-        rotateEnabled={true}
-        mapType={'standard'}
-        showsCompass={true}
-        showsScale={true}
-        showsIndoors={true}
-        zoomEnabled={true}
-        loadingEnabled={true}
-      >
-        {locations.map((shop, index) => (
-          <Marker
-            key={index}
-            coordinate={{
-              latitude: parseFloat(shop.latitude) || 0,
-              longitude: parseFloat(shop.longitude) || 0,
-            }}
-            title={shop.city}
-            description={`${shop.address}, ${shop.hours}`}
-
-            onPress={() => onMarkerPress?.(shop)}
-          >
-            <CustomMarkerView>
-              <MaterialCommunityIcons
-                name="store-marker-outline"
-                size={35}
-                color="#047857"
-              />
-            </CustomMarkerView>
-          </Marker>
-
-        ))}
-        {selectedShop && (
-          <Marker
-            coordinate={{
-              latitude: parseFloat(selectedShop.latitude),
-              longitude: parseFloat(selectedShop.longitude),
-            }}
-            title={selectedShop.city}
-            description={`${selectedShop.address}, ${selectedShop.hours}`}
-          >
-            <CustomMarkerView>
-              <MaterialCommunityIcons
-                name="store-marker-outline"
-                size={35}
-                color="#047857"
-              />
-            </CustomMarkerView>
-          </Marker>
-        )}
-      </MapView>
-      {Platform.OS === 'ios' && selectedShop ? (
-        // <View className="w-[50%] flex-1 absolute bottom-[-20px] right-20">
-        //   <Button title="Построить маршрут" onPress={handleDirections} />
-        // </View>
-        <View
-          className="w-[10%] flex-1 absolute bottom-[-20px] right-20"
-          style={{
-            shadowColor: '#000',
-            shadowRadius: 4,
-            shadowOpacity: 0.2,
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
-          }}
-        >
-          <Pressable
-            onPress={handleDirections}
-            className="text-gray-800 rounded-sm h-10 w-10 p-2 bg-blue-500 
-             "
-          >
-            <View className="bg-blue-500 items-center justify-center">
-              <MaterialCommunityIcons
-                name="map-marker-path"
-                size={25}
-                color="white"
-              />
-            </View>
-          </Pressable>
+    <>
+      {isLoadingPage ? (
+        <View className="flex-1 items-center justify-center">
+          <ActivityIndicator size="large" color="green" />
         </View>
-      ) : null}
-    </View>
+      ) : (
+        <View style={styles.container}>
+          <MapView
+            ref={mapRef}
+            provider={PROVIDER_GOOGLE}
+            style={styles.map}
+            initialRegion={initialRegion}
+            showsUserLocation={true}
+            followsUserLocation={true}
+            showsMyLocationButton={true}
+            toolbarEnabled={true}
+            rotateEnabled={true}
+            mapType={'standard'}
+            showsCompass={true}
+            showsScale={true}
+            showsIndoors={true}
+            zoomEnabled={true}
+            loadingEnabled={true}
+          >
+            {locations.map((shop, index) => (
+              <Marker
+                key={index}
+                coordinate={{
+                  latitude: parseFloat(shop.latitude) || 0,
+                  longitude: parseFloat(shop.longitude) || 0,
+                }}
+                title={shop.city}
+                description={`${shop.address}, ${shop.hours}`}
+                onPress={() => onMarkerPress?.(shop)}
+              >
+                <CustomMarkerView>
+                  <MaterialCommunityIcons
+                    name="store-marker-outline"
+                    size={35}
+                    color="#047857"
+                  />
+                </CustomMarkerView>
+              </Marker>
+            ))}
+            {selectedShop && (
+              <Marker
+                coordinate={{
+                  latitude: parseFloat(selectedShop.latitude),
+                  longitude: parseFloat(selectedShop.longitude),
+                }}
+                title={selectedShop.city}
+                description={`${selectedShop.address}, ${selectedShop.hours}`}
+              >
+                <CustomMarkerView>
+                  <MaterialCommunityIcons
+                    name="store-marker-outline"
+                    size={35}
+                    color="#047857"
+                  />
+                </CustomMarkerView>
+              </Marker>
+            )}
+          </MapView>
+          {Platform.OS === 'ios' && selectedShop ? (
+            // <View className="w-[50%] flex-1 absolute bottom-[-20px] right-20">
+            //   <Button title="Построить маршрут" onPress={handleDirections} />
+            // </View>
+            <View
+              className="w-[10%] flex-1 absolute bottom-[-20px] right-20"
+              style={{
+                shadowColor: '#000',
+                shadowRadius: 4,
+                shadowOpacity: 0.2,
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+              }}
+            >
+              <Pressable
+                onPress={handleDirections}
+                className="text-gray-800 rounded-sm h-10 w-10 p-2 bg-blue-500 
+             "
+              >
+                <View className="bg-blue-500 items-center justify-center">
+                  <MaterialCommunityIcons
+                    name="map-marker-path"
+                    size={25}
+                    color="white"
+                  />
+                </View>
+              </Pressable>
+            </View>
+          ) : null}
+        </View>
+      )}
+    </>
   );
 };
 

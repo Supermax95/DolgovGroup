@@ -1,5 +1,5 @@
-import { View, Text, SafeAreaView, ScrollView } from 'react-native';
-import React, { useEffect } from 'react';
+import { View, Text, SafeAreaView, ScrollView, Alert, ActivityIndicator, RefreshControl } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import RenderHtml from 'react-native-render-html';
 import { useWindowDimensions } from 'react-native';
@@ -24,7 +24,8 @@ const PromoOneDetail = ({ route }: any) => {
   const { promotionId } = route.params;
   const { width } = useWindowDimensions();
   const navigation = useNavigation<StackNavigationProp>();
-
+  const [isLoadingPage, setIsLoadingPage] = useState<boolean>(true);
+  const [refreshing, setRefreshing] = useState(false);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -32,12 +33,20 @@ const PromoOneDetail = ({ route }: any) => {
       try {
         await dispatch(currentPromotion(promotionId));
       } catch (error) {
-        console.error(error);
+        Alert.alert('Ошибка при получении данных');
       }
     };
 
     fetchData();
+    setIsLoadingPage(false);
   }, [dispatch, promotionId]);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    dispatch(currentPromotion(promotionId));
+    setRefreshing(false);
+  };
+
 
   const currentPromotionOpen =
     useAppSelector<IPromotion>(
@@ -56,13 +65,19 @@ const PromoOneDetail = ({ route }: any) => {
   );
 
   return (
-    // <SafeAreaView className={`flex-1 items-center justify-start bg-[#ffff] `}>
+    <>
+    {isLoadingPage ? (
+      <View className="flex-1 items-center justify-center">
+        <ActivityIndicator size="large" color="green" />
+      </View>
+    ) : (
     <SafeAreaView className="bg-white h-full flex-1">
       <UniversalHeader onPress={() => navigation.goBack()} />
-
-      {/* Scrollable container start */}
       {currentPromotionOpen ? (
-        <ScrollView style={{ flex: 1, width: '100%' }}>
+        <ScrollView style={{ flex: 1, width: '100%' }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
           <SinglePromo
             key={currentPromotionOpen.id}
             title={currentPromotionOpen.title}
@@ -81,6 +96,8 @@ const PromoOneDetail = ({ route }: any) => {
         </View>
       )}
     </SafeAreaView>
+          )}
+          </>
   );
 };
 

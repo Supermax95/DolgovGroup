@@ -6,14 +6,11 @@ import {
   View,
   SafeAreaView,
   ScrollView,
-  TextInput,
   Text,
   Pressable,
-  TouchableOpacity,
   RefreshControl,
 } from 'react-native';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import getCategory from 'Redux/thunks/Catalog/categoryGet.api';
 import getProducts from 'Redux/thunks/Catalog/productGet.api';
 import getSubcategory from 'Redux/thunks/Catalog/subcategoryGet.api';
 import Subcategory from 'ui/Subcategory';
@@ -28,7 +25,6 @@ export interface ISubcategory {
 
 export interface IProduct {
   id: number;
-  // article: string;
   productName: string;
   promoStartDate: string;
   promoEndDate: string;
@@ -55,12 +51,12 @@ const SubcategoryDetail = ({ route }: any) => {
 
   const onRefresh = async () => {
     setRefreshing(true);
-  
+
     try {
       await dispatch(getProducts());
       await dispatch(getSubcategory());
     } catch (error) {
-      console.error("Ошибка при обновлении данных:", error);
+      console.error('Ошибка при обновлении данных:', error);
     } finally {
       setRefreshing(false);
     }
@@ -157,9 +153,6 @@ const SubcategoryDetail = ({ route }: any) => {
                 </Text>
               </View>
             )}
-
-            {/* <View className="flex-row flex-wrap justify-center">
-          </View> */}
           </View>
         </ScrollView>
       </View>
