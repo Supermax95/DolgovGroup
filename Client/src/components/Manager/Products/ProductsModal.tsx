@@ -4,7 +4,7 @@ import deleteProduct from '../../../Redux/thunks/Products/deleteProduct.api';
 import Wrapper from '../../../ui/Wrapper';
 import InputModal, { InputField } from '../../../ui/InputModal';
 import Modal from '../../../ui/Modal';
-import { IProduct } from './Products';
+import { ICategory, IProduct, ISubcategory } from './Products';
 import { VITE_URL } from '../../../VITE_URL';
 import axios from 'axios';
 import 'react-quill/dist/quill.snow.css';
@@ -50,8 +50,6 @@ interface ProductsModalProps {
   setEditedProduct: React.Dispatch<
     React.SetStateAction<Product | null | undefined>
   >;
-  // axiosError: string | null;
-  // resetAxiosError: () => void;
 }
 
 const ProductsModal: FC<ProductsModalProps> = ({
@@ -65,25 +63,23 @@ const ProductsModal: FC<ProductsModalProps> = ({
   editedProduct,
   setEditedProduct,
   openEditModal,
-  // axiosError,
-  // resetAxiosError,
 }) => {
   const subcategory = useAppSelector((state) => state.subcategorySlice.data);
   const category = useAppSelector((state) => state.categorySlice.data);
-  // console.log('category', category);
   const products = useAppSelector<IProduct[]>(
     (state) => state.productSlice.data
   );
 
   const selectedSubcategory = editedProduct?.subcategoryId
     ? subcategory.find(
-        (subcategory) => subcategory.id === editedProduct.subcategoryId
+        (subcategory: ISubcategory) =>
+          subcategory.id === editedProduct.subcategoryId
       )
     : null;
 
   const selectedCategory = selectedSubcategory
     ? category.find(
-        (category) => category.id === selectedSubcategory.categoryId
+        (category: ICategory) => category.id === selectedSubcategory.categoryId
       )
     : null;
 
@@ -140,7 +136,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
 
   const modalTitle = isAddingMode ? 'Новый продукт' : 'Редактирование продукта';
 
-  const handleCancel = () => {
+  const handleCancel = (): void => {
     setEditedProduct(undefined);
     onCloseEditModal();
     onCloseAddModal();
@@ -169,8 +165,8 @@ const ProductsModal: FC<ProductsModalProps> = ({
             withCredentials: true,
           }
         );
-         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         unwrapResult(response);
         setShowNotificationPicture(true);
 
@@ -194,7 +190,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
     }
   };
 
-  const handleFormSubmit = async (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
 
     const isConfirmed = window.confirm(
@@ -274,7 +270,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
 
   //! прокинуть ошибки при удалении
   //! нужны стейты здесь
-  const handleDelete = () => {
+  const handleDelete = (): void => {
     const isConfirmed = window.confirm(
       'Вы уверены, что хотите удалить продукт?'
     );
@@ -293,7 +289,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
     }
   };
 
-  const handleDeletePhoto = () => {
+  const handleDeletePhoto = (): void => {
     const isConfirmed = window.confirm(
       'Вы уверены, что хотите удалить изображение?'
     );
@@ -313,7 +309,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
     }
   };
 
-  const handleBack = () => {
+  const handleBack = (): void => {
     const product = products.find((p) => p.id === id);
     setEditedProduct(undefined);
     onCloseEditModal();
@@ -324,14 +320,17 @@ const ProductsModal: FC<ProductsModalProps> = ({
     return null;
   }
 
-  const uniqueCategories = Array.from(
-    new Set(category.map((cat) => cat.categoryName))
+  const uniqueCategories: string[] = Array.from(
+    new Set(category.map((cat: ICategory) => cat.categoryName))
   );
-  const uniqueSubcategories = Array.from(
+
+  const uniqueSubcategories: string[] = Array.from(
     new Set(
       subcategory
-        .filter((subcat) => subcat.categoryId === selectedCategory?.id)
-        .map((cat) => cat.subcategoryName)
+        .filter(
+          (subcat: ISubcategory) => subcat.categoryId === selectedCategory?.id
+        )
+        .map((subcatName: ISubcategory) => subcatName.subcategoryName)
     )
   );
 
@@ -349,12 +348,12 @@ const ProductsModal: FC<ProductsModalProps> = ({
       htmlFor: 'categoryName',
       onChange: (value: string | boolean | number | Date) => {
         const selectedCategory = category.find(
-          (cat) => cat.categoryName === value
+          (cat: ICategory) => cat.categoryName === value
         );
 
         if (selectedCategory) {
           const filteredSubcategories = subcategory.filter(
-            (subcat) => subcat.categoryId === selectedCategory.id
+            (subcat: ISubcategory) => subcat.categoryId === selectedCategory.id
           );
 
           const firstSubcategory = filteredSubcategories[0];
@@ -392,7 +391,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
       htmlFor: 'subcategoryId',
       onChange: (value: string | boolean | number | Date) => {
         const selectedSubcategory = subcategory.find(
-          (subcat) => subcat.subcategoryName === value
+          (subcat: ISubcategory) => subcat.subcategoryName === value
         );
         if (selectedSubcategory) {
           setEditedProduct({
@@ -486,99 +485,6 @@ const ProductsModal: FC<ProductsModalProps> = ({
       required: true,
     },
     {
-      id: 'customerPrice',
-      name: 'customerPrice',
-      type: 'text',
-      value: editedProduct.customerPrice.toString().replace(',', '.'),
-      autoComplete: 'off',
-      placeholder: '',
-      title: 'Цена со скидкой для клиента',
-      htmlFor: 'customerPrice',
-      onChange: (value: string | boolean | number | Date) => {
-        if (typeof value === 'string') {
-          const trimmedValue = value.replace(/\s/g, '');
-          const sanitizedValue = trimmedValue.replace(/,/g, '');
-
-          if (
-            sanitizedValue === '' ||
-            /^\d+(\.\d{0,2})?$/.test(sanitizedValue)
-          ) {
-            setEditedProduct({
-              ...editedProduct,
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
-              customerPrice: sanitizedValue,
-            });
-          }
-        }
-      },
-      required: true,
-    },
-    {
-      id: 'percentage',
-      name: 'percentage',
-      type: 'text',
-      value: (
-        ((editedProduct.originalPrice - editedProduct.customerPrice) /
-          editedProduct.originalPrice) *
-        100
-      )
-        .toFixed(2)
-        .toString(),
-      autoComplete: 'off',
-      placeholder: '',
-      title: 'Процент скидки',
-      htmlFor: 'percentage',
-      onChange: (value: string | boolean | number | Date) => {
-        if (typeof value === 'string') {
-          const newValue = value.replace(/[^\d.]/g, '');
-    
-          if (!isNaN(+newValue)) {
-            const discountedPrice =
-              (editedProduct.originalPrice * (100 - +newValue)) / 100;
-    
-            setEditedProduct({
-              ...editedProduct,
-              customerPrice: discountedPrice,
-            });
-          }
-        }
-      },
-      required: true,
-    },
-    {
-      id: 'percentage',
-      name: 'percentage',
-      type: 'text',
-      value: +(
-        ((editedProduct.originalPrice - editedProduct.customerPrice) /
-          editedProduct.originalPrice) *
-        100
-      )
-        .toFixed(2)
-        .toString(),
-      autoComplete: 'off',
-      placeholder: '',
-      title: 'Процент скидки',
-      htmlFor: 'percentage',
-      onChange: (value: string | boolean | number | Date) => {
-        if (typeof value === 'string') {
-          const newValue = value.replace(/[^\d.]/g, '');
-
-          if (!isNaN(+newValue)) {
-            const discountedPrice =
-              (editedProduct.originalPrice * (100 - +newValue)) / 100;
-
-            setEditedProduct({
-              ...editedProduct,
-              customerPrice: discountedPrice,
-            });
-          }
-        }
-      },
-      required: true,
-    },
-    {
       id: 'employeePrice',
       name: 'employeePrice',
       type: 'text',
@@ -591,7 +497,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
       onChange: (value: string | boolean | number | Date) => {
         if (typeof value === 'string') {
           const trimmedValue = value.replace(/\s/g, '');
-          const sanitizedValue = trimmedValue.replace(/,/g, '');
+          const sanitizedValue = trimmedValue.replace(/,/g, '.');
 
           if (
             sanitizedValue === '' ||
@@ -602,6 +508,38 @@ const ProductsModal: FC<ProductsModalProps> = ({
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
               employeePrice: sanitizedValue,
+            });
+          }
+        }
+      },
+      required: true,
+    },
+    {
+      id: 'percentageEmployee',
+      name: 'percentageEmployee',
+      type: 'text',
+      value: +(
+        ((editedProduct.originalPrice - editedProduct.employeePrice) /
+          editedProduct.originalPrice) *
+        100
+      )
+        .toFixed(2)
+        .toString(),
+      autoComplete: 'off',
+      placeholder: '',
+      title: 'Процент скидки',
+      htmlFor: 'percentageEmployee',
+      onChange: (value: string | boolean | number | Date) => {
+        if (typeof value === 'string') {
+          const newValue = value.replace(/[^\d.]/g, '');
+
+          if (!isNaN(+newValue)) {
+            const discountedPrice =
+              (editedProduct.originalPrice * (100 - +newValue)) / 100;
+
+            setEditedProduct({
+              ...editedProduct,
+              employeePrice: discountedPrice,
             });
           }
         }
@@ -724,34 +662,6 @@ const ProductsModal: FC<ProductsModalProps> = ({
                 </span>
               </div>
               <div className="pt-4 pb-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
-              <div className="my-4">
-  <label htmlFor="percentage" className="block text-sm font-medium text-gray-700">
-    Процент скидки
-  </label>
-  <input
-    type="range"
-    min="0"
-    max="100"
-    step="1"
-    value={((editedProduct.originalPrice - editedProduct.customerPrice) /
-      editedProduct.originalPrice) * 100}
-    onChange={(e) => {
-      const newValue = e.target.value;
-      const discountedPrice =
-        (editedProduct.originalPrice * (100 - +newValue)) / 100;
-
-      setEditedProduct({
-        ...editedProduct,
-        customerPrice: discountedPrice,
-      });
-    }}
-    className="block w-full mt-1 bg-gray-300 rounded-md appearance-none focus:outline-none focus:ring focus:border-blue-300"
-  />
-  <span className="text-xs text-gray-500">{(((editedProduct.originalPrice - editedProduct.customerPrice) /
-      editedProduct.originalPrice) * 100).toFixed(2)}%
-      </span>
-</div>
-
 
                 <div className="relative">
                   <input
@@ -792,6 +702,96 @@ const ProductsModal: FC<ProductsModalProps> = ({
                     className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-slate-400 peer-focus:text-sm"
                   >
                     Окончание акции
+                  </label>
+                </div>
+
+                <div className="relative">
+                  <input
+                    id="customerPrice"
+                    name="customerPrice"
+                    type="text"
+                    value={editedProduct.customerPrice
+                      .toString()
+                      .replace(',', '.')}
+                    autoComplete="off"
+                    placeholder=""
+                    title="Цена со скидкой для клиента"
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      console.log('newValue+++', value);
+
+                      if (typeof value === 'string') {
+                        const trimmedValue = value.replace(/\s/g, '');
+                        const sanitizedValue = trimmedValue.replace(/,/g, '.');
+
+                        if (
+                          sanitizedValue === '' ||
+                          /^\d+(\.\d{0,2})?$/.test(sanitizedValue)
+                        ) {
+                          setEditedProduct({
+                            ...editedProduct,
+                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                            // @ts-ignore
+                            customerPrice: sanitizedValue,
+                          });
+                        }
+                      }
+                    }}
+                    required={true}
+                    className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
+                  />
+                  <label
+                    htmlFor="customerPrice"
+                    className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-slate-400 peer-focus:text-sm"
+                  >
+                    Цена со скидкой для клиента
+                  </label>
+                </div>
+
+                <div className="relative">
+                  <input
+                    id="percentageCustomer"
+                    name="percentageCustomer"
+                    type="text"
+                    value={
+                      +(
+                        ((editedProduct.originalPrice -
+                          editedProduct.customerPrice) /
+                          editedProduct.originalPrice) *
+                        100
+                      )
+                        .toFixed(2)
+                        .toString()
+                    }
+                    autoComplete="off"
+                    placeholder=""
+                    title="Процент скидки"
+                    onChange={(e) => {
+                      const value = e.target.value.replace(/[^\d.]/g, '');
+
+                      if (typeof value === 'string') {
+                        const newValue = value.replace(/[^\d.]/g, '');
+
+                        if (!isNaN(+newValue)) {
+                          const discountedPrice =
+                            (editedProduct.originalPrice * (100 - +newValue)) /
+                            100;
+
+                          setEditedProduct({
+                            ...editedProduct,
+                            customerPrice: discountedPrice,
+                          });
+                        }
+                      }
+                    }}
+                    required={true}
+                    className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
+                  />
+                  <label
+                    htmlFor="percentageCustomer"
+                    className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-slate-400 peer-focus:text-sm"
+                  >
+                    Процент скидки
                   </label>
                 </div>
               </div>
