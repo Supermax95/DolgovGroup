@@ -22,7 +22,7 @@ import getSubcategory from 'Redux/thunks/Catalog/subcategoryGet.api';
 
 export interface IProduct {
   id: number;
-  article: string;
+  // article: string;
   productName: string;
   promoStartDate: string;
   promoEndDate: string;
@@ -94,7 +94,7 @@ const SearchProduct = () => {
           String(product.productName),
           String(product.promoStartDate),
           String(product.promoEndDate),
-          String(product.article),
+          // String(product.article),
         ];
 
         const searchTerms = searchText.toLowerCase().split(' ');

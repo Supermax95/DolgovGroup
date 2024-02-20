@@ -2,7 +2,7 @@ import { View, Text, Image, SafeAreaView, Dimensions } from 'react-native';
 import React, { FC } from 'react';
 
 interface ISingleProductCard {
-  article: string;
+  // article: string;
   productName: string;
   originalPrice: number;
   isDiscount?: boolean | undefined;
@@ -14,7 +14,7 @@ interface ISingleProductCard {
 }
 
 const SingleProductCard: FC<ISingleProductCard> = ({
-  article,
+  // article,
   productName,
   originalPrice,
   isDiscount,

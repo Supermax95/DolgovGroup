@@ -21,7 +21,7 @@ import getProducts from 'Redux/thunks/Catalog/productGet.api';
 
 export interface IProduct {
   id: number;
-  article: string;
+  // article: string;
   productName: string;
   promoStartDate: string;
   promoEndDate: string;
@@ -95,7 +95,7 @@ const ProductsCards: FC = ({ route }: any) => {
           String(product.productName),
           String(product.promoStartDate),
           String(product.promoEndDate),
-          String(product.article),
+          // String(product.article),
         ];
 
         const searchTerms = searchText.toLowerCase().split(' ');
