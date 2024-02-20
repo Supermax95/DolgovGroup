@@ -28,6 +28,15 @@ interface IData {
   password: string;
 }
 
+interface ResultType {
+  payload: {
+    activationError?: string;
+  };
+  meta: {
+    requestStatus: string;
+  };
+}
+
 type HomeAndPropResetPassword = CompositeNavigationProp<
   StackNavigationProp,
   TabScreenNavigationProp
@@ -62,10 +71,10 @@ const SignIn: FC = () => {
         userLogin({
           userData: data,
         })
-      );
+      ) as ResultType;
 
       if (result.meta.requestStatus === 'rejected') {
-        Alert.alert('Ошибка', result.payload);
+        Alert.alert('Ошибка', result.payload as string);
       } else if (result.meta.requestStatus === 'fulfilled') {
         if (result.payload.activationError === 'Аккаунт не активирован') {
           navigation.navigate('CheckMail');

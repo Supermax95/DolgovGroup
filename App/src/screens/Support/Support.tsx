@@ -18,7 +18,7 @@ const Support: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
 
   const userStatus = useAppSelector<string | undefined>(
-    (state) => state.userSlice.user.userStatus
+    (state) => state.userSlice.user?.userStatus
   );
 
   const [isModalVisible, setModalVisible] = useState<boolean>(false);

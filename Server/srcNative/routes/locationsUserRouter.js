@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const { Location } = require('../../db/models');
+const { Op } = require('sequelize');
 
 router.get('/userlocations', async (req, res) => {
   try {
@@ -9,6 +10,9 @@ router.get('/userlocations', async (req, res) => {
       return res.status(401).json({ error: 'Пользователь не авторизован' });
     }
     const locations = await Location.findAll({
+      where: {
+        invisible: { [Op.not]: [true] },
+      },
       order: [
         ['city', 'ASC'],
         ['address', 'ASC'],

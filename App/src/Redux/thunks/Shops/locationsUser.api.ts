@@ -6,9 +6,16 @@ interface Request {
   token?: string | undefined;
 }
 
-interface ResponseData {
-  data: any; 
+interface ResponseDataLocation {
+  id: number;
+  city: string;
+  address: string;
+  latitude: string;
+  longitude: string;
+  hours: string;
 }
+
+type ResponseData = Array<ResponseDataLocation>;
 
 const getUserLocations = createAsyncThunk<ResponseData, Request>(
   'api/getuserlocations',
@@ -21,10 +28,10 @@ const getUserLocations = createAsyncThunk<ResponseData, Request>(
             Authorization: `Bearer ${token}`,
           },
         }
-      );      
-      return response.data ; 
+      );
+      return response.data;
     } catch (error) {
-      throw error; 
+      throw error;
     }
   }
 );

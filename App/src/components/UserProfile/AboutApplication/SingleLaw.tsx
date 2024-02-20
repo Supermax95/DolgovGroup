@@ -38,7 +38,7 @@ const SingleLaw = ({ route }: any) => {
   const [refreshing, setRefreshing] = useState(false);
 
   const currentLawOpen =
-    useAppSelector<ILaw>((state) => state.lawSlice.currentLaw) || ({} as ILaw);
+    useAppSelector<ILaw | null>((state) => state.lawSlice.currentLaw) || ({} as ILaw);
 
   useEffect(() => {
     const timeout = setTimeout(() => {

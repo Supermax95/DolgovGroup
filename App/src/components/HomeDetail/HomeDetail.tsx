@@ -95,7 +95,7 @@ const HomeDetail: FC = () => {
   }, []);
 
   const barcode = useAppSelector<string | undefined>(
-    (state) => state.userSlice.user.barcode
+    (state) => state.userSlice.user?.barcode
   );
 
 

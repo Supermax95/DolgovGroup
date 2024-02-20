@@ -40,7 +40,7 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
     (state) => state.userSlice.token?.refreshToken
   );
   const userStatus = useAppSelector<string | undefined>(
-    (state) => state.userSlice.user.userStatus
+    (state) => state.userSlice.user?.userStatus
   );
 
   const [modalOffset, setModalOffset] = useState(new Animated.Value(0));

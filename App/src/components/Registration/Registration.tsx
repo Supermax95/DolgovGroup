@@ -143,7 +143,7 @@ export const Registration: FC = () => {
               if (result.meta.requestStatus === 'rejected') {
                 setTimeout(() => {
                   setIsLoading(false);
-                  Alert.alert('Ошибка', result.payload);
+                  Alert.alert('Ошибка', result.payload as string);
                 }, 2000);
                 // setTimeout(() => {
                 //   setIsLoading(false);

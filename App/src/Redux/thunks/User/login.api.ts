@@ -10,6 +10,7 @@ interface RequestData {
 }
 
 interface ResponseData {
+  activationError: string | undefined;
   accessToken: string;
   refreshToken?: string;
   user: {
