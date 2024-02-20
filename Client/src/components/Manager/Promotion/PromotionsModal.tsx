@@ -4,13 +4,11 @@ import Wrapper from '../../../ui/Wrapper';
 import InputModal, { InputField } from '../../../ui/InputModal';
 import Modal from '../../../ui/Modal';
 import { VITE_URL } from '../../../VITE_URL';
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import deletePromotion from '../../../Redux/thunks/Promotion/deletePromotion.api';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import PopUpNotification from '../../../ui/PopUpNotification';
-import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
-import { unwrapResult } from '@reduxjs/toolkit';
 import deletePromoPhoto from '../../../Redux/thunks/Promotion/deletePromoPhoto.api';
 import {
   ArrowUturnLeftIcon,
@@ -472,7 +470,7 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
                   <button
                     type="button"
                     onClick={handleBack}
-                    className="w-full flex items-center justify-center w-1/2 px-5 py-2 text-sm text-slate-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto dark:hover:bg-slate-800 dark:bg-slate-900 hover:bg-slate-100 dark:text-slate-200 dark:border-slate-700"
+                    className="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-slate-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto dark:hover:bg-slate-800 dark:bg-slate-900 hover:bg-slate-100 dark:text-slate-200 dark:border-slate-700"
                   >
                     <ArrowUturnLeftIcon className="w-4 h-4 text-slate-500" />
                     <span className="text-sm text-slate-500 dark:text-slate-400">

@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import portalLogin from '../../Redux/thunks/PortalLogin/portalLogin.api';
 import PortalModal from './PortalModal';
 import resetPassword from '../../Redux/thunks/PortalLogin/portalResetPassword.api';
-import LoadingAnimation from '../Admin/Laws/Loading';
 
 interface IDate {
   email: string;

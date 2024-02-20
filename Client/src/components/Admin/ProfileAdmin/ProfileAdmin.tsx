@@ -186,37 +186,6 @@ const ProfileAdmin: FC = () => {
     setErrorMessages((prevErr) => ({ ...prevErr, [field]: '' }));
   };
 
-  //! нужна регулярка, проверяющая верность кириллицы на введение ФИО  её прокинуть в native
-  //! сделать регистр первой буквы заглавной для ФИО
-  // const handleSubmitProfileManager = async (
-  //   e: React.FormEvent
-  // ): Promise<void> => {
-  //   e.preventDefault();
-
-  //   const isConfirmed = window.confirm(
-  //     'Вы уверены, что хотите внести изменения?'
-  //   );
-
-  //   if (isConfirmed) {
-  //     try {
-  //       const resultEdit = await dispatch(
-  //         editProfileManager({
-  //           managerId,
-  //           newLastName: data.newLastName,
-  //           newFirstName: data.newFirstName,
-  //           newMiddleName: data.newMiddleName,
-  //         })
-  //       );
-  //       unwrapResult(resultEdit);
-  //       setErrorNotification(null);
-  //       setShowNotificationFullname(true);
-  //     } catch (error) {
-  //       console.error('Ошибка обновления данных:', error);
-  //       setShowErrorNotificationFullname(true);
-  //       setErrorNotification(error as string | null);
-  //     }
-  //   }
-  // };
   const handleSubmitProfileManager = async (
     e: React.FormEvent
   ): Promise<void> => {

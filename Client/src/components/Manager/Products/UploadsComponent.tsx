@@ -24,11 +24,6 @@ function UploadFile(): React.JSX.Element {
     }
   };
 
-  // const handleFileInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
-  //   const file = e.target.files?.[0] || null;
-  //   void uploadFile(file);
-  // };
-
   const handleFileInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const file = e.target.files?.[0];
     if (file) {

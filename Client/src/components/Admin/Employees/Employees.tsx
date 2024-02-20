@@ -231,13 +231,13 @@ const Employees: FC = () => {
             />
           </div>
           {isLoading && (
-              <div className="fixed inset-0 z-20 backdrop-blur-lg flex items-center justify-center ">
-                {/* <div className="bg-white p-1 rounded-sm shadow-xs  "> */}
-                <div className="bg-white p-1 rounded-sm z-10 py-20 bg-opacity-70 fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center ">
-                  <LoadingAnimation />
-                </div>
+            <div className="fixed inset-0 z-20 backdrop-blur-lg flex items-center justify-center ">
+              {/* <div className="bg-white p-1 rounded-sm shadow-xs  "> */}
+              <div className="bg-white p-1 rounded-sm z-10 py-20 bg-opacity-70 fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center ">
+                <LoadingAnimation />
               </div>
-            )}
+            </div>
+          )}
           {isModalOpen && selectedUser && (
             <EmployeesModal
               isOpen={isModalOpen}

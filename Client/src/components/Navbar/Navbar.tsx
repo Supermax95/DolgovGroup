@@ -1,4 +1,3 @@
-//import React from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import UserMenu from './UserMenu';
 import { FC } from 'react';
@@ -12,23 +11,11 @@ interface INavigation {
   isActive: boolean;
 }
 
-//! не удалять
-// interface INavigation {
-//   manager: { id:number, name: string; href: string }[];
-//   admin: {id:number, name: string; href: string }[];
-// }
-
 const Navbar: FC = () => {
-  const location = useLocation(); // хз, как типизировать
+  const location = useLocation();
   const manager = useAppSelector((state) => state.managerSlice.manager);
 
   const navigation: INavigation[] = [
-    // {
-    //   id: 11,
-    //   name: 'Вход',
-    //   href: '/portal',
-    //   isActive: location.pathname === '/portal',
-    // },
     {
       id: 1,
       name: 'Клиенты',
@@ -73,26 +60,12 @@ const Navbar: FC = () => {
     },
   ];
 
-  //! не удалять
-  // const roles: INavigation = {
-  // manager: [
-  //   { id: 'manager-locations', name: 'Магазины', href: '/locations', isActive: location.pathname === '/locations', },
-  //   { id: 'manager-products', name: 'Продукты', href: '/products', isActive: location.pathname === '/products',  },
-  //   { id: 'manager-stock', name: 'Акции', href: '/stock',  isActive: location.pathname === '/stock', },
-  // ],
-  // admin: [
-  //   { id: 'admin-clients', name: 'Клиенты', href: '/clients', isActive: location.pathname === '/clients', },
-  //   { id: 'admin-employees', name: 'Сотрудники', href: '/employees', isActive: location.pathname === '/employees', },
-  //   { id: 'admin-locations', name: 'Магазины', href: '/locations', isActive: location.pathname === '/locations', },
-  //   { id: 'admin-products', name: 'Продукты', href: '/products', isActive: location.pathname === '/products',  },
-  //   { id: 'admin-stock', name: 'Акции', href: '/stock', isActive: location.pathname === '/stock', },
-  // ]
-  // };
-
   const filteredNavigation = manager.isAdmin
     ? navigation
     : navigation.filter((item) =>
-        ['Магазины', 'Продукты', 'Маркетинговые акции', 'Вопросы'].includes(item.name)
+        ['Магазины', 'Продукты', 'Маркетинговые акции', 'Вопросы'].includes(
+          item.name
+        )
       );
 
   return (
@@ -105,9 +78,6 @@ const Navbar: FC = () => {
               className="h-8 mr-3"
               alt="Flowbite Logo"
             />
-            {/* <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-              DGCompany
-            </span> */}
           </Link>
 
           <div className="flex md:order-2">

@@ -5,7 +5,6 @@ import {
   XMarkIcon,
   UserIcon,
   TrashIcon,
-  CheckCircleIcon,
   HandThumbUpIcon,
 } from '@heroicons/react/24/outline';
 import {

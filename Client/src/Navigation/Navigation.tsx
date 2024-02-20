@@ -27,30 +27,21 @@ const Navigation: FC = () => {
   const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-
-  // useEffect(() => {
-  //   const navigateToLocations = () => {
-  //     navigate('/locations');
-  //     setLoading(false);
-  //   };
-
-  //   if (manager.email && window.location.pathname.includes('/portal')) {
-  //     setLoading(true);
-  //     setTimeout(navigateToLocations, 1000);
-  //   } else if (!manager.email) {
-  //     navigate('/portal');
-  //   }
-  // }, [manager.email, navigate]);
-
   useEffect(() => {
     const navigateToLocations = () => {
       navigate('/locations');
       setLoading(false);
     };
 
-    const SuccessPage = location.pathname.includes('/registration/success')|| location.pathname.includes('/email/success');
+    const SuccessPage =
+      location.pathname.includes('/registration/success') ||
+      location.pathname.includes('/email/success');
 
-    if (!SuccessPage && manager.email && window.location.pathname.includes('/portal')) {
+    if (
+      !SuccessPage &&
+      manager.email &&
+      window.location.pathname.includes('/portal')
+    ) {
       setLoading(true);
       setTimeout(navigateToLocations, 1000);
     } else if (!manager.email && !SuccessPage) {
@@ -184,7 +175,7 @@ const Navigation: FC = () => {
             />
 
             <Route path="/registration/success" element={<Success />} />
-            <Route path="/email/success" element={<EmailSuccess/>} />
+            <Route path="/email/success" element={<EmailSuccess />} />
             <Route path="*" element={<NotFound />} />
             <Route />
           </Route>

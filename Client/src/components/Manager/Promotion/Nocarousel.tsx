@@ -12,7 +12,6 @@ import Search from '../../../ui/Search';
 import PromotionsModal from './PromotionsModal';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import Button from '../../../ui/Button';
 import { PencilSquareIcon } from '@heroicons/react/24/outline';
 import PromotionSidebar from './PromotionSidebar';
 import PopUpNotification from '../../../ui/PopUpNotification';
@@ -180,6 +179,7 @@ const Nocarousel: FC = () => {
   };
 
   const handleSaveAdd = async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let add = {} as any;
     try {
       if (editedPromotion) {
@@ -203,6 +203,7 @@ const Nocarousel: FC = () => {
   };
 
   const handleSaveEdit = async (editedPromotion: Promotion) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let add = {} as any;
 
     try {

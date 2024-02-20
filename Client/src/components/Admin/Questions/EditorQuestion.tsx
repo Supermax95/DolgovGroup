@@ -1,11 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
+import { useAppDispatch } from '../../../Redux/hooks';
 import { IQuestion } from './Questions';
-import {
-  DocumentTextIcon,
-  HandThumbUpIcon,
-  TrashIcon,
-} from '@heroicons/react/24/outline';
+import { HandThumbUpIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Button from '../../../ui/Button';
 import ReactQuill from 'react-quill';
 import 'quill/dist/quill.snow.css';

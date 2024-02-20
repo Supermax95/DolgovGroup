@@ -4,7 +4,6 @@ import Wrapper from '../../../ui/Wrapper';
 import InputModal, { InputField } from '../../../ui/InputModal';
 import ModalUser from '../../../ui/ModalUser';
 import nodemailerActivationSend from '../../../Redux/thunks/Nodemailer/nodemailerActivation.api';
-import nodemailerCodeSend from '../../../Redux/thunks/Nodemailer/nodemailerCodeSend.api';
 import { unwrapResult } from '@reduxjs/toolkit';
 import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
 import PopUpNotification from '../../../ui/PopUpNotification';

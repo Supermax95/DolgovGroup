@@ -20,21 +20,37 @@ export interface IQuestion {
 
 const Questions: FC = () => {
   const dispatch = useAppDispatch();
-  const questions = useAppSelector<IQuestion[]>((state) => state.questionsSlice.data);
+  const questions = useAppSelector<IQuestion[]>(
+    (state) => state.questionsSlice.data
+  );
   const [isEditorOpen, setEditorOpen] = useState(false);
-  const [selectedQuestion, setSelectedQuestion] = useState<IQuestion | null>(null);
+  const [selectedQuestion, setSelectedQuestion] = useState<IQuestion | null>(
+    null
+  );
   const [isAddingMode, setAddingMode] = useState(false);
-  const [editedQuestion, setEditedQuestion] = useState<IQuestion | null | undefined>(null);
+  const [editedQuestion, setEditedQuestion] = useState<
+    IQuestion | null | undefined
+  >(null);
   const [axiosError, setAxiosError] = useState<string | null>(null);
   const [dataLoaded, setDataLoaded] = useState(false);
   const [isLoading, setLoading] = useState(false);
-  const [showNotificationAddQuestion, setShowNotificationAddQuestion] = useState<boolean>(false);
-  const [showNotificationEditQuestion, setShowNotificationEditQuestion] = useState<boolean>(false);
+  const [showNotificationAddQuestion, setShowNotificationAddQuestion] =
+    useState<boolean>(false);
+  const [showNotificationEditQuestion, setShowNotificationEditQuestion] =
+    useState<boolean>(false);
 
-  const [errorNotification, setErrorNotification] = useState<string | null>(null);
+  const [errorNotification, setErrorNotification] = useState<string | null>(
+    null
+  );
 
-  const [showErrorNotificationAddQuestion, setShowErrorNotificationAddQuestion] = useState<boolean>(false);
-  const [showErrorNotificationEditQuestion, setShowErrorNotificationEditQuestion] = useState<boolean>(false);
+  const [
+    showErrorNotificationAddQuestion,
+    setShowErrorNotificationAddQuestion,
+  ] = useState<boolean>(false);
+  const [
+    showErrorNotificationEditQuestion,
+    setShowErrorNotificationEditQuestion,
+  ] = useState<boolean>(false);
 
   useEffect(() => {
     if (
@@ -126,6 +142,7 @@ const Questions: FC = () => {
   };
 
   const handleSaveAdd = async (): Promise<void> => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let add = {} as any;
 
     try {
@@ -150,6 +167,7 @@ const Questions: FC = () => {
   };
 
   const handleSaveEdit = async (editedQuestion: IQuestion): Promise<void> => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let add = {} as any;
     try {
       if (selectedQuestion) {
@@ -170,7 +188,6 @@ const Questions: FC = () => {
     }
     return add;
   };
-
 
   return (
     <Wrapper>
