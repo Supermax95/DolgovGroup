@@ -44,7 +44,7 @@ interface ProductsModalProps {
   onSaveEdit: (editedProduct: IProduct) => void;
   onCloseAddModal: () => void;
   onCloseEditModal: () => void;
-  openEditModal: (product: IProduct | undefined) => void;
+  openEditModal: (product: IProduct) => void;
   isAddingMode: boolean;
   editedProduct: Product | null | undefined;
   setEditedProduct: React.Dispatch<
@@ -311,9 +311,11 @@ const ProductsModal: FC<ProductsModalProps> = ({
 
   const handleBack = (): void => {
     const product = products.find((p) => p.id === id);
-    setEditedProduct(undefined);
-    onCloseEditModal();
-    openEditModal(product);
+    if (product) {
+      setEditedProduct(undefined);
+      onCloseEditModal();
+      openEditModal(product);
+    }
   };
 
   if (!isOpen || !editedProduct) {

@@ -30,12 +30,6 @@ import getCategory from '../../../../Redux/thunks/Category/getCategory.api';
 import deleteCategoryPhoto from '../../../../Redux/thunks/Category/deleteCategoryPhoto.api';
 
 interface ICategory {
-  id?: number | undefined;
-  categoryName?: string | undefined;
-  img?: string | undefined;
-}
-
-interface ICategoryForProd {
   id: number;
   categoryName: string;
   img: string;
@@ -47,12 +41,24 @@ interface ISubcategory {
   subcategoryName: string;
 }
 
+const InitialStateCat: ICategory = {
+  id: 0,
+  categoryName: '',
+  img: '',
+};
+
+const InitialStateSub: ISubcategory = {
+  id: 0,
+  categoryId: 0,
+  subcategoryName: '',
+};
+
 interface ProductSidebarProps {
   categories: ICategory[];
   addModal: () => void | undefined;
-  onCategorySelect: (category: ICategoryForProd | null) => void;
+  onCategorySelect: (category: ICategory | null) => void;
   onSubcategorySelect: (subcategory: ISubcategory | null) => void;
-  onActiveCategory: (category: ICategoryForProd | null) => void;
+  onActiveCategory: (category: ICategory | null) => void;
   onActiveSubcategory: (subcategory: ISubcategory | null) => void;
   resetFirstComponentState: () => void | undefined;
 }
@@ -78,31 +84,34 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
 
   //* добавление категории
   const [isAddingCategory, setAddingCategory] = useState<boolean>(false);
-  const [dataCategory, setDataCategory] = useState<string>('');
+  const [dataCategory, setDataCategory] = useState<ICategory | null>(
+    InitialStateCat
+  );
   // ? редактирование категории
   const [isEditingCategory, setEditingCategory] = useState<number | null>(null);
   const [dataEditCategory, setDataEditCategory] = useState<ICategory | null>(
-    null
+    InitialStateCat
   );
   const [titleNotification, setTitleNotification] = useState<string>('');
 
   //* добавление подкатегории
   const [isAddingSubcategory, setAddingSubcategory] = useState<boolean>(false);
-  const [dataSubcategory, setDataSubcategory] = useState<string>('');
+  const [dataSubcategory, setDataSubcategory] = useState<ISubcategory | null>(
+    InitialStateSub
+  );
   const [
     selectedCategoryIdForSubcategory,
     setSelectedCategoryIdForSubcategory,
-  ] = useState<number | null>(null); // отслеживает ID текущей выбранной категории для добавления подкатегории
+  ] = useState<number>(0); // отслеживает ID текущей выбранной категории для добавления подкатегории
   // ? редактирование подкатегории
   const [isEditingSubcategory, setEditingSubcategory] = useState<number | null>(
     null
   );
   const [dataEditSubcategory, setDataEditSubcategory] =
-    useState<ISubcategory | null>(null);
+    useState<ISubcategory | null>(InitialStateSub);
+
   //? выводит подкатегории в сайдбаре
-  const [selectedSubcategoryData, setSelectedSubcategoryData] = useState<
-    ISubcategory[] | null
-  >(null);
+  const [, setSelectedSubcategoryData] = useState<ISubcategory[] | null>(null);
 
   //* рендерит  выпадающий список для категорий
   const [selectedCategoryDataId, setSelectedCategoryDataId] = useState<
@@ -113,7 +122,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     number | null
   >(0);
 
-  //! вывод подкатегории в сайдбаре - запоминает id и булевое - открыто/закрыто
+  //? вывод подкатегории в сайдбаре - запоминает id и булевое - открыто/закрыто
   const [subcategoryStates, setSubcategoryStates] = useState<{
     [key: number]: boolean;
   }>({});
@@ -122,7 +131,9 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     useState<boolean>(false); //* меню для редактирования категории
   const [actionMenuForSub, setActionMenuForSub] = useState<boolean>(false); //* меню для редактирования подкатегории
 
-  const [menuPosition, setMenuPosition] = useState(0);
+  const [menuPosition, setMenuPosition] = useState<{ top: number }>({
+    top: 0,
+  });
 
   const menuRef = useRef<HTMLDivElement | null>(null);
 
@@ -223,7 +234,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   };
 
   const handleClickOutside = (e: MouseEvent): void => {
-    if (menuRef.current && !menuRef.current.contains(e.target)) {
+    if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
       setActionMenuForCategory(false);
       setActionMenuForSub(false);
     }
@@ -241,7 +252,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     const rect = target.getBoundingClientRect();
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
     const newTop = rect.bottom + scrollTop - 130;
-    setMenuPosition(newTop);
+    setMenuPosition({ top: newTop });
   };
 
   //* всплывающее меню для каждой ПОДкатегории
@@ -295,8 +306,6 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     id: number
   ): Promise<void> => {
     try {
-      console.log('===========>Sidebar-handleFileInputChange');
-
       const file = e.target.files?.[0] || null;
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
@@ -338,15 +347,17 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
       if (addCategory) {
         const resultAdd = await dispatch(
           addCategory({
-            newCategory: dataCategory,
+            //!меня это смущает
+            newCategory: dataCategory as unknown as string,
           })
         );
         unwrapResult(resultAdd);
         setAddingCategory(false);
-        setDataCategory('');
+        setDataCategory(null);
         setErrorNotification(null);
         setShowNotificationAddCategory(true);
-        setTitleNotification(dataCategory.categoryName);
+        console.log('dataCategory.categoryName', dataCategory);
+        setTitleNotification(dataCategory?.categoryName as string);
       }
     } catch (error) {
       console.error('Произошла ошибка при добавлении:', error);
@@ -358,7 +369,11 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   // ? логика редактирования категории
   const startEditingCategory = (id: number): void => {
     setEditingCategory(id);
-    const categoryToEdit = allCategories.find((cat) => cat.id === id);
+    const categoryToEdit: ICategory | undefined = allCategories.find(
+      (cat: ICategory) => cat.id === id
+    );
+    console.log('categoryToEdit', categoryToEdit);
+
     setActionMenuForCategory(false);
     setDataEditCategory(categoryToEdit || null);
   };
@@ -371,7 +386,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   // раскрывает предыдущее и записывает текущее состояние
   const handleFieldChange = (fild: keyof ICategory, value: string): void => {
     setDataEditCategory((prev) => ({
-      ...prev,
+      ...(prev as ICategory),
       [fild]: value,
     }));
   };
@@ -390,15 +405,15 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
         if (editCategory) {
           const resultEdit = await dispatch(
             editCategory({
-              categoryId: dataEditCategory.id,
-              newCategoryName: dataEditCategory?.categoryName,
+              categoryId: dataEditCategory?.id as number,
+              newCategoryName: dataEditCategory?.categoryName as string,
             })
           );
           unwrapResult(resultEdit);
           setEditingCategory(null);
           setErrorNotification(null);
           setShowNotificationEditCategory(true);
-          setTitleNotification(dataEditCategory.categoryName);
+          setTitleNotification(dataEditCategory?.categoryName as string);
         }
       } catch (error) {
         console.error('Произошла ошибка при добавлении:', error);
@@ -424,7 +439,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   };
 
   // ? вывод подкатегорий в сайдбаре и их скрытие
-  const subcategoryOutput = (id: number | null, adding = false): void => {
+  const subcategoryOutput = (id: number, adding = false): void => {
     const subcategory = allSubcategories.filter(
       (sub: ISubcategory) => sub.categoryId === id
     );
@@ -452,7 +467,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
 
   const cancelAddingSubcategory = (): void => {
     setAddingSubcategory(false);
-    setDataSubcategory('');
+    setDataSubcategory(null);
   };
 
   const addedHandleFormSubcategory = async (
@@ -463,18 +478,18 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
       if (addSubcategory) {
         const resultAdd = await dispatch(
           addSubcategory({
-            newSubcategory: dataSubcategory.subcategoryName,
+            newSubcategory: dataSubcategory?.subcategoryName as string,
             categoryId: selectedCategoryIdForSubcategory,
           })
         );
         unwrapResult(resultAdd);
         setAddingSubcategory(false);
-        setDataSubcategory('');
+        setDataSubcategory(null);
         setErrorNotification(null);
         setShowNotificationAddSubcategory(true);
         //* при лобавлении подкатегории открывается тут же список в категории
         subcategoryOutput(selectedCategoryIdForSubcategory, true);
-        setTitleNotification(dataSubcategory.subcategoryName);
+        setTitleNotification(dataSubcategory?.subcategoryName as string);
       }
     } catch (error) {
       console.error('Произошла ошибка при добавлении:', error);
@@ -505,7 +520,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     value: string
   ): void => {
     setDataEditSubcategory((prev) => ({
-      ...prev,
+      ...(prev as ISubcategory),
       [fild]: value,
     }));
   };
@@ -524,15 +539,18 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
         if (editSubcategory) {
           const resultEdit = await dispatch(
             editSubcategory({
-              subcategoryId: dataEditSubcategory.id,
-              newSubcategoryName: dataEditSubcategory?.subcategoryName,
+              subcategoryId: dataEditSubcategory?.id as number,
+              newSubcategoryName:
+                dataEditSubcategory?.subcategoryName as string,
             })
           );
           unwrapResult(resultEdit);
           setEditingSubcategory(null);
           setErrorNotification(null);
           setShowNotificationEditSubcategory(true);
-          setTitleNotification(dataEditSubcategory.subcategoryName);
+          if (dataEditSubcategory !== null) {
+            setTitleNotification(dataEditSubcategory.subcategoryName);
+          }
         }
       } catch (error) {
         console.error('Произошла ошибка при добавлении:', error);
@@ -561,7 +579,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
   //! рендерит карточки категорий
   const handleCategoryClick = (selectedCategoryId: number): void => {
     const currentCategory = categories.find(
-      (category) => category.id === selectedCategoryId
+      (category: ICategory) => category.id === selectedCategoryId
     );
 
     onCategorySelect(currentCategory || null);
@@ -578,7 +596,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
 
     // Находим соответствующую категорию
     const currentCategory = categories.find(
-      (category) => category.id === currentSubcategory?.categoryId
+      (category: ICategory) => category.id === currentSubcategory?.categoryId
     );
 
     // Добавляем вызов onCategorySelect, чтобы передать выбранную категорию наружу
@@ -689,8 +707,10 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                   value={dataCategory?.categoryName || ''}
                   autoFocus
                   onChange={(e) =>
+                    //!сомнительно, но окэй
                     setDataCategory({
-                      ...dataCategory,
+                      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                      ...dataCategory!,
                       categoryName: e.target.value,
                     })
                   }
@@ -837,7 +857,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                         <div
                           ref={menuRef}
                           id={`dropdownRight-${item.id}`}
-                          style={{ top: `${menuPosition}px` }}
+                          style={{ top: `${menuPosition.top}px` }}
                           className={`z-10 absolute w-52 ${menuClass} left-24 bg-white divide-y divide-gray-100 rounded-lg shadow border border-slate-100`}
                         >
                           <ul
@@ -938,8 +958,10 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                                 value={dataSubcategory?.subcategoryName || ''}
                                 autoFocus
                                 onChange={(e) =>
+                                  //!сомнительно, но окэй
                                   setDataSubcategory({
-                                    ...dataSubcategory,
+                                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                                    ...dataSubcategory!,
                                     subcategoryName: e.target.value,
                                   })
                                 }
@@ -965,8 +987,10 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                       {subcategoryStates[item.id] && (
                         <ul className="ml-6 space-y-1 text-md">
                           {allSubcategories
-                            .filter((sub) => sub.categoryId === item.id)
-                            .map((subcategory) => (
+                            .filter(
+                              (sub: ISubcategory) => sub.categoryId === item.id
+                            )
+                            .map((subcategory: ISubcategory) => (
                               <li key={subcategory.id}>
                                 {isEditingSubcategory === subcategory.id ? (
                                   <form onSubmit={editedSubcategoryHandleForm}>
@@ -1086,8 +1110,9 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
                       )}
                     </li>
                   )}
-                  {allSubcategories.filter((sub) => sub.categoryId === item.id)
-                    .length === 0 && (
+                  {allSubcategories.filter(
+                    (sub: ISubcategory) => sub.categoryId === item.id
+                  ).length === 0 && (
                     <div className="flex items-center justify-center w-38">
                       <span className="text-slate-600 text-sm font-normal">
                         Cписок подкатегорий пуст

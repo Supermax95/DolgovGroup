@@ -44,6 +44,7 @@ export interface IProduct {
 export interface ICategory {
   id: number;
   categoryName: string;
+  img: string;
 }
 
 export interface ISubcategory {
@@ -303,6 +304,7 @@ const Products: FC = () => {
   };
 
   const handleSaveAdd = async (): Promise<void> => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let add = {} as any;
     try {
       if (editedProduct) {
@@ -326,6 +328,7 @@ const Products: FC = () => {
   };
 
   const handleSaveEdit = async (editedProduct: IProduct): Promise<void> => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let add = {} as any;
     try {
       if (selectedProduct) {
