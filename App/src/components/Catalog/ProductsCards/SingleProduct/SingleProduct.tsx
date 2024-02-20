@@ -13,7 +13,7 @@ import { StackNavigationProp } from 'navigation/types';
 
 export interface IProduct {
   id: number;
-  article: string;
+  // article: string;
   productName: string;
   promoStartDate: string;
   promoEndDate: string;
@@ -77,7 +77,7 @@ const SingleProduct = ({ route }: any) => {
           {currentProductOpen ? (
             <SingleProductCard
               key={currentProductOpen.id}
-              article={currentProductOpen.article}
+              // article={currentProductOpen.article}
               productName={currentProductOpen.productName}
               originalPrice={currentProductOpen.originalPrice}
               isDiscount={currentProductOpen.isDiscounted}

@@ -4,7 +4,7 @@ import currentProduct from './thunks/Catalog/getcurrentProduct';
 
 interface Product {
   id: number;
-  article: string;
+  // article: string;
   productName: string;
   promoStartDate: string;
   promoEndDate: string;

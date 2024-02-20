@@ -5,7 +5,7 @@ import axios from 'axios';
 
 interface ResponseData {
   id: number;
-  article: string;
+  // article: string;
   productName: string;
   promoStartDate: string;
   promoEndDate: string;

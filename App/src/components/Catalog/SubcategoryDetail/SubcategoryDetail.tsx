@@ -28,7 +28,7 @@ export interface ISubcategory {
 
 export interface IProduct {
   id: number;
-  article: string;
+  // article: string;
   productName: string;
   promoStartDate: string;
   promoEndDate: string;
