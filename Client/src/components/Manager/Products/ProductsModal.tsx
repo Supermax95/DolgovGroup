@@ -83,10 +83,10 @@ const ProductsModal: FC<ProductsModalProps> = ({
       )
     : null;
 
-  const id = useAppSelector((state) => state.productSlice.postId);
   const dispatch = useAppDispatch();
-  const [isUpload, setUpload] = useState(false);
-  const [currentStep, setCurrentStep] = useState(1);
+  const id = useAppSelector<number>((state) => state.productSlice.postId);
+  const [isUpload, setUpload] = useState<boolean>(false);
+  const [currentStep, setCurrentStep] = useState<number>(1);
 
   //! message не выводится с бэка в случае положительного действия
   //! ошибка тоже не выгружается с бэка, т.к. ошибку он не допускает пока вовсе. Не знаю, обрабатывает ли вообще
