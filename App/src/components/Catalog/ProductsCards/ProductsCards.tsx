@@ -62,8 +62,8 @@ const ProductsCards: FC = ({ route }: any) => {
   const allProducts = useAppSelector<IProduct[]>(
     (state) => state.productSlice.data
   );
-  const userStatus = useAppSelector<string>(
-    (state) => state.userSlice.user.userStatus
+  const userStatus = useAppSelector<string | undefined>(
+    (state) => state.userSlice.user?.userStatus
   );
 
   const products = allProducts.filter(

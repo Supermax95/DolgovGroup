@@ -49,7 +49,7 @@ const PromoOneDetail = ({ route }: any) => {
 
 
   const currentPromotionOpen =
-    useAppSelector<IPromotion>(
+    useAppSelector<IPromotion | null>(
       (state) => state.promotiosSlice.currentPromotion
     ) || ({} as IPromotion);
 

@@ -43,8 +43,8 @@ const SingleProduct = ({ route }: any) => {
   const [refreshing, setRefreshing] = useState(false);
   const { width } = useWindowDimensions();
   const navigation = useNavigation<StackNavigationProp>();
-  const userStatus = useAppSelector<string>(
-    (state) => state.userSlice.user.userStatus
+  const userStatus = useAppSelector<string | undefined>(
+    (state) => state.userSlice.user?.userStatus
   );
   useEffect(() => {
     const fetchData = async () => {
@@ -66,7 +66,7 @@ const SingleProduct = ({ route }: any) => {
   };
 
   const currentProductOpen =
-    useAppSelector<IProduct>((state) => state.productSlice.currentProduct) ||
+    useAppSelector<IProduct | null >((state) => state.productSlice.currentProduct) ||
     ({} as IProduct);
 
   const desc = currentProductOpen.description ? (

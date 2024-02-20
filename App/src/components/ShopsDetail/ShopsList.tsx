@@ -22,7 +22,7 @@ export interface ISelectedShop {
   latitude: string;
   longitude: string;
   hours: string;
-  invisible: boolean;
+  invisible?: boolean;
 }
 
 const ShopsList: FC = () => {
