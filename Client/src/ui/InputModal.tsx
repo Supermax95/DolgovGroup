@@ -1,9 +1,9 @@
 import { FC } from 'react';
-import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/20/solid';
+import { CheckCircleIcon } from '@heroicons/react/20/solid';
 import Button from './Button';
 import InputMask from 'react-input-mask';
 import 'react-quill/dist/quill.snow.css';
-import { EnvelopeIcon, HandThumbUpIcon } from '@heroicons/react/24/outline';
+import { EnvelopeIcon } from '@heroicons/react/24/outline';
 
 //* Здесь инпуты, которые переиспользуются в модальных окнах
 //* На Location, в профиле админа (создание/редактирование менеджера) - один столбец
@@ -42,9 +42,7 @@ export interface InputField {
 const InputModal: FC<IInputModal> = ({
   inputFields,
   containerClassName = 'py-8 space-y-4',
-  codeSend,
   activationSend,
-  modalTitle,
 }) => {
   return (
     <div className={`${containerClassName}`}>
@@ -232,32 +230,6 @@ const InputModal: FC<IInputModal> = ({
               </label>
             </>
           ) : (
-            // ) :
-            // field.id === 'originalPrice' ||
-            //   field.id === 'customerPrice' ||
-            //   field.id === 'employeePrice' ? (
-            //   <>
-            //     <InputMask
-            //       // mask="+7 (999) 999-99-99"
-            //       // maskChar="_"
-            //       id={field.id}
-            //       name={field.name}
-            //       value={field.value as string}
-            //       placeholder={field.placeholder}
-            //       autoComplete={field.autoComplete}
-            //       className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
-            //       required={field.required}
-            //       pattern={field.pattern}
-            //       onChange={(e) => field.onChange?.(e.target.value)}
-            //       disabled={field.disabled}
-            //     />
-            //     <label
-            //       htmlFor={field.htmlFor}
-            //       className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-lime-3s00 peer-focus:text-sm"
-            //     >
-            //       {field.title}
-            //     </label>
-            //   </>
             <div>
               <input
                 onChange={(e) => field.onChange?.(e.target.value)}

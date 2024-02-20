@@ -528,7 +528,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
       autoComplete: 'off',
       placeholder: '',
       title: 'Процент скидки',
-      htmlFor: 'percentage',
+      htmlFor: 'percentageEmployee',
       onChange: (value: string | boolean | number | Date) => {
         if (typeof value === 'string') {
           const newValue = value.replace(/[^\d.]/g, '');
@@ -707,6 +707,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
                 <div className="relative">
                   <input
                     id="customerPrice"
+                    name="customerPrice"
                     type="text"
                     value={editedProduct.customerPrice
                       .toString()
@@ -715,27 +716,27 @@ const ProductsModal: FC<ProductsModalProps> = ({
                     placeholder=""
                     title="Цена со скидкой для клиента"
                     onChange={(e) => {
-                      const newValue = e.target.value;
-                      if (typeof newValue === 'string') {
-                        const trimmedValue = newValue.replace(/\s/g, '');
+                      const value = e.target.value;
+                      console.log('newValue+++', value);
+
+                      if (typeof value === 'string') {
+                        const trimmedValue = value.replace(/\s/g, '');
                         const sanitizedValue = trimmedValue.replace(/,/g, '.');
 
                         if (
                           sanitizedValue === '' ||
                           /^\d+(\.\d{0,2})?$/.test(sanitizedValue)
                         ) {
-                          if (!isNaN(+sanitizedValue)) {
-                            // здесь исправление
-                            setEditedProduct({
-                              ...editedProduct,
-                              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                              // @ts-ignore
-                              customerPrice: sanitizedValue,
-                            });
-                          }
+                          setEditedProduct({
+                            ...editedProduct,
+                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                            // @ts-ignore
+                            customerPrice: sanitizedValue,
+                          });
                         }
                       }
                     }}
+                    required={true}
                     className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
                   />
                   <label
@@ -748,7 +749,8 @@ const ProductsModal: FC<ProductsModalProps> = ({
 
                 <div className="relative">
                   <input
-                    id="percentage"
+                    id="percentageCustomer"
+                    name="percentageCustomer"
                     type="text"
                     value={
                       +(
@@ -764,23 +766,28 @@ const ProductsModal: FC<ProductsModalProps> = ({
                     placeholder=""
                     title="Процент скидки"
                     onChange={(e) => {
-                      const newValue = e.target.value.replace(/[^\d.]/g, '');
+                      const value = e.target.value.replace(/[^\d.]/g, '');
 
-                      if (!isNaN(+newValue)) {
-                        const discountedPrice =
-                          (editedProduct.originalPrice * (100 - +newValue)) /
-                          100;
+                      if (typeof value === 'string') {
+                        const newValue = value.replace(/[^\d.]/g, '');
 
-                        setEditedProduct({
-                          ...editedProduct,
-                          customerPrice: discountedPrice,
-                        });
+                        if (!isNaN(+newValue)) {
+                          const discountedPrice =
+                            (editedProduct.originalPrice * (100 - +newValue)) /
+                            100;
+
+                          setEditedProduct({
+                            ...editedProduct,
+                            customerPrice: discountedPrice,
+                          });
+                        }
                       }
                     }}
+                    required={true}
                     className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
                   />
                   <label
-                    htmlFor="percentage"
+                    htmlFor="percentageCustomer"
                     className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-slate-400 peer-focus:text-sm"
                   >
                     Процент скидки
