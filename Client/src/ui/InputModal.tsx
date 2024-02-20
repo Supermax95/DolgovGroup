@@ -19,23 +19,23 @@ interface IInputModal {
 
 export interface InputField {
   id: string;
-  name?: string;
-  type?: (string | boolean) | undefined;
-  value?: string | boolean | number | Date;
-  placeholder?: string;
-  autoComplete?: string;
-  title?: string;
-  htmlFor?: string;
-  required?: boolean;
+  name: string;
+  type: (string | boolean) | undefined;
+  value: string | boolean | number | Date;
+  placeholder?: string | undefined;
+  autoComplete: string;
+  title: string;
+  htmlFor?: string | undefined;
+  required: boolean;
   pattern?: string | undefined;
   // onChange?: (value: string) => void | undefined;
   onChange?: (
     value: string | boolean | number | Date
   ) => void | false | 0 | undefined;
-  divFielsCss?: string[];
-  disabled?: boolean;
-  options?: { value: string; label: string }[];
-  children?: React.ReactNode;
+  divFielsCss?: string[] | undefined;
+  disabled?: boolean | undefined;
+  options?: { value: string; label: string }[] | undefined;
+  children?: React.ReactNode | undefined;
   error?: React.ReactNode;
 }
 
