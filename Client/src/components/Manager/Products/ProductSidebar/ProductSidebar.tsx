@@ -333,9 +333,6 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
       } catch (error) {
         console.error('Произошла ошибка при удалении:', error);
       }
-      // setTimeout(() => {
-      //   onCloseEditModal();
-      // }, 50);
     }
   };
 

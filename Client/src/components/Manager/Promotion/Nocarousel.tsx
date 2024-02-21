@@ -41,6 +41,7 @@ const Nocarousel: FC = () => {
   );
   // остальное
   const [isModalOpen, setModalOpen] = useState(false);
+  // eslint-disable-next-line
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setLoading] = useState(false);
   const [selectedPromotion, setSelectedPromotion] = useState<Promotion | null>(

@@ -224,12 +224,14 @@ const Law: FC = () => {
           bodyText={errorNotification}
         />
       )}
+
       <SidebarLaw
         data={formattedLaws}
         title="Документы"
         onAddClick={openAddEditor}
         onEditClick={openEditEditor}
       />
+
       <div
         className={`p-4 ${
           isLoading

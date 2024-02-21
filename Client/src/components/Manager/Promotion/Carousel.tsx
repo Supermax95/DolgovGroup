@@ -48,6 +48,7 @@ const Carousel: FC = () => {
 
   // остальное
   const [isModalOpen, setModalOpen] = useState(false);
+  // eslint-disable-next-line
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setLoading] = useState(false);
   const [selectedPromotion, setSelectedPromotion] = useState<Promotion | null>(
@@ -60,6 +61,7 @@ const Carousel: FC = () => {
 
   const [searchText, setSearchText] = useState('');
 
+  //* всплывающие уведомления
   const [showNotificationAddPromo, setShowNotificationAddPromo] =
     useState<boolean>(false);
   const [showNotificationEditPromo, setShowNotificationEditPromo] =
@@ -505,9 +507,7 @@ const Carousel: FC = () => {
             isAddingMode={isAddingMode}
             editedPromotion={editedPromotion}
             setEditedPromotion={setEditedPromotion}
-            errorNotification={errorNotification}
             openEditModal={openEditModal}
-            // resetAxiosError={resetAxiosError}
           />
         )}
       </div>

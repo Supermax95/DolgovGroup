@@ -16,6 +16,7 @@ import {
   TrashIcon,
 } from '@heroicons/react/24/outline';
 import Button from '../../../ui/Button';
+import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
 
 interface Promotion {
   id: number;
@@ -40,12 +41,7 @@ interface PromotionsModalProps {
   setEditedPromotion: React.Dispatch<
     React.SetStateAction<Promotion | null | undefined>
   >;
-  // openEditModal: React.Dispatch<
-  //   React.SetStateAction<Promotion | null | undefined>
-  // >;
   openEditModal: (promotion: Promotion) => void;
-  // axiosError: string | null;
-  // resetAxiosError: () => void;
 }
 
 const PromotionsModal: FC<PromotionsModalProps> = ({
@@ -59,8 +55,6 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
   editedPromotion,
   setEditedPromotion,
   openEditModal,
-  // axiosError,
-  // resetAxiosError,
 }) => {
   const id = useAppSelector((state) => state.promotionSlice.postId);
   const dispatch = useAppDispatch();
@@ -70,17 +64,19 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
   const [isUpload, setUpload] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
 
-  //! message не выводится с бэка в случае положительного действия
-  //! ошибка тоже не выгружается с бэка, т.к. ошибку он не допускает пока вовсе. Не знаю, обрабатывает ли вообще
-  // const [messNotification, setMessNotification] = useState<string | null>(null);
-  // const [errorNotification, setErrorNotification] = useState<string | null>(
-  //   null
-  // );
-
+  const [errorNotification, setErrorNotification] = useState<string | null>(
+    null
+  );
   const [showNotificationPicture, setShowNotificationPicture] =
     useState<boolean>(false);
-  // const [showErrorNotificationPicture, setErrorShowNotificationPicture] =
-  //   useState<boolean>(false);
+  //* удаление
+  const [showNotificationDelPromo, setShowNotificationDelPromo] =
+    useState<boolean>(false);
+  const [showNotificationDelPick, setShowNotificationDelPick] =
+    useState<boolean>(false);
+
+  const [showErrorNotificationPicture, setErrorShowNotificationPicture] =
+    useState<boolean>(false);
 
   useEffect(() => {
     if (promotion) {
@@ -91,19 +87,31 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
   const modalTitle = isAddingMode ? 'Новая акция' : 'Редактирование акции';
 
   useEffect(() => {
-    if (showNotificationPicture) {
+    console.log('dbsdjknj');
+    console.log('showNotificationDelPromo', showNotificationDelPromo);
+
+    if (
+      showNotificationPicture ||
+      showNotificationDelPromo ||
+      showNotificationDelPick
+    ) {
       const timeoutId = setTimeout(() => {
         setShowNotificationPicture(false);
-        // setErrorShowNotificationPicture(false);
+        setShowNotificationDelPromo(false);
+        setShowNotificationDelPick(false);
+        setErrorShowNotificationPicture(false);
       });
 
       return () => clearTimeout(timeoutId);
     }
-  }, [showNotificationPicture]);
+  }, [
+    showNotificationPicture,
+    showNotificationDelPromo,
+    showNotificationDelPick,
+  ]);
 
   const handleCancel = () => {
     setEditedPromotion(undefined);
-    // resetAxiosError();
     onCloseEditModal();
     onCloseAddModal();
   };
@@ -132,9 +140,14 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
           onCloseEditModal();
         }
       } catch (error) {
-        console.error('Ошибка при загрузке файла:', error);
-        // setErrorNotification(error as string | null);
-        // setErrorShowNotificationPicture(true);
+        if (axios.isAxiosError(error) && error.response) {
+          console.error('Server response data:', error.response.data.error);
+          const errorRes = error.response.data.error;
+          setErrorNotification(errorRes);
+          setErrorShowNotificationPicture(true);
+        } else {
+          throw error;
+        }
       }
     }
   };
@@ -199,12 +212,16 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
 
   const handleDelete = () => {
     const isConfirmed = window.confirm('Вы уверены, что хотите удалить акцию?');
+
     if (isConfirmed && editedPromotion && editedPromotion.id) {
       const promotionId = editedPromotion.id;
-
       try {
         dispatch(deletePromotion(promotionId));
-        onCloseEditModal();
+        setShowNotificationDelPromo(true);
+        //* позволяет вывести уведолмление после закрытия модального окна
+        setTimeout(() => {
+          onCloseEditModal();
+        }, 50);
       } catch (error) {
         console.error('Произошла ошибка при удалении:', error);
       }
@@ -221,7 +238,10 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
 
       try {
         dispatch(deletePromoPhoto(promoId));
-        onCloseEditModal();
+        setShowNotificationDelPick(true);
+        setTimeout(() => {
+          onCloseEditModal();
+        }, 50);
       } catch (error) {
         console.error('Произошла ошибка при удалении:', error);
       }
@@ -247,12 +267,13 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
   const inputFields: InputField[] = [
     {
       id: 'promotionTitle',
+      name: 'promotionTitle',
       type: 'text',
       value: editedPromotion.title,
       autoComplete: 'off',
       placeholder: '',
       title: 'Название акции',
-      htmlFor: 'promotionName',
+      htmlFor: 'promotionTitle',
       onChange: (value: string | boolean | number | Date) => {
         if (typeof value === 'string') {
           setEditedPromotion({
@@ -270,18 +291,29 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
       {showNotificationPicture && (
         <PopUpNotification
           titleText={'Обложка акции загружена'}
-          bodyText={`Наименование акции:`}
+          name={editedPromotion.title}
+        />
+      )}
+      {showNotificationDelPromo && (
+        <PopUpNotification
+          titleText={'Акция удалена'}
+          name={editedPromotion.title}
+        />
+      )}
+      {showNotificationDelPick && (
+        <PopUpNotification
+          titleText={'Изображение акции удалёно'}
           name={editedPromotion.title}
         />
       )}
 
       {/* //!уведомления об ошибках */}
-      {/* {showErrorNotificationPicture && (
+      {showErrorNotificationPicture && (
         <PopUpErrorNotification
           titleText={'Ошибка'}
           bodyText={errorNotification}
         />
-      )} */}
+      )}
 
       <form onSubmit={handleFormSubmit}>
         <Modal
@@ -291,20 +323,7 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
           onCancelСlick={handleCancel}
           isUpload={isUpload}
         >
-          {/* {axiosError && (
-            <div className="text-sm text-rose-400 text-center mt-2">
-              {axiosError}
-            </div>
-          )} */}
-
-          {currentStep === 1 && (
-            <InputModal
-              // containerClassName={
-              //   'py-8 grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'
-              // }
-              inputFields={inputFields}
-            />
-          )}
+          {currentStep === 1 && <InputModal inputFields={inputFields} />}
 
           {currentStep === 1 && (
             <div className="flex space-x-2 items-center justify-between pb-4">
