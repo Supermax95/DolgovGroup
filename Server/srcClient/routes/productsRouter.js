@@ -125,7 +125,6 @@ router.get('/admin/currentproduct/:id', async (req, res) => {
 
 router.post('/admin/products', async (req, res) => {
   const { newProduct } = req.body;
-
   try {
     const existingProduct = await Product.findOne({
       where: { article: newProduct.article },

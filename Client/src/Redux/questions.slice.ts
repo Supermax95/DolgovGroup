@@ -12,6 +12,7 @@ interface Question {
 }
 
 interface QuestionState {
+  postId: number | null;
   data: Question[];
   isLoading: boolean;
   error: string | null;
@@ -20,6 +21,7 @@ interface QuestionState {
 }
 
 const initialState: QuestionState = {
+  postId: 0,
   data: [],
   isLoading: false,
   error: null,
@@ -76,7 +78,8 @@ const questionsSlice = createSlice({
       })
       .addCase(newQuestion.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.data = action.payload;
+        state.data = action.payload.questions;    
+        state.postId = action.payload.postId
       })
       .addCase(newQuestion.rejected, (state, action) => {
         state.isLoading = false;

@@ -20,7 +20,12 @@ interface ResponseData {
   updatedAt: Date;
 }
 
-const newQuestion = createAsyncThunk<ResponseData[], RequestData>(
+interface ResponseDataId {
+  postId: number;
+  questions: ResponseData[];
+}
+
+const newQuestion = createAsyncThunk<ResponseDataId, RequestData>(
   'admin/newQuestion',
 
   async ({ newQuestion }, { rejectWithValue }) => {

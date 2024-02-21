@@ -280,6 +280,7 @@ const Products: FC = () => {
   };
 
   const openEditModal = async (product: IProduct): Promise<void> => {
+
     const productId = product.id;
     const res = await dispatch(currentProduct(productId));
     const result = unwrapResult(res);
@@ -302,7 +303,7 @@ const Products: FC = () => {
 
   const handleSaveAdd = async (): Promise<void> => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let add = {} as any;
+    let add = {} as any;    
     try {
       if (editedProduct) {
         const resultAction = await dispatch(

@@ -3,7 +3,6 @@ const { isPast, parseISO, addDays, subDays } = require('date-fns');
 const { Op } = require('sequelize');
 const { Promotion } = require('../../db/models');
 const path = require('path');
-const { log } = require('console');
 const fsPromises = require('fs').promises;
 
 router.get('/admin/promotions', async (req, res) => {
@@ -160,6 +159,7 @@ router.put('/admin/promotions', async (req, res) => {
     const existingPromotion = await Promotion.findOne({
       where: { title: newInfo.title, id: { [Op.not]: newInfo.id } },
     });
+
 
     if (existingPromotion) {
       return res.status(400).json({
