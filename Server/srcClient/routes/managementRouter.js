@@ -344,24 +344,29 @@ module.exports = router
     const { managerId } = req.body;
 
     try {
-      await Manager.destroy({
-        where: { id: managerId },
-      });
-      const managers = await Manager.findAll({
-        where: {
-          isAdmin: false,
-        },
-        attributes: {
-          exclude: ['password'],
-        },
-        order: [
-          ['lastName', 'ASC'],
-          ['firstName', 'ASC'],
-          ['middleName', 'ASC'],
-        ],
-        raw: true,
-      });
-      res.json(managers);
+      const manager = await Manager.findByPk(managerId);
+      if (!manager) {
+        res.status(404).json({ error: 'Акция не найдена' });
+      } else {
+        await Manager.destroy({
+          where: { id: managerId },
+        });
+        const managers = await Manager.findAll({
+          where: {
+            isAdmin: false,
+          },
+          attributes: {
+            exclude: ['password'],
+          },
+          order: [
+            ['lastName', 'ASC'],
+            ['firstName', 'ASC'],
+            ['middleName', 'ASC'],
+          ],
+          raw: true,
+        });
+        res.json(managers);
+      }
     } catch (error) {
       console.error('Ошибка при удалении данных', error);
       res.status(500).json({ error: 'Произошла ошибка на сервере' });

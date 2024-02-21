@@ -87,9 +87,6 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
   const modalTitle = isAddingMode ? 'Новая акция' : 'Редактирование акции';
 
   useEffect(() => {
-    console.log('dbsdjknj');
-    console.log('showNotificationDelPromo', showNotificationDelPromo);
-
     if (
       showNotificationPicture ||
       showNotificationDelPromo ||
@@ -287,7 +284,7 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
   ];
 
   return (
-    <Wrapper>
+    <>
       {showNotificationPicture && (
         <PopUpNotification
           titleText={'Обложка акции загружена'}
@@ -517,7 +514,7 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
           )}
         </Modal>
       </form>
-    </Wrapper>
+    </>
   );
 };
 
