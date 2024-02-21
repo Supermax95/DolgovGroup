@@ -249,7 +249,8 @@ const Questions: FC = () => {
               axiosError={axiosError}
               resetAxiosError={resetAxiosError}
               openAddEditor={openAddEditor}
-              // openEditEditor={openEditEditor}
+              openEditEditor={openEditEditor}
+              setAddingMode={setAddingMode}
             />
           )
         )}

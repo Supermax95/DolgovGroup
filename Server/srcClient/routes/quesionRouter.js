@@ -51,7 +51,7 @@ router.post('/admin/questions', async (req, res) => {
       });
     }
 
-    await Question.create({
+    const createdQuestion = await Question.create({
       title: newQuestion.title,
       description: newQuestion.description,
     });
@@ -61,7 +61,7 @@ router.post('/admin/questions', async (req, res) => {
       raw: true,
     });
 
-    res.json(questions);
+    res.json({ postId: createdQuestion.id, questions });
   } catch (error) {
     console.error('Ошибка при добавлении данных', error);
     res.status(500).json({
@@ -92,6 +92,7 @@ router.delete('/admin/questions/:id', async (req, res) => {
 
 router.put('/admin/questions', async (req, res) => {
   const { newInfo } = req.body;
+  console.log(newInfo);
 
   try {
     const existingQuestion = await Question.findOne({

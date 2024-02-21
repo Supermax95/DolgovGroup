@@ -214,29 +214,6 @@ const Editor: FC<LawEditorProps> = ({
     uploadFile(file, id, isAddingMode);
   };
 
-  const handleDelete = async () => {
-    const isConfirmed = window.confirm(
-      'Вы уверены, что хотите удалить документ?'
-    );
-    if (laws.length > 0) {
-      if (isConfirmed && editedLaw && editedLaw.id) {
-        const lawId = editedLaw.id;
-        const resultAction = await dispatch(deleteLaw(lawId));
-        setShowNotificationDelLaw(true);
-        if (deleteLaw.fulfilled.match(resultAction)) {
-          const response = resultAction.payload;
-          setShowNotificationDelLaw(true);
-          if (response.length === 0) {
-            setEditedLaw(null);
-            openAddEditor();
-          } else {
-            setEditedLaw(response[0]);
-          }
-        }
-      }
-    }
-  };
-
   const handleDeleteDocument = () => {
     const isConfirmed = window.confirm('Вы уверены, что хотите удалить файл?');
     if (isConfirmed && editedLaw && editedLaw.id) {
@@ -249,6 +226,29 @@ const Editor: FC<LawEditorProps> = ({
   if (!isOpen || !editedLaw) {
     return null;
   }
+
+  const handleDelete = async () => {
+    const isConfirmed = window.confirm(
+      'Вы уверены, что хотите удалить документ?'
+    );
+    if (laws.length > 0) {
+      if (isConfirmed && editedLaw && editedLaw.id) {
+        const lawId = editedLaw.id;
+        const resultAction = await dispatch(deleteLaw(lawId));
+        setShowNotificationDelLaw(true);
+        if (deleteLaw.fulfilled.match(resultAction)) {
+          const response = resultAction.payload;    
+          setShowNotificationDelLaw(true);
+          if (response.length === 0) {
+            setEditedLaw(null);
+            openAddEditor();
+          } else {
+            openEditEditor(response[0])
+          }
+        }
+      }
+    }
+  };
 
   const quillModules = {
     toolbar: [

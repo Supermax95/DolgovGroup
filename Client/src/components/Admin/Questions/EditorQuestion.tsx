@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { useAppDispatch } from '../../../Redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import { IQuestion } from './Questions';
 import { HandThumbUpIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Button from '../../../ui/Button';
@@ -9,19 +9,28 @@ import { Toaster } from 'sonner';
 import PopUpNotification from '../../../ui/PopUpNotification';
 import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
 import deleteQuestion from '../../../Redux/thunks/Question/deleteQuestion.api';
+import getLaws from '../../../Redux/thunks/Document/getLaws.api';
+
+interface SaveResult {
+  postId: number | undefined;
+  questions: IQuestion[]; 
+}
 
 interface EditorQuestionProps {
   isOpen: boolean;
   question: IQuestion | null;
-  onSaveAdd: (editedQuestion: IQuestion) => void;
+  // onSaveAdd: (editedQuestion: IQuestion) => void;
+  onSaveAdd: (editedQuestion: IQuestion) => Promise<SaveResult>;
   onSaveEdit: (editedQuestion: IQuestion) => void;
   onCloseAddEditor: () => void;
   onCloseEditEditor: () => void;
   isAddingMode: boolean;
+  openEditEditor: (question: IQuestion) => void;
   editedQuestion: IQuestion | null | undefined;
   setEditedQuestion: React.Dispatch<
     React.SetStateAction<IQuestion | null | undefined>
   >;
+  setAddingMode: React.Dispatch<React.SetStateAction<boolean>>;
   axiosError: string | null;
   resetAxiosError: () => void;
   openAddEditor: () => void;
@@ -31,16 +40,24 @@ const EditorQuestion: FC<EditorQuestionProps> = ({
   isOpen,
   question,
   onSaveEdit,
+  onCloseAddEditor,
   onSaveAdd,
   isAddingMode,
+  setAddingMode,
   editedQuestion,
   setEditedQuestion,
   openAddEditor,
+  openEditEditor,
 }) => {
   const dispatch = useAppDispatch();
   const [errorNotification, setErrorNotification] = useState<string | null>(
     null
   );
+
+  const questions = useAppSelector<IQuestion[]>(
+    (state) => state.questionsSlice.data
+  );
+  const id = useAppSelector((state) => state.questionsSlice.postId);
 
   const [showNotificationDelQuestion, setShowNotificationDelQuestion] =
     useState<boolean>(false);
@@ -84,7 +101,6 @@ const EditorQuestion: FC<EditorQuestionProps> = ({
   // //     setTimeout(() => {}, 50);
   // //   }
   // // }, [showNotificationDelQuestion]);
-
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const isConfirmed = window.confirm(
@@ -94,7 +110,22 @@ const EditorQuestion: FC<EditorQuestionProps> = ({
     if (isConfirmed) {
       try {
         if (isAddingMode) {
-          onSaveAdd(editedQuestion as IQuestion);
+          const result = await onSaveAdd(editedQuestion as IQuestion);
+          const { postId } = result;
+          const savedQuestion = result.questions;
+
+          if (postId !== undefined) {
+            const question: IQuestion | undefined = savedQuestion.find(
+              (p: IQuestion) => p.id === postId
+            );
+            if (question) {
+              openEditEditor(question as IQuestion);
+            }
+          } else {
+            console.error(
+              'Ошибка: postId не определен в результатах сохранения.'
+            );
+          }
         } else {
           await onSaveEdit(editedQuestion as IQuestion);
         }
@@ -110,8 +141,9 @@ const EditorQuestion: FC<EditorQuestionProps> = ({
     const isConfirmed = window.confirm(
       'Вы уверены, что хотите удалить вопрос?'
     );
-
     if (isConfirmed && editedQuestion && editedQuestion.id) {
+
+
       const questionId = editedQuestion.id;
       try {
         const resultAction = await dispatch(deleteQuestion(questionId));
@@ -122,7 +154,7 @@ const EditorQuestion: FC<EditorQuestionProps> = ({
             setEditedQuestion(null);
             openAddEditor();
           } else {
-            setEditedQuestion(response[0]);
+            openEditEditor(response[0]);
           }
         }
       } catch (error) {
