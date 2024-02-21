@@ -43,7 +43,6 @@ const Management: FC = () => {
   console.log('managers', managers);
 
   //* для уведомления при добавлении
-  // //! ПОЧЕМУ-ТО ТЕПЕРЬ НЕ ЗАЛЕТАЕТ ОТВЕТ С БЭКА
   const managerIdForBellAdd = useAppSelector(
     (state) => state.managerSlice.addedManagerData
   );

@@ -323,6 +323,7 @@ const Products: FC = () => {
     }
     return add;
   };
+  console.log('editedProduct***********', editedProduct);
 
   const handleSaveEdit = async (editedProduct: IProduct): Promise<void> => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -419,6 +420,7 @@ const Products: FC = () => {
           bodyText={errorNotification}
         />
       )}
+
       <ProductSidebar
         addModal={openAddModal}
         categories={categories}

@@ -9,6 +9,9 @@ import Pagination from '../../../ui/Paggination';
 import Table from '../../../ui/Table';
 import Search from '../../../ui/Search';
 import addLocation from '../../../Redux/thunks/Locations/addLocation.api';
+import PopUpNotification from '../../../ui/PopUpNotification';
+import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 export interface ILocation {
   id: number;
@@ -52,6 +55,48 @@ const Location: FC = () => {
   >(null);
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
   const [searchText, setSearchText] = useState('');
+
+  //* всплывающие уведомления
+  const [showNotificationAddLocation, setShowNotificationAddLocation] =
+    useState<boolean>(false);
+  const [showNotificationEditLocation, setShowNotificationEditLocation] =
+    useState<boolean>(false);
+
+  const [errorNotification, setErrorNotification] = useState<string | null>(
+    null
+  );
+
+  const [
+    showErrorNotificationAddLocation,
+    setShowErrorNotificationAddLocation,
+  ] = useState<boolean>(false);
+  const [
+    showErrorNotificationEditLocation,
+    setShowErrorNotificationEditLocation,
+  ] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (
+      showNotificationAddLocation ||
+      showErrorNotificationAddLocation ||
+      showNotificationEditLocation ||
+      showErrorNotificationEditLocation
+    ) {
+      const timeoutId = setTimeout(() => {
+        setShowNotificationAddLocation(false);
+        setShowErrorNotificationAddLocation(false);
+        setShowNotificationEditLocation(false);
+        setShowErrorNotificationEditLocation(false);
+      });
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [
+    showNotificationAddLocation,
+    showErrorNotificationAddLocation,
+    showNotificationEditLocation,
+    showErrorNotificationEditLocation,
+  ]);
 
   const columnsDefaultName: IColumnsDefaultName[] = [
     { name: 'Город' },
@@ -163,18 +208,27 @@ const Location: FC = () => {
   };
 
   const handleSaveAdd = async (): Promise<void> => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let add = {} as any;
     try {
       if (editedLocation) {
-        await dispatch(
+        const resultAction = await dispatch(
           addLocation({
             newLocation: editedLocation,
           })
         );
+        const result = unwrapResult(resultAction);
+        add = result;
+        console.log('🚀 ~ handleSaveAdd ~ resultAction:', result);
         closeAddModal();
+        setShowNotificationAddLocation(true);
       }
     } catch (error) {
       console.error('Произошла ошибка при добавлении:', error);
+      setErrorNotification(error as string | null);
+      setShowErrorNotificationAddLocation(true);
     }
+    return add;
   };
 
   const handleSaveEdit = async (editedLocation: ILocation): Promise<void> => {
@@ -239,8 +293,36 @@ const Location: FC = () => {
     </div>
   );
 
+  console.log('editedLocation***********', editedLocation);
+
   return (
     <Wrapper>
+      {showNotificationAddLocation && (
+        <PopUpNotification
+          titleText={'Добавлена новая локация'}
+          name={editedLocation?.city}
+        />
+      )}
+      {showNotificationEditLocation && (
+        <PopUpNotification
+          titleText={'Внесены изменения в локацию'}
+          name={editedLocation?.city}
+        />
+      )}
+      {/* //!уведомления об ошибках */}
+      {showErrorNotificationAddLocation && (
+        <PopUpErrorNotification
+          titleText={'Ошибка'}
+          bodyText={errorNotification}
+        />
+      )}
+      {showErrorNotificationEditLocation && (
+        <PopUpErrorNotification
+          titleText={'Ошибка'}
+          bodyText={errorNotification}
+        />
+      )}
+
       <Sidebar
         items={uniqueCities}
         onItemSelect={setSelectedCity}
