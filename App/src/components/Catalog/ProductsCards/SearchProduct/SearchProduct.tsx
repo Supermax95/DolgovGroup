@@ -5,7 +5,6 @@ import {
   SafeAreaView,
   RefreshControl,
   FlatList,
-  ActivityIndicator,
 } from 'react-native';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { PORT, IP } from '@env';

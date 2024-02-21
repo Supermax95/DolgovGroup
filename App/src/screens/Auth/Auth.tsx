@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Image, Text, View, Button } from 'react-native';
+import { Image, Text, View, Button, Alert } from 'react-native';
 import { PORT, IP } from '@env';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from 'navigation/types';
@@ -18,7 +18,7 @@ export const Auth = () => {
         const jsonData = await response.json();
         setData(jsonData);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        Alert.alert('Error fetching data:');
       }
     };
 

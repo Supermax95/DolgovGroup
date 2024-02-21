@@ -18,7 +18,6 @@ import getCategory from 'Redux/thunks/Catalog/categoryGet.api';
 import getProducts from 'Redux/thunks/Catalog/productGet.api';
 import getSubcategory from 'Redux/thunks/Catalog/subcategoryGet.api';
 import getPromotions from 'Redux/thunks/Promotion/getPromotion.api';
-import getUserLocations from 'Redux/thunks/Shops/locationsUser.api';
 
 export interface ICategory {
   id: number;

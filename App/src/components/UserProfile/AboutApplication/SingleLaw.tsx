@@ -8,6 +8,7 @@ import {
   Pressable,
   ActivityIndicator,
   RefreshControl,
+  Alert,
 } from 'react-native';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import RenderHtml from 'react-native-render-html';
@@ -53,7 +54,7 @@ const SingleLaw = ({ route }: any) => {
       try {
         await dispatch(currentLaw(lawId));
       } catch (error) {
-        console.error(error);
+        Alert.alert('Ошибка. Произошла ошибка при получении данных');
       }
     };
 

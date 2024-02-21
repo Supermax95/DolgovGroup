@@ -126,9 +126,8 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
         setModalVisible(false);
       }
     } catch (error) {
-      console.error(
-        'Ошибка при обновлении токена и получении статуса пользователя:',
-        error
+      Alert.alert(
+        'Ошибка при обновлении токена и получении статуса пользователя:'
       );
     }
   };

@@ -110,7 +110,6 @@ const ChangeEmail: FC = () => {
         navigation.navigate('EditProfile');
       }
     } catch (error) {
-      console.error(error);
       Alert.alert(
         'Ошибка',
         'Данного пользователя не существует или произошла ошибка'

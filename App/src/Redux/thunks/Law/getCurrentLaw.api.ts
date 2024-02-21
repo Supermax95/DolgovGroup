@@ -11,20 +11,21 @@ interface ResponseData {
   updatedAt: Date;
 }
 
-
-
 const currentLaw = createAsyncThunk<ResponseData, number>(
   'admin/curentLaw',
 
-  async (lawId) => {
+  async (lawId, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axios.get(
         `http://${IP}:${PORT}/admin/currentlaw/${lawId}`
       );
       return response.data;
     } catch (error) {
-      console.error('Error:', error);
-      throw error;
+      if (axios.isAxiosError(error) && error.response) {
+        throw rejectWithValue(error.response.data.message);
+      } else {
+        throw error;
+      }
     }
   }
 );
