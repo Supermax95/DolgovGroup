@@ -6,6 +6,7 @@ import {
   Alert,
   ActivityIndicator,
   RefreshControl,
+  Platform,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
@@ -95,6 +96,16 @@ const PromoOneDetail = ({ route }: any) => {
                 dateEnd={currentPromotionOpen.dateEnd}
                 carusel={currentPromotionOpen.carousel}
               />
+              <View
+                className={`items-center justify-center pb-10 ${
+                  Platform.OS === 'android' ? 'px-3' : 'px-2'
+                }`}
+              >
+                <Text className="text-gray-600 font-medium text-xs italic text-center">
+                  *Информация о ценах и акциях может изменяться. Рекомендуем
+                  уточнить актуальную информацию в магазине.
+                </Text>
+              </View>
             </ScrollView>
           ) : (
             <View className="flex-row flex-wrap justify-center mt-4">
@@ -103,10 +114,6 @@ const PromoOneDetail = ({ route }: any) => {
               </Text>
             </View>
           )}
-          <Text className="text-gray-600 font-medium text-xs italic">
-            Цены и акции могут варьироваться, уточняйте актуальную информацию в
-            магазине
-          </Text>
         </SafeAreaView>
       )}
     </>
