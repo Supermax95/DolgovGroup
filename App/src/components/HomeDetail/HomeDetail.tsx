@@ -101,7 +101,7 @@ const HomeDetail: FC = () => {
 
   const checkResendAvailability = async () => {
     const lastSentTime = await AsyncStorage.getItem('bonusCheck');
-    console.log('lastSentTime', lastSentTime);
+    // console.log('lastSentTime', lastSentTime);
     if (lastSentTime) {
       const currentTime = Date.now();
       const timeDifference = currentTime - parseInt(lastSentTime, 10);
@@ -146,7 +146,7 @@ const HomeDetail: FC = () => {
       setNumberPoints(bonusCount);
       checkResendAvailability();
       setIsLoading(false);
-      console.log('Ответ на запрос бонусов клиента:=====>', bonusCount);
+      // console.log('Ответ на запрос бонусов клиента:=====>', bonusCount);
     } catch (error) {
       console.error('Ошибка при запросе бонусов');
     }

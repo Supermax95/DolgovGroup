@@ -16,7 +16,7 @@ const getBarcode = createAsyncThunk<ICheckResponse, ICheckRequest>(
   'api/checkBarcode',
   async ({ token }) => {
     try {
-      const response: AxiosResponse<ICheckResponse> = await axios.get(
+      const response: AxiosResponse = await axios.get(
         `http://${IP}:${PORT}/barcode`,
         {
           headers: {

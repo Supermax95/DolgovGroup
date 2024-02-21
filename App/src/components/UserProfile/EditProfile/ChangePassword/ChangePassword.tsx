@@ -84,7 +84,7 @@ const ChangePassword: FC = () => {
           })
         );
         if (result.meta.requestStatus === 'rejected') {
-          Alert.alert('Ошибка', result.payload);
+          Alert.alert('Ошибка', result.payload as string);
         } else if (result.meta.requestStatus === 'fulfilled') {
           Alert.alert(
             'Ваш пароль был успешно изменен.',

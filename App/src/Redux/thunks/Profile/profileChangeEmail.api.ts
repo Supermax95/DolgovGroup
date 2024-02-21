@@ -29,7 +29,7 @@ const profileChangeEmail = createAsyncThunk<
         },
       }
     );
-    console.log('responseresponseresponse --> newEmail', response.data);
+    // console.log('responseresponseresponse --> newEmail', response.data);
     return response.data;
   } catch (error) {
     throw error;

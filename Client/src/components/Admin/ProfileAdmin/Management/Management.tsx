@@ -40,7 +40,7 @@ const Management: FC = () => {
   const managers = useAppSelector<IManager[]>(
     (state) => state.managerSlice.data
   );
-  //console.log('managers', managers);
+  console.log('managers', managers);
 
   //* для уведомления при добавлении
   // //! ПОЧЕМУ-ТО ТЕПЕРЬ НЕ ЗАЛЕТАЕТ ОТВЕТ С БЭКА

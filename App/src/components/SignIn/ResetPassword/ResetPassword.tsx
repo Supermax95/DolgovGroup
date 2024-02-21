@@ -54,7 +54,7 @@ export const ResetPassword: FC = () => {
       if (result.meta.requestStatus === 'rejected') {
         setTimeout(() => {
           setIsLoading(false);
-          Alert.alert('Ошибка', result.payload);
+          Alert.alert('Ошибка', result.payload as string);
         }, 1000);
       } else if (result.meta.requestStatus === 'fulfilled') {
         Alert.alert('Пароль выслан на вашу почту', '', [
@@ -85,7 +85,7 @@ export const ResetPassword: FC = () => {
 
   const checkResendAvailability = async () => {
     const lastSentResetPass = await AsyncStorage.getItem('lastSentResetPass');
-    console.log('lastSentResetPass', lastSentResetPass);
+    // console.log('lastSentResetPass', lastSentResetPass);
     if (lastSentResetPass) {
       const currentTime = Date.now();
       const timeDifference = currentTime - parseInt(lastSentResetPass, 10);

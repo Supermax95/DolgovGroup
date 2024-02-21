@@ -21,8 +21,9 @@ const ChangePhoneNumber: FC = () => {
     (state) => state.userSlice.token?.refreshToken
   );
   const reduxPhoneProfile = useAppSelector<string>(
-    (state) => state.profileSlice.phoneNumber
+    (state) => state.profileSlice.phoneNumber!
   );
+  
 
   const phoneProfile = `+7 (${reduxPhoneProfile.substring(
     0,

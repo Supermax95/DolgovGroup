@@ -76,7 +76,7 @@ const SingleLaw = ({ route }: any) => {
       enableExperimentalMarginCollapsing={true}
     />
   ) : null;
-  console.log(desc);
+  // console.log(desc);
 
   const openDocumentLink = () => {
     if (currentLawOpen.documentLink) {

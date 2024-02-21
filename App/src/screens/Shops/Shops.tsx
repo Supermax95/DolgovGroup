@@ -1,7 +1,7 @@
 //* https://github.com/react-native-maps/react-native-maps/blob/master/docs/mapview.md
 //* документация по карте
 import React, { FC, useEffect, useState } from 'react';
-import { useRoute, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from 'navigation/types';
 import { View, Pressable, Text } from 'react-native';
 
