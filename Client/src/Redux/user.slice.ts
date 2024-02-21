@@ -16,8 +16,9 @@ interface User {
   userStatus: string;
   isActivated: boolean;
   bonusProgram: string;
+  birthDate: Date;
   balance: number;
-  phoneNumber:string;
+  phoneNumber: string;
 }
 
 interface UserState {

@@ -16,7 +16,7 @@ interface IUser {
   email: string;
   barcode: string;
   userStatus: string;
-  birthDate?: Date;
+  birthDate: Date | undefined;
   bonusProgram: string;
   balance: number;
   isActivated: boolean;
@@ -104,11 +104,10 @@ const ClientsModal: React.FC<UsersModalProps> = ({
     }
   };
 
-  const handleActivationSend = () => {
+  const handleActivationSend = async (): Promise<void> => {
     try {
       if (editedUser) {
-        const result = dispatch(nodemailerActivationSend(editedUser));
-
+        const result = await dispatch(nodemailerActivationSend(editedUser));
         unwrapResult(result);
         setShowNotificationActivationSend(true);
       }
@@ -182,25 +181,6 @@ const ClientsModal: React.FC<UsersModalProps> = ({
       },
       required: true,
     },
-    // {
-    //   id: 'balance',
-    //   name: 'balance',
-    //   type: 'number',
-    //   value: editedUser.balance.toString(),
-    //   placeholder: '',
-    //   autoComplete: 'off',
-    //   title: 'Баланс',
-    //   htmlFor: 'balance',
-    //   onChange: (value: string | boolean | number | Date) => {
-    //     if (typeof value === 'string') {
-    //       setEditedUser({
-    //         ...editedUser,
-    //         balance: parseFloat(value),
-    //       });
-    //     }
-    //   },
-    //   disabled: true,
-    // },
     {
       id: 'birthdate',
       name: 'birthdate',
@@ -259,25 +239,6 @@ const ClientsModal: React.FC<UsersModalProps> = ({
       },
       required: true,
     },
-    // {
-    //   id: 'bonusProgram',
-    //   name: 'bonusProgram',
-    //   type: 'text',
-    //   value: editedUser.bonusProgram,
-    //   placeholder: '',
-    //   autoComplete: 'off',
-    //   title: 'Бонусная программа',
-    //   htmlFor: 'bonusProgram',
-    //   onChange: (value: string | boolean | number | Date) => {
-    //     if (typeof value === 'string') {
-    //       setEditedUser({
-    //         ...editedUser,
-    //         bonusProgram: value,
-    //       });
-    //     }
-    //   },
-    //   disabled: true,
-    // },
     {
       id: 'phone',
       name: 'phone',
@@ -360,7 +321,7 @@ const ClientsModal: React.FC<UsersModalProps> = ({
             />
           </ModalUser>
         </form>
-      </Wrapper>{' '}
+      </Wrapper>
     </>
   );
 };

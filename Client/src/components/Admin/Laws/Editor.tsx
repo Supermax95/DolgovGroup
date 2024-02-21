@@ -10,6 +10,7 @@ import {
   ArrowUturnLeftIcon,
   CloudArrowUpIcon,
   DocumentTextIcon,
+  ExclamationTriangleIcon,
   EyeIcon,
   HandThumbUpIcon,
   TrashIcon,
@@ -32,9 +33,7 @@ interface LawEditorProps {
   isAddingMode: boolean;
   editedLaw: ILaw | null | undefined;
   setEditedLaw: React.Dispatch<React.SetStateAction<ILaw | null | undefined>>;
-  axiosError: string | null;
-  openEditEditor: (law: ILaw | undefined) => void;
-  resetAxiosError: () => void;
+  openEditEditor: (law: ILaw) => void;
   currentStep: number;
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
   setAddingMode: React.Dispatch<React.SetStateAction<boolean>>;
@@ -47,23 +46,20 @@ const Editor: FC<LawEditorProps> = ({
   law,
   onSaveEdit,
   onSaveAdd,
-  onCloseAddEditor,
-  onCloseEditEditor,
   isAddingMode,
   editedLaw,
   setEditedLaw,
-  axiosError,
-  resetAxiosError,
   currentStep,
   setCurrentStep,
   setAddingMode,
-  setSelectedLaw,
   openEditEditor,
   openAddEditor,
 }) => {
   const laws = useAppSelector<ILaw[]>((state) => state.lawsSlice.data);
   const id = useAppSelector((state) => state.lawsSlice.postId);
   const dispatch = useAppDispatch();
+
+  // eslint-disable-next-line
   const [isUpload, setUpload] = useState(false);
   const [errorNotification, setErrorNotification] = useState<string | null>(
     null
@@ -127,11 +123,12 @@ const Editor: FC<LawEditorProps> = ({
 
   const handleCancel = () => {
     dispatch(getLaws());
-    const law = laws.find((p) => p.id === id);
-    setEditedLaw(undefined);
-    openEditEditor(law);
-    setAddingMode(false);
-    resetAxiosError();
+    const law: ILaw | undefined = laws.find((p) => p.id === id);
+    if (law) {
+      setEditedLaw(undefined);
+      openEditEditor(law);
+      setAddingMode(false);
+    }
   };
 
   const uploadFile = async (file: File, id: number | 0): Promise<void> => {
@@ -150,25 +147,30 @@ const Editor: FC<LawEditorProps> = ({
             withCredentials: true,
           }
         );
-
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         unwrapResult(response);
         setShowNotificationPicture(true);
       } catch (error) {
-        console.error('Ошибка при загрузке файла:', error);
-        const errorRes = 'Ошибка при загрузке файла';
-        setErrorNotification(errorRes);
-        setErrorShowNotificationPicture(true);
+        if (axios.isAxiosError(error) && error.response) {
+          console.error('Server response data:', error.response.data.error);
+          const errorRes = error.response.data.error;
+          setErrorNotification(errorRes);
+          setErrorShowNotificationPicture(true);
+        } else {
+          throw error;
+        }
       }
     }
   };
 
   useEffect(() => {
     if (showNotificationPicture) {
-      handleCancel();
       setTimeout(() => {
         handleCancel();
       }, 50);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showNotificationPicture]);
 
   const handleFormSubmit = async (e: React.FormEvent) => {
@@ -186,7 +188,6 @@ const Editor: FC<LawEditorProps> = ({
         if (isConfirmed) {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-
           result = await onSaveEdit(editedLaw as ILaw);
         }
       }
@@ -421,9 +422,15 @@ const Editor: FC<LawEditorProps> = ({
                       />
                     </div>
                   ) : (
-                    <span className="text-slate-600 text-sm font-normal">
-                      Подгруженные документы отсутствуют
-                    </span>
+                    <div className="flex items-center justify-start space-x-1">
+                      <ExclamationTriangleIcon
+                        className="h-5 w-5 ml-2 text-amber-600"
+                        aria-hidden="true"
+                      />
+                      <span className="text-sm text-slate-600 font-normal">
+                        Подгруженные документы отсутствуют
+                      </span>
+                    </div>
                   )}
 
                   <div className="text-center my-4">
@@ -528,64 +535,6 @@ const Editor: FC<LawEditorProps> = ({
                     title="Назад"
                   />
                 </div>
-
-                {/* <div className="container mx-auto mt-8 p-8 max-w-4xl justify-center items-center flex-col block rounded-lg bg-white shadow-m">
-                <div className="px-4 sm:px-0 text-center">
-                  <h1 className="text-xl font-bold mb-4">
-                    Форма загрузки документа
-                    <span className="block mt-2 text-xs text-gray-500">
-                      Загрузите документ в формате PDF или DOCX.
-                    </span>
-                    <span className="block mt-2 text-sm text-gray-500">
-                      Если документ загружать не нужно, вы можете пропустить
-                      этот шаг
-                    </span>
-                  </h1>
-                  <div className="mt-6">
-                    <div className="mb-4">
-                      <input
-                        type="file"
-                        id="fileInput"
-                        name="documentLink"
-                        className="hidden"
-                        onChange={handleFileInputChange}
-                      />
-                      <label
-                        htmlFor="fileInput"
-                        className="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mb-2 inline-block"
-                      >
-                        Выберите файл
-                      </label>
-                      <br />
-                      <div className="mt-4">
-                        <button
-                          type="button"
-                          className="text-sm text-blue-500 hover:underline focus:outline-none"
-                          onClick={handleCancel}
-                        >
-                          Пропустить
-                        </button>
-                      </div>
-                      <div className="mt-4">
-                        <Button
-                          type="button"
-                          onClick={handleCancel}
-                          styleCSSButton={
-                            'w-full flex items-center justify-center w-1/2 px-5 py-2 text-sm text-slate-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto dark:hover:bg-slate-800 dark:bg-slate-900 hover:bg-slate-100 dark:text-slate-200 dark:border-slate-700'
-                          }
-                          styleCSSSpan={
-                            'text-sm text-slate-500 dark:text-slate-400'
-                          }
-                          icon={
-                            <ArrowUturnLeftIcon className="w-4 h-4 text-slate-500" />
-                          }
-                          title="Назад"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div> */}
               </>
             )}
           </form>

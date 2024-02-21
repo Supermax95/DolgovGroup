@@ -35,12 +35,10 @@ const ManagementModal: FC<ManagersModalProps> = ({
   manager,
   onSaveEdit,
   onSaveAdd,
-  // onCloseAddModal,
   onCloseEditModal,
   isAddingMode,
   editedManager,
   setEditedManager,
-  // showError,
 }) => {
   const dispatch = useAppDispatch();
 
@@ -66,12 +64,12 @@ const ManagementModal: FC<ManagersModalProps> = ({
     ? 'Регистрация нового менеджера'
     : 'Редактирование данных менеджера';
 
-  const handleCancel = () => {
+  const handleCancel = (): void => {
     setEditedManager(undefined);
     onCloseEditModal();
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = (e: React.FormEvent): void => {
     e.preventDefault();
     try {
       if (isAddingMode) {
@@ -89,7 +87,7 @@ const ManagementModal: FC<ManagersModalProps> = ({
     }
   };
 
-  const handleDelete = async () => {
+  const handleDelete = (): void => {
     const isConfirmed = window.confirm(
       'Вы уверены, что хотите удалить данного менеджера?'
     );
@@ -97,7 +95,7 @@ const ManagementModal: FC<ManagersModalProps> = ({
       const managerId = editedManager.id;
 
       try {
-        await dispatch(deleteManager({ managerId }));
+        dispatch(deleteManager({ managerId }));
         onCloseEditModal();
       } catch (error) {
         console.error('Произошла ошибка при удалении:', error);

@@ -62,12 +62,12 @@ const LocationsModal: FC<LocationsModalProps> = ({
 
   const modalTitle = isAddingMode ? 'Новая точка продажи' : 'Редактирование';
 
-  const handleCancel = () => {
+  const handleCancel = (): void => {
     setEditedLocation(undefined);
     onCloseEditModal();
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = (e: React.FormEvent): void => {
     e.preventDefault();
     const isConfirmed = window.confirm(
       'Вы уверены, что хотите внести изменения?'
@@ -83,7 +83,7 @@ const LocationsModal: FC<LocationsModalProps> = ({
     }
   };
 
-  const handleDelete = () => {
+  const handleDelete = (): void => {
     const isConfirmed = window.confirm(
       'Вы уверены, что хотите удалить эту локацию?'
     );

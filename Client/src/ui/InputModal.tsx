@@ -19,12 +19,12 @@ interface IInputModal {
 
 export interface InputField {
   id: string;
-  name: string;
-  type: (string | boolean) | undefined;
-  value: string | boolean | number | Date;
+  name?: string | undefined;
+  type?: (string | boolean) | undefined;
+  value: string | boolean | number | Date | undefined;
   placeholder?: string | undefined;
   autoComplete?: string | undefined;
-  title: string;
+  title?: string | undefined;
   htmlFor?: string | undefined;
   required?: boolean | undefined;
   pattern?: string | undefined;
