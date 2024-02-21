@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import RoleSidebar from '../../RoleSidebar/RoleSidebar';
 import getManagerInfo from '../../../Redux/thunks/Manager/getManagerInfo.api';
 
-interface IManager {
+export interface IManager {
   id: number;
   lastName: string;
   firstName: string;

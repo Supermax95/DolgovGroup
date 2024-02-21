@@ -210,7 +210,7 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
     );
   };
 
-  const handleDelete = () => {
+  const handleDelete = (): void => {
     const isConfirmed = window.confirm('Вы уверены, что хотите удалить акцию?');
 
     if (isConfirmed && editedPromotion && editedPromotion.id) {

@@ -123,6 +123,7 @@ const Law: FC = () => {
     } else if (dataLoaded && laws.length > 0 && !selectedLaw) {
       openEditEditor(laws[0]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataLoaded, laws, selectedLaw]);
 
   const closeAddEditor = (): void => {
@@ -143,6 +144,7 @@ const Law: FC = () => {
   };
 
   const handleSaveAdd = async (): Promise<void> => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let add = {} as any;
 
     try {
@@ -167,6 +169,7 @@ const Law: FC = () => {
   };
 
   const handleSaveEdit = async (editedLaw: ILaw): Promise<void> => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let add = {} as any;
     try {
       if (selectedLaw) {
@@ -256,8 +259,6 @@ const Law: FC = () => {
               isAddingMode={isAddingMode}
               editedLaw={editedLaw}
               setEditedLaw={setEditedLaw}
-              axiosError={axiosError}
-              resetAxiosError={resetAxiosError}
               currentStep={currentStep}
               setCurrentStep={setCurrentStep}
               setAddingMode={setAddingMode}

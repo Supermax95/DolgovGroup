@@ -10,6 +10,7 @@ import {
 interface ITable {
   title?: string;
   columnsDefaultName: { name: string }[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data?: any[] | undefined;
   columnsListDb: string[];
   currentPage?: number | undefined;
@@ -17,6 +18,7 @@ interface ITable {
   childrenSearch?: React.ReactNode;
   childrenFilter?: React.ReactNode;
   onAddClick?: (() => void) | undefined;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onEditClick?: (item: any) => void | undefined;
   onOneTimePassword?: (item: number) => Promise<void> | undefined;
   renderCell?: () => void;
@@ -41,6 +43,8 @@ const Table: FC<ITable> = ({
   const filteredData = data
     ? data.filter((item) => item.id !== currentManagerId)
     : [];
+
+  console.log('data', data);
 
   return (
     <div className="max-w-screen-lg">

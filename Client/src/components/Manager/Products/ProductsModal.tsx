@@ -264,8 +264,6 @@ const ProductsModal: FC<ProductsModalProps> = ({
     );
   };
 
-  //! прокинуть ошибки при удалении
-  //! нужны стейты здесь
   const handleDelete = (): void => {
     const isConfirmed = window.confirm(
       'Вы уверены, что хотите удалить продукт?'
@@ -307,7 +305,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
   };
 
   const handleBack = (): void => {
-    const product = products.find((p) => p.id === id);
+    const product: IProduct | undefined = products.find((p) => p.id === id);
     if (product) {
       setEditedProduct(undefined);
       onCloseEditModal();

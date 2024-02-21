@@ -79,11 +79,11 @@ const EditorQuestion: FC<EditorQuestionProps> = ({
     }
   }, [isAddingMode, setEditedQuestion]);
 
-  useEffect(() => {
-    if (showNotificationDelQuestion) {
-      setTimeout(() => {}, 50);
-    }
-  }, [showNotificationDelQuestion]);
+  // // useEffect(() => {
+  // //   if (showNotificationDelQuestion) {
+  // //     setTimeout(() => {}, 50);
+  // //   }
+  // // }, [showNotificationDelQuestion]);
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

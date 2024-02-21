@@ -90,13 +90,10 @@ const Products: FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);
   const [isAddingMode, setAddingMode] = useState(false);
-  // const openProduct = useAppSelector(
-  //   (state) => state.productSlice.currentProduct
-  // );
+
   const [editedProduct, setEditedProduct] = useState<
     IProduct | null | undefined
   >(null);
-  // const [axiosError, setAxiosError] = useState<string | null>(null);
   const [searchText, setSearchText] = useState('');
   const [showNew, setShowNew] = useState('');
   const [showDiscounted, setshowDiscounted] = useState('');

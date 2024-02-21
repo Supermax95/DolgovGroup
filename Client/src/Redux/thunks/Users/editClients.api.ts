@@ -28,12 +28,11 @@ interface ResponseData {
   barcode: string;
   userStatus: string;
   isActivated: boolean;
+  birthDate: Date;
   bonusProgram: string;
   balance: number;
   phoneNumber: string;
 }
-
-
 
 type ArrayResponseData = Array<ResponseData>;
 
