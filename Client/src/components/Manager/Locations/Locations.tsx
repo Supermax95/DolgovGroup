@@ -199,51 +199,60 @@ const Location: FC = () => {
     setSelectedLocation(null);
     setEditedLocation(null);
     setModalOpen(false);
+    dispatch(getLocations());
   };
 
   const closeEditModal = (): void => {
     setSelectedLocation(null);
     setEditedLocation(null);
     setModalOpen(false);
+    dispatch(getLocations());
   };
 
   const handleSaveAdd = async (): Promise<void> => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let add = {} as any;
     try {
       if (editedLocation) {
+        console.log('🚀 ~ handleSaveAdd ~ editedLocation:', editedLocation);
         const resultAction = await dispatch(
           addLocation({
             newLocation: editedLocation,
           })
         );
+
         const result = unwrapResult(resultAction);
-        add = result;
         console.log('🚀 ~ handleSaveAdd ~ resultAction:', result);
-        closeAddModal();
         setShowNotificationAddLocation(true);
+        setTimeout(() => {
+          closeEditModal();
+        }, 50);
       }
     } catch (error) {
       console.error('Произошла ошибка при добавлении:', error);
       setErrorNotification(error as string | null);
       setShowErrorNotificationAddLocation(true);
     }
-    return add;
   };
 
   const handleSaveEdit = async (editedLocation: ILocation): Promise<void> => {
     try {
       if (selectedLocation) {
-        await dispatch(
+        const resultAction = await dispatch(
           editLocation({
             locationId: selectedLocation.id,
             newInfo: editedLocation,
           })
         );
-        closeEditModal();
+        unwrapResult(resultAction);
+        setErrorNotification(null);
+        setShowNotificationEditLocation(true);
       }
+      setTimeout(() => {
+        closeEditModal();
+      }, 50);
     } catch (error) {
       console.error('Произошла ошибка при редактировании:', error);
+      setErrorNotification(error as string | null);
+      setShowErrorNotificationEditLocation(true);
     }
   };
 
@@ -293,20 +302,18 @@ const Location: FC = () => {
     </div>
   );
 
-  console.log('editedLocation***********', editedLocation);
-
   return (
     <Wrapper>
       {showNotificationAddLocation && (
         <PopUpNotification
           titleText={'Добавлена новая локация'}
-          name={editedLocation?.city}
+          name={`${editedLocation?.city} ${editedLocation?.address}`}
         />
       )}
       {showNotificationEditLocation && (
         <PopUpNotification
           titleText={'Внесены изменения в локацию'}
-          name={editedLocation?.city}
+          name={`${editedLocation?.city} ${editedLocation?.address}`}
         />
       )}
       {/* //!уведомления об ошибках */}

@@ -55,14 +55,8 @@ const ManagementModal: FC<ManagersModalProps> = ({
         phone: '',
       };
 
-  const [errorNotification, setErrorNotification] = useState<string | null>(
-    null
-  );
   //* удаление
   const [showNotificationDelManager, setShowNotificationDelManager] =
-    useState<boolean>(false);
-
-  const [showErrorNotificationDelManager, setErrorShowNotificationDelManager] =
     useState<boolean>(false);
 
   useEffect(() => {
@@ -123,14 +117,7 @@ const ManagementModal: FC<ManagersModalProps> = ({
           onCloseEditModal();
         }, 50);
       } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-          console.error('Server response data:', error.response.data.error);
-          const errorRes = error.response.data.error;
-          setErrorNotification(errorRes);
-          setErrorShowNotificationDelManager(true);
-        } else {
-          throw error;
-        }
+        console.error('Произошла ошибка при отправке:', error);
       }
     }
   };
@@ -260,14 +247,6 @@ const ManagementModal: FC<ManagersModalProps> = ({
         <PopUpNotification
           titleText={'Аккаунт менеджера удалён'}
           name={`${editedManager.lastName} ${editedManager.firstName}  ${editedManager.middleName}`}
-        />
-      )}
-
-      {/* //!уведомления об ошибках */}
-      {showErrorNotificationDelManager && (
-        <PopUpErrorNotification
-          titleText={'Ошибка'}
-          bodyText={errorNotification}
         />
       )}
 

@@ -1,9 +1,10 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import deleteLocation from '../../../Redux/thunks/Locations/deleteLocation.api';
 import Wrapper from '../../../ui/Wrapper';
 import InputModal, { InputField } from '../../../ui/InputModal';
 import Modal from '../../../ui/Modal';
+import PopUpNotification from '../../../ui/PopUpNotification';
 
 interface ILocation {
   id: number;
@@ -54,11 +55,25 @@ const LocationsModal: FC<LocationsModalProps> = ({
     invisible: false,
   };
 
+  //* удаление
+  const [showNotificationDelLocation, setShowNotificationDelLocation] =
+    useState<boolean>(false);
+
   useEffect(() => {
     if (location) {
       setEditedLocation({ ...location });
     }
   }, [location, isAddingMode, setEditedLocation]);
+
+  useEffect(() => {
+    if (showNotificationDelLocation) {
+      const timeoutId = setTimeout(() => {
+        setShowNotificationDelLocation(false);
+      });
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [showNotificationDelLocation]);
 
   const modalTitle = isAddingMode ? 'Новая точка продажи' : 'Редактирование';
 
@@ -75,10 +90,8 @@ const LocationsModal: FC<LocationsModalProps> = ({
     if (isConfirmed) {
       if (isAddingMode) {
         onSaveAdd(locationToSave);
-        onCloseAddModal();
       } else {
         onSaveEdit(locationToSave);
-        onCloseEditModal();
       }
     }
   };
@@ -89,8 +102,16 @@ const LocationsModal: FC<LocationsModalProps> = ({
     );
     if (isConfirmed && editedLocation && editedLocation.id) {
       const locationId = editedLocation.id;
-      dispatch(deleteLocation(locationId));
-      onCloseEditModal();
+
+      try {
+        dispatch(deleteLocation(locationId));
+        setShowNotificationDelLocation(true);
+        setTimeout(() => {
+          onCloseEditModal();
+        }, 50);
+      } catch (error) {
+        console.error('Произошла ошибка при отправке:', error);
+      }
     }
   };
 
@@ -98,7 +119,6 @@ const LocationsModal: FC<LocationsModalProps> = ({
     return null;
   }
   const uniqueCities = [...new Set(locations.map((location) => location.city))];
-  console.log(uniqueCities);
 
   const inputFields: InputField[] = [
     {
@@ -237,7 +257,13 @@ const LocationsModal: FC<LocationsModalProps> = ({
   ];
 
   return (
-    <Wrapper>
+    <>
+      {showNotificationDelLocation && (
+        <PopUpNotification
+          titleText={'Локация удалена'}
+          name={`${editedLocation?.city} ${editedLocation?.address}`}
+        />
+      )}
       <form onSubmit={handleFormSubmit}>
         <Modal
           modalTitle={modalTitle}
@@ -248,7 +274,7 @@ const LocationsModal: FC<LocationsModalProps> = ({
           <InputModal inputFields={inputFields} />
         </Modal>
       </form>
-    </Wrapper>
+    </>
   );
 };
 
