@@ -20,7 +20,7 @@ const getAnswers = createAsyncThunk<ResponseData, number>(
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        console.error('Server response data:', error.response.data.error);
+        // console.error('Server response data:', error.response.data.error);
         throw rejectWithValue(error.response.data.error);
       } else {
         throw error;

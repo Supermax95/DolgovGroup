@@ -19,7 +19,10 @@ interface ResponseData {
 
 const profileChangeFullName = createAsyncThunk<ResponseData, RequestDate>(
   'api/profileChangeFullName',
-  async ({ token, newLastName, newFirstName, newMiddleName }) => {
+  async (
+    { token, newLastName, newFirstName, newMiddleName },
+    { rejectWithValue }
+  ) => {
     try {
       const response: AxiosResponse = await axios.put(
         `http://${IP}:${PORT}/fullname`,
@@ -37,8 +40,12 @@ const profileChangeFullName = createAsyncThunk<ResponseData, RequestDate>(
       );
       return response.data;
     } catch (error) {
-      console.error('Error:', error);
-      throw error;
+      if (axios.isAxiosError(error) && error.response) {
+        // console.error(error.response.data.message);
+        throw rejectWithValue(error.response.data.message);
+      } else {
+        throw error;
+      }
     }
   }
 );

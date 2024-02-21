@@ -23,15 +23,19 @@ interface ResponseData {
 const currentProduct = createAsyncThunk<ResponseData, number>(
   'api/curentProduct',
 
-  async (productId) => {
+  async (productId, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axios.get(
         `http://${IP}:${PORT}/admin/currentproduct/${productId}`
       );
       return response.data;
     } catch (error) {
-      console.error('Error:', error);
-      throw error;
+      if (axios.isAxiosError(error) && error.response) {
+        // console.error(error.response.data.message);
+        throw rejectWithValue(error.response.data.message);
+      } else {
+        throw error;
+      }
     }
   }
 );

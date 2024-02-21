@@ -13,7 +13,7 @@ interface ResponseData {
 const profileChangeBirthDate = createAsyncThunk<ResponseData, RequestData>(
   'api/profileChangeBirthDate',
 
-  async ({ newBirthDate, token }) => {
+  async ({ newBirthDate, token }, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axios.put(
         `http://${IP}:${PORT}/calendar`,
@@ -27,10 +27,12 @@ const profileChangeBirthDate = createAsyncThunk<ResponseData, RequestData>(
       );
       return response.data;
     } catch (error) {
-      console.error('Error:', error);
-      throw error;
+      if (axios.isAxiosError(error) && error.response) {
+        throw rejectWithValue(error.response.data.message);
+      } else {
+        throw error;
+      }
     }
   }
 );
-
 export default profileChangeBirthDate;

@@ -59,12 +59,12 @@ const MarketMap: FC<MarketMapProps> = ({ selectedShop, onMarkerPress }) => {
     const fetchInitialLocation = async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status === 'granted') {
-        const startTimestamp = Date.now();
+        // const startTimestamp = Date.now();
         let userLocation = await Location.getCurrentPositionAsync({
           accuracy: Location.Accuracy.Low,
         });
-        const endTimestamp = Date.now();
-        const elapsedTime = endTimestamp - startTimestamp;
+        // const endTimestamp = Date.now();
+        // const elapsedTime = endTimestamp - startTimestamp;
         if (userLocation && mapRef.current) {
           if (selectedShop) {
             mapRef.current.animateToRegion({

@@ -2,7 +2,7 @@ import React, { FC, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { StackNavigationProp } from 'navigation/types';
-import { View, Text } from 'react-native';
+import { View, Text, Alert } from 'react-native';
 import Padding from 'ui/Padding';
 import FieldDetail from 'ui/FieldDetail';
 import userLogout from 'Redux/thunks/User/logout.api';
@@ -31,7 +31,7 @@ const Profile: FC = () => {
       await dispatch(userLogout({ token }));
       navigation.navigate('SignIn');
     } catch (error) {
-      console.error('Ошибка при выходе:', error);
+      Alert.alert('Ошибка при выходе:');
     }
   };
 

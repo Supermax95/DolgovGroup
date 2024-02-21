@@ -64,7 +64,6 @@ const CheckMail: FC = () => {
       const result = await dispatch(sendActivationLink({ userId }));
       Alert.alert('Проверьте свою почту.');
     } catch (error) {
-      console.error('Произошла ошибка при отправке:', error);
       Alert.alert('Произошла ошибка при отправке повторной активации.');
       setResendDisabled(false);
     }

@@ -71,7 +71,7 @@ console.log(profileInfo);
       phoneNumber: 'Нет данных',
     });
   } catch (error) {
-    console.error('Ошибка при получении данных', error);
+    // console.error('Ошибка при получении данных', error);
 
     return rejectWithValue({
       lastName: 'Нет данных',

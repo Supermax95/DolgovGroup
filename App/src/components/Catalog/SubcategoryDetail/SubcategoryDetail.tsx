@@ -9,6 +9,7 @@ import {
   Text,
   Pressable,
   RefreshControl,
+  Alert,
 } from 'react-native';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import getProducts from 'Redux/thunks/Catalog/productGet.api';
@@ -56,7 +57,7 @@ const SubcategoryDetail = ({ route }: any) => {
       await dispatch(getProducts());
       await dispatch(getSubcategory());
     } catch (error) {
-      console.error('Ошибка при обновлении данных:', error);
+      Alert.alert('Ошибка при обновлении данных');
     } finally {
       setRefreshing(false);
     }
