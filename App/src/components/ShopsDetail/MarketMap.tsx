@@ -65,11 +65,6 @@ const MarketMap: FC<MarketMapProps> = ({ selectedShop, onMarkerPress }) => {
         });
         const endTimestamp = Date.now();
         const elapsedTime = endTimestamp - startTimestamp;
-        console.log(
-          'Время выполнения getCurrentPositionAsync():',
-          elapsedTime,
-          'мс'
-        );
         if (userLocation && mapRef.current) {
           if (selectedShop) {
             mapRef.current.animateToRegion({

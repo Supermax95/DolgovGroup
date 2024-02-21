@@ -35,9 +35,7 @@ const locationsUserSlice = createSlice({
       })
       .addCase(getUserLocations.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.data = action.payload;
-        console.log('=====>', state.data);
-        
+        state.data = action.payload;        
       })
       .addCase(getUserLocations.rejected, (state, action) => {
         state.isLoading = false;
