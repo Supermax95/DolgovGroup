@@ -20,6 +20,16 @@ router.get('/admin/clients', async (req, res) => {
       where: {
         userStatus: 'Клиент',
       },
+      attributes: {
+        exclude: [
+          'password',
+          'activationLink',
+          'emailConfirmationCode',
+          'newEmail',
+          'notificationPush',
+          'notificationEmail',
+        ],
+      },
       order: [
         ['lastName', 'ASC'],
         ['firstName', 'ASC'],
@@ -137,6 +147,16 @@ router.put('/admin/clients/:id', async (req, res) => {
     const clients = await DiscountCard.findAll({
       where: {
         userStatus: 'Клиент',
+      },
+      attributes: {
+        exclude: [
+          'password',
+          'activationLink',
+          'emailConfirmationCode',
+          'newEmail',
+          'notificationPush',
+          'notificationEmail',
+        ],
       },
       order: [
         ['lastName', 'ASC'],

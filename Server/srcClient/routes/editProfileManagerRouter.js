@@ -6,6 +6,9 @@ module.exports = router
   .get('/info', async (req, res) => {
     try {
       const manager = await Manager.findAll({
+        attributes: {
+          exclude: ['password'],
+        },
         order: [
           ['lastName', 'ASC'],
           ['firstName', 'ASC'],

@@ -48,7 +48,7 @@ const usersSlice = createSlice({
       })
       .addCase(getClients.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.data = action.payload;
+        state.data = action.payload;        
       })
       .addCase(getClients.rejected, (state, action) => {
         state.isLoading = false;
@@ -66,6 +66,7 @@ const usersSlice = createSlice({
         state.isLoading = false;
         state.error =
           action.error.message || 'Произошла ошибка при редактировании';
+
       })
       .addCase(getEmployees.pending, (state) => {
         state.isLoading = true;
@@ -86,6 +87,7 @@ const usersSlice = createSlice({
       .addCase(editEmployees.fulfilled, (state, action) => {
         state.isLoading = false;
         state.data = action.payload;
+
       })
       .addCase(editEmployees.rejected, (state, action) => {
         state.isLoading = false;
