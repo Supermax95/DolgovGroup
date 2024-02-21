@@ -32,7 +32,7 @@ const checkEmployee = createAsyncThunk<ResponseData, RequestData>(
           },
         }
       );
-      console.log(response.data);
+      // console.log(response.data);
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {

@@ -56,7 +56,7 @@ const ManagementModal: FC<ManagersModalProps> = ({
       };
 
   useEffect(() => {
-    console.log('Данные менеджера:', editedManager);
+    // console.log('Данные менеджера:', editedManager);
     if (manager) {
       setEditedManager({ ...manager });
     }

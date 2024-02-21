@@ -5,7 +5,7 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Registration } from '../components/Registration/Registration';
 import SignIn from 'components/SignIn/SignIn';
 import Home from 'screens/Home/Home';
-import { Auth } from 'screens/Auth/Auth';
+// import { Auth } from 'screens/Auth/Auth';
 import Catalog from 'screens/Catalog/Catalog';
 import Shops from 'screens/Shops/Shops';
 import Support from 'screens/Support/Support';
@@ -109,10 +109,10 @@ export const AppNavigator: FC = () => {
 
     const timeoutId = setTimeout(() => {
       if (notificationPush) {
-        console.log('======>через 3 дня будет уведомление');
+        // console.log('======>через 3 дня будет уведомление');
         sendPushNotification();
       }
-      console.log('упало уведомление');
+      // console.log('упало уведомление');
     }, 2000);
 
     return () => clearTimeout(timeoutId);
@@ -144,7 +144,7 @@ export const AppNavigator: FC = () => {
     dispatch(getQuestions());
   }, [dispatch]);
 
-  const user = useAppSelector((state) => state.userSlice.user.isActivated);
+  const user = useAppSelector((state) => state.userSlice.user?.isActivated);
 
   const renderLoggedInUserScreens = () => (
     <>

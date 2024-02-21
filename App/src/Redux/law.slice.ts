@@ -56,7 +56,7 @@ const lawSlice = createSlice({
       .addCase(currentLaw.fulfilled, (state, action) => {
         state.isLoading = false;
         state.currentLaw = action.payload;
-        console.log('======>', state.currentLaw);
+        // console.log('======>', state.currentLaw);
       })
       .addCase(currentLaw.rejected, (state, action) => {
         state.isLoading = false;

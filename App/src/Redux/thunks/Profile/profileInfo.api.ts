@@ -57,7 +57,7 @@ const getProfileInfo = createAsyncThunk<
         notificationPush: data.notificationPush,
         notificationEmail: data.notificationEmail,
       };
-console.log(profileInfo);
+// console.log(profileInfo);
 
       return profileInfo;
     }
