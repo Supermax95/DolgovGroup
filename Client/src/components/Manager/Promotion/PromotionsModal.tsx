@@ -1,6 +1,5 @@
 import React, { ChangeEvent, FC, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
-import Wrapper from '../../../ui/Wrapper';
 import InputModal, { InputField } from '../../../ui/InputModal';
 import Modal from '../../../ui/Modal';
 import { VITE_URL } from '../../../VITE_URL';
@@ -87,9 +86,6 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
   const modalTitle = isAddingMode ? 'Новая акция' : 'Редактирование акции';
 
   useEffect(() => {
-    console.log('dbsdjknj');
-    console.log('showNotificationDelPromo', showNotificationDelPromo);
-
     if (
       showNotificationPicture ||
       showNotificationDelPromo ||
@@ -287,7 +283,7 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
   ];
 
   return (
-    <Wrapper>
+    <>
       {showNotificationPicture && (
         <PopUpNotification
           titleText={'Обложка акции загружена'}
@@ -517,7 +513,7 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
           )}
         </Modal>
       </form>
-    </Wrapper>
+    </>
   );
 };
 

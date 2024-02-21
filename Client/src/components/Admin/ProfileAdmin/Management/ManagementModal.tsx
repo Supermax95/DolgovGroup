@@ -1,9 +1,11 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useAppDispatch } from '../../../../Redux/hooks';
-import Wrapper from '../../../../ui/Wrapper';
 import InputModal, { InputField } from '../../../../ui/InputModal';
 import Modal from '../../../../ui/Modal';
 import deleteManager from '../../../../Redux/thunks/Manager/Management/deleteManager.api';
+import PopUpNotification from '../../../../ui/PopUpNotification';
+import PopUpErrorNotification from '../../../../ui/PopUpErrorNotification';
+import axios from 'axios';
 
 interface IManager {
   id: number;
@@ -53,12 +55,31 @@ const ManagementModal: FC<ManagersModalProps> = ({
         phone: '',
       };
 
+  const [errorNotification, setErrorNotification] = useState<string | null>(
+    null
+  );
+  //* удаление
+  const [showNotificationDelManager, setShowNotificationDelManager] =
+    useState<boolean>(false);
+
+  const [showErrorNotificationDelManager, setErrorShowNotificationDelManager] =
+    useState<boolean>(false);
+
   useEffect(() => {
-    // console.log('Данные менеджера:', editedManager);
     if (manager) {
       setEditedManager({ ...manager });
     }
   }, [manager, isAddingMode, setEditedManager]);
+
+  useEffect(() => {
+    if (showNotificationDelManager) {
+      const timeoutId = setTimeout(() => {
+        setShowNotificationDelManager(false);
+      });
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [showNotificationDelManager]);
 
   const modalTitle = isAddingMode
     ? 'Регистрация нового менеджера'
@@ -96,9 +117,20 @@ const ManagementModal: FC<ManagersModalProps> = ({
 
       try {
         dispatch(deleteManager({ managerId }));
-        onCloseEditModal();
+        setShowNotificationDelManager(true);
+        //* позволяет вывести уведолмление после закрытия модального окна
+        setTimeout(() => {
+          onCloseEditModal();
+        }, 50);
       } catch (error) {
-        console.error('Произошла ошибка при удалении:', error);
+        if (axios.isAxiosError(error) && error.response) {
+          console.error('Server response data:', error.response.data.error);
+          const errorRes = error.response.data.error;
+          setErrorNotification(errorRes);
+          setErrorShowNotificationDelManager(true);
+        } else {
+          throw error;
+        }
       }
     }
   };
@@ -224,18 +256,31 @@ const ManagementModal: FC<ManagersModalProps> = ({
 
   return (
     <>
-      <Wrapper>
-        <form onSubmit={handleFormSubmit}>
-          <Modal
-            modalTitle={modalTitle}
-            isAddingMode={isAddingMode}
-            onCancelСlick={handleCancel}
-            onDeleteClick={handleDelete}
-          >
-            <InputModal inputFields={inputFieldsDate} />
-          </Modal>
-        </form>
-      </Wrapper>
+      {showNotificationDelManager && (
+        <PopUpNotification
+          titleText={'Аккаунт менеджера удалён'}
+          name={`${editedManager.lastName} ${editedManager.firstName}  ${editedManager.middleName}`}
+        />
+      )}
+
+      {/* //!уведомления об ошибках */}
+      {showErrorNotificationDelManager && (
+        <PopUpErrorNotification
+          titleText={'Ошибка'}
+          bodyText={errorNotification}
+        />
+      )}
+
+      <form onSubmit={handleFormSubmit}>
+        <Modal
+          modalTitle={modalTitle}
+          isAddingMode={isAddingMode}
+          onCancelСlick={handleCancel}
+          onDeleteClick={handleDelete}
+        >
+          <InputModal inputFields={inputFieldsDate} />
+        </Modal>
+      </form>
     </>
   );
 };
