@@ -28,7 +28,6 @@ const Law: FC = () => {
   const [selectedLaw, setSelectedLaw] = useState<ILaw | null>(null);
   const [isAddingMode, setAddingMode] = useState(false);
   const [editedLaw, setEditedLaw] = useState<ILaw | null | undefined>(null);
-  const [axiosError, setAxiosError] = useState<string | null>(null);
   const [dataLoaded, setDataLoaded] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [isLoading, setLoading] = useState(false);
@@ -137,10 +136,6 @@ const Law: FC = () => {
     setSelectedLaw(null);
     setEditedLaw(null);
     setEditorOpen(false);
-  };
-
-  const resetAxiosError = () => {
-    setAxiosError(null);
   };
 
   const handleSaveAdd = async (): Promise<void> => {

@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import deleteLocation from '../../../Redux/thunks/Locations/deleteLocation.api';
-import Wrapper from '../../../ui/Wrapper';
 import InputModal, { InputField } from '../../../ui/InputModal';
 import Modal from '../../../ui/Modal';
 import PopUpNotification from '../../../ui/PopUpNotification';
@@ -36,7 +35,6 @@ const LocationsModal: FC<LocationsModalProps> = ({
   onSaveEdit,
   onSaveAdd,
   onCloseEditModal,
-  onCloseAddModal,
   isAddingMode,
   editedLocation,
   setEditedLocation,
