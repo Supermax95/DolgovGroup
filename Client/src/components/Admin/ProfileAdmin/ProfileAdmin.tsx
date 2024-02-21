@@ -198,7 +198,7 @@ const ProfileAdmin: FC = () => {
     if (isConfirmed) {
       try {
         // Проверка верности кириллицы
-        const cyrillicRegex = /^[А-Яа-яЁё\s\-]+$/;
+        const cyrillicRegex = /^[А-Яа-яЁё\s-]+$/;
         if (
           !cyrillicRegex.test(data.newLastName) ||
           !cyrillicRegex.test(data.newFirstName) ||
@@ -349,7 +349,7 @@ const ProfileAdmin: FC = () => {
             })
           );
           unwrapResult(resultEdit);
-           console.log(resultEdit);
+          console.log(resultEdit);
 
           setErrorNotification(null);
           setShowNotificationPass(true);

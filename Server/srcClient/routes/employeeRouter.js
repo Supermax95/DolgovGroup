@@ -4,7 +4,6 @@ const { DiscountCard } = require('../../db/models');
 const nodemailer = require('nodemailer');
 const axios = require('axios');
 
-
 const transporter = nodemailer.createTransport({
   port: 465,
   host: 'smtp.gmail.com',
@@ -22,6 +21,16 @@ router.get('/admin/employees', async (req, res) => {
         userStatus: {
           [Op.not]: 'Клиент',
         },
+      },
+      attributes: {
+        exclude: [
+          'password',
+          'activationLink',
+          'emailConfirmationCode',
+          'newEmail',
+          'notificationPush',
+          'notificationEmail',
+        ],
       },
       order: [
         ['lastName', 'ASC'],
@@ -142,6 +151,16 @@ router.put('/admin/employees/:id', async (req, res) => {
         userStatus: {
           [Op.not]: 'Клиент',
         },
+      },
+      attributes: {
+        exclude: [
+          'password',
+          'activationLink',
+          'emailConfirmationCode',
+          'newEmail',
+          'notificationPush',
+          'notificationEmail',
+        ],
       },
       order: [
         ['lastName', 'ASC'],

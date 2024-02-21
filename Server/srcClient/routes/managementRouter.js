@@ -20,6 +20,9 @@ module.exports = router
         where: {
           isAdmin: false,
         },
+        attributes: {
+          exclude: ['password'],
+        },
         order: [
           ['lastName', 'ASC'],
           ['firstName', 'ASC'],
@@ -80,6 +83,9 @@ module.exports = router
         const managers = await Manager.findAll({
           where: {
             isAdmin: false,
+          },
+          attributes: {
+            exclude: ['password'],
           },
           order: [
             ['lastName', 'ASC'],
@@ -219,6 +225,9 @@ module.exports = router
           where: {
             isAdmin: false,
           },
+          attributes: {
+            exclude: ['password'],
+          },
           order: [
             ['lastName', 'ASC'],
             ['firstName', 'ASC'],
@@ -226,7 +235,6 @@ module.exports = router
           ],
           raw: true,
         });
-        console.log('===============================>', managers);
         const updatedManagerOne = await Manager.findOne({
           where: { id: managerId },
         });
@@ -266,7 +274,6 @@ module.exports = router
         //! если письмо не отослалось, произошла какая-то ошибка, надо сообщать об этом на фронт
         //* генерация пароля
         const code = generateCode();
-        console.log('code==================>', code);
 
         const mailData = {
           from: process.env.EMAIL,
@@ -343,6 +350,9 @@ module.exports = router
       const managers = await Manager.findAll({
         where: {
           isAdmin: false,
+        },
+        attributes: {
+          exclude: ['password'],
         },
         order: [
           ['lastName', 'ASC'],
