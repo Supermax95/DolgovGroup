@@ -88,13 +88,9 @@ const ProductsModal: FC<ProductsModalProps> = ({
   const [isUpload, setUpload] = useState<boolean>(false);
   const [currentStep, setCurrentStep] = useState<number>(1);
 
-  //! message не выводится с бэка в случае положительного действия
-  //! ошибка тоже не выгружается с бэка, т.к. ошибку он не допускает пока вовсе. Не знаю, обрабатывает ли вообще
-  // const [messNotification, setMessNotification] = useState<string | null>(null);
   const [errorNotification, setErrorNotification] = useState<string | null>(
     null
   );
-
   const [showNotificationPicture, setShowNotificationPicture] =
     useState<boolean>(false);
   //* удаление
@@ -280,6 +276,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
       try {
         dispatch(deleteProduct(productId));
         setShowNotificationDelProd(true);
+        //* позволяет вывести уведолмление после закрытия модального окна
         setTimeout(() => {
           onCloseEditModal();
         }, 50);
@@ -300,12 +297,12 @@ const ProductsModal: FC<ProductsModalProps> = ({
       try {
         dispatch(deleteProductPhoto(productId));
         setShowNotificationDelPick(true);
+        setTimeout(() => {
+          onCloseEditModal();
+        }, 50);
       } catch (error) {
         console.error('Произошла ошибка при удалении:', error);
       }
-      setTimeout(() => {
-        onCloseEditModal();
-      }, 50);
     }
   };
 
@@ -579,6 +576,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
           bodyText={errorNotification}
         />
       )}
+
       <form onSubmit={handleFormSubmit}>
         <Modal
           modalTitle={modalTitle}

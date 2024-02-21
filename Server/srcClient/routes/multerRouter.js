@@ -76,12 +76,18 @@ router.put(
     const { id } = req.params;
     const originalname = req.file.filename;
     try {
-      await Promotion.update(
-        { photo: `/uploads/promotion/${originalname}` },
-        { where: { id } }
-      );
+      const promotion = await Promotion.findByPk(id);
 
-      res.json({ message: 'Файл загрузился.' });
+      if (!promotion) {
+        res.status(404).json({ error: 'Акция не найдена' });
+      } else {
+        await Promotion.update(
+          { photo: `/uploads/promotion/${originalname}` },
+          { where: { id } }
+        );
+
+        res.json({ message: 'Файл загрузился.' });
+      }
     } catch (error) {
       console.log('error', error);
       res.status(500).json({ message: 'Ошибка загрузки' });
