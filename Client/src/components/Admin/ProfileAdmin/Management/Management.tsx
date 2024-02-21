@@ -40,17 +40,6 @@ const Management: FC = () => {
   const managers = useAppSelector<IManager[]>(
     (state) => state.managerSlice.data
   );
-  console.log('managers', managers);
-
-  //* для уведомления при добавлении
-  const managerIdForBellAdd = useAppSelector(
-    (state) => state.managerSlice.addedManagerData
-  );
-
-  //* для уведомления при редактировании
-  const managerIdForBellEdit = useAppSelector(
-    (state) => state.managerSlice.updatedManager
-  );
 
   //* для уведомления отправке кода на почту
   const managerIdForBellOneTimePass = useAppSelector(
@@ -177,8 +166,10 @@ const Management: FC = () => {
           })
         );
         unwrapResult(resultAdd);
-        closeAddModal();
         setShowNotificationAdd(true);
+        setTimeout(() => {
+          closeEditModal();
+        }, 50);
       }
     } catch (error) {
       console.error('Произошла ошибка при добавлении:', error);
@@ -199,8 +190,10 @@ const Management: FC = () => {
         );
 
         unwrapResult(resultEdit);
-        closeEditModal();
         setShowNotificationEdit(true);
+        setTimeout(() => {
+          closeEditModal();
+        }, 50);
       }
     } catch (error) {
       console.error('Произошла ошибка при редактировании:', error);
@@ -218,7 +211,6 @@ const Management: FC = () => {
         })
       );
       unwrapResult(result);
-
       setShowNotificationOnePass(true);
     } catch (error) {
       console.error('Произошла ошибка при отправке:', error);
@@ -234,7 +226,7 @@ const Management: FC = () => {
           <PopUpNotification
             titleText={'Личный кабинет менеджера создан'}
             bodyText={'Временный пароль выслан на почту:'}
-            email={managerIdForBellAdd.email}
+            email={editedManager?.email}
           />
         )}
         {showNotificationEdit && (
@@ -243,13 +235,13 @@ const Management: FC = () => {
             bodyText={
               'Для обновления пароля менеджера отправьте новый пароль на почту:'
             }
-            email={managerIdForBellEdit.email}
+            email={editedManager?.email}
           />
         )}
         {showNotificationOnePass && (
           <PopUpNotification
             titleText={'Временный пароль выслан на почту:'}
-            email={managerIdForBellOneTimePass.email}
+            email={managerIdForBellOneTimePass?.email}
           />
         )}
 

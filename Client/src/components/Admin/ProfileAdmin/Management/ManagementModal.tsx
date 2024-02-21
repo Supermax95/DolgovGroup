@@ -4,8 +4,6 @@ import InputModal, { InputField } from '../../../../ui/InputModal';
 import Modal from '../../../../ui/Modal';
 import deleteManager from '../../../../Redux/thunks/Manager/Management/deleteManager.api';
 import PopUpNotification from '../../../../ui/PopUpNotification';
-import PopUpErrorNotification from '../../../../ui/PopUpErrorNotification';
-import axios from 'axios';
 
 interface IManager {
   id: number;

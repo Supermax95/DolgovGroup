@@ -69,16 +69,13 @@ module.exports = router
           error: 'Пользователь с таким номером телефона уже существует',
         });
       } else {
-        const resultAdd = await Manager.create({
+        await Manager.create({
           lastName: newManager.lastName,
           firstName: newManager.firstName,
           middleName: newManager.middleName,
           phone: newManager.phone,
           email: newManager.email,
         });
-        const addedManagerData = resultAdd.get();
-        // console.log('addedManagerData', addedManagerData);
-        // console.log('addedManagerData======>', addedManagerData.id);
 
         const managers = await Manager.findAll({
           where: {
@@ -98,7 +95,6 @@ module.exports = router
         //! если письмо не отослалось, произошла какая-то ошибка, надо сообщать об этом на фронт
         //* генерация пароля
         const code = generateCode();
-        console.log('code', code);
         const mailData = {
           from: process.env.EMAIL,
           to: newManager.email,
@@ -146,9 +142,7 @@ module.exports = router
           console.log('Код пользователю отправлен');
         }
 
-        //   console.log('addedManagerData=======Ю', addedManagerData);
-
-        res.json({ managers, addedManagerData });
+        res.json({ managers });
       }
     } catch (error) {
       console.log('Ошибка при получении данных из базы данных', error);
@@ -235,13 +229,8 @@ module.exports = router
           ],
           raw: true,
         });
-        const updatedManagerOne = await Manager.findOne({
-          where: { id: managerId },
-        });
 
-        const updatedManager = updatedManagerOne.get();
-
-        res.json({ managers, updatedManager });
+        res.json({ managers });
       }
     } catch (error) {
       console.log('Ошибка при получении данных из базы данных', error);

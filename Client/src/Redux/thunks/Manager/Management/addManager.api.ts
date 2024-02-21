@@ -25,7 +25,6 @@ interface ResponseData {
 
 interface ServerResponse {
   managers: ResponseData[];
-  addedManagerData: ResponseData;
 }
 
 const addManager = createAsyncThunk<ServerResponse, RequestData>(
