@@ -264,6 +264,8 @@ const ProductsModal: FC<ProductsModalProps> = ({
     );
   };
 
+  //! прокинуть ошибки при удалении
+  //! нужны стейты здесь
   const handleDelete = (): void => {
     const isConfirmed = window.confirm(
       'Вы уверены, что хотите удалить продукт?'

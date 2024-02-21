@@ -21,6 +21,7 @@ interface User {
   email: string;
   barcode: string;
   userStatus: string;
+  birthDate: Date | undefined;
   isActivated: boolean;
   bonusProgram: string;
   balance: number;

@@ -22,6 +22,7 @@ export interface IUserTable {
   barcode: string;
   userStatus: string;
   isActivated: boolean;
+  birthDate: Date | undefined;
   bonusProgram: string;
   balance: number;
   phoneNumber: string;
