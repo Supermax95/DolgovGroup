@@ -23,10 +23,10 @@ export interface InputField {
   type: (string | boolean) | undefined;
   value: string | boolean | number | Date;
   placeholder?: string | undefined;
-  autoComplete: string;
+  autoComplete?: string | undefined;
   title: string;
   htmlFor?: string | undefined;
-  required: boolean;
+  required?: boolean | undefined;
   pattern?: string | undefined;
   // onChange?: (value: string) => void | undefined;
   onChange?: (

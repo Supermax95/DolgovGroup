@@ -14,7 +14,6 @@ const App: FC = () => {
   return (
     <>
       <Toaster position="bottom-left" expand={true} />
-
       <Navigation />
     </>
   );

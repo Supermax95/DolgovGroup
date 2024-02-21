@@ -47,7 +47,7 @@ const Navigation: FC = () => {
     } else if (!manager.email && !SuccessPage) {
       navigate('/portal');
     }
-  }, [manager.email, navigate, location.pathname]);
+  }, [manager.email, navigate]);
 
   return (
     <>
