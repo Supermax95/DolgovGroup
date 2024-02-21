@@ -64,29 +64,8 @@ const LocationsModal: FC<LocationsModalProps> = ({
 
   const handleCancel = () => {
     setEditedLocation(undefined);
-    //! почему работает на обоих клойзах, хотя этот только на эдит, хаха
     onCloseEditModal();
   };
-
-  //для упрощения
-  // const handleFormSubmit = (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   if (isAddingMode) {
-  //     onSaveAdd(locationToSave);
-  //     onCloseAddModal();
-  //   } else {
-  //     onSaveEdit(locationToSave);
-  //     onCloseEditModal();
-  //   }
-  // };
-
-  // const handleDelete = () => {
-  //   if (editedLocation && editedLocation.id) {
-  //     const locationId = editedLocation.id;
-  //     dispatch(deleteLocation(locationId));
-  //     onCloseEditModal();
-  //   }
-  // };
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -120,7 +99,6 @@ const LocationsModal: FC<LocationsModalProps> = ({
   }
   const uniqueCities = [...new Set(locations.map((location) => location.city))];
   console.log(uniqueCities);
-  
 
   const inputFields: InputField[] = [
     {

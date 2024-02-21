@@ -23,8 +23,9 @@ const Portal: FC = () => {
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [data, setData] = useState<IDate>({ email: '', password: '' });
-  const [isLoading, setLoading] = useState(false);
-  const [isModalOpen, setModalOpen] = useState(true);
+  // eslint-disable-next-line
+  const [isLoading, setLoading] = useState<boolean>(false);
+  const [isModalOpen, setModalOpen] = useState<boolean>(true);
   const [enterEmail, setEnterEmail] = useState<IEmail | null | undefined>(null);
   const [selectedManager, setSelectedManager] = useState<string | null>(null);
   const [modalError, setModalError] = useState<string | null>(null);
