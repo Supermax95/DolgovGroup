@@ -50,14 +50,7 @@ const SingleProductCard: FC<ISingleProductCard> = ({
       </SafeAreaView>
 
       <View className={`w-full flex-1 h-full bg-white rounded-t-3xl px-6 py-2`}>
-        {/* //! артикул */}
         <View className="space-y-2">
-          {/* <View className={`flex items-end w-full`}>
-            <Text className={`text-xs font-normal text-gray-500`}>
-              Арт. {article}
-            </Text>
-          </View> */}
-
           <View className={`flex items-start justify-start w-full`}>
             <Text className={`text-lg font-bold text-gray-800`}>
               {productName}

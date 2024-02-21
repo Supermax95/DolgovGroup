@@ -132,7 +132,7 @@ router.post('/admin/products', async (req, res) => {
     });
     if (existingProduct) {
       return res.status(400).json({
-        error: 'Продукт с указанным артикулом уже существует',
+        error: 'Продукт с указанным кодом номенкулатуры уже существует',
       });
     }
 
@@ -228,7 +228,7 @@ router.put('/admin/products', async (req, res) => {
 
     if (existingProduct) {
       return res.status(400).json({
-        error: 'Продукт с указанным артикулом уже существует',
+        error: 'Продукт с указанным кодом номенкулатуры уже существует',
       });
     }
 
