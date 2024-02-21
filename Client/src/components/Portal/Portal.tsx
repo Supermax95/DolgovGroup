@@ -53,7 +53,6 @@ const Portal: FC = () => {
       const resultAction = await dispatch(portalLogin(data));
 
       if (portalLogin.fulfilled.match(resultAction)) {
-        //! вход для всех - магазины. затем надо будет исправить, что для админа редирект на что-то одно, для менеджера другое, мб
         setLoading(true);
         setTimeout(() => {
           setLoading(false);
