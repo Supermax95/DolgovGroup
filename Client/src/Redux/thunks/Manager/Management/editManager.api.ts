@@ -26,7 +26,6 @@ interface ResponseData {
 
 interface ServerResponse {
   managers: ResponseData[];
-  updatedManager: ResponseData;
 }
 
 const editManager = createAsyncThunk<ServerResponse, RequestData>(

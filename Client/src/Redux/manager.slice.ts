@@ -28,8 +28,6 @@ interface managerState {
   manager: IManager;
   data: IManager[]; //* используется массив для таблицы в кабинете админа
   info: IManager[]; //* используется массив для таблицы в кабинете маркетолога
-  addedManagerData: IManager;
-  updatedManager: IManager;
   resultPass: IManager;
   isAuth: boolean;
   isLoading: boolean;
@@ -39,24 +37,6 @@ interface managerState {
 
 const initialState: managerState = {
   manager: {
-    id: 0,
-    lastName: '',
-    firstName: '',
-    middleName: '',
-    phone: '',
-    email: '',
-    isAdmin: false,
-  },
-  addedManagerData: {
-    id: 0,
-    lastName: '',
-    firstName: '',
-    middleName: '',
-    phone: '',
-    email: '',
-    isAdmin: false,
-  },
-  updatedManager: {
     id: 0,
     lastName: '',
     firstName: '',
@@ -266,7 +246,6 @@ const managerSlice = createSlice({
       .addCase(addManager.fulfilled, (state, action) => {
         state.isLoading = false;
         state.data = action.payload.managers;
-        state.addedManagerData = action.payload.addedManagerData;
       })
       .addCase(addManager.rejected, (state, action) => {
         state.isLoading = false;
@@ -280,9 +259,6 @@ const managerSlice = createSlice({
       .addCase(editManager.fulfilled, (state, action) => {
         state.isLoading = false;
         state.data = action.payload.managers;
-        state.updatedManager = action.payload.updatedManager;
-        console.log(' state.data', state.data);
-        console.log('state.id', state);
       })
       .addCase(editManager.rejected, (state, action) => {
         state.isLoading = false;
