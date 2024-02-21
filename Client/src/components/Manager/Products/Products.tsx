@@ -99,7 +99,7 @@ const Products: FC = () => {
   const [showDiscounted, setshowDiscounted] = useState('');
   const [withoutIsDiscounted, setwWthoutIsDiscounted] = useState('');
 
-  const [showNotificationArticle, setShowNotificationArticle] =
+  const [showNomenclatureCode, setShowNomenclatureCode] =
     useState<boolean>(false);
 
   //* всплывающие уведомления
@@ -159,14 +159,14 @@ const Products: FC = () => {
   ]);
 
   useEffect(() => {
-    if (showNotificationArticle) {
+    if (showNomenclatureCode) {
       const notificationTimeout = setTimeout(() => {
-        setShowNotificationArticle(false);
+        setShowNomenclatureCode(false);
       }, 3000);
 
       return () => clearTimeout(notificationTimeout);
     }
-  }, [showNotificationArticle]);
+  }, [showNomenclatureCode]);
 
   const itemsPerPage = 30;
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -358,7 +358,7 @@ const Products: FC = () => {
       .writeText(text)
       .then(() => {
         console.log('Текст скопирован в буфер обмена:', text);
-        setShowNotificationArticle(true);
+        setShowNomenclatureCode(true);
       })
       .catch((error) => {
         console.error('Не удалось скопировать текст:', error);
@@ -375,7 +375,7 @@ const Products: FC = () => {
   //   document.body.removeChild(textarea);
 
   //   console.log('Текст скопирован в буфер обмена:', text);
-  //   setShowNotificationArticle(true);
+  //   setShowNomenclatureCode(true);
   // };
 
   //* сбрасывает состояния чекбоксов и радиокнопок
@@ -430,14 +430,14 @@ const Products: FC = () => {
       />
 
       <div className="p-4">
-        {showNotificationArticle && (
+        {showNomenclatureCode && (
           <div className="fixed top-24 left-1/2 transform -translate-x-1/2 bg-opacity-75 animate-pulse h-10 w-80 z-10 bg-slate-600 p-4 rounded-md">
             <span
               className="text-slate-100 font-medium flex items-center"
               style={{ marginTop: '-0.5rem' }}
             >
               <CheckIcon className="mr-1 h-5 w-5" />
-              Артикул скопирован
+              Код номенкулатуры скопирован
             </span>
           </div>
         )}

@@ -102,16 +102,21 @@ router.put(
     const { id } = req.params;
     const originalname = req.file.filename;
     try {
-      await Law.update(
-        { documentLink: `/uploads/document/${originalname}` },
-        { where: { id } }
-      );
-      const laws = await Law.findAll({
-        order: [['title', 'ASC']],
-        raw: true,
-      });
+      const law = await Law.findByPk(id);
+      if (!law) {
+        res.status(404).json({ error: 'Акция не найдена' });
+      } else {
+        await Law.update(
+          { documentLink: `/uploads/document/${originalname}` },
+          { where: { id } }
+        );
+        const laws = await Law.findAll({
+          order: [['title', 'ASC']],
+          raw: true,
+        });
 
-      res.json({ laws, message: 'Файл загрузился.' });
+        res.json({ laws, message: 'Файл загрузился.' });
+      }
     } catch (error) {
       console.log('error', error);
       res.status(500).json({ message: 'Ошибка загрузки' });
@@ -126,16 +131,19 @@ router.put(
     const { id } = req.params;
     const originalname = req.file.filename;
     try {
-      await Category.update(
-        { img: `/uploads/category/${originalname}` },
-        { where: { id } }
-      );
-      const category = await Category.findAll({
-        order: [['categoryName', 'ASC']],
-        raw: true,
-      });
+      const category = await Category.findByPk(id);
+      if (!category) {
+        await Category.update(
+          { img: `/uploads/category/${originalname}` },
+          { where: { id } }
+        );
+        const category = await Category.findAll({
+          order: [['categoryName', 'ASC']],
+          raw: true,
+        });
 
-      res.json({ category, message: 'Файл загрузился.' });
+        res.json({ category, message: 'Файл загрузился.' });
+      }
     } catch (error) {
       console.log('error', error);
       res.status(500).json({ message: 'Ошибка загрузки' });
