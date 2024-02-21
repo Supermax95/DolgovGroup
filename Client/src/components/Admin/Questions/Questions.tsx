@@ -11,6 +11,11 @@ import editQuestion from '../../../Redux/thunks/Question/editQuestion.api';
 import LoadingAnimation from '../Laws/Loading';
 import SidebarQuestion from './SidebarQuestion';
 
+export interface SaveResult {
+  postId: number | undefined;
+  questions: IQuestion[]; 
+}
+
 export interface IQuestion {
   id: number;
   title: string;
@@ -141,7 +146,7 @@ const Questions: FC = () => {
     setAxiosError(null);
   };
 
-  const handleSaveAdd = async (): Promise<void> => {
+  const handleSaveAdd = async (): Promise<SaveResult> => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let add = {} as any;
 

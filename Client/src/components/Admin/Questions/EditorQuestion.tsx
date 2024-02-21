@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
-import { IQuestion } from './Questions';
+import { IQuestion, SaveResult } from './Questions';
 import { HandThumbUpIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Button from '../../../ui/Button';
 import ReactQuill from 'react-quill';
@@ -11,10 +11,6 @@ import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
 import deleteQuestion from '../../../Redux/thunks/Question/deleteQuestion.api';
 import getLaws from '../../../Redux/thunks/Document/getLaws.api';
 
-interface SaveResult {
-  postId: number | undefined;
-  questions: IQuestion[]; 
-}
 
 interface EditorQuestionProps {
   isOpen: boolean;
@@ -40,10 +36,8 @@ const EditorQuestion: FC<EditorQuestionProps> = ({
   isOpen,
   question,
   onSaveEdit,
-  onCloseAddEditor,
   onSaveAdd,
   isAddingMode,
-  setAddingMode,
   editedQuestion,
   setEditedQuestion,
   openAddEditor,
