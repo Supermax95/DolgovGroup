@@ -64,7 +64,7 @@ const Table: FC<ITable> = ({
                 {title === 'Список контактов' ? (
                   <></>
                 ) : (
-                  <th className="w-16 pl-6 py-3   text-center   border-b-2 border-orange-300 leading-4 text-slate-700 text-sm font-bold ">
+                  <th className="w-16 pl-6 py-3  text-center border-b-2 border-orange-300 leading-4 text-slate-700 text-sm font-bold ">
                     {title === 'Список сотрудников' ||
                     title === 'Список покупателей' ? (
                       <div className="flex justify-center items-center rounded-lg">
@@ -84,7 +84,7 @@ const Table: FC<ITable> = ({
                     )}
                   </th>
                 )}
-                <th className="w-16 pl-6 py-3   text-center   border-b-2 border-orange-300 leading-4 text-slate-700 text-sm font-medium ">
+                <th className="w-16 pl-6 py-3 text-center border-b-2 border-orange-300 leading-4 text-slate-700 text-sm font-medium ">
                   №
                 </th>
 
@@ -118,7 +118,7 @@ const Table: FC<ITable> = ({
                       </td>
                     )}
 
-                    <td className="w-16 text-center pl-6 py-0 whitespace-no-wrap border-b-2 border-slate-300 text-slate-600 text-sm font-normal">
+                    <td className=" w-24 text-center pl-6 py-0 whitespace-no-wrap border-b-2 border-slate-300 text-slate-600 text-sm font-normal">
                       <div>
                         {(currentPage
                           ? (currentPage - 1) * (itemsPerPage ?? 1)

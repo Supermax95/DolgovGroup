@@ -282,7 +282,7 @@ const Nocarousel: FC = () => {
               .map((promotion) => (
                 <div
                   key={promotion.id}
-                  className="mx-auto my-4 flex w-full flex-col overflow-hidden rounded-2xl border border-gray-300 bg-white text-slate-900 hover:shadow-lg"
+                  className="mx-auto my-4 flex w-full flex-col overflow-hidden rounded-2xl border border-gray-300 bg-white text-slate-900 transition hover:translate-y-2 hover:shadow-lg"
                 >
                   <div className="relative">
                     <div className="absolute flex h-6 w-6 items-center justify-center rounded-lg bg-slate-400 hover:bg-lime-600 top-2 right-2 ">
@@ -375,7 +375,7 @@ const Nocarousel: FC = () => {
               .map((promotion) => (
                 <div
                   key={promotion.id}
-                  className="mx-auto my-4 flex w-full flex-col overflow-hidden rounded-2xl border border-gray-300 bg-white text-slate-900 hover:shadow-lg"
+                  className="mx-auto my-4 flex w-full flex-col overflow-hidden rounded-2xl border border-gray-300 bg-white text-slate-900 transition hover:translate-y-2 hover:shadow-lg"
                 >
                   <div className="relative">
                     <div className="absolute flex h-6 w-6 items-center justify-center rounded-lg bg-slate-400 hover:bg-lime-600 top-2 right-2 ">
