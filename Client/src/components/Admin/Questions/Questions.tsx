@@ -13,7 +13,7 @@ import SidebarQuestion from './SidebarQuestion';
 
 export interface SaveResult {
   postId: number | undefined;
-  questions: IQuestion[]; 
+  questions: IQuestion[];
 }
 
 export interface IQuestion {
