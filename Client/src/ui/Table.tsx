@@ -190,7 +190,7 @@ const Table: FC<ITable> = ({
                                 'email',
                               ].includes(columnName) && (
                                 <>
-                                  {item[columnName].length > 18 && (
+                                  {item[columnName].length > 15 && (
                                     <div
                                       className={`absolute z-10 p-2 bg-white border rounded shadow ${
                                         hoveredCell ===
@@ -203,8 +203,8 @@ const Table: FC<ITable> = ({
                                       {item[columnName]}
                                     </div>
                                   )}
-                                  {item[columnName].length > 18
-                                    ? `${item[columnName].substring(0, 18)}...`
+                                  {item[columnName].length > 15
+                                    ? `${item[columnName].substring(0, 15)}...`
                                     : item[columnName]}
                                 </>
                               )}
