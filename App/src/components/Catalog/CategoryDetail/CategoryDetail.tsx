@@ -51,10 +51,9 @@ const CategoryDetail: FC = () => {
     navigation.navigate('SearchProduct');
   };
 
-  const [refreshing, setRefreshing] = useState(false);
+  const [refreshing, setRefreshing] = useState(true);
   
   const onRefresh = async () => {
-    setRefreshing(true);
 
     try {
       await dispatch(getPromotions());

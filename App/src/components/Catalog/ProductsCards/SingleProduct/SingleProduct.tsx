@@ -41,7 +41,7 @@ const SingleProduct = ({ route }: any) => {
   const { productId } = route.params;
   const dispatch = useAppDispatch();
   const [isLoadingPage, setIsLoadingPage] = useState<boolean>(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const [refreshing, setRefreshing] = useState(true);
   const { width } = useWindowDimensions();
   const navigation = useNavigation<StackNavigationProp>();
   const userStatus = useAppSelector<string | undefined>(
@@ -61,7 +61,6 @@ const SingleProduct = ({ route }: any) => {
   // }, [dispatch, productId]);
 
   const onRefresh = async () => {
-    setRefreshing(true);
 
     try {
     dispatch(currentProduct(productId));

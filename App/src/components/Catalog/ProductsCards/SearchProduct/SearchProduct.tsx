@@ -46,10 +46,9 @@ const SearchProduct = () => {
   const [minPrice] = useState<number>(0);
   const [maxPrice, setMaxPrice] = useState<number>(0);
   const [initialRender, setInitialRender] = useState<boolean>(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const [refreshing, setRefreshing] = useState(true);
 
   const onRefresh = async () => {
-    setRefreshing(true);
 
     try {
       await dispatch(getProducts());

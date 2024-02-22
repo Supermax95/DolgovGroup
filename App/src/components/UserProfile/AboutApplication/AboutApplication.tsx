@@ -28,7 +28,7 @@ const AboutApplication: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
   // const [isLoadingPage, setIsLoadingPage] = useState<boolean>(true);
   const dispatch = useAppDispatch();
-  const [refreshing, setRefreshing] = useState(false);
+  const [refreshing, setRefreshing] = useState(true);
 
   // useEffect(() => {
   //   dispatch(getLaws());
@@ -36,7 +36,6 @@ const AboutApplication: FC = () => {
   // }, [dispatch]);
 
   const onRefresh = async () => {
-    setRefreshing(true);
 
     try {
       dispatch(getLaws());

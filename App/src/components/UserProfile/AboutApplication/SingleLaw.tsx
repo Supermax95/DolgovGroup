@@ -36,7 +36,7 @@ const SingleLaw = ({ route }: any) => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<StackNavigationProp>();
   // const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const [refreshing, setRefreshing] = useState(true);
 
   const currentLawOpen =
     useAppSelector<ILaw | null>((state) => state.lawSlice.currentLaw) ||
@@ -63,7 +63,6 @@ const SingleLaw = ({ route }: any) => {
   // }, [dispatch, lawId]);
 
   const onRefresh = async () => {
-    setRefreshing(true);
 
     try {
       dispatch(currentLaw(lawId));
