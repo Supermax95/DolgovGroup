@@ -466,7 +466,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
       onChange: (value: string | boolean | number | Date) => {
         if (typeof value === 'string') {
           const trimmedValue = value.replace(/\s/g, '');
-          const sanitizedValue = trimmedValue.replace(/,/g, '');
+          const sanitizedValue = trimmedValue.replace(/,/g, '.');
 
           if (
             sanitizedValue === '' ||
@@ -517,20 +517,26 @@ const ProductsModal: FC<ProductsModalProps> = ({
       id: 'percentageEmployee',
       name: 'percentageEmployee',
       type: 'text',
-      value: +(
-        ((editedProduct.originalPrice - editedProduct.employeePrice) /
-          editedProduct.originalPrice) *
-        100
-      )
-        .toFixed(2)
-        .toString(),
+      value: (() => {
+        if (!editedProduct.originalPrice) {
+          return '0';
+        } else {
+          return +(
+            ((editedProduct.originalPrice - editedProduct.employeePrice) /
+              editedProduct.originalPrice) *
+            100
+          )
+            .toFixed(2)
+            .toString();
+        }
+      })(),
       autoComplete: 'off',
       placeholder: '',
       title: 'Процент скидки для сотрудника',
       htmlFor: 'percentageEmployee',
       onChange: (value: string | boolean | number | Date) => {
         if (typeof value === 'string') {
-          const newValue = value.replace(/[^\d.]/g, '');
+          const newValue = value.replace(/\s/g, '');
 
           if (!isNaN(+newValue)) {
             const discountedPrice =
@@ -757,24 +763,28 @@ const ProductsModal: FC<ProductsModalProps> = ({
                     id="percentageCustomer"
                     name="percentageCustomer"
                     type="text"
-                    value={
-                      +(
-                        ((editedProduct.originalPrice -
-                          editedProduct.customerPrice) /
-                          editedProduct.originalPrice) *
-                        100
-                      )
-                        .toFixed(2)
-                        .toString()
-                    }
+                    value={(() => {
+                      if (!editedProduct.originalPrice) {
+                        return '0';
+                      } else {
+                        return +(
+                          ((editedProduct.originalPrice -
+                            editedProduct.customerPrice) /
+                            editedProduct.originalPrice) *
+                          100
+                        )
+                          .toFixed(2)
+                          .toString();
+                      }
+                    })()}
                     autoComplete="off"
                     placeholder=""
-                    title="Процент скидки"
+                    title="Процент скидки для клиента"
                     onChange={(e) => {
-                      const value = e.target.value.replace(/[^\d.]/g, '');
+                      const value = e.target.value;
 
                       if (typeof value === 'string') {
-                        const newValue = value.replace(/[^\d.]/g, '');
+                        const newValue = value.replace(/\s/g, '');
 
                         if (!isNaN(+newValue)) {
                           const discountedPrice =
