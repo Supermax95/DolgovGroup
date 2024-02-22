@@ -59,9 +59,16 @@ const SubcategoryDetail = ({ route }: any) => {
     } catch (error) {
       Alert.alert('Ошибка при обновлении данных');
     } finally {
-      setRefreshing(false);
+      setTimeout(() => {
+        setRefreshing(false);
+      }, 500);
     }
   };
+
+
+  useEffect(() => {
+    onRefresh();
+  }, []);
 
   //* все подкатегории по определённой категории
   const subOfCat = subcategories.filter(

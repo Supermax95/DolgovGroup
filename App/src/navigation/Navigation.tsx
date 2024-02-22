@@ -118,17 +118,17 @@ export const AppNavigator: FC = () => {
     return () => clearTimeout(timeoutId);
   }, [notificationPush]);
 
-  useEffect(() => {
-    dispatch(getProducts());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getProducts());
+  // }, [dispatch]);
 
-  useEffect(() => {
-    dispatch(getCategory());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getCategory());
+  // }, [dispatch]);
 
-  useEffect(() => {
-    dispatch(getSubcategory());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getSubcategory());
+  // }, [dispatch]);
 
   useEffect(() => {
     if (token) {
@@ -136,9 +136,9 @@ export const AppNavigator: FC = () => {
     }
   }, [dispatch]);
 
-  useEffect(() => {
-    dispatch(getPromotions());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getPromotions());
+  // }, [dispatch]);
 
   useEffect(() => {
     dispatch(getQuestions());

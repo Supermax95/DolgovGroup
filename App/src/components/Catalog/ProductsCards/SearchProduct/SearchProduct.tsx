@@ -5,6 +5,7 @@ import {
   SafeAreaView,
   RefreshControl,
   FlatList,
+  Alert,
 } from 'react-native';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { PORT, IP } from '@env';
@@ -49,9 +50,20 @@ const SearchProduct = () => {
 
   const onRefresh = async () => {
     setRefreshing(true);
-    await dispatch(getProducts());
-    setRefreshing(false);
+
+    try {
+      await dispatch(getProducts());
+    } catch (error) {
+      Alert.alert('Ошибка при обновлении данных');
+    } finally {
+      setTimeout(() => {
+        setRefreshing(false);
+      }, 500);
+    }
   };
+  useEffect(() => {
+    onRefresh();
+  }, []);
 
   const userStatus = useAppSelector<string | undefined>(
     (state) => state.userSlice.user?.userStatus
