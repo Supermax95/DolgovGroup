@@ -2,7 +2,6 @@ import { FC, useEffect, useState } from 'react';
 import Wrapper from '../../../ui/Wrapper';
 import { useAppDispatch, useAppSelector } from '../../../Redux/hooks';
 import { VITE_URL } from '../../../VITE_URL';
-// import Pagination from '../../../ui/Paggination';
 import { isToday, parseISO, isPast } from 'date-fns';
 import { unwrapResult } from '@reduxjs/toolkit';
 import getPromotions from '../../../Redux/thunks/Promotion/getPromotion.api';
@@ -44,6 +43,8 @@ const Nocarousel: FC = () => {
   // eslint-disable-next-line
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setLoading] = useState(false);
+  const [isLoadingPromo, setLoadingPromo] = useState(true);
+
   const [selectedPromotion, setSelectedPromotion] = useState<Promotion | null>(
     null
   );
@@ -51,7 +52,6 @@ const Nocarousel: FC = () => {
   const [editedPromotion, setEditedPromotion] = useState<
     Promotion | null | undefined
   >(null);
-  // const [axiosError, setAxiosError] = useState<string | null>(null);
   const [searchText, setSearchText] = useState('');
 
   //* всплывающие уведомления
@@ -70,7 +70,15 @@ const Nocarousel: FC = () => {
     useState<boolean>(false);
 
   useEffect(() => {
-    dispatch(getPromotions());
+    const fetchData = async () => {
+      try {
+        await dispatch(getPromotions());
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+      setLoadingPromo(false);
+    };
+    fetchData();
   }, [dispatch]);
 
   useEffect(() => {
@@ -130,11 +138,6 @@ const Nocarousel: FC = () => {
   };
 
   const displayedPromotions = filterPromotions().slice(startIndex, endIndex);
-  // const totalPages = Math.ceil(filterPromotions().length / itemsPerPage);
-
-  // const resetAxiosError = () => {
-  //   setAxiosError(null);
-  // };
 
   const openAddModal = () => {
     setAddingMode(true);
@@ -262,234 +265,236 @@ const Nocarousel: FC = () => {
           bodyText={errorNotification}
         />
       )}
-      <PromotionSidebar openAddModal={openAddModal} />
-      {/* <div className="max-w-screen-lg	"> */}
-      <div className="p-4">
-        <h1 className="text-xl text-lime-600 font-medium text-center mb-2">
-          Акции вне карусели
-        </h1>
 
-        <div className="col-span-full">
-          <div className="flex items-center justify-between mb-2">
-            <Search onFilter={setSearchText} />
-          </div>
+      {isLoadingPromo ? (
+        <div className="flex items-center justify-center h-full">
+          <LoadingAnimation />
         </div>
+      ) : (
+        <>
+          <PromotionSidebar openAddModal={openAddModal} />
+          {/* <div className="max-w-screen-lg	"> */}
+          <div className="p-4">
+            <h1 className="text-xl text-lime-600 font-medium text-center mb-2">
+              Акции вне карусели
+            </h1>
 
-        <div className="col-span-full mt-8">
-          <div className="mx-auto grid max-w-screen-lg justify-center px-4 sm:grid-cols-2 sm:gap-4 sm:px-8 md:grid-cols-3">
-            {displayedPromotions
-              .filter((promotion) => !promotion.invisible)
-              .map((promotion) => (
-                <div
-                  key={promotion.id}
-                  className="mx-auto my-4 flex w-full flex-col overflow-hidden rounded-2xl border border-gray-300 bg-white text-slate-900 transition hover:translate-y-2 hover:shadow-lg"
-                >
-                  <div className="relative">
-                    <div className="absolute flex h-6 w-6 items-center justify-center rounded-lg bg-slate-400 hover:bg-lime-600 top-2 right-2 ">
-                      <PencilSquareIcon
-                        className="mr-0 h-5 w-5 cursor-pointer text-white "
-                        onClick={() => openEditModal(promotion)}
-                      />
-                    </div>
-                    <img
-                      className="h-56 w-full object-cover"
-                      src={`${VITE_URL}${promotion.photo}`}
-                      alt={promotion.title}
-                    />
-                    {promotion.invisible && (
-                      <div className="absolute bottom-0 left-2 p-2 text-center flex space-x-2 items-center">
+            <div className="col-span-full">
+              <div className="flex items-center justify-between mb-2">
+                <Search onFilter={setSearchText} />
+              </div>
+            </div>
+
+            <div className="col-span-full mt-8">
+              <div className="mx-auto grid max-w-screen-lg justify-center px-4 sm:grid-cols-2 sm:gap-4 sm:px-8 md:grid-cols-3">
+                {displayedPromotions
+                  .filter((promotion) => !promotion.invisible)
+                  .map((promotion) => (
+                    <div
+                      key={promotion.id}
+                      className="mx-auto my-4 flex w-full flex-col overflow-hidden rounded-2xl border border-gray-300 bg-white text-slate-900 transition hover:translate-y-2 hover:shadow-lg"
+                    >
+                      <div className="relative">
+                        <div className="absolute flex h-6 w-6 items-center justify-center rounded-lg bg-slate-400 hover:bg-lime-600 top-2 right-2 ">
+                          <PencilSquareIcon
+                            className="mr-0 h-5 w-5 cursor-pointer text-white "
+                            onClick={() => openEditModal(promotion)}
+                          />
+                        </div>
+                        <img
+                          className="h-56 w-full object-cover"
+                          src={`${VITE_URL}${promotion.photo}`}
+                          alt={promotion.title}
+                        />
                         {promotion.invisible && (
-                          <p className="rounded-full border-2 border-slate-300 bg-slate-500 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3 mt-2">
-                            Скрыта
-                          </p>
+                          <div className="absolute bottom-0 left-2 p-2 text-center flex space-x-2 items-center">
+                            {promotion.invisible && (
+                              <p className="rounded-full border-2 border-slate-300 bg-slate-500 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3 mt-2">
+                                Скрыта
+                              </p>
+                            )}
+                          </div>
                         )}
                       </div>
-                    )}
-                  </div>
 
-                  <div className="flex-auto px-6 py-5">
-                    <h3 className="mt-4 mb-3 text-xs text-slate-700 text-center font-semibold xl:text-sm lg:text-sm ">
-                      {promotion.title}
-                    </h3>
+                      <div className="flex-auto px-6 py-5">
+                        <h3 className="mt-4 mb-3 text-xs text-slate-700 text-center font-semibold xl:text-sm lg:text-sm ">
+                          {promotion.title}
+                        </h3>
 
-                    {promotion.dateStart && promotion.dateEnd ? (
-                      <div className="mb-2 mt-4 text-center">
-                        {isToday(parseISO(promotion.dateEnd)) ? (
-                          <span className="text-rose-600 text-sm font-medium">
-                            Акция истекает сегодня
-                          </span>
-                        ) : isPast(parseISO(promotion.dateEnd)) ? (
-                          <span className="text-amber-600 text-sm font-medium">
-                            Акция завершена
-                          </span>
-                        ) : (
-                          <p className="mb-2 text-slate-600 text-sm font-normal text-center">
-                            Период акции:
-                            <br />
-                            <span className="text-center">
-                              с{' '}
-                              <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
-                                {reverseDate(promotion.dateStart)}
-                              </span>{' '}
-                              по{' '}
-                              <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
-                                {reverseDate(promotion.dateEnd)}
+                        {promotion.dateStart && promotion.dateEnd ? (
+                          <div className="mb-2 mt-4 text-center">
+                            {isToday(parseISO(promotion.dateEnd)) ? (
+                              <span className="text-rose-600 text-sm font-medium">
+                                Акция истекает сегодня
                               </span>
-                            </span>
-                          </p>
+                            ) : isPast(parseISO(promotion.dateEnd)) ? (
+                              <span className="text-amber-600 text-sm font-medium">
+                                Акция завершена
+                              </span>
+                            ) : (
+                              <p className="mb-2 text-slate-600 text-sm font-normal text-center">
+                                Период акции:
+                                <br />
+                                <span className="text-center">
+                                  с{' '}
+                                  <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
+                                    {reverseDate(promotion.dateStart)}
+                                  </span>{' '}
+                                  по{' '}
+                                  <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
+                                    {reverseDate(promotion.dateEnd)}
+                                  </span>
+                                </span>
+                              </p>
+                            )}
+                          </div>
+                        ) : (
+                          <div className="mb-2 mt-4text-center">
+                            <p className="mb-2 text-slate-600 text-sm font-normal text-center">
+                              Период акции: <br />
+                              <span className="text-center">
+                                <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
+                                  бессрочная
+                                </span>
+                              </span>
+                            </p>
+                          </div>
                         )}
                       </div>
-                    ) : (
-                      <div className="mb-2 mt-4text-center">
-                        <p className="mb-2 text-slate-600 text-sm font-normal text-center">
-                          Период акции: <br />
-                          <span className="text-center">
-                            <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
-                              бессрочная
-                            </span>
-                          </span>
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
-          </div>
-          {displayedPromotions.filter((promotion) => !promotion.invisible)
-            .length === 0 && (
-            <div className="flex items-center justify-center max-w-screen-lg mx-auto mt-8 p-8 bg-white rounded-xl w-[1020px] backdrop-blur-lg">
-              <span className="text-slate-600 text-sm font-normal">
-                Актуальные акции отсутствуют{' '}
-              </span>
-            </div>
-          )}
-        </div>
-
-        <div className="my-6 rounded-md shadow-sm border-b-2 border-orange-300"></div>
-
-        {/* Карточки */}
-        <div className="col-span-full mt-8">
-          <div className="mx-auto grid max-w-screen-lg justify-center px-4 sm:grid-cols-2 sm:gap-4 sm:px-8 md:grid-cols-3">
-            {displayedPromotions
-              .filter((promotion) => promotion.invisible)
-              .map((promotion) => (
-                <div
-                  key={promotion.id}
-                  className="mx-auto my-4 flex w-full flex-col overflow-hidden rounded-2xl border border-gray-300 bg-white text-slate-900 transition hover:translate-y-2 hover:shadow-lg"
-                >
-                  <div className="relative">
-                    <div className="absolute flex h-6 w-6 items-center justify-center rounded-lg bg-slate-400 hover:bg-lime-600 top-2 right-2 ">
-                      <PencilSquareIcon
-                        className="mr-0 h-5 w-5 cursor-pointer text-white "
-                        onClick={() => openEditModal(promotion)}
-                      />
                     </div>
-                    <img
-                      className="h-56 w-full object-cover"
-                      src={`${VITE_URL}${promotion.photo}`}
-                      alt={promotion.title}
-                    />
-                    {promotion.invisible && (
-                      <div className="absolute bottom-0 left-2 p-2 text-center flex space-x-2 items-center">
-                        {promotion.invisible && (
-                          <p className="rounded-full border-2 border-slate-300 bg-slate-500 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3 mt-2">
-                            Скрыта
-                          </p>
-                        )}
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="flex-auto px-6 py-5">
-                    <h3 className="mt-4 mb-3 text-xs text-slate-700 text-center font-semibold xl:text-sm lg:text-sm ">
-                      {promotion.title}
-                    </h3>
-
-                    {promotion.dateStart && promotion.dateEnd ? (
-                      <div className="mb-2 mt-4 text-center">
-                        {isToday(parseISO(promotion.dateEnd)) ? (
-                          <span className="text-rose-600 text-sm font-medium">
-                            Акция истекает сегодня
-                          </span>
-                        ) : isPast(parseISO(promotion.dateEnd)) ? (
-                          <span className="text-amber-600 text-sm font-medium">
-                            Акция завершена
-                          </span>
-                        ) : (
-                          <p className="mb-2 text-slate-600 text-sm font-normal text-center">
-                            Период акции:
-                            <br />
-                            <span className="text-center">
-                              с{' '}
-                              <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
-                                {reverseDate(promotion.dateStart)}
-                              </span>{' '}
-                              по{' '}
-                              <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
-                                {reverseDate(promotion.dateEnd)}
-                              </span>
-                            </span>
-                          </p>
-                        )}
-                      </div>
-                    ) : (
-                      <div className="mb-2 mt-4text-center">
-                        <p className="mb-2 text-slate-600 text-sm font-normal text-center">
-                          Период акции: <br />
-                          <span className="text-center">
-                            <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
-                              бессрочная
-                            </span>
-                          </span>
-                        </p>
-                      </div>
-                    )}
-                  </div>
+                  ))}
+              </div>
+              {displayedPromotions.filter((promotion) => !promotion.invisible)
+                .length === 0 && (
+                <div className="flex items-center justify-center max-w-screen-lg mx-auto mt-8 p-8 bg-white rounded-xl w-[1020px] backdrop-blur-lg">
+                  <span className="text-slate-600 text-sm font-normal">
+                    Актуальные акции отсутствуют{' '}
+                  </span>
                 </div>
-              ))}
-          </div>
-          {displayedPromotions.filter((promotion) => promotion.invisible)
-            .length === 0 && (
-            <div className="flex items-center justify-center max-w-screen-lg mx-auto mt-8 p-8 bg-white rounded-xl w-[1020px] backdrop-blur-lg">
-              <span className="text-slate-600 text-sm font-normal">
-                Скрытые акции отсутствуют{' '}
-              </span>
+              )}
             </div>
-          )}
-        </div>
-      </div>{' '}
-      {/* </div> */}
-      {/* <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        /> */}
-      <div className="relative ">
-        {isLoading && (
-          <div className="fixed inset-0 z-20 backdrop-blur-lg flex items-center justify-center ">
-            {/* <div className="bg-white p-1 rounded-sm shadow-xs  "> */}
-            <div className="bg-white p-1 rounded-sm z-10 py-20 bg-opacity-70 fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center ">
-              <LoadingAnimation />
+
+            <div className="my-6 rounded-md shadow-sm border-b-2 border-orange-300"></div>
+
+            {/* Карточки */}
+            <div className="col-span-full mt-8">
+              <div className="mx-auto grid max-w-screen-lg justify-center px-4 sm:grid-cols-2 sm:gap-4 sm:px-8 md:grid-cols-3">
+                {displayedPromotions
+                  .filter((promotion) => promotion.invisible)
+                  .map((promotion) => (
+                    <div
+                      key={promotion.id}
+                      className="mx-auto my-4 flex w-full flex-col overflow-hidden rounded-2xl border border-gray-300 bg-white text-slate-900 transition hover:translate-y-2 hover:shadow-lg"
+                    >
+                      <div className="relative">
+                        <div className="absolute flex h-6 w-6 items-center justify-center rounded-lg bg-slate-400 hover:bg-lime-600 top-2 right-2 ">
+                          <PencilSquareIcon
+                            className="mr-0 h-5 w-5 cursor-pointer text-white "
+                            onClick={() => openEditModal(promotion)}
+                          />
+                        </div>
+                        <img
+                          className="h-56 w-full object-cover"
+                          src={`${VITE_URL}${promotion.photo}`}
+                          alt={promotion.title}
+                        />
+                        {promotion.invisible && (
+                          <div className="absolute bottom-0 left-2 p-2 text-center flex space-x-2 items-center">
+                            {promotion.invisible && (
+                              <p className="rounded-full border-2 border-slate-300 bg-slate-500 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3 mt-2">
+                                Скрыта
+                              </p>
+                            )}
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="flex-auto px-6 py-5">
+                        <h3 className="mt-4 mb-3 text-xs text-slate-700 text-center font-semibold xl:text-sm lg:text-sm ">
+                          {promotion.title}
+                        </h3>
+
+                        {promotion.dateStart && promotion.dateEnd ? (
+                          <div className="mb-2 mt-4 text-center">
+                            {isToday(parseISO(promotion.dateEnd)) ? (
+                              <span className="text-rose-600 text-sm font-medium">
+                                Акция истекает сегодня
+                              </span>
+                            ) : isPast(parseISO(promotion.dateEnd)) ? (
+                              <span className="text-amber-600 text-sm font-medium">
+                                Акция завершена
+                              </span>
+                            ) : (
+                              <p className="mb-2 text-slate-600 text-sm font-normal text-center">
+                                Период акции:
+                                <br />
+                                <span className="text-center">
+                                  с{' '}
+                                  <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
+                                    {reverseDate(promotion.dateStart)}
+                                  </span>{' '}
+                                  по{' '}
+                                  <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
+                                    {reverseDate(promotion.dateEnd)}
+                                  </span>
+                                </span>
+                              </p>
+                            )}
+                          </div>
+                        ) : (
+                          <div className="mb-2 mt-4text-center">
+                            <p className="mb-2 text-slate-600 text-sm font-normal text-center">
+                              Период акции: <br />
+                              <span className="text-center">
+                                <span className="underline decoration-sky-500 decoration-2 decoration-dotted text-sm font-medium">
+                                  бессрочная
+                                </span>
+                              </span>
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+              </div>
+              {displayedPromotions.filter((promotion) => promotion.invisible)
+                .length === 0 && (
+                <div className="flex items-center justify-center max-w-screen-lg mx-auto mt-8 p-8 bg-white rounded-xl w-[1020px] backdrop-blur-lg">
+                  <span className="text-slate-600 text-sm font-normal">
+                    Скрытые акции отсутствуют{' '}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
-        )}
-        {isModalOpen && (selectedPromotion || isAddingMode) && (
-          <PromotionsModal
-            isOpen={isModalOpen}
-            promotion={selectedPromotion}
-            onSaveEdit={handleSaveEdit}
-            onSaveAdd={handleSaveAdd}
-            onCloseAddModal={closeAddModal}
-            onCloseEditModal={closeEditModal}
-            isAddingMode={isAddingMode}
-            editedPromotion={editedPromotion}
-            setEditedPromotion={setEditedPromotion}
-            openEditModal={openEditModal}
-            // axiosError={axiosError}
-            // resetAxiosError={resetAxiosError}
-          />
-        )}
-      </div>
+
+          <div className="relative ">
+            {isLoading && (
+              <div className="fixed inset-0 z-20 backdrop-blur-lg flex items-center justify-center ">
+                {/* <div className="bg-white p-1 rounded-sm shadow-xs  "> */}
+                <div className="bg-white p-1 rounded-sm z-10 py-20 bg-opacity-70 fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center ">
+                  <LoadingAnimation />
+                </div>
+              </div>
+            )}
+            {isModalOpen && (selectedPromotion || isAddingMode) && (
+              <PromotionsModal
+                isOpen={isModalOpen}
+                promotion={selectedPromotion}
+                onSaveEdit={handleSaveEdit}
+                onSaveAdd={handleSaveAdd}
+                onCloseAddModal={closeAddModal}
+                onCloseEditModal={closeEditModal}
+                isAddingMode={isAddingMode}
+                editedPromotion={editedPromotion}
+                setEditedPromotion={setEditedPromotion}
+                openEditModal={openEditModal}
+              />
+            )}
+          </div>
+        </>
+      )}
     </Wrapper>
   );
 };

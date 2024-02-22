@@ -223,47 +223,53 @@ const Law: FC = () => {
         />
       )}
 
-      <SidebarLaw
-        data={formattedLaws}
-        title="Документы"
-        onAddClick={openAddEditor}
-        onEditClick={openEditEditor}
-      />
+      {isLoading ? (
+        <div className="flex items-center justify-center h-full">
+          <LoadingAnimation />
+        </div>
+      ) : (
+        <>
+          <SidebarLaw
+            data={formattedLaws}
+            title="Документы"
+            onAddClick={openAddEditor}
+            onEditClick={openEditEditor}
+          />
 
-      <div
-        className={`p-4 ${
-          isLoading
-            ? 'max-w-screen-lg mx-auto mt-8 p-8 bg-white rounded-xl w-[1020px] h-[500px] backdrop-blur-lg'
-            : ''
-        }`}
-      >
-        {isLoading ? (
+          <div
+            className={`p-4 ${
+              isLoading
+                ? 'max-w-screen-lg mx-auto mt-8 p-8 bg-white rounded-xl w-[1020px] h-[500px] backdrop-blur-lg'
+                : ''
+            }`}
+          >
+            {/* {isLoading ? (
           <div className="flex items-center justify-center h-full">
             <LoadingAnimation />
           </div>
-        ) : (
-          isEditorOpen &&
-          (selectedLaw || isAddingMode) && (
-            <Editor
-              isOpen={isEditorOpen}
-              law={selectedLaw}
-              onSaveEdit={handleSaveEdit}
-              onSaveAdd={handleSaveAdd}
-              onCloseAddEditor={closeAddEditor}
-              onCloseEditEditor={closeEditEditor}
-              isAddingMode={isAddingMode}
-              editedLaw={editedLaw}
-              setEditedLaw={setEditedLaw}
-              currentStep={currentStep}
-              setCurrentStep={setCurrentStep}
-              setAddingMode={setAddingMode}
-              setSelectedLaw={setSelectedLaw}
-              openAddEditor={openAddEditor}
-              openEditEditor={openEditEditor}
-            />
-          )
-        )}
-      </div>
+        ) : ( */}
+            {isEditorOpen && (selectedLaw || isAddingMode) && (
+              <Editor
+                isOpen={isEditorOpen}
+                law={selectedLaw}
+                onSaveEdit={handleSaveEdit}
+                onSaveAdd={handleSaveAdd}
+                onCloseAddEditor={closeAddEditor}
+                onCloseEditEditor={closeEditEditor}
+                isAddingMode={isAddingMode}
+                editedLaw={editedLaw}
+                setEditedLaw={setEditedLaw}
+                currentStep={currentStep}
+                setCurrentStep={setCurrentStep}
+                setAddingMode={setAddingMode}
+                setSelectedLaw={setSelectedLaw}
+                openAddEditor={openAddEditor}
+                openEditEditor={openEditEditor}
+              />
+            )}
+          </div>
+        </>
+      )}
     </Wrapper>
   );
 };
