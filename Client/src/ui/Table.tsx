@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import React, { FC, useState } from 'react';
 import Button from './Button';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/20/solid';
 import {
@@ -10,7 +10,6 @@ import {
 interface ITable {
   title?: string;
   columnsDefaultName: { name: string }[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data?: any[] | undefined;
   columnsListDb: string[];
   currentPage?: number | undefined;
@@ -18,7 +17,6 @@ interface ITable {
   childrenSearch?: React.ReactNode;
   childrenFilter?: React.ReactNode;
   onAddClick?: (() => void) | undefined;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onEditClick?: (item: any) => void | undefined;
   onOneTimePassword?: (item: number) => Promise<void> | undefined;
   renderCell?: () => void;
@@ -39,7 +37,8 @@ const Table: FC<ITable> = ({
   onOneTimePassword,
   currentManagerId,
 }) => {
-  //* проверяет текущего менеджера, чтобы тот не видел себя в таблице
+  const [hoveredCell, setHoveredCell] = useState<number | null>(null);
+
   const filteredData = data
     ? data.filter((item) => item.id !== currentManagerId)
     : [];
@@ -64,11 +63,11 @@ const Table: FC<ITable> = ({
                 {title === 'Список контактов' ? (
                   <></>
                 ) : (
-                  <th className="w-16 pl-6 py-3  text-center border-b-2 border-orange-300 leading-4 text-slate-700 text-sm font-bold ">
+                  <th className="w-16 pl-6 py-3 text-center border-b-2 border-orange-300 leading-4 text-slate-700 text-sm font-bold ">
                     {title === 'Список сотрудников' ||
                     title === 'Список покупателей' ? (
                       <div className="flex justify-center items-center rounded-lg">
-                        <UserGroupIcon className="h-5 w-5 text-slate-600" />{' '}
+                        <UserGroupIcon className="h-5 w-5 text-slate-600" />
                       </div>
                     ) : title === 'Список магазинов' ||
                       title === 'Список менеджеров' ||
@@ -101,7 +100,7 @@ const Table: FC<ITable> = ({
 
             <tbody className="bg-white">
               {filteredData &&
-                filteredData.map((item, index) => (
+                filteredData.map((item, rowIndex) => (
                   <tr key={item.id}>
                     {title === 'Список контактов' ? (
                       <></>
@@ -123,62 +122,85 @@ const Table: FC<ITable> = ({
                         {(currentPage
                           ? (currentPage - 1) * (itemsPerPage ?? 1)
                           : 0) +
-                          index +
+                          rowIndex +
                           1}
                       </div>
                     </td>
 
-                    {columnsListDb.slice(1).map((columnName) => (
+                    {columnsListDb.slice(1).map((columnName, colIndex) => (
                       <td
                         key={columnName}
-                        className="px-6 py-3 text-center whitespace-no-wrap border-b-2 border-slate-300 text-slate-600 text-sm font-normal"
+                        className="px-6 py-3 text-center whitespace-no-wrap border-b-2 border-slate-300 text-slate-600 text-sm font-normal relative"
+                        onMouseEnter={() =>
+                          setHoveredCell(
+                            rowIndex * columnsListDb.length + colIndex
+                          )
+                        }
+                        onMouseLeave={() => setHoveredCell(null)}
                       >
-                        {columnName === 'isActivated' ? (
-                          item[columnName] ? (
-                            <span className="flex justify-center">
-                              <CheckCircleIcon
-                                className="h-8 w-8 text-lime-600"
-                                aria-hidden="true"
-                              />
-                            </span>
+                        <div>
+                          {columnName === 'isActivated' ? (
+                            item[columnName] ? (
+                              <span className="flex justify-center">
+                                <CheckCircleIcon
+                                  className="h-8 w-8 text-lime-600"
+                                  aria-hidden="true"
+                                />
+                              </span>
+                            ) : (
+                              <span className="flex justify-center">
+                                <XCircleIcon
+                                  className="h-8 w-8 text-orange-400"
+                                  aria-hidden="true"
+                                />
+                              </span>
+                            )
+                          ) : columnName === 'invisible' ? (
+                            item[columnName] ? (
+                              <span className="flex justify-center">
+                                <XCircleIcon
+                                  className="h-8 w-8 text-slate-400"
+                                  aria-hidden="true"
+                                />
+                              </span>
+                            ) : (
+                              <span className="flex justify-center">
+                                <CheckCircleIcon
+                                  className="h-8 w-8 text-lime-600"
+                                  aria-hidden="true"
+                                />
+                              </span>
+                            )
+                          ) : columnName === 'isAdmin' ? (
+                            item[columnName] ? (
+                              <span className="flex justify-center">
+                                <p className="text-sky-400"> Администатор</p>
+                              </span>
+                            ) : (
+                              <span className="flex justify-center">
+                                <p className="text-lime-500"> Маркетолог</p>
+                              </span>
+                            )
                           ) : (
-                            <span className="flex justify-center">
-                              <XCircleIcon
-                                className="h-8 w-8 text-orange-400"
-                                aria-hidden="true"
-                              />
-                            </span>
-                          )
-                        ) : columnName === 'invisible' ? (
-                          item[columnName] ? (
-                            //  (
-                            <span className="flex justify-center">
-                              <XCircleIcon
-                                className="h-8 w-8 text-slate-400"
-                                aria-hidden="true"
-                              />
-                            </span>
-                          ) : (
-                            <span className="flex justify-center">
-                              <CheckCircleIcon
-                                className="h-8 w-8 text-lime-600"
-                                aria-hidden="true"
-                              />
-                            </span>
-                          )
-                        ) : columnName === 'isAdmin' ? (
-                          item[columnName] ? (
-                            <span className="flex justify-center">
-                              <p className="text-sky-400"> Администатор</p>
-                            </span>
-                          ) : (
-                            <span className="flex justify-center">
-                              <p className="text-lime-500"> Маркетолог</p>
-                            </span>
-                          )
-                        ) : (
-                          item[columnName]
-                        )}
+                            <>
+                              {item[columnName].length > 18 && (
+                                <div
+                                  className={`absolute z-10 p-2 bg-white border rounded shadow ${
+                                    hoveredCell ===
+                                    rowIndex * columnsListDb.length + colIndex
+                                      ? ''
+                                      : 'hidden'
+                                  }`}
+                                >
+                                  {item[columnName]}
+                                </div>
+                              )}
+                              {item[columnName].length > 18
+                                ? `${item[columnName].substring(0, 18)}...`
+                                : item[columnName]}
+                            </>
+                          )}
+                        </div>
                       </td>
                     ))}
 
