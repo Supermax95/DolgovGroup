@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   RefreshControl,
   FlatList,
+  Alert,
 } from 'react-native';
 import ProductCard from 'ui/ProductCard';
 import { PORT, IP } from '@env';
@@ -55,10 +56,22 @@ const ProductsCards: FC = ({ route }: any) => {
 
   const onRefresh = async () => {
     setRefreshing(true);
-    await dispatch(getProducts());
-    setRefreshing(false);
+
+    try {
+      await dispatch(getProducts());
+    } catch (error) {
+      Alert.alert('Ошибка при обновлении данных');
+    } finally {
+      setTimeout(() => {
+        setRefreshing(false);
+      }, 500);
+    }
   };
 
+  useEffect(() => {
+    onRefresh();
+  }, []);
+  
   const allProducts = useAppSelector<IProduct[]>(
     (state) => state.productSlice.data
   );

@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   ScrollView,
   RefreshControl,
+  Alert,
 } from 'react-native';
 import CardCategory from 'ui/CardCategory';
 import Heading from 'ui/Heading';
@@ -51,14 +52,27 @@ const CategoryDetail: FC = () => {
   };
 
   const [refreshing, setRefreshing] = useState(false);
+  
   const onRefresh = async () => {
     setRefreshing(true);
-    await dispatch(getPromotions());
-    await dispatch(getProducts());
-    await dispatch(getCategory());
-    await dispatch(getSubcategory());
-    setRefreshing(false);
+
+    try {
+      await dispatch(getPromotions());
+      await dispatch(getProducts());
+      await dispatch(getCategory());
+      await dispatch(getSubcategory());
+    } catch (error) {
+      Alert.alert('Ошибка при обновлении данных');
+    } finally {
+      setTimeout(() => {
+        setRefreshing(false);
+      }, 500);
+    }
   };
+
+  useEffect(() => {
+    onRefresh();
+  }, []);
 
   return (
     <SafeAreaView className="bg-white h-full flex-1">

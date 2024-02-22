@@ -35,38 +35,49 @@ const SingleLaw = ({ route }: any) => {
   const { width } = useWindowDimensions();
   const dispatch = useAppDispatch();
   const navigation = useNavigation<StackNavigationProp>();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  // const [isLoading, setIsLoading] = useState<boolean>(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const currentLawOpen =
-    useAppSelector<ILaw | null>((state) => state.lawSlice.currentLaw) || ({} as ILaw);
+    useAppSelector<ILaw | null>((state) => state.lawSlice.currentLaw) ||
+    ({} as ILaw);
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
+  // useEffect(() => {
+  //   const timeout = setTimeout(() => {
+  //     setIsLoading(false);
+  //   }, 500);
 
-    return () => clearTimeout(timeout);
-  }, []);
+  //   return () => clearTimeout(timeout);
+  // }, []);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await dispatch(currentLaw(lawId));
-      } catch (error) {
-        Alert.alert('Ошибка. Произошла ошибка при получении данных');
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       await dispatch(currentLaw(lawId));
+  //     } catch (error) {
+  //       Alert.alert('Ошибка. Произошла ошибка при получении данных');
+  //     }
+  //   };
 
-    fetchData();
-  }, [dispatch, lawId]);
+  //   fetchData();
+  // }, [dispatch, lawId]);
 
   const onRefresh = async () => {
     setRefreshing(true);
-    dispatch(currentLaw(lawId));
-    setRefreshing(false);
-  };
 
+    try {
+      dispatch(currentLaw(lawId));
+    } catch (error) {
+      Alert.alert('Ошибка при обновлении данных');
+    } finally {
+      setTimeout(() => {
+        setRefreshing(false);
+      }, 500);
+    }
+  };
+  useEffect(() => {
+    onRefresh();
+  }, []);
   const desc = currentLawOpen.description ? (
     <RenderHtml
       source={{
@@ -100,28 +111,28 @@ const SingleLaw = ({ route }: any) => {
 
   return (
     <SafeAreaView className="bg-white h-full flex-1">
-      {isLoading ? (
+      {/* {isLoading ? (
         <View className="flex-1 items-center justify-center">
           <ActivityIndicator size="large" color="green" />
         </View>
-      ) : (
-        <>
-          <UniversalHeader
-            onPress={() => navigation.goBack()}
-            title={truncated}
-          />
-          <ScrollView
-            style={{ flex: 1, width: '100%' }}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-          >
+      ) : ( */}
+      <>
+        <UniversalHeader
+          onPress={() => navigation.goBack()}
+          title={truncated}
+        />
+        <ScrollView
+          style={{ flex: 1, width: '100%' }}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
+          <Padding>
             <Padding>
-              <Padding>
-                {/* Если отсутсвует документ. Невозможно сделать проверку на отсутствие текста,
+              {/* Если отсутсвует документ. Невозможно сделать проверку на отсутствие текста,
                  т.к. остаются теги в бд после удаления него */}
 
-                {/* {!currentLawOpen.documentLink && (
+              {/* {!currentLawOpen.documentLink && (
                   <View className="items-center justify-center w-full mt-4">
                     <Text className="text-lg font-normal text-zinc-500">
                       Информация отсутствует
@@ -129,42 +140,42 @@ const SingleLaw = ({ route }: any) => {
                   </View>
                 )} */}
 
-                {currentLawOpen.documentLink && (
-                  <Pressable
-                    onPress={openDocumentLink}
-                    className="flex-row justify-center items-center py-2 border-b-[1px] border-zinc-200"
-                  >
-                    <View className="w-7">
-                      <MaterialCommunityIcons
-                        name="file-document-outline"
-                        size={23}
-                        color="#047857"
-                      />
-                    </View>
-                    <Text className="text-zinc-700 font-medium text-md">
-                      {/* {truncatedDoc} */}
-                      Документ (скачать)
-                    </Text>
-                  </Pressable>
-                )}
-                {currentLawOpen.description === '<p><br></p>' ? (
-                  <View className="items-center justify-center w-full mt-4">
-                    <Text className="text-lg font-normal text-zinc-500">
-                      Информация отсутствует
-                    </Text>
+              {currentLawOpen.documentLink && (
+                <Pressable
+                  onPress={openDocumentLink}
+                  className="flex-row justify-center items-center py-2 border-b-[1px] border-zinc-200"
+                >
+                  <View className="w-7">
+                    <MaterialCommunityIcons
+                      name="file-document-outline"
+                      size={23}
+                      color="#047857"
+                    />
                   </View>
-                ) : (
-                  <View className="flex-1 flex-col items-center justify-center">
-                    <View className="flex items-start justify-start w-full">
-                      {desc}
-                    </View>
+                  <Text className="text-zinc-700 font-medium text-md">
+                    {/* {truncatedDoc} */}
+                    Документ (скачать)
+                  </Text>
+                </Pressable>
+              )}
+              {currentLawOpen.description === '<p><br></p>' ? (
+                <View className="items-center justify-center w-full mt-4">
+                  <Text className="text-lg font-normal text-zinc-500">
+                    Информация отсутствует
+                  </Text>
+                </View>
+              ) : (
+                <View className="flex-1 flex-col items-center justify-center">
+                  <View className="flex items-start justify-start w-full">
+                    {desc}
                   </View>
-                )}
-              </Padding>
+                </View>
+              )}
             </Padding>
-          </ScrollView>
-        </>
-      )}
+          </Padding>
+        </ScrollView>
+      </>
+      {/* )} */}
     </SafeAreaView>
   );
 };

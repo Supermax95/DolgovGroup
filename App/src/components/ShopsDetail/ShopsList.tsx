@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { TabScreenNavigationProp } from 'navigation/types';
 import {
@@ -8,6 +8,7 @@ import {
   Pressable,
   Platform,
   RefreshControl,
+  Alert,
 } from 'react-native';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
@@ -41,10 +42,21 @@ const ShopsList: FC = () => {
 
   const onRefresh = async () => {
     setRefreshing(true);
-    await dispatch(getUserLocations({ token }));
-    setRefreshing(false);
-  };
 
+    try {
+      await dispatch(getUserLocations({ token }));
+    } catch (error) {
+      Alert.alert('Ошибка при обновлении данных');
+    } finally {
+      setTimeout(() => {
+        setRefreshing(false);
+      }, 500);
+    }
+  };
+  useEffect(() => {
+    onRefresh();
+  }, []);
+  
   const locations = useAppSelector<ISelectedShop[]>(
     (state) => state.locationsUserSlice.data
   );
@@ -123,12 +135,8 @@ const ShopsList: FC = () => {
             </Padding>
           </Padding>
         )}
-        refreshControl=
-        {
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-          />
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
         ListEmptyComponent={
           <View className="flex-row justify-center items-center mt-4">

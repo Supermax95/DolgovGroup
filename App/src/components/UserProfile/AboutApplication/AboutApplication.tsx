@@ -13,6 +13,7 @@ import {
   ActivityIndicator,
   RefreshControl,
   ScrollView,
+  Alert,
 } from 'react-native';
 
 interface ILaw {
@@ -25,20 +26,31 @@ interface ILaw {
 
 const AboutApplication: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
-  const [isLoadingPage, setIsLoadingPage] = useState<boolean>(true);
+  // const [isLoadingPage, setIsLoadingPage] = useState<boolean>(true);
   const dispatch = useAppDispatch();
   const [refreshing, setRefreshing] = useState(false);
 
-  useEffect(() => {
-    dispatch(getLaws());
-    setIsLoadingPage(false);
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getLaws());
+  //   setIsLoadingPage(false);
+  // }, [dispatch]);
 
   const onRefresh = async () => {
     setRefreshing(true);
-    dispatch((getLaws()));
-    setRefreshing(false);
+
+    try {
+      dispatch(getLaws());
+    } catch (error) {
+      Alert.alert('Ошибка при обновлении данных');
+    } finally {
+      setTimeout(() => {
+        setRefreshing(false);
+      }, 500);
+    }
   };
+  useEffect(() => {
+    onRefresh();
+  }, []);
 
   const laws = useAppSelector<ILaw[]>((state) => state.lawSlice.data);
 
@@ -58,11 +70,11 @@ const AboutApplication: FC = () => {
 
   return (
     <>
-      {isLoadingPage ? (
+      {/* {isLoadingPage ? (
         <View className="flex-1 items-center justify-center">
           <ActivityIndicator size="large" color="green" />
         </View>
-      ) : (
+      ) : ( */}
         <SafeAreaView className="bg-white h-full flex-1">
           <UniversalHeader
             onPress={() => navigation.goBack()}
@@ -98,7 +110,7 @@ const AboutApplication: FC = () => {
             </Padding>
           </ScrollView>
         </SafeAreaView>
-      )}
+      {/* )} */}
     </>
   );
 };

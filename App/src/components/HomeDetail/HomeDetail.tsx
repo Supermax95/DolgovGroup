@@ -44,15 +44,26 @@ const HomeDetail: FC = () => {
   );
 
   const [refreshing, setRefreshing] = useState(false);
-
   const onRefresh = async () => {
     setRefreshing(true);
-    await dispatch(getPromotions());
-    await dispatch(getProducts());
-    await dispatch(getCategory());
-    await dispatch(getSubcategory());
-    setRefreshing(false);
+
+    try {
+      await dispatch(getPromotions());
+      await dispatch(getProducts());
+      await dispatch(getCategory());
+      await dispatch(getSubcategory());
+    } catch (error) {
+      Alert.alert('Ошибка при обновлении данных');
+    } finally {
+      setTimeout(() => {
+        setRefreshing(false);
+      }, 500);
+    }
   };
+
+  useEffect(() => {
+    onRefresh();
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -98,7 +109,6 @@ const HomeDetail: FC = () => {
     (state) => state.userSlice.user?.barcode
   );
 
-
   const checkResendAvailability = async () => {
     const lastSentTime = await AsyncStorage.getItem('bonusCheck');
     // console.log('lastSentTime', lastSentTime);
@@ -139,8 +149,8 @@ const HomeDetail: FC = () => {
           headers: {
             Authorization: `Basic ${base64Credentials}`,
           },
-        }   
-        );
+        }
+      );
       const bonusCount = response.data?.BonusCount || 0;
       AsyncStorage.setItem('bonusCheck', Date.now().toString());
       setNumberPoints(bonusCount);

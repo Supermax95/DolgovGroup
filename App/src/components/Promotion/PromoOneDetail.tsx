@@ -33,28 +33,28 @@ const PromoOneDetail = ({ route }: any) => {
   const { promotionId } = route.params;
   const { width } = useWindowDimensions();
   const navigation = useNavigation<StackNavigationProp>();
-  const [isLoadingPage, setIsLoadingPage] = useState<boolean>(true);
+  // const [isLoadingPage, setIsLoadingPage] = useState<boolean>(true);
   const [refreshing, setRefreshing] = useState(false);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await dispatch(currentPromotion(promotionId));
-      } catch (error) {
-        Alert.alert('Ошибка при получении данных');
-      }
-    };
 
-    fetchData();
-    setIsLoadingPage(false);
-  }, [dispatch, promotionId]);
 
   const onRefresh = async () => {
     setRefreshing(true);
-    dispatch(currentPromotion(promotionId));
-    setRefreshing(false);
+
+    try {
+      dispatch(currentPromotion(promotionId));
+    } catch (error) {
+      Alert.alert('Ошибка при обновлении данных');
+    } finally {
+      setTimeout(() => {
+        setRefreshing(false);
+      }, 500);
+    }
   };
+  useEffect(() => {
+    onRefresh();
+  }, []);
 
   const currentPromotionOpen =
     useAppSelector<IPromotion | null>(
@@ -73,11 +73,6 @@ const PromoOneDetail = ({ route }: any) => {
 
   return (
     <>
-      {isLoadingPage ? (
-        <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color="green" />
-        </View>
-      ) : (
         <SafeAreaView className="bg-white h-full flex-1">
           <UniversalHeader onPress={() => navigation.goBack()} />
           {currentPromotionOpen ? (
@@ -115,7 +110,6 @@ const PromoOneDetail = ({ route }: any) => {
             </View>
           )}
         </SafeAreaView>
-      )}
     </>
   );
 };

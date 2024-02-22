@@ -47,24 +47,35 @@ const SingleProduct = ({ route }: any) => {
   const userStatus = useAppSelector<string | undefined>(
     (state) => state.userSlice.user?.userStatus
   );
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await dispatch(currentProduct(productId));
-      } catch (error) {
-        Alert.alert('Ошибка при получении данных');
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       await dispatch(currentProduct(productId));
+  //     } catch (error) {
+  //       Alert.alert('Ошибка при получении данных');
+  //     }
+  //   };
 
-    fetchData();
-    setIsLoadingPage(false);
-  }, [dispatch, productId]);
+  //   fetchData();
+  //   setIsLoadingPage(false);
+  // }, [dispatch, productId]);
 
   const onRefresh = async () => {
     setRefreshing(true);
+
+    try {
     dispatch(currentProduct(productId));
-    setRefreshing(false);
-  };
+  } catch (error) {
+    Alert.alert('Ошибка при обновлении данных');
+  } finally {
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 500);
+  }
+};
+useEffect(() => {
+  onRefresh();
+}, []);
 
   const currentProductOpen =
     useAppSelector<IProduct | null>(
@@ -83,11 +94,11 @@ const SingleProduct = ({ route }: any) => {
 
   return (
     <>
-      {isLoadingPage ? (
+      {/* {isLoadingPage ? (
         <View className="flex-1 items-center justify-center">
           <ActivityIndicator size="large" color="green" />
         </View>
-      ) : (
+      ) : ( */}
         <SafeAreaView
           className={`relative flex-1 items-center justify-start bg-[#ffff] `}
         >
@@ -144,7 +155,7 @@ const SingleProduct = ({ route }: any) => {
             </View>
           )}
         </SafeAreaView>
-      )}
+      {/* )} */}
     </>
   );
 };
