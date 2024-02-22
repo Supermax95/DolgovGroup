@@ -43,9 +43,8 @@ const HomeDetail: FC = () => {
     (state) => state.userSlice.token?.refreshToken
   );
 
-  const [refreshing, setRefreshing] = useState(false);
+  const [refreshing, setRefreshing] = useState(true);
   const onRefresh = async () => {
-    setRefreshing(true);
 
     try {
       await dispatch(getPromotions());

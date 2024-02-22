@@ -34,14 +34,12 @@ const PromoOneDetail = ({ route }: any) => {
   const { width } = useWindowDimensions();
   const navigation = useNavigation<StackNavigationProp>();
   // const [isLoadingPage, setIsLoadingPage] = useState<boolean>(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const [refreshing, setRefreshing] = useState(true);
   const dispatch = useAppDispatch();
 
 
 
   const onRefresh = async () => {
-    setRefreshing(true);
-
     try {
       dispatch(currentPromotion(promotionId));
     } catch (error) {

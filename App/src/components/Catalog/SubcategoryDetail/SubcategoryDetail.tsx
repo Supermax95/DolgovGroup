@@ -48,10 +48,9 @@ const SubcategoryDetail = ({ route }: any) => {
   const subcategories = useAppSelector<ISubcategory[]>(
     (state) => state.subcategorySlice.data
   );
-  const [refreshing, setRefreshing] = useState(false);
+  const [refreshing, setRefreshing] = useState(true);
 
   const onRefresh = async () => {
-    setRefreshing(true);
 
     try {
       await dispatch(getProducts());
