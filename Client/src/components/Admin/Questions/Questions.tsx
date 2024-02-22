@@ -221,52 +221,45 @@ const Questions: FC = () => {
           bodyText={errorNotification}
         />
       )}
-
-      {isLoading ? (
-        <div className="flex items-center justify-center h-full">
-          <LoadingAnimation />
-        </div>
-      ) : (
-        <>
-          <SidebarQuestion
-            data={questions}
-            title="Вопросы"
-            onAddClick={openAddEditor}
-            onEditClick={openEditEditor}
-          />
-          <div
-            className={`p-4 ${
-              isLoading
-                ? 'max-w-screen-lg mx-auto mt-8 p-8 bg-white rounded-xl w-[1020px] h-[500px] backdrop-blur-lg'
-                : ''
-            }`}
-          >
-            {/* {isLoading ? (
+      <SidebarQuestion
+        data={questions}
+        title="Вопросы"
+        onAddClick={openAddEditor}
+        onEditClick={openEditEditor}
+      />
+      <div
+        className={`p-4 ${
+          isLoading
+            ? 'max-w-screen-lg mx-auto mt-8 p-8 bg-white rounded-xl w-[1020px] h-[500px] backdrop-blur-lg'
+            : ''
+        }`}
+      >
+        {isLoading ? (
           <div className="flex items-center justify-center h-full">
             <LoadingAnimation />
           </div>
-        ) : ( */}
-            {isEditorOpen && (selectedQuestion || isAddingMode) && (
-              <EditorQuestion
-                isOpen={isEditorOpen}
-                question={selectedQuestion}
-                onSaveEdit={handleSaveEdit}
-                onSaveAdd={handleSaveAdd}
-                onCloseAddEditor={closeAddEditor}
-                onCloseEditEditor={closeEditEditor}
-                isAddingMode={isAddingMode}
-                editedQuestion={editedQuestion}
-                setEditedQuestion={setEditedQuestion}
-                axiosError={axiosError}
-                resetAxiosError={resetAxiosError}
-                openAddEditor={openAddEditor}
-                openEditEditor={openEditEditor}
-                setAddingMode={setAddingMode}
-              />
-            )}
-          </div>
-        </>
-      )}
+        ) : (
+          isEditorOpen &&
+          (selectedQuestion || isAddingMode) && (
+            <EditorQuestion
+              isOpen={isEditorOpen}
+              question={selectedQuestion}
+              onSaveEdit={handleSaveEdit}
+              onSaveAdd={handleSaveAdd}
+              onCloseAddEditor={closeAddEditor}
+              onCloseEditEditor={closeEditEditor}
+              isAddingMode={isAddingMode}
+              editedQuestion={editedQuestion}
+              setEditedQuestion={setEditedQuestion}
+              axiosError={axiosError}
+              resetAxiosError={resetAxiosError}
+              openAddEditor={openAddEditor}
+              openEditEditor={openEditEditor}
+              setAddingMode={setAddingMode}
+            />
+          )
+        )}
+      </div>
     </Wrapper>
   );
 };
