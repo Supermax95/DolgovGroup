@@ -183,21 +183,37 @@ const Table: FC<ITable> = ({
                             )
                           ) : (
                             <>
-                              {item[columnName].length > 18 && (
-                                <div
-                                  className={`absolute z-10 p-2 bg-white border rounded shadow ${
-                                    hoveredCell ===
-                                    rowIndex * columnsListDb.length + colIndex
-                                      ? ''
-                                      : 'hidden'
-                                  }`}
-                                >
-                                  {item[columnName]}
-                                </div>
+                              {[
+                                'lastName',
+                                'firstName',
+                                'middleName',
+                                'email',
+                              ].includes(columnName) && (
+                                <>
+                                  {item[columnName].length > 18 && (
+                                    <div
+                                      className={`absolute z-10 p-2 bg-white border rounded shadow ${
+                                        hoveredCell ===
+                                        rowIndex * columnsListDb.length +
+                                          colIndex
+                                          ? ''
+                                          : 'hidden'
+                                      }`}
+                                    >
+                                      {item[columnName]}
+                                    </div>
+                                  )}
+                                  {item[columnName].length > 18
+                                    ? `${item[columnName].substring(0, 18)}...`
+                                    : item[columnName]}
+                                </>
                               )}
-                              {item[columnName].length > 18
-                                ? `${item[columnName].substring(0, 18)}...`
-                                : item[columnName]}
+                              {![
+                                'lastName',
+                                'firstName',
+                                'middleName',
+                                'email',
+                              ].includes(columnName) && <>{item[columnName]}</>}
                             </>
                           )}
                         </div>
