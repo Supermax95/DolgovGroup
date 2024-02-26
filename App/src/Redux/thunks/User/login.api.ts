@@ -3,12 +3,6 @@ import axios, { AxiosResponse } from 'axios';
 import { PORT, IP } from '@env';
 
 interface RequestData {
-  token:
-    | {
-        accessToken: string;
-        refreshToken?: string;
-      }
-    | undefined;
   userData: {
     password: string;
     email: string;
@@ -16,6 +10,7 @@ interface RequestData {
 }
 
 interface ResponseData {
+  activationError: string | undefined;
   accessToken: string;
   refreshToken?: string;
   user: {
@@ -23,32 +18,27 @@ interface ResponseData {
     firstName: string;
     id: number;
     isActivated: boolean;
+    userStatus:string;
   };
 }
 
 const userLogin = createAsyncThunk<ResponseData, RequestData>(
   'api/login',
-  async ({ token, userData }) => {
-    console.log('token===>' , token);
-    
+  async ({ userData }, { rejectWithValue }) => {
     try {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      };
-
       const response: AxiosResponse = await axios.post(
         `http://${IP}:${PORT}/api/login`,
-        userData,
-        config
+        userData
       );
-      console.log('response axios', response.data);
-
       return response.data;
+      
     } catch (error) {
-      throw error;
+      if (axios.isAxiosError(error) && error.response) {
+        // console.error(error.response.data.message);
+        throw rejectWithValue(error.response.data.message);
+      } else {
+        throw error;
+      }
     }
   }
 );

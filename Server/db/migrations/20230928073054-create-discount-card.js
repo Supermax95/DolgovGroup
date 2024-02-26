@@ -20,6 +20,9 @@ module.exports = {
       birthDate: {
         type: Sequelize.DATEONLY,
       },
+      phoneNumber: {
+        type: Sequelize.STRING,
+      },
       email: {
         type: Sequelize.STRING,
       },
@@ -35,6 +38,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       barcode: {
+        defaultValue: '',
         type: Sequelize.STRING,
       },
       bonusProgram: {
@@ -42,6 +46,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       balance: {
+        defaultValue: 0,
         type: Sequelize.INTEGER,
       },
       userStatus: {
@@ -49,11 +54,26 @@ module.exports = {
         type: Sequelize.STRING,
       },
       isActivated: {
-        type: Sequelize.BOOLEAN,
         defaultValue: false,
+        type: Sequelize.BOOLEAN,
       },
       activationLink: {
         type: Sequelize.STRING,
+      },
+      emailConfirmationCode: {
+        type: Sequelize.STRING,
+      },
+      newEmail: {
+        defaultValue: '',
+        type: Sequelize.STRING,
+      },
+      notificationPush: {
+        defaultValue: true,
+        type: Sequelize.BOOLEAN,
+      },
+      notificationEmail: {
+        defaultValue: true,
+        type: Sequelize.BOOLEAN,
       },
       createdAt: {
         allowNull: false,

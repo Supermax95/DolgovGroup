@@ -1,6 +1,20 @@
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { ISelectedShop } from 'components/ShopsDetail/ShopsList';
+
+type NavigationParams = {
+  productId?: number;
+  subcategoryId?: number;
+  subcategoryName?: string;
+  promotionId?: number;
+  categoryId?: number;
+  categoryName?: string;
+  subcategoryIdArray?: number[];
+  selectedShop?: ISelectedShop;
+  questionId?: number;
+  lawId?: number;
+};
 
 type RootStackParamList = {
   FooterTabs: undefined;
@@ -14,9 +28,21 @@ type RootStackParamList = {
   ResetPassword: undefined;
   ChangeFullName: undefined;
   ChangeBirthDate: undefined;
+  ChangePhoneNumber: undefined;
   ChangeEmail: undefined;
   ChangePassword: undefined;
-  ShopsList: undefined;
+  ShopsList: undefined | NavigationParams;
+  SubcategoryDetail: undefined | NavigationParams;
+  ProductsCards: undefined | NavigationParams;
+  SingleProduct: undefined | NavigationParams;
+  PromoOneDetail: undefined | NavigationParams;
+  SearchProduct: undefined | NavigationParams;
+  SingleLaw: undefined | NavigationParams;
+  SupportMessage: undefined | NavigationParams;
+  Support: undefined | NavigationParams;
+  EmployeeConfirm: undefined | NavigationParams;
+  MarketMap: undefined | NavigationParams;
+  QuestionAndAnswer: undefined | NavigationParams;
 };
 
 type IMaterialCommunityIcons = keyof typeof MaterialCommunityIcons.glyphMap;
@@ -25,7 +51,7 @@ type TabNavigatorOptions = {
   Auth: undefined;
   Home: undefined;
   Catalog: undefined;
-  Shops: undefined;
+  Shops: undefined | NavigationParams;
   Support: undefined;
   Profile: undefined;
 };

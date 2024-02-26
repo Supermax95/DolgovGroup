@@ -4,7 +4,7 @@ import axios from 'axios';
 import { PORT, IP } from '@env';
 
 interface RequestData {
-  userId: number;
+  token: string | undefined;
   newPassword: string;
   oldPassword: string;
 }
@@ -14,18 +14,27 @@ interface ResponseData {
 
 const changeProfilePass = createAsyncThunk<ResponseData, RequestData>(
   'api/profileChangePass',
-  async ({ userId, newPassword, oldPassword }) => {
+  async ({ token, newPassword, oldPassword }, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axios.put(
-        `http://${IP}:${PORT}/newpassword/${userId}`,
-        { oldPassword, newPassword }
+        `http://${IP}:${PORT}/newpassword`,
+        { oldPassword, newPassword },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
       );
-      console.log('response', response.data);
 
       return response.data;
     } catch (error) {
-      console.error('Error:', error);
-      throw error;
+      if (axios.isAxiosError(error) && error.response) {
+        // console.error(error.response.data.error);
+        throw rejectWithValue(error.response.data.error);
+      } else {
+        throw error;
+      }
     }
   }
 );

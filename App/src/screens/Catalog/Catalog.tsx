@@ -1,11 +1,12 @@
-import { View, Text } from 'react-native';
 import React, { FC } from 'react';
+
+import CategoryDetail from 'components/Catalog/CategoryDetail/CategoryDetail';
 
 const Catalog: FC = () => {
   return (
-    <View>
-      <Text>Catalog</Text>
-    </View>
+    <>
+      <CategoryDetail />
+    </>
   );
 };
 

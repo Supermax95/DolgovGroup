@@ -2,10 +2,11 @@
 require('dotenv').config();
 const userService = require('../services/user-service');
 
+const { FRONTPORT, IP } = process.env;
 class UserController {
   async registration(req, res, next) {
     try {
-      const { lastName, firstName, middleName, email, birthDate, password } =
+      const { lastName, firstName, middleName, email, birthDate, password, phoneNumber } =
         req.body;
       const userData = await userService.registration(
         lastName,
@@ -13,7 +14,8 @@ class UserController {
         middleName,
         email,
         birthDate,
-        password
+        password,
+        phoneNumber,
       );
       // req.session.userId = userData.user.id;
       // res.cookie('refreshToken', userData.refreshToken, {
@@ -22,7 +24,9 @@ class UserController {
       // });
       return res.json(userData);
     } catch (e) {
-      next(e);
+      const errorMessage = typeof e === 'string' ? e : 'Internal Server Error';
+      console.log(errorMessage);
+      return res.status(500).json({ message: errorMessage });
     }
   }
 
@@ -30,9 +34,13 @@ class UserController {
     try {
       const activationLink = req.params.link;
       await userService.activate(activationLink);
-      return res.redirect('https://ya.ru');
+      // Когда будет деплой должно работать
+      return res.redirect(`http://${IP}:${FRONTPORT}/registration/success`);
+      // return res.redirect('https://ya.ru');
     } catch (e) {
-      console.log(e);
+      const errorMessage = typeof e === 'string' ? e : 'Internal Server Error';
+      console.log(errorMessage);
+      return res.status(500).json({ message: errorMessage });
     }
   }
 
@@ -40,41 +48,52 @@ class UserController {
     try {
       const { email, password } = req.body;
       const userData = await userService.login(email, password);
-      req.session.userId = userData.user.id;
-      res.cookie('refreshToken', userData.refreshToken, {
-        maxAge: 30 * 24 * 60 * 60 * 1000,
-        httpOnly: true,
-      });
+      console.log(userData);
       return res.json(userData);
     } catch (e) {
-      next(e);
+      const errorMessage = typeof e === 'string' ? e : 'Internal Server Error';
+      console.log(errorMessage);
+      return res.status(500).json({ message: errorMessage });
     }
   }
 
   async logout(req, res, next) {
+    const refreshToken = req.headers.authorization.split(' ')[1];
     try {
-      const { refreshToken } = req.cookies;
       const token = await userService.logout(refreshToken);
-
       // Очищаем сессию и куки
-      req.session.destroy(() => {
-        res.clearCookie('name');
-        res.clearCookie(refreshToken);
-        res.status(200).json({ message: 'Logged out successfully' });
-      });
+      res.status(200).json({ message: 'Logged out successfully' });
     } catch (e) {
-      next(e);
+      const errorMessage = typeof e === 'string' ? e : 'Internal Server Error';
+      console.log(errorMessage);
+      return res.status(500).json({ message: errorMessage });
     }
   }
 
+  // async refresh(req, res, next) {
+  //   try {
+  //     const { refreshToken } = req.cookies;
+  //     const { email } = req.body;
+  //     const userData = await userService.refresh(email);
+  //     res.cookie('refreshToken', userData.refreshToken, {
+  //       maxAge: 30 * 24 * 60 * 60 * 1000,
+  //       httpOnly: true,
+  //     });
+  //     return res.json(userData);
+  //   } catch (e) {
+  //     next(e);
+  //   }
+  // }
+
   async refresh(req, res, next) {
+    const { refreshToken } = req.headers;
+    console.log(refreshToken);
     try {
-      const { refreshToken } = req.cookies;
-      const userData = await userService.refresh(email, password);
-      res.cookie('refreshToken', userData.refreshToken, {
-        maxAge: 30 * 24 * 60 * 60 * 1000,
-        httpOnly: true,
-      });
+      const userData = await userService.refresh(refreshToken);
+      // res.cookie('refreshToken', userData.refreshToken, {
+      //   maxAge: 30 * 24 * 60 * 60 * 1000,
+      //   httpOnly: true,
+      // });
       return res.json(userData);
     } catch (e) {
       next(e);
@@ -89,7 +108,9 @@ class UserController {
 
       return res.json({ message: 'Новый пароль отправлен на указанный email' });
     } catch (e) {
-      next(e);
+      const errorMessage = typeof e === 'string' ? e : 'Internal Server Error';
+      console.log(errorMessage);
+      return res.status(500).json({ message: errorMessage });
     }
   }
 }

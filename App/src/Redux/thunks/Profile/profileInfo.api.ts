@@ -1,63 +1,10 @@
-// import { createAsyncThunk } from '@reduxjs/toolkit';
-// import type { AxiosResponse } from 'axios';
-// import axios from 'axios';
-// import { PORT, IP } from '@env';
-
-// interface IProfileInfoRequest {
-//   userId: number;
-// }
-
-// interface IProfileInfoResponse {
-//   lastName: string;
-//   firstName: string;
-//   middleName: string;
-//   birthDate: Date | null | string;
-//   email: string;
-// }
-
-// const getProfileInfo = createAsyncThunk<
-//   IProfileInfoResponse,
-//   IProfileInfoRequest
-// >('api/profileInfo', async ({ userId }) => {
-//   try {
-//     const response: AxiosResponse = await axios.get(
-//       `http://${IP}:${PORT}/edit/${userId}`
-//     );
-
-//     if (response.status === 200) {
-//       const { data } = response;
-//       const profileInfo = {
-//         lastName: data.lastName,
-//         firstName: data.firstName,
-//         middleName: data.middleName,
-//         birthDate: data.birthDate,
-//         email: data.email,
-//       };
-
-//       return profileInfo;
-//     }
-//   } catch (error) {
-//     console.error('Ошибка при получении данных', error);
-
-//     return {
-//       lastName: 'Нет данных',
-//       firstName: 'Нет данных',
-//       middleName: 'Нет данных',
-//       birthDate: 'Нет данных',
-//       email: 'Нет данных',
-//     };
-//   }
-// });
-
-// export default getProfileInfo;
-
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { AxiosResponse } from 'axios';
 import axios from 'axios';
 import { PORT, IP } from '@env';
 
 interface IProfileInfoRequest {
-  userId: number;
+  token?: string | undefined;
 }
 
 interface IProfileInfoResponse {
@@ -66,6 +13,10 @@ interface IProfileInfoResponse {
   middleName: string;
   birthDate: Date | null | string;
   email: string;
+  newEmail:string;
+  phoneNumber: string;
+  notificationPush: boolean;
+  notificationEmail: boolean;
 }
 
 const getProfileInfo = createAsyncThunk<
@@ -78,12 +29,19 @@ const getProfileInfo = createAsyncThunk<
       middleName: string;
       birthDate: Date | null | string;
       email: string;
+      phoneNumber: string;
     };
   }
->('api/profileInfo', async ({ userId }, { rejectWithValue }) => {
+>('api/profileInfo', async ({ token }, { rejectWithValue }) => {
   try {
     const response: AxiosResponse = await axios.get(
-      `http://${IP}:${PORT}/edit/${userId}`
+      `http://${IP}:${PORT}/edit`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      }
     );
 
     if (response.status === 200) {
@@ -94,7 +52,12 @@ const getProfileInfo = createAsyncThunk<
         middleName: data.middleName,
         birthDate: data.birthDate,
         email: data.email,
+        newEmail:data.newEmail,
+        phoneNumber: data.phoneNumber,
+        notificationPush: data.notificationPush,
+        notificationEmail: data.notificationEmail,
       };
+// console.log(profileInfo);
 
       return profileInfo;
     }
@@ -105,9 +68,10 @@ const getProfileInfo = createAsyncThunk<
       middleName: 'Нет данных',
       birthDate: 'Нет данных',
       email: 'Нет данных',
+      phoneNumber: 'Нет данных',
     });
   } catch (error) {
-    console.error('Ошибка при получении данных', error);
+    // console.error('Ошибка при получении данных', error);
 
     return rejectWithValue({
       lastName: 'Нет данных',
@@ -115,6 +79,7 @@ const getProfileInfo = createAsyncThunk<
       middleName: 'Нет данных',
       birthDate: 'Нет данных',
       email: 'Нет данных',
+      phoneNumber: 'Нет данных',
     });
   }
 });

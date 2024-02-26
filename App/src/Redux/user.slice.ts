@@ -4,13 +4,21 @@ import userLogout from './thunks/User/logout.api';
 import userLogin from './thunks/User/login.api';
 import userActivate from './thunks/User/activated.api';
 import resetPassword from './thunks/User/newPassword.api';
+import refreshToken from './thunks/User/refresh.api';
+import getCheck from './thunks/User/check.api';
+import checkEmployee from './thunks/Support/checkEmployee.api';
+import getBarcode from './thunks/User/barcode.api';
+import getUserStatus from './thunks/User/userStatus.api';
 
 type User = {
-  email: string;
+  id?: number | undefined;
   firstName: string;
-  id: number;
-  isActivated: boolean;
+  email: string;
+  isActivated: boolean | undefined;
+  userStatus?: string;
+  barcode?: string;
 };
+
 type IToken =
   | {
       accessToken: string;
@@ -20,11 +28,11 @@ type IToken =
 
 type UserState = {
   token: IToken | undefined;
-  user: User;
-  isAuth: boolean;
+  user: User | undefined;
+  isAuth: boolean | null;
   isLoading: boolean;
-  error: any; //* указать конкретный тип для ошибок, если он известен
-  email: string;
+  error: undefined | string;
+  activationError: undefined | string;
 };
 
 const initialState: UserState = {
@@ -34,14 +42,17 @@ const initialState: UserState = {
   },
   user: {
     email: '',
+    userStatus: '',
     firstName: '',
-    id: 0,
-    isActivated: false,
+    barcode: '' || undefined,
+    id: 0 || undefined,
+    isActivated: null || undefined,
   },
   isAuth: false,
   isLoading: false,
-  error: null,
-  email: '',
+  error: undefined,
+  activationError: undefined,
+  // email:'',
 };
 
 const userSlice = createSlice({
@@ -58,16 +69,16 @@ const userSlice = createSlice({
         if (action.payload) state.isLoading = false;
         state.token = {
           accessToken: action.payload.accessToken || '',
-          refreshToken: '',
+          refreshToken: action.payload.refreshToken || '',
         };
         state.user = action.payload.user;
+        state.activationError = action.payload.activationError;
         state.isAuth = true;
-        console.log('tokenslice', state.token);
       })
-      
+
       .addCase(userLogin.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message;
+        state.error = action.payload as string || undefined;
       })
       .addCase(userRegister.pending, (state) => {
         state.isLoading = true;
@@ -77,9 +88,9 @@ const userSlice = createSlice({
         state.user = action.payload.user;
         state.isAuth = true;
       })
-      .addCase(userRegister.rejected, (state, action) => {
+      .addCase(userRegister.rejected, (state) => {
         state.isLoading = false;
-        state.error = action.error.message;
+        // state.error = action.payload;
       })
       .addCase(userLogout.pending, (state) => {
         state.isLoading = true;
@@ -95,6 +106,8 @@ const userSlice = createSlice({
           firstName: '',
           id: 0,
           isActivated: false,
+          userStatus: '',
+          barcode: '',
         };
         state.isAuth = false;
       })
@@ -108,11 +121,12 @@ const userSlice = createSlice({
       })
       .addCase(userActivate.fulfilled, (state, action) => {
         if (action.payload) state.user = action.payload.user;
+
         state.isLoading = false;
         state.isAuth = true;
         state.token = {
           accessToken: action.payload?.token?.accessToken || '',
-          refreshToken: '',
+          refreshToken: action.payload?.token?.refreshToken || '',
         };
       })
       .addCase(userActivate.rejected, (state, action) => {
@@ -124,11 +138,87 @@ const userSlice = createSlice({
       })
       .addCase(resetPassword.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.email = action.payload.message;
-      })
+        if (state.user) {
+        state.user.email = action.payload.message;
+      }})
       .addCase(resetPassword.rejected, (state, action) => {
         state.isLoading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(refreshToken.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(refreshToken.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.token = {
+          accessToken: action.payload?.accessToken || '',
+          refreshToken: action.payload?.refreshToken || '',
+        };
+        state.user = action.payload.user;
+      })
+      .addCase(refreshToken.rejected, (state, action) => {
+        state.isLoading = false;
         state.error = action.error.message;
+      })
+      .addCase(getCheck.fulfilled, (state, action) => {
+        state.isLoading = false;
+        if (state.user) {
+        state.user.id = action.payload.id;
+        state.user.isActivated = action.payload.isActivated || undefined;
+        state.user.userStatus = action.payload.userStatus || undefined;
+      }})
+      // .addCase(getCheck.fulfilled, (state, action) => {
+      //   state.isLoading = false;
+      //   state.user.id = action.payload;
+      //   state.user.isActivated = action.payload || undefined;
+      // })
+      .addCase(getCheck.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      .addCase(getCheck.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(checkEmployee.fulfilled, (state, action) => {
+        state.isLoading = false;
+        if (state.user) {
+        state.user.id = action.payload.updatedUser.id;
+        state.user.isActivated =
+          action.payload.updatedUser.isActivated || undefined;
+        state.user.userStatus =
+          action.payload.updatedUser.userStatus || undefined;
+      }})
+      .addCase(checkEmployee.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      .addCase(checkEmployee.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getBarcode.fulfilled, (state, action) => {
+        state.isLoading = false;
+        if (state.user) {
+        state.user.barcode = action.payload.barcode;
+      }})
+      .addCase(getBarcode.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      .addCase(getBarcode.pending, (state) => {
+        state.isLoading = true;
+      })
+      // userStatus
+      .addCase(getUserStatus.fulfilled, (state, action) => {
+        state.isLoading = false;
+        if (state.user) {
+        state.user.userStatus = action.payload.userStatus || undefined;
+      }})
+      .addCase(getUserStatus.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      .addCase(getUserStatus.pending, (state) => {
+        state.isLoading = true;
       });
   },
 });

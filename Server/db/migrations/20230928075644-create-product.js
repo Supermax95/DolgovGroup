@@ -8,6 +8,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      article: {
+        type: Sequelize.STRING,
+      },
       productName: {
         type: Sequelize.STRING,
       },
@@ -18,13 +21,13 @@ module.exports = {
         type: Sequelize.STRING,
       },
       originalPrice: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.FLOAT,
       },
       customerPrice: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.FLOAT,
       },
       employeePrice: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.FLOAT,
       },
       isNew: {
         type: Sequelize.BOOLEAN,
@@ -33,17 +36,21 @@ module.exports = {
         type: Sequelize.BOOLEAN,
       },
       description: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
       },
       photo: {
         allowNull: true,
         type: Sequelize.STRING,
       },
-      categoryId: {
+      invisible: {
+        defaultValue: true,
+        type: Sequelize.BOOLEAN,
+      },
+      subcategoryId: {
         type: Sequelize.INTEGER,
         references: {
           model: {
-            tableName: 'Categories',
+            tableName: 'Subcategories',
           },
           key: 'id',
         },

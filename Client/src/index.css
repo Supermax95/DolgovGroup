@@ -2,8 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
-.form-container {
-  max-height: 100vh;
-  height: 600px;
-  overflow-y: auto;
+*,
+::after,
+::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.wrapperCss {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch; /* Добавлено выравнивание элементов по высоте */
+  justify-content: space-between; /* Добавлено распределение пространства между элементами */
 }

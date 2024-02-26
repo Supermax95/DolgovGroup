@@ -1,239 +1,105 @@
-// import React, { FC, useEffect, useRef, useState } from 'react';
-// import { useRoute, useNavigation } from '@react-navigation/native';
-// import { StackNavigationProp } from 'navigation/types';
-// import { View, StyleSheet, Button as RNButton } from 'react-native';
-// import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-// import Button from 'ui/Button';
-// import locations from './locations';
-// import * as Location from 'expo-location';
-
-// const Shops: FC = () => {
-//   const navigation = useNavigation<StackNavigationProp>();
-//   const mapRef = useRef(null);
-//   const route = useRoute();
-//   const selectedShop = route.params?.selectedShop1;
-//   const [userLocation, setUserLocation] = useState(null);
-
-//   useEffect(() => {
-//     (async () => {
-//       let { status } = await Location.requestForegroundPermissionsAsync();
-//       if (status === 'granted') {
-//         let userLocation = await Location.getCurrentPositionAsync({});
-//         setUserLocation(userLocation.coords);
-//         if (selectedShop && mapRef.current) {
-//           mapRef.current.animateToRegion({
-//             latitude: selectedShop.latitude,
-//             longitude: selectedShop.longitude,
-//             latitudeDelta: 0.005,
-//             longitudeDelta: 0.005,
-//           });
-//         }
-//       }
-//     })();
-//   }, [selectedShop]);
-
-//   const showMyLocation = () => {
-//     if (userLocation && mapRef.current) {
-//       mapRef.current.animateToRegion({
-//         latitude: userLocation.latitude,
-//         longitude: userLocation.longitude,
-//         latitudeDelta: 0.005,
-//         longitudeDelta: 0.005,
-//       });
-//     }
-//   };
-
-//   return (
-//     <View style={styles.container}>
-//       <Button
-//         title="Список магазинов"
-//         onPress={() => navigation.navigate('ShopsList')}
-//       />
-//       <RNButton title="Показать моё местоположение" onPress={showMyLocation} />
-//       <MapView
-//         ref={mapRef}
-//         provider={PROVIDER_GOOGLE}
-//         style={styles.map}
-//         initialRegion={{
-//           latitude: selectedShop
-//             ? selectedShop.latitude
-//             : userLocation
-//             ? userLocation.latitude
-//             : 54.725607,
-//           longitude: selectedShop
-//             ? selectedShop.longitude
-//             : userLocation
-//             ? userLocation.longitude
-//             : 20.5382,
-//           latitudeDelta: 0.0922,
-//           longitudeDelta: 0.0421,
-//         }}
-//       >
-//         {locations.map((shop, index) => (
-//           <Marker
-//             key={index}
-//             coordinate={{
-//               latitude: shop.latitude,
-//               longitude: shop.longitude,
-//             }}
-//             title={shop.name}
-//             pinColor={selectedShop === shop ? 'blue' : 'green'}
-//           >
-//             {/* <Callout onPress={() => setSelectedShop(shop)} /> */}
-//           </Marker>
-//         ))}
-//         {userLocation && (
-//           <Marker
-//             coordinate={{
-//               latitude: userLocation.latitude,
-//               longitude: userLocation.longitude,
-//             }}
-//             title="Ваше местоположение"
-//             pinColor="red"
-//           />
-//         )}
-//       </MapView>
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//   },
-//   map: {
-//     width: '100%',
-//     height: '100%',
-//   },
-// });
-
-// export default Shops;
-
-
-
-import React, { FC, useEffect, useRef, useState } from 'react';
-import { useRoute, useNavigation } from '@react-navigation/native';
+//* https://github.com/react-native-maps/react-native-maps/blob/master/docs/mapview.md
+//* документация по карте
+import React, { FC, useEffect, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from 'navigation/types';
-import { View, StyleSheet, Button as RNButton } from 'react-native';
-import MapView, { Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
-import Button from 'ui/Button';
-import locations, { LocationObjectCoords } from './locations';
-import * as Location from 'expo-location';
+import { View, Pressable, Text } from 'react-native';
+
+import UniversalHeader from 'ui/UniversalHeader';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import ShopsList from '../../components/ShopsDetail/ShopsList';
+import MarketMap from '../../components/ShopsDetail/MarketMap';
 
 interface ISelectedShop {
-  latitude?: number;
-  longitude?: number;
-  name?: string;
+  id: number;
+  city: string;
+  address: string;
+  latitude: string;
+  longitude: string;
+  hours: string;
 }
 
-const Shops: FC = () => {
-  const navigation = useNavigation<StackNavigationProp>();
-  const mapRef = useRef<MapView | null>(null);
-  const route = useRoute();
-  const selectedShop = route.params?.selectedShop1 as ISelectedShop | undefined;
-  const [userLocation, setUserLocation] = useState<LocationObjectCoords | null>(
-    null
-  );
+// interface IRouteParams {
+//   selectedShop?: ISelectedShop | null;
+// }
 
-  useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status === 'granted') {
-        let userLocation = await Location.getCurrentPositionAsync({});
-        setUserLocation(userLocation.coords);
-        if (selectedShop && mapRef.current) {
-          const region: Region = {
-            latitude:
-              selectedShop.latitude ||
-              userLocation.coords.latitude ||
-              54.725607,
-            longitude:
-              selectedShop.longitude ||
-              userLocation.coords.longitude ||
-              20.5382,
-            latitudeDelta: 0.005,
-            longitudeDelta: 0.005,
-          };
-          mapRef.current.animateToRegion(region);
-        }
-      }
-    })();
-  }, [selectedShop]);
+// const Shops: FC = ({ route }: any) => {
+//   const navigation = useNavigation<StackNavigationProp>();
+//   const [showMap, setShowMap] = useState(true);
+//   const  selectedShop  = route.params;
 
-  const showMyLocation = () => {
-    if (userLocation && mapRef.current) {
-      mapRef.current.animateToRegion({
-        latitude: userLocation.latitude,
-        longitude: userLocation.longitude,
-        latitudeDelta: 0.005,
-        longitudeDelta: 0.005,
-      });
-    }
+  const Shops: FC = ({ route }: any) => {
+    const navigation = useNavigation<StackNavigationProp>();
+    const [showMap, setShowMap] = useState(true);
+    const selectedShop = route.params?.selectedShop as ISelectedShop | null;
+    
+    // const  selectedShop  = route.params as IRouteParams;
+  
+  const handleShowList = () => {
+    setShowMap(false);
+    navigation.setParams({ selectedShop: null });
   };
 
-  return (
-    <View style={styles.container}>
-      <Button
-        title="Список магазинов"
-        onPress={() => navigation.navigate('ShopsList')}
-      />
-      <RNButton title="Показать моё местоположение" onPress={showMyLocation} />
-      <MapView
-        ref={mapRef}
-        provider={PROVIDER_GOOGLE}
-        style={styles.map}
-        initialRegion={{
-          latitude:
-            selectedShop?.latitude ||
-            (userLocation ? userLocation.latitude : 54.725607),
-          longitude:
-            selectedShop?.longitude ||
-            (userLocation ? userLocation.longitude : 20.5382),
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-      >
-        {locations.map((shop, index) => (
-          <Marker
-            key={index}
-            coordinate={{
-              latitude: shop.latitude,
-              longitude: shop.longitude,
-            }}
-            title={shop.name}
-            pinColor={
-              selectedShop &&
-              selectedShop.latitude === shop.latitude &&
-              selectedShop.longitude === shop.longitude
-                ? 'blue'
-                : 'green'
-            }
-          />
-        ))}
+  const handleMarkerPress = (shop: ISelectedShop) => {
+    navigation.setParams({ selectedShop: shop });
+  };
 
-        {userLocation && (
-          <Marker
-            coordinate={{
-              latitude: userLocation.latitude,
-              longitude: userLocation.longitude,
-            }}
-            title="Ваше местоположение"
-            pinColor="red"
-          />
-        )}
-      </MapView>
-    </View>
+  const handleShowMap = () => {
+    setShowMap(true);
+  };
+
+  useEffect(() => {
+    if (selectedShop) {
+      setShowMap(true);
+    }
+  }, [selectedShop]);
+
+  return (
+    <SafeAreaView className="flex-1 bg-white">
+      <UniversalHeader title="Магазины" />
+
+      <View className="justify-center items-center py-2">
+        <View className="flex-row items-center justify-center w-[90%] h-8 bg-gray-100 rounded-lg">
+          <Pressable
+            className={`rounded-lg w-[50%] h-[96%] justify-center items-center ${
+              showMap ? 'bg-gray-100' : 'bg-emerald-700'
+            }`}
+            onPress={handleShowList}
+          >
+            <Text
+              className={`text-md font-medium ${
+                showMap ? 'text-zinc-700' : 'text-white'
+              }`}
+            >
+              Список
+            </Text>
+          </Pressable>
+          <Pressable
+            className={`rounded-lg w-[50%] h-[96%] justify-center items-center ${
+              showMap ? 'bg-emerald-700' : 'bg-gray-100'
+            }`}
+            onPress={handleShowMap}
+          >
+            <Text
+              className={`text-md font-medium ${
+                showMap ? 'text-white' : 'text-zinc-700'
+              }`}
+            >
+              На карте
+            </Text>
+          </Pressable>
+        </View>
+      </View>
+      {showMap ? (
+        <MarketMap
+          onMarkerPress={handleMarkerPress}
+          selectedShop={selectedShop}
+        />
+      ) : (
+        <ShopsList />
+      )}
+    </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  map: {
-    width: '100%',
-    height: '100%',
-  },
-});
 
 export default Shops;

@@ -8,14 +8,23 @@ import Calendar from '../../../Calendar/Calendar';
 import Button from 'ui/Button';
 import profileChangeBirthDate from 'Redux/thunks/Profile/profileChangeBirthDate.api';
 import Padding from 'ui/Padding';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import UniversalHeader from 'ui/UniversalHeader';
 
 export const ChangeBirthDate: FC = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<StackNavigationProp>();
-  const userId = useAppSelector<number>((state) => state.userSlice.user.id);
   const userDate = useAppSelector<Date | null | string>(
     (state) => state.profileSlice.birthDate
   );
+
+  const token = useAppSelector<string | undefined>(
+    (state) => state.userSlice.token?.refreshToken
+  );
+  // const email = useAppSelector<null | string>(
+  //   (state) => state.userSlice.user.email
+  // );
+  //  const refreshResult = dispatch(refreshToken());
 
   const userDateAsDate =
     userDate !== null ? parseISO(userDate as string) : null;
@@ -36,7 +45,7 @@ export const ChangeBirthDate: FC = () => {
       }
 
       const result = await dispatch(
-        profileChangeBirthDate({ userId, newBirthDate: data.newBirthDate })
+        profileChangeBirthDate({ token, newBirthDate: data.newBirthDate })
       );
       if (result.meta.requestStatus === 'rejected') {
         Alert.alert(
@@ -63,7 +72,11 @@ export const ChangeBirthDate: FC = () => {
   };
 
   return (
-    <View className="bg-white h-full">
+    <SafeAreaView className="bg-white h-full flex-1">
+      <UniversalHeader
+        onPress={() => navigation.goBack()}
+        title="Изменение профиля"
+      />
       <Padding>
         <Padding>
           <View>
@@ -78,7 +91,7 @@ export const ChangeBirthDate: FC = () => {
           <Button onPress={handleSubmit} title="Сохранить" />
         </Padding>
       </Padding>
-    </View>
+    </SafeAreaView>
   );
 };
 

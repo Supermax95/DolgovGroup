@@ -8,9 +8,10 @@ interface RequestData {
     id: number;
     city: string;
     address: string;
-    latitude: number;
-    longitude: number;
+    latitude: string;
+    longitude: string;
     hours: string;
+    invisible: boolean;
   };
 }
 
@@ -18,22 +19,23 @@ interface ResponseData {
   id: number;
   city: string;
   address: string;
-  latitude: number;
-  longitude: number;
+  latitude: string;
+  longitude: string;
   hours: string;
+  invisible: boolean;
 }
 
-type ArrayResponseData = Array<ResponseData>
+type ArrayResponseData = Array<ResponseData>;
 
 const editLocation = createAsyncThunk<ArrayResponseData, RequestData>(
   'admin/editlocation',
 
-  async ({ locationId, newInfo }) => { 
+  async ({ locationId, newInfo }) => {
     try {
       const response: AxiosResponse = await axios.put(
         `${VITE_URL}/admin/locations/${locationId}`,
         { newInfo }
-      );      
+      );
       return response.data;
     } catch (error) {
       console.error('Error:', error);

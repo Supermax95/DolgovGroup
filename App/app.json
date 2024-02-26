@@ -1,10 +1,19 @@
 {
   "expo": {
     "name": "DolgovGroup",
-    "slug": "DolgovGroup",
+    "slug": "dolgovapp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./src/assets/adaptive-icon2.png",
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./src/assets/images/icon.png",
+          "color": "#ffffff"
+        }
+      ]
+    ],
+    "icon": "./src/assets/images/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./src/assets/adaptive-icon2.png",
@@ -15,16 +24,26 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "adaptiveIcon": {
+        "foregroundImage": "./src/assets/images/adaptive-icon.png"
+      }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/наш_продукт_лого.png",
+        "foregroundImage": "./src/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.supermax95.dolgovapp"
     },
     "web": {
       "favicon": "./src/assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ca7ac5b0-6ced-4fa9-ab4e-c79396d8ad27"
+      }
+    },
+    "owner": "supermax95"
   }
 }

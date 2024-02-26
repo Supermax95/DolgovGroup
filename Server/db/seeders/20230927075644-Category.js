@@ -8,20 +8,16 @@ module.exports = {
       [
         {
           categoryName: 'Молочные продукты',
-          subcategory: ' Йогурт',
+          img: null,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           categoryName: 'Колбасные изделия',
-          subcategory: ' Ветчина',
+          img: null,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
-        // {
-        //   categoryName: 'Колбасные изделия',
-        //   subcategory: ' Колбаса',
-        // },
       ],
       {}
     );

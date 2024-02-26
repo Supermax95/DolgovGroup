@@ -4,25 +4,32 @@ import axios from 'axios';
 import { PORT, IP } from '@env';
 
 interface IProfileChangeEmailRequest {
-  userId: number;
+  token?: string | undefined;
   newEmail: string;
 }
 
 interface IProfileChangeEmailResponse {
   email: string;
   message: string;
+  newEmail:string;
 }
 
 const profileChangeEmail = createAsyncThunk<
   IProfileChangeEmailResponse,
   IProfileChangeEmailRequest
->('api/profileChangeEmail', async ({ userId, newEmail }) => {
+>('api/profileChangeEmail', async ({ token, newEmail }) => {
   try {
     const response: AxiosResponse = await axios.put(
-      `http://${IP}:${PORT}/email/${userId}`,
-      { newEmail }
+      `http://${IP}:${PORT}/email`,
+      { newEmail },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      }
     );
-    console.log('responseresponseresponse --> newEmail', response.data);
+    // console.log('responseresponseresponse --> newEmail', response.data);
     return response.data;
   } catch (error) {
     throw error;

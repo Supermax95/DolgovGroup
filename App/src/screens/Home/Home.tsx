@@ -1,58 +1,8 @@
-import { ScrollView, View } from 'react-native';
 import React, { FC } from 'react';
-import Padding from 'ui/Padding';
-import LargeCard from 'ui/LargeCard';
-import Heading from 'ui/Heading';
-import NewGoods from 'screens/NewGoods/NewGoods';
+import HomeDetail from 'components/HomeDetail/HomeDetail';
 
 const Home: FC = () => {
-  function formatPoints(numberPoints: number) {
-    if (numberPoints === 0) {
-      return '0 баллов';
-    }
-
-    const lastDigit = numberPoints % 10;
-    const lastTwoDigits = numberPoints % 100;
-
-    if (lastTwoDigits >= 11 && lastTwoDigits <= 19) {
-      return `${numberPoints} баллов`;
-    } else if (lastDigit === 1) {
-      return `${numberPoints} балл`;
-    } else if (lastDigit >= 2 && lastDigit <= 4) {
-      return `${numberPoints} балла`;
-    } else {
-      return `${numberPoints} баллов`;
-    }
-  }
-
-  const numberPoints = 15;
-
-  const numberPointsRub = formatPoints(numberPoints);
-  //console.log(numberPointsRub);
-
-  return (
-    <View className="bg-white h-full">
-      <ScrollView alwaysBounceVertical showsVerticalScrollIndicator={false}>
-        <Padding>
-          <LargeCard
-            numberPoints={numberPointsRub}
-            barcode={require('../../assets/shtrihkod.jpg')}
-          />
-          <Heading title="Акции" />
-          <ScrollView
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            className="px-1"
-          >
-            <NewGoods />
-          </ScrollView>
-          <Heading title="Персональные предложения" />
-
-          <NewGoods />
-        </Padding>
-      </ScrollView>
-    </View>
-  );
+  return <HomeDetail />;
 };
 
 export default Home;

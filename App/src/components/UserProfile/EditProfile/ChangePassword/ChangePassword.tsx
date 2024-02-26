@@ -4,10 +4,12 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from 'navigation/types';
 import { View, Text, Alert } from 'react-native';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import Field from 'ui/Field';
+import FieldInput from 'ui/FieldInput';
 import Button from 'ui/Button';
 import changeProfilePass from 'Redux/thunks/Profile/profileChangePass.api';
 import Padding from 'ui/Padding';
+import UniversalHeader from 'ui/UniversalHeader';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface PasswordChangeData {
   oldPassword: string;
@@ -18,13 +20,16 @@ interface PasswordChangeData {
 const ChangePassword: FC = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<StackNavigationProp>();
-  const userId = useAppSelector<number>((state) => state.userSlice.user.id);
+  const token = useAppSelector<string | undefined>(
+    (state) => state.userSlice.token?.refreshToken
+  );
 
   const [data, setData] = useState<PasswordChangeData>({
     oldPassword: '',
     newPassword: '',
     confirmPassword: '',
   });
+
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const [errorMessages, setErrorMessages] = useState<PasswordChangeData>({
@@ -33,6 +38,11 @@ const ChangePassword: FC = () => {
     confirmPassword: '',
   });
 
+  const validatePassword = (password: string): boolean => {
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{6,}$/;
+    return passwordRegex.test(password);
+  };
+  
   const toggleShowPassword = (): void => {
     setShowPassword(!showPassword);
   };
@@ -48,7 +58,7 @@ const ChangePassword: FC = () => {
   const handleSubmit = async (): Promise<void> => {
     if (!data.oldPassword || !data.newPassword || !data.confirmPassword) {
       setErrorMessages({
-        oldPassword: !data.oldPassword ? 'Введите старый пароль' : '',
+        oldPassword: !data.oldPassword ? 'Введите текущий пароль' : '',
         newPassword: !data.newPassword ? 'Введите новый пароль' : '',
         confirmPassword: !data.confirmPassword
           ? 'Подтвердите новый пароль'
@@ -57,26 +67,28 @@ const ChangePassword: FC = () => {
     } else if (data.newPassword !== data.confirmPassword) {
       setErrorMessages((prevErrors) => ({
         ...prevErrors,
-        newPassword: 'Пароли не совпадают',
+        confirmPassword: 'Пароли не совпадают',
+      }));
+    } else if (!validatePassword(data.newPassword)) {
+      setErrorMessages((prevErrors) => ({
+        ...prevErrors,
+        newPassword: 'Пароль должен содержать минимум 6 символов, включая заглавную и строчную букву, а также одну цифру.',
       }));
     } else {
       try {
         const result = await dispatch(
           changeProfilePass({
-            userId,
+            token,
             oldPassword: data.oldPassword,
             newPassword: data.newPassword,
           })
         );
         if (result.meta.requestStatus === 'rejected') {
-          Alert.alert(
-            'Ошибка',
-            'Произошла ошибка при изменении пароля. Пожалуйста, попробуйте ещё раз.'
-          );
+          Alert.alert('Ошибка', result.payload as string);
         } else if (result.meta.requestStatus === 'fulfilled') {
           Alert.alert(
-            'Пароль успешно изменен',
             'Ваш пароль был успешно изменен.',
+            '',
             [
               {
                 text: 'OK',
@@ -97,11 +109,15 @@ const ChangePassword: FC = () => {
   };
 
   return (
-    <View className="bg-white h-full">
+    <SafeAreaView className="bg-white h-full flex-1">
+      <UniversalHeader
+        onPress={() => navigation.goBack()}
+        title="Изменение профиля"
+      />
       <Padding>
         <Padding>
           <View className="flex-row items-center">
-            <Field
+            <FieldInput
               value={data.oldPassword}
               placeholder="Старый пароль"
               onChange={(value) => handleFieldChange('oldPassword', value)}
@@ -126,7 +142,7 @@ const ChangePassword: FC = () => {
             </Text>
           )}
           <View className="flex-row items-center">
-            <Field
+            <FieldInput
               value={data.newPassword}
               placeholder="Новый пароль"
               onChange={(value) => handleFieldChange('newPassword', value)}
@@ -151,7 +167,7 @@ const ChangePassword: FC = () => {
             </Text>
           )}
           <View className="flex-row items-center">
-            <Field
+            <FieldInput
               value={data.confirmPassword}
               placeholder="Подтвердите новый пароль"
               onChange={(value) => handleFieldChange('confirmPassword', value)}
@@ -170,11 +186,6 @@ const ChangePassword: FC = () => {
               }}
             />
           </View>
-          {errorMessages.newPassword && (
-            <Text className="text-red-500 ml-1 mt-1 text-xs">
-              {errorMessages.newPassword}
-            </Text>
-          )}
           {errorMessages.confirmPassword && (
             <Text className="text-red-500 ml-1 mt-1 text-xs">
               {errorMessages.confirmPassword}
@@ -183,7 +194,7 @@ const ChangePassword: FC = () => {
           <Button onPress={handleSubmit} title="Сохранить" />
         </Padding>
       </Padding>
-    </View>
+    </SafeAreaView>
   );
 };
 

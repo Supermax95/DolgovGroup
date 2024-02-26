@@ -23,6 +23,10 @@ module.exports = {
       hours: {
         type: Sequelize.STRING,
       },
+      invisible: {
+        defaultValue: true,
+        type: Sequelize.BOOLEAN,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

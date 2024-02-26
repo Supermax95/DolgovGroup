@@ -3,10 +3,12 @@ import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from 'navigation/types';
 import { View, Text, Alert } from 'react-native';
-import Field from 'ui/Field';
+import FieldInput from 'ui/FieldInput';
 import Button from 'ui/Button';
 import profileChangeFullName from 'Redux/thunks/Profile/profileChangeFullName.api';
 import Padding from 'ui/Padding';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import UniversalHeader from 'ui/UniversalHeader';
 
 interface IFullName {
   newLastName: string;
@@ -17,16 +19,17 @@ interface IFullName {
 const ChangeFullName: FC = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<StackNavigationProp>();
-  const userId = useAppSelector<number>((state) => state.userSlice.user.id);
-
+  const token = useAppSelector<string | undefined>(
+    (state) => state.userSlice.token?.refreshToken
+  );
+  // const userId = useAppSelector<number>((state) => state.userSlice.user.id);
 
   const dateProfile = useAppSelector<{
     lastName?: string;
     firstName?: string;
     middleName?: string;
-  }>((state) => state.profileSlice); 
-  
-  
+  }>((state) => state.profileSlice);
+
   const [data, setData] = useState<IFullName>({
     newLastName: dateProfile.lastName || '',
     newFirstName: dateProfile.firstName || '',
@@ -38,6 +41,11 @@ const ChangeFullName: FC = () => {
     newFirstName: '',
     newMiddleName: '',
   });
+
+  const validateCyrillicName = (name: string): boolean => {
+    const cyrillicRegex = /^[А-Яа-яЁё]+$/;
+    return cyrillicRegex.test(name);
+  };
 
   const handleFieldChange = (field: keyof IFullName, value: string): void => {
     setData((prevData) => ({ ...prevData, [field]: value }));
@@ -51,11 +59,27 @@ const ChangeFullName: FC = () => {
         newFirstName: !data.newFirstName ? 'Введите свое имя' : '',
         newMiddleName: !data.newMiddleName ? 'Введите своё отчество' : '',
       });
+    } else if (
+      !validateCyrillicName(data.newLastName) ||
+      !validateCyrillicName(data.newFirstName) ||
+      !validateCyrillicName(data.newMiddleName)
+    ) {
+      setErrorMessages({
+        newLastName: !validateCyrillicName(data.newLastName)
+          ? 'Фамилия должна содержать только кириллические символы'
+          : '',
+        newFirstName: !validateCyrillicName(data.newFirstName)
+          ? 'Имя должно содержать только кириллические символы'
+          : '',
+        newMiddleName: !validateCyrillicName(data.newMiddleName)
+          ? 'Отчество должно содержать только кириллические символы'
+          : '',
+      });
     } else {
       try {
         const result = await dispatch(
           profileChangeFullName({
-            userId,
+            token,
             newLastName: data.newLastName,
             newFirstName: data.newFirstName,
             newMiddleName: data.newMiddleName,
@@ -87,10 +111,15 @@ const ChangeFullName: FC = () => {
   };
 
   return (
-    <View className="bg-white h-full">
+    <SafeAreaView className="bg-white h-full flex-1">
+      <UniversalHeader
+        onPress={() => navigation.goBack()}
+        title="Изменение профиля"
+      />
+
       <Padding>
         <Padding>
-          <Field
+          <FieldInput
             value={data.newLastName}
             placeholder="Фамилия"
             onChange={(value) => handleFieldChange('newLastName', value)}
@@ -101,7 +130,7 @@ const ChangeFullName: FC = () => {
               {errorMessages.newLastName}
             </Text>
           )}
-          <Field
+          <FieldInput
             value={data.newFirstName}
             placeholder="Имя"
             onChange={(value) => handleFieldChange('newFirstName', value)}
@@ -112,7 +141,7 @@ const ChangeFullName: FC = () => {
               {errorMessages.newFirstName}
             </Text>
           )}
-          <Field
+          <FieldInput
             value={data.newMiddleName}
             placeholder="Отчество"
             onChange={(value) => handleFieldChange('newMiddleName', value)}
@@ -126,7 +155,7 @@ const ChangeFullName: FC = () => {
           <Button onPress={handlerSubmitFullName} title="Сохранить" />
         </Padding>
       </Padding>
-    </View>
+    </SafeAreaView>
   );
 };
 
