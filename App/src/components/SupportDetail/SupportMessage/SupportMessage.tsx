@@ -110,6 +110,10 @@ const SupportMessage: FC = () => {
     { label: 'Обслуживание в магазине', value: 'Обслуживание в магазине' },
     { label: 'Функционал приложения', value: 'Функционал приложения' },
     { label: 'Программа лояльности', value: 'Программа лояльности' },
+    {
+      label: 'Накопленные баллы отсутствуют',
+      value: 'Накопленные баллы отсутствуют',
+    },
     { label: 'Прочее', value: 'Прочее' },
   ];
 
@@ -160,7 +164,15 @@ const SupportMessage: FC = () => {
                     autoCapitalize="sentences"
                   />
                 )}
-
+                {selectedOption === 'Накопленные баллы отсутствуют' && (
+                  <View className="mt-2 justify-center items-center w-full">
+                    <Text className="text-xs font-molmal text-green-700">
+                      Выберите этот запрос, если баллы с вашей физической карты
+                      не отображаются в приложении. Время рассмотрения составит
+                      от 30 до 45 дней.
+                    </Text>
+                  </View>
+                )}
                 <FieldInput
                   value={data.message}
                   placeholder="Текст"

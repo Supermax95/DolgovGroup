@@ -34,39 +34,54 @@ router.post('/supportNodemailerRouter', async (req, res) => {
       subject: `Обращение в службу поддержки от ${dataUser.lastName} ${dataUser.firstName} ${dataUser.middleName}`,
       text: '',
       html: `
-      <p>В приложении было получено обращение от пользователя с именем ${dataUser.lastName} ${dataUser.firstName} ${dataUser.middleName}.</p>
-      <ul> 
-      <li>Электронная почта пользователя: ${dataUser.email}</li>
-      <li>Телефон пользователя: ${formattedPhoneNumber}</li>
-      <li>Тема обращения: <strong>${titleMessage}</strong></li>
-      <li>
-        Содержание обращения: <br>
-        ${message}
-      </li>
-    `,
-    };
-
-    //!проблема с гугл-почтой
-    // const imagePath = `public/adaptive-icon2.svg`;
-    // const rrr = `http://${IP}:${PORT}/${imagePath}`;
-    // console.log('🚀 ~ router.post ~ rrr:', rrr);
-
-    const userMailData = {
-      from: process.env.EMAIL,
-      to: dataUser.email,
-      subject: `Статус вашего заявления по теме: ${titleMessage}`,
-      text: '',
-      html: `
-  <p>Уважаемый(ая) ${dataUser.firstName} ${dataUser.middleName}, Ваше обращение принято. В ближайшее время мы его рассмотрим.</p>
-  <p style="font-weight: bold; color: #555;">С уважением,</p>
-  <p style="font-weight: bold; color: #555;">ООО "ДОЛГОВ ГРУПП"</p>
+        <p>В приложении было получено обращение от пользователя с именем ${dataUser.lastName} ${dataUser.firstName} ${dataUser.middleName}.</p>
+        <ul> 
+          <li>Электронная почта пользователя: ${dataUser.email}</li>
+          <li>Телефон пользователя: ${formattedPhoneNumber}</li>
+          <li>Тема обращения: <strong>${titleMessage}</strong></li>
+          <li>
+            Содержание обращения: <br>
+            ${message}
+          </li>
+        </ul>
       `,
     };
 
-    transporter.sendMail(userMailData);
-    transporter.sendMail(mailData);
+    if (titleMessage === 'Накопленные баллы отсутствуют') {
+      const userMailData = {
+        from: process.env.EMAIL,
+        to: dataUser.email,
+        subject: `Статус вашего заявления по теме: ${titleMessage}`,
+        text: '',
+        html: `
+          <p>Уважаемый(ая) ${dataUser.firstName} ${dataUser.middleName}, Ваше обращение принято. Время рассмотрения составит от 30 до 45 дней.</p>
+          <p style="font-weight: bold; color: #555;">С уважением,</p>
+          <p style="font-weight: bold; color: #555;">ООО "ДОЛГОВ ГРУПП"</p>
+        `,
+      };
 
-    res.status(200).json({ message: 'Письмо отправлено' });
+      transporter.sendMail(userMailData);
+      transporter.sendMail(mailData);
+
+      res.status(200).json({ message: 'Письмо отправлено' });
+    } else {
+      const userMailData = {
+        from: process.env.EMAIL,
+        to: dataUser.email,
+        subject: `Статус вашего заявления по теме: ${titleMessage}`,
+        text: '',
+        html: `
+          <p>Уважаемый(ая) ${dataUser.firstName} ${dataUser.middleName}, Ваше обращение принято. В ближайшее время мы его рассмотрим.</p>
+          <p style="font-weight: bold; color: #555;">С уважением,</p>
+          <p style="font-weight: bold; color: #555;">ООО "ДОЛГОВ ГРУПП"</p>
+        `,
+      };
+
+      transporter.sendMail(userMailData);
+      transporter.sendMail(mailData);
+
+      res.status(200).json({ message: 'Письмо отправлено' });
+    }
   } catch (error) {
     console.error('Ошибка при отправке письма:', error);
     res.status(500).json({
@@ -74,6 +89,8 @@ router.post('/supportNodemailerRouter', async (req, res) => {
     });
   }
 });
+
+
 
 router.post('/checkEmployee', async (req, res) => {
   try {
