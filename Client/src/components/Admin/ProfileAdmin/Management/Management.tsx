@@ -156,20 +156,79 @@ const Management: FC = () => {
     setModalOpen(false);
   };
 
-  //* добавление менеджера
+  // //* добавление менеджера
+  // const handleSaveAdd = async (): Promise<void> => {
+  //   try {
+  //     if (editedManager) {
+  //       const resultAdd = await dispatch(
+  //         addManager({
+  //           newManager: editedManager,
+  //         })
+  //       );
+  //       unwrapResult(resultAdd);
+  //       setShowNotificationAdd(true);
+  //       setTimeout(() => {
+  //         closeEditModal();
+  //       }, 50);
+  //     }
+  //   } catch (error) {
+  //     console.error('Произошла ошибка при добавлении:', error);
+  //     setErrorNotification(error as string | null);
+  //     setShowErrorNotificationAdd(true);
+  //   }
+  // };
+
+  // //* редактирование менеджера
+  // const handleSaveEdit = async (editedManager: IManager): Promise<void> => {
+  //   try {
+  //     if (selectedManager) {
+  //       const resultEdit = await dispatch(
+  //         editManager({
+  //           managerId: selectedManager.id,
+  //           updateManager: editedManager,
+  //         })
+  //       );
+
+  //       unwrapResult(resultEdit);
+  //       setShowNotificationEdit(true);
+  //       setTimeout(() => {
+  //         closeEditModal();
+  //       }, 50);
+  //     }
+  //   } catch (error) {
+  //     console.error('Произошла ошибка при редактировании:', error);
+  //     setErrorNotification(error as string | null);
+  //     setShowErrorNotificationEdit(true);
+  //   }
+  // };
+
   const handleSaveAdd = async (): Promise<void> => {
+    
     try {
       if (editedManager) {
-        const resultAdd = await dispatch(
-          addManager({
-            newManager: editedManager,
-          })
-        );
-        unwrapResult(resultAdd);
-        setShowNotificationAdd(true);
-        setTimeout(() => {
-          closeEditModal();
-        }, 50);
+        const cyrillicRegex = /^[А-Яа-яЁё\s-]+$/;
+
+        if (
+          cyrillicRegex.test(editedManager.lastName) &&
+          cyrillicRegex.test(editedManager.firstName) &&
+          cyrillicRegex.test(editedManager.middleName)
+        ) {
+          const resultAdd = await dispatch(
+            addManager({
+              newManager: editedManager,
+            })
+          );
+          unwrapResult(resultAdd);
+          setShowNotificationAdd(true);
+          setTimeout(() => {
+            closeEditModal();
+          }, 50);
+        } else {
+          setErrorNotification(
+            'ФИО должны содержать только кириллические символы, пробелы и дефисы'
+          );
+          setShowErrorNotificationAdd(true);
+        }
       }
     } catch (error) {
       console.error('Произошла ошибка при добавлении:', error);
@@ -178,22 +237,34 @@ const Management: FC = () => {
     }
   };
 
-  //* редактирование менеджера
   const handleSaveEdit = async (editedManager: IManager): Promise<void> => {
     try {
       if (selectedManager) {
-        const resultEdit = await dispatch(
-          editManager({
-            managerId: selectedManager.id,
-            updateManager: editedManager,
-          })
-        );
+        const cyrillicRegex = /^[А-Яа-яЁё\s-]+$/;
 
-        unwrapResult(resultEdit);
-        setShowNotificationEdit(true);
-        setTimeout(() => {
-          closeEditModal();
-        }, 50);
+        if (
+          cyrillicRegex.test(editedManager.lastName) &&
+          cyrillicRegex.test(editedManager.firstName) &&
+          cyrillicRegex.test(editedManager.middleName)
+        ) {
+          const resultEdit = await dispatch(
+            editManager({
+              managerId: selectedManager.id,
+              updateManager: editedManager,
+            })
+          );
+
+          unwrapResult(resultEdit);
+          setShowNotificationEdit(true);
+          setTimeout(() => {
+            closeEditModal();
+          }, 50);
+        } else {
+          setErrorNotification(
+            'ФИО должны содержать только кириллические символы, пробелы и дефисы'
+          );
+          setShowErrorNotificationEdit(true);
+        }
       }
     } catch (error) {
       console.error('Произошла ошибка при редактировании:', error);
