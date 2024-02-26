@@ -74,7 +74,7 @@ const Navbar: FC = () => {
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <Link to="/locations" className="flex items-center">
             <img
-              src="/src/assets/DGCompany.png"
+              src="/DGCompany.png"
               className="h-8 mr-3"
               alt="Flowbite Logo"
             />

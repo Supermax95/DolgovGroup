@@ -3,7 +3,6 @@ import {
   CheckCircleIcon,
   ChevronDownIcon,
   ChevronUpIcon,
-  UserGroupIcon,
   UserIcon,
   UserPlusIcon,
   XCircleIcon,
@@ -11,29 +10,27 @@ import {
 import { useState } from 'react';
 import { FC } from 'react';
 
-interface SidebarProps<T> {
-  items: T[];
-  onItemSelect: (selectedItem: T) => void;
+interface SidebarProps {
+  items: any[];
+  onItemSelect: (selectedItem: any) => void;
   title: string;
   setCurrentPage: (page: number) => void;
-  displayKey: (item: T) => string;
+  displayKey: (item: any) => string;
 }
 
-const Sidebar: FC<SidebarProps<any>> = ({
+const Sidebar: FC<SidebarProps> = ({
   items,
   onItemSelect,
   title,
   setCurrentPage,
   displayKey,
 }) => {
-  const [selectedItem, setSelectedItem] = useState<T | null>(null);
+  // eslint-disable-next-line
+  const [selectedItem, setSelectedItem] = useState<any | null>(null);
 
   const [isItemListVisible, setItemListVisible] = useState(false);
 
-  // console.log('items:', items);
-  // console.log('onItemSelect', onItemSelect);
-
-  const handleItemChange = (item: T | null) => {
+  const handleItemChange = (item: any | null) => {
     if (item === null) {
       setSelectedItem(null);
       setItemListVisible(!isItemListVisible);
