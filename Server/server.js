@@ -105,7 +105,6 @@ app.use('/', lawsRouter);
 app.use('/', questionRouter);
 app.use('/', userStatusRouter);
 
-app.listen(PORT, IP, () => {
-  console.log(`Сервер крутится на ${IP}:${PORT} порту`);
+app.listen(PORT, () => {
+  console.log(`Сервер крутится на ${PORT} порту`);
 });
-
