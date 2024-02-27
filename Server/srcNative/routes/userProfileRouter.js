@@ -1,4 +1,4 @@
-const { PORT, IP } = process.env;
+const { PORT, IP, SUCCESS } = process.env;
 const uuid = require('uuid');
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
@@ -221,7 +221,7 @@ router
           },
         }
       );
-      return res.redirect(`http://${IP}:${FRONTPORT}/email/success`);
+      return res.redirect(`http://${SUCCESS}/email/success`);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Произошла ошибка на сервере' });
