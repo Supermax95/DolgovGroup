@@ -60,6 +60,7 @@ module.exports = router
   .put('/calendar', async (req, res) => {
     try {
       const { newBirthDate } = req.body;
+      console.log(newBirthDate);
       const token = req.headers.authorization.split(' ')[1];
 
       const user = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
