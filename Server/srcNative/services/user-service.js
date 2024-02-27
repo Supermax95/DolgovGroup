@@ -170,8 +170,8 @@ class UserService {
       // }
 
       async function generateUniqueBarcode() {
-        const minBarcode = 320000000000;
-        const maxBarcode = 320000099999;
+        const minBarcode = 340000000000;
+        const maxBarcode = 340000099999;
 
         // Генерируем случайный штрихкод в основном диапазоне
         const newBarcode =
