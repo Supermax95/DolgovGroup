@@ -79,17 +79,30 @@ const Law: FC = () => {
   //     });
   // }, [dispatch]);
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       await Promise.all([dispatch(getLaws()), dispatch(getLaws())]);
+  //       setDataLoaded(true);
+  //     } catch (error) {
+  //       console.error('Error fetching questions:', error);
+  //     }
+  //     setLoadingLaws(false);
+  //   };
+  //   fetchData();
+  // }, [dispatch]);
+
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await Promise.all([dispatch(getLaws()), dispatch(getLaws())]);
-        setDataLoaded(true);
-      } catch (error) {
+    dispatch(getLaws())
+      .then(() => {
+        setLoadingLaws(false);
+        setDataLoaded(true); 
+      })
+      .catch((error) => {
         console.error('Error fetching questions:', error);
-      }
-      setLoadingLaws(false);
-    };
-    fetchData();
+        setLoadingLaws(false);
+      });
   }, [dispatch]);
 
   const openAddEditor = (): void => {
