@@ -38,7 +38,7 @@ const ListContact: FC = () => {
     (state) => state.managerSlice.info
   );
 
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(true);
 
   const columnsDefaultName: IColumnsDefaultName[] = [
     { name: 'Фамилия' },

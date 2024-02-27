@@ -54,7 +54,7 @@ const Management: FC = () => {
     IManager | null | undefined
   >(null);
 
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(true);
 
   const [showNotificationAdd, setShowNotificationAdd] =
     useState<boolean>(false);

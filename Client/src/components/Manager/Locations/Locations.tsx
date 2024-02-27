@@ -55,7 +55,7 @@ const Location: FC = () => {
   >(null);
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
   const [searchText, setSearchText] = useState('');
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(true);
 
   //* всплывающие уведомления
   const [showNotificationAddLocation, setShowNotificationAddLocation] =
