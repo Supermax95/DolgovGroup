@@ -18,12 +18,10 @@ module.exports = {
       {}
     );
   },
-
-  down: async (queryInterface, Sequelize) => {
+  async down(queryInterface, Sequelize) {
     await queryInterface.bulkDelete('Promotions', null, {});
   },
 };
-
 
 // module.exports = {
 //   up: async (queryInterface, Sequelize) => {
