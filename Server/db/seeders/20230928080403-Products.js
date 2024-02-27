@@ -201,41 +201,41 @@ module.exports = {
 //   },
 // };
 
-/** @type {import('sequelize-cli').Migration} */
-module.exports = {
-  async up(queryInterface, Sequelize) {
-    const seedData = [];
+// /** @type {import('sequelize-cli').Migration} */
+// module.exports = {
+//   async up(queryInterface, Sequelize) {
+//     const seedData = [];
 
-    for (let i = 0; i <= 500; i++) {
-      const seed = {
-        article: `ПГ000000901`,
-        productName: `Йогурт питьевой Нежинская лесная ягода 2,5% БЗМЖ 275 г ${i}`,
-        promoStartDate: '2024-02-18',
-        promoEndDate: '2024-02-18',
-        originalPrice: 45.0,
-        customerPrice: 45.0,
-        employeePrice: 35.0,
-        isNew: true,
-        isDiscounted: false,
-        description:
-          '<h3><strong>Пищевая ценность</strong>&nbsp;на 100 г</h3><p>Белки:<strong>3.0 г</strong></p><p>Жиры: <strong>2.5 г</strong></p><p>Углеводы:<strong>16.3 г</strong></p><p>Калорийность: <strong>99.0 ккал</strong></p><h2><strong><em>Все о товаре</em></strong></h2><p><strong>Состав</strong></p><h3>Молоко цельное, молоко обезжиренное, сахар-песок, наполнитель (сахар, малина, черника, вода, крахмал, натур ароматизатор краситель - концентрат из черной моркови и бузины), стабилизатор консистенции, ароматизатор клюква , закваска чистых культур термофильного стрептококка и болгарской палочки.</h3><p><strong>Общая информация</strong></p><p><strong>Бренд: </strong><span style="color: var(--textAccent);">Нежинская</span></p><p><strong>Производитель: </strong>Гусевмолоко ООО</p><p><strong>Страна: </strong>Россия</p><p><strong>Тип продукта: </strong>Йогурт</p><p><strong>Вид йогурта: </strong>Питьевой</p><p><strong>Вкус/Добавки: </strong>Лесные ягоды</p><p><strong>Жирность:</strong>2,5 %</p><p><strong>Вес: </strong>275.0 г</p><p><strong>Тип сырья: </strong>Коровье</p><p><strong>Способ изготовления: </strong>Резервуарный</p><p><strong>Возраст ребенка: </strong>С 5 лет</p><p><strong>Вид упаковки: </strong>Пластиковая бутылка</p><p><strong>Условия хранения: </strong>При температуре от +2°С до +5°С</p><p><strong>Срок хранения: </strong>10.0 сут</p><p><strong>Условия хранения 2: </strong>После вскрытия упаковки хранить при температуре от +2°С до +5°С</p><p><strong>Срок хранения 2: </strong>1 сутки</p><h3><strong>Описание</strong></h3><p>Йогурт питьевой со вкусом лесных ягод с массовой долей жира 2,5%. Перед употреблением взболтать.</p>',
-        photo: `/uploads/product/!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.webp`,
-        invisible: false,
-        subcategoryId: 3,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
+//     for (let i = 0; i <= 500; i++) {
+//       const seed = {
+//         article: `ПГ000000901`,
+//         productName: `Йогурт питьевой Нежинская лесная ягода 2,5% БЗМЖ 275 г ${i}`,
+//         promoStartDate: '2024-02-18',
+//         promoEndDate: '2024-02-18',
+//         originalPrice: 45.0,
+//         customerPrice: 45.0,
+//         employeePrice: 35.0,
+//         isNew: true,
+//         isDiscounted: false,
+//         description:
+//           '<h3><strong>Пищевая ценность</strong>&nbsp;на 100 г</h3><p>Белки:<strong>3.0 г</strong></p><p>Жиры: <strong>2.5 г</strong></p><p>Углеводы:<strong>16.3 г</strong></p><p>Калорийность: <strong>99.0 ккал</strong></p><h2><strong><em>Все о товаре</em></strong></h2><p><strong>Состав</strong></p><h3>Молоко цельное, молоко обезжиренное, сахар-песок, наполнитель (сахар, малина, черника, вода, крахмал, натур ароматизатор краситель - концентрат из черной моркови и бузины), стабилизатор консистенции, ароматизатор клюква , закваска чистых культур термофильного стрептококка и болгарской палочки.</h3><p><strong>Общая информация</strong></p><p><strong>Бренд: </strong><span style="color: var(--textAccent);">Нежинская</span></p><p><strong>Производитель: </strong>Гусевмолоко ООО</p><p><strong>Страна: </strong>Россия</p><p><strong>Тип продукта: </strong>Йогурт</p><p><strong>Вид йогурта: </strong>Питьевой</p><p><strong>Вкус/Добавки: </strong>Лесные ягоды</p><p><strong>Жирность:</strong>2,5 %</p><p><strong>Вес: </strong>275.0 г</p><p><strong>Тип сырья: </strong>Коровье</p><p><strong>Способ изготовления: </strong>Резервуарный</p><p><strong>Возраст ребенка: </strong>С 5 лет</p><p><strong>Вид упаковки: </strong>Пластиковая бутылка</p><p><strong>Условия хранения: </strong>При температуре от +2°С до +5°С</p><p><strong>Срок хранения: </strong>10.0 сут</p><p><strong>Условия хранения 2: </strong>После вскрытия упаковки хранить при температуре от +2°С до +5°С</p><p><strong>Срок хранения 2: </strong>1 сутки</p><h3><strong>Описание</strong></h3><p>Йогурт питьевой со вкусом лесных ягод с массовой долей жира 2,5%. Перед употреблением взболтать.</p>',
+//         photo: `/uploads/product/!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.webp`,
+//         invisible: false,
+//         subcategoryId: 3,
+//         createdAt: new Date(),
+//         updatedAt: new Date(),
+//       };
 
-      seedData.push(seed);
-    }
+//       seedData.push(seed);
+//     }
 
-    await queryInterface.bulkInsert('Products', seedData);
-  },
+//     await queryInterface.bulkInsert('Products', seedData);
+//   },
 
-  async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('Products', null, {});
-  },
-};
+//   async down(queryInterface, Sequelize) {
+//     await queryInterface.bulkDelete('Products', null, {});
+//   },
+// };
 
 
 
