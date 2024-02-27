@@ -10,7 +10,7 @@ module.exports = {
         firstName: 'Имя1',
         middleName: 'Отчество1',
         birthDate: '1990-01-15',
-        phoneNumber: '9219458686',
+        phoneNumber: '',
         email: 'email1@example.com',
         password: hash,
         photo: '',
