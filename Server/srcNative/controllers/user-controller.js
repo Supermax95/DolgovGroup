@@ -35,7 +35,6 @@ class UserController {
       const activationLink = req.params.link;
       await userService.activate(activationLink);
       // Когда будет деплой должно работать
-      log
       return res.redirect(`http://${SUCCESS}/registration/success`);
       // return res.redirect('https://ya.ru');
     } catch (e) {
