@@ -78,7 +78,10 @@ export const Registration: FC = () => {
     field: keyof IData,
     value: string | Date
   ): void => {
-    setData((prevData) => ({ ...prevData, [field]: value }));
+    setData((prevData) => {
+      const data = { ...prevData, [field]: value };
+      return data;
+    });
     setErrorMessages((prevErrors) => ({ ...prevErrors, [field]: '' }));
   };
 
