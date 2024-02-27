@@ -55,6 +55,7 @@ const Location: FC = () => {
   >(null);
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
   const [searchText, setSearchText] = useState('');
+  const [isLoading, setLoading] = useState(false);
 
   //* всплывающие уведомления
   const [showNotificationAddLocation, setShowNotificationAddLocation] =
@@ -118,7 +119,15 @@ const Location: FC = () => {
   ];
 
   useEffect(() => {
-    dispatch(getLocations());
+    const fetchData = async () => {
+      try {
+        await dispatch(getLocations());
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+      setLoading(false);
+    };
+    fetchData();
   }, [dispatch]);
 
   useEffect(() => {
@@ -330,47 +339,58 @@ const Location: FC = () => {
         />
       )}
 
-      <Sidebar
-        items={uniqueCities}
-        onItemSelect={setSelectedCity}
-        title="Города"
-        setCurrentPage={setCurrentPage}
-        displayKey={(city) => city}
-      />
-      <div className="p-4">
-        <Table
-          // title="Список магазинов"
-          childrenSearch={<Search onFilter={setSearchText} />}
-          childrenFilter={filterRadio}
-          columnsDefaultName={columnsDefaultName}
-          data={displayedLocations}
-          currentPage={currentPage}
-          itemsPerPage={itemsPerPage}
-          columnsListDb={columnsListDb}
-          onAddClick={openAddModal}
-          onEditClick={openEditModal}
-        />
-        {/* Используем компонент Pagination */}
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        />
-
-        {isModalOpen && (selectedLocation || isAddingMode) && (
-          <LocationsModal
-            isOpen={isModalOpen}
-            location={selectedLocation}
-            onSaveEdit={handleSaveEdit}
-            onSaveAdd={handleSaveAdd}
-            onCloseAddModal={closeAddModal}
-            onCloseEditModal={closeEditModal}
-            isAddingMode={isAddingMode}
-            editedLocation={editedLocation}
-            setEditedLocation={setEditedLocation}
+      {isLoading ? (
+        <div className="flex items-center justify-center h-full">
+          <div className="relative h-16 w-16">
+            <div className="absolute top-24 left-0 w-full h-full bg-transparent border-4 border-gray-300 rounded-full animate-spin"></div>
+            <div className="absolute top-24 left-0 w-full h-full bg-transparent border-t-4 border-green-500 rounded-full animate-spin"></div>
+          </div>
+        </div>
+      ) : (
+        <>
+          <Sidebar
+            items={uniqueCities}
+            onItemSelect={setSelectedCity}
+            title="Города"
+            setCurrentPage={setCurrentPage}
+            displayKey={(city) => city}
           />
-        )}
-      </div>
+          <div className="p-4">
+            <Table
+              // title="Список магазинов"
+              childrenSearch={<Search onFilter={setSearchText} />}
+              childrenFilter={filterRadio}
+              columnsDefaultName={columnsDefaultName}
+              data={displayedLocations}
+              currentPage={currentPage}
+              itemsPerPage={itemsPerPage}
+              columnsListDb={columnsListDb}
+              onAddClick={openAddModal}
+              onEditClick={openEditModal}
+            />
+            {/* Используем компонент Pagination */}
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          </div>
+
+          {isModalOpen && (selectedLocation || isAddingMode) && (
+            <LocationsModal
+              isOpen={isModalOpen}
+              location={selectedLocation}
+              onSaveEdit={handleSaveEdit}
+              onSaveAdd={handleSaveAdd}
+              onCloseAddModal={closeAddModal}
+              onCloseEditModal={closeEditModal}
+              isAddingMode={isAddingMode}
+              editedLocation={editedLocation}
+              setEditedLocation={setEditedLocation}
+            />
+          )}
+        </>
+      )}
     </Wrapper>
   );
 };
