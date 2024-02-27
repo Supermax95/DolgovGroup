@@ -60,7 +60,6 @@ module.exports = router
   .put('/calendar', async (req, res) => {
     try {
       const { newBirthDate } = req.body;
-      console.log(newBirthDate);
       const token = req.headers.authorization.split(' ')[1];
 
       const user = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
@@ -118,7 +117,6 @@ const sendConfirmationEmail = async (newEmail, confirmationCode) => {
 
   try {
     const info = await transporter.sendMail(mailOptions);
-    console.log('Email sent: ' + info.response);
   } catch (error) {
     console.error(error);
     throw error;
