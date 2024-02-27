@@ -22,7 +22,7 @@ import {
 import PopUpNotification from '../../../ui/PopUpNotification';
 import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
 import currentProduct from '../../../Redux/thunks/Products/getcurrentProduct';
-import LoadingAnimation from '../../Admin/Laws/Loading';
+import LoadingAnimation from '../../Loading/Loading';
 
 export interface IProduct {
   id: number;

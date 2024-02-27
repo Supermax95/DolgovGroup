@@ -11,7 +11,7 @@ import UsersModal from './ClientsModal';
 import { unwrapResult } from '@reduxjs/toolkit';
 import PopUpNotification from '../../../ui/PopUpNotification';
 import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
-import LoadingAnimation from '../Laws/Loading';
+import LoadingAnimation from '../../Loading/Loading';
 
 export interface IUserTable {
   id: number;

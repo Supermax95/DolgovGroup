@@ -16,7 +16,7 @@ import PromotionSidebar from './PromotionSidebar';
 import PopUpNotification from '../../../ui/PopUpNotification';
 import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
 import currentPromotion from '../../../Redux/thunks/Promotion/getcurrentPromotion.api';
-import LoadingAnimation from '../../Admin/Laws/Loading';
+import LoadingAnimation from '../../Loading/Loading';
 
 export interface Promotion {
   id: number;
@@ -272,7 +272,7 @@ const Nocarousel: FC = () => {
             <div className="absolute top-24 left-0 w-full h-full bg-transparent border-4 border-gray-300 rounded-full animate-spin"></div>
             <div className="absolute top-24 left-0 w-full h-full bg-transparent border-t-4 border-green-500 rounded-full animate-spin"></div>
           </div>
-        </div> 
+        </div>
       ) : (
         <>
           <PromotionSidebar openAddModal={openAddModal} />

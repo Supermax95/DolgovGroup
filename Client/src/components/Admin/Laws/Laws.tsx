@@ -8,7 +8,7 @@ import addLaw from '../../../Redux/thunks/Document/addLaw.api';
 import currentLaw from '../../../Redux/thunks/Document/getcurrentLaw.api';
 import Editor from './Editor';
 import SidebarLaw from '../../../ui/SidebarLaw';
-import LoadingAnimation from './Loading';
+import LoadingAnimation from '../../Loading/Loading';
 import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
 import PopUpNotification from '../../../ui/PopUpNotification';
 
@@ -35,6 +35,7 @@ const Law: FC = () => {
     useState<boolean>(false);
   const [showNotificationEditLaw, setShowNotificationEditLaw] =
     useState<boolean>(false);
+  const [isLoadingLaws, setLoadingLaws] = useState(true);
 
   const [errorNotification, setErrorNotification] = useState<string | null>(
     null
@@ -68,14 +69,27 @@ const Law: FC = () => {
     showErrorNotificationEditLaw,
   ]);
 
+  // useEffect(() => {
+  //   dispatch(getLaws())
+  //     .then(() => {
+  //       setDataLoaded(true);
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error fetching laws:', error);
+  //     });
+  // }, [dispatch]);
+
   useEffect(() => {
-    dispatch(getLaws())
-      .then(() => {
+    const fetchData = async () => {
+      try {
+        await Promise.all([dispatch(getLaws()), dispatch(getLaws())]);
         setDataLoaded(true);
-      })
-      .catch((error) => {
-        console.error('Error fetching laws:', error);
-      });
+      } catch (error) {
+        console.error('Error fetching questions:', error);
+      }
+      setLoadingLaws(false);
+    };
+    fetchData();
   }, [dispatch]);
 
   const openAddEditor = (): void => {
@@ -223,47 +237,58 @@ const Law: FC = () => {
         />
       )}
 
-      <SidebarLaw
-        data={formattedLaws}
-        title="Документы"
-        onAddClick={openAddEditor}
-        onEditClick={openEditEditor}
-      />
-
-      <div
-        className={`p-4 ${
-          isLoading
-            ? 'max-w-screen-lg mx-auto mt-8 p-8 bg-white rounded-xl w-[1020px] h-[500px] backdrop-blur-lg'
-            : ''
-        }`}
-      >
-        {isLoading ? (
-          <div className="flex items-center justify-center h-full">
-            <LoadingAnimation />
+      {isLoadingLaws ? (
+        <div className="flex items-center justify-center h-full">
+          <div className="relative h-16 w-16">
+            <div className="absolute top-24 left-0 w-full h-full bg-transparent border-4 border-gray-300 rounded-full animate-spin"></div>
+            <div className="absolute top-24 left-0 w-full h-full bg-transparent border-t-4 border-green-500 rounded-full animate-spin"></div>
           </div>
-        ) : (
-          isEditorOpen &&
-          (selectedLaw || isAddingMode) && (
-            <Editor
-              isOpen={isEditorOpen}
-              law={selectedLaw}
-              onSaveEdit={handleSaveEdit}
-              onSaveAdd={handleSaveAdd}
-              onCloseAddEditor={closeAddEditor}
-              onCloseEditEditor={closeEditEditor}
-              isAddingMode={isAddingMode}
-              editedLaw={editedLaw}
-              setEditedLaw={setEditedLaw}
-              currentStep={currentStep}
-              setCurrentStep={setCurrentStep}
-              setAddingMode={setAddingMode}
-              setSelectedLaw={setSelectedLaw}
-              openAddEditor={openAddEditor}
-              openEditEditor={openEditEditor}
-            />
-          )
-        )}
-      </div>
+        </div>
+      ) : (
+        <>
+          <SidebarLaw
+            data={formattedLaws}
+            title="Документы"
+            onAddClick={openAddEditor}
+            onEditClick={openEditEditor}
+          />
+
+          <div
+            className={`p-4 ${
+              isLoading
+                ? 'max-w-screen-lg mx-auto mt-8 p-8 bg-white rounded-xl w-[1020px] h-[500px] backdrop-blur-lg'
+                : ''
+            }`}
+          >
+            {isLoading ? (
+              <div className="flex items-center justify-center h-full">
+                <LoadingAnimation />
+              </div>
+            ) : (
+              isEditorOpen &&
+              (selectedLaw || isAddingMode) && (
+                <Editor
+                  isOpen={isEditorOpen}
+                  law={selectedLaw}
+                  onSaveEdit={handleSaveEdit}
+                  onSaveAdd={handleSaveAdd}
+                  onCloseAddEditor={closeAddEditor}
+                  onCloseEditEditor={closeEditEditor}
+                  isAddingMode={isAddingMode}
+                  editedLaw={editedLaw}
+                  setEditedLaw={setEditedLaw}
+                  currentStep={currentStep}
+                  setCurrentStep={setCurrentStep}
+                  setAddingMode={setAddingMode}
+                  setSelectedLaw={setSelectedLaw}
+                  openAddEditor={openAddEditor}
+                  openEditEditor={openEditEditor}
+                />
+              )
+            )}
+          </div>
+        </>
+      )}
     </Wrapper>
   );
 };

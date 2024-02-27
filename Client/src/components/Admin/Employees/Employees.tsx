@@ -11,7 +11,7 @@ import editEmployees from '../../../Redux/thunks/Users/editEmployee.api';
 import { unwrapResult } from '@reduxjs/toolkit';
 import PopUpNotification from '../../../ui/PopUpNotification';
 import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
-import LoadingAnimation from '../Laws/Loading';
+import LoadingAnimation from '../../Loading/Loading';
 
 interface User {
   id: number;
