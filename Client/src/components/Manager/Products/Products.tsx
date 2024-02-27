@@ -358,30 +358,30 @@ const Products: FC = () => {
     return `${day}.${month}.${year}`;
   };
 
-  const handleCopyToClipboard = (text: string): void => {
-    navigator.clipboard
-      .writeText(text)
-      .then(() => {
-        console.log('Текст скопирован в буфер обмена:', text);
-        setShowNomenclatureCode(true);
-      })
-      .catch((error) => {
-        console.error('Не удалось скопировать текст:', error);
-      });
-  };
-
-  // //устаревший метод не удалять
-  // const handleCopyToClipboard = (text: string) => {
-  //   const textarea = document.createElement('textarea');
-  //   textarea.value = text;
-  //   document.body.appendChild(textarea);
-  //   textarea.select();
-  //   document.execCommand('copy');
-  //   document.body.removeChild(textarea);
-
-  //   console.log('Текст скопирован в буфер обмена:', text);
-  //   setShowNomenclatureCode(true);
+  // const handleCopyToClipboard = (text: string): void => {
+  //   navigator.clipboard
+  //     .writeText(text)
+  //     .then(() => {
+  //       console.log('Текст скопирован в буфер обмена:', text);
+  //       setShowNomenclatureCode(true);
+  //     })
+  //     .catch((error) => {
+  //       console.error('Не удалось скопировать текст:', error);
+  //     });
   // };
+
+  //устаревший метод не удалять
+  const handleCopyToClipboard = (text: string) => {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+
+    console.log('Текст скопирован в буфер обмена:', text);
+    setShowNomenclatureCode(true);
+  };
 
   //* сбрасывает состояния чекбоксов и радиокнопок
   const resetFirstComponentState = (): void => {

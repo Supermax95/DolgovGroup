@@ -54,6 +54,8 @@ const Management: FC = () => {
     IManager | null | undefined
   >(null);
 
+  const [isLoading, setLoading] = useState(false);
+
   const [showNotificationAdd, setShowNotificationAdd] =
     useState<boolean>(false);
   const [showNotificationEdit, setShowNotificationEdit] =
@@ -121,7 +123,15 @@ const Management: FC = () => {
   const displayedManagers = managers;
 
   useEffect(() => {
-    dispatch(getManager());
+    const fetchData = async () => {
+      try {
+        await dispatch(getManager());
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+      setLoading(false);
+    };
+    fetchData();
   }, [dispatch]);
 
   const openAddModal = (): void => {
@@ -156,54 +166,8 @@ const Management: FC = () => {
     setModalOpen(false);
   };
 
-  // //* добавление менеджера
-  // const handleSaveAdd = async (): Promise<void> => {
-  //   try {
-  //     if (editedManager) {
-  //       const resultAdd = await dispatch(
-  //         addManager({
-  //           newManager: editedManager,
-  //         })
-  //       );
-  //       unwrapResult(resultAdd);
-  //       setShowNotificationAdd(true);
-  //       setTimeout(() => {
-  //         closeEditModal();
-  //       }, 50);
-  //     }
-  //   } catch (error) {
-  //     console.error('Произошла ошибка при добавлении:', error);
-  //     setErrorNotification(error as string | null);
-  //     setShowErrorNotificationAdd(true);
-  //   }
-  // };
-
-  // //* редактирование менеджера
-  // const handleSaveEdit = async (editedManager: IManager): Promise<void> => {
-  //   try {
-  //     if (selectedManager) {
-  //       const resultEdit = await dispatch(
-  //         editManager({
-  //           managerId: selectedManager.id,
-  //           updateManager: editedManager,
-  //         })
-  //       );
-
-  //       unwrapResult(resultEdit);
-  //       setShowNotificationEdit(true);
-  //       setTimeout(() => {
-  //         closeEditModal();
-  //       }, 50);
-  //     }
-  //   } catch (error) {
-  //     console.error('Произошла ошибка при редактировании:', error);
-  //     setErrorNotification(error as string | null);
-  //     setShowErrorNotificationEdit(true);
-  //   }
-  // };
-
+  //* добавление менеджера
   const handleSaveAdd = async (): Promise<void> => {
-    
     try {
       if (editedManager) {
         const cyrillicRegex = /^[А-Яа-яЁё\s-]+$/;
@@ -237,6 +201,7 @@ const Management: FC = () => {
     }
   };
 
+  //* редактирование менеджера
   const handleSaveEdit = async (editedManager: IManager): Promise<void> => {
     try {
       if (selectedManager) {
@@ -336,31 +301,42 @@ const Management: FC = () => {
           />
         )}
 
-        <RoleSidebar />
+        {isLoading ? (
+          <div className="flex items-center justify-center h-full">
+            <div className="relative h-16 w-16">
+              <div className="absolute top-24 left-0 w-full h-full bg-transparent border-4 border-gray-300 rounded-full animate-spin"></div>
+              <div className="absolute top-24 left-0 w-full h-full bg-transparent border-t-4 border-green-500 rounded-full animate-spin"></div>
+            </div>
+          </div>
+        ) : (
+          <>
+            <RoleSidebar />
 
-        <div className="p-4">
-          <Table
-            title="Список менеджеров"
-            data={displayedManagers}
-            columnsDefaultName={columnsDefaultName}
-            columnsListDb={columnsListDb}
-            onAddClick={openAddModal}
-            onEditClick={openEditModal}
-            onOneTimePassword={(id) => handleOneTimePassword(id)}
-          />
-        </div>
-        {isModalOpen && (selectedManager || isAddingMode) && (
-          <ManagementModal
-            isOpen={isModalOpen}
-            manager={selectedManager}
-            onSaveEdit={handleSaveEdit}
-            onSaveAdd={handleSaveAdd}
-            onCloseAddModal={closeAddModal}
-            onCloseEditModal={closeEditModal}
-            isAddingMode={isAddingMode}
-            editedManager={editedManager}
-            setEditedManager={setEditedManager}
-          />
+            <div className="p-4">
+              <Table
+                title="Список менеджеров"
+                data={displayedManagers}
+                columnsDefaultName={columnsDefaultName}
+                columnsListDb={columnsListDb}
+                onAddClick={openAddModal}
+                onEditClick={openEditModal}
+                onOneTimePassword={(id) => handleOneTimePassword(id)}
+              />
+            </div>
+            {isModalOpen && (selectedManager || isAddingMode) && (
+              <ManagementModal
+                isOpen={isModalOpen}
+                manager={selectedManager}
+                onSaveEdit={handleSaveEdit}
+                onSaveAdd={handleSaveAdd}
+                onCloseAddModal={closeAddModal}
+                onCloseEditModal={closeEditModal}
+                isAddingMode={isAddingMode}
+                editedManager={editedManager}
+                setEditedManager={setEditedManager}
+              />
+            )}
+          </>
         )}
       </Wrapper>
     </>
