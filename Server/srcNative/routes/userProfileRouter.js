@@ -211,6 +211,7 @@ router
 
       const credentials = 'Exchange:Exchange';
       const base64Credentials = Buffer.from(credentials).toString('base64');
+      console.log('==========>',userData.barcode,userData.email);
       await axios.post(
         `http://retail.dolgovagro.ru/rtnagaev/hs/loyaltyservice/updateclientcard?ClientCardID=${userData.barcode}&Email=${userData.email}
       `,
