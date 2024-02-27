@@ -56,6 +56,7 @@ type TabNavigatorOptions = {
   Profile: undefined;
 };
 
+
 type StackNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 type TabScreenNavigationProp = BottomTabNavigationProp<TabNavigatorOptions>;
 //* ссылка на типизацию StackNavigationProp https://stackoverflow.com/questions/73328944/react-navigation-navigation-navigatesomescreen-error-in-typescript
