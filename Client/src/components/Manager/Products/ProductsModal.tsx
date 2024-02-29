@@ -194,8 +194,6 @@ const ProductsModal: FC<ProductsModalProps> = ({
     );
 
     if (currentStep === 1) {
-      console.log('Я на первом шаге модалки ProductModal');
-
       if (
         !selectedSubcategory ||
         selectedSubcategory.subcategoryName === 'Выберите категорию'

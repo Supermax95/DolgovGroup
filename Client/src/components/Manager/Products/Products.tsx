@@ -452,7 +452,7 @@ const Products: FC = () => {
                   style={{ marginTop: '-0.5rem' }}
                 >
                   <CheckIcon className="mr-1 h-5 w-5" />
-                  Код номенкулатуры скопирован
+                  Код номенклатуры скопирован
                 </span>
               </div>
             )}
