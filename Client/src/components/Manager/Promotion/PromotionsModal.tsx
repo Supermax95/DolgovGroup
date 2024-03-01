@@ -456,7 +456,7 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
                       загрузить файл
                     </p>
                     <p className="text-center text-xs text-slate-500 dark:text-slate-400">
-                      Загрузите документ в формате IMG, PNG, WEBP или JPEG{' '}
+                      Загрузите изображение в формате IMG, PNG, WEBP или JPEG{' '}
                       <br />
                       Разрешение для карусели:{' '}
                       <span className="font-medium">1280x720px</span>

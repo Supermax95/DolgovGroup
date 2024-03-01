@@ -32,7 +32,7 @@ const CardCategory: FC<ICardCategory> = ({
       >
         <Image
           source={{ uri: `http://${IP}:${PORT}${imageCategory}` }}
-          resizeMode="contain"
+          resizeMode="cover"
           style={styles.image}
         />
         <View className="absolute top-0 right-0 bottom-0 left-0 justify-start items-start pl-2 pt-2">
@@ -47,9 +47,11 @@ const CardCategory: FC<ICardCategory> = ({
 
 const styles = StyleSheet.create({
   image: {
-    width: 200,
+    width: '100%',
     height: 120,
+    borderRadius: 12, // Установка радиуса скругления для изображения
   },
 });
 
 export default CardCategory;
+
