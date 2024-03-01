@@ -166,7 +166,7 @@ const Management: FC = () => {
     setModalOpen(false);
   };
 
-  //* добавление менеджера
+  //* добавление маркетолога
   const handleSaveAdd = async (): Promise<void> => {
     try {
       if (editedManager) {
@@ -201,7 +201,7 @@ const Management: FC = () => {
     }
   };
 
-  //* редактирование менеджера
+  //* редактирование маркетолога
   const handleSaveEdit = async (editedManager: IManager): Promise<void> => {
     try {
       if (selectedManager) {
@@ -260,16 +260,16 @@ const Management: FC = () => {
       <Wrapper>
         {showNotificationAdd && (
           <PopUpNotification
-            titleText={'Личный кабинет менеджера создан'}
+            titleText={'Личный кабинет маркетолога создан'}
             bodyText={'Временный пароль выслан на почту:'}
             email={editedManager?.email}
           />
         )}
         {showNotificationEdit && (
           <PopUpNotification
-            titleText={' Данные менеджера успешно обновлены'}
+            titleText={' Данные маркетолога успешно обновлены'}
             bodyText={
-              'Для обновления пароля менеджера отправьте новый пароль на почту:'
+              'Для обновления пароля маркетолога отправьте новый пароль на почту:'
             }
             email={editedManager?.email}
           />
@@ -314,7 +314,7 @@ const Management: FC = () => {
 
             <div className="p-4">
               <Table
-                title="Список менеджеров"
+                title="Список маркетологов"
                 data={displayedManagers}
                 columnsDefaultName={columnsDefaultName}
                 columnsListDb={columnsListDb}

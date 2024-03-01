@@ -215,7 +215,7 @@ module.exports = router
 
         console.log('Данные успешно обновлены');
 
-        //* Получение обновленного списка менеджеров
+        //* Получение обновленного списка маркетологов
         const managers = await Manager.findAll({
           where: {
             isAdmin: false,

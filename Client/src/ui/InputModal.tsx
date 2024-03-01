@@ -6,7 +6,7 @@ import 'react-quill/dist/quill.snow.css';
 import { EnvelopeIcon } from '@heroicons/react/24/outline';
 
 //* Здесь инпуты, которые переиспользуются в модальных окнах
-//* На Location, в профиле админа (создание/редактирование менеджера) - один столбец
+//* На Location, в профиле админа (создание/редактирование маркетолога) - один столбец
 //* На Clients, Employees два столбца
 
 interface IInputModal {

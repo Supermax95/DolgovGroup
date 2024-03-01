@@ -70,7 +70,7 @@ const Portal: FC = () => {
     }
   };
 
-  //* добавление менеджера
+  //* добавление маркетолога
   const sendOneTimePasswordHandle = async (): Promise<void> => {
     if (enterEmail) {
       try {
