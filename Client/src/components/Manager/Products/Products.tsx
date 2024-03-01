@@ -22,7 +22,7 @@ import {
 import PopUpNotification from '../../../ui/PopUpNotification';
 import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
 import currentProduct from '../../../Redux/thunks/Products/getcurrentProduct';
-import LoadingAnimation from '../../Admin/Laws/Loading';
+import LoadingAnimation from '../../Loading/Loading';
 
 export interface IProduct {
   id: number;
@@ -358,30 +358,30 @@ const Products: FC = () => {
     return `${day}.${month}.${year}`;
   };
 
-  const handleCopyToClipboard = (text: string): void => {
-    navigator.clipboard
-      .writeText(text)
-      .then(() => {
-        console.log('Текст скопирован в буфер обмена:', text);
-        setShowNomenclatureCode(true);
-      })
-      .catch((error) => {
-        console.error('Не удалось скопировать текст:', error);
-      });
-  };
-
-  // //устаревший метод не удалять
-  // const handleCopyToClipboard = (text: string) => {
-  //   const textarea = document.createElement('textarea');
-  //   textarea.value = text;
-  //   document.body.appendChild(textarea);
-  //   textarea.select();
-  //   document.execCommand('copy');
-  //   document.body.removeChild(textarea);
-
-  //   console.log('Текст скопирован в буфер обмена:', text);
-  //   setShowNomenclatureCode(true);
+  // const handleCopyToClipboard = (text: string): void => {
+  //   navigator.clipboard
+  //     .writeText(text)
+  //     .then(() => {
+  //       console.log('Текст скопирован в буфер обмена:', text);
+  //       setShowNomenclatureCode(true);
+  //     })
+  //     .catch((error) => {
+  //       console.error('Не удалось скопировать текст:', error);
+  //     });
   // };
+
+  //устаревший метод не удалять
+  const handleCopyToClipboard = (text: string) => {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+
+    console.log('Текст скопирован в буфер обмена:', text);
+    setShowNomenclatureCode(true);
+  };
 
   //* сбрасывает состояния чекбоксов и радиокнопок
   const resetFirstComponentState = (): void => {
@@ -452,7 +452,7 @@ const Products: FC = () => {
                   style={{ marginTop: '-0.5rem' }}
                 >
                   <CheckIcon className="mr-1 h-5 w-5" />
-                  Код номенкулатуры скопирован
+                  Код номенклатуры скопирован
                 </span>
               </div>
             )}

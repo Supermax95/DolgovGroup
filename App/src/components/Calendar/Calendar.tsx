@@ -10,6 +10,7 @@ interface CalendarProps {
   selectedDate?: Date | null;
 }
 
+
 const Calendar: FC<CalendarProps> = ({
   onDateChange,
   styleCSS = [
@@ -19,7 +20,7 @@ const Calendar: FC<CalendarProps> = ({
 }) => {
   const [date, setDate] = useState(initialDate || new Date());
   const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
-
+  
   const currentDate = new Date();
   const maxDate = currentDate;
   const minDate = new Date(

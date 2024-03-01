@@ -27,11 +27,15 @@ export const ChangeBirthDate: FC = () => {
   //  const refreshResult = dispatch(refreshToken());
 
   const userDateAsDate =
-    userDate !== null ? parseISO(userDate as string) : null;
+  userDate !== null ? new Date(userDate as string) : null;
+
+    
 
   const [data, setData] = useState({
     newBirthDate: userDateAsDate || new Date(),
   });
+
+  
 
   const handleFieldChange = (field: string, value: Date): void => {
     setData({ ...data, [field]: value });

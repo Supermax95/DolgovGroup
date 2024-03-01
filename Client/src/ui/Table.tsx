@@ -72,7 +72,7 @@ const Table: FC<ITable> = ({
                         <UserGroupIcon className="h-5 w-5 text-slate-600" />
                       </div>
                     ) : title === 'Список магазинов' ||
-                      title === 'Список менеджеров' ||
+                      title === 'Список маркетологов' ||
                       onAddClick ? (
                       <div className="flex justify-center items-center rounded-lg">
                         <PlusCircleIcon

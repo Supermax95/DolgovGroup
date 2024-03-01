@@ -18,7 +18,7 @@ import Success from '../components/Success/Success';
 import NotFound from '../components/404/NotFound';
 import { useAppSelector } from '../Redux/hooks';
 import Law from '../components/Admin/Laws/Laws';
-import LoadingAnimation from '../components/Admin/Laws/Loading';
+import LoadingAnimation from '../components/Loading/Loading';
 import Questions from '../components/Admin/Questions/Questions';
 import EmailSuccess from '../components/Success/EmailSucces';
 

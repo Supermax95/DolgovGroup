@@ -11,7 +11,7 @@ import UsersModal from './ClientsModal';
 import { unwrapResult } from '@reduxjs/toolkit';
 import PopUpNotification from '../../../ui/PopUpNotification';
 import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
-import LoadingAnimation from '../Laws/Loading';
+import LoadingAnimation from '../../Loading/Loading';
 
 export interface IUserTable {
   id: number;
@@ -55,6 +55,7 @@ const Clients: FC = () => {
   const [searchText, setSearchText] = useState('');
   const [isModalOpen, setModalOpen] = useState(false);
   const [isLoading, setLoading] = useState(false);
+  const [isLoadingClients, setLoadingClients] = useState(true);
 
   //* уведомления
   const [showNotificationEditUser, setShowNotificationEditUser] =
@@ -100,7 +101,15 @@ const Clients: FC = () => {
   ];
 
   useEffect(() => {
-    dispatch(getClients());
+    const fetchData = async () => {
+      try {
+        await dispatch(getClients());
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+      setLoadingClients(false);
+    };
+    fetchData();
   }, [dispatch]);
 
   useEffect(() => {
@@ -207,8 +216,16 @@ const Clients: FC = () => {
           bodyText={errorNotification}
         />
       )}
-      <div>
-        <div className="flex">
+
+      {isLoadingClients ? (
+        <div className="flex items-center justify-center h-full">
+          <div className="relative h-16 w-16">
+            <div className="absolute top-24 left-0 w-full h-full bg-transparent border-4 border-gray-300 rounded-full animate-spin"></div>
+            <div className="absolute top-24 left-0 w-full h-full bg-transparent border-t-4 border-green-500 rounded-full animate-spin"></div>
+          </div>
+        </div>
+      ) : (
+        <>
           <Sidebar
             items={uniqueStatus}
             onItemSelect={setSelectedStatus}
@@ -232,27 +249,27 @@ const Clients: FC = () => {
               totalPages={totalPages}
               onPageChange={setCurrentPage}
             />
-            {isLoading && (
-              <div className="fixed inset-0 z-20 backdrop-blur-lg flex items-center justify-center ">
-                {/* <div className="bg-white p-1 rounded-sm shadow-xs  "> */}
-                <div className="bg-white p-1 rounded-sm z-10 py-20 bg-opacity-70 fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center ">
-                  <LoadingAnimation />
-                </div>
-              </div>
-            )}
-            {isModalOpen && selectedUser && (
-              <UsersModal
-                isOpen={isModalOpen}
-                user={selectedUser}
-                onSaveEdit={handleSaveEdit}
-                onCloseEditModal={closeEditModal}
-                editedUser={editedUser}
-                setEditedUser={setEditedUser}
-              />
-            )}
           </div>
-        </div>
-      </div>
+
+          {isLoading && (
+            <div className="fixed inset-0 z-20 backdrop-blur-lg flex items-center justify-center ">
+              <div className="bg-white p-1 rounded-sm z-10 py-20 bg-opacity-70 fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center ">
+                <LoadingAnimation />
+              </div>
+            </div>
+          )}
+          {isModalOpen && selectedUser && (
+            <UsersModal
+              isOpen={isModalOpen}
+              user={selectedUser}
+              onSaveEdit={handleSaveEdit}
+              onCloseEditModal={closeEditModal}
+              editedUser={editedUser}
+              setEditedUser={setEditedUser}
+            />
+          )}
+        </>
+      )}
     </Wrapper>
   );
 };

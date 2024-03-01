@@ -51,8 +51,8 @@ const Modal: FC<IModal> = ({
       >
         <div className="relative py-8 px-5 md:px-10 bg-white shadow-md rounded-3xl border border-slate-400 modal-container max-h-[75vh] overflow-y-auto">
           <div className="flex justify-center items-center">
-            {modalTitle === 'Регистрация нового менеджера' ||
-            modalTitle === 'Редактирование данных менеджера' ? (
+            {modalTitle === 'Регистрация нового маркетолога' ||
+            modalTitle === 'Редактирование данных маркетолога' ? (
               <div className="w-8 text-gray-600">
                 <UserIcon className="w-6 h-6 text-slate-400" />
               </div>
@@ -79,7 +79,7 @@ const Modal: FC<IModal> = ({
               {modalTitle}
             </h1>
           </div>
-          {modalTitle === 'Регистрация нового менеджера' ||
+          {modalTitle === 'Регистрация нового маркетолога' ||
           modalTitle === 'Сброс пароля' ? (
             <div className="text-center mt-2">
               <span className="text-sm text-amber-600 font-normal">

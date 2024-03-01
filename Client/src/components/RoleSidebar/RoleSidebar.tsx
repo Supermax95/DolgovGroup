@@ -41,7 +41,7 @@ const RoleSidebar: FC = () => {
         {
           id: 2,
           href: '/listOfManagers',
-          name: 'Список менеджеров',
+          name: 'Список маркетологов',
           childrenIcon: <ListBulletIcon className="w-4 h-4 text-slate-600" />,
         },
       ],

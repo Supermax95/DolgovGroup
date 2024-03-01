@@ -56,13 +56,17 @@ const app = express();
 //* ReactNative
 app.use(
   cors({
-    origin: [
-      `http://${IP}:8081`,
-      `http://${IP}:5173`,
-      'http://localhost:5173',
-      'http://localhost:5174',
-    ],
+    // origin: [
+    //   `http://${IP}:8081`,
+    //   `http://${IP}:5173`,
+    //   'http://localhost:5173',
+    //   'http://localhost:5174',
+    // ],
+    origin: true,
     credentials: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    exposedHeaders: 'Authorization',
+    secure: false,
   })
 );
 

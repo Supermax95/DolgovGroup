@@ -4,8 +4,9 @@ const nodemailer = require('nodemailer');
 const { Manager } = require('../../db/models');
 
 const transporter = nodemailer.createTransport({
+  host: 'smtp.yandex.ru',
   port: 465,
-  host: 'smtp.gmail.com',
+  secure: true,
   auth: {
     user: process.env.EMAIL,
     pass: process.env.PASSWORD,
@@ -214,7 +215,7 @@ module.exports = router
 
         console.log('Данные успешно обновлены');
 
-        //* Получение обновленного списка менеджеров
+        //* Получение обновленного списка маркетологов
         const managers = await Manager.findAll({
           where: {
             isAdmin: false,

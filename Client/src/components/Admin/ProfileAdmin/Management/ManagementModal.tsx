@@ -74,8 +74,8 @@ const ManagementModal: FC<ManagersModalProps> = ({
   }, [showNotificationDelManager]);
 
   const modalTitle = isAddingMode
-    ? 'Регистрация нового менеджера'
-    : 'Редактирование данных менеджера';
+    ? 'Регистрация нового маркетолога'
+    : 'Редактирование данных маркетолога';
 
   const handleCancel = (): void => {
     setEditedManager(undefined);
@@ -84,14 +84,14 @@ const ManagementModal: FC<ManagersModalProps> = ({
 
   const handleFormSubmit = (e: React.FormEvent): void => {
     e.preventDefault();
+    const isConfirmed = window.confirm(
+      'Вы уверены, что хотите внести изменения?'
+    );
     try {
-      if (isAddingMode) {
-        onSaveAdd(managerToSave);
-      } else {
-        const isConfirmed = window.confirm(
-          'Вы уверены, что хотите внести изменения?'
-        );
-        if (isConfirmed) {
+      if (isConfirmed) {
+        if (isAddingMode) {
+          onSaveAdd(managerToSave);
+        } else {
           onSaveEdit(managerToSave);
         }
       }
@@ -102,7 +102,7 @@ const ManagementModal: FC<ManagersModalProps> = ({
 
   const handleDelete = (): void => {
     const isConfirmed = window.confirm(
-      'Вы уверены, что хотите удалить данного менеджера?'
+      'Вы уверены, что хотите удалить данного маркетолога?'
     );
     if (isConfirmed && editedManager && editedManager.id) {
       const managerId = editedManager.id;
@@ -243,7 +243,7 @@ const ManagementModal: FC<ManagersModalProps> = ({
     <>
       {showNotificationDelManager && (
         <PopUpNotification
-          titleText={'Аккаунт менеджера удалён'}
+          titleText={'Аккаунт маркетолога удалён'}
           name={`${editedManager.lastName} ${editedManager.firstName}  ${editedManager.middleName}`}
         />
       )}

@@ -5,8 +5,9 @@ const { Op } = require('sequelize');
 const { DiscountCard } = require('../../db/models');
 
 const transporter = nodemailer.createTransport({
+  host: 'smtp.yandex.ru',
   port: 465,
-  host: 'smtp.gmail.com',
+  secure: true,
   auth: {
     user: process.env.EMAIL,
     pass: process.env.PASSWORD,

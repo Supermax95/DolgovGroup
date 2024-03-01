@@ -1,4 +1,4 @@
-const { PORT, IP } = process.env;
+const { PORT, IP, SUCCESS } = process.env;
 const uuid = require('uuid');
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
@@ -85,8 +85,9 @@ module.exports = router
 
 const sendConfirmationEmail = async (newEmail, confirmationCode) => {
   const transporter = nodemailer.createTransport({
+    host: 'smtp.yandex.ru',
     port: 465,
-    host: 'smtp.gmail.com',
+    secure: true,
     auth: {
       user: process.env.EMAIL,
       pass: process.env.PASSWORD,
@@ -116,7 +117,6 @@ const sendConfirmationEmail = async (newEmail, confirmationCode) => {
 
   try {
     const info = await transporter.sendMail(mailOptions);
-    console.log('Email sent: ' + info.response);
   } catch (error) {
     console.error(error);
     throw error;
@@ -221,7 +221,7 @@ router
           },
         }
       );
-      return res.redirect(`http://${IP}:${FRONTPORT}/email/success`);
+      return res.redirect(`http://${SUCCESS}/email/success`);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Произошла ошибка на сервере' });

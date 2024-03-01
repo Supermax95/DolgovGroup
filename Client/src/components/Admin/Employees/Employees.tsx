@@ -11,7 +11,7 @@ import editEmployees from '../../../Redux/thunks/Users/editEmployee.api';
 import { unwrapResult } from '@reduxjs/toolkit';
 import PopUpNotification from '../../../ui/PopUpNotification';
 import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
-import LoadingAnimation from '../Laws/Loading';
+import LoadingAnimation from '../../Loading/Loading';
 
 interface User {
   id: number;
@@ -54,6 +54,8 @@ const Employees: FC = () => {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [editedUser, setEditedUser] = useState<User | null | undefined>(null);
   const [isLoading, setLoading] = useState(false);
+  const [isLoadingEmployees, setLoadingEmployees] = useState(true);
+
   //* уведомления
   const [showNotificationEditUser, setShowNotificationEditUser] =
     useState<boolean>(false);
@@ -102,7 +104,15 @@ const Employees: FC = () => {
   }, [searchText]);
 
   useEffect(() => {
-    dispatch(getEmployees());
+    const fetchData = async () => {
+      try {
+        await dispatch(getEmployees());
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+      setLoadingEmployees(false);
+    };
+    fetchData();
   }, [dispatch]);
 
   const itemsPerPage = 50;
@@ -205,8 +215,15 @@ const Employees: FC = () => {
           bodyText={errorNotification}
         />
       )}
-      <div>
-        <div className="flex">
+      {isLoadingEmployees ? (
+        <div className="flex items-center justify-center h-full">
+          <div className="relative h-16 w-16">
+            <div className="absolute top-24 left-0 w-full h-full bg-transparent border-4 border-gray-300 rounded-full animate-spin"></div>
+            <div className="absolute top-24 left-0 w-full h-full bg-transparent border-t-4 border-green-500 rounded-full animate-spin"></div>
+          </div>
+        </div>
+      ) : (
+        <>
           <Sidebar
             items={uniqueEmployeeStatuses}
             onItemSelect={setSelectedStatus}
@@ -249,8 +266,8 @@ const Employees: FC = () => {
               setEditedUser={setEditedUser}
             />
           )}
-        </div>
-      </div>
+        </>
+      )}
     </Wrapper>
   );
 };

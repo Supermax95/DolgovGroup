@@ -1,16 +1,24 @@
 import React, { FC, useEffect, useState } from 'react';
+import {
+  CompositeNavigationProp,
+  useNavigation,
+} from '@react-navigation/native';
 import { View, Text, Alert, Pressable } from 'react-native';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
-import { TabScreenNavigationProp } from 'navigation/types';
+import { StackNavigationProp, TabScreenNavigationProp } from 'navigation/types';
 import userActivate from 'Redux/thunks/User/activated.api';
-import { useNavigation } from '@react-navigation/native';
 import Button from 'ui/Button';
 import sendActivationLink from 'Redux/thunks/User/sendActivationLink.api';
 import UniversalHeader from 'ui/UniversalHeader';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+type HomeAndPropResetPassword = CompositeNavigationProp<
+  StackNavigationProp,
+  TabScreenNavigationProp
+>;
+
 const CheckMail: FC = () => {
-  const navigation = useNavigation<TabScreenNavigationProp>();
+  const navigation = useNavigation<HomeAndPropResetPassword>();
   const dispatch = useAppDispatch();
   const userId = useAppSelector<number | undefined>(
     (state) => state.userSlice.user?.id
@@ -47,7 +55,7 @@ const CheckMail: FC = () => {
     try {
       const result = await dispatch(userActivate({ userId, force: true }));
       if (result.meta.requestStatus === 'fulfilled') {
-        navigation.navigate('Home');
+        navigation.navigate('FooterTabs');
       } else {
         Alert.alert('Аккаунт не активирован');
       }

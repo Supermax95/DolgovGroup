@@ -23,7 +23,7 @@ import 'swiper/css/scrollbar';
 import PopUpNotification from '../../../ui/PopUpNotification';
 import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
 import currentPromotion from '../../../Redux/thunks/Promotion/getcurrentPromotion.api';
-import LoadingAnimation from '../../Admin/Laws/Loading';
+import LoadingAnimation from '../../Loading/Loading';
 
 export interface Promotion {
   id: number;

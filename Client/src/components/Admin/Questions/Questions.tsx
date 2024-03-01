@@ -8,7 +8,7 @@ import PopUpNotification from '../../../ui/PopUpNotification';
 import getQuestions from '../../../Redux/thunks/Question/getQuestions.api';
 import newQuestion from '../../../Redux/thunks/Question/newQuestion.api';
 import editQuestion from '../../../Redux/thunks/Question/editQuestion.api';
-import LoadingAnimation from '../Laws/Loading';
+import LoadingAnimation from '../../Loading/Loading';
 import SidebarQuestion from './SidebarQuestion';
 
 export interface SaveResult {
@@ -39,6 +39,8 @@ const Questions: FC = () => {
   const [axiosError, setAxiosError] = useState<string | null>(null);
   const [dataLoaded, setDataLoaded] = useState(false);
   const [isLoading, setLoading] = useState(false);
+  const [isLoadingQuestions, setLoadingQuestions] = useState(true);
+
   const [showNotificationAddQuestion, setShowNotificationAddQuestion] =
     useState<boolean>(false);
   const [showNotificationEditQuestion, setShowNotificationEditQuestion] =
@@ -80,14 +82,27 @@ const Questions: FC = () => {
     showErrorNotificationEditQuestion,
   ]);
 
+  // useEffect(() => {
+  //   dispatch(getQuestions())
+  //     .then(() => {
+  //       setDataLoaded(true);
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error fetching questions:', error);
+  //     });
+  // }, [dispatch]);
+
   useEffect(() => {
-    dispatch(getQuestions())
-      .then(() => {
+    const fetchData = async () => {
+      try {
+        await Promise.all([dispatch(getQuestions()), dispatch(getQuestions())]);
         setDataLoaded(true);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error('Error fetching questions:', error);
-      });
+      }
+      setLoadingQuestions(false);
+    };
+    fetchData();
   }, [dispatch]);
 
   const openAddEditor = (): void => {
@@ -221,45 +236,57 @@ const Questions: FC = () => {
           bodyText={errorNotification}
         />
       )}
-      <SidebarQuestion
-        data={questions}
-        title="Вопросы"
-        onAddClick={openAddEditor}
-        onEditClick={openEditEditor}
-      />
-      <div
-        className={`p-4 ${
-          isLoading
-            ? 'max-w-screen-lg mx-auto mt-8 p-8 bg-white rounded-xl w-[1020px] h-[500px] backdrop-blur-lg'
-            : ''
-        }`}
-      >
-        {isLoading ? (
-          <div className="flex items-center justify-center h-full">
-            <LoadingAnimation />
+
+      {isLoadingQuestions ? (
+        <div className="flex items-center justify-center h-full">
+          <div className="relative h-16 w-16">
+            <div className="absolute top-24 left-0 w-full h-full bg-transparent border-4 border-gray-300 rounded-full animate-spin"></div>
+            <div className="absolute top-24 left-0 w-full h-full bg-transparent border-t-4 border-green-500 rounded-full animate-spin"></div>
           </div>
-        ) : (
-          isEditorOpen &&
-          (selectedQuestion || isAddingMode) && (
-            <EditorQuestion
-              isOpen={isEditorOpen}
-              question={selectedQuestion}
-              onSaveEdit={handleSaveEdit}
-              onSaveAdd={handleSaveAdd}
-              onCloseAddEditor={closeAddEditor}
-              onCloseEditEditor={closeEditEditor}
-              isAddingMode={isAddingMode}
-              editedQuestion={editedQuestion}
-              setEditedQuestion={setEditedQuestion}
-              axiosError={axiosError}
-              resetAxiosError={resetAxiosError}
-              openAddEditor={openAddEditor}
-              openEditEditor={openEditEditor}
-              setAddingMode={setAddingMode}
-            />
-          )
-        )}
-      </div>
+        </div>
+      ) : (
+        <>
+          <SidebarQuestion
+            data={questions}
+            title="Вопросы"
+            onAddClick={openAddEditor}
+            onEditClick={openEditEditor}
+          />
+          <div
+            className={`p-4 ${
+              isLoading
+                ? 'max-w-screen-lg mx-auto mt-8 p-8 bg-white rounded-xl w-[1020px] h-[500px] backdrop-blur-lg'
+                : ''
+            }`}
+          >
+            {isLoading ? (
+              <div className="flex items-center justify-center h-full">
+                <LoadingAnimation />
+              </div>
+            ) : (
+              isEditorOpen &&
+              (selectedQuestion || isAddingMode) && (
+                <EditorQuestion
+                  isOpen={isEditorOpen}
+                  question={selectedQuestion}
+                  onSaveEdit={handleSaveEdit}
+                  onSaveAdd={handleSaveAdd}
+                  onCloseAddEditor={closeAddEditor}
+                  onCloseEditEditor={closeEditEditor}
+                  isAddingMode={isAddingMode}
+                  editedQuestion={editedQuestion}
+                  setEditedQuestion={setEditedQuestion}
+                  axiosError={axiosError}
+                  resetAxiosError={resetAxiosError}
+                  openAddEditor={openAddEditor}
+                  openEditEditor={openEditEditor}
+                  setAddingMode={setAddingMode}
+                />
+              )
+            )}
+          </div>
+        </>
+      )}
     </Wrapper>
   );
 };

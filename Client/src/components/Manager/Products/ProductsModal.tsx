@@ -194,8 +194,6 @@ const ProductsModal: FC<ProductsModalProps> = ({
     );
 
     if (currentStep === 1) {
-      console.log('Я на первом шаге модалки ProductModal');
-
       if (
         !selectedSubcategory ||
         selectedSubcategory.subcategoryName === 'Выберите категорию'
@@ -423,7 +421,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
       autoComplete: 'off',
       placeholder: '',
       title: 'Код номенклатуры',
-      htmlFor: 'productName',
+      htmlFor: 'article',
       onChange: (value: string | boolean | number | Date) => {
         if (typeof value === 'string') {
           setEditedProduct({
@@ -468,9 +466,19 @@ const ProductsModal: FC<ProductsModalProps> = ({
           const trimmedValue = value.replace(/\s/g, '');
           const sanitizedValue = trimmedValue.replace(/,/g, '.');
 
+          // if (
+          //   sanitizedValue === '' ||
+          //   /^\d+(\.\d{0,2})?$/.test(sanitizedValue)
+          // ) {
+          //   setEditedProduct({
+          //     ...editedProduct,
+          //     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          //     // @ts-ignore
+          //     originalPrice: sanitizedValue,
+          //   });
           if (
             sanitizedValue === '' ||
-            /^\d+(\.\d{0,2})?$/.test(sanitizedValue)
+            /^(0(\.0{1,2})?|[1-9]\d*(\.\d{1,2})?)$/.test(sanitizedValue)
           ) {
             setEditedProduct({
               ...editedProduct,
@@ -500,7 +508,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
 
           if (
             sanitizedValue === '' ||
-            /^\d+(\.\d{0,2})?$/.test(sanitizedValue)
+            /^(0(\.0{1,2})?|[1-9]\d*(\.\d{1,2})?)$/.test(sanitizedValue)
           ) {
             setEditedProduct({
               ...editedProduct,
@@ -518,7 +526,14 @@ const ProductsModal: FC<ProductsModalProps> = ({
       name: 'percentageEmployee',
       type: 'text',
       value: (() => {
-        if (!editedProduct.originalPrice) {
+        console.log(
+          ' editedProduct.originalPrice ',
+          typeof editedProduct.originalPrice
+        );
+        if (
+          !editedProduct.originalPrice ||
+          editedProduct.originalPrice.toString() === '0'
+        ) {
           return '0';
         } else {
           return +(
@@ -736,7 +751,9 @@ const ProductsModal: FC<ProductsModalProps> = ({
 
                         if (
                           sanitizedValue === '' ||
-                          /^\d+(\.\d{0,2})?$/.test(sanitizedValue)
+                          /^(0(\.0{1,2})?|[1-9]\d*(\.\d{1,2})?)$/.test(
+                            sanitizedValue
+                          )
                         ) {
                           setEditedProduct({
                             ...editedProduct,
@@ -764,7 +781,10 @@ const ProductsModal: FC<ProductsModalProps> = ({
                     name="percentageCustomer"
                     type="text"
                     value={(() => {
-                      if (!editedProduct.originalPrice) {
+                      if (
+                        !editedProduct.originalPrice ||
+                        editedProduct.originalPrice.toString() === '0'
+                      ) {
                         return '0';
                       } else {
                         return +(
