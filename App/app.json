@@ -20,12 +20,15 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/adaptive-icon.png"
-      }
+      },
+      "bundleIdentifier": "com.supermax95.dolgovapp"
     },
     "android": {
       "adaptiveIcon": {
