@@ -17,7 +17,7 @@ interface IUser {
   email: string;
   barcode: string;
   userStatus: string;
-  birthDate: string;
+  birthDate: Date | undefined;
   bonusProgram: string;
   balance: number;
   isActivated: boolean;
