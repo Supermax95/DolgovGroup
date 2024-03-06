@@ -224,12 +224,12 @@ const ClientsModal: React.FC<UsersModalProps> = ({
       title: 'Дата рождения',
       htmlFor: 'birthdate',
       onChange: (value: string | boolean | number | Date) => {
-        if (value instanceof Date) {
-          setEditedUser({
-            ...editedUser,
-            birthDate: value,
-          });
-        }
+        setEditedUser({
+          ...editedUser,
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          birthDate: value,
+        });
       },
       required: true,
     },

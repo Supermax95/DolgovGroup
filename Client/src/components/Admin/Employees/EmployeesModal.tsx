@@ -17,7 +17,7 @@ interface IUser {
   email: string;
   barcode: string;
   userStatus: string;
-  birthDate: Date | undefined;
+  birthDate: string;
   bonusProgram: string;
   balance: number;
   isActivated: boolean;
@@ -224,12 +224,12 @@ const EmployeesModal: FC<UsersModalProps> = ({
       title: 'Дата рождения',
       htmlFor: 'birthdate',
       onChange: (value: string | boolean | number | Date) => {
-        if (value instanceof Date) {
-          setEditedUser({
-            ...editedUser,
-            birthDate: value,
-          });
-        }
+        setEditedUser({
+          ...editedUser,
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          birthDate: value,
+        });
       },
     },
     {

@@ -526,10 +526,6 @@ const ProductsModal: FC<ProductsModalProps> = ({
       name: 'percentageEmployee',
       type: 'text',
       value: (() => {
-        console.log(
-          ' editedProduct.originalPrice ',
-          typeof editedProduct.originalPrice
-        );
         if (
           !editedProduct.originalPrice ||
           editedProduct.originalPrice.toString() === '0'
