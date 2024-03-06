@@ -3,18 +3,18 @@ import axios, { AxiosResponse } from 'axios';
 import { VITE_URL } from '../../../VITE_URL';
 
 interface ResponseData {
-    id: number;
-    lastName: string;
-    firstName: string;
-    middleName: string;
-    email: string;
-    barcode: string;
-    userStatus: string;
-    isActivated: boolean;
-    bonusProgram: string;
-    birthDate: Date;
-    balance: number;
-    phoneNumber: string;
+  id: number;
+  lastName: string;
+  firstName: string;
+  middleName: string;
+  email: string;
+  barcode: string;
+  userStatus: string;
+  isActivated: boolean;
+  bonusProgram: string;
+  birthDate: Date;
+  balance: number;
+  phoneNumber: string;
 }
 
 type ArrayResponseData = Array<ResponseData>;
