@@ -49,21 +49,34 @@ const EmployeesModal: FC<UsersModalProps> = ({
     null
   );
 
+  //* удаление
+  const [showNotificationDelUser, setShowNotificationDelUser] =
+    useState<boolean>(false);
+
   const [
     showErrorNotificationActivationSend,
     setShowErrorNotificationActivationSend,
   ] = useState<boolean>(false);
 
   useEffect(() => {
-    if (showNotificationActivationSend || showErrorNotificationActivationSend) {
+    if (
+      showNotificationActivationSend ||
+      showErrorNotificationActivationSend ||
+      showNotificationDelUser
+    ) {
       const timeoutId = setTimeout(() => {
         setShowNotificationActivationSend(false);
         setShowErrorNotificationActivationSend(false);
+        setShowNotificationDelUser(false);
       });
 
       return () => clearTimeout(timeoutId);
     }
-  }, [showNotificationActivationSend, showErrorNotificationActivationSend]);
+  }, [
+    showNotificationActivationSend,
+    showErrorNotificationActivationSend,
+    showNotificationDelUser,
+  ]);
 
   const userToSave = editedUser || {
     id: 0,
@@ -118,6 +131,26 @@ const EmployeesModal: FC<UsersModalProps> = ({
     }
   };
 
+  const handleDelete = (): void => {
+    const isConfirmed = window.confirm(
+      'Вы уверены, что хотите удалить данного пользователя?'
+    );
+    if (isConfirmed && editedUser && editedUser.id) {
+      const userId = editedUser.id;
+
+      try {
+        // dispatch(deleteManager({ managerId }));
+        setShowNotificationDelUser(true);
+        //* позволяет вывести уведолмление после закрытия модального окна
+        setTimeout(() => {
+          onCloseEditModal();
+        }, 50);
+      } catch (error) {
+        console.error('Произошла ошибка при отправке:', error);
+      }
+    }
+  };
+
   if (!isOpen || !editedUser) {
     return null;
   }
@@ -159,7 +192,6 @@ const EmployeesModal: FC<UsersModalProps> = ({
           });
         }
       },
-      disabled: true,
       required: true,
     },
     {
@@ -198,7 +230,6 @@ const EmployeesModal: FC<UsersModalProps> = ({
           });
         }
       },
-      disabled: true,
     },
     {
       id: 'middleName',
@@ -302,6 +333,14 @@ const EmployeesModal: FC<UsersModalProps> = ({
           email={editedUser.email}
         />
       )}
+
+      {showNotificationDelUser && (
+        <PopUpNotification
+          titleText={'Аккаунт пользователя удалён'}
+          name={`${editedUser.lastName} ${editedUser.firstName}  ${editedUser.middleName}`}
+        />
+      )}
+
       {/* //!уведомления об ошибках */}
       {showErrorNotificationActivationSend && (
         <PopUpErrorNotification
@@ -311,7 +350,11 @@ const EmployeesModal: FC<UsersModalProps> = ({
       )}
       <Wrapper>
         <form onSubmit={handleFormSubmit}>
-          <ModalUser modalTitle={modalTitle} onCancelСlick={handleCancel}>
+          <ModalUser
+            modalTitle={modalTitle}
+            onCancelСlick={handleCancel}
+            onDeleteClick={handleDelete}
+          >
             <InputModal
               containerClassName={
                 'py-8 grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'
