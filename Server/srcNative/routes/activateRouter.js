@@ -43,10 +43,20 @@ router.get('/check/:userId', async (req, res) => {
 router.put('/newRegEmail', async (req, res) => {
   try {
     const { newEmail, userId } = req.body;
+    const existingUser = await DiscountCard.findOne({
+      where: { email: newEmail },
+    });
+
+    if (existingUser) {
+      return res
+        .status(400)
+        .json({ message: 'Этот email уже зарегистрирован' });
+    }
     const user = await DiscountCard.findOne({ where: { id: userId } });
     if (!user) {
       return res.status(404).json({ message: 'Пользователь не найден' });
     }
+
     const newActivationLink = uuid.v4();
     user.email = newEmail;
     user.activationLink = newActivationLink;
@@ -62,6 +72,7 @@ router.put('/newRegEmail', async (req, res) => {
         message: 'Новая ссылка для активации аккаунта отправлена',
         newEmail,
       });
+
   } catch (error) {
     console.error(error);
     next(error);
