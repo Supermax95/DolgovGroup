@@ -281,7 +281,7 @@ class UserService {
       const credentials = 'Exchange:Exchange';
       const base64Credentials = Buffer.from(credentials).toString('base64');
       await axios.post(
-        `http://retail.dolgovagro.ru/rtnagaev/hs/loyaltyservice/issueclientcard?Phone=${
+        `http://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/issueclientcard?Phone=${
           '+7' + user.phoneNumber
         }&Email=${
           user.email

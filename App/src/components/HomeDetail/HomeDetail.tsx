@@ -143,7 +143,7 @@ const HomeDetail: FC = () => {
     const base64Credentials = encode(`${credentials}`);
     try {
       const response = await axios.get(
-        `http://retail.dolgovagro.ru/rtnagaev/hs/loyaltyservice/getclientbonuses?ClientCardID=${barcode}`,
+        `http://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/getclientbonuses?ClientCardID=${barcode}`,
         {
           headers: {
             Authorization: `Basic ${base64Credentials}`,

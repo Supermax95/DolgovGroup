@@ -214,7 +214,7 @@ router
       const credentials = 'Exchange:Exchange';
       const base64Credentials = Buffer.from(credentials).toString('base64');
       await axios.post(
-        `http://retail.dolgovagro.ru/rtnagaev/hs/loyaltyservice/updateclientcard?ClientCardID=${userData.barcode}&Email=${userData.email}
+        `http://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/updateclientcard?ClientCardID=${userData.barcode}&Email=${userData.email}
       `,
         {},
         {
@@ -294,7 +294,7 @@ router
       const credentials = 'Exchange:Exchange';
       const base64Credentials = Buffer.from(credentials).toString('base64');
       await axios.post(
-        `http://retail.dolgovagro.ru/rtnagaev/hs/loyaltyservice/updateclientcard?ClientCardID=${
+        `http://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/updateclientcard?ClientCardID=${
           userData.barcode
         }&Phone=${'+7' + trimmedPhoneNumber}
       `,

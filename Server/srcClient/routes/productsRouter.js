@@ -71,7 +71,7 @@ const task = cron.schedule('05 00 * * *', async () => {
       const credentials = 'Exchange:Exchange';
       const base64Credentials = Buffer.from(credentials).toString('base64');
       const response = await axios.get(
-        `http://retail.dolgovagro.ru/rtnagaev/hs/loyaltyservice/getprices?Code=${product.article}`,
+        `http://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/getprices?Code=${product.article}`,
         {
           headers: {
             Authorization: `Basic ${base64Credentials}`,
