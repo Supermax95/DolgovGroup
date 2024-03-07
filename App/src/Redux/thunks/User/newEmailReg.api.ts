@@ -4,10 +4,11 @@ import axios, { AxiosResponse } from 'axios';
 
 interface Response {
   message: string;
+  newEmail: string;
 }
 
 interface Request {
-  userId: number;
+  userId?: number | undefined;
   newEmail: string;
 }
 

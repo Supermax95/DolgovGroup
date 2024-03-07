@@ -74,30 +74,6 @@ export const Registration: FC = () => {
     navigation.navigate('AboutApplication');
   };
 
-  // const handleFieldChange = (
-  //   field: keyof IData,
-  //   value: string | Date
-  // ): void => {
-  //   setData((prevData) => {
-  //     let dateValue: Date;
-  
-  //     if (value instanceof Date) {
-  //       // Если значение - экземпляр Date, установите время на 00:00:00.000
-  //       dateValue = new Date(value);
-  //       dateValue.setHours(10, 0, 0, 0);
-  //     } else {
-  //       // Если значение - строка, преобразуйте ее в объект Date и установите время
-  //       dateValue = new Date(value);
-  //       dateValue.setHours(10, 0, 0, 0);
-  //     }
-  
-  //     const data = { ...prevData, [field]: dateValue };
-  //     return data;
-  //   });
-  
-  //   setErrorMessages((prevErrors) => ({ ...prevErrors, [field]: '' }));
-  // };
- 
   const handleFieldChange = (
     field: keyof IData,
     value: string | Date
@@ -105,7 +81,7 @@ export const Registration: FC = () => {
     setData((prevData) => {
       if (field === 'birthDate') {
         let dateValue: Date;
-  
+
         if (value instanceof Date) {
           // Если значение - экземпляр Date, установите время на 00:00:00.000
           dateValue = new Date(value.setUTCHours(0, 0, 0, 0)); // Используем setUTCHours для явного указания UTC времени
@@ -114,7 +90,7 @@ export const Registration: FC = () => {
           dateValue = new Date(value);
           dateValue.setUTCHours(0, 0, 0, 0); // Используем setUTCHours для явного указания UTC времени
         }
-  
+
         const data = { ...prevData, [field]: dateValue };
         return data;
       } else {
@@ -122,12 +98,9 @@ export const Registration: FC = () => {
         return data;
       }
     });
-  
+
     setErrorMessages((prevErrors) => ({ ...prevErrors, [field]: '' }));
   };
-  
-  
-
 
   const validateEmail = (): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
