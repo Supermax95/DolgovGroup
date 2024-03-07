@@ -3,7 +3,7 @@ import {
   CompositeNavigationProp,
   useNavigation,
 } from '@react-navigation/native';
-import { View, Text, Alert, Pressable } from 'react-native';
+import { View, Text, Alert, Pressable, ActivityIndicator } from 'react-native';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { StackNavigationProp, TabScreenNavigationProp } from 'navigation/types';
 import userActivate from 'Redux/thunks/User/activated.api';
@@ -35,7 +35,7 @@ const CheckMail: FC = () => {
 
   const [isResendDisabled, setResendDisabled] = useState<boolean>(false);
   const [secondsRemaining, setSecondsRemaining] = useState<number>(0);
-
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errorMessages, setErrorMessages] = useState<IChangeEmail>({
     newEmail: '',
   });
@@ -86,7 +86,7 @@ const CheckMail: FC = () => {
       setResendDisabled(true);
       startResendTimer();
 
-      const result = await dispatch(sendActivationLink({ userId }));
+     await dispatch(sendActivationLink({ userId }));
       Alert.alert('Проверьте свою почту.');
     } catch (error) {
       Alert.alert('Произошла ошибка при отправке повторной активации.');
@@ -124,6 +124,7 @@ const CheckMail: FC = () => {
       });
     } else {
       try {
+        setIsLoading(true);
         const result = await dispatch(
           newEmailReg({
             userId,
@@ -132,11 +133,13 @@ const CheckMail: FC = () => {
         );
 
         if (result.meta.requestStatus === 'rejected') {
+          setIsLoading(false);
           Alert.alert(
             'Ошибка',
             'Пользователь с такой электронной почтой уже существует'
           );
         } else if (result.meta.requestStatus === 'fulfilled') {
+          setIsLoading(false);
           Alert.alert(
             'На новую почту было отправлено письмо',
             'Подтвердите новую почту',
@@ -149,6 +152,7 @@ const CheckMail: FC = () => {
           setChangeEmail(false);
         }
       } catch (error) {
+        setIsLoading(false);
         Alert.alert(
           'Ошибка',
           'Данного пользователя не существует или произошла ошибка'
@@ -164,7 +168,11 @@ const CheckMail: FC = () => {
           onPress={() => navigation.goBack()}
           title="Проверка активации"
         />
-
+      {isLoading ? (
+        <View className="flex-1 items-center justify-center">
+          <ActivityIndicator size="large" color="green" />
+        </View>
+      ) : (
         <View className="justify-center items-center h-[80%]">
           {changeEmail ? (
             <View className="w-10/12">
@@ -180,6 +188,11 @@ const CheckMail: FC = () => {
                 autoCapitalize="none"
                 keyboardType="email-address"
               />
+                   {errorMessages.newEmail && (
+                      <Text className="text-red-500 ml-1 mt-1 text-xs">
+                        {errorMessages.newEmail}
+                      </Text>
+                    )}
               <Button onPress={handlerSubmitEmail} title="Сохранить" />
 
               <Button
@@ -241,6 +254,7 @@ const CheckMail: FC = () => {
             </View>
           )}
         </View>
+              )}
       </SafeAreaView>
     </>
   );
