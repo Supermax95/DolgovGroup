@@ -68,7 +68,7 @@ router.put('/newRegEmail', async (req, res) => {
 
     return res
       .status(200)
-      .json({ message: 'Новая ссылка для активации аккаунта отправлена' });
+      .json({ newEmail , message: 'Новая ссылка для активации аккаунта отправлена' });
   } catch (error) {
     console.error(error);
     next(error);
