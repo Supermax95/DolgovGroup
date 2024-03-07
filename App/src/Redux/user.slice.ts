@@ -9,6 +9,7 @@ import getCheck from './thunks/User/check.api';
 import checkEmployee from './thunks/Support/checkEmployee.api';
 import getBarcode from './thunks/User/barcode.api';
 import getUserStatus from './thunks/User/userStatus.api';
+import newEmailReg from './thunks/User/newEmailReg.api';
 
 type User = {
   id?: number | undefined;
@@ -78,7 +79,7 @@ const userSlice = createSlice({
 
       .addCase(userLogin.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload as string || undefined;
+        state.error = (action.payload as string) || undefined;
       })
       .addCase(userRegister.pending, (state) => {
         state.isLoading = true;
@@ -139,8 +140,9 @@ const userSlice = createSlice({
       .addCase(resetPassword.fulfilled, (state, action) => {
         state.isLoading = false;
         if (state.user) {
-        state.user.email = action.payload.message;
-      }})
+          state.user.email = action.payload.message;
+        }
+      })
       .addCase(resetPassword.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
@@ -163,15 +165,11 @@ const userSlice = createSlice({
       .addCase(getCheck.fulfilled, (state, action) => {
         state.isLoading = false;
         if (state.user) {
-        state.user.id = action.payload.id;
-        state.user.isActivated = action.payload.isActivated || undefined;
-        state.user.userStatus = action.payload.userStatus || undefined;
-      }})
-      // .addCase(getCheck.fulfilled, (state, action) => {
-      //   state.isLoading = false;
-      //   state.user.id = action.payload;
-      //   state.user.isActivated = action.payload || undefined;
-      // })
+          state.user.id = action.payload.id;
+          state.user.isActivated = action.payload.isActivated || undefined;
+          state.user.userStatus = action.payload.userStatus || undefined;
+        }
+      })
       .addCase(getCheck.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
@@ -182,12 +180,13 @@ const userSlice = createSlice({
       .addCase(checkEmployee.fulfilled, (state, action) => {
         state.isLoading = false;
         if (state.user) {
-        state.user.id = action.payload.updatedUser.id;
-        state.user.isActivated =
-          action.payload.updatedUser.isActivated || undefined;
-        state.user.userStatus =
-          action.payload.updatedUser.userStatus || undefined;
-      }})
+          state.user.id = action.payload.updatedUser.id;
+          state.user.isActivated =
+            action.payload.updatedUser.isActivated || undefined;
+          state.user.userStatus =
+            action.payload.updatedUser.userStatus || undefined;
+        }
+      })
       .addCase(checkEmployee.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
@@ -198,8 +197,9 @@ const userSlice = createSlice({
       .addCase(getBarcode.fulfilled, (state, action) => {
         state.isLoading = false;
         if (state.user) {
-        state.user.barcode = action.payload.barcode;
-      }})
+          state.user.barcode = action.payload.barcode;
+        }
+      })
       .addCase(getBarcode.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
@@ -211,14 +211,28 @@ const userSlice = createSlice({
       .addCase(getUserStatus.fulfilled, (state, action) => {
         state.isLoading = false;
         if (state.user) {
-        state.user.userStatus = action.payload.userStatus || undefined;
-      }})
+          state.user.userStatus = action.payload.userStatus || undefined;
+        }
+      })
       .addCase(getUserStatus.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       })
       .addCase(getUserStatus.pending, (state) => {
         state.isLoading = true;
+      })
+      .addCase(newEmailReg.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(newEmailReg.fulfilled, (state, action) => {
+        state.isLoading = false;
+        if (state.user) {
+          state.user.email = action.payload.newEmail;
+        }
+      })
+      .addCase(newEmailReg.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
       });
   },
 });
