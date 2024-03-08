@@ -96,7 +96,7 @@ router.put('/admin/employees/:id', async (req, res) => {
       await transporter.sendMail(mailData);
     }
     if (newInfo.email !== employee.email) {
-      const credentials = 'Exchange:Exchange';
+      const credentials = 'Личкаб:Ko9dyfum';
       const base64Credentials = Buffer.from(credentials).toString('base64');
       await axios.post(
         `http://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/updateclientcard?ClientCardID=${newInfo.barcode}&Email=${newInfo.email}`,
@@ -130,7 +130,7 @@ router.put('/admin/employees/:id', async (req, res) => {
         { ...newInfo, phoneNumber: trimmedPhoneNumber },
         { where: { id: employeeId } }
       );
-      const credentials = 'Exchange:Exchange';
+      const credentials = 'Личкаб:Ko9dyfum';
       const base64Credentials = Buffer.from(credentials).toString('base64');
       await axios.post(
         `http://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/updateclientcard?ClientCardID=${

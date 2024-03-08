@@ -68,7 +68,7 @@ const task = cron.schedule('05 00 * * *', async () => {
     });
 
     for (const product of products) {
-      const credentials = 'Exchange:Exchange';
+      const credentials = 'Личкаб:Ko9dyfum';
       const base64Credentials = Buffer.from(credentials).toString('base64');
       const response = await axios.get(
         `http://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/getprices?Code=${product.article}`,

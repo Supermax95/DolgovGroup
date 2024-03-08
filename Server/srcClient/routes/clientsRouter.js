@@ -44,7 +44,6 @@ router.get('/admin/clients', async (req, res) => {
   }
 });
 
-
 router.delete('/admin/userdelete/:id', async (req, res) => {
   const userId = req.params.id;
   try {
@@ -79,8 +78,6 @@ router.delete('/admin/userdelete/:id', async (req, res) => {
     res.status(500).json({ message: 'Произошла ошибка при удалении записи' });
   }
 });
-
-
 
 router.put('/admin/clients/:id', async (req, res) => {
   const clientId = req.params.id;
@@ -133,7 +130,7 @@ router.put('/admin/clients/:id', async (req, res) => {
       await transporter.sendMail(mailData);
     }
     if (newInfo.email !== client.email) {
-      const credentials = 'Exchange:Exchange';
+      const credentials = 'Личкаб:Ko9dyfum';
       const base64Credentials = Buffer.from(credentials).toString('base64');
       await axios.post(
         `http://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/updateclientcard?ClientCardID=${newInfo.barcode}&Email=${newInfo.email}`,
@@ -165,7 +162,7 @@ router.put('/admin/clients/:id', async (req, res) => {
         { ...newInfo, phoneNumber: trimmedPhoneNumber },
         { where: { id: clientId } }
       );
-      const credentials = 'Exchange:Exchange';
+      const credentials = 'Личкаб:Ko9dyfum';
       const base64Credentials = Buffer.from(credentials).toString('base64');
       console.log(' newInfo.barcode', newInfo.barcode, trimmedPhoneNumber);
       await axios.post(

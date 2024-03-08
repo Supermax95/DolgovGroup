@@ -1,6 +1,8 @@
-const { PORT, IP,
+const {
+  PORT,
+  IP,
   //  SUCCESS
-   } = process.env;
+} = process.env;
 const uuid = require('uuid');
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
@@ -211,7 +213,7 @@ router
         newEmail: '',
       });
 
-      const credentials = 'Exchange:Exchange';
+      const credentials = 'Личкаб:Ko9dyfum';
       const base64Credentials = Buffer.from(credentials).toString('base64');
       await axios.post(
         `http://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/updateclientcard?ClientCardID=${userData.barcode}&Email=${userData.email}
@@ -291,7 +293,7 @@ router
       }
 
       await userData.update({ phoneNumber: trimmedPhoneNumber });
-      const credentials = 'Exchange:Exchange';
+      const credentials = 'Личкаб:Ko9dyfum';
       const base64Credentials = Buffer.from(credentials).toString('base64');
       await axios.post(
         `http://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/updateclientcard?ClientCardID=${

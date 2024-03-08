@@ -45,7 +45,6 @@ const HomeDetail: FC = () => {
 
   const [refreshing, setRefreshing] = useState(true);
   const onRefresh = async () => {
-
     try {
       await dispatch(getPromotions());
       await dispatch(getProducts());
@@ -139,7 +138,7 @@ const HomeDetail: FC = () => {
   };
   const handleGetClientBonuses = async () => {
     setIsLoading(true);
-    const credentials = 'Exchange:Exchange';
+    const credentials = 'Личкаб:Ko9dyfum';
     const base64Credentials = encode(`${credentials}`);
     try {
       const response = await axios.get(
@@ -149,7 +148,7 @@ const HomeDetail: FC = () => {
             Authorization: `Basic ${base64Credentials}`,
           },
         }
-        );
+      );
       const bonusCount = response.data?.BonusCount || 0;
       AsyncStorage.setItem('bonusCheck', Date.now().toString());
       setNumberPoints(bonusCount);
