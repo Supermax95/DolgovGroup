@@ -280,7 +280,7 @@ class UserService {
 
       const credentials = 'Личкаб:Ko9dyfum';
       const base64Credentials = Buffer.from(credentials).toString('base64');
-      await axios.post(
+      const response =  await axios.post(
         `http://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/issueclientcard?Phone=${
           '+7' + user.phoneNumber
         }&Email=${
@@ -295,7 +295,8 @@ class UserService {
           },
         }
       );
-
+      console.log('Response Data:', response.data);
+      console.log('Response Status:', response.status);
       await user.save();
     } catch (error) {
       console.error(`Ошибка активации: ${error}`);

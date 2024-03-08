@@ -149,6 +149,8 @@ const HomeDetail: FC = () => {
           },
         }
       );
+      console.log('response', response);
+      
       const bonusCount = response.data?.BonusCount || 0;
       AsyncStorage.setItem('bonusCheck', Date.now().toString());
       setNumberPoints(bonusCount);
@@ -156,6 +158,7 @@ const HomeDetail: FC = () => {
       setIsLoading(false);
       // console.log('Ответ на запрос бонусов клиента:=====>', bonusCount);
     } catch (error) {
+      setIsLoading(false);
       console.error('Ошибка при запросе бонусов');
     }
   };
