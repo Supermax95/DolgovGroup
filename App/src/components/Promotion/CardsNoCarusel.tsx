@@ -1,4 +1,4 @@
-import { PORT, IP } from '@env';
+import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
 import { useNavigation } from '@react-navigation/native';
 import { useAppSelector } from 'Redux/hooks';
 import { StackNavigationProp } from 'navigation/types';
@@ -56,7 +56,7 @@ export default function CardsNoCarusel() {
               style={[styles.cardContainer, { width: cardWidth }]}
             >
               <Image
-                source={{ uri: `http://${IP}:${PORT}${promotion.photo}` }}
+                source={{ uri: `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}${promotion.photo}` }}
                 resizeMode="contain"
                 style={styles.image}
               />

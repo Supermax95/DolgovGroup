@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
-import { PORT, IP } from '@env';
+import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
 
 interface ResponseData {
   id: number;
@@ -17,7 +17,7 @@ const currentLaw = createAsyncThunk<ResponseData, number>(
   async (lawId, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axios.get(
-        `http://${IP}:${PORT}/admin/currentlaw/${lawId}`
+        `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/admin/currentlaw/${lawId}`
       );
       return response.data;
     } catch (error) {

@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { AxiosResponse } from 'axios';
 import axios from 'axios';
-import { PORT, IP } from '@env';
+import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
 
 interface RequestData {
   birthDate?: Date | null | string;
@@ -27,7 +27,7 @@ const userRegister = createAsyncThunk<ResponseData, RequestData>(
   async (user,{ rejectWithValue }) => {    
     try {
       const response: AxiosResponse = await axios.post(
-        `http://${IP}:${PORT}/api/registration`,
+        `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/api/registration`,
         user
       );
       if (response.status === 200) {

@@ -13,7 +13,7 @@ import {
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import RenderHtml from 'react-native-render-html';
 import currentLaw from 'Redux/thunks/Law/getCurrentLaw.api';
-import { PORT, IP } from '@env';
+import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
 import UniversalHeader from 'ui/UniversalHeader';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from 'navigation/types';
@@ -90,7 +90,7 @@ const SingleLaw = ({ route }: any) => {
 
   const openDocumentLink = () => {
     if (currentLawOpen.documentLink) {
-      Linking.openURL(`http://${IP}:${PORT}${currentLawOpen.documentLink}`);
+      Linking.openURL(`http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}${currentLawOpen.documentLink}`);
     }
   };
 

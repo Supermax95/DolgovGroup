@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { AxiosResponse } from 'axios';
 import axios from 'axios';
-import { PORT, IP } from '@env';
+import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
 
 interface RequestData {
   newBirthDate: Date | null | string;
@@ -16,7 +16,7 @@ const profileChangeBirthDate = createAsyncThunk<ResponseData, RequestData>(
   async ({ newBirthDate, token }, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axios.put(
-        `http://${IP}:${PORT}/calendar`,
+        `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/calendar`,
         { newBirthDate },
         {
           headers: {

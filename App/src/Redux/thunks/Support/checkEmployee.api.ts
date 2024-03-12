@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { AxiosResponse } from 'axios';
 import axios from 'axios';
-import { PORT, IP } from '@env';
+import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
 
 interface RequestData {
   token: string | undefined;
@@ -23,7 +23,7 @@ const checkEmployee = createAsyncThunk<ResponseData, RequestData>(
 
     try {
       const response: AxiosResponse = await axios.post(
-        `http://${IP}:${PORT}/checkEmployee`,
+        `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/checkEmployee`,
         {},
         {
           headers: {

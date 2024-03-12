@@ -1,4 +1,4 @@
-import { PORT, IP } from '@env';
+import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { AxiosResponse } from 'axios';
 import axios from 'axios';
@@ -26,7 +26,7 @@ const currentProduct = createAsyncThunk<ResponseData, number>(
   async (productId, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axios.get(
-        `http://${IP}:${PORT}/admin/currentproduct/${productId}`
+        `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/admin/currentproduct/${productId}`
       );
       return response.data;
     } catch (error) {

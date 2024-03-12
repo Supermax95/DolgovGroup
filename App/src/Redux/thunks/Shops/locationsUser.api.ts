@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
-import { PORT, IP } from '@env';
+import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
 
 interface Request {
   token?: string | undefined;
@@ -26,7 +26,7 @@ const getUserLocations = createAsyncThunk<ResponseData, Request>(
   async ({ token }) => {
     try {
       const response: AxiosResponse = await axios.get(
-        `http://${IP}:${PORT}/userlocations`,
+        `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/userlocations`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

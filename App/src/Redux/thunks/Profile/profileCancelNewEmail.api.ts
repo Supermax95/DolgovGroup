@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { AxiosResponse } from 'axios';
 import axios from 'axios';
-import { PORT, IP } from '@env';
+import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
 
 interface Request {
   token?: string | undefined;
@@ -18,7 +18,7 @@ Response,
 >('api/profileCancelEmail', async ({ token }) => {
   try {
     const response: AxiosResponse = await axios.put(
-      `http://${IP}:${PORT}/cancelEmail`,
+      `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/cancelEmail`,
       {},
       {
         headers: {

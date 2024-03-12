@@ -1,4 +1,4 @@
-import { PORT, IP } from '@env';
+import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { AxiosResponse } from 'axios';
 import axios from 'axios';
@@ -6,7 +6,7 @@ import axios from 'axios';
 const getCategory = createAsyncThunk('getCategoryUser', async () => {
   try {
     const response: AxiosResponse = await axios.get(
-      `http://${IP}:${PORT}/admin/category`
+      `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/admin/category`
     );
     return response.data;
   } catch (error) {

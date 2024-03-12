@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { PORT, IP } from '@env';
+import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
 import axios, { AxiosResponse } from 'axios';
 
 interface Response {
@@ -17,7 +17,7 @@ const newEmailReg = createAsyncThunk<Response, Request>(
   async ({ userId, newEmail }) => {
     try {
       const response: AxiosResponse = await axios.put<AxiosResponse>(
-        `http://${IP}:${PORT}/newRegEmail`,
+        `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/newRegEmail`,
         { userId, newEmail }
       );
 

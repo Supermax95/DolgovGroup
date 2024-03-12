@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { AxiosResponse } from 'axios';
 import axios from 'axios';
-import { PORT, IP } from '@env';
+import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
 
 interface ICheckRequest {
   token?: string | undefined;
@@ -17,7 +17,7 @@ const getBarcode = createAsyncThunk<ICheckResponse, ICheckRequest>(
   async ({ token }) => {
     try {
       const response: AxiosResponse = await axios.get(
-        `http://${IP}:${PORT}/barcode`,
+        `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/barcode`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

@@ -7,7 +7,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import React, { FC } from 'react';
-import { PORT, IP } from '@env';
+import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
 import { isToday, parseISO } from 'date-fns';
 
 interface ISinglePromo {
@@ -55,7 +55,7 @@ const SinglePromo: FC<ISinglePromo> = ({
             <View style={styles.card}>
               <View style={styles.imageBox}>
                 <Image
-                  source={{ uri: `http://${IP}:${PORT}${image}` }}
+                  source={{ uri: `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}${image}` }}
                   resizeMode="contain"
                   style={styles.image}
                 />
@@ -119,7 +119,7 @@ const SinglePromo: FC<ISinglePromo> = ({
                 className={`w-full h-full absolute top-0 left-0 flex items-center justify-center`}
               >
                 <Image
-                  source={{ uri: `http://${IP}:${PORT}${image}` }}
+                  source={{ uri: `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}${image}` }}
                   resizeMode="contain"
                   className={`w-80 h-80`}
                 />

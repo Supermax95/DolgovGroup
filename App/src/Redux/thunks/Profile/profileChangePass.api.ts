@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { AxiosResponse } from 'axios';
 import axios from 'axios';
-import { PORT, IP } from '@env';
+import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
 
 interface RequestData {
   token: string | undefined;
@@ -17,7 +17,7 @@ const changeProfilePass = createAsyncThunk<ResponseData, RequestData>(
   async ({ token, newPassword, oldPassword }, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axios.put(
-        `http://${IP}:${PORT}/newpassword`,
+        `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/newpassword`,
         { oldPassword, newPassword },
         {
           headers: {

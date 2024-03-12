@@ -7,7 +7,7 @@ import {
   Dimensions,
   StyleSheet,
 } from 'react-native';
-import { PORT, IP } from '@env';
+import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
 
 interface ICardCategory {
   onPress: () => void;
@@ -31,7 +31,7 @@ const CardCategory: FC<ICardCategory> = ({
         style={{ width: cardWidth }}
       >
         <Image
-          source={{ uri: `http://${IP}:${PORT}${imageCategory}` }}
+          source={{ uri: `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}${imageCategory}` }}
           resizeMode="cover"
           style={styles.image}
         />

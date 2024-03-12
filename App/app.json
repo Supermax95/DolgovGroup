@@ -20,7 +20,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "adaptiveIcon": {
@@ -32,6 +34,14 @@
       "googleMaps": {
         "apiKey": "AIzaSyBQVCBBj3wCbJIQzhD68LV3Fn3n_lEKZd4"
       }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ca7ac5b0-6ced-4fa9-ab4e-c79396d8ad27"
+      }
+    },
+    "android": {
+      "package": "com.supermax95.dolgovapp"
     }
   },
   "android": {
