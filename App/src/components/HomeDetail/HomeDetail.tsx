@@ -138,7 +138,7 @@ const HomeDetail: FC = () => {
   };
   const handleGetClientBonuses = async () => {
     setIsLoading(true);
-    const credentials = 'Личкаб:Ko9dyfum';
+    const credentials = 'Lichkab:Ko9dyfum';
     const base64Credentials = encode(`${credentials}`);
     try {
       const response = await axios.get(
@@ -148,15 +148,14 @@ const HomeDetail: FC = () => {
             Authorization: `Basic ${base64Credentials}`,
           },
         }
-      );
-      console.log('response', response);
+      );      
+      console.log(response);
       
       const bonusCount = response.data?.BonusCount || 0;
       AsyncStorage.setItem('bonusCheck', Date.now().toString());
       setNumberPoints(bonusCount);
       checkResendAvailability();
       setIsLoading(false);
-      // console.log('Ответ на запрос бонусов клиента:=====>', bonusCount);
     } catch (error) {
       setIsLoading(false);
       console.error('Ошибка при запросе бонусов');

@@ -278,9 +278,9 @@ class UserService {
 
       const formattedBirthDate = formatBirthDate(user.birthDate);
 
-      const credentials = 'Личкаб:Ko9dyfum';
+      const credentials = 'Lichkab:Ko9dyfum';
       const base64Credentials = Buffer.from(credentials).toString('base64');
-      const response =  await axios.post(
+      const response = await axios.post(
         `http://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/issueclientcard?Phone=${
           '+7' + user.phoneNumber
         }&Email=${
