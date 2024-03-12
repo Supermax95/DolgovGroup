@@ -149,7 +149,6 @@ const HomeDetail: FC = () => {
           },
         }
       );      
-      console.log(response);
       
       const bonusCount = response.data?.BonusCount || 0;
       AsyncStorage.setItem('bonusCheck', Date.now().toString());

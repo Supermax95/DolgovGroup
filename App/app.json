@@ -20,9 +20,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "adaptiveIcon": {
@@ -30,21 +28,31 @@
       },
       "bundleIdentifier": "com.supermax95.dolgovapp"
     },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./src/assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "package": "com.supermax95.dolgovapp"
-    },
-    "web": {
-      "favicon": "./src/assets/favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "ca7ac5b0-6ced-4fa9-ab4e-c79396d8ad27"
+    "config": {
+      "googleMaps": {
+        "apiKey": "AIzaSyBQVCBBj3wCbJIQzhD68LV3Fn3n_lEKZd4"
       }
+    }
+  },
+  "android": {
+    "adaptiveIcon": {
+      "foregroundImage": "./src/assets/images/adaptive-icon.png",
+      "backgroundColor": "#ffffff"
     },
-    "owner": "supermax95"
-  }
+    "package": "com.supermax95.dolgovapp",
+    "config": {
+      "googleMaps": {
+        "apiKey": "AIzaSyBQVCBBj3wCbJIQzhD68LV3Fn3n_lEKZd4"
+      }
+    }
+  },
+  "web": {
+    "favicon": "./src/assets/favicon.png"
+  },
+  "extra": {
+    "eas": {
+      "projectId": "ca7ac5b0-6ced-4fa9-ab4e-c79396d8ad27"
+    }
+  },
+  "owner": "supermax95"
 }
