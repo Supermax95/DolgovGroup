@@ -11,6 +11,14 @@
           "icon": "./src/assets/images/icon.png",
           "color": "#ffffff"
         }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
+        }
       ]
     ],
     "icon": "./src/assets/images/icon.png",
@@ -20,9 +28,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "adaptiveIcon": {
@@ -41,19 +47,22 @@
       }
     },
     "android": {
-      "package": "com.supermax95.dolgovapp"
-    }
-  },
-  "android": {
-    "adaptiveIcon": {
-      "foregroundImage": "./src/assets/images/adaptive-icon.png",
-      "backgroundColor": "#ffffff"
-    },
-    "package": "com.supermax95.dolgovapp",
-    "config": {
-      "googleMaps": {
-        "apiKey": "AIzaSyBQVCBBj3wCbJIQzhD68LV3Fn3n_lEKZd4"
+      "package": "com.supermax95.dolgovapp",
+      "adaptiveIcon": {
+        "foregroundImage": "./src/assets/images/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyBQVCBBj3wCbJIQzhD68LV3Fn3n_lEKZd4"
+        }
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/ca7ac5b0-6ced-4fa9-ab4e-c79396d8ad27"
     }
   },
   "web": {

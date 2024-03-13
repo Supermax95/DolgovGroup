@@ -67,11 +67,11 @@ const SignIn: FC = () => {
         return;
       }
 
-      const result = await dispatch(
+      const result = (await dispatch(
         userLogin({
           userData: data,
         })
-      ) as ResultType;
+      )) as ResultType;
 
       if (result.meta.requestStatus === 'rejected') {
         Alert.alert('Ошибка', result.payload as string);
@@ -90,7 +90,6 @@ const SignIn: FC = () => {
       // console.error('Ошибка при авторизации:', error);
     }
   };
-
 
   return (
     <>
