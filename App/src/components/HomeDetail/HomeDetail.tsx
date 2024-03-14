@@ -64,18 +64,18 @@ const HomeDetail: FC = () => {
   }, []);
 
   useEffect(() => {
-    (async () => {
-      const { status } = await Brightness.requestPermissionsAsync();
-      if (status === 'granted') {
+        (async () => {
+      // const { status } = await Brightness.requestPermissionsAsync();
+      // if (status === 'granted') {
         const initialBrightness = await Brightness.getSystemBrightnessAsync();
         setOriginalBrightness(initialBrightness);
-      }
+      // }
     })();
   }, []);
 
   const increaseBrightness = async () => {
-    const { status } = await Brightness.requestPermissionsAsync();
-    if (status === 'granted') {
+    // const { status } = await Brightness.requestPermissionsAsync();
+    // if (status === 'granted') {
       try {
         await Brightness.setBrightnessAsync(1.0);
         setTimeout(async () => {
@@ -85,7 +85,7 @@ const HomeDetail: FC = () => {
         Alert.alert('Ошибка при установке яркости:');
       }
     }
-  };
+  // };
 
   useEffect(() => {
     if (token) {
