@@ -1,3 +1,4 @@
+import React, { Dispatch, FC, SetStateAction, useState } from 'react';
 import {
   View,
   Text,
@@ -7,10 +8,10 @@ import {
   Switch,
   Platform,
   PanResponder,
+  StyleSheet,
 } from 'react-native';
 import Slider from '@react-native-community/slider';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import React, { Dispatch, FC, SetStateAction, useState } from 'react';
 
 interface FilterModalProps {
   isVisible: boolean;
@@ -74,21 +75,8 @@ const FilterModal: FC<FilterModalProps> = ({
 
   return (
     <>
-      {/*     затемнение компонента при появлении модалки   */}
-      {isVisible && (
-        <View
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.5)', // Черный цвет с прозрачностью 50%
-          }}
-        />
-      )}
+      {isVisible && <View style={styles.overlay} />}
 
-      {/* модальное окно и его содержимое */}
       <Modal
         visible={isVisible}
         animationType="slide"
@@ -100,32 +88,19 @@ const FilterModal: FC<FilterModalProps> = ({
       >
         <Animated.View
           {...panResponder.panHandlers}
-          style={{
-            flex: 1,
-            backgroundColor: 'rgba(0,0,0,0.0)',
-            transform: [{ translateY: modalOffset }],
-          }}
+          style={[
+            styles.container,
+            { transform: [{ translateY: modalOffset }] },
+          ]}
         >
-          <View className="flex-1 justify-end items-center">
-            <View
-              className="h-[40%] w-full m-0 p-6 rounded-t-2xl bg-white"
-              style={{
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.25,
-                shadowRadius: 4,
-                elevation: 21,
-              }}
-            >
+          <View style={styles.modalWrapper}>
+            <View style={styles.modalContent}>
               <Pressable
                 onPress={() => {
                   onApply();
                   onClose(false);
                 }}
-                className="absolute left-5 top-5"
+                style={styles.closeButton}
               >
                 <MaterialCommunityIcons
                   name="close"
@@ -134,17 +109,8 @@ const FilterModal: FC<FilterModalProps> = ({
                 />
               </Pressable>
 
-              <View
-                className={`flex-row border-b-[1px] border-zinc-200 items-center justify-between mt-4
-          ${Platform.OS === 'android' ? 'py-0' : 'py-4'}`}
-              >
-                <Text
-                  className={`text-zinc-700 font-medium ${
-                    Platform.OS === 'android' ? 'text-base' : 'text-md'
-                  }`}
-                >
-                  Новые продукты
-                </Text>
+              <View style={styles.switchContainer}>
+                <Text style={styles.label}>Новые продукты</Text>
                 <Switch
                   trackColor={{ false: '#d6d3d1', true: '#a7f3d0' }}
                   thumbColor={showNew ? '#22c55e' : '#f5f5f4'}
@@ -153,17 +119,9 @@ const FilterModal: FC<FilterModalProps> = ({
                   value={showNew}
                 />
               </View>
-              <View
-                className={`flex-row border-b-[1px] border-zinc-200 items-center justify-between
-          ${Platform.OS === 'android' ? 'py-0' : 'py-2'}`}
-              >
-                <Text
-                  className={`text-zinc-700 font-medium ${
-                    Platform.OS === 'android' ? 'text-base' : 'text-md'
-                  }`}
-                >
-                  Только со скидками
-                </Text>
+
+              <View style={styles.switchContainer}>
+                <Text style={styles.label}>Только со скидками</Text>
                 <Switch
                   trackColor={{ false: '#d6d3d1', true: '#a7f3d0' }}
                   thumbColor={showDiscounted ? '#22c55e' : '#f5f5f4'}
@@ -173,30 +131,16 @@ const FilterModal: FC<FilterModalProps> = ({
                 />
               </View>
 
-              <View
-                className={`flex-col  justify-between
-          ${Platform.OS === 'android' ? 'py-0' : 'py-2'}`}
-              >
-                <View className="flex-row justify-between items-center my-4">
-                  <Text
-                    className={`text-zinc-700 font-medium ${
-                      Platform.OS === 'android' ? 'text-base' : 'text-md'
-                    }`}
-                  >
-                    Цена:
-                  </Text>
-
-                  <Text
-                    className={`text-zinc-700 font-medium ${
-                      Platform.OS === 'android' ? 'text-base' : 'text-md'
-                    }`}
-                  >
+              <View style={styles.priceContainer}>
+                <View style={styles.priceLabelContainer}>
+                  <Text style={styles.label}>Цена:</Text>
+                  <Text style={styles.price}>
                     {minPrice}&#8381; - {maxPrice}&#8381;
                   </Text>
                 </View>
 
                 <Slider
-                  style={{ width: '100%', height: 40 }}
+                  style={styles.slider}
                   minimumValue={0}
                   maximumValue={maxProductOriginalPrice}
                   step={10}
@@ -212,5 +156,82 @@ const FilterModal: FC<FilterModalProps> = ({
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  container: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.0)',
+  },
+  modalWrapper: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  modalContent: {
+    height: '40%',
+    width: '100%',
+    margin: 0,
+    paddingTop: 35,
+    paddingHorizontal: 25,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    backgroundColor: '#ffffff',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 21,
+  },
+  closeButton: {
+    position: 'absolute',
+    left: 20,
+    top: 15,
+  },
+  switchContainer: {
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderBottomColor: '#e5e5e5',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: Platform.OS === 'android' ? 0 : 8,
+    marginBottom: Platform.OS === 'android' ? 0 : 4,
+  },
+  label: {
+    flex: 1,
+    color: '#3f3f46',
+    fontSize: Platform.OS === 'android' ? 16 : 14,
+    fontWeight: '600',
+  },
+  priceContainer: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    marginTop: 20,
+    width: '100%',
+  },
+  priceLabelContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  price: {
+    color: '#333',
+    fontSize: Platform.OS === 'android' ? 16 : 14,
+    fontWeight: '600',
+  },
+  slider: {
+    width: '100%',
+    height: 40,
+  },
+});
 
 export default FilterModal;
