@@ -204,8 +204,10 @@ const styles = StyleSheet.create({
     borderBottomColor: '#e5e5e5',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: Platform.OS === 'android' ? 0 : 8,
-    marginBottom: Platform.OS === 'android' ? 0 : 4,
+    paddingVertical: 8,
+    // paddingVertical: Platform.OS === 'android' ? 8 : 8,
+    // marginBottom: Platform.OS === 'android' ? 0 : 4,
+    marginBottom: 4,
   },
   label: {
     flex: 1,
