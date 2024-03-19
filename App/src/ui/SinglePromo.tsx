@@ -162,7 +162,7 @@ const SinglePromo: FC<ISinglePromo> = ({
             </View>
 
             <SafeAreaView className="mt-4 flex-col items-center justify-between w-full">
-              <View className={`flex items-start justify-start w-full`}>
+              <View className={`flex items-start justify-start w-full pr-4`}>
                 {description}
               </View>
             </SafeAreaView>
