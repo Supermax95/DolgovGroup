@@ -459,7 +459,11 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
                       Загрузите изображение в формате IMG, PNG, WEBP или JPEG{' '}
                       <br />
                       Разрешение для карусели:{' '}
-                      <span className="font-medium">1280x720px</span>
+                      <span className="font-medium">
+                        1280x720px <br />
+                        (желательно меньше, но соблюдать пропорции, например,
+                        599х300)
+                      </span>
                       <br />
                       Разрешение для карточек:{' '}
                       <span className="font-medium"> 800x800px</span>
