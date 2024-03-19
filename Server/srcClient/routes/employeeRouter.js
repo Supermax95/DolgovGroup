@@ -46,6 +46,44 @@ router.get('/admin/employees', async (req, res) => {
   }
 });
 
+router.delete('/admin/employeeDelete/:id', async (req, res) => {
+  const userId = req.params.id;
+  try {
+    await DiscountCard.destroy({
+      where: { id: userId },
+    });
+
+    const users = await DiscountCard.findAll({
+      where: {
+        [Op.or]: [
+          { userStatus: 'Сотрудник' },
+          { userStatus: 'Новый сотрудник' }
+        ]
+      },
+      attributes: {
+        exclude: [
+          'password',
+          'activationLink',
+          'emailConfirmationCode',
+          'newEmail',
+          'notificationPush',
+          'notificationEmail',
+        ],
+      },
+      order: [
+        ['lastName', 'ASC'],
+        ['firstName', 'ASC'],
+      ],
+      raw: true,
+    });
+
+    res.status(200).json(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Произошла ошибка при удалении записи' });
+  }
+});
+
 router.put('/admin/employees/:id', async (req, res) => {
   const employeeId = req.params.id;
   const { newInfo } = req.body;

@@ -5,7 +5,8 @@ import editEmployees from './thunks/Users/editEmployee.api';
 import getEmployees from './thunks/Users/getEmployee.api';
 import nodemailerCodeSend from './thunks/Nodemailer/nodemailerCodeSend.api';
 import nodemailerActivationSend from './thunks/Nodemailer/nodemailerActivation.api';
-import deleteUser from './thunks/Users/deleteUsers.api';
+import deleteClients from './thunks/Users/deleteClients.api';
+import deleteEmployee from './thunks/Users/deleteEmployee.api';
 
 interface User {
   id: number;
@@ -118,15 +119,27 @@ const usersSlice = createSlice({
         state.error =
           action.error.message || 'Произошла ошибка при отправке письма';
       })
-      .addCase(deleteUser.pending, (state) => {
+      .addCase(deleteClients.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(deleteUser.fulfilled, (state, action) => {
+      .addCase(deleteClients.fulfilled, (state, action) => {
         state.isLoading = false;
         state.data = action.payload;
       })
-      .addCase(deleteUser.rejected, (state, action) => {
+      .addCase(deleteClients.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message || 'Произошла ошибка при удалении';
+      })
+      .addCase(deleteEmployee.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(deleteEmployee.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.data = action.payload;
+      })
+      .addCase(deleteEmployee.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message || 'Произошла ошибка при удалении';
       });

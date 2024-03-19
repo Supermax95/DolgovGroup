@@ -44,7 +44,7 @@ router.get('/admin/clients', async (req, res) => {
   }
 });
 
-router.delete('/admin/userdelete/:id', async (req, res) => {
+router.delete('/admin/clientDelete/:id', async (req, res) => {
   const userId = req.params.id;
   try {
     await DiscountCard.destroy({

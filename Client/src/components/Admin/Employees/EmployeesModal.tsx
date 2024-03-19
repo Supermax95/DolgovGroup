@@ -7,7 +7,7 @@ import nodemailerActivationSend from '../../../Redux/thunks/Nodemailer/nodemaile
 import { unwrapResult } from '@reduxjs/toolkit';
 import PopUpErrorNotification from '../../../ui/PopUpErrorNotification';
 import PopUpNotification from '../../../ui/PopUpNotification';
-import deleteUser from '../../../Redux/thunks/Users/deleteUsers.api';
+import deleteEmployee from '../../../Redux/thunks/Users/deleteEmployee.api';
 
 interface IUser {
   id: number;
@@ -140,7 +140,7 @@ const EmployeesModal: FC<UsersModalProps> = ({
       const userId = editedUser.id;
 
       try {
-        dispatch(deleteUser(userId));
+        dispatch(deleteEmployee(userId));
         setShowNotificationDelUser(true);
         //* позволяет вывести уведолмление после закрытия модального окна
         setTimeout(() => {
