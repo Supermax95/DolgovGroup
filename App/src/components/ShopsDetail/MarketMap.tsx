@@ -102,15 +102,12 @@ const MarketMap: FC<MarketMapProps> = ({ selectedShop, onMarkerPress }) => {
 
   useEffect(() => {
     const fetchInitialLocation = async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') return;
-
       let userLocation = await Location.getCurrentPositionAsync({
         accuracy: Location.Accuracy.Low,
       });
-
+  
       if (!userLocation || !mapRef.current) return;
-
+  
       const { latitude, longitude } = userLocation.coords;
       const newRegion = {
         latitude,
@@ -118,18 +115,25 @@ const MarketMap: FC<MarketMapProps> = ({ selectedShop, onMarkerPress }) => {
         latitudeDelta: 0.005,
         longitudeDelta: 0.005,
       };
-
+  
       if (selectedShop) {
         newRegion.latitude = parseFloat(selectedShop.latitude);
         newRegion.longitude = parseFloat(selectedShop.longitude);
       }
-
-      mapRef.current.animateToRegion(newRegion);
+  
+      mapRef.current.animateCamera({
+        center: {
+          latitude: newRegion.latitude,
+          longitude: newRegion.longitude,
+        },
+        zoom: 16, 
+      });
+  
       setInitialRegion(newRegion);
     };
-
     fetchInitialLocation();
   }, [selectedShop]);
+  
 
   const handleDirections = () => {
     if (selectedShop) {
