@@ -134,10 +134,10 @@ router.post('/admin/products', async (req, res) => {
         error: 'Продукт с указанным кодом номенклатуры уже существует',
       });
     }
-    if (newProduct.customerPrice === 0) {
+    if (newProduct.customerPrice == 0) {
       newProduct.customerPrice = newProduct.originalPrice;
     }
-    if (newProduct.employeePrice === 0) {
+    if (newProduct.employeePrice == 0) {
       newProduct.employeePrice = newProduct.originalPrice;
     }
 
@@ -236,10 +236,10 @@ console.log('=========>', newInfo);
         error: 'Продукт с указанным кодом номенклатуры уже существует',
       });
     }
-    if (newInfo.customerPrice === 0) {
+    if (newInfo.customerPrice == 0) {
       newInfo.customerPrice = newInfo.originalPrice;
     }
-    if (newInfo.employeePrice === 0) {
+    if (newInfo.employeePrice == 0) {
       newInfo.employeePrice = newInfo.originalPrice;
     }
 
