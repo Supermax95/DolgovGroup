@@ -103,7 +103,8 @@ const EmployeeConfirm: FC<EmployeeConfirmProps> = ({
       setModalVisible(false);
     } else {
       Alert.alert(
-        'Ваше обращение успешно отправлено. Ожидайте письмо на почту.'
+        'Ваше обращение успешно отправлено.',
+        'Ожидайте письмо на почту.'
       );
       setModalVisible(false);
     }

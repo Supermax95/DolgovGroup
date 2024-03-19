@@ -121,7 +121,7 @@ const FilterModal: FC<FilterModalProps> = ({
               </View>
 
               <View style={styles.switchContainer}>
-                <Text style={styles.label}>Только со скидками</Text>
+                <Text style={styles.label}>Товары со скидками</Text>
                 <Switch
                   trackColor={{ false: '#d6d3d1', true: '#a7f3d0' }}
                   thumbColor={showDiscounted ? '#22c55e' : '#f5f5f4'}
