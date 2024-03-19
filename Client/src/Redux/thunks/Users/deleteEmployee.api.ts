@@ -19,13 +19,13 @@ interface ResponseData {
 
 type ArrayResponseData = Array<ResponseData>;
 
-const deleteUser = createAsyncThunk<ArrayResponseData, number>(
-  'admin/deleteUser',
+const deleteEmployee = createAsyncThunk<ArrayResponseData, number>(
+  'admin/deleteEmployee',
 
   async (userId, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axios.delete(
-        `${VITE_URL}/admin/userdelete/${userId}`
+        `${VITE_URL}/admin/employeeDelete/${userId}`
       );
       return response.data;
     } catch (error) {
@@ -39,4 +39,4 @@ const deleteUser = createAsyncThunk<ArrayResponseData, number>(
   }
 );
 
-export default deleteUser;
+export default deleteEmployee;
