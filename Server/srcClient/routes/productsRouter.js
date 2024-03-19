@@ -225,7 +225,7 @@ router.delete('/admin/products/:id', async (req, res) => {
 
 router.put('/admin/products', async (req, res) => {
   const { newInfo } = req.body;
-
+console.log('=========>', newInfo);
   try {
     const existingProduct = await Product.findOne({
       where: { article: newInfo.article, id: { [Op.not]: newInfo.id } },
