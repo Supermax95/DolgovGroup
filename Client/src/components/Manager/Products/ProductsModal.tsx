@@ -877,7 +877,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
                     <p className="text-center text-xs text-slate-500 dark:text-slate-400">
                       Загрузите изображение в формате PNG, WEBP <br />
                       Разрешение:{' '}
-                      <span className="font-medium"> 800x800px</span>
+                      <span className="font-medium"> 800x800px (желательно 400x400px)</span>
                     </p>
                   </div>
                   <input
