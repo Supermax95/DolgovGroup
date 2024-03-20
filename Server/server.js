@@ -47,10 +47,9 @@ const sessionConfig = {
   saveUninitialized: false,
   cookie: {
     maxAge: 30 * 24 * 60 * 60 * 1000,
-    httpOnly: true,
-    // sameSite: 'none',
-    // domain:'http://localhost:5173',
-    // path:'/',
+    httpOnly: true, // Куки доступны только через HTTP(S) запросы, JavaScript не имеет к ним доступа
+    sameSite: 'Lax', // Устанавливаем SameSite в значение "None"
+    secure: false, // Устан
   },
 };
 console.log('sessionConfig', sessionConfig);
