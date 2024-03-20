@@ -50,7 +50,6 @@ const ProductsCards: FC = ({ route }: any) => {
   const [showDiscounted, setShowDiscounted] = useState<boolean>(false);
   const [minPrice, setMinPrice] = useState<number>(0);
   const [maxPrice, setMaxPrice] = useState<number>(0);
-  console.log('======>', maxPrice);
 
   const [initialRender, setInitialRender] = useState<boolean>(true);
   const [refreshing, setRefreshing] = useState(true);

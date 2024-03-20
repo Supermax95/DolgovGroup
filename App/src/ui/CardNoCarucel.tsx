@@ -9,16 +9,16 @@ import {
 } from 'react-native';
 import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
 
-interface ICardCategory {
+interface ICardNoCarusel {
   onPress: () => void;
-  categoryName: string;
-  imageCategory: string;
+  promotionTitle: string;
+  promotionImage: string;
 }
 
-const CardCategory: FC<ICardCategory> = ({
+const CardNoCarusel: FC<ICardNoCarusel> = ({
   onPress,
-  categoryName,
-  imageCategory,
+  promotionTitle,
+  promotionImage,
 }) => {
   const screenWidth = Math.round(Dimensions.get('window').width);
   const cardWidth = screenWidth / 2 - 20;
@@ -27,7 +27,7 @@ const CardCategory: FC<ICardCategory> = ({
     <>
       <Pressable
         onPress={onPress}
-        className="relative p-0 m-1 rounded-xl flex-col items-center justify-center bg-[#FBECDE]"
+        className="m-1 rounded-xl flex-col items-center justify-center bg-white"
         style={{
           width: cardWidth,
           shadowColor: '#000',
@@ -37,19 +37,19 @@ const CardCategory: FC<ICardCategory> = ({
             width: 0,
             height: 2,
           },
-          elevation: 1,
+          elevation: 3,
         }}
       >
         <Image
           source={{
-            uri: `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}${imageCategory}`,
+            uri: `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}${promotionImage}`,
           }}
           resizeMode="cover"
           style={styles.image}
         />
-        <View className="absolute top-0 right-0 bottom-0 left-0 justify-start items-start pl-2 pt-2">
-          <Text className="text-md font-bold text-zinc-800">
-            {categoryName}
+        <View className="justify-start items-start py-2">
+          <Text className="text-md font-semibold text-zinc-900">
+            {promotionTitle}
           </Text>
         </View>
       </Pressable>
@@ -65,4 +65,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CardCategory;
+export default CardNoCarusel;
