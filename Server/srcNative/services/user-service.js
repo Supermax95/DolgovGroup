@@ -64,79 +64,6 @@ class UserService {
     };
   }
 
-  // async activate(activationLink) {
-  //   const user = await DiscountCard.findOne({ where: { activationLink } });
-  //   console.log('activate user'user)
-  //   if (!user) {
-  //     throw 'Некорректная ссылка активации';
-  //   }
-  //   else
-  //   user.isActivated = true;
-  //   await user.save();
-  // }
-
-  // async activate(activationLink) {
-  //   try {
-  //     const user = await DiscountCard.findOne({ where: { activationLink } });
-
-  //     if (!user) {
-  //       throw 'Некорректная ссылка активации';
-  //     }
-
-  //     const userDataFile = path.join(__dirname, '../../userCards/data.json');
-  //     console.log('======>', userDataFile);
-  //     const userData = JSON.parse(await fs.readFile(userDataFile, 'utf8'));
-
-  //     async function generateUniqueBarcode() {
-  //       const minBarcode = 3200000000001;
-  //       const maxBarcode = 3200000999999;
-  //       const newBarcode = Math.floor(Math.random() * (maxBarcode - minBarcode + 1)) + minBarcode;
-  //       return newBarcode.toString();
-  //     }
-
-  //     async function barcodeExists(barcode, users) {
-  //       return users.some(user => user.cardInfo[0].barcode === barcode);
-  //     }
-
-  //     async function isBarcodeInDatabase(barcode) {
-  //       const userWithBarcode = await DiscountCard.findOne({ where: { barcode } });
-  //       return userWithBarcode !== null;
-  //     }
-
-  //     console.time('activate'); // Начало таймера
-
-  //     const matchingUser = userData.find(dataUser => {
-  //       return (
-
-  //         user.phoneNumber === dataUser.cardInfo[0].phoneNumber.substring(1)
-  //       );
-  //     });
-
-  //     console.timeEnd('activate');
-  //     console.log('======>', matchingUser);
-
-  //     if (matchingUser) {
-  //       // Преобразовываем в строки перед сравнением
-  //       if (user.barcode.toString() !== matchingUser.cardInfo[0].barcode.toString()) {
-  //         user.barcode = matchingUser.cardInfo[0].barcode.toString();
-  //       }
-  //     } else {
-  //       let uniqueBarcode;
-  //       do {
-  //         uniqueBarcode = await generateUniqueBarcode();
-  //       } while (await barcodeExists(uniqueBarcode, userData) || await isBarcodeInDatabase(uniqueBarcode));
-
-  //       user.barcode = uniqueBarcode;
-  //     }
-
-  //     user.isActivated = true;
-  //     await user.save();
-  //   } catch (error) {
-  //     console.error(`Ошибка активации: ${error}`);
-  //     throw 'Произошла ошибка при активации пользователя';
-  //   }
-  // }
-
   async activate(activationLink) {
     try {
       // Функция для поиска записей по номеру телефона
@@ -223,7 +150,6 @@ class UserService {
         __dirname,
         '../../userCards/data.json'
       );
-      console.log('======>', userDataFilePath);
 
       // Чтение файла с использованием fs.readFile
       const userData = JSON.parse(await fs.readFile(userDataFilePath, 'utf8'));
@@ -239,7 +165,6 @@ class UserService {
       })[0];
 
       console.timeEnd('activate');
-      console.log('======>', matchingUser);
 
       // Логика активации
 
@@ -295,8 +220,8 @@ class UserService {
           },
         }
       );
-      console.log('Response Data:', response.data);
-      console.log('Response Status:', response.status);
+      // console.log('Response Data:', response.data);
+      // console.log('Response Status:', response.status);
       await user.save();
     } catch (error) {
       console.error(`Ошибка активации: ${error}`);
@@ -336,25 +261,6 @@ class UserService {
     const token = await tokenService.removeToken(refreshToken);
     return token;
   }
-
-  // async refresh(refreshToken) {
-  //   if (!refreshToken) {
-  //     throw ApiError.UnauthorizedError();
-  //   }
-  //   const userData = tokenService.validateRefreshToken(refreshToken);
-  //   const tokenFromBd = await tokenService.findToken(refreshToken);
-  //   if (!userData || !tokenFromBd) {
-  //     throw ApiError.UnauthorizedError();
-  //   }
-  //   const user = await DiscountCard.findById(userData.id);
-  //   const userDto = new UserDto(user);
-  //   const tokens = tokenService.generateTokens({ ...userDto });
-  //   await tokenService.saveToken(userDto.id, tokens.refreshToken);
-  //   return {
-  //     ...tokens,
-  //     user: userDto,
-  //   };
-  // }
 
   async newPassword(email) {
     function generateNewPassword(length = 6) {

@@ -36,8 +36,6 @@ const addManager = createAsyncThunk<ServerResponse, RequestData>(
         { newManager }
       );
 
-      console.log(response.data);
-
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {

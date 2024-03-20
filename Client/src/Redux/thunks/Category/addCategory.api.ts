@@ -19,8 +19,6 @@ const addCategory = createAsyncThunk<ArrayResponseData, RequestData>(
 
   async ({ newCategory }, { rejectWithValue }) => {
     try {
-      console.log('axios', newCategory);
-
       const response: AxiosResponse = await axios.post(
         `${VITE_URL}/admin/category`,
         { newCategory }

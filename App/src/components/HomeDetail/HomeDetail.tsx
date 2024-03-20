@@ -109,7 +109,6 @@ const HomeDetail: FC = () => {
 
   const checkResendAvailability = async () => {
     const lastSentTime = await AsyncStorage.getItem('bonusCheck');
-    // console.log('lastSentTime', lastSentTime);
     if (lastSentTime) {
       const currentTime = Date.now();
       const timeDifference = currentTime - parseInt(lastSentTime, 10);

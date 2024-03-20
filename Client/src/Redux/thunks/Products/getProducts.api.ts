@@ -5,7 +5,6 @@ import axios from 'axios';
 
 const getProducts = createAsyncThunk('admin/getproducts', async () => {
   const response: AxiosResponse = await axios.get(`${VITE_URL}/admin/products`);
-  // console.log(' response.data prod', response.data);
 
   return response.data;
 });

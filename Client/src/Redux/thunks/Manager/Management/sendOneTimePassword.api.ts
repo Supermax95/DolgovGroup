@@ -23,14 +23,11 @@ const sendOneTimePassword = createAsyncThunk<ResponseData, RequestData>(
   'api/sendOneTimePassword',
 
   async ({ managerId }, { rejectWithValue }) => {
-    console.log('async managerIdmanagerId', managerId);
-
     try {
       const response: AxiosResponse = await axios.post(
         `${VITE_URL}/management/oneTimePassword`,
         { managerId }
       );
-      console.log('response.data', response.data);
 
       return response.data;
     } catch (error) {

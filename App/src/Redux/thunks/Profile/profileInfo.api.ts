@@ -13,7 +13,7 @@ interface IProfileInfoResponse {
   middleName: string;
   birthDate: Date | null | string;
   email: string;
-  newEmail:string;
+  newEmail: string;
   phoneNumber: string;
   notificationPush: boolean;
   notificationEmail: boolean;
@@ -52,12 +52,11 @@ const getProfileInfo = createAsyncThunk<
         middleName: data.middleName,
         birthDate: data.birthDate,
         email: data.email,
-        newEmail:data.newEmail,
+        newEmail: data.newEmail,
         phoneNumber: data.phoneNumber,
         notificationPush: data.notificationPush,
         notificationEmail: data.notificationEmail,
       };
-// console.log(profileInfo);
 
       return profileInfo;
     }
@@ -71,8 +70,6 @@ const getProfileInfo = createAsyncThunk<
       phoneNumber: 'Нет данных',
     });
   } catch (error) {
-    // console.error('Ошибка при получении данных', error);
-
     return rejectWithValue({
       lastName: 'Нет данных',
       firstName: 'Нет данных',

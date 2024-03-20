@@ -17,7 +17,6 @@ const portalLogout = createAsyncThunk<ResponseData, void>(
         withCredentials: true,
       }
     );
-    console.log('response logout', response.data);
 
     return response.data;
   }

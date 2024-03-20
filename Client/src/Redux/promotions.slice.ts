@@ -50,7 +50,6 @@ const promotionSlice = createSlice({
       .addCase(getPromotions.fulfilled, (state, action) => {
         state.isLoading = false;
         state.data = action.payload;
-        //console.log('action.payload prod', action.payload);
       })
       .addCase(getPromotions.rejected, (state, action) => {
         state.isLoading = false;

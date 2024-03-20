@@ -75,13 +75,11 @@ const Products: FC = () => {
   const [currentCategory, setCurrentCategory] = useState<ICategory | null>(
     null
   );
-  // console.log('currentCategory', currentCategory);
 
   const [currentSubcategory, setCurrentSubcategory] =
     useState<ISubcategory | null>(null);
-  // console.log('currentSubcategory', currentSubcategory);
 
-  // // для плашки Вы сейчас здесь
+  // для плашки Вы сейчас здесь
   const [activeCategory, setActiveCategory] = useState<ICategory | null>(null);
 
   const [activeSubcategory, setActiveSubcategory] =
@@ -232,7 +230,6 @@ const Products: FC = () => {
       /** если для хотя бы одного элемента product в массиве filtered условие внутри some возвращает true,
        * то этот product будет включен в результирующий массив filtered. */
       filtered = filtered.filter((product) => {
-        //console.log('product', product.subcategoryId);
         return subcategoriesOfCurrentCategory.some(
           (sub) => sub.id === product.subcategoryId
         );
@@ -244,7 +241,6 @@ const Products: FC = () => {
       filtered = filtered.filter(
         (product) => product.subcategoryId === currentSubcategory.id
       );
-      // console.log('filtered', filtered);
     }
 
     return filtered;
@@ -253,7 +249,6 @@ const Products: FC = () => {
   const totalMatches = filteredProdPag.length;
   const displayedProducts = filterProducts().slice(startIndex, endIndex);
   const totalPages = Math.ceil(totalMatches / itemsPerPage);
-  // const totalPages = Math.ceil(filterProducts().length / itemsPerPage);
 
   const openAddModal = (): void => {
     setAddingMode(true);
@@ -327,7 +322,6 @@ const Products: FC = () => {
     }
     return add;
   };
-  console.log('editedProduct***********', editedProduct);
 
   const handleSaveEdit = async (editedProduct: IProduct): Promise<void> => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -379,7 +373,7 @@ const Products: FC = () => {
     document.execCommand('copy');
     document.body.removeChild(textarea);
 
-    console.log('Текст скопирован в буфер обмена:', text);
+    // console.log('Текст скопирован в буфер обмена:', text);
     setShowNomenclatureCode(true);
   };
 
@@ -567,7 +561,6 @@ const Products: FC = () => {
                     onChange={(e) => {
                       setCurrentPage(1);
                       setshowDiscounted(e.target.checked ? 'isDiscounted' : '');
-                      // console.log(e.target.checked);
                     }}
                     className="w-4 h-4 text-amber-600 text-sm font-normal bg-slate-100 border-slate-300 rounded focus:ring-amber-500"
                   />
@@ -592,7 +585,6 @@ const Products: FC = () => {
                       setwWthoutIsDiscounted(
                         e.target.checked ? 'withoutIsDiscounted' : ''
                       );
-                      console.log(e.target.checked);
                     }}
                     className="w-4 h-4 text-amber-600 text-sm font-normal bg-slate-100 border-slate-300 rounded focus:ring-amber-500"
                   />
@@ -600,12 +592,6 @@ const Products: FC = () => {
                 </label>
               </div>
             </div>
-
-            {/* {isLoadingProd ? (
-          <div className="flex items-center justify-center h-full">
-            <LoadingAnimation />
-          </div>
-        ) : ( */}
 
             <section className="max-w-6xl mx-auto px-4 ">
               {/** новая карточка */}
@@ -776,27 +762,6 @@ const Products: FC = () => {
                               </div>
                             )
                           )}
-
-                          {/* //! даже если описания нет, инпут остаётся, тернарка не работает, т.к. теги почему-то хранятся в бд */}
-                          {/* {product.description ? (
-                  <div className="mb-2 mt-4 w-full">
-                    <p className="text-slate-600 text-sm font-normal  text-sm font-normal text-center">
-                      Описание:
-                    </p>
-                    <div
-                      id="description"
-                      className="block p-2.5 h-full w-full text-justify text-sm text-slate-700 bg-white rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 overflow-auto resize-y"
-                      style={{ whiteSpace: 'pre-wrap', maxHeight: '100px' }}
-                      dangerouslySetInnerHTML={{
-                        __html: product.description,
-                      }}
-                    />
-                  </div>
-                ) : (
-                  <div className="mb-2 mt-4 text-slate-600 text-sm font-normal  text-sm font-medium text-center">
-                    Описание отсутствует
-                  </div>
-                )} */}
                         </div>
                       </article>
                     ))

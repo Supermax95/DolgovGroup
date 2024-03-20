@@ -118,30 +118,10 @@ export const AppNavigator: FC = () => {
     return () => clearTimeout(timeoutId);
   }, [notificationPush]);
 
-  // useEffect(() => {
-  //   dispatch(getProducts());
-  // }, [dispatch]);
-
-  // useEffect(() => {
-  //   dispatch(getCategory());
-  // }, [dispatch]);
-
-  // useEffect(() => {
-  //   dispatch(getSubcategory());
-  // }, [dispatch]);
-
   useEffect(() => {
     if (token) {
       dispatch(getCheck({ token }));
     }
-  }, [dispatch]);
-
-  // useEffect(() => {
-  //   dispatch(getPromotions());
-  // }, [dispatch]);
-
-  useEffect(() => {
-    dispatch(getQuestions());
   }, [dispatch]);
 
   const user = useAppSelector((state) => state.userSlice.user?.isActivated);

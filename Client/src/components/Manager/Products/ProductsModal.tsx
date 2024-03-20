@@ -213,14 +213,14 @@ const ProductsModal: FC<ProductsModalProps> = ({
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           result2 = await onSaveEdit(editedProduct as IProduct);
-          console.log(
-            'Я заканчиваю первый шаг  ProductModal, отправляю данные на бек'
-          );
+          // console.log(
+          //   'Я заканчиваю первый шаг  ProductModal, отправляю данные на бек'
+          // );
         }
       }
 
       if (typeof result2 !== 'string') {
-        console.log('я иду на второй шаг ProductModal');
+        // console.log('я иду на второй шаг ProductModal');
 
         setCurrentStep(2);
         setUpload(true);
@@ -235,7 +235,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
         'fileInput'
       ) as HTMLInputElement;
       const file = fileInput?.files?.[0];
-      console.log('я принимаю ID', id);
+      // console.log('я принимаю ID', id);
 
       await uploadFile(
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -244,7 +244,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
         id,
         isAddingMode
       );
-      console.log('я закончил второй шаг');
+      // console.log('я закончил второй шаг');
     }
   };
 
@@ -739,7 +739,6 @@ const ProductsModal: FC<ProductsModalProps> = ({
                     title="Цена со скидкой для клиента"
                     onChange={(e) => {
                       const value = e.target.value;
-                      console.log('newValue+++', value);
 
                       if (typeof value === 'string') {
                         const trimmedValue = value.replace(/\s/g, '');
@@ -877,7 +876,10 @@ const ProductsModal: FC<ProductsModalProps> = ({
                     <p className="text-center text-xs text-slate-500 dark:text-slate-400">
                       Загрузите изображение в формате PNG, WEBP <br />
                       Разрешение:{' '}
-                      <span className="font-medium"> 800x800px (желательно 400x400px)</span>
+                      <span className="font-medium">
+                        {' '}
+                        800x800px (желательно 400x400px)
+                      </span>
                     </p>
                   </div>
                   <input

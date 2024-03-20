@@ -21,19 +21,14 @@ interface ResponseData {
 const portalLogin = createAsyncThunk<ResponseData, RequestData>(
   'api/login',
   async (manager) => {
-    console.log('manager', manager);
-    
-    console.log( VITE_URL );
     const response: AxiosResponse = await axios.post(
       `${VITE_URL}/portal/login`,
       manager,
-      
+
       {
         withCredentials: true,
       }
     );
-
-    console.log('response axios login', response.data);
 
     return response.data;
   }

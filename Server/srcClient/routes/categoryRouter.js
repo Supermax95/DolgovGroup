@@ -160,8 +160,8 @@ router.delete('/admin/category/photo/:id', async (req, res) => {
 
       res.json(updateCategory);
     } else {
-      console.log('Категория или ее картинка не найдены');
-      res.status(404).json({ error: 'Категория или его картинка не найдены' });
+      console.log('Категория или её картинка не найдены');
+      res.status(404).json({ error: 'Категория или её картинка не найдены' });
     }
   } catch (error) {
     console.error('Ошибка при удалении картинки продукта', error);

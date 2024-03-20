@@ -28,7 +28,7 @@ interface ResponseData {
   customerPrice: number;
   employeePrice: number;
   isNew: boolean;
-  photo:string;
+  photo: string;
   isDiscounted: boolean;
   description: string;
   subcategoryId: number;
@@ -46,13 +46,10 @@ const addProduct = createAsyncThunk<ResponseDataId, RequestData>(
 
   async ({ newProduct }, { rejectWithValue }) => {
     try {
-      console.log('axios', newProduct);
-
       const response: AxiosResponse = await axios.post(
         `${VITE_URL}/admin/products`,
         { newProduct }
       );
-      console.log(response.data);
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {

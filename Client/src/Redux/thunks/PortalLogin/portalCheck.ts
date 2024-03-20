@@ -24,8 +24,6 @@ const portalCheck = createAsyncThunk<ResponseData, void>(
       }
     );
 
-    console.log('response axios check', response.data);
-
     return response.data;
   }
 );

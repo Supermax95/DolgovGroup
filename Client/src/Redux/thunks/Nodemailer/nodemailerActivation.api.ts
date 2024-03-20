@@ -21,7 +21,6 @@ const nodemailerActivationSend = createAsyncThunk<ResponseData, RequestData>(
         `${VITE_URL}/nodemailerActivation/${id}`,
         { firstName, middleName }
       );
-      console.log('====>', response.data);
 
       return response.data;
     } catch (error) {

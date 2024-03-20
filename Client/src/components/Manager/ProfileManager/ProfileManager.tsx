@@ -292,7 +292,6 @@ const ProfileManager: FC = () => {
             })
           );
           unwrapResult(resultEdit);
-          console.log(resultEdit);
 
           setErrorNotification(null);
           setShowNotificationPass(true);
