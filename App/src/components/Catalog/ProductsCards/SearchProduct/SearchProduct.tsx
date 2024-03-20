@@ -49,7 +49,6 @@ const SearchProduct = () => {
   const [refreshing, setRefreshing] = useState(true);
 
   const onRefresh = async () => {
-
     try {
       await dispatch(getProducts());
     } catch (error) {
@@ -109,11 +108,19 @@ const SearchProduct = () => {
       });
     }
 
-    filtered = filtered.filter(
-      (product) =>
-        product.originalPrice >= minPrice && product.originalPrice <= maxPrice
-    );
-
+    filtered = filtered.filter((product) => {
+      if (userStatus === 'Клиент' || userStatus === 'Новый сотрудник') {
+        return (
+          product.customerPrice >= minPrice && product.customerPrice <= maxPrice
+        );
+      } else if (userStatus === 'Сотрудник') {
+        return (
+          product.employeePrice >= minPrice && product.employeePrice <= maxPrice
+        );
+      } else {
+        return false;
+      }
+    });
     return filtered;
   };
 

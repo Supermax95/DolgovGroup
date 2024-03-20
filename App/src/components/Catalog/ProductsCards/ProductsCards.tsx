@@ -22,7 +22,6 @@ import getProducts from 'Redux/thunks/Catalog/productGet.api';
 
 export interface IProduct {
   id: number;
-  // article: string;
   productName: string;
   promoStartDate: string;
   promoEndDate: string;
@@ -51,6 +50,8 @@ const ProductsCards: FC = ({ route }: any) => {
   const [showDiscounted, setShowDiscounted] = useState<boolean>(false);
   const [minPrice, setMinPrice] = useState<number>(0);
   const [maxPrice, setMaxPrice] = useState<number>(0);
+  console.log('======>', maxPrice);
+
   const [initialRender, setInitialRender] = useState<boolean>(true);
   const [refreshing, setRefreshing] = useState(true);
 
@@ -116,11 +117,19 @@ const ProductsCards: FC = ({ route }: any) => {
       });
     }
 
-    filtered = filtered.filter(
-      (product) =>
-        product.originalPrice >= minPrice && product.originalPrice <= maxPrice
-    );
-
+    filtered = filtered.filter((product) => {
+      if (userStatus === 'Клиент' || userStatus === 'Новый сотрудник') {
+        return (
+          product.customerPrice >= minPrice && product.customerPrice <= maxPrice
+        );
+      } else if (userStatus === 'Сотрудник') {
+        return (
+          product.employeePrice >= minPrice && product.employeePrice <= maxPrice
+        );
+      } else {
+        return false;
+      }
+    });
     return filtered;
   };
 
