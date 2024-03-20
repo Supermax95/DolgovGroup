@@ -6,6 +6,7 @@ import { AppNavigator } from './src/navigation/Navigation';
 import { store, persistor } from './src/Redux/store';
 import { StatusBar } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import registerNNPushToken from 'native-notify';
 
 // //!!!!Для сброса состояния не удалять
 // persistor
@@ -18,7 +19,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 //   });
 
 export default function App() {
-  return (
+  registerNNPushToken(20294, 'GdT8ZAf6ZMwPPqd1E5x5DU');
+    return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <LinearGradient

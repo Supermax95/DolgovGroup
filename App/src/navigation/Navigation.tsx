@@ -44,6 +44,7 @@ import SearchProduct from 'components/Catalog/ProductsCards/SearchProduct/Search
 import ChangePhoneNumber from 'components/UserProfile/EditProfile/ChangePhoneNumber/ChangePhoneNumber';
 import { ResetPassword } from 'components/SignIn/ResetPassword/ResetPassword';
 
+
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabNavigatorOptions>();
 
@@ -91,7 +92,11 @@ async function sendPushNotification() {
   }
 }
 
+
+
+
 export const AppNavigator: FC = () => {
+  
   const dispatch = useAppDispatch();
 
   const notificationPush = useAppSelector<boolean>(
