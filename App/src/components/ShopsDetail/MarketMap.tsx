@@ -8,6 +8,7 @@ import {
   Linking,
   Pressable,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
@@ -101,6 +102,7 @@ const MarketMap: FC<MarketMapProps> = ({ selectedShop, onMarkerPress }) => {
   // }, [selectedShop]);
 
   useEffect(() => {
+    Alert.alert('Selected Shop', JSON.stringify(selectedShop));
     const fetchInitialLocation = async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status === 'granted') {
