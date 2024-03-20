@@ -47,14 +47,13 @@ const sessionConfig = {
   saveUninitialized: false,
   cookie: {
     maxAge: 30 * 24 * 60 * 60 * 1000,
-    sameSite: 'none',
-    secure: true,
-    // httpOnly: true,
+    httpOnly: true,
+    // sameSite: 'none',
     // domain:'http://localhost:5173',
     // path:'/',
   },
 };
-console.log('sessionConfig', sessionConfig)
+console.log('sessionConfig', sessionConfig);
 
 const app = express();
 
