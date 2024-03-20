@@ -8,8 +8,13 @@ const App: FC = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(portalCheck());
+    const fetchData = async () => {
+      await dispatch(portalCheck());
+    };
+  
+    fetchData();
   }, [dispatch]);
+  
 
   return (
     <>
