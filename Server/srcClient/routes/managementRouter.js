@@ -337,6 +337,9 @@ module.exports = router
       await Manager.destroy({
         where: { id: managerId },
       });
+      if (req.session.managerId === managerId) {
+        req.session.destroy();
+      }
       const managers = await Manager.findAll({
         where: {
           isAdmin: false,
