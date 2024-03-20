@@ -47,6 +47,7 @@ const sessionConfig = {
   saveUninitialized: false,
   cookie: {
     maxAge: 30 * 24 * 60 * 60 * 1000,
+    sameSite: 'none',
     // httpOnly: true,
     // domain:'http://localhost:5173',
     // path:'/',
