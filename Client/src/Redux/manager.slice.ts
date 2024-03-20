@@ -107,6 +107,15 @@ const managerSlice = createSlice({
       })
       .addCase(portalCheck.rejected, (state, action) => {
         state.isLoading = false;
+        state.manager = {
+          id: 0,
+          lastName: '',
+          firstName: '',
+          middleName: '',
+          phone: '',
+          email: '',
+          isAdmin: false,
+        };
         state.error = action.error.message;
       })
       //* //* resetPassword
