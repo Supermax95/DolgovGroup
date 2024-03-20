@@ -62,7 +62,9 @@ const CardsCarusel = () => {
           <View style={styles.card}>
             <View style={styles.imageBox}>
               <Image
-                source={{ uri: `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}${item.photo}` }}
+                source={{
+                  uri: `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}${item.photo}`,
+                }}
                 resizeMode="contain"
                 style={styles.image}
               />
@@ -80,8 +82,8 @@ const styles = StyleSheet.create({
     width: cardWidth,
     marginVertical: 10,
     shadowColor: '#000',
-    shadowRadius: 4,
-    shadowOpacity: 0.3,
+    shadowRadius: 2,
+    shadowOpacity: 0.2,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -92,6 +94,7 @@ const styles = StyleSheet.create({
     height: cardHeight,
     overflow: 'hidden',
     borderRadius: 16,
+    elevation: 3,
   },
   image: {
     width: cardWidth,

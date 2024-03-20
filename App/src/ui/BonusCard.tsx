@@ -4,12 +4,10 @@ import {
   Platform,
   Pressable,
   ActivityIndicator,
-  Image,
   StyleSheet,
   Dimensions,
 } from 'react-native';
-import React, { FC, useState } from 'react';
-import { BOX_SHADOW } from 'styles';
+import React, { FC } from 'react';
 import { Feather } from '@expo/vector-icons';
 import { Svg } from 'react-native-svg';
 import Barcode from 'react-native-barcode-svg';
@@ -104,20 +102,12 @@ const BonusCard: FC<IBonusCard> = ({
             className={`
               ${
                 Platform.OS === 'android'
-                  ? 'absolute bottom-5 right-20'
-                  : 'absolute bottom-5 right-20'
+                  ? 'absolute bottom-5 right-24'
+                  : 'absolute bottom-5 right-24'
               }`}
           >
-            <Pressable
-              onPress={onPressBonuses}
-              disabled={isResendDisabled}
-              className="text-gray-800 rounded-xl w-full"
-            >
-              <Text
-                className={` ${
-                  isResendDisabled ? 'text-green-800' : 'text-gray-500'
-                } text-center text-base`}
-              >
+            <Pressable onPress={onPressBonuses} disabled={isResendDisabled}>
+              <Text className="text-center text-md text-gray-800">
                 Обновить баланс карты
               </Text>
             </Pressable>
