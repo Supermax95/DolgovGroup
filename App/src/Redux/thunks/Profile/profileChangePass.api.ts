@@ -8,6 +8,7 @@ interface RequestData {
   newPassword: string;
   oldPassword: string;
 }
+
 interface ResponseData {
   message?: string;
 }

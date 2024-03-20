@@ -466,7 +466,10 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
                       </span>
                       <br />
                       Разрешение для карточек:{' '}
-                      <span className="font-medium">800x800px (желательно 400x400px)</span>
+                      <span className="font-medium">
+                        284x198px (без фона желательно, но главное соблюдать
+                        пропорции)
+                      </span>
                     </p>
                   </div>
                   <input
