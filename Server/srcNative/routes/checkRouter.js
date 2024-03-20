@@ -10,7 +10,7 @@ module.exports = router.get('/checkUser', async (req, res) => {
     }
     const user = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
     const userData = await DiscountCard.findOne({ where: { id: user.id } });
-    console.log('userData', userData);
+
     res.json({
       message: 'Проверка авторизации прошла успешно!',
       id: userData.id,

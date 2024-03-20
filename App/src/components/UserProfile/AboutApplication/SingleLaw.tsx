@@ -6,7 +6,6 @@ import {
   ScrollView,
   Linking,
   Pressable,
-  ActivityIndicator,
   RefreshControl,
   Alert,
 } from 'react-native';
@@ -33,37 +32,17 @@ export interface ILaw {
 const SingleLaw = ({ route }: any) => {
   const { lawId } = route.params;
   const { width } = useWindowDimensions();
+
   const dispatch = useAppDispatch();
   const navigation = useNavigation<StackNavigationProp>();
-  // const [isLoading, setIsLoading] = useState<boolean>(true);
+
   const [refreshing, setRefreshing] = useState(true);
 
   const currentLawOpen =
     useAppSelector<ILaw | null>((state) => state.lawSlice.currentLaw) ||
     ({} as ILaw);
 
-  // useEffect(() => {
-  //   const timeout = setTimeout(() => {
-  //     setIsLoading(false);
-  //   }, 500);
-
-  //   return () => clearTimeout(timeout);
-  // }, []);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       await dispatch(currentLaw(lawId));
-  //     } catch (error) {
-  //       Alert.alert('Ошибка. Произошла ошибка при получении данных');
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, [dispatch, lawId]);
-
   const onRefresh = async () => {
-
     try {
       dispatch(currentLaw(lawId));
     } catch (error) {
@@ -74,6 +53,7 @@ const SingleLaw = ({ route }: any) => {
       }, 500);
     }
   };
+
   useEffect(() => {
     onRefresh();
   }, []);
@@ -86,11 +66,12 @@ const SingleLaw = ({ route }: any) => {
       enableExperimentalMarginCollapsing={true}
     />
   ) : null;
-  // console.log(desc);
 
   const openDocumentLink = () => {
     if (currentLawOpen.documentLink) {
-      Linking.openURL(`http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}${currentLawOpen.documentLink}`);
+      Linking.openURL(
+        `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}${currentLawOpen.documentLink}`
+      );
     }
   };
 
@@ -110,11 +91,6 @@ const SingleLaw = ({ route }: any) => {
 
   return (
     <SafeAreaView className="bg-white h-full flex-1">
-      {/* {isLoading ? (
-        <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color="green" />
-        </View>
-      ) : ( */}
       <>
         <UniversalHeader
           onPress={() => navigation.goBack()}
@@ -174,7 +150,6 @@ const SingleLaw = ({ route }: any) => {
           </Padding>
         </ScrollView>
       </>
-      {/* )} */}
     </SafeAreaView>
   );
 };

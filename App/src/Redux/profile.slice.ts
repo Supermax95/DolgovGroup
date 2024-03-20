@@ -82,7 +82,6 @@ const profileSlice = createSlice({
         state.notificationPush = notificationPush;
         state.newEmail = newEmail;
         state.notificationEmail = notificationEmail;
-        // console.log('=======>', action.payload);
       })
       .addCase(getProfileInfo.rejected, (state, action) => {
         state.isLoading = false;

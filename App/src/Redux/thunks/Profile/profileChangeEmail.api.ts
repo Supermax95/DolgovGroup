@@ -11,7 +11,7 @@ interface IProfileChangeEmailRequest {
 interface IProfileChangeEmailResponse {
   email: string;
   message: string;
-  newEmail:string;
+  newEmail: string;
 }
 
 const profileChangeEmail = createAsyncThunk<
@@ -29,7 +29,7 @@ const profileChangeEmail = createAsyncThunk<
         },
       }
     );
-    // console.log('responseresponseresponse --> newEmail', response.data);
+
     return response.data;
   } catch (error) {
     throw error;

@@ -25,7 +25,6 @@ interface IQuestion {
 
 const QuestionAndAnswer = ({ route }: any) => {
   const { questionId } = route.params;
-  // console.log('questionId', questionId);
   const { width } = useWindowDimensions();
 
   const navigation = useNavigation<StackNavigationProp>();

@@ -56,7 +56,6 @@ const productSlice = createSlice({
       .addCase(getProducts.fulfilled, (state, action) => {
         state.isLoading = false;
         state.data = action.payload;
-        //console.log('action.payload prod', action.payload);
       })
       .addCase(getProducts.rejected, (state, action) => {
         state.isLoading = false;
@@ -70,7 +69,6 @@ const productSlice = createSlice({
         state.isLoading = false;
         state.data = action.payload.products;
         state.postId = action.payload.postId;
-        console.log('state.data ', state.data);
       })
       .addCase(editProduct.rejected, (state, action) => {
         state.isLoading = false;

@@ -37,7 +37,6 @@ const editManager = createAsyncThunk<ServerResponse, RequestData>(
         `${VITE_URL}/management/updateManager`,
         { managerId, updateManager }
       );
-      console.log('response.data', response.data);
 
       return response.data;
     } catch (error) {

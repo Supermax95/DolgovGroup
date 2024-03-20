@@ -92,7 +92,6 @@ router.delete('/admin/questions/:id', async (req, res) => {
 
 router.put('/admin/questions', async (req, res) => {
   const { newInfo } = req.body;
-  console.log(newInfo);
 
   try {
     const existingQuestion = await Question.findOne({

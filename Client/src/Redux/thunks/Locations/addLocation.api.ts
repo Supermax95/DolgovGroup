@@ -30,8 +30,6 @@ const addLocation = createAsyncThunk<ArrayResponseData, RequestData>(
 
   async ({ newLocation }) => {
     try {
-      console.log('axios', newLocation);
-
       const response: AxiosResponse = await axios.post(
         `${VITE_URL}/admin/locations`,
         { newLocation }

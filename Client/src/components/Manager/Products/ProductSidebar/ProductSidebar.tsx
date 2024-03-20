@@ -286,7 +286,6 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     if (file && id) {
       const formData = new FormData();
       formData.append('file', file);
-      console.log('==========>uploadCategoryFile', id);
 
       try {
         await axios.put(`${VITE_URL}/categoryImg/${id}`, formData, {
@@ -353,7 +352,6 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
         setDataCategory(null);
         setErrorNotification(null);
         setShowNotificationAddCategory(true);
-        console.log('dataCategory.categoryName', dataCategory);
         setTitleNotification(dataCategory?.categoryName as string);
       }
     } catch (error) {
@@ -369,7 +367,6 @@ const ProductSidebar: FC<ProductSidebarProps> = ({
     const categoryToEdit: ICategory | undefined = allCategories.find(
       (cat: ICategory) => cat.id === id
     );
-    console.log('categoryToEdit', categoryToEdit);
 
     setActionMenuForCategory(false);
     setDataEditCategory(categoryToEdit || null);

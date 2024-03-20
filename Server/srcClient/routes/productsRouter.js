@@ -82,7 +82,6 @@ const task = cron.schedule('05 00 * * *', async () => {
       const newOriginalPrice = parseFloat(
         response.data.Price.replace(',', '.')
       );
-      console.log('newOriginalPrice', newOriginalPrice);
 
       if (!isNaN(newOriginalPrice)) {
         // Только если newOriginalPrice является числом, выполнить обновление
@@ -225,7 +224,7 @@ router.delete('/admin/products/:id', async (req, res) => {
 
 router.put('/admin/products', async (req, res) => {
   const { newInfo } = req.body;
-console.log('=========>', newInfo);
+ 
   try {
     const existingProduct = await Product.findOne({
       where: { article: newInfo.article, id: { [Op.not]: newInfo.id } },

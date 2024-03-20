@@ -6,9 +6,7 @@ const userService = require('../services/user-service');
 class UserController {
   async registration(req, res, next) {
     try {
-      const { lastName, firstName, middleName, email, birthDate, password, phoneNumber } =
-        req.body;
-      const userData = await userService.registration(
+      const {
         lastName,
         firstName,
         middleName,
@@ -16,12 +14,17 @@ class UserController {
         birthDate,
         password,
         phoneNumber,
+      } = req.body;
+      const userData = await userService.registration(
+        lastName,
+        firstName,
+        middleName,
+        email,
+        birthDate,
+        password,
+        phoneNumber
       );
-      // req.session.userId = userData.user.id;
-      // res.cookie('refreshToken', userData.refreshToken, {
-      // maxAge: 30 * 24 * 60 * 60 * 1000,
-      // httpOnly: true,
-      // });
+
       return res.json(userData);
     } catch (e) {
       const errorMessage = typeof e === 'string' ? e : 'Internal Server Error';
@@ -68,36 +71,6 @@ class UserController {
       const errorMessage = typeof e === 'string' ? e : 'Internal Server Error';
       console.log(errorMessage);
       return res.status(500).json({ message: errorMessage });
-    }
-  }
-
-  // async refresh(req, res, next) {
-  //   try {
-  //     const { refreshToken } = req.cookies;
-  //     const { email } = req.body;
-  //     const userData = await userService.refresh(email);
-  //     res.cookie('refreshToken', userData.refreshToken, {
-  //       maxAge: 30 * 24 * 60 * 60 * 1000,
-  //       httpOnly: true,
-  //     });
-  //     return res.json(userData);
-  //   } catch (e) {
-  //     next(e);
-  //   }
-  // }
-
-  async refresh(req, res, next) {
-    const { refreshToken } = req.headers;
-    console.log(refreshToken);
-    try {
-      const userData = await userService.refresh(refreshToken);
-      // res.cookie('refreshToken', userData.refreshToken, {
-      //   maxAge: 30 * 24 * 60 * 60 * 1000,
-      //   httpOnly: true,
-      // });
-      return res.json(userData);
-    } catch (e) {
-      next(e);
     }
   }
 

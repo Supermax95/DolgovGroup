@@ -20,7 +20,6 @@ interface ResponseData {
 const checkEmployee = createAsyncThunk<ResponseData, RequestData>(
   'api/checkEmployee',
   async ({ token }, { rejectWithValue }) => {
-
     try {
       const response: AxiosResponse = await axios.post(
         `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/checkEmployee`,
@@ -32,7 +31,7 @@ const checkEmployee = createAsyncThunk<ResponseData, RequestData>(
           },
         }
       );
-      // console.log(response.data);
+
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
