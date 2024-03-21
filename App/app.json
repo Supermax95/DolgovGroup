@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "DolgovGroup",
-    "slug": "dolgovapp",
+    "name": "Наш Продукт",
+    "slug": "Наш Продукт",
     "version": "1.0.0",
     "orientation": "portrait",
     "plugins": [
