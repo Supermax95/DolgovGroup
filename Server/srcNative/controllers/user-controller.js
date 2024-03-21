@@ -74,6 +74,17 @@ class UserController {
     }
   }
 
+  async refresh(req, res, next) {
+    const { refreshToken } = req.headers;
+    console.log(refreshToken);
+    try {
+      const userData = await userService.refresh(refreshToken);
+      return res.json(userData);
+    } catch (e) {
+      next(e);
+    }
+  }
+
   async newPassword(req, res, next) {
     try {
       const { email } = req.body;
