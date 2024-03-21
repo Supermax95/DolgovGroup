@@ -27,7 +27,7 @@ const CardNoCarusel: FC<ICardNoCarusel> = ({
     <>
       <Pressable
         onPress={onPress}
-        className="m-1 rounded-xl flex-col items-center justify-center bg-white"
+        className="m-1 rounded-xl flex-col items-center justify-start bg-white"
         style={{
           width: cardWidth,
           shadowColor: '#000',
@@ -48,7 +48,11 @@ const CardNoCarusel: FC<ICardNoCarusel> = ({
           style={styles.image}
         />
         <View className="justify-start items-start py-2">
-          <Text className="text-md font-semibold text-zinc-900">
+          <Text
+            className="text-md font-semibold text-zinc-900"
+            numberOfLines={2}
+            ellipsizeMode="tail"
+          >
             {promotionTitle}
           </Text>
         </View>
