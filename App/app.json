@@ -48,6 +48,7 @@
     },
     "android": {
       "package": "com.supermax95.dolgovapp",
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"

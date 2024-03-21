@@ -8,7 +8,6 @@ import {
   Linking,
   Pressable,
   ActivityIndicator,
-  Alert,
 } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
@@ -102,42 +101,39 @@ const MarketMap: FC<MarketMapProps> = ({ selectedShop, onMarkerPress }) => {
   // }, [selectedShop]);
 
   useEffect(() => {
-    Alert.alert('Selected Shop', JSON.stringify(selectedShop));
     const fetchInitialLocation = async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status === 'granted') {
         let userLocation = await Location.getCurrentPositionAsync({
           accuracy: Location.Accuracy.Low,
         });
-
+  
         if (!userLocation || !mapRef.current) return;
-
+  
         const { latitude, longitude } = userLocation.coords;
-        const newRegion = {
+        let newRegion = {
           latitude,
           longitude,
           latitudeDelta: 0.005,
           longitudeDelta: 0.005,
         };
-
+  
         if (selectedShop) {
-          newRegion.latitude = parseFloat(selectedShop.latitude);
-          newRegion.longitude = parseFloat(selectedShop.longitude);
+          newRegion = {
+            ...newRegion,
+            latitude: parseFloat(selectedShop.latitude),
+            longitude: parseFloat(selectedShop.longitude),
+          };
         }
-
-        mapRef.current.animateCamera({
-          center: {
-            latitude: newRegion.latitude,
-            longitude: newRegion.longitude,
-          },
-          zoom: 16,
-        });
-
+  
+        mapRef.current.animateToRegion(newRegion);
         setInitialRegion(newRegion);
       }
     };
+  
     fetchInitialLocation();
   }, [selectedShop]);
+  
 
   const handleDirections = () => {
     if (selectedShop) {
