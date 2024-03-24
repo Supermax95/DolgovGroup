@@ -3,7 +3,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert('Tokens', [
       {
-        discountCardId: 1,
+        discountCardId: 18,
         refreshToken: 'token1',
         createdAt: new Date(),
         updatedAt: new Date(),
