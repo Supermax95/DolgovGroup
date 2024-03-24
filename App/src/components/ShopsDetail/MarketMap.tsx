@@ -100,42 +100,69 @@ const MarketMap: FC<MarketMapProps> = ({ selectedShop, onMarkerPress }) => {
   //   fetchInitialLocation();
   // }, [selectedShop]);
 
+  // useEffect(() => {
+  //   const fetchInitialLocation = async () => {
+  //     let { status } = await Location.requestForegroundPermissionsAsync();
+  //     if (status === 'granted') {
+  //       let userLocation = await Location.getCurrentPositionAsync({
+  //         accuracy: Location.Accuracy.Low,
+  //       });
+
+  //       if (!userLocation || !mapRef.current) return;
+
+  //       const { latitude, longitude } = userLocation.coords;
+  //       const newRegion = {
+  //         latitude,
+  //         longitude,
+  //         latitudeDelta: 0.005,
+  //         longitudeDelta: 0.005,
+  //       };
+
+  //       if (selectedShop) {
+  //         newRegion.latitude = parseFloat(selectedShop.latitude);
+  //         newRegion.longitude = parseFloat(selectedShop.longitude);
+  //       }
+
+  //       mapRef.current.animateCamera({
+  //         center: {
+  //           latitude: newRegion.latitude,
+  //           longitude: newRegion.longitude,
+  //         },
+  //         zoom: 16,
+  //       });
+  //       setInitialRegion(newRegion);
+  //     }
+  //   };
+  //   fetchInitialLocation();
+  // }, [selectedShop]);
+
+
   useEffect(() => {
     const fetchInitialLocation = async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status === 'granted') {
-        let userLocation = await Location.getCurrentPositionAsync({
-          accuracy: Location.Accuracy.Low,
-        });
-
-        if (!userLocation || !mapRef.current) return;
-
-        const { latitude, longitude } = userLocation.coords;
+      if (status === 'granted' && selectedShop) {
         const newRegion = {
-          latitude,
-          longitude,
+          latitude: parseFloat(selectedShop.latitude),
+          longitude: parseFloat(selectedShop.longitude),
           latitudeDelta: 0.005,
           longitudeDelta: 0.005,
         };
-
-        if (selectedShop) {
-          newRegion.latitude = parseFloat(selectedShop.latitude);
-          newRegion.longitude = parseFloat(selectedShop.longitude);
-        }
-
-        mapRef.current.animateCamera({
+  
+        mapRef.current?.animateCamera({
           center: {
             latitude: newRegion.latitude,
             longitude: newRegion.longitude,
           },
           zoom: 16,
         });
+  
         setInitialRegion(newRegion);
       }
     };
     fetchInitialLocation();
   }, [selectedShop]);
 
+  
   const handleDirections = () => {
     if (selectedShop) {
       const url = `https://www.google.com/maps/dir/?api=1&destination=${selectedShop.latitude},${selectedShop.longitude}`;
