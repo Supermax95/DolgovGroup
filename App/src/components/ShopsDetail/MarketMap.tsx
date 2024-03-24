@@ -49,8 +49,8 @@ const MarketMap: FC<MarketMapProps> = ({ selectedShop, onMarkerPress }) => {
   );
 
   const [initialRegion, setInitialRegion] = useState({
-    latitude: 54.725607,
-    longitude: 20.5382,
+    latitude: 54.710162,
+    longitude: 20.510137,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
@@ -136,7 +136,6 @@ const MarketMap: FC<MarketMapProps> = ({ selectedShop, onMarkerPress }) => {
   //   fetchInitialLocation();
   // }, [selectedShop]);
 
-
   useEffect(() => {
     const fetchInitialLocation = async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -147,7 +146,7 @@ const MarketMap: FC<MarketMapProps> = ({ selectedShop, onMarkerPress }) => {
           latitudeDelta: 0.005,
           longitudeDelta: 0.005,
         };
-  
+
         mapRef.current?.animateCamera({
           center: {
             latitude: newRegion.latitude,
@@ -155,14 +154,13 @@ const MarketMap: FC<MarketMapProps> = ({ selectedShop, onMarkerPress }) => {
           },
           zoom: 16,
         });
-  
+
         setInitialRegion(newRegion);
       }
     };
     fetchInitialLocation();
   }, [selectedShop]);
 
-  
   const handleDirections = () => {
     if (selectedShop) {
       const url = `https://www.google.com/maps/dir/?api=1&destination=${selectedShop.latitude},${selectedShop.longitude}`;
