@@ -13,6 +13,13 @@
         }
       ],
       [
+        "notification",
+        {
+          "icon": "./src/assets/images/icon.png",
+          "color": "#ffffff"
+        }
+      ],
+      [
         "expo-build-properties",
         {
           "android": {
