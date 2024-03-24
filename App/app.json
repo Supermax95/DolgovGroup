@@ -8,14 +8,7 @@
       [
         "expo-notifications",
         {
-          "icon": "./src/assets/images/icon.png",
-          "color": "#ffffff"
-        }
-      ],
-      [
-        "notification",
-        {
-          "icon": "./src/assets/images/icon.png",
+          "icon": "./src/assets/images/adaptive-icon.png",
           "color": "#ffffff"
         }
       ],
