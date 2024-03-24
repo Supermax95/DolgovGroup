@@ -130,7 +130,6 @@ const MarketMap: FC<MarketMapProps> = ({ selectedShop, onMarkerPress }) => {
           },
           zoom: 16,
         });
-
         setInitialRegion(newRegion);
       }
     };
@@ -171,6 +170,7 @@ const MarketMap: FC<MarketMapProps> = ({ selectedShop, onMarkerPress }) => {
           >
             {locations.map((shop, index) => (
               <Marker
+                tracksViewChanges={false}
                 key={index}
                 coordinate={{
                   latitude: parseFloat(shop.latitude) || 0,
@@ -191,6 +191,7 @@ const MarketMap: FC<MarketMapProps> = ({ selectedShop, onMarkerPress }) => {
             ))}
             {selectedShop && (
               <Marker
+                tracksViewChanges={false}
                 coordinate={{
                   latitude: parseFloat(selectedShop.latitude),
                   longitude: parseFloat(selectedShop.longitude),
