@@ -9,6 +9,7 @@ import {
 import React, { FC } from 'react';
 import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
 import { isToday, parseISO } from 'date-fns';
+import Padding from './Padding';
 
 interface ISinglePromo {
   title: string;
@@ -62,8 +63,10 @@ const SinglePromo: FC<ISinglePromo> = ({
           </View>
         </View>
       </View>
-
-      <View className={`w-full flex-1 h-full bg-white rounded-t-3xl px-6 py-2`}>
+              <SafeAreaView className="bg-white h-full flex-1">
+      {/* <View className={`w-full flex-1 h-full bg-white rounded-t-3xl px-6 py-2`}> */}
+      <Padding>
+            <Padding>
         {dateStart && dateEnd ? (
           isToday(parseISO(dateEnd)) ? (
             <>
@@ -97,12 +100,16 @@ const SinglePromo: FC<ISinglePromo> = ({
           <Text className="text-lg font-bold text-gray-800">{title}</Text>
         </View>
 
-        <SafeAreaView className="flex-col items-center justify-between w-full">
+        <View className="flex-1 items-center justify-center">
           <View className={`flex items-start justify-start w-full`}>
             {description}
           </View>
-        </SafeAreaView>
-      </View>
+        </View>
+      {/* </View> */}
+      </Padding>
+      </Padding>
+      </SafeAreaView>
+
     </>
   );
 };
