@@ -92,7 +92,7 @@ const ChangeFullName: FC = () => {
             'Произошла ошибка при изменении личных данных. Пожалуйста, попробуйте ещё раз.'
           );
         } else if (result.meta.requestStatus === 'fulfilled') {
-          Alert.alert('Данные обновлены', 'Ваши данные успешно обновлены', [
+          Alert.alert('Ваши данные успешно обновлены', '', [
             {
               text: 'OK',
               onPress: () => {

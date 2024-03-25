@@ -1,4 +1,4 @@
-import { PORT, IP } from '@env';
+import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { AxiosResponse } from 'axios';
 import axios from 'axios';
@@ -14,7 +14,7 @@ const getAnswers = createAsyncThunk<ResponseData, number>(
   async (questionId, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axios.get(
-        `http://${IP}:${PORT}/admin/questions/${questionId}`
+        `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/admin/questions/${questionId}`
       );
 
       return response.data;

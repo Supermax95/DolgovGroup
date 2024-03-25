@@ -68,10 +68,10 @@ const task = cron.schedule('05 00 * * *', async () => {
     });
 
     for (const product of products) {
-      const credentials = 'Exchange:Exchange';
+      const credentials = 'Lichkab:Ko9dyfum';
       const base64Credentials = Buffer.from(credentials).toString('base64');
       const response = await axios.get(
-        `http://retail.dolgovagro.ru/rtnagaev/hs/loyaltyservice/getprices?Code=${product.article}`,
+        `http://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/getprices?Code=${product.article}`,
         {
           headers: {
             Authorization: `Basic ${base64Credentials}`,
@@ -82,7 +82,6 @@ const task = cron.schedule('05 00 * * *', async () => {
       const newOriginalPrice = parseFloat(
         response.data.Price.replace(',', '.')
       );
-      console.log('newOriginalPrice', newOriginalPrice);
 
       if (!isNaN(newOriginalPrice)) {
         // Только если newOriginalPrice является числом, выполнить обновление
@@ -133,6 +132,12 @@ router.post('/admin/products', async (req, res) => {
       return res.status(400).json({
         error: 'Продукт с указанным кодом номенклатуры уже существует',
       });
+    }
+    if (newProduct.customerPrice == 0) {
+      newProduct.customerPrice = newProduct.originalPrice;
+    }
+    if (newProduct.employeePrice == 0) {
+      newProduct.employeePrice = newProduct.originalPrice;
     }
 
     const createdProduct = await Product.create({
@@ -219,7 +224,7 @@ router.delete('/admin/products/:id', async (req, res) => {
 
 router.put('/admin/products', async (req, res) => {
   const { newInfo } = req.body;
-
+ 
   try {
     const existingProduct = await Product.findOne({
       where: { article: newInfo.article, id: { [Op.not]: newInfo.id } },
@@ -229,6 +234,12 @@ router.put('/admin/products', async (req, res) => {
       return res.status(400).json({
         error: 'Продукт с указанным кодом номенклатуры уже существует',
       });
+    }
+    if (newInfo.customerPrice == 0) {
+      newInfo.customerPrice = newInfo.originalPrice;
+    }
+    if (newInfo.employeePrice == 0) {
+      newInfo.employeePrice = newInfo.originalPrice;
     }
 
     if (

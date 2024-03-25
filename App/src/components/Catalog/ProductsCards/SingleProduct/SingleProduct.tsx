@@ -11,7 +11,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import SingleProductCard from 'ui/SingleProductCard';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
-import { PORT, IP } from '@env';
+import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
 import currentProduct from 'Redux/thunks/Catalog/getcurrentProduct';
 import RenderHtml from 'react-native-render-html';
 import { useWindowDimensions } from 'react-native';
@@ -132,7 +132,7 @@ useEffect(() => {
                     100
                 )}
                 isNew={currentProductOpen.isNew}
-                image={`http://${IP}:${PORT}${currentProductOpen.photo}`}
+                image={`http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}${currentProductOpen.photo}`}
                 description={desc}
               />
               <View

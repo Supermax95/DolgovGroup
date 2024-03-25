@@ -29,7 +29,7 @@ interface ResponseData {
   originalPrice: number;
   customerPrice: number;
   employeePrice: number;
-  photo:string;
+  photo: string;
   isNew: boolean;
   isDiscounted: boolean;
   description: string;
@@ -51,7 +51,6 @@ const editProduct = createAsyncThunk<ResponseDataId, RequestData>(
         `${VITE_URL}/admin/products`,
         { newInfo }
       );
-      console.log('response.data put', response.data);
 
       return response.data;
     } catch (error) {

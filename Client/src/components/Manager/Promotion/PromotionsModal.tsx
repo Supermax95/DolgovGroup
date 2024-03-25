@@ -456,13 +456,20 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
                       загрузить файл
                     </p>
                     <p className="text-center text-xs text-slate-500 dark:text-slate-400">
-                      Загрузите документ в формате IMG, PNG, WEBP или JPEG{' '}
+                      Загрузите изображение в формате IMG, PNG, WEBP или JPEG{' '}
                       <br />
                       Разрешение для карусели:{' '}
-                      <span className="font-medium">1280x720px</span>
+                      <span className="font-medium">
+                        1280x720px <br />
+                        (желательно меньше, но соблюдать пропорции, например,
+                        599х300)
+                      </span>
                       <br />
                       Разрешение для карточек:{' '}
-                      <span className="font-medium"> 800x800px</span>
+                      <span className="font-medium">
+                        284x198px (без фона желательно, но главное соблюдать
+                        пропорции)
+                      </span>
                     </p>
                   </div>
                   <input

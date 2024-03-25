@@ -221,15 +221,13 @@ const Location: FC = () => {
   const handleSaveAdd = async (): Promise<void> => {
     try {
       if (editedLocation) {
-        console.log('🚀 ~ handleSaveAdd ~ editedLocation:', editedLocation);
         const resultAction = await dispatch(
           addLocation({
             newLocation: editedLocation,
           })
         );
 
-        const result = unwrapResult(resultAction);
-        console.log('🚀 ~ handleSaveAdd ~ resultAction:', result);
+        unwrapResult(resultAction);
         setShowNotificationAddLocation(true);
         setTimeout(() => {
           closeEditModal();

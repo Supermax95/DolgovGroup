@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { AxiosResponse } from 'axios';
 import axios from 'axios';
-import { PORT, IP } from '@env';
+import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
 
 interface RequestData {
   token: string | undefined;
@@ -18,7 +18,7 @@ const nodemailerSend = createAsyncThunk<ResponseData, RequestData>(
   async ({ token, titleMessage, message }, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axios.post(
-        `http://${IP}:${PORT}/supportNodemailerRouter`,
+        `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/supportNodemailerRouter`,
         { titleMessage, message },
         {
           headers: {

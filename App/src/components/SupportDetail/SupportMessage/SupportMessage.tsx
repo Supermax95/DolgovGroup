@@ -42,7 +42,6 @@ const SupportMessage: FC = () => {
 
   const checkResendAvailability = async (): Promise<void> => {
     const lastSentTime = await AsyncStorage.getItem('lastSentTime');
-    // console.log('lastSentTime', lastSentTime);
     if (lastSentTime) {
       const currentTime = Date.now();
       const timeDifference = currentTime - parseInt(lastSentTime, 10);

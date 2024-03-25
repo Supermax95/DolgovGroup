@@ -1,4 +1,8 @@
-const { PORT, IP, SUCCESS } = process.env;
+const {
+  PORT,
+  IP,
+  //  SUCCESS
+} = process.env;
 const uuid = require('uuid');
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
@@ -13,7 +17,7 @@ module.exports = router
       const token = req.headers.authorization.split(' ')[1];
       const user = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
       const dataUser = await DiscountCard.findOne({ where: { id: user.id } });
-      console.log(dataUser);
+
       res.json(dataUser);
     } catch (error) {
       console.error(error);
@@ -209,10 +213,10 @@ router
         newEmail: '',
       });
 
-      const credentials = 'Exchange:Exchange';
+      const credentials = 'Lichkab:Ko9dyfum';
       const base64Credentials = Buffer.from(credentials).toString('base64');
       await axios.post(
-        `http://retail.dolgovagro.ru/rtnagaev/hs/loyaltyservice/updateclientcard?ClientCardID=${userData.barcode}&Email=${userData.email}
+        `http://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/updateclientcard?ClientCardID=${userData.barcode}&Email=${userData.email}
       `,
         {},
         {
@@ -221,7 +225,8 @@ router
           },
         }
       );
-      return res.redirect(`http://${SUCCESS}/email/success`);
+      // return res.redirect(`http://${SUCCESS}/email/success`);
+      return res.redirect(`http://lkft.dolgovagro.ru/email/success`);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Произошла ошибка на сервере' });
@@ -231,7 +236,6 @@ router
   .put('/newpassword', async (req, res) => {
     try {
       const { oldPassword, newPassword } = req.body;
-      console.log('req.headers', req.headers);
 
       const token = req.headers.authorization.split(' ')[1];
       const user = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
@@ -288,10 +292,10 @@ router
       }
 
       await userData.update({ phoneNumber: trimmedPhoneNumber });
-      const credentials = 'Exchange:Exchange';
+      const credentials = 'Lichkab:Ko9dyfum';
       const base64Credentials = Buffer.from(credentials).toString('base64');
       await axios.post(
-        `http://retail.dolgovagro.ru/rtnagaev/hs/loyaltyservice/updateclientcard?ClientCardID=${
+        `http://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/updateclientcard?ClientCardID=${
           userData.barcode
         }&Phone=${'+7' + trimmedPhoneNumber}
       `,

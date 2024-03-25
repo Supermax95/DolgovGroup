@@ -44,6 +44,41 @@ router.get('/admin/clients', async (req, res) => {
   }
 });
 
+router.delete('/admin/clientDelete/:id', async (req, res) => {
+  const userId = req.params.id;
+  try {
+    await DiscountCard.destroy({
+      where: { id: userId },
+    });
+
+    const users = await DiscountCard.findAll({
+      where: {
+        userStatus: 'Клиент',
+      },
+      attributes: {
+        exclude: [
+          'password',
+          'activationLink',
+          'emailConfirmationCode',
+          'newEmail',
+          'notificationPush',
+          'notificationEmail',
+        ],
+      },
+      order: [
+        ['lastName', 'ASC'],
+        ['firstName', 'ASC'],
+      ],
+      raw: true,
+    });
+
+    res.status(200).json(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Произошла ошибка при удалении записи' });
+  }
+});
+
 router.put('/admin/clients/:id', async (req, res) => {
   const clientId = req.params.id;
   const { newInfo } = req.body;
@@ -95,10 +130,10 @@ router.put('/admin/clients/:id', async (req, res) => {
       await transporter.sendMail(mailData);
     }
     if (newInfo.email !== client.email) {
-      const credentials = 'Exchange:Exchange';
+      const credentials = 'Lichkab:Ko9dyfum';
       const base64Credentials = Buffer.from(credentials).toString('base64');
       await axios.post(
-        `http://retail.dolgovagro.ru/rtnagaev/hs/loyaltyservice/updateclientcard?ClientCardID=${newInfo.barcode}&Email=${newInfo.email}`,
+        `http://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/updateclientcard?ClientCardID=${newInfo.barcode}&Email=${newInfo.email}`,
         {},
         {
           headers: {
@@ -127,11 +162,11 @@ router.put('/admin/clients/:id', async (req, res) => {
         { ...newInfo, phoneNumber: trimmedPhoneNumber },
         { where: { id: clientId } }
       );
-      const credentials = 'Exchange:Exchange';
+      const credentials = 'Lichkab:Ko9dyfum';
       const base64Credentials = Buffer.from(credentials).toString('base64');
-      console.log(' newInfo.barcode', newInfo.barcode, trimmedPhoneNumber);
+      // console.log(' newInfo.barcode', newInfo.barcode, trimmedPhoneNumber);
       await axios.post(
-        `http://retail.dolgovagro.ru/rtnagaev/hs/loyaltyservice/updateclientcard?ClientCardID=${
+        `http://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/updateclientcard?ClientCardID=${
           newInfo.barcode
         }&Phone=${'+7' + trimmedPhoneNumber}
       `,

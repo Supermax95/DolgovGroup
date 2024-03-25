@@ -4,6 +4,7 @@ import {
   XMarkIcon,
   UserGroupIcon,
   HandThumbUpIcon,
+  TrashIcon,
 } from '@heroicons/react/24/outline';
 
 //* Модальное окно используеются в компонентах Clients и Employees
@@ -14,6 +15,7 @@ interface IModalUser {
   modalTitle: string;
   isAddingMode?: boolean;
   onCancelСlick: () => void;
+  onDeleteClick?: () => void | undefined;
 }
 
 const ModalUser: FC<IModalUser> = ({
@@ -21,6 +23,7 @@ const ModalUser: FC<IModalUser> = ({
   modalTitle,
   isAddingMode,
   onCancelСlick,
+  onDeleteClick,
 }) => {
   return (
     <div
@@ -48,11 +51,25 @@ const ModalUser: FC<IModalUser> = ({
                 title="Добавить"
               />
             ) : (
-              <Button
-                type="submit"
-                icon={<HandThumbUpIcon className="w-4 h-4 text-slate-50" />}
-                title="Сохранить"
-              />
+              <>
+                <Button
+                  type="submit"
+                  icon={<HandThumbUpIcon className="w-4 h-4 text-slate-50" />}
+                  title="Сохранить"
+                />
+
+                {onDeleteClick && (
+                  <Button
+                    type="button"
+                    onClick={onDeleteClick}
+                    styleCSSButton={
+                      'w-full flex items-center justify-center w-1/2 px-5 py-2 mr-2 text-sm transition-colors duration-200 p-0.5 group bg-gradient-to-br from-red-500 to-rose-400 hover:bg-gradient-to-bl from-red-500 to-rose-400 rounded-lg gap-x-2 sm:w-auto'
+                    }
+                    icon={<TrashIcon className="w-4 h-4 text-slate-50" />}
+                    title="Удалить"
+                  />
+                )}
+              </>
             )}
           </div>
           <button

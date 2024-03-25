@@ -5,6 +5,8 @@ import editEmployees from './thunks/Users/editEmployee.api';
 import getEmployees from './thunks/Users/getEmployee.api';
 import nodemailerCodeSend from './thunks/Nodemailer/nodemailerCodeSend.api';
 import nodemailerActivationSend from './thunks/Nodemailer/nodemailerActivation.api';
+import deleteClients from './thunks/Users/deleteClients.api';
+import deleteEmployee from './thunks/Users/deleteEmployee.api';
 
 interface User {
   id: number;
@@ -16,7 +18,7 @@ interface User {
   userStatus: string;
   isActivated: boolean;
   bonusProgram: string;
-  birthDate: Date;
+  birthDate: Date | undefined;
   balance: number;
   phoneNumber: string;
 }
@@ -49,7 +51,7 @@ const usersSlice = createSlice({
       })
       .addCase(getClients.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.data = action.payload;        
+        state.data = action.payload;
       })
       .addCase(getClients.rejected, (state, action) => {
         state.isLoading = false;
@@ -67,7 +69,6 @@ const usersSlice = createSlice({
         state.isLoading = false;
         state.error =
           action.error.message || 'Произошла ошибка при редактировании';
-
       })
       .addCase(getEmployees.pending, (state) => {
         state.isLoading = true;
@@ -88,7 +89,6 @@ const usersSlice = createSlice({
       .addCase(editEmployees.fulfilled, (state, action) => {
         state.isLoading = false;
         state.data = action.payload;
-
       })
       .addCase(editEmployees.rejected, (state, action) => {
         state.isLoading = false;
@@ -118,6 +118,30 @@ const usersSlice = createSlice({
         state.isLoading = false;
         state.error =
           action.error.message || 'Произошла ошибка при отправке письма';
+      })
+      .addCase(deleteClients.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(deleteClients.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.data = action.payload;
+      })
+      .addCase(deleteClients.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message || 'Произошла ошибка при удалении';
+      })
+      .addCase(deleteEmployee.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(deleteEmployee.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.data = action.payload;
+      })
+      .addCase(deleteEmployee.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message || 'Произошла ошибка при удалении';
       });
   },
 });

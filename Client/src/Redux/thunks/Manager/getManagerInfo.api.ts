@@ -21,8 +21,6 @@ const getManagerInfo = createAsyncThunk<ResponseData[], void>(
         `${VITE_URL}/profileManager/info`
       );
 
-      console.log('response.data get arr', response.data);
-
       return response.data;
     } catch (error) {
       console.log('Ошибка при получении данных', error);

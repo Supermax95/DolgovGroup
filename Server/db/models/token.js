@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
   Token.init(
     {
       discountCardId: DataTypes.INTEGER,
-      refreshToken: DataTypes.STRING,
+      refreshToken: DataTypes.TEXT,
     },
     {
       sequelize,

@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
-import { PORT, IP } from '@env';
+import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
 
 interface IPropsActivateResponse {
   token:
@@ -30,7 +30,7 @@ const checkActivation = createAsyncThunk<
   
   try {
     const response: AxiosResponse = await axios.get(
-      `http://${IP}:${PORT}/check/${userId}`
+      `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/check/${userId}`
     );
 
     if (response.status === 200) {

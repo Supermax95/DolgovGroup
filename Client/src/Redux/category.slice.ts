@@ -76,7 +76,6 @@ const categorySlice = createSlice({
       .addCase(addCategory.fulfilled, (state, action) => {
         state.isLoading = false;
         state.data = action.payload;
-        console.log(' state.data', state.data);
       })
       .addCase(addCategory.rejected, (state, action) => {
         state.isLoading = false;
@@ -92,7 +91,8 @@ const categorySlice = createSlice({
       })
       .addCase(deleteCategoryPhoto.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message || 'Произошла ошибка при удалении изображения';
+        state.error =
+          action.error.message || 'Произошла ошибка при удалении изображения';
       });
   },
 });

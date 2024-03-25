@@ -45,7 +45,6 @@ const HomeDetail: FC = () => {
 
   const [refreshing, setRefreshing] = useState(true);
   const onRefresh = async () => {
-
     try {
       await dispatch(getPromotions());
       await dispatch(getProducts());
@@ -65,18 +64,18 @@ const HomeDetail: FC = () => {
   }, []);
 
   useEffect(() => {
-    (async () => {
-      const { status } = await Brightness.requestPermissionsAsync();
-      if (status === 'granted') {
+        (async () => {
+      // const { status } = await Brightness.requestPermissionsAsync();
+      // if (status === 'granted') {
         const initialBrightness = await Brightness.getSystemBrightnessAsync();
         setOriginalBrightness(initialBrightness);
-      }
+      // }
     })();
   }, []);
 
   const increaseBrightness = async () => {
-    const { status } = await Brightness.requestPermissionsAsync();
-    if (status === 'granted') {
+    // const { status } = await Brightness.requestPermissionsAsync();
+    // if (status === 'granted') {
       try {
         await Brightness.setBrightnessAsync(1.0);
         setTimeout(async () => {
@@ -86,7 +85,7 @@ const HomeDetail: FC = () => {
         Alert.alert('Ошибка при установке яркости:');
       }
     }
-  };
+  // };
 
   useEffect(() => {
     if (token) {
@@ -110,7 +109,6 @@ const HomeDetail: FC = () => {
 
   const checkResendAvailability = async () => {
     const lastSentTime = await AsyncStorage.getItem('bonusCheck');
-    // console.log('lastSentTime', lastSentTime);
     if (lastSentTime) {
       const currentTime = Date.now();
       const timeDifference = currentTime - parseInt(lastSentTime, 10);
@@ -139,24 +137,25 @@ const HomeDetail: FC = () => {
   };
   const handleGetClientBonuses = async () => {
     setIsLoading(true);
-    const credentials = 'Exchange:Exchange';
+    const credentials = 'Lichkab:Ko9dyfum';
     const base64Credentials = encode(`${credentials}`);
     try {
       const response = await axios.get(
-        `http://retail.dolgovagro.ru/rtnagaev/hs/loyaltyservice/getclientbonuses?ClientCardID=${barcode}`,
+        `http://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/getclientbonuses?ClientCardID=${barcode}`,
         {
           headers: {
             Authorization: `Basic ${base64Credentials}`,
           },
         }
-        );
+      );      
+      
       const bonusCount = response.data?.BonusCount || 0;
       AsyncStorage.setItem('bonusCheck', Date.now().toString());
       setNumberPoints(bonusCount);
       checkResendAvailability();
       setIsLoading(false);
-      // console.log('Ответ на запрос бонусов клиента:=====>', bonusCount);
     } catch (error) {
+      setIsLoading(false);
       console.error('Ошибка при запросе бонусов');
     }
   };

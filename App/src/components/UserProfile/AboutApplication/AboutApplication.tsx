@@ -26,17 +26,10 @@ interface ILaw {
 
 const AboutApplication: FC = () => {
   const navigation = useNavigation<StackNavigationProp>();
-  // const [isLoadingPage, setIsLoadingPage] = useState<boolean>(true);
   const dispatch = useAppDispatch();
   const [refreshing, setRefreshing] = useState(true);
 
-  // useEffect(() => {
-  //   dispatch(getLaws());
-  //   setIsLoadingPage(false);
-  // }, [dispatch]);
-
   const onRefresh = async () => {
-
     try {
       dispatch(getLaws());
     } catch (error) {
@@ -47,6 +40,7 @@ const AboutApplication: FC = () => {
       }, 500);
     }
   };
+
   useEffect(() => {
     onRefresh();
   }, []);
@@ -69,47 +63,41 @@ const AboutApplication: FC = () => {
 
   return (
     <>
-      {/* {isLoadingPage ? (
-        <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color="green" />
-        </View>
-      ) : ( */}
-        <SafeAreaView className="bg-white h-full flex-1">
-          <UniversalHeader
-            onPress={() => navigation.goBack()}
-            title="Правовая информация"
-          />
-          <ScrollView
-            alwaysBounceVertical
-            showsVerticalScrollIndicator={false}
-            style={{ flex: 1, width: '100%' }}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-          >
+      <SafeAreaView className="bg-white h-full flex-1">
+        <UniversalHeader
+          onPress={() => navigation.goBack()}
+          title="Правовая информация"
+        />
+        <ScrollView
+          alwaysBounceVertical
+          showsVerticalScrollIndicator={false}
+          style={{ flex: 1, width: '100%' }}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
+          <Padding>
             <Padding>
-              <Padding>
-                {laws.length ? (
-                  laws.map((law) => (
-                    <FieldDetailArrow
-                      key={law.id}
-                      onPress={() => navigateToSingleLaw(law.id)}
-                      icon="file-document-outline"
-                      title={truncateText(law.title, maxLength)}
-                    />
-                  ))
-                ) : (
-                  <View className="items-center justify-center w-full mt-4">
-                    <Text className="text-lg font-normal text-zinc-500">
-                      Информация отсутствует
-                    </Text>
-                  </View>
-                )}
-              </Padding>
+              {laws.length ? (
+                laws.map((law) => (
+                  <FieldDetailArrow
+                    key={law.id}
+                    onPress={() => navigateToSingleLaw(law.id)}
+                    icon="file-document-outline"
+                    title={truncateText(law.title, maxLength)}
+                  />
+                ))
+              ) : (
+                <View className="items-center justify-center w-full mt-4">
+                  <Text className="text-lg font-normal text-zinc-500">
+                    Информация отсутствует
+                  </Text>
+                </View>
+              )}
             </Padding>
-          </ScrollView>
-        </SafeAreaView>
-      {/* )} */}
+          </Padding>
+        </ScrollView>
+      </SafeAreaView>
     </>
   );
 };

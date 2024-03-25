@@ -107,6 +107,15 @@ const managerSlice = createSlice({
       })
       .addCase(portalCheck.rejected, (state, action) => {
         state.isLoading = false;
+        state.manager = {
+          id: 0,
+          lastName: '',
+          firstName: '',
+          middleName: '',
+          phone: '',
+          email: '',
+          isAdmin: false,
+        };
         state.error = action.error.message;
       })
       //* //* resetPassword
@@ -154,7 +163,6 @@ const managerSlice = createSlice({
       .addCase(getManagerInfo.fulfilled, (state, action) => {
         state.isLoading = false;
         state.info = action.payload;
-        console.log('action.payload', action.payload);
       })
       .addCase(getManagerInfo.rejected, (state, action) => {
         state.isLoading = false;
@@ -187,12 +195,10 @@ const managerSlice = createSlice({
         state.isLoading = false;
         state.isAuth = true;
         state.message = action.payload.message;
-        console.log(state.message);
       })
       .addCase(changePassword.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
-        console.log(state.error);
       })
       //* email
       .addCase(changeEmailAdmin.pending, (state) => {
@@ -208,7 +214,6 @@ const managerSlice = createSlice({
       .addCase(changeEmailAdmin.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
-        console.log(state.error);
       })
       //* phone
       .addCase(changePhone.pending, (state) => {
@@ -286,8 +291,6 @@ const managerSlice = createSlice({
       .addCase(deleteManager.fulfilled, (state, action) => {
         state.isLoading = false;
         state.data = action.payload;
-        console.log(' state.data ', state.data);
-        console.log('action.payload ', action.payload);
       })
       .addCase(deleteManager.rejected, (state, action) => {
         state.isLoading = false;

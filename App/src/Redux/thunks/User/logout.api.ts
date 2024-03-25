@@ -1,7 +1,7 @@
 import type { AxiosResponse } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { PORT, IP } from '@env';
+import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
 
 interface Request {
   token: string | undefined;
@@ -16,7 +16,7 @@ export const userLogout = createAsyncThunk<ResponseData, Request>(
   async ({ token }) => {
     try {
       const response: AxiosResponse = await axios.post(
-        `http://${IP}:${PORT}/api/logout`,
+        `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/api/logout`,
         null,
         {
           headers: {

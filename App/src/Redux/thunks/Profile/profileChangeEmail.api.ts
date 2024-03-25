@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { AxiosResponse } from 'axios';
 import axios from 'axios';
-import { PORT, IP } from '@env';
+import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
 
 interface IProfileChangeEmailRequest {
   token?: string | undefined;
@@ -11,7 +11,7 @@ interface IProfileChangeEmailRequest {
 interface IProfileChangeEmailResponse {
   email: string;
   message: string;
-  newEmail:string;
+  newEmail: string;
 }
 
 const profileChangeEmail = createAsyncThunk<
@@ -20,7 +20,7 @@ const profileChangeEmail = createAsyncThunk<
 >('api/profileChangeEmail', async ({ token, newEmail }) => {
   try {
     const response: AxiosResponse = await axios.put(
-      `http://${IP}:${PORT}/email`,
+      `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/email`,
       { newEmail },
       {
         headers: {
@@ -29,7 +29,7 @@ const profileChangeEmail = createAsyncThunk<
         },
       }
     );
-    // console.log('responseresponseresponse --> newEmail', response.data);
+
     return response.data;
   } catch (error) {
     throw error;

@@ -1,4 +1,4 @@
-import { PORT, IP } from '@env';
+import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
 import { useNavigation } from '@react-navigation/native';
 import { useAppSelector } from 'Redux/hooks';
 import { StackNavigationProp } from 'navigation/types';
@@ -12,6 +12,8 @@ import {
   Dimensions,
   StyleSheet,
 } from 'react-native';
+import CardCategory from 'ui/CardCategory';
+import CardNoCarusel from 'ui/CardNoCarucel';
 
 export interface IPromotion {
   id: number;
@@ -21,13 +23,11 @@ export interface IPromotion {
   dateEnd: string;
   carousel: boolean;
   invisible: boolean;
-  photo?: string;
+  photo: string;
 }
 
 export default function CardsNoCarusel() {
   const navigation = useNavigation<StackNavigationProp>();
-  const screenWidth = Math.round(Dimensions.get('window').width);
-  const cardWidth = screenWidth / 2 - 20;
 
   const promotionsAll = useAppSelector<IPromotion[]>(
     (state) => state.promotiosSlice.data
@@ -50,25 +50,12 @@ export default function CardsNoCarusel() {
       {promotions.length ? (
         <View className="flex-row flex-wrap justify-center mx-3">
           {promotions.map((promotion) => (
-            <Pressable
+            <CardNoCarusel
               key={promotion.id}
               onPress={() => navigateToPromoDetail(promotion.id)}
-              style={[styles.cardContainer, { width: cardWidth }]}
-            >
-              <Image
-                source={{ uri: `http://${IP}:${PORT}${promotion.photo}` }}
-                resizeMode="contain"
-                style={styles.image}
-              />
-
-              <View className="h-19 w-full space-y-1 mt-2 px-1">
-                <View className="flex-col items-center justify-center w-full h-8">
-                  <Text className="text-xs text-gray-700 font-medium">
-                    {promotion.title}
-                  </Text>
-                </View>
-              </View>
-            </Pressable>
+              promotionTitle={promotion.title}
+              promotionImage={promotion.photo}
+            />
           ))}
         </View>
       ) : (
@@ -81,30 +68,3 @@ export default function CardsNoCarusel() {
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  cardContainer: {
-    shadowColor: '#000',
-    shadowRadius: 4,
-    shadowOpacity: 0.15,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    elevation: 3,
-    //
-    position: 'relative',
-    padding: 2,
-    margin: 4,
-    borderRadius: 10,
-    backgroundColor: 'white',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 200,
-  },
-  image: {
-    width: 144,
-    height: 128,
-  },
-});

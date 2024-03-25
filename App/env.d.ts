@@ -1,3 +1,3 @@
 declare module '@env' {
-  export const PORT, IP: string;
+  export const EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP: string;
 }

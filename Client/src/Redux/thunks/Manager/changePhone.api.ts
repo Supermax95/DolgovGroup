@@ -22,8 +22,6 @@ const changePhone = createAsyncThunk<ResponseData, RequestDate>(
         { managerId, newPhone }
       );
 
-      console.log('response.data phone', response.data);
-
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {

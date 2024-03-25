@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { PORT, IP } from '@env';
+import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
 import axios, { AxiosResponse } from 'axios';
 
 interface Response {
@@ -16,7 +16,7 @@ const sendActivationLink = createAsyncThunk<Response, Request>(
   async ({ userId }) => {
     try {
       const response: AxiosResponse = await axios.post<AxiosResponse>(
-        `http://${IP}:${PORT}/sendNewActivationLink/${userId}`
+        `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/sendNewActivationLink/${userId}`
       );
 
       return response.data;

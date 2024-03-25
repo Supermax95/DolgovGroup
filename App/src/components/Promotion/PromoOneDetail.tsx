@@ -37,8 +37,6 @@ const PromoOneDetail = ({ route }: any) => {
   const [refreshing, setRefreshing] = useState(true);
   const dispatch = useAppDispatch();
 
-
-
   const onRefresh = async () => {
     try {
       dispatch(currentPromotion(promotionId));
@@ -71,43 +69,43 @@ const PromoOneDetail = ({ route }: any) => {
 
   return (
     <>
-        <SafeAreaView className="bg-white h-full flex-1">
-          <UniversalHeader onPress={() => navigation.goBack()} />
-          {currentPromotionOpen ? (
-            <ScrollView
-              style={{ flex: 1, width: '100%' }}
-              refreshControl={
-                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-              }
+      <SafeAreaView className="bg-white h-full flex-1">
+        <UniversalHeader onPress={() => navigation.goBack()} />
+        {currentPromotionOpen ? (
+          <ScrollView
+            style={{ flex: 1, width: '100%' }}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          >
+            <SinglePromo
+              key={currentPromotionOpen.id}
+              title={currentPromotionOpen.title}
+              image={currentPromotionOpen.photo}
+              description={desc}
+              dateStart={currentPromotionOpen.dateStart}
+              dateEnd={currentPromotionOpen.dateEnd}
+              carusel={currentPromotionOpen.carousel}
+            />
+            <View
+              className={`items-center justify-center pb-10 ${
+                Platform.OS === 'android' ? 'px-3' : 'px-2'
+              }`}
             >
-              <SinglePromo
-                key={currentPromotionOpen.id}
-                title={currentPromotionOpen.title}
-                image={currentPromotionOpen.photo}
-                description={desc}
-                dateStart={currentPromotionOpen.dateStart}
-                dateEnd={currentPromotionOpen.dateEnd}
-                carusel={currentPromotionOpen.carousel}
-              />
-              <View
-                className={`items-center justify-center pb-10 ${
-                  Platform.OS === 'android' ? 'px-3' : 'px-2'
-                }`}
-              >
-                <Text className="text-gray-600 font-medium text-xs italic text-center">
-                  *Информация о ценах и акциях может изменяться. Рекомендуем
-                  уточнить актуальную информацию в магазине.
-                </Text>
-              </View>
-            </ScrollView>
-          ) : (
-            <View className="flex-row flex-wrap justify-center mt-4">
-              <Text className="text-gray-600 font-medium text-lg">
-                Продукт отсутстует
+              <Text className="text-gray-600 font-medium text-xs italic text-center">
+                *Информация о ценах и акциях может изменяться. Рекомендуем
+                уточнить актуальную информацию в магазине.
               </Text>
             </View>
-          )}
-        </SafeAreaView>
+          </ScrollView>
+        ) : (
+          <View className="flex-row flex-wrap justify-center mt-4">
+            <Text className="text-gray-600 font-medium text-lg">
+              Продукт отсутстует
+            </Text>
+          </View>
+        )}
+      </SafeAreaView>
     </>
   );
 };

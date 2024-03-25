@@ -2,13 +2,11 @@
 require('dotenv').config();
 const userService = require('../services/user-service');
 
-const { SUCCESS } = process.env;
+// const { SUCCESS } = process.env;
 class UserController {
   async registration(req, res, next) {
     try {
-      const { lastName, firstName, middleName, email, birthDate, password, phoneNumber } =
-        req.body;
-      const userData = await userService.registration(
+      const {
         lastName,
         firstName,
         middleName,
@@ -16,12 +14,17 @@ class UserController {
         birthDate,
         password,
         phoneNumber,
+      } = req.body;
+      const userData = await userService.registration(
+        lastName,
+        firstName,
+        middleName,
+        email,
+        birthDate,
+        password,
+        phoneNumber
       );
-      // req.session.userId = userData.user.id;
-      // res.cookie('refreshToken', userData.refreshToken, {
-      // maxAge: 30 * 24 * 60 * 60 * 1000,
-      // httpOnly: true,
-      // });
+
       return res.json(userData);
     } catch (e) {
       const errorMessage = typeof e === 'string' ? e : 'Internal Server Error';
@@ -35,7 +38,8 @@ class UserController {
       const activationLink = req.params.link;
       await userService.activate(activationLink);
       // Когда будет деплой должно работать
-      return res.redirect(`http://${SUCCESS}/registration/success`);
+      return res.redirect(`http://lkft.dolgovagro.ru/registration/success`);
+      // return res.redirect(`http://${SUCCESS}/registration/success`);
       // return res.redirect('https://ya.ru');
     } catch (e) {
       const errorMessage = typeof e === 'string' ? e : 'Internal Server Error';
@@ -70,30 +74,11 @@ class UserController {
     }
   }
 
-  // async refresh(req, res, next) {
-  //   try {
-  //     const { refreshToken } = req.cookies;
-  //     const { email } = req.body;
-  //     const userData = await userService.refresh(email);
-  //     res.cookie('refreshToken', userData.refreshToken, {
-  //       maxAge: 30 * 24 * 60 * 60 * 1000,
-  //       httpOnly: true,
-  //     });
-  //     return res.json(userData);
-  //   } catch (e) {
-  //     next(e);
-  //   }
-  // }
-
   async refresh(req, res, next) {
     const { refreshToken } = req.headers;
     console.log(refreshToken);
     try {
       const userData = await userService.refresh(refreshToken);
-      // res.cookie('refreshToken', userData.refreshToken, {
-      //   maxAge: 30 * 24 * 60 * 60 * 1000,
-      //   httpOnly: true,
-      // });
       return res.json(userData);
     } catch (e) {
       next(e);

@@ -23,19 +23,11 @@ const editProfileManager = createAsyncThunk<ResponseData, RequestDate>(
     { managerId, newLastName, newFirstName, newMiddleName },
     { rejectWithValue }
   ) => {
-    console.log(
-      'newLastName, newFirstName, newMiddleName',
-      newLastName,
-      newFirstName,
-      newMiddleName
-    );
-
     try {
       const response: AxiosResponse = await axios.put(
         `${VITE_URL}/profileManager/fullName`,
         { managerId, newLastName, newFirstName, newMiddleName }
       );
-      // console.log('response.dataresponse.data', response.data);
 
       return response.data;
     } catch (error) {

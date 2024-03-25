@@ -59,7 +59,7 @@ export const ChangeBirthDate: FC = () => {
       } else if (result.meta.requestStatus === 'fulfilled') {
         Alert.alert(
           'Ваша дата рождения была успешно изменена',
-          'Ваша дата рождения была успешно изменена',
+          '',
           [
             {
               text: 'OK',

@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
-import { PORT, IP } from '@env';
+import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
 
 interface ResponseData {
   id: number;
@@ -19,7 +19,7 @@ const currentPromotion = createAsyncThunk<ResponseData, number>(
   async (promotionId, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axios.get(
-        `http://${IP}:${PORT}/admin/currentpromotion/${promotionId}`
+        `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/admin/currentpromotion/${promotionId}`
       );
 
       return response.data;
