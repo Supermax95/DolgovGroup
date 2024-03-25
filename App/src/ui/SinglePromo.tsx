@@ -65,39 +65,42 @@ const SinglePromo: FC<ISinglePromo> = ({
       </View>
       <Padding>
         <Padding>
-          {dateStart && dateEnd ? (
-            isToday(parseISO(dateEnd)) ? (
-              <>
-                <View className="flex-row items-center">
-                  <Text className="text-base font-normal text-red-600">
-                    Последний день акции
-                  </Text>
-                </View>
-                <View className="flex-row items-center">
-                  <Text className="text-base font-normal text-slate-600">
+          <View className="px-1">
+            {dateStart && dateEnd ? (
+              isToday(parseISO(dateEnd)) ? (
+                <>
+                  <View className="flex-row items-center mt-2">
+                    <Text className="text-md font-medium text-red-600">
+                      Последний день акции
+                    </Text>
+                  </View>
+                  <View className="flex-row items-center mt-2">
+                    <Text className="text-md font-medium text-slate-600">
+                      C {reverseDate(dateStart)} по {reverseDate(dateEnd)}
+                    </Text>
+                  </View>
+                </>
+              ) : (
+                <View className="flex-row items-center mt-2">
+                  <Text className="text-md font-medium text-slate-600">
                     C {reverseDate(dateStart)} по {reverseDate(dateEnd)}
                   </Text>
                 </View>
-              </>
+              )
             ) : (
-              <View className="flex-row items-center">
-                <Text className="text-base font-normal text-slate-600">
-                  C {reverseDate(dateStart)} по {reverseDate(dateEnd)}
+              <View className="flex-row items-center mt-2">
+                <Text className="text-md font-medium text-slate-600">
+                  Акция бессрочная
                 </Text>
               </View>
-            )
-          ) : (
-            <View className="flex-row items-center">
-              <Text className="text-base font-normal text-slate-600">
-                Акция бессрочная
-              </Text>
+            )}
+            <View className="mt-2 flex items-start justify-start w-full">
+              <Text className="text-md font-black text-green-800">{title}</Text>
             </View>
-          )}
-          <View className="mt-2 flex items-start justify-start w-full">
-            <Text className="text-lg font-bold text-gray-800">{title}</Text>
-          </View>
-          <View className="mb-2">
-            <View className="w-full">{description}</View>
+
+            <View className="mb-2">
+              <View className="w-full">{description}</View>
+            </View>
           </View>
         </Padding>
       </Padding>
