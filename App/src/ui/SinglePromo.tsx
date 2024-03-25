@@ -9,6 +9,7 @@ import {
 import React, { FC } from 'react';
 import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
 import { isToday, parseISO } from 'date-fns';
+import Padding from './Padding';
 
 interface ISinglePromo {
   title: string;
@@ -62,47 +63,47 @@ const SinglePromo: FC<ISinglePromo> = ({
           </View>
         </View>
       </View>
-
-      <View className={`w-full flex-1 h-full bg-white rounded-t-3xl px-6 py-2`}>
-        {dateStart && dateEnd ? (
-          isToday(parseISO(dateEnd)) ? (
-            <>
-              <View className="flex-row items-center">
-                <Text className="text-base font-normal text-red-600">
-                  Последний день акции
+      <Padding>
+        <Padding>
+          <View className="px-1">
+            {dateStart && dateEnd ? (
+              isToday(parseISO(dateEnd)) ? (
+                <>
+                  <View className="flex-row items-center mt-2">
+                    <Text className="text-md font-medium text-red-600">
+                      Последний день акции
+                    </Text>
+                  </View>
+                  <View className="flex-row items-center mt-2">
+                    <Text className="text-md font-medium text-slate-600">
+                      C {reverseDate(dateStart)} по {reverseDate(dateEnd)}
+                    </Text>
+                  </View>
+                </>
+              ) : (
+                <View className="flex-row items-center mt-2">
+                  <Text className="text-md font-medium text-slate-600">
+                    C {reverseDate(dateStart)} по {reverseDate(dateEnd)}
+                  </Text>
+                </View>
+              )
+            ) : (
+              <View className="flex-row items-center mt-2">
+                <Text className="text-md font-medium text-slate-600">
+                  Акция бессрочная
                 </Text>
               </View>
-              <View className="flex-row items-center">
-                <Text className="text-base font-normal text-slate-600">
-                  C {reverseDate(dateStart)} по {reverseDate(dateEnd)}
-                </Text>
-              </View>
-            </>
-          ) : (
-            <View className="flex-row items-center">
-              <Text className="text-base font-normal text-slate-600">
-                C {reverseDate(dateStart)} по {reverseDate(dateEnd)}
-              </Text>
+            )}
+            <View className="mt-2 flex items-start justify-start w-full">
+              <Text className="text-md font-black text-green-800">{title}</Text>
             </View>
-          )
-        ) : (
-          <View className="flex-row items-center">
-            <Text className="text-base font-normal text-slate-600">
-              Акция бессрочная
-            </Text>
-          </View>
-        )}
 
-        <View className="mt-2 flex items-start justify-start w-full">
-          <Text className="text-lg font-bold text-gray-800">{title}</Text>
-        </View>
-
-        <SafeAreaView className="flex-col items-center justify-between w-full">
-          <View className={`flex items-start justify-start w-full`}>
-            {description}
+            <View className="mb-2">
+              <View className="w-full">{description}</View>
+            </View>
           </View>
-        </SafeAreaView>
-      </View>
+        </Padding>
+      </Padding>
     </>
   );
 };

@@ -140,10 +140,8 @@ const SingleLaw = ({ route }: any) => {
                   </Text>
                 </View>
               ) : (
-                <View className="flex-1 flex-col items-center justify-center">
-                  <View className="flex items-start justify-start w-full">
-                    {desc}
-                  </View>
+                <View className="mb-2">
+                  <View className="w-full">{desc}</View>
                 </View>
               )}
             </Padding>

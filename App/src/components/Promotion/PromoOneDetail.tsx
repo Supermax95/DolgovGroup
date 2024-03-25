@@ -71,6 +71,7 @@ const PromoOneDetail = ({ route }: any) => {
     <>
       <SafeAreaView className="bg-white h-full flex-1">
         <UniversalHeader onPress={() => navigation.goBack()} />
+
         {currentPromotionOpen ? (
           <ScrollView
             style={{ flex: 1, width: '100%' }}
