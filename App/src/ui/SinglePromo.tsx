@@ -63,53 +63,44 @@ const SinglePromo: FC<ISinglePromo> = ({
           </View>
         </View>
       </View>
-              <SafeAreaView className="bg-white h-full flex-1">
-      {/* <View className={`w-full flex-1 h-full bg-white rounded-t-3xl px-6 py-2`}> */}
       <Padding>
-            <Padding>
-        {dateStart && dateEnd ? (
-          isToday(parseISO(dateEnd)) ? (
-            <>
-              <View className="flex-row items-center">
-                <Text className="text-base font-normal text-red-600">
-                  Последний день акции
-                </Text>
-              </View>
+        <Padding>
+          {dateStart && dateEnd ? (
+            isToday(parseISO(dateEnd)) ? (
+              <>
+                <View className="flex-row items-center">
+                  <Text className="text-base font-normal text-red-600">
+                    Последний день акции
+                  </Text>
+                </View>
+                <View className="flex-row items-center">
+                  <Text className="text-base font-normal text-slate-600">
+                    C {reverseDate(dateStart)} по {reverseDate(dateEnd)}
+                  </Text>
+                </View>
+              </>
+            ) : (
               <View className="flex-row items-center">
                 <Text className="text-base font-normal text-slate-600">
                   C {reverseDate(dateStart)} по {reverseDate(dateEnd)}
                 </Text>
               </View>
-            </>
+            )
           ) : (
             <View className="flex-row items-center">
               <Text className="text-base font-normal text-slate-600">
-                C {reverseDate(dateStart)} по {reverseDate(dateEnd)}
+                Акция бессрочная
               </Text>
             </View>
-          )
-        ) : (
-          <View className="flex-row items-center">
-            <Text className="text-base font-normal text-slate-600">
-              Акция бессрочная
-            </Text>
+          )}
+          <View className="mt-2 flex items-start justify-start w-full">
+            <Text className="text-lg font-bold text-gray-800">{title}</Text>
           </View>
-        )}
-
-        <View className="mt-2 flex items-start justify-start w-full">
-          <Text className="text-lg font-bold text-gray-800">{title}</Text>
-        </View>
-
-        <View className="flex-1 items-center justify-center">
-          <View className={`flex items-start justify-start w-full`}>
-            {description}
+          <View className="mb-2">
+            <View className="w-full">{description}</View>
           </View>
-        </View>
-      {/* </View> */}
+        </Padding>
       </Padding>
-      </Padding>
-      </SafeAreaView>
-
     </>
   );
 };
