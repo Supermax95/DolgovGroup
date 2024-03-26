@@ -464,7 +464,10 @@ const ProductsModal: FC<ProductsModalProps> = ({
       onChange: (value: string | boolean | number | Date) => {
         if (typeof value === 'string') {
           const trimmedValue = value.replace(/\s/g, '');
-          const sanitizedValue = trimmedValue.replace(/,/g, '.');
+          const sanitizedValue = trimmedValue.replace(
+            /[^0-9,.]|(?<=\.\d\d)\d+/g,
+            ''
+          );
 
           // if (
           //   sanitizedValue === '' ||
@@ -476,10 +479,7 @@ const ProductsModal: FC<ProductsModalProps> = ({
           //     // @ts-ignore
           //     originalPrice: sanitizedValue,
           //   });
-          if (
-            sanitizedValue === '' ||
-            /^(0(\.0{1,2})?|[1-9]\d*(\.\d{1,2})?)$/.test(sanitizedValue)
-          ) {
+          if (sanitizedValue === '' || /^(0(\.0{1,2})?|[1-9]\d*(\.\d{1,})?)$/) {
             setEditedProduct({
               ...editedProduct,
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -504,12 +504,12 @@ const ProductsModal: FC<ProductsModalProps> = ({
       onChange: (value: string | boolean | number | Date) => {
         if (typeof value === 'string') {
           const trimmedValue = value.replace(/\s/g, '');
-          const sanitizedValue = trimmedValue.replace(/,/g, '.');
+          const sanitizedValue = trimmedValue.replace(
+            /[^0-9,.]|(?<=\.\d\d)\d+/g,
+            ''
+          );
 
-          if (
-            sanitizedValue === '' ||
-            /^(0(\.0{1,2})?|[1-9]\d*(\.\d{1,2})?)$/.test(sanitizedValue)
-          ) {
+          if (sanitizedValue === '' || /^(0(\.0{1,2})?|[1-9]\d*(\.\d{1,})?)$/) {
             setEditedProduct({
               ...editedProduct,
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -742,13 +742,14 @@ const ProductsModal: FC<ProductsModalProps> = ({
 
                       if (typeof value === 'string') {
                         const trimmedValue = value.replace(/\s/g, '');
-                        const sanitizedValue = trimmedValue.replace(/,/g, '.');
+                        const sanitizedValue = trimmedValue.replace(
+                          /[^0-9,.]|(?<=\.\d\d)\d+/g,
+                          ''
+                        );
 
                         if (
                           sanitizedValue === '' ||
-                          /^(0(\.0{1,2})?|[1-9]\d*(\.\d{1,2})?)$/.test(
-                            sanitizedValue
-                          )
+                          /^(0(\.0{1,2})?|[1-9]\d*(\.\d{1,})?)$/
                         ) {
                           setEditedProduct({
                             ...editedProduct,

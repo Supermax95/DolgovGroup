@@ -125,14 +125,14 @@ router.get('/admin/currentproduct/:id', async (req, res) => {
 router.post('/admin/products', async (req, res) => {
   const { newProduct } = req.body;
   try {
-    const existingProduct = await Product.findOne({
-      where: { article: newProduct.article },
-    });
-    if (existingProduct) {
-      return res.status(400).json({
-        error: 'Продукт с указанным кодом номенклатуры уже существует',
-      });
-    }
+    // const existingProduct = await Product.findOne({
+    //   where: { article: newProduct.article },
+    // });
+    // if (existingProduct) {
+    //   return res.status(400).json({
+    //     error: 'Продукт с указанным кодом номенклатуры уже существует',
+    //   });
+    // }
     if (newProduct.customerPrice == 0) {
       newProduct.customerPrice = newProduct.originalPrice;
     }
