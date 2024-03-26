@@ -463,29 +463,30 @@ const ProductsModal: FC<ProductsModalProps> = ({
       htmlFor: 'originalPrice',
       onChange: (value: string | boolean | number | Date) => {
         if (typeof value === 'string') {
-          const trimmedValue = value.replace(/\s/g, '');
-          const sanitizedValue = trimmedValue.replace(
-            /[^0-9,.]|(?<=\.\d\d)\d+/g,
-            ''
+          let processedValue = value.replace(/\s/g, ''); // Удаление пробелов
+          processedValue = processedValue.replace(',', '.'); // Замена запятой на точку
+          const sanitizedValue = processedValue.replace(
+            /[^0-9.]/g,
+            '' // Удаление всех символов, кроме цифр и одной точки
           );
 
-          // if (
-          //   sanitizedValue === '' ||
-          //   /^\d+(\.\d{0,2})?$/.test(sanitizedValue)
-          // ) {
-          //   setEditedProduct({
-          //     ...editedProduct,
-          //     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          //     // @ts-ignore
-          //     originalPrice: sanitizedValue,
-          //   });
-          if (sanitizedValue === '' || /^(0(\.0{1,2})?|[1-9]\d*(\.\d{1,})?)$/) {
-            setEditedProduct({
-              ...editedProduct,
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
-              originalPrice: sanitizedValue,
-            });
+          const parts = sanitizedValue.split('.'); // Разбиваем на целую и дробную части
+
+          if (parts.length <= 2) {
+            // Проверяем, что точка встречается не более одного раза
+            const integerPart = parts[0];
+            const decimalPart = parts[1] || '';
+
+            if (integerPart === '' || /^[1-9]\d*$/.test(integerPart)) {
+              if (decimalPart === '' || /^\d{0,2}$/.test(decimalPart)) {
+                setEditedProduct({
+                  ...editedProduct,
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
+                  originalPrice: sanitizedValue,
+                });
+              }
+            }
           }
         }
       },
@@ -503,19 +504,30 @@ const ProductsModal: FC<ProductsModalProps> = ({
 
       onChange: (value: string | boolean | number | Date) => {
         if (typeof value === 'string') {
-          const trimmedValue = value.replace(/\s/g, '');
-          const sanitizedValue = trimmedValue.replace(
-            /[^0-9,.]|(?<=\.\d\d)\d+/g,
-            ''
+          let processedValue = value.replace(/\s/g, ''); // Удаление пробелов
+          processedValue = processedValue.replace(',', '.'); // Замена запятой на точку
+          const sanitizedValue = processedValue.replace(
+            /[^0-9.]/g,
+            '' // Удаление всех символов, кроме цифр и одной точки
           );
 
-          if (sanitizedValue === '' || /^(0(\.0{1,2})?|[1-9]\d*(\.\d{1,})?)$/) {
-            setEditedProduct({
-              ...editedProduct,
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
-              employeePrice: sanitizedValue,
-            });
+          const parts = sanitizedValue.split('.'); // Разбиваем на целую и дробную части
+
+          if (parts.length <= 2) {
+            // Проверяем, что точка встречается не более одного раза
+            const integerPart = parts[0];
+            const decimalPart = parts[1] || '';
+
+            if (integerPart === '' || /^[1-9]\d*$/.test(integerPart)) {
+              if (decimalPart === '' || /^\d{0,2}$/.test(decimalPart)) {
+                setEditedProduct({
+                  ...editedProduct,
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
+                  employeePrice: sanitizedValue,
+                });
+              }
+            }
           }
         }
       },
@@ -741,22 +753,36 @@ const ProductsModal: FC<ProductsModalProps> = ({
                       const value = e.target.value;
 
                       if (typeof value === 'string') {
-                        const trimmedValue = value.replace(/\s/g, '');
-                        const sanitizedValue = trimmedValue.replace(
-                          /[^0-9,.]|(?<=\.\d\d)\d+/g,
-                          ''
+                        let processedValue = value.replace(/\s/g, ''); // Удаление пробелов
+                        processedValue = processedValue.replace(',', '.'); // Замена запятой на точку
+                        const sanitizedValue = processedValue.replace(
+                          /[^0-9.]/g,
+                          '' // Удаление всех символов, кроме цифр и одной точки
                         );
 
-                        if (
-                          sanitizedValue === '' ||
-                          /^(0(\.0{1,2})?|[1-9]\d*(\.\d{1,})?)$/
-                        ) {
-                          setEditedProduct({
-                            ...editedProduct,
-                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                            // @ts-ignore
-                            customerPrice: sanitizedValue,
-                          });
+                        const parts = sanitizedValue.split('.'); // Разбиваем на целую и дробную части
+
+                        if (parts.length <= 2) {
+                          // Проверяем, что точка встречается не более одного раза
+                          const integerPart = parts[0];
+                          const decimalPart = parts[1] || '';
+
+                          if (
+                            integerPart === '' ||
+                            /^[1-9]\d*$/.test(integerPart)
+                          ) {
+                            if (
+                              decimalPart === '' ||
+                              /^\d{0,2}$/.test(decimalPart)
+                            ) {
+                              setEditedProduct({
+                                ...editedProduct,
+                                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                // @ts-ignore
+                                customerPrice: sanitizedValue,
+                              });
+                            }
+                          }
                         }
                       }
                     }}
