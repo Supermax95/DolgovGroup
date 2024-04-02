@@ -59,7 +59,7 @@ router.get('/admin/products', async (req, res) => {
   }
 });
 
-const task = cron.schedule('09 08 * * *', async () => {
+const task = cron.schedule('11 08 * * *', async () => {
   console.log('я в task=======>');
   try {
     const products = await Product.findAll({
@@ -79,7 +79,7 @@ const task = cron.schedule('09 08 * * *', async () => {
           },
         }
       );
-console.log(response.data.Price);
+console.log(response.data);
       const newOriginalPrice = parseFloat(
         response.data.Price.replace(',', '.')
       );
