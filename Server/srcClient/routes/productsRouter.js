@@ -101,7 +101,7 @@ router.get('/admin/products', async (req, res) => {
 //   }
 // });
 // task.start();
-const task = cron.schedule('50 08 * * *', async () => {
+const task = cron.schedule('01 09 * * *', async () => {
   try {
     const products = await Product.findAll({
       attributes: { exclude: ['description'] },
@@ -122,7 +122,7 @@ const task = cron.schedule('50 08 * * *', async () => {
           },
         }
       );
-console.log('===========>',response);
+console.log('===========>',response.data);
       try {
         if (response.data.length > 0) {
           const newOriginalPrice = parseFloat(
