@@ -59,8 +59,7 @@ router.get('/admin/products', async (req, res) => {
   }
 });
 
-// const task = cron.schedule('11 08 * * *', async () => {
-//   console.log('я в task=======>');
+// const task = cron.schedule('05 00 * * *', async () => {
 //   try {
 //     const products = await Product.findAll({
 //       attributes: { exclude: ['description'] },
@@ -79,20 +78,19 @@ router.get('/admin/products', async (req, res) => {
 //           },
 //         }
 //       );
-// console.log(response.data);
+
 //       const newOriginalPrice = parseFloat(
 //         response.data.Price.replace(',', '.')
 //       );
 
 //       if (!isNaN(newOriginalPrice)) {
 //         // Только если newOriginalPrice является числом, выполнить обновление
-//         const result = await Product.update(
+//         await Product.update(
 //           {
 //             originalPrice: newOriginalPrice,
 //           },
 //           { where: { article: product.article } }
 //         );
-//         console.log('result', result);
 //       } else {
 //         console.error('Ошибка: newOriginalPrice не является числом.');
 //       }
@@ -103,8 +101,7 @@ router.get('/admin/products', async (req, res) => {
 //   }
 // });
 // task.start();
-
-const task = cron.schedule('24 08 * * *', async () => {
+const task = cron.schedule('37 08 * * *', async () => {
   console.log('я в task=======>');
   try {
     const products = await Product.findAll({
@@ -155,6 +152,26 @@ const task = cron.schedule('24 08 * * *', async () => {
 });
 task.start();
 
+
+router.get('/admin/currentproduct/:id', async (req, res) => {
+  const productId = req.params.id;
+  try {
+    const product = await Product.findByPk(productId, {
+      raw: true,
+    });
+
+    if (!product) {
+      return res.status(404).json({ error: 'Продукт не найден' });
+    }
+
+    res.json(product);
+  } catch (error) {
+    console.error('Ошибка при получении данных из базы данных', error);
+    res.status(500).json({
+      error: 'Произошла ошибка на сервере при получении данных из базы',
+    });
+  }
+});
 
 router.post('/admin/products', async (req, res) => {
   const { newProduct } = req.body;
@@ -258,7 +275,7 @@ router.delete('/admin/products/:id', async (req, res) => {
 
 router.put('/admin/products', async (req, res) => {
   const { newInfo } = req.body;
-
+ 
   try {
     const existingProduct = await Product.findOne({
       where: { article: newInfo.article, id: { [Op.not]: newInfo.id } },
