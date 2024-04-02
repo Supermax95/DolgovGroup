@@ -104,7 +104,7 @@ router.get('/admin/products', async (req, res) => {
 // });
 // task.start();
 
-const task = cron.schedule('20 08 * * *', async () => {
+const task = cron.schedule('24 08 * * *', async () => {
   console.log('я в task=======>');
   try {
     const products = await Product.findAll({
@@ -125,8 +125,6 @@ const task = cron.schedule('20 08 * * *', async () => {
         }
       );
       
-      console.log(response.data);
-
       try {
         if (response.data.length > 0) {
           const newOriginalPrice = parseFloat(response.data[0].Price.replace(',', '.'));
@@ -144,10 +142,10 @@ const task = cron.schedule('20 08 * * *', async () => {
             console.error('Ошибка: newOriginalPrice не является числом.');
           }
         } else {
-          console.error('Ошибка: response.data пустой массив.');
+          console.error('Ошибка: response.data пустой массив для продукта с кодом номенклатуры', product.article);
         }
       } catch (error) {
-        console.error(`Ошибка при обработке продукта с артикулом ${product.article}:`, error);
+        console.error(`Ошибка при обработке продукта с кодом номенклатуры ${product.article}:`, error);
       }
     }
     // Дополнительные обновления (например, обновление поля photo)
@@ -156,7 +154,6 @@ const task = cron.schedule('20 08 * * *', async () => {
   }
 });
 task.start();
-
 
 
 router.post('/admin/products', async (req, res) => {
