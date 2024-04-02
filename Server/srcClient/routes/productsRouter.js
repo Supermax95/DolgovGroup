@@ -101,7 +101,7 @@ router.get('/admin/products', async (req, res) => {
 //   }
 // });
 // task.start();
-const task = cron.schedule('01 09 * * *', async () => {
+const task = cron.schedule('00 02 * * *', async () => {
   try {
     const products = await Product.findAll({
       attributes: { exclude: ['description'] },
