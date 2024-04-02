@@ -104,7 +104,7 @@ router.get('/admin/products', async (req, res) => {
 // });
 // task.start();
 
-const task = cron.schedule('13 08 * * *', async () => {
+const task = cron.schedule('15 08 * * *', async () => {
   console.log('я в task=======>');
   try {
     const products = await Product.findAll({
@@ -124,22 +124,26 @@ const task = cron.schedule('13 08 * * *', async () => {
           },
         }
       );
+      
       console.log(response.data);
-      const newOriginalPrice = parseFloat(
-        response.data[0].Price.replace(',', '.')
-      );
 
-      if (!isNaN(newOriginalPrice)) {
-        // Только если newOriginalPrice является числом, выполнить обновление
-        const result = await Product.update(
-          {
-            originalPrice: newOriginalPrice,
-          },
-          { where: { article: product.article } }
-        );
-        console.log('result', result);
+      if (response.data.length > 0) {
+        const newOriginalPrice = parseFloat(response.data[0].Price.replace(',', '.'));
+
+        if (!isNaN(newOriginalPrice)) {
+          // Только если newOriginalPrice является числом, выполнить обновление
+          const result = await Product.update(
+            {
+              originalPrice: newOriginalPrice,
+            },
+            { where: { article: product.article } }
+          );
+          console.log('result', result);
+        } else {
+          console.error('Ошибка: newOriginalPrice не является числом.');
+        }
       } else {
-        console.error('Ошибка: newOriginalPrice не является числом.');
+        console.error('Ошибка: response.data пустой массив.');
       }
     }
     // Дополнительные обновления (например, обновление поля photo)
@@ -149,26 +153,6 @@ const task = cron.schedule('13 08 * * *', async () => {
 });
 task.start();
 
-
-router.get('/admin/currentproduct/:id', async (req, res) => {
-  const productId = req.params.id;
-  try {
-    const product = await Product.findByPk(productId, {
-      raw: true,
-    });
-
-    if (!product) {
-      return res.status(404).json({ error: 'Продукт не найден' });
-    }
-
-    res.json(product);
-  } catch (error) {
-    console.error('Ошибка при получении данных из базы данных', error);
-    res.status(500).json({
-      error: 'Произошла ошибка на сервере при получении данных из базы',
-    });
-  }
-});
 
 router.post('/admin/products', async (req, res) => {
   const { newProduct } = req.body;
