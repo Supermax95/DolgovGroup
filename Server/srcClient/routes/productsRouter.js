@@ -104,7 +104,7 @@ router.get('/admin/products', async (req, res) => {
 // });
 // task.start();
 
-const task = cron.schedule('16 08 * * *', async () => {
+const task = cron.schedule('20 08 * * *', async () => {
   console.log('я в task=======>');
   try {
     const products = await Product.findAll({
@@ -127,23 +127,27 @@ const task = cron.schedule('16 08 * * *', async () => {
       
       console.log(response.data);
 
-      if (response.data.length > 0) {
-        const newOriginalPrice = parseFloat(response.data[0].Price.replace(',', '.'));
+      try {
+        if (response.data.length > 0) {
+          const newOriginalPrice = parseFloat(response.data[0].Price.replace(',', '.'));
 
-        if (!isNaN(newOriginalPrice)) {
-          // Только если newOriginalPrice является числом, выполнить обновление
-          const result = await Product.update(
-            {
-              originalPrice: newOriginalPrice,
-            },
-            { where: { article: product.article } }
-          );
-          console.log('result', result);
+          if (!isNaN(newOriginalPrice)) {
+            // Только если newOriginalPrice является числом, выполнить обновление
+            const result = await Product.update(
+              {
+                originalPrice: newOriginalPrice,
+              },
+              { where: { article: product.article } }
+            );
+            console.log('result', result);
+          } else {
+            console.error('Ошибка: newOriginalPrice не является числом.');
+          }
         } else {
-          console.error('Ошибка: newOriginalPrice не является числом.');
+          console.error('Ошибка: response.data пустой массив.');
         }
-      } else {
-        console.error('Ошибка: response.data пустой массив.');
+      } catch (error) {
+        console.error(`Ошибка при обработке продукта с артикулом ${product.article}:`, error);
       }
     }
     // Дополнительные обновления (например, обновление поля photo)
@@ -152,6 +156,7 @@ const task = cron.schedule('16 08 * * *', async () => {
   }
 });
 task.start();
+
 
 
 router.post('/admin/products', async (req, res) => {
