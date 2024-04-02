@@ -109,7 +109,7 @@ const task = cron.schedule('00 02 * * *', async () => {
       raw: true,
     });
 
-    const emptyResponseProducts = []; 
+    const emptyResponseProducts = [];
 
     for (const product of products) {
       const credentials = 'Lichkab:Ko9dyfum';
@@ -122,7 +122,6 @@ const task = cron.schedule('00 02 * * *', async () => {
           },
         }
       );
-console.log('===========>',response.data);
       try {
         if (response.data.length > 0) {
           const newOriginalPrice = parseFloat(
@@ -130,13 +129,12 @@ console.log('===========>',response.data);
           );
 
           if (!isNaN(newOriginalPrice)) {
-            const result = await Product.update(
+            await Product.update(
               {
                 originalPrice: newOriginalPrice,
               },
               { where: { article: product.article } }
             );
-            console.log('result', result);
           } else {
             console.error('Ошибка: newOriginalPrice не является числом.');
           }
@@ -145,12 +143,11 @@ console.log('===========>',response.data);
             'Ошибка: response.data пустой массив для продукта с кодом номенклатуры',
             product.article
           );
-          emptyResponseProducts.push(product); // Добавляем продукт в массив с пустыми ответами
+          emptyResponseProducts.push(product);
         }
       } catch (error) {
         console.error(
-        '===========>'
-        `Ошибка при обработке продукта с кодом номенклатуры ${product.article}:`,
+          '===========>'`Ошибка при обработке продукта с кодом номенклатуры ${product.article}:`,
           error
         );
       }

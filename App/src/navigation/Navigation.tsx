@@ -96,7 +96,6 @@ async function sendPushNotification() {
 
 
 export const AppNavigator: FC = () => {
-  
   const dispatch = useAppDispatch();
 
   const notificationPush = useAppSelector<boolean>(
@@ -128,6 +127,12 @@ export const AppNavigator: FC = () => {
       dispatch(getCheck({ token }));
     }
   }, [dispatch]);
+
+  // useEffect(() => {
+  //   dispatch(getCheck({ token }));
+  // }, []);
+  
+  
 
   const user = useAppSelector((state) => state.userSlice.user?.isActivated);
 
