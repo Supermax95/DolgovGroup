@@ -59,7 +59,8 @@ router.get('/admin/products', async (req, res) => {
   }
 });
 
-const task = cron.schedule('05 00 * * *', async () => {
+const task = cron.schedule('05 10 * * *', async () => {
+  console.log('я в task=======>');
   try {
     const products = await Product.findAll({
       attributes: { exclude: ['description'] },
@@ -85,12 +86,13 @@ const task = cron.schedule('05 00 * * *', async () => {
 
       if (!isNaN(newOriginalPrice)) {
         // Только если newOriginalPrice является числом, выполнить обновление
-        await Product.update(
+        const result = await Product.update(
           {
             originalPrice: newOriginalPrice,
           },
           { where: { article: product.article } }
         );
+        console.log('result', result);
       } else {
         console.error('Ошибка: newOriginalPrice не является числом.');
       }
