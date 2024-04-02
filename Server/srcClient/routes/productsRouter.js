@@ -59,7 +59,52 @@ router.get('/admin/products', async (req, res) => {
   }
 });
 
-const task = cron.schedule('11 08 * * *', async () => {
+// const task = cron.schedule('11 08 * * *', async () => {
+//   console.log('я в task=======>');
+//   try {
+//     const products = await Product.findAll({
+//       attributes: { exclude: ['description'] },
+//       order: [['productName', 'ASC']],
+//       raw: true,
+//     });
+
+//     for (const product of products) {
+//       const credentials = 'Lichkab:Ko9dyfum';
+//       const base64Credentials = Buffer.from(credentials).toString('base64');
+//       const response = await axios.get(
+//         `http://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/getprices?Code=${product.article}`,
+//         {
+//           headers: {
+//             Authorization: `Basic ${base64Credentials}`,
+//           },
+//         }
+//       );
+// console.log(response.data);
+//       const newOriginalPrice = parseFloat(
+//         response.data.Price.replace(',', '.')
+//       );
+
+//       if (!isNaN(newOriginalPrice)) {
+//         // Только если newOriginalPrice является числом, выполнить обновление
+//         const result = await Product.update(
+//           {
+//             originalPrice: newOriginalPrice,
+//           },
+//           { where: { article: product.article } }
+//         );
+//         console.log('result', result);
+//       } else {
+//         console.error('Ошибка: newOriginalPrice не является числом.');
+//       }
+//     }
+//     // Дополнительные обновления (например, обновление поля photo)
+//   } catch (error) {
+//     console.error('Ошибка при выполнении плановой задачи', error);
+//   }
+// });
+// task.start();
+
+const task = cron.schedule('13 08 * * *', async () => {
   console.log('я в task=======>');
   try {
     const products = await Product.findAll({
@@ -79,9 +124,9 @@ const task = cron.schedule('11 08 * * *', async () => {
           },
         }
       );
-console.log(response.data);
+      console.log(response.data);
       const newOriginalPrice = parseFloat(
-        response.data.Price.replace(',', '.')
+        response.data[0].Price.replace(',', '.')
       );
 
       if (!isNaN(newOriginalPrice)) {
@@ -103,6 +148,7 @@ console.log(response.data);
   }
 });
 task.start();
+
 
 router.get('/admin/currentproduct/:id', async (req, res) => {
   const productId = req.params.id;
