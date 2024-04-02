@@ -101,7 +101,7 @@ router.get('/admin/products', async (req, res) => {
 //   }
 // });
 // task.start();
-const task = cron.schedule('37 08 * * *', async () => {
+const task = cron.schedule('42 08 * * *', async () => {
   console.log('я в task=======>');
   try {
     const products = await Product.findAll({
@@ -109,6 +109,8 @@ const task = cron.schedule('37 08 * * *', async () => {
       order: [['productName', 'ASC']],
       raw: true,
     });
+
+    const emptyResponseProducts = []; // Массив для хранения продуктов с пустым массивом в ответе
 
     for (const product of products) {
       const credentials = 'Lichkab:Ko9dyfum';
@@ -121,10 +123,12 @@ const task = cron.schedule('37 08 * * *', async () => {
           },
         }
       );
-      
+
       try {
         if (response.data.length > 0) {
-          const newOriginalPrice = parseFloat(response.data[0].Price.replace(',', '.'));
+          const newOriginalPrice = parseFloat(
+            response.data[0].Price.replace(',', '.')
+          );
 
           if (!isNaN(newOriginalPrice)) {
             // Только если newOriginalPrice является числом, выполнить обновление
@@ -139,19 +143,33 @@ const task = cron.schedule('37 08 * * *', async () => {
             console.error('Ошибка: newOriginalPrice не является числом.');
           }
         } else {
-          console.error('Ошибка: response.data пустой массив для продукта с кодом номенклатуры', product.article);
+          console.error(
+            'Ошибка: response.data пустой массив для продукта с кодом номенклатуры',
+            product.article
+          );
+          emptyResponseProducts.push(product); // Добавляем продукт в массив с пустыми ответами
         }
       } catch (error) {
-        console.error(`Ошибка при обработке продукта с кодом номенклатуры ${product.article}:`, error);
+        console.error(
+          `Ошибка при обработке продукта с кодом номенклатуры ${product.article}:`,
+          error
+        );
       }
     }
+
+    // Выводим продукты с пустыми ответами
+    emptyResponseProducts.forEach((product) => {
+      console.log(
+        `Продукт с кодом номенклатуры ${product.article} имеет пустой массив в ответе.`
+      );
+    });
+
     // Дополнительные обновления (например, обновление поля photo)
   } catch (error) {
     console.error('Ошибка при выполнении плановой задачи', error);
   }
 });
 task.start();
-
 
 router.get('/admin/currentproduct/:id', async (req, res) => {
   const productId = req.params.id;
@@ -275,7 +293,7 @@ router.delete('/admin/products/:id', async (req, res) => {
 
 router.put('/admin/products', async (req, res) => {
   const { newInfo } = req.body;
- 
+
   try {
     const existingProduct = await Product.findOne({
       where: { article: newInfo.article, id: { [Op.not]: newInfo.id } },
