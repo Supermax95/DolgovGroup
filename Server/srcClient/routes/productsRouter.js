@@ -101,8 +101,7 @@ router.get('/admin/products', async (req, res) => {
 //   }
 // });
 // task.start();
-const task = cron.schedule('42 08 * * *', async () => {
-  console.log('я в task=======>');
+const task = cron.schedule('50 08 * * *', async () => {
   try {
     const products = await Product.findAll({
       attributes: { exclude: ['description'] },
@@ -110,7 +109,7 @@ const task = cron.schedule('42 08 * * *', async () => {
       raw: true,
     });
 
-    const emptyResponseProducts = []; // Массив для хранения продуктов с пустым массивом в ответе
+    const emptyResponseProducts = []; 
 
     for (const product of products) {
       const credentials = 'Lichkab:Ko9dyfum';
@@ -123,7 +122,7 @@ const task = cron.schedule('42 08 * * *', async () => {
           },
         }
       );
-
+console.log('===========>',response);
       try {
         if (response.data.length > 0) {
           const newOriginalPrice = parseFloat(
@@ -131,7 +130,6 @@ const task = cron.schedule('42 08 * * *', async () => {
           );
 
           if (!isNaN(newOriginalPrice)) {
-            // Только если newOriginalPrice является числом, выполнить обновление
             const result = await Product.update(
               {
                 originalPrice: newOriginalPrice,
@@ -151,7 +149,8 @@ const task = cron.schedule('42 08 * * *', async () => {
         }
       } catch (error) {
         console.error(
-          `Ошибка при обработке продукта с кодом номенклатуры ${product.article}:`,
+        '===========>'
+        `Ошибка при обработке продукта с кодом номенклатуры ${product.article}:`,
           error
         );
       }
