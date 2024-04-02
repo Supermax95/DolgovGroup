@@ -59,7 +59,7 @@ router.get('/admin/products', async (req, res) => {
   }
 });
 
-const task = cron.schedule('05 10 * * *', async () => {
+const task = cron.schedule('00 10 * * *', async () => {
   console.log('я в task=======>');
   try {
     const products = await Product.findAll({
