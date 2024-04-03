@@ -109,7 +109,6 @@ if (userStatus === 'Сотрудник') {
     0
   );
 }
-console.log('Максимальная цена продукта:', maxProductOriginalPrice);
 
   const applyFilters = () => {
     let filtered: IProduct[] = Array.isArray(products) ? products : [];
