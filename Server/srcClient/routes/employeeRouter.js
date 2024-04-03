@@ -1,8 +1,9 @@
 const router = require('express').Router();
-const { Op } = require('sequelize');
-const { DiscountCard } = require('../../db/models');
 const nodemailer = require('nodemailer');
 const axios = require('axios');
+const { Op } = require('sequelize');
+const { DiscountCard } = require('../../db/models');
+const checkUser = require('./middlewares/auth-middleware-client');
 
 const transporter = nodemailer.createTransport({
   host: 'smtp.yandex.ru',
@@ -12,7 +13,6 @@ const transporter = nodemailer.createTransport({
     user: process.env.EMAIL,
     pass: process.env.PASSWORD,
   },
-  secure: true,
 });
 
 router.get('/admin/employees', async (req, res) => {
@@ -46,7 +46,7 @@ router.get('/admin/employees', async (req, res) => {
   }
 });
 
-router.delete('/admin/employeeDelete/:id', async (req, res) => {
+router.delete('/admin/employeeDelete/:id', checkUser, async (req, res) => {
   const userId = req.params.id;
   try {
     await DiscountCard.destroy({
@@ -57,8 +57,8 @@ router.delete('/admin/employeeDelete/:id', async (req, res) => {
       where: {
         [Op.or]: [
           { userStatus: 'Сотрудник' },
-          { userStatus: 'Новый сотрудник' }
-        ]
+          { userStatus: 'Новый сотрудник' },
+        ],
       },
       attributes: {
         exclude: [
@@ -84,7 +84,7 @@ router.delete('/admin/employeeDelete/:id', async (req, res) => {
   }
 });
 
-router.put('/admin/employees/:id', async (req, res) => {
+router.put('/admin/employees/:id', checkUser, async (req, res) => {
   const employeeId = req.params.id;
   const { newInfo } = req.body;
 

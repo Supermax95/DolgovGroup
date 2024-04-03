@@ -1,9 +1,10 @@
 const router = require('express').Router();
 const { isPast, parseISO, addDays, subDays } = require('date-fns');
-const { Op } = require('sequelize');
-const { Promotion } = require('../../db/models');
 const path = require('path');
 const fsPromises = require('fs').promises;
+const { Op } = require('sequelize');
+const { Promotion } = require('../../db/models');
+const checkUser = require('./middlewares/auth-middleware-client');
 
 router.get('/admin/promotions', async (req, res) => {
   try {
@@ -67,7 +68,7 @@ router.get('/admin/currentpromotion/:id', async (req, res) => {
   }
 });
 
-router.post('/admin/promotions', async (req, res) => {
+router.post('/admin/promotions', checkUser, async (req, res) => {
   const { newPromotion } = req.body;
 
   try {
@@ -106,7 +107,7 @@ router.post('/admin/promotions', async (req, res) => {
   }
 });
 
-router.delete('/admin/promotions/:id', async (req, res) => {
+router.delete('/admin/promotions/:id', checkUser, async (req, res) => {
   const promotionId = req.params.id;
   try {
     // Найдите информацию о промо-акции
@@ -152,14 +153,13 @@ router.delete('/admin/promotions/:id', async (req, res) => {
   }
 });
 
-router.put('/admin/promotions', async (req, res) => {
+router.put('/admin/promotions', checkUser, async (req, res) => {
   const { newInfo } = req.body;
 
   try {
     const existingPromotion = await Promotion.findOne({
       where: { title: newInfo.title, id: { [Op.not]: newInfo.id } },
     });
-
 
     if (existingPromotion) {
       return res.status(400).json({
@@ -204,7 +204,7 @@ router.put('/admin/promotions', async (req, res) => {
     });
   }
 });
-router.delete('/admin/promotions/photo/:id', async (req, res) => {
+router.delete('/admin/promotions/photo/:id', checkUser, async (req, res) => {
   const promoId = req.params.id;
 
   try {

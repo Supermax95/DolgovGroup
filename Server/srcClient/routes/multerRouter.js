@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const multer = require('multer');
 const { Product, Promotion, Law, Category } = require('../../db/models');
+const checkUser = require('./middlewares/auth-middleware-client');
 
 const storageProduct = multer.diskStorage({
   destination(req, file, cb) {
@@ -46,6 +47,7 @@ const uploadsCategory = multer({ storage: storageCategory });
 router.put(
   '/admin/productsPhoto/:id',
   uploadsProduct.single('file'),
+  checkUser,
   async (req, res) => {
     const { id } = req.params;
     const originalname = req.file.filename;
@@ -72,6 +74,7 @@ router.put(
 router.put(
   '/admin/promotionsPhoto/:id',
   uploadsPromotion.single('file'),
+  checkUser,
   async (req, res) => {
     const { id } = req.params;
     const originalname = req.file.filename;
@@ -98,6 +101,7 @@ router.put(
 router.put(
   '/admin/documentFile/:id',
   uploadsDocument.single('file'),
+  checkUser,
   async (req, res) => {
     const { id } = req.params;
     const originalname = req.file.filename;
@@ -122,6 +126,7 @@ router.put(
 router.put(
   '/categoryImg/:id',
   uploadsCategory.single('file'),
+  checkUser,
   async (req, res) => {
     const { id } = req.params;
     const originalname = req.file.filename;

@@ -1,8 +1,9 @@
 const router = require('express').Router();
-const { Op } = require('sequelize');
 const fsPromises = require('fs/promises');
 const path = require('path');
+const { Op } = require('sequelize');
 const { Law } = require('../../db/models');
+const checkUser = require('./middlewares/auth-middleware-client');
 
 router.get('/admin/laws', async (req, res) => {
   try {
@@ -41,7 +42,7 @@ router.get('/admin/currentlaw/:id', async (req, res) => {
   }
 });
 
-router.post('/admin/laws', async (req, res) => {
+router.post('/admin/laws', checkUser, async (req, res) => {
   const { newLaw } = req.body;
 
   try {
@@ -75,7 +76,7 @@ router.post('/admin/laws', async (req, res) => {
   }
 });
 
-router.delete('/admin/laws/:id', async (req, res) => {
+router.delete('/admin/laws/:id', checkUser, async (req, res) => {
   const lawId = req.params.id;
   try {
     // Найдите информацию о законе
@@ -121,7 +122,7 @@ router.delete('/admin/laws/:id', async (req, res) => {
   }
 });
 
-router.put('/admin/laws', async (req, res) => {
+router.put('/admin/laws', checkUser, async (req, res) => {
   const { newInfo } = req.body;
 
   try {
@@ -159,7 +160,8 @@ router.put('/admin/laws', async (req, res) => {
     });
   }
 });
-router.delete('/admin/laws/doc/:id', async (req, res) => {
+
+router.delete('/admin/laws/doc/:id', checkUser, async (req, res) => {
   const lawId = req.params.id;
 
   try {

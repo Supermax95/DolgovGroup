@@ -13,7 +13,6 @@ const transporter = nodemailer.createTransport({
     user: process.env.EMAIL,
     pass: process.env.PASSWORD,
   },
-  secure: true,
 });
 
 router.post('/supportNodemailerRouter', authMiddleware, async (req, res) => {
@@ -92,7 +91,7 @@ router.post('/supportNodemailerRouter', authMiddleware, async (req, res) => {
   }
 });
 
-router.post('/checkEmployee',  authMiddleware, async (req, res) => {
+router.post('/checkEmployee', authMiddleware, async (req, res) => {
   try {
     const token = req.headers.authorization.split(' ')[1];
     const user = jwt.verify(token, process.env.JWT_REFRESH_SECRET);

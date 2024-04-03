@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const { Location } = require('../../db/models');
+const checkUser = require('./middlewares/auth-middleware-client');
 
 router.get('/admin/locations', async (req, res) => {
   try {
@@ -17,7 +18,7 @@ router.get('/admin/locations', async (req, res) => {
   }
 });
 
-router.post('/admin/locations', async (req, res) => {
+router.post('/admin/locations', checkUser, async (req, res) => {
   const { newLocation } = req.body;
 
   try {
@@ -45,7 +46,7 @@ router.post('/admin/locations', async (req, res) => {
   }
 });
 
-router.delete('/admin/locations/:id', async (req, res) => {
+router.delete('/admin/locations/:id', checkUser, async (req, res) => {
   const locationId = req.params.id;
   try {
     await Location.destroy({
@@ -65,7 +66,7 @@ router.delete('/admin/locations/:id', async (req, res) => {
   }
 });
 
-router.put('/admin/locations/:id', async (req, res) => {
+router.put('/admin/locations/:id', checkUser, async (req, res) => {
   const locationId = req.params.id;
   const { newInfo } = req.body;
   try {

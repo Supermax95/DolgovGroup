@@ -11,7 +11,6 @@ const transporter = nodemailer.createTransport({
     user: process.env.EMAIL,
     pass: process.env.PASSWORD,
   },
-  secure: true,
 });
 
 module.exports = router

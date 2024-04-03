@@ -118,9 +118,11 @@ app.use(
   //  authMiddleware,
   barcodeRouter
 );
-app.use('/',
-//  authMiddleware, 
-userStatusRouter);
+app.use(
+  '/',
+  //  authMiddleware,
+  userStatusRouter
+);
 app.use(errorMiddleware);
 
 // ? Routes React

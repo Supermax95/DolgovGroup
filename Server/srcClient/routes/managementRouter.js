@@ -2,6 +2,7 @@ const router = require('express').Router();
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const { Manager } = require('../../db/models');
+const checkUser = require('./middlewares/auth-middleware-client');
 
 const transporter = nodemailer.createTransport({
   host: 'smtp.yandex.ru',
@@ -11,7 +12,6 @@ const transporter = nodemailer.createTransport({
     user: process.env.EMAIL,
     pass: process.env.PASSWORD,
   },
-  secure: true,
 });
 
 module.exports = router
@@ -38,7 +38,7 @@ module.exports = router
     }
   })
 
-  .post('/newManager', async (req, res) => {
+  .post('/newManager', checkUser, async (req, res) => {
     const { newManager } = req.body;
 
     function generateCode() {
@@ -151,7 +151,7 @@ module.exports = router
     }
   })
 
-  .put('/updateManager', async (req, res) => {
+  .put('/updateManager', checkUser, async (req, res) => {
     const { managerId, updateManager } = req.body;
 
     try {
@@ -239,7 +239,7 @@ module.exports = router
     }
   })
 
-  .post('/oneTimePassword', async (req, res) => {
+  .post('/oneTimePassword', checkUser, async (req, res) => {
     const { managerId } = req.body;
 
     function generateCode() {
@@ -324,7 +324,7 @@ module.exports = router
     }
   })
 
-  .delete('/deleteManager', async (req, res) => {
+  .delete('/deleteManager', checkUser, async (req, res) => {
     const { managerId } = req.body;
 
     try {

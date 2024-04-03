@@ -1,17 +1,9 @@
-// const express = require('express');
-
-// const { PORT, IP } = process.env;
-// const { DiscountCard } = require('../../db/models');
-
-// const router = express.Router();
-// const nodemailer = require('nodemailer');
-// const uuid = require('uuid');
-
-const router = require('express').Router();
 const { PORT, IP } = process.env;
+const router = require('express').Router();
 const nodemailer = require('nodemailer');
 const uuid = require('uuid');
 const { DiscountCard } = require('../../db/models');
+const checkUser = require('./middlewares/auth-middleware-client');
 
 const transporter = nodemailer.createTransport({
   host: 'smtp.yandex.ru',
@@ -21,11 +13,9 @@ const transporter = nodemailer.createTransport({
     user: process.env.EMAIL,
     pass: process.env.PASSWORD,
   },
-  secure: true,
 });
 
-router.post('/nodemailerCodeSend/:id', async (req, res) => {
-  const userId = req.params.id;
+router.post('/nodemailerCodeSend/:id', checkUser, async (req, res) => {
   const { firstName, middleName, email, userStatus } = req.body;
 
   function generateCode() {
@@ -40,10 +30,6 @@ router.post('/nodemailerCodeSend/:id', async (req, res) => {
   }
 
   const code = generateCode();
-
-  //   await DiscountCard.update(code, {
-  //     where: { id: userId },
-  //   });
 
   const mailData = {
     from: process.env.EMAIL,
@@ -75,7 +61,7 @@ router.post('/nodemailerCodeSend/:id', async (req, res) => {
   console.log('Код для сотрудника отправлен по почте');
 });
 
-router.post('/nodemailerActivation/:id', async (req, res) => {
+router.post('/nodemailerActivation/:id', checkUser, async (req, res) => {
   const userId = req.params.id;
   const { firstName, middleName } = req.body;
   try {

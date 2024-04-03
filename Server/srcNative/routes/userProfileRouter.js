@@ -97,7 +97,6 @@ const sendConfirmationEmail = async (newEmail, confirmationCode) => {
       user: process.env.EMAIL,
       pass: process.env.PASSWORD,
     },
-    secure: true,
   });
 
   const activeLinkForNewEmail = `http://${IP}:${PORT}/confirm-email/${confirmationCode}/${newEmail}`;
@@ -171,7 +170,7 @@ router
     }
   })
 
-  .put('/cancelEmail', authMiddleware,  async (req, res) => {
+  .put('/cancelEmail', authMiddleware, async (req, res) => {
     try {
       const token = req.headers.authorization.split(' ')[1];
       const user = jwt.verify(token, process.env.JWT_REFRESH_SECRET);

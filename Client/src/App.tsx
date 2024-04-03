@@ -11,10 +11,9 @@ const App: FC = () => {
     const fetchData = async () => {
       await dispatch(portalCheck());
     };
-  
+
     fetchData();
   }, [dispatch]);
-  
 
   return (
     <>
