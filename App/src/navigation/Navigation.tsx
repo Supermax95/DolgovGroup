@@ -43,7 +43,7 @@ import QuestionAndAnswer from 'components/SupportDetail/PopularQuestions/Questio
 import SearchProduct from 'components/Catalog/ProductsCards/SearchProduct/SearchProduct';
 import ChangePhoneNumber from 'components/UserProfile/EditProfile/ChangePhoneNumber/ChangePhoneNumber';
 import { ResetPassword } from 'components/SignIn/ResetPassword/ResetPassword';
-
+import { setupInterceptors } from 'Redux/thunks/User/axios.api';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabNavigatorOptions>();
@@ -92,9 +92,6 @@ async function sendPushNotification() {
   }
 }
 
-
-
-
 export const AppNavigator: FC = () => {
   const dispatch = useAppDispatch();
 
@@ -105,6 +102,12 @@ export const AppNavigator: FC = () => {
   const token = useAppSelector<string | undefined>(
     (state) => state.userSlice.token?.refreshToken
   );
+
+  useEffect(() => {
+    if (token) {
+      setupInterceptors(token, dispatch);
+    }
+  }, [token]);
 
   useEffect(() => {
     if (token) {
@@ -131,8 +134,6 @@ export const AppNavigator: FC = () => {
   // useEffect(() => {
   //   dispatch(getCheck({ token }));
   // }, []);
-  
-  
 
   const user = useAppSelector((state) => state.userSlice.user?.isActivated);
 

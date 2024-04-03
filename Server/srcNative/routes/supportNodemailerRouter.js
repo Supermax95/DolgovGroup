@@ -3,6 +3,7 @@ const router = require('express').Router();
 const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
 const { DiscountCard } = require('../../db/models');
+const authMiddleware = require('../middlewares/auth-middleware');
 
 const transporter = nodemailer.createTransport({
   host: 'smtp.yandex.ru',
@@ -15,7 +16,7 @@ const transporter = nodemailer.createTransport({
   secure: true,
 });
 
-router.post('/supportNodemailerRouter', async (req, res) => {
+router.post('/supportNodemailerRouter', authMiddleware, async (req, res) => {
   try {
     const { titleMessage, message } = req.body;
     const token = req.headers.authorization.split(' ')[1];
@@ -91,7 +92,7 @@ router.post('/supportNodemailerRouter', async (req, res) => {
   }
 });
 
-router.post('/checkEmployee', async (req, res) => {
+router.post('/checkEmployee',  authMiddleware, async (req, res) => {
   try {
     const token = req.headers.authorization.split(' ')[1];
     const user = jwt.verify(token, process.env.JWT_REFRESH_SECRET);

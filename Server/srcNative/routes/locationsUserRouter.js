@@ -1,8 +1,10 @@
 const router = require('express').Router();
 const { Location } = require('../../db/models');
 const { Op } = require('sequelize');
+const authMiddleware = require('../middlewares/auth-middleware');
 
-router.get('/userlocations', async (req, res) => {
+
+router.get('/userlocations', authMiddleware,  async (req, res) => {
   try {
     const token = req.headers.authorization.split(' ')[1];
 

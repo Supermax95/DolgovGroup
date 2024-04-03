@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Provider } from 'react-redux';
@@ -7,6 +7,7 @@ import { store, persistor } from './src/Redux/store';
 import { StatusBar } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import registerNNPushToken from 'native-notify';
+
 
 // //!!!!Для сброса состояния не удалять
 // persistor
@@ -19,6 +20,8 @@ import registerNNPushToken from 'native-notify';
 //   });
 
 export default function App() {
+
+  
   registerNNPushToken(20294, 'GdT8ZAf6ZMwPPqd1E5x5DU');
     return (
     <Provider store={store}>

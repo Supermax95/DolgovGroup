@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { AxiosResponse } from 'axios';
-import axios from 'axios';
+import { axiosInstance } from '../User/axios.api';
 import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
 
 interface IProfileInfoRequest {
@@ -34,7 +34,7 @@ const getProfileInfo = createAsyncThunk<
   }
 >('api/profileInfo', async ({ token }, { rejectWithValue }) => {
   try {
-    const response: AxiosResponse = await axios.get(
+    const response: AxiosResponse = await axiosInstance.get(
       `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/edit`,
       {
         headers: {

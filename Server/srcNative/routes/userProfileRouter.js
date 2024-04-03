@@ -10,9 +10,10 @@ const jwt = require('jsonwebtoken');
 const axios = require('axios');
 const nodemailer = require('nodemailer');
 const { DiscountCard } = require('../../db/models');
+const authMiddleware = require('../middlewares/auth-middleware');
 
 module.exports = router
-  .get('/edit', async (req, res) => {
+  .get('/edit', authMiddleware, async (req, res) => {
     try {
       const token = req.headers.authorization.split(' ')[1];
       const user = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
@@ -25,7 +26,7 @@ module.exports = router
     }
   })
 
-  .put('/fullname', async (req, res) => {
+  .put('/fullname', authMiddleware, async (req, res) => {
     try {
       const { newLastName, newFirstName, newMiddleName } = req.body;
       const token = req.headers.authorization.split(' ')[1];
@@ -61,7 +62,7 @@ module.exports = router
     }
   })
 
-  .put('/calendar', async (req, res) => {
+  .put('/calendar', authMiddleware, async (req, res) => {
     try {
       const { newBirthDate } = req.body;
       const token = req.headers.authorization.split(' ')[1];
@@ -120,7 +121,7 @@ const sendConfirmationEmail = async (newEmail, confirmationCode) => {
   };
 
   try {
-    const info = await transporter.sendMail(mailOptions);
+    await transporter.sendMail(mailOptions);
   } catch (error) {
     console.error(error);
     throw error;
@@ -128,7 +129,7 @@ const sendConfirmationEmail = async (newEmail, confirmationCode) => {
 };
 
 router
-  .put('/email', async (req, res) => {
+  .put('/email', authMiddleware, async (req, res) => {
     try {
       const { newEmail } = req.body;
 
@@ -170,7 +171,7 @@ router
     }
   })
 
-  .put('/cancelEmail', async (req, res) => {
+  .put('/cancelEmail', authMiddleware,  async (req, res) => {
     try {
       const token = req.headers.authorization.split(' ')[1];
       const user = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
@@ -233,7 +234,7 @@ router
     }
   })
 
-  .put('/newpassword', async (req, res) => {
+  .put('/newpassword', authMiddleware, async (req, res) => {
     try {
       const { oldPassword, newPassword } = req.body;
 
@@ -266,7 +267,7 @@ router
     }
   })
 
-  .put('/changePhoneNumber', async (req, res) => {
+  .put('/changePhoneNumber', authMiddleware, async (req, res) => {
     try {
       const { newPhoneNumber } = req.body;
       const token = req.headers.authorization.split(' ')[1];
@@ -317,7 +318,7 @@ router
     }
   })
 
-  .put('/notification', async (req, res) => {
+  .put('/notification', authMiddleware, async (req, res) => {
     try {
       const { notificationEmail, notificationPush } = req.body;
       const token = req.headers.authorization.split(' ')[1];

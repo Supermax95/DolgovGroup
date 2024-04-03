@@ -36,6 +36,7 @@ const questionRouter = require('./srcClient/routes/quesionRouter');
 const userStatusRouter = require('./srcNative/routes/userStatusRouter');
 // middleware
 const errorMiddleware = require('./srcNative/middlewares/error-middleware');
+// const authMiddleware = require('./srcNative/middlewares/auth-middleware');
 
 const { PORT, IP } = process.env;
 
@@ -59,9 +60,9 @@ const sessionConfig = {
 //   saveUninitialized: false,
 //   cookie: {
 //     maxAge: 30 * 24 * 60 * 60 * 1000,
-//     httpOnly: true, 
+//     httpOnly: true,
 //     sameSite: 'Lax',
-//     secure: false, 
+//     secure: false,
 //   },
 // };
 // console.log('sessionConfig', sessionConfig);
@@ -95,12 +96,31 @@ app.use(cookieParser());
 app.use('/uploads/', express.static('uploads'));
 app.use('/api', indexRouter);
 app.use('/', activateRouter);
-app.use('/', userProfileRouter);
-app.use('/', locationUserRouter);
+app.use(
+  '/',
+  //  authMiddleware,
+  userProfileRouter
+);
+app.use(
+  '/',
+  //  authMiddleware,
+  locationUserRouter
+);
 app.use('/', checkUserNative);
 app.use('/', sendNewActivationLink);
-app.use('/', supportNodemailerRouter);
-app.use('/', barcodeRouter);
+app.use(
+  '/',
+  //  authMiddleware,
+  supportNodemailerRouter
+);
+app.use(
+  '/',
+  //  authMiddleware,
+  barcodeRouter
+);
+app.use('/',
+//  authMiddleware, 
+userStatusRouter);
 app.use(errorMiddleware);
 
 // ? Routes React
@@ -118,7 +138,6 @@ app.use('/', subcategoryRouter);
 app.use('/', promotionRouter);
 app.use('/', lawsRouter);
 app.use('/', questionRouter);
-app.use('/', userStatusRouter);
 
 app.listen(PORT, () => {
   console.log(`Сервер крутится на ${PORT} порту`);
