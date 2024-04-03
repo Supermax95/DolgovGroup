@@ -75,8 +75,7 @@ const ProductCard: FC<IProductCard> = ({
           </View>
 
           {/* {isDiscount ? ( */}
-
-          {discountedPrice !== originalPrice ? (
+          {discountedPrice && discountedPrice < originalPrice ? (
             <View className="flex-row items-center space-x-1">
               <Text className="text-lg font-medium text-red-600">
                 {discountedPrice}₽

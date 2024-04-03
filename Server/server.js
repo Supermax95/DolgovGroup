@@ -96,33 +96,13 @@ app.use(cookieParser());
 app.use('/uploads/', express.static('uploads'));
 app.use('/api', indexRouter);
 app.use('/', activateRouter);
-app.use(
-  '/',
-  //  authMiddleware,
-  userProfileRouter
-);
-app.use(
-  '/',
-  //  authMiddleware,
-  locationUserRouter
-);
+app.use('/', userProfileRouter);
+app.use('/', locationUserRouter);
 app.use('/', checkUserNative);
 app.use('/', sendNewActivationLink);
-app.use(
-  '/',
-  //  authMiddleware,
-  supportNodemailerRouter
-);
-app.use(
-  '/',
-  //  authMiddleware,
-  barcodeRouter
-);
-app.use(
-  '/',
-  //  authMiddleware,
-  userStatusRouter
-);
+app.use('/', supportNodemailerRouter);
+app.use('/', barcodeRouter);
+app.use('/', userStatusRouter);
 app.use(errorMiddleware);
 
 // ? Routes React

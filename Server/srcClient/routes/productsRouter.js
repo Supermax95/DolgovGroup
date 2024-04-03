@@ -25,6 +25,11 @@ router.get('/admin/products', async (req, res) => {
           { isDiscounted: false, customerPrice: product.originalPrice },
           { where: { id: product.id } }
         );
+      } else if (!product.isDiscounted) {
+        await Product.update(
+          { customerPrice: product.originalPrice },
+          { where: { id: product.id } }
+        );
       }
     }
 
