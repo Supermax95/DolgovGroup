@@ -2,6 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { AxiosResponse } from 'axios';
 import axios from 'axios';
 import { VITE_URL } from '../../../VITE_URL';
+import { axiosInstance } from '../Logout401/axios.api';
 
 interface RequestDate {
   managerId: number;
@@ -17,7 +18,7 @@ const changePhone = createAsyncThunk<ResponseData, RequestDate>(
   'api/changePhone',
   async ({ managerId, newPhone }, { rejectWithValue }) => {
     try {
-      const response: AxiosResponse = await axios.put(
+      const response: AxiosResponse = await axiosInstance.put(
         `${VITE_URL}/profileManager/phone`,
         { managerId, newPhone }
       );

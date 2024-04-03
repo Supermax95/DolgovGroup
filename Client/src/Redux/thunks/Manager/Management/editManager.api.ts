@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
 import { VITE_URL } from '../../../../VITE_URL';
+import { axiosInstance } from '../../Logout401/axios.api';
 
 interface RequestData {
   managerId: number;
@@ -33,7 +34,7 @@ const editManager = createAsyncThunk<ServerResponse, RequestData>(
 
   async ({ managerId, updateManager }, { rejectWithValue }) => {
     try {
-      const response: AxiosResponse = await axios.put(
+      const response: AxiosResponse = await axiosInstance.put(
         `${VITE_URL}/management/updateManager`,
         { managerId, updateManager }
       );

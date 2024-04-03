@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
 import { VITE_URL } from '../../../VITE_URL';
+import { axiosInstance } from '../Logout401/axios.api';
 
 interface RequestData {
   id: number;
@@ -17,7 +18,7 @@ const nodemailerActivationSend = createAsyncThunk<ResponseData, RequestData>(
 
   async ({ id, firstName, middleName }, { rejectWithValue }) => {
     try {
-      const response: AxiosResponse = await axios.post(
+      const response: AxiosResponse = await axiosInstance.post(
         `${VITE_URL}/nodemailerActivation/${id}`,
         { firstName, middleName }
       );

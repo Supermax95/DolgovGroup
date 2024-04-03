@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
 import { VITE_URL } from '../../../../VITE_URL';
+import { axiosInstance } from '../../Logout401/axios.api';
 
 interface RequestData {
   managerId: number;
@@ -24,7 +25,7 @@ const sendOneTimePassword = createAsyncThunk<ResponseData, RequestData>(
 
   async ({ managerId }, { rejectWithValue }) => {
     try {
-      const response: AxiosResponse = await axios.post(
+      const response: AxiosResponse = await axiosInstance.post(
         `${VITE_URL}/management/oneTimePassword`,
         { managerId }
       );

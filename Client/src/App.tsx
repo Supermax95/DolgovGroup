@@ -3,6 +3,7 @@ import Navigation from './Navigation/Navigation';
 import { useAppDispatch } from './Redux/hooks';
 import portalCheck from './Redux/thunks/PortalLogin/portalCheck';
 import { Toaster } from 'sonner';
+import { setupInterceptors } from './Redux/thunks/Logout401/axios.api';
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -13,6 +14,10 @@ const App: FC = () => {
     };
 
     fetchData();
+  }, [dispatch]);
+
+  useEffect(() => {
+    setupInterceptors(dispatch);
   }, [dispatch]);
 
   return (
