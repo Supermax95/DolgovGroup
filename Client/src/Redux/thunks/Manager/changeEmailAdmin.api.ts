@@ -20,7 +20,10 @@ const changeEmailAdmin = createAsyncThunk<ResponseData, RequestDate>(
     try {
       const response: AxiosResponse = await axiosInstance.put(
         `${VITE_URL}/profileManager/email`,
-        { managerId, newEmail }
+        { managerId, newEmail },
+        {
+          withCredentials: true,
+        }
       );
 
       return response.data;

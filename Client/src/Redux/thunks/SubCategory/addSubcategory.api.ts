@@ -23,7 +23,10 @@ const addSubcategory = createAsyncThunk<ArrayResponseData, RequestData>(
     try {
       const response: AxiosResponse = await axiosInstance.post(
         `${VITE_URL}/admin/subcategory`,
-        { newSubcategory, categoryId }
+        { newSubcategory, categoryId },
+        {
+          withCredentials: true,
+        }
       );
       return response.data;
     } catch (error) {

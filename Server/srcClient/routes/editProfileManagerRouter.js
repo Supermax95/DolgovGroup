@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
 const { Manager } = require('../../db/models');
-const checkUser = require('./middlewares/auth-middleware-client');
+const checkUser = require('../middlewares/auth-middleware-client');
 
 module.exports = router
   .get('/info', async (req, res) => {

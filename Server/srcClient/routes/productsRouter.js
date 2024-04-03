@@ -6,7 +6,7 @@ const axios = require('axios');
 const cron = require('node-cron');
 const { Op } = require('sequelize');
 const { Product } = require('../../db/models');
-const checkUser = require('./middlewares/auth-middleware-client');
+const checkUser = require('../middlewares/auth-middleware-client');
 
 router.get('/admin/products', async (req, res) => {
   try {

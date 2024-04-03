@@ -22,7 +22,10 @@ const deletePromotion = createAsyncThunk<ArrayResponseData, number>(
   async (promotionId) => {
     try {
       const response: AxiosResponse = await axiosInstance.delete(
-        `${VITE_URL}/admin/promotions/${promotionId}`
+        `${VITE_URL}/admin/promotions/${promotionId}`,
+        {
+          withCredentials: true,
+        }
       );
       return response.data;
     } catch (error) {

@@ -43,7 +43,12 @@ const editClients = createAsyncThunk<ArrayResponseData, RequestData>(
     try {
       const response: AxiosResponse = await axiosInstance.put(
         `${VITE_URL}/admin/clients/${clientId}`,
-        { newInfo }
+        {
+          newInfo,
+        },
+        {
+          withCredentials: true,
+        }
       );
       return response.data;
     } catch (error) {

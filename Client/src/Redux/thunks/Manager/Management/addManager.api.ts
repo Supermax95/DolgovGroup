@@ -34,7 +34,10 @@ const addManager = createAsyncThunk<ServerResponse, RequestData>(
     try {
       const response: AxiosResponse = await axiosInstance.post(
         `${VITE_URL}/management/newManager`,
-        { newManager }
+        { newManager },
+        {
+          withCredentials: true,
+        }
       );
 
       return response.data;

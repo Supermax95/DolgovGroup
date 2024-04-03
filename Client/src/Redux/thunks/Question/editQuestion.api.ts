@@ -26,7 +26,10 @@ const editQuestion = createAsyncThunk<ResponseData[], RequestData>(
     try {
       const response: AxiosResponse = await axiosInstance.put(
         `${VITE_URL}/admin/questions`,
-        { newInfo }
+        { newInfo },
+        {
+          withCredentials: true,
+        }
       );
 
       return response.data;

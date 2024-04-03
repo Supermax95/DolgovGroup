@@ -16,7 +16,10 @@ const deleteCategoryPhoto = createAsyncThunk<ArrayResponseData, number>(
   async (categoryId, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axiosInstance.delete(
-        `${VITE_URL}/admin/category/photo/${categoryId}`
+        `${VITE_URL}/admin/category/photo/${categoryId}`,
+        {
+          withCredentials: true,
+        }
       );
       return response.data;
     } catch (error) {

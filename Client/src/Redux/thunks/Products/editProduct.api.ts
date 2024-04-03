@@ -50,7 +50,10 @@ const editProduct = createAsyncThunk<ResponseDataId, RequestData>(
     try {
       const response: AxiosResponse = await axiosInstance.put(
         `${VITE_URL}/admin/products`,
-        { newInfo }
+        { newInfo },
+        {
+          withCredentials: true,
+        }
       );
 
       return response.data;

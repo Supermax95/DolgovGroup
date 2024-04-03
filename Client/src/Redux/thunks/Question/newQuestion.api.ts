@@ -33,7 +33,10 @@ const newQuestion = createAsyncThunk<ResponseDataId, RequestData>(
     try {
       const response: AxiosResponse = await axiosInstance.post(
         `${VITE_URL}/admin/questions`,
-        { newQuestion }
+        { newQuestion },
+        {
+          withCredentials: true,
+        }
       );
       return response.data;
     } catch (error) {

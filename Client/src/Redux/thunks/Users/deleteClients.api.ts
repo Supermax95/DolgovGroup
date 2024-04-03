@@ -26,7 +26,10 @@ const deleteClients = createAsyncThunk<ArrayResponseData, number>(
   async (userId, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axiosInstance.delete(
-        `${VITE_URL}/admin/clientDelete/${userId}`
+        `${VITE_URL}/admin/clientDelete/${userId}`,
+        {
+          withCredentials: true,
+        }
       );
       return response.data;
     } catch (error) {
