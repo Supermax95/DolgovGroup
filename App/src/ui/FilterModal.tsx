@@ -135,7 +135,7 @@ const FilterModal: FC<FilterModalProps> = ({
                 <View style={styles.priceLabelContainer}>
                   <Text style={styles.label}>Цена:</Text>
                   <Text style={styles.price}>
-                    {minPrice}&#8381; - {maxPrice}&#8381;
+                  {minPrice}&#8381; - {maxPrice.toFixed(2)}&#8381;
                   </Text>
                 </View>
 
