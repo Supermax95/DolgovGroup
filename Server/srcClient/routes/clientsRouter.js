@@ -3,7 +3,7 @@ const nodemailer = require('nodemailer');
 const axios = require('axios');
 const { Op } = require('sequelize');
 const { DiscountCard } = require('../../db/models');
-const checkUser = require('./middlewares/auth-middleware-client');
+const checkUser = require('../middlewares/auth-middleware-client');
 
 const transporter = nodemailer.createTransport({
   host: 'smtp.yandex.ru',
@@ -82,6 +82,7 @@ router.delete('/admin/clientDelete/:id', checkUser, async (req, res) => {
 router.put('/admin/clients/:id', checkUser, async (req, res) => {
   const clientId = req.params.id;
   const { newInfo } = req.body;
+  console.log('🚀 ~ router.put ~ newInfo:', newInfo);
 
   try {
     const existingClient = await DiscountCard.findOne({

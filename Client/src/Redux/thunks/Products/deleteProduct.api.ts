@@ -28,7 +28,10 @@ const deleteProduct = createAsyncThunk<ArrayResponseData, number>(
   async (productId, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axiosInstance.delete(
-        `${VITE_URL}/admin/products/${productId}`
+        `${VITE_URL}/admin/products/${productId}`,
+        {
+          withCredentials: true,
+        }
       );
       return response.data;
     } catch (error) {

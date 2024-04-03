@@ -4,7 +4,7 @@ const path = require('path');
 const fsPromises = require('fs').promises;
 const { Op } = require('sequelize');
 const { Promotion } = require('../../db/models');
-const checkUser = require('./middlewares/auth-middleware-client');
+const checkUser = require('../middlewares/auth-middleware-client');
 
 router.get('/admin/promotions', async (req, res) => {
   try {

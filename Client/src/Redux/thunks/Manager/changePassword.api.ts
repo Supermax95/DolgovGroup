@@ -20,7 +20,10 @@ const changePassword = createAsyncThunk<ResponseData, RequestDate>(
     try {
       const response: AxiosResponse = await axiosInstance.put(
         `${VITE_URL}/profileManager/password`,
-        { managerId, oldPassword, newPassword }
+        { managerId, oldPassword, newPassword },
+        {
+          withCredentials: true,
+        }
       );
 
       return response.data;

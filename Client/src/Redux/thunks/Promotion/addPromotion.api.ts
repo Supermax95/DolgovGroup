@@ -39,7 +39,10 @@ const addPromotion = createAsyncThunk<ResponseDataId, RequestData>(
     try {
       const response: AxiosResponse = await axiosInstance.post(
         `${VITE_URL}/admin/promotions`,
-        { newPromotion }
+        { newPromotion },
+        {
+          withCredentials: true,
+        }
       );
       return response.data;
     } catch (error) {

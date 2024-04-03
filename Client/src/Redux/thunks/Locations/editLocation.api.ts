@@ -35,7 +35,10 @@ const editLocation = createAsyncThunk<ArrayResponseData, RequestData>(
     try {
       const response: AxiosResponse = await axiosInstance.put(
         `${VITE_URL}/admin/locations/${locationId}`,
-        { newInfo }
+        { newInfo },
+        {
+          withCredentials: true,
+        }
       );
       return response.data;
     } catch (error) {

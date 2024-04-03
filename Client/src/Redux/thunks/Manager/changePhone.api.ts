@@ -20,7 +20,10 @@ const changePhone = createAsyncThunk<ResponseData, RequestDate>(
     try {
       const response: AxiosResponse = await axiosInstance.put(
         `${VITE_URL}/profileManager/phone`,
-        { managerId, newPhone }
+        { managerId, newPhone },
+        {
+          withCredentials: true,
+        }
       );
 
       return response.data;

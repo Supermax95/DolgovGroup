@@ -20,7 +20,10 @@ const nodemailerActivationSend = createAsyncThunk<ResponseData, RequestData>(
     try {
       const response: AxiosResponse = await axiosInstance.post(
         `${VITE_URL}/nodemailerActivation/${id}`,
-        { firstName, middleName }
+        { firstName, middleName },
+        {
+          withCredentials: true,
+        }
       );
 
       return response.data;

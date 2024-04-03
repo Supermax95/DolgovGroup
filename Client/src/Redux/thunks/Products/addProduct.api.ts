@@ -49,7 +49,10 @@ const addProduct = createAsyncThunk<ResponseDataId, RequestData>(
     try {
       const response: AxiosResponse = await axiosInstance.post(
         `${VITE_URL}/admin/products`,
-        { newProduct }
+        { newProduct },
+        {
+          withCredentials: true,
+        }
       );
       return response.data;
     } catch (error) {

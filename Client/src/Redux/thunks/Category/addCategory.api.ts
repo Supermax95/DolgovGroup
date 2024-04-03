@@ -22,7 +22,10 @@ const addCategory = createAsyncThunk<ArrayResponseData, RequestData>(
     try {
       const response: AxiosResponse = await axiosInstance.post(
         `${VITE_URL}/admin/category`,
-        { newCategory }
+        { newCategory },
+        {
+          withCredentials: true,
+        }
       );
       return response.data;
     } catch (error) {

@@ -36,7 +36,10 @@ const editManager = createAsyncThunk<ServerResponse, RequestData>(
     try {
       const response: AxiosResponse = await axiosInstance.put(
         `${VITE_URL}/management/updateManager`,
-        { managerId, updateManager }
+        { managerId, updateManager },
+        {
+          withCredentials: true,
+        }
       );
 
       return response.data;

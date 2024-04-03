@@ -20,7 +20,10 @@ const deleteLaw = createAsyncThunk<ArrayResponseData, number>(
   async (lawId) => {
     try {
       const response: AxiosResponse = await axiosInstance.delete(
-        `${VITE_URL}/admin/laws/${lawId}`
+        `${VITE_URL}/admin/laws/${lawId}`,
+        {
+          withCredentials: true,
+        }
       );
 
       return response.data;
