@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
 import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
+import { axiosInstance } from '../Logout401/axios.api';
 
 interface Request {
   token?: string | undefined;
@@ -18,14 +19,14 @@ interface ResponseDataLocation {
 type ResponseData = Array<ResponseDataLocation>;
 
 // interface ResponseData {
-//   data: any; 
+//   data: any;
 // }
 
 const getUserLocations = createAsyncThunk<ResponseData, Request>(
   'api/getuserlocations',
   async ({ token }) => {
     try {
-      const response: AxiosResponse = await axios.get(
+      const response: AxiosResponse = await axiosInstance.get(
         `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/userlocations`,
         {
           headers: {

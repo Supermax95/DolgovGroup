@@ -43,7 +43,7 @@ import QuestionAndAnswer from 'components/SupportDetail/PopularQuestions/Questio
 import SearchProduct from 'components/Catalog/ProductsCards/SearchProduct/SearchProduct';
 import ChangePhoneNumber from 'components/UserProfile/EditProfile/ChangePhoneNumber/ChangePhoneNumber';
 import { ResetPassword } from 'components/SignIn/ResetPassword/ResetPassword';
-import { setupInterceptors } from 'Redux/thunks/User/axios.api';
+import { setupInterceptors } from 'Redux/thunks/Logout401/axios.api';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabNavigatorOptions>();

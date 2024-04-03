@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { userLogout } from './logout.api';
+import { userLogout } from '../User/logout.api';
 
 const axiosInstance = axios.create();
 

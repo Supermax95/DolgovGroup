@@ -14,8 +14,6 @@ interface ResponseData {
 export const userLogout = createAsyncThunk<ResponseData, Request>(
   'api/logout',
   async ({ token }) => {
-    console.log('tokenLogout');
-    console.log('ручка', token);
     try {
       const response: AxiosResponse = await axios.post(
         `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/api/logout`,

@@ -2,6 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { AxiosResponse } from 'axios';
 import axios from 'axios';
 import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
+import { axiosInstance } from '../Logout401/axios.api';
 
 interface RequestData {
   token: string | undefined;
@@ -21,7 +22,7 @@ const checkEmployee = createAsyncThunk<ResponseData, RequestData>(
   'api/checkEmployee',
   async ({ token }, { rejectWithValue }) => {
     try {
-      const response: AxiosResponse = await axios.post(
+      const response: AxiosResponse = await axiosInstance.post(
         `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/checkEmployee`,
         {},
         {

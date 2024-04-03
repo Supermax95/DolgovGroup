@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { AxiosResponse } from 'axios';
-import { axiosInstance } from '../User/axios.api';
+import { axiosInstance } from '../Logout401/axios.api';
 import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
 
 interface IProfileInfoRequest {
