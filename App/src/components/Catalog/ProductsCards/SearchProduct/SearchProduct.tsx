@@ -75,10 +75,41 @@ const SearchProduct = () => {
     navigation.navigate('SingleProduct', { productId });
   };
 
-  const maxProductOriginalPrice = Math.max(
-    ...products.map((product: IProduct) => product.originalPrice),
+  // const maxProductOriginalPrice = Math.max(
+  //   ...products.map((product: IProduct) => product.originalPrice),
+  //   0
+  // );
+
+  console.log('Список продуктов:');
+  console.log(products);
+
+
+  let maxProductOriginalPrice = 0;
+
+if (userStatus === 'Сотрудник') {
+  maxProductOriginalPrice = Math.max(
+    ...products.map((product) => {
+      if (product.originalPrice >= product.employeePrice) {
+        return product.originalPrice;
+      } else {
+        return product.employeePrice;
+      }
+    }),
     0
   );
+} else if (userStatus === 'Клиент' || userStatus === 'Новый сотрудник') {
+  maxProductOriginalPrice = Math.max(
+    ...products.map((product) => {
+      if (product.customerPrice >= product.originalPrice) {
+        return product.customerPrice;
+      } else {
+        return product.originalPrice;
+      }
+    }),
+    0
+  );
+}
+console.log('Максимальная цена продукта:', maxProductOriginalPrice);
 
   const applyFilters = () => {
     let filtered: IProduct[] = Array.isArray(products) ? products : [];
