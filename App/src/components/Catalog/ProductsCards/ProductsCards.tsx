@@ -116,11 +116,8 @@ const ProductsCards: FC = ({ route }: any) => {
   //   );
   // }
 
-  console.log('Список продуктов:');
-console.log(products);
 
 let maxProductOriginalPrice = 0;
-
 if (userStatus === 'Сотрудник') {
   maxProductOriginalPrice = Math.max(
     ...products.map((product) => {
@@ -144,10 +141,6 @@ if (userStatus === 'Сотрудник') {
     0
   );
 }
-
-console.log('Максимальная цена продукта:', maxProductOriginalPrice);
-
-
 
   const applyFilters = () => {
     let filtered: IProduct[] = Array.isArray(products) ? products : [];
