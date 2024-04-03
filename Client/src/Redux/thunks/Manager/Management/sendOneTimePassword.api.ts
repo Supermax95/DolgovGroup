@@ -27,7 +27,10 @@ const sendOneTimePassword = createAsyncThunk<ResponseData, RequestData>(
     try {
       const response: AxiosResponse = await axiosInstance.post(
         `${VITE_URL}/management/oneTimePassword`,
-        { managerId }
+        { managerId },
+        {
+          withCredentials: true,
+        }
       );
 
       return response.data;

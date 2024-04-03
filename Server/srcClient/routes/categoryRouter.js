@@ -3,7 +3,7 @@ const path = require('path');
 const fsPromises = require('fs').promises;
 const { Op } = require('sequelize');
 const { Category } = require('../../db/models');
-const checkUser = require('./middlewares/auth-middleware-client');
+const checkUser = require('../middlewares/auth-middleware-client');
 
 router.get('/admin/category', async (req, res) => {
   try {

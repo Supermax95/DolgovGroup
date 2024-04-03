@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { Location } = require('../../db/models');
-const checkUser = require('./middlewares/auth-middleware-client');
+const checkUser = require('../middlewares/auth-middleware-client');
 
 router.get('/admin/locations', async (req, res) => {
   try {

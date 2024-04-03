@@ -35,7 +35,10 @@ const addLaw = createAsyncThunk<ResponseDataId, RequestData>(
     try {
       const response: AxiosResponse = await axiosInstance.post(
         `${VITE_URL}/admin/laws`,
-        { newLaw }
+        { newLaw },
+        {
+          withCredentials: true,
+        }
       );
       return response.data;
     } catch (error) {

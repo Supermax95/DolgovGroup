@@ -21,7 +21,10 @@ const deleteLocation = createAsyncThunk<ArrayResponseData, number>(
   async (locationId) => {
     try {
       const response: AxiosResponse = await axiosInstance.delete(
-        `${VITE_URL}/admin/locations/${locationId}`
+        `${VITE_URL}/admin/locations/${locationId}`,
+        {
+          withCredentials: true,
+        }
       );
       return response.data;
     } catch (error) {

@@ -24,7 +24,10 @@ const deleteManager = createAsyncThunk<ResponseData[], RequestData>(
     try {
       const response: AxiosResponse = await axiosInstance.delete(
         `${VITE_URL}/management/deleteManager`,
-        { data: { managerId } }
+        {
+          data: { managerId },
+          withCredentials: true,
+        }
       );
 
       return response.data;

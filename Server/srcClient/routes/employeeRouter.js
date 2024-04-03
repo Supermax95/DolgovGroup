@@ -3,7 +3,7 @@ const nodemailer = require('nodemailer');
 const axios = require('axios');
 const { Op } = require('sequelize');
 const { DiscountCard } = require('../../db/models');
-const checkUser = require('./middlewares/auth-middleware-client');
+const checkUser = require('../middlewares/auth-middleware-client');
 
 const transporter = nodemailer.createTransport({
   host: 'smtp.yandex.ru',
