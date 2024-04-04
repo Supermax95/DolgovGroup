@@ -52,7 +52,6 @@ class UserController {
     try {
       const { email, password } = req.body;
       const userData = await userService.login(email, password);
-      console.log(userData);
       return res.json(userData);
     } catch (e) {
       const errorMessage = typeof e === 'string' ? e : 'Internal Server Error';
