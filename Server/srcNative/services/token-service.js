@@ -4,10 +4,8 @@ const { Token } = require('../../db/models');
 class TokenService {
   generateTokens(payload) {
     const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET, {
-      // expiresIn: '15d',
-      expiresIn: '1s',
+      expiresIn: '15d',
     });
-    console.log('==========>', refreshToken);
     return {
       refreshToken,
     };
@@ -50,9 +48,7 @@ class TokenService {
 
   validateRefreshToken(token) {
     try {
-      console.log('verify')
       const userData = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
-      console.log('userDataSucces',userData);
       return userData;
     } catch (e) {
       return null;
