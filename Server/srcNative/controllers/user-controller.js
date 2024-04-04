@@ -4,34 +4,6 @@ const userService = require('../services/user-service');
 
 // const { SUCCESS } = process.env;
 class UserController {
-  // async registration(req, res, next) {
-  //   try {
-  //     const {
-  //       lastName,
-  //       firstName,
-  //       middleName,
-  //       email,
-  //       birthDate,
-  //       password,
-  //       phoneNumber,
-  //     } = req.body;
-  //     const userData = await userService.registration(
-  //       lastName,
-  //       firstName,
-  //       middleName,
-  //       email,
-  //       birthDate,
-  //       password,
-  //       phoneNumber
-  //     );
-
-  //     return res.json(userData);
-  //   } catch (e) {
-  //     const errorMessage = typeof e === 'string' ? e : 'Internal Server Error';
-  //     console.log(errorMessage);
-  //     return res.status(500).json({ message: errorMessage });
-  //   }
-  // }
   async registration(req, res, next) {
     try {
       const {
@@ -43,8 +15,6 @@ class UserController {
         password,
         phoneNumber,
       } = req.body;
-
-      // Вызываем метод регистрации пользователя из сервиса
       await userService.registration(
         lastName,
         firstName,
@@ -55,17 +25,14 @@ class UserController {
         phoneNumber
       );
 
-      // Если регистрация прошла успешно, возвращаем успешный ответ
       return res.status(200).json({
         email,
         message: 'Регистрация прошла успешно',
       });
-    } catch (error) {
-      // Если произошла ошибка во время регистрации, отправляем соответствующий статус и сообщение об ошибке
-      console.error('Ошибка при регистрации:', error);
-      return res
-        .status(500)
-        .json({ message: 'Ошибка при регистрации пользователя' });
+    } catch (e) {
+      const errorMessage = typeof e === 'string' ? e : 'Internal Server Error';
+      console.log(errorMessage);
+      return res.status(500).json({ message: errorMessage });
     }
   }
 

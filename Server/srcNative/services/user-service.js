@@ -147,11 +147,23 @@ class UserService {
         return userWithBarcode !== null;
       }
 
-      // Загрузка данных пользователя
-      // const user = await DiscountCard.findOne({ where: { activationLink } });
-      const userToken = jwt.verify(activationLink, process.env.JWT_REFRESH_SECRET);
+      const userToken = jwt.verify(
+        activationLink,
+        process.env.JWT_REFRESH_SECRET
+      );
       if (!userToken) {
         throw 'Некорректная ссылка активации';
+      }
+      if (await DiscountCard.findOne({ where: { email: userToken.email } })) {
+        throw 'Пользователь с данной почтой уже существует';
+      }
+
+      if (
+        await DiscountCard.findOne({
+          where: { phoneNumber: userToken.phoneNumber },
+        })
+      ) {
+        throw 'Пользователь с данным телефоном уже существует';
       }
       const user = await DiscountCard.create({
         lastName: userToken.lastName,
@@ -167,7 +179,6 @@ class UserService {
         __dirname,
         '../../userCards/data.json'
       );
-      console.log('=======>', user);
 
       // Чтение файла с использованием fs.readFile
       const userData = JSON.parse(await fs.readFile(userDataFilePath, 'utf8'));
