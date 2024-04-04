@@ -34,6 +34,7 @@ type UserState = {
   isLoading: boolean;
   error: undefined | string;
   activationError: undefined | string;
+  email: string;
 };
 
 const initialState: UserState = {
@@ -53,7 +54,7 @@ const initialState: UserState = {
   isLoading: false,
   error: undefined,
   activationError: undefined,
-  // email:'',
+  email: '',
 };
 
 const userSlice = createSlice({
@@ -86,7 +87,8 @@ const userSlice = createSlice({
       })
       .addCase(userRegister.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.user = action.payload.user;
+        // state.user = action.payload.user;
+        state.email = action.payload.email;
         state.isAuth = true;
       })
       .addCase(userRegister.rejected, (state) => {

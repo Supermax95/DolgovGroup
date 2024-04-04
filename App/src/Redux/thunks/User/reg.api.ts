@@ -14,23 +14,25 @@ interface RequestData {
 }
 
 interface ResponseData {
-  user: {
-    email: string;
-    firstName: string;
-    id: number;
-    isActivated: boolean;
-  };
+  // user: {
+  //   email: string;
+  //   firstName: string;
+  //   id: number;
+  //   isActivated: boolean;
+  // };
+  email: string;
 }
 
 const userRegister = createAsyncThunk<ResponseData, RequestData>(
   'api/register',
-  async (user,{ rejectWithValue }) => {    
+  async (user, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axios.post(
         `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/api/registration`,
         user
       );
       if (response.status === 200) {
+        console.log('🚀 ~ response.data:', response.data);
         return response.data;
       } else {
         throw new Error('Ошибка при регистрации');

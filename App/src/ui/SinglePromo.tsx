@@ -88,11 +88,12 @@ const SinglePromo: FC<ISinglePromo> = ({
                 </View>
               )
             ) : (
-              <View className="flex-row items-center mt-2">
-                <Text className="text-md font-medium text-slate-600">
-                  Акция бессрочная
-                </Text>
-              </View>
+              // <View className="flex-row items-center mt-2">
+              //   <Text className="text-md font-medium text-slate-600">
+              //     Акция бессрочная
+              //   </Text>
+              // </View>
+              <></>
             )}
             <View className="mt-2 flex items-start justify-start w-full">
               <Text className="text-md font-black text-green-800">{title}</Text>

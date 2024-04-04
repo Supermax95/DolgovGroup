@@ -56,7 +56,9 @@ class UserController {
       );
 
       // Если регистрация прошла успешно, возвращаем успешный ответ
-      return res.status(200).json({ message: 'Регистрация прошла успешно' });
+      return res
+        .status(200)
+        .json({ email, message: 'Регистрация прошла успешно' });
     } catch (error) {
       // Если произошла ошибка во время регистрации, отправляем соответствующий статус и сообщение об ошибке
       console.error('Ошибка при регистрации:', error);
@@ -133,26 +135,6 @@ class UserController {
 }
 
 module.exports = new UserController();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // /* eslint-disable class-methods-use-this */
 // require('dotenv').config();

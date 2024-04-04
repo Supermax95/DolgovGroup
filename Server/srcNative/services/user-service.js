@@ -4,7 +4,8 @@ const { PORT, IP } = process.env;
 const jwt = require('jsonwebtoken');
 
 const bcrypt = require('bcrypt');
-const uuid = require('uuid');
+const path = require('path');
+const fs = require('fs').promises;
 const MailService = require('./mail-service');
 // const TokenService = require('./token-service');
 const UserDto = require('../dtos/user-dto');
@@ -12,8 +13,7 @@ const { DiscountCard } = require('../../db/models');
 const ApiError = require('../middlewares/error-middleware');
 const tokenService = require('./token-service');
 const axios = require('axios');
-const path = require('path');
-const fs = require('fs').promises;
+const uuid = require('uuid');
 
 class UserService {
   // async registration(

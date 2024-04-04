@@ -31,8 +31,7 @@ const CheckMail: FC = () => {
 
   const userId = useAppSelector((state) => state.userSlice.user?.id);
 
-  const userEmail = useAppSelector((state) => state.userSlice.email);
-  console.log('🚀 ~ userEmail:', userEmail);
+  const userEmail = useAppSelector((state) => state.userSlice.user?.email);
 
   const [isResendDisabled, setResendDisabled] = useState<boolean>(false);
   const [secondsRemaining, setSecondsRemaining] = useState<number>(0);
@@ -87,11 +86,78 @@ const CheckMail: FC = () => {
       setResendDisabled(true);
       startResendTimer();
 
-      await dispatch(sendActivationLink({ userId }));
+     await dispatch(sendActivationLink({ userId }));
       Alert.alert('Проверьте свою почту.');
     } catch (error) {
       Alert.alert('Произошла ошибка при отправке повторной активации.');
       setResendDisabled(false);
+    }
+  };
+
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+    return emailRegex.test(email);
+  };
+
+  const handleFieldChange = (
+    field: keyof IChangeEmail,
+    value: string
+  ): void => {
+    setData((prevData) => ({ ...prevData, [field]: value }));
+    setErrorMessages((prevErrors) => ({ ...prevErrors, [field]: '' }));
+  };
+
+  const handleChangeEmail = () => {
+    setChangeEmail(true);
+  };
+
+  const handlerCancelEmail = () => {
+    setChangeEmail(false);
+  };
+
+  const handlerSubmitEmail = async (): Promise<void> => {
+    if (!data.newEmail || !validateEmail(data.newEmail)) {
+      setErrorMessages({
+        newEmail: !data.newEmail
+          ? 'Введите почту'
+          : 'Введите корректный адрес электронной почты',
+      });
+    } else {
+      try {
+        setIsLoading(true);
+        const result = await dispatch(
+          newEmailReg({
+            userId,
+            newEmail: data.newEmail,
+          })
+        );
+
+        if (result.meta.requestStatus === 'rejected') {
+          setIsLoading(false);
+          Alert.alert(
+            'Ошибка',
+            'Пользователь с такой электронной почтой уже существует'
+          );
+        } else if (result.meta.requestStatus === 'fulfilled') {
+          setIsLoading(false);
+          Alert.alert(
+            'На новую почту было отправлено письмо',
+            'Подтвердите новую почту',
+            [
+              {
+                text: 'OK',
+              },
+            ]
+          );
+          setChangeEmail(false);
+        }
+      } catch (error) {
+        setIsLoading(false);
+        Alert.alert(
+          'Ошибка',
+          'Данного пользователя не существует или произошла ошибка'
+        );
+      }
     }
   };
 
@@ -102,19 +168,44 @@ const CheckMail: FC = () => {
           onPress={() => navigation.goBack()}
           title="Проверка активации"
         />
-        {isLoading ? (
-          <View className="flex-1 items-center justify-center">
-            <ActivityIndicator size="large" color="green" />
-          </View>
-        ) : (
-          <View className="justify-start items-center">
-            <View className="w-11/12">
-              <View className="w-full px-2">
-                <Text className="text-base font-molmal text-zinc-800">
-                  Письмо было отправлено на вашу электронную почту:
+      {isLoading ? (
+        <View className="flex-1 items-center justify-center">
+          <ActivityIndicator size="large" color="green" />
+        </View>
+      ) : (
+        <View className="justify-center items-center h-[80%]">
+          {changeEmail ? (
+            <View className="w-10/12">
+              <View className="w-full justify-center items-center">
+                <Text className="text-center text-gray-800 text-md font-normal mb-2">
+                  На указанную вами эл. почту придёт ссылка активации
                 </Text>
-                <Text className="text-center text-base font-molmal text-zinc-800">
-                  {userEmail}
+              </View>
+              <FieldInput
+                value={data.newEmail}
+                placeholder="Email"
+                onChange={(value) => handleFieldChange('newEmail', value)}
+                autoCapitalize="none"
+                keyboardType="email-address"
+              />
+                   {errorMessages.newEmail && (
+                      <Text className="text-red-500 ml-1 mt-1 text-xs">
+                        {errorMessages.newEmail}
+                      </Text>
+                    )}
+              <Button onPress={handlerSubmitEmail} title="Сохранить" />
+
+              <Button
+                onPress={handlerCancelEmail}
+                colors={['bg-zinc-400', 'bg-zinc-400']}
+                title="Отменить изменение почты"
+              />
+            </View>
+          ) : (
+            <View className="w-11/12">
+              <View className="w-full justify-center items-center">
+                <Text className="text-center text-zinc-800 text-md font-normal mb-2">
+                  Мы отправили вам письмо на адрес электронной почты {userEmail}
                 </Text>
               </View>
               <Button
@@ -127,6 +218,14 @@ const CheckMail: FC = () => {
                   или запросите отправку письма повторно
                 </Text>
               </View>
+              <Pressable
+                onPress={handleChangeEmail}
+                className="w-full justify-center items-center mt-2 px-2"
+              >
+                <Text className="text-xs font-molmal text-zinc-600">
+                  Ввести другой адрес эл. почты
+                </Text>
+              </Pressable>
               <Pressable
                 onPress={handleSendActivation}
                 disabled={isResendDisabled}
@@ -153,8 +252,9 @@ const CheckMail: FC = () => {
                 </View>
               </Pressable>
             </View>
-          </View>
-        )}
+          )}
+        </View>
+              )}
       </SafeAreaView>
     </>
   );
