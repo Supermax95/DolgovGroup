@@ -40,18 +40,7 @@ import { userLogout } from '../User/logout.api';
 const axiosInstance = axios.create();
 
 function setupInterceptors(token: string, dispatch: any) {
-  axiosInstance.interceptors.request.use(
-    (config) => {
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-        config.headers['Content-Type'] = 'application/json';
-      }
-      return config;
-    },
-    (error) => {
-      return Promise.reject(error);
-    }
-  );
+  axiosInstance.interceptors.request.use
 
   axiosInstance.interceptors.response.use(
     (response) => {
