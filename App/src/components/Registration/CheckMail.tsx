@@ -56,25 +56,25 @@ const CheckMail: FC = () => {
     }, 1000);
   };
 
-  // const handleCheckActivation = async (): Promise<void> => {
-  //   try {
-  //     const result = await dispatch(userActivate({ userId, force: true }));
-  //     if (result.meta.requestStatus === 'fulfilled') {
-  //       navigation.navigate('FooterTabs');
-  //     } else {
-  //       Alert.alert('Аккаунт не активирован');
-  //     }
-  //   } catch (error) {
-  //     Alert.alert('Произошла ошибка при проверке активации.');
-  //   }
-  // };
+  const handleCheckActivation = async (): Promise<void> => {
+    try {
+      const result = await dispatch(userActivate({ userEmail, force: true }));
+      if (result.meta.requestStatus === 'fulfilled') {
+        navigation.navigate('FooterTabs');
+      } else {
+        Alert.alert('Аккаунт не активирован');
+      }
+    } catch (error) {
+      Alert.alert('Произошла ошибка при проверке активации.');
+    }
+  };
 
   // const handleSendActivation = async (): Promise<void> => {
   //   try {
   //     setResendDisabled(true);
   //     startResendTimer();
 
-  //     await dispatch(sendActivationLink({ userId }));
+  //     await dispatch(sendActivationLink({ userEmail }));
   //     Alert.alert('Проверьте свою почту.');
   //   } catch (error) {
   //     Alert.alert('Произошла ошибка при отправке повторной активации.');
@@ -106,7 +106,7 @@ const CheckMail: FC = () => {
               </View>
               <Button
                 title="Проверить активацию"
-                // onPress={handleCheckActivation}
+                onPress={handleCheckActivation}
               />
               <View className="w-full justify-center items-center mt-2 px-2">
                 <Text className="text-xs font-molmal text-zinc-500">

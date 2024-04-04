@@ -6,12 +6,12 @@ const MailService = require('../services/mail-service');
 const uuid = require('uuid');
 const { PORT, IP } = process.env;
 
-router.get('/check/:userId', async (req, res) => {
+router.get('/check/:userEmail', async (req, res) => {
   try {
-    const { userId } = req.params;
-    const user = await DiscountCard.findOne({ where: { id: userId } });
+    const { userEmail } = req.params;
+    const user = await DiscountCard.findOne({ where: { email: userEmail } });
     if (!user) {
-      return res.status(404).json({ message: 'Пользователь не найден' });
+      return res.status(404).json({ message: 'Аккаунт не активирован' });
     }
 
     if (user.isActivated) {
@@ -66,13 +66,10 @@ router.put('/newRegEmail', async (req, res) => {
       `http://${IP}:${PORT}/api/activate/${newActivationLink}`
     );
 
-    return res
-      .status(200)
-      .json({
-        message: 'Новая ссылка для активации аккаунта отправлена',
-        newEmail,
-      });
-
+    return res.status(200).json({
+      message: 'Новая ссылка для активации аккаунта отправлена',
+      newEmail,
+    });
   } catch (error) {
     console.error(error);
     next(error);

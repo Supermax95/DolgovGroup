@@ -10,68 +10,12 @@ const MailService = require('./mail-service');
 // const TokenService = require('./token-service');
 const UserDto = require('../dtos/user-dto');
 const { DiscountCard } = require('../../db/models');
-const ApiError = require('../middlewares/error-middleware');
+// const ApiError = require('../middlewares/error-middleware');
 const tokenService = require('./token-service');
 const axios = require('axios');
-const uuid = require('uuid');
+// const uuid = require('uuid');
 
 class UserService {
-  // async registration(
-  //   lastName,
-  //   firstName,
-  //   middleName,
-  //   email,
-  //   birthDate,
-  //   password,
-  //   phoneNumber
-  // ) {
-  //   const userByEmail = await DiscountCard.findOne({ where: { email } });
-  //   if (userByEmail) {
-  //     throw `Пользователь с такой электронной почтой ${email} уже существует`;
-  //   }
-
-  //   const cleanedPhoneNumber = phoneNumber.replace(/\D/g, '');
-
-  //   // Удаление первой цифры "7" из номера телефона
-  //   const trimmedPhoneNumber = cleanedPhoneNumber.substring(1);
-
-  //   const userByPhoneNumber = await DiscountCard.findOne({
-  //     where: { phoneNumber: trimmedPhoneNumber },
-  //   });
-  //   if (userByPhoneNumber) {
-  //     throw `Пользователь с таким номером телефона ${phoneNumber} уже существует`;
-  //   }
-
-  //   const hash = await bcrypt.hash(password, 10);
-  //   const activationLink = tokenService.generateTokens({ lastName,
-  //       firstName,
-  //       middleName,
-  //       email,
-  //       birthDate,
-  //       password: hash,
-  //       activationLink,
-  //       phoneNumber: trimmedPhoneNumber });
-  //   // const activationLink = uuid.v4();
-  //   // const user = await DiscountCard.create({
-  //   //   lastName,
-  //   //   firstName,
-  //   //   middleName,
-  //   //   email,
-  //   //   birthDate,
-  //   //   password: hash,
-  //   //   activationLink,
-  //   //   phoneNumber: trimmedPhoneNumber,
-  //   // });
-  //   await MailService.sendActivationMail(
-  //     email,
-  //     `http://${IP}:${PORT}/api/activate/${activationLink}`
-  //   );
-  //   // const userDto = new UserDto(user);
-  //   // return {
-  //   //   user: userDto,
-  //   // };
-  // }
-
   async registration(
     lastName,
     firstName,
@@ -114,7 +58,6 @@ class UserService {
         phoneNumber: trimmedPhoneNumber,
       });
       const activationLink = activationToken.refreshToken;
-      console.log(activationLink);
       // Отправляем письмо активации
       await MailService.sendActivationMail(
         email,
@@ -206,17 +149,25 @@ class UserService {
 
       // Загрузка данных пользователя
       // const user = await DiscountCard.findOne({ where: { activationLink } });
-      console.log(activationLink);
-      const user = jwt.verify(activationLink, process.env.JWT_REFRESH_SECRET);
-      console.log('userverify', user);
-      if (!user) {
+      const userToken = jwt.verify(activationLink, process.env.JWT_REFRESH_SECRET);
+      if (!userToken) {
         throw 'Некорректная ссылка активации';
       }
-
+      const user = await DiscountCard.create({
+        lastName: userToken.lastName,
+        firstName: userToken.firstName,
+        middleName: userToken.middleName,
+        email: userToken.email,
+        birthDate: userToken.birthDate,
+        password: userToken.password,
+        phoneNumber: userToken.phoneNumber,
+        isActivated: true,
+      });
       const userDataFilePath = path.join(
         __dirname,
         '../../userCards/data.json'
       );
+      console.log('=======>', user);
 
       // Чтение файла с использованием fs.readFile
       const userData = JSON.parse(await fs.readFile(userDataFilePath, 'utf8'));
@@ -272,21 +223,21 @@ class UserService {
 
       const credentials = 'Lichkab:Ko9dyfum';
       const base64Credentials = Buffer.from(credentials).toString('base64');
-      // const response = await axios.post(
-      //   `http://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/issueclientcard?Phone=${
-      //     '+7' + user.phoneNumber
-      //   }&Email=${
-      //     user.email
-      //   }&Client=${`${user.lastName} ${user.firstName} ${user.middleName}`}&DateOfBirth=${formattedBirthDate}&ClientCardID=${
-      //     user.barcode
-      //   }`,
-      //   {},
-      //   {
-      //     headers: {
-      //       Authorization: `Basic ${base64Credentials}`,
-      //     },
-      //   }
-      // );
+      await axios.post(
+        `http://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/issueclientcard?Phone=${
+          '+7' + user.phoneNumber
+        }&Email=${
+          user.email
+        }&Client=${`${user.lastName} ${user.firstName} ${user.middleName}`}&DateOfBirth=${formattedBirthDate}&ClientCardID=${
+          user.barcode
+        }`,
+        {},
+        {
+          headers: {
+            Authorization: `Basic ${base64Credentials}`,
+          },
+        }
+      );
       // console.log('Response Data:', response.data);
       // console.log('Response Status:', response.status);
       await user.save();
