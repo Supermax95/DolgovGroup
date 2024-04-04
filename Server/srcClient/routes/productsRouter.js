@@ -18,6 +18,7 @@ router.get('/admin/products', async (req, res) => {
 
     for (const product of products) {
       if (
+        product.customerPrice !== product.originalPrice &&
         product.promoEndDate &&
         isPast(addDays(parseISO(product.promoEndDate), 1))
       ) {
