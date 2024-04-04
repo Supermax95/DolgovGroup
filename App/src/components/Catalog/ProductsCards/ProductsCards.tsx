@@ -84,7 +84,6 @@ const ProductsCards: FC = ({ route }: any) => {
         subcategoryIdArray?.includes(prod.subcategoryId))
   );
 
-
   // const maxProductOriginalPrice = Math.max(
   //   ...products.map((product: IProduct) => product.originalPrice),
   //   0
@@ -116,31 +115,30 @@ const ProductsCards: FC = ({ route }: any) => {
   //   );
   // }
 
-
-let maxProductOriginalPrice = 0;
-if (userStatus === 'Сотрудник') {
-  maxProductOriginalPrice = Math.max(
-    ...products.map((product) => {
-      if (product.originalPrice >= product.employeePrice) {
-        return product.originalPrice;
-      } else {
-        return product.employeePrice;
-      }
-    }),
-    0
-  );
-} else if (userStatus === 'Клиент' || userStatus === 'Новый сотрудник') {
-  maxProductOriginalPrice = Math.max(
-    ...products.map((product) => {
-      if (product.customerPrice >= product.originalPrice) {
-        return product.customerPrice;
-      } else {
-        return product.originalPrice;
-      }
-    }),
-    0
-  );
-}
+  let maxProductOriginalPrice = 0;
+  if (userStatus === 'Сотрудник') {
+    maxProductOriginalPrice = Math.max(
+      ...products.map((product) => {
+        if (product.originalPrice >= product.employeePrice) {
+          return product.originalPrice;
+        } else {
+          return product.employeePrice;
+        }
+      }),
+      0
+    );
+  } else if (userStatus === 'Клиент' || userStatus === 'Новый сотрудник') {
+    maxProductOriginalPrice = Math.max(
+      ...products.map((product) => {
+        if (product.customerPrice >= product.originalPrice) {
+          return product.customerPrice;
+        } else {
+          return product.originalPrice;
+        }
+      }),
+      0
+    );
+  }
 
   const applyFilters = () => {
     let filtered: IProduct[] = Array.isArray(products) ? products : [];
@@ -150,7 +148,13 @@ if (userStatus === 'Сотрудник') {
     }
 
     if (showDiscounted) {
-      filtered = filtered.filter((product) => product.isDiscounted === true);
+      if (userStatus === 'Клиент' || userStatus === 'Новый сотрудник') {
+        filtered = filtered.filter((product) => product.isDiscounted === true);
+      } else if (userStatus === 'Сотрудник') {
+        filtered = filtered.filter(
+          (product) => product.employeePrice < product.originalPrice
+        );
+      }
     }
 
     if (searchText !== '') {
