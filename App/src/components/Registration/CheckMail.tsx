@@ -8,11 +8,8 @@ import { useAppDispatch, useAppSelector } from 'Redux/hooks';
 import { StackNavigationProp, TabScreenNavigationProp } from 'navigation/types';
 import userActivate from 'Redux/thunks/User/activated.api';
 import Button from 'ui/Button';
-import sendActivationLink from 'Redux/thunks/User/sendActivationLink.api';
 import UniversalHeader from 'ui/UniversalHeader';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import FieldInput from 'ui/FieldInput';
-import newEmailReg from 'Redux/thunks/User/newEmailReg.api';
 
 type HomeAndPropResetPassword = CompositeNavigationProp<
   StackNavigationProp,
@@ -23,38 +20,10 @@ const CheckMail: FC = () => {
   const navigation = useNavigation<HomeAndPropResetPassword>();
   const dispatch = useAppDispatch();
 
-  const userId = useAppSelector((state) => state.userSlice.user?.id);
-
   const userEmail = useAppSelector((state) => state.userSlice.email);
   console.log('🚀 ~ userEmail:', userEmail);
 
-  const [isResendDisabled, setResendDisabled] = useState<boolean>(false);
-  const [secondsRemaining, setSecondsRemaining] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  // useEffect(() => {
-  //   if (userId) {
-  //     dispatch(userActivate({ userId, force: true }));
-  //   }
-  // }, [dispatch, userId]);
-
-  useEffect(() => {
-    setResendDisabled(true);
-    startResendTimer();
-  }, []);
-
-  const startResendTimer = (): void => {
-    setSecondsRemaining(180);
-    const interval = setInterval(() => {
-      setSecondsRemaining((prevSeconds) => {
-        if (prevSeconds === 1) {
-          clearInterval(interval);
-          setResendDisabled(false);
-        }
-        return prevSeconds - 1;
-      });
-    }, 1000);
-  };
 
   const handleCheckActivation = async (): Promise<void> => {
     try {
@@ -68,19 +37,6 @@ const CheckMail: FC = () => {
       Alert.alert('Произошла ошибка при проверке активации.');
     }
   };
-
-  // const handleSendActivation = async (): Promise<void> => {
-  //   try {
-  //     setResendDisabled(true);
-  //     startResendTimer();
-
-  //     await dispatch(sendActivationLink({ userEmail }));
-  //     Alert.alert('Проверьте свою почту.');
-  //   } catch (error) {
-  //     Alert.alert('Произошла ошибка при отправке повторной активации.');
-  //     setResendDisabled(false);
-  //   }
-  // };
 
   return (
     <>
@@ -113,31 +69,6 @@ const CheckMail: FC = () => {
                   Если вы не получили письмо, пожалуйста, проверьте папку "Спам"
                 </Text>
               </View>
-              {/* <Pressable
-                // onPress={handleSendActivation}
-                disabled={isResendDisabled}
-                className="text-zinc-800 rounded-xl w-full px-2 py-3"
-              >
-                <View>
-                  {isResendDisabled ? (
-                    <Text className="text-center text-xs font-molmal text-zinc-500">
-                      Возможность повторной отправки через{' '}
-                      {Math.floor(secondsRemaining / 60)} минут{' '}
-                      {secondsRemaining % 60} секунд
-                    </Text>
-                  ) : (
-                    <Text
-                      className={`text-sm text-center font-molmal text-zinc-800
-                  ${
-                    isResendDisabled ? 'text-zinc-500 ' : 'text-zinc-800'
-                  }                
-              `}
-                    >
-                      Отправить повторно
-                    </Text>
-                  )}
-                </View>
-              </Pressable> */}
             </View>
           </View>
         )}
