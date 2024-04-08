@@ -64,6 +64,11 @@ router.put(
     try {
       const newPhotoPath = `/uploads/product/${originalname}`;
 
+      if (!product.photo) {
+        await product.update({ photo: newPhotoPath }, { where: { id } });
+        return res.json({ message: 'Файл загрузился.' });
+      }
+
       // Проверяем, существует ли уже файл с таким путем в базе данных
       const existingProduct = await Product.findOne({
         where: { photo: newPhotoPath },
