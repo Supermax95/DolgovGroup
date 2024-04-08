@@ -122,6 +122,7 @@ router.put(
     console.log('hell');
     try {
       const newPhotoPath = `/uploads/product/${originalname}`;
+      
       // Проверяем, существует ли уже файл с таким путем в базе данных
       const existingProduct = await Product.findOne({
         where: { photo: newPhotoPath },
