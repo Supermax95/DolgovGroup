@@ -94,7 +94,7 @@ const PromoOneDetail = ({ route }: any) => {
               }`}
             >
               <Text className="text-gray-600 font-medium text-xs italic text-center">
-                *Информация о ценах и акциях может изменяться. Рекомендуем
+                *Информация о ценах и акциях может отличаться. Рекомендуем
                 уточнить актуальную информацию в магазине.
               </Text>
             </View>
