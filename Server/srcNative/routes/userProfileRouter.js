@@ -1,7 +1,7 @@
 const {
   PORT,
   IP,
-  //  SUCCESS
+   SUCCESS
 } = process.env;
 const uuid = require('uuid');
 const router = require('express').Router();
@@ -225,8 +225,8 @@ router
           },
         }
       );
-      // return res.redirect(`http://${SUCCESS}/email/success`);
-      return res.redirect(`http://lkft.dolgovagro.ru/email/success`);
+      return res.redirect(`http://${SUCCESS}/email/success`);
+      // return res.redirect(`http://lkft.dolgovagro.ru/email/success`);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Произошла ошибка на сервере' });

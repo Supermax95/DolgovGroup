@@ -1,8 +1,7 @@
 /* eslint-disable class-methods-use-this */
 require('dotenv').config();
 const userService = require('../services/user-service');
-
-// const { SUCCESS } = process.env;
+const { SUCCESS } = process.env;
 class UserController {
   async registration(req, res, next) {
     try {
@@ -41,8 +40,8 @@ class UserController {
       const activationLink = req.params.link;
       await userService.activate(activationLink);
       // Когда будет деплой должно работать
-      return res.redirect(`http://lkft.dolgovagro.ru/registration/success`);
-      // return res.redirect(`http://${SUCCESS}/registration/success`);
+      // return res.redirect(`http://lkft.dolgovagro.ru/registration/success`);
+      return res.redirect(`http://${SUCCESS}/registration/success`);
       // return res.redirect('https://ya.ru');
     } catch (e) {
       const errorMessage = typeof e === 'string' ? e : 'Internal Server Error';
