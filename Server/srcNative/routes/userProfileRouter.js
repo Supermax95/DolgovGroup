@@ -1,4 +1,4 @@
-const { PORT, IP, SUCCESS } = process.env;
+const { PORT, IP } = process.env;
 const uuid = require('uuid');
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
@@ -221,7 +221,7 @@ router
           },
         }
       );
-      return res.redirect(`https://${SUCCESS}/email/success`);
+      return res.redirect(`https://${IP}/email/success`);
       // return res.redirect(`http://lkft.dolgovagro.ru/email/success`);
     } catch (error) {
       console.error(error);
