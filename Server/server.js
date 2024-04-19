@@ -9,6 +9,9 @@ const session = require('express-session');
 const FileStore = require('session-file-store')(session);
 const cookieParser = require('cookie-parser');
 
+const https = require('https');
+const fs = require('fs');
+
 //* Require routes ReactNative
 const indexRouter = require('./srcNative/routes/indexRouter');
 const activateRouter = require('./srcNative/routes/activateRouter');
@@ -86,6 +89,17 @@ app.use(
   })
 );
 
+const privateKeyPath = './Sertificate/privkey.pem';
+const certificatePath = '.Sertificate/cert.pem';
+
+const privateKey = fs.readFileSync(privateKeyPath, 'utf8');
+const certificate = fs.readFileSync(certificatePath, 'utf8');
+
+const options = {
+  key: privateKey,
+  cert: certificate,
+};
+
 app.use(session(sessionConfig));
 app.use(morgan('dev'));
 app.use(express.json());
@@ -121,6 +135,8 @@ app.use('/', promotionRouter);
 app.use('/', lawsRouter);
 app.use('/', questionRouter);
 
-app.listen(PORT, () => {
-  console.log(`Сервер крутится на ${PORT} порту`);
+const server = https.createServer(options, app);
+
+server.listen(PORT, () => {
+  console.log(`Сервер запущен на порту ${PORT} (HTTPS)`);
 });
