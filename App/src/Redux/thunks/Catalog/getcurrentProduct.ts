@@ -26,7 +26,7 @@ const currentProduct = createAsyncThunk<ResponseData, number>(
   async (productId, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axios.get(
-        `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/admin/currentproduct/${productId}`
+        `https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/admin/currentproduct/${productId}`
       );
       return response.data;
     } catch (error) {

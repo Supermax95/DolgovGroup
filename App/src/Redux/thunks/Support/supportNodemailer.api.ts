@@ -19,7 +19,7 @@ const nodemailerSend = createAsyncThunk<ResponseData, RequestData>(
   async ({ token, titleMessage, message }, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axiosInstance.post(
-        `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/supportNodemailerRouter`,
+        `https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/supportNodemailerRouter`,
         { titleMessage, message },
         {
           headers: {

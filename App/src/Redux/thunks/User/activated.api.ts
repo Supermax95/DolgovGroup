@@ -29,7 +29,7 @@ const checkActivation = createAsyncThunk<
 >('api/activate', async ({ userEmail }) => {
   try {
     const response: AxiosResponse = await axios.get(
-      `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/check/${userEmail}`
+      `https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/check/${userEmail}`
     );
 
     if (response.status === 200) {

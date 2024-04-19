@@ -5,10 +5,9 @@ import axios from 'axios';
 
 const getLaws = createAsyncThunk('admin/getDocument', async () => {
   const response: AxiosResponse = await axios.get(
-    `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/admin/laws`
-  );  
+    `https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/admin/laws`
+  );
   return response.data;
-
 });
 
 export default getLaws;

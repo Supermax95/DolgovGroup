@@ -73,10 +73,10 @@ const app = express();
 app.use(
   cors({
     // origin: [
-    //   `http://${IP}:8081`,
-    //   `http://${IP}:5173`,
-    //   'http://localhost:5173',
-    //   'http://localhost:5174',
+    //   `https://${IP}:8081`,
+    //   `https://${IP}:5173`,
+    //   'https://localhost:5173',
+    //   'https://localhost:5174',
     // ],
     origin: true,
     credentials: true,

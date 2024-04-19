@@ -16,7 +16,7 @@ const sendActivationLink = createAsyncThunk<Response, Request>(
   async ({ userId }) => {
     try {
       const response: AxiosResponse = await axios.post<AxiosResponse>(
-        `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/sendNewActivationLink/${userId}`
+        `https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/sendNewActivationLink/${userId}`
       );
 
       return response.data;

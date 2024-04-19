@@ -19,7 +19,7 @@ const currentPromotion = createAsyncThunk<ResponseData, number>(
   async (promotionId, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axios.get(
-        `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/admin/currentpromotion/${promotionId}`
+        `https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/admin/currentpromotion/${promotionId}`
       );
 
       return response.data;

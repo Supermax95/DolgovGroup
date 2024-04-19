@@ -18,7 +18,7 @@ const changeProfilePass = createAsyncThunk<ResponseData, RequestData>(
   async ({ token, newPassword, oldPassword }, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axiosInstance.put(
-        `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/newpassword`,
+        `https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/newpassword`,
         { oldPassword, newPassword },
         {
           headers: {

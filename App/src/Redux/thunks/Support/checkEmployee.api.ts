@@ -23,7 +23,7 @@ const checkEmployee = createAsyncThunk<ResponseData, RequestData>(
   async ({ token }, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axiosInstance.post(
-        `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/checkEmployee`,
+        `https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/checkEmployee`,
         {},
         {
           headers: {

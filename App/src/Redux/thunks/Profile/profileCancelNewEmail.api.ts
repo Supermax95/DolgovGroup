@@ -18,7 +18,7 @@ const profileCancelEmail = createAsyncThunk<Response, Request>(
   async ({ token }) => {
     try {
       const response: AxiosResponse = await axiosInstance.put(
-        `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/cancelEmail`,
+        `https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/cancelEmail`,
         {},
         {
           headers: {

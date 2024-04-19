@@ -21,7 +21,7 @@ const profileChangeEmail = createAsyncThunk<
 >('api/profileChangeEmail', async ({ token, newEmail }) => {
   try {
     const response: AxiosResponse = await axiosInstance.put(
-      `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/email`,
+      `https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/email`,
       { newEmail },
       {
         headers: {

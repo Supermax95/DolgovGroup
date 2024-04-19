@@ -61,7 +61,7 @@ class UserService {
       // Отправляем письмо активации
       await MailService.sendActivationMail(
         email,
-        `http://${IP}:${PORT}/api/activate/${activationLink}`
+        `https://${IP}:${PORT}/api/activate/${activationLink}`
       );
 
       // Пользователь успешно зарегистрирован, в этом месте можно выполнить дополнительные действия, например, вернуть DTO пользователя
@@ -235,7 +235,7 @@ class UserService {
       const credentials = 'Lichkab:Ko9dyfum';
       const base64Credentials = Buffer.from(credentials).toString('base64');
       await axios.post(
-        `http://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/issueclientcard?Phone=${
+        `https://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/issueclientcard?Phone=${
           '+7' + user.phoneNumber
         }&Email=${
           user.email
@@ -377,7 +377,7 @@ module.exports = new UserService();
 //     });
 //     await MailService.sendActivationMail(
 //       email,
-//       `http://${IP}:${PORT}/api/activate/${activationLink}`
+//       `https://${IP}:${PORT}/api/activate/${activationLink}`
 //     );
 //     const userDto = new UserDto(user);
 //     return {
@@ -527,7 +527,7 @@ module.exports = new UserService();
 //       const credentials = 'Lichkab:Ko9dyfum';
 //       const base64Credentials = Buffer.from(credentials).toString('base64');
 //       const response = await axios.post(
-//         `http://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/issueclientcard?Phone=${
+//         `https://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/issueclientcard?Phone=${
 //           '+7' + user.phoneNumber
 //         }&Email=${
 //           user.email

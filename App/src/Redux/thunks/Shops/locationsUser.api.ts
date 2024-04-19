@@ -27,7 +27,7 @@ const getUserLocations = createAsyncThunk<ResponseData, Request>(
   async ({ token }) => {
     try {
       const response: AxiosResponse = await axiosInstance.get(
-        `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/userlocations`,
+        `https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/userlocations`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

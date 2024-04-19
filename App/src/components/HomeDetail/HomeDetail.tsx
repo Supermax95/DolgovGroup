@@ -64,11 +64,11 @@ const HomeDetail: FC = () => {
   }, []);
 
   useEffect(() => {
-        (async () => {
+    (async () => {
       // const { status } = await Brightness.requestPermissionsAsync();
       // if (status === 'granted') {
-        const initialBrightness = await Brightness.getSystemBrightnessAsync();
-        setOriginalBrightness(initialBrightness);
+      const initialBrightness = await Brightness.getSystemBrightnessAsync();
+      setOriginalBrightness(initialBrightness);
       // }
     })();
   }, []);
@@ -76,15 +76,15 @@ const HomeDetail: FC = () => {
   const increaseBrightness = async () => {
     // const { status } = await Brightness.requestPermissionsAsync();
     // if (status === 'granted') {
-      try {
-        await Brightness.setBrightnessAsync(1.0);
-        setTimeout(async () => {
-          await Brightness.setBrightnessAsync(originalBrightness || 0.5);
-        }, 10000);
-      } catch (error) {
-        Alert.alert('Ошибка при установке яркости:');
-      }
+    try {
+      await Brightness.setBrightnessAsync(1.0);
+      setTimeout(async () => {
+        await Brightness.setBrightnessAsync(originalBrightness || 0.5);
+      }, 10000);
+    } catch (error) {
+      Alert.alert('Ошибка при установке яркости:');
     }
+  };
   // };
 
   useEffect(() => {
@@ -141,14 +141,14 @@ const HomeDetail: FC = () => {
     const base64Credentials = encode(`${credentials}`);
     try {
       const response = await axios.get(
-        `http://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/getclientbonuses?ClientCardID=${barcode}`,
+        `https://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/getclientbonuses?ClientCardID=${barcode}`,
         {
           headers: {
             Authorization: `Basic ${base64Credentials}`,
           },
         }
-      );      
-      
+      );
+
       const bonusCount = response.data?.BonusCount || 0;
       AsyncStorage.setItem('bonusCheck', Date.now().toString());
       setNumberPoints(bonusCount);

@@ -37,11 +37,10 @@ const refreshToken = createAsyncThunk<ResponseData, RequestData>(
       };
 
       const response: AxiosResponse = await axios.post(
-        `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/refresh`,
+        `https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/refresh`,
         userData,
         config
       );
-    
 
       return response.data;
     } catch (error) {

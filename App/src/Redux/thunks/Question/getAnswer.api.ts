@@ -14,7 +14,7 @@ const getAnswers = createAsyncThunk<ResponseData, number>(
   async (questionId, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axios.get(
-        `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/admin/questions/${questionId}`
+        `https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/admin/questions/${questionId}`
       );
 
       return response.data;

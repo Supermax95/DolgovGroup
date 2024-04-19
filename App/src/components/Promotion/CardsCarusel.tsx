@@ -63,7 +63,7 @@ const CardsCarusel = () => {
             <View style={styles.imageBox}>
               <Image
                 source={{
-                  uri: `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}${item.photo}`,
+                  uri: `https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}${item.photo}`,
                 }}
                 resizeMode="contain"
                 style={styles.image}

@@ -70,7 +70,7 @@ const SingleLaw = ({ route }: any) => {
   const openDocumentLink = () => {
     if (currentLawOpen.documentLink) {
       Linking.openURL(
-        `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}${currentLawOpen.documentLink}`
+        `https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}${currentLawOpen.documentLink}`
       );
     }
   };

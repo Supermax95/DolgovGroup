@@ -23,7 +23,7 @@ const profileNotification = createAsyncThunk<ResponseData, RequestData>(
   ) => {
     try {
       const response: AxiosResponse = await axiosInstance.put(
-        `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/notification`,
+        `https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/notification`,
         {
           notificationPush,
           notificationEmail,

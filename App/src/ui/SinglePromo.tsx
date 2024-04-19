@@ -55,7 +55,7 @@ const SinglePromo: FC<ISinglePromo> = ({
           <View style={styles.imageBox}>
             <Image
               source={{
-                uri: `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}${image}`,
+                uri: `https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}${image}`,
               }}
               resizeMode="contain"
               style={styles.image}

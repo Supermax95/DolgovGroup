@@ -6,7 +6,7 @@ const NotFound = () => {
     <div className="grid h-screen place-content-center bg-white px-4">
       <div className="text-center">
         <svg
-          xmlns="http://www.w3.org/2000/svg"
+          xmlns="https://www.w3.org/2000/svg"
           viewBox="0 0 1024 768"
           className="mx-auto h-56 w-auto text-black sm:h-64"
         >

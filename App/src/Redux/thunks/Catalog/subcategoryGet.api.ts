@@ -5,7 +5,7 @@ import axios from 'axios';
 
 const getSubcategory = createAsyncThunk('userSubcategory', async () => {
   const response: AxiosResponse = await axios.get(
-    `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/admin/subcategory`
+    `https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/admin/subcategory`
   );
 
   return response.data;

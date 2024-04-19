@@ -14,9 +14,12 @@ const resetPassword = createAsyncThunk<ResponseData, RequestData>(
   'api/resetpassword',
   async (requestData, { rejectWithValue }) => {
     try {
-      await axios.post(`http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/api/new-password`, {
-        email: requestData.email,
-      });
+      await axios.post(
+        `https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/api/new-password`,
+        {
+          email: requestData.email,
+        }
+      );
       const response: ResponseData = {
         message: 'Пароль успешно сброшен',
       };

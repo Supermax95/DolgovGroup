@@ -61,20 +61,19 @@ const SingleProduct = ({ route }: any) => {
   // }, [dispatch, productId]);
 
   const onRefresh = async () => {
-
     try {
-    dispatch(currentProduct(productId));
-  } catch (error) {
-    Alert.alert('Ошибка при обновлении данных');
-  } finally {
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 500);
-  }
-};
-useEffect(() => {
-  onRefresh();
-}, []);
+      dispatch(currentProduct(productId));
+    } catch (error) {
+      Alert.alert('Ошибка при обновлении данных');
+    } finally {
+      setTimeout(() => {
+        setRefreshing(false);
+      }, 500);
+    }
+  };
+  useEffect(() => {
+    onRefresh();
+  }, []);
 
   const currentProductOpen =
     useAppSelector<IProduct | null>(
@@ -98,62 +97,62 @@ useEffect(() => {
           <ActivityIndicator size="large" color="green" />
         </View>
       ) : ( */}
-        <SafeAreaView
-          className={`relative flex-1 items-center justify-start bg-[#ffff] `}
-        >
-          <UniversalHeader onPress={() => navigation.goBack()} />
+      <SafeAreaView
+        className={`relative flex-1 items-center justify-start bg-[#ffff] `}
+      >
+        <UniversalHeader onPress={() => navigation.goBack()} />
 
-          {/* Scrollable container start */}
-          {currentProductOpen ? (
-            <ScrollView
-              style={{ flex: 1, width: '100%' }}
-              refreshControl={
-                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        {/* Scrollable container start */}
+        {currentProductOpen ? (
+          <ScrollView
+            style={{ flex: 1, width: '100%' }}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          >
+            {/* <View className="flex-col flex-wrap justify-center"> */}
+            <SingleProductCard
+              key={currentProductOpen.id}
+              // article={currentProductOpen.article}
+              productName={currentProductOpen.productName}
+              originalPrice={currentProductOpen.originalPrice}
+              isDiscount={currentProductOpen.isDiscounted}
+              discountedPrice={
+                userStatus === 'Сотрудник'
+                  ? currentProductOpen.employeePrice
+                  : currentProductOpen.customerPrice
               }
-            >
-              {/* <View className="flex-col flex-wrap justify-center"> */}
-              <SingleProductCard
-                key={currentProductOpen.id}
-                // article={currentProductOpen.article}
-                productName={currentProductOpen.productName}
-                originalPrice={currentProductOpen.originalPrice}
-                isDiscount={currentProductOpen.isDiscounted}
-                discountedPrice={
-                  userStatus === 'Сотрудник'
+              discountPercentage={Math.round(
+                ((currentProductOpen.originalPrice -
+                  (userStatus === 'Сотрудник'
                     ? currentProductOpen.employeePrice
-                    : currentProductOpen.customerPrice
-                }
-                discountPercentage={Math.round(
-                  ((currentProductOpen.originalPrice -
-                    (userStatus === 'Сотрудник'
-                      ? currentProductOpen.employeePrice
-                      : currentProductOpen.customerPrice)) /
-                    currentProductOpen.originalPrice) *
-                    100
-                )}
-                isNew={currentProductOpen.isNew}
-                image={`http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}${currentProductOpen.photo}`}
-                description={desc}
-              />
-              <View
-                className={`items-center justify-center pb-10 ${
-                  Platform.OS === 'android' ? 'px-3' : 'px-2'
-                }`}
-              >
-                <Text className="text-gray-600 font-medium text-xs italic text-center">
-                  *Информация о ценах и акциях может отличаться. Рекомендуем
-                  уточнить актуальную информацию в магазине.
-                </Text>
-              </View>
-            </ScrollView>
-          ) : (
-            <View className="flex-row flex-wrap justify-center mt-4">
-              <Text className="text-gray-600 font-medium text-lg">
-                Продукт отсутстует
+                    : currentProductOpen.customerPrice)) /
+                  currentProductOpen.originalPrice) *
+                  100
+              )}
+              isNew={currentProductOpen.isNew}
+              image={`https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}${currentProductOpen.photo}`}
+              description={desc}
+            />
+            <View
+              className={`items-center justify-center pb-10 ${
+                Platform.OS === 'android' ? 'px-3' : 'px-2'
+              }`}
+            >
+              <Text className="text-gray-600 font-medium text-xs italic text-center">
+                *Информация о ценах и акциях может отличаться. Рекомендуем
+                уточнить актуальную информацию в магазине.
               </Text>
             </View>
-          )}
-        </SafeAreaView>
+          </ScrollView>
+        ) : (
+          <View className="flex-row flex-wrap justify-center mt-4">
+            <Text className="text-gray-600 font-medium text-lg">
+              Продукт отсутстует
+            </Text>
+          </View>
+        )}
+      </SafeAreaView>
       {/* )} */}
     </>
   );

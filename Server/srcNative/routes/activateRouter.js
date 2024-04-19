@@ -63,7 +63,7 @@ router.put('/newRegEmail', async (req, res) => {
     await user.save();
     await MailService.sendActivationMail(
       newEmail,
-      `http://${IP}:${PORT}/api/activate/${newActivationLink}`
+      `https://${IP}:${PORT}/api/activate/${newActivationLink}`
     );
 
     return res.status(200).json({

@@ -249,7 +249,7 @@ const ProductsCards: FC = ({ route }: any) => {
                     100
                 )}
                 isNew={item.isNew}
-                imageProduct={`http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}${item.photo}`}
+                imageProduct={`https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}${item.photo}`}
               />
             )}
             refreshControl={

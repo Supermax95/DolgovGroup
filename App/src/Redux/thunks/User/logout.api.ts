@@ -16,7 +16,7 @@ export const userLogout = createAsyncThunk<ResponseData, Request>(
   async ({ token }) => {
     try {
       const response: AxiosResponse = await axios.post(
-        `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/api/logout`,
+        `https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/api/logout`,
         null,
         {
           headers: {

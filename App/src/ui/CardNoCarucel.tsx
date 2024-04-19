@@ -42,7 +42,7 @@ const CardNoCarusel: FC<ICardNoCarusel> = ({
       >
         <Image
           source={{
-            uri: `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}${promotionImage}`,
+            uri: `https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}${promotionImage}`,
           }}
           resizeMode="cover"
           style={styles.image}

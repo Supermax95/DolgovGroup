@@ -35,7 +35,7 @@ const getProfileInfo = createAsyncThunk<
 >('api/profileInfo', async ({ token }, { rejectWithValue }) => {
   try {
     const response: AxiosResponse = await axiosInstance.get(
-      `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/edit`,
+      `https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/edit`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

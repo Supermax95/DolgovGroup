@@ -80,8 +80,6 @@ const SearchProduct = () => {
   //   0
   // );
 
-
-
   let maxProductOriginalPrice = 0;
 
   if (userStatus === 'Сотрудник') {
@@ -210,7 +208,7 @@ const SearchProduct = () => {
                     item.originalPrice) *
                     100
                 )}
-                imageProduct={`http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}${item.photo}`}
+                imageProduct={`https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}${item.photo}`}
               />
             )}
             refreshControl={

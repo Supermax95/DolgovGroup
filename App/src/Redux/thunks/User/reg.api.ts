@@ -28,7 +28,7 @@ const userRegister = createAsyncThunk<ResponseData, RequestData>(
   async (user, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axios.post(
-        `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/api/registration`,
+        `https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/api/registration`,
         user
       );
       if (response.status === 200) {

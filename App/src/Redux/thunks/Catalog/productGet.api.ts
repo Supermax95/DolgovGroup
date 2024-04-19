@@ -5,10 +5,9 @@ import axios from 'axios';
 
 const getProducts = createAsyncThunk('getProductsUser', async () => {
   const response: AxiosResponse = await axios.get(
-    `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/admin/products`
+    `https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/admin/products`
   );
   return response.data;
-  
 });
 
 export default getProducts;

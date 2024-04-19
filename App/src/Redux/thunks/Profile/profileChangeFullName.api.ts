@@ -26,7 +26,7 @@ const profileChangeFullName = createAsyncThunk<ResponseData, RequestDate>(
   ) => {
     try {
       const response: AxiosResponse = await axiosInstance.put(
-        `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/fullname`,
+        `https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/fullname`,
         {
           newLastName,
           newFirstName,

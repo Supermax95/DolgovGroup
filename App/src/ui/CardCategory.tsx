@@ -42,7 +42,7 @@ const CardCategory: FC<ICardCategory> = ({
       >
         <Image
           source={{
-            uri: `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}${imageCategory}`,
+            uri: `https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}${imageCategory}`,
           }}
           resizeMode="cover"
           style={styles.image}

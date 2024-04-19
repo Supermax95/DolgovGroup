@@ -5,7 +5,7 @@ import axios from 'axios';
 
 const getQuestions = createAsyncThunk('api/getQuestions', async () => {
   const response: AxiosResponse = await axios.get(
-    `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/admin/questions`
+    `https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/admin/questions`
   );
 
   return response.data;

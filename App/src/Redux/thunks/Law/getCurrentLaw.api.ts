@@ -17,7 +17,7 @@ const currentLaw = createAsyncThunk<ResponseData, number>(
   async (lawId, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axios.get(
-        `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/admin/currentlaw/${lawId}`
+        `https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/admin/currentlaw/${lawId}`
       );
       return response.data;
     } catch (error) {

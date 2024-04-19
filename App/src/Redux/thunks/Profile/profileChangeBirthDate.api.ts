@@ -17,7 +17,7 @@ const profileChangeBirthDate = createAsyncThunk<ResponseData, RequestData>(
   async ({ newBirthDate, token }, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axiosInstance.put(
-        `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/calendar`,
+        `https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/calendar`,
         { newBirthDate },
         {
           headers: {

@@ -18,7 +18,7 @@ const profileChangePhoneNumber = createAsyncThunk<ResponseData, RequestData>(
   async ({ newPhoneNumber, token }, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axiosInstance.put(
-        `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/changePhoneNumber`,
+        `https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/changePhoneNumber`,
         { newPhoneNumber },
         {
           headers: {

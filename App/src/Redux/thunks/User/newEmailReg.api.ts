@@ -17,7 +17,7 @@ const newEmailReg = createAsyncThunk<Response, Request>(
   async ({ userId, newEmail }) => {
     try {
       const response: AxiosResponse = await axios.put<AxiosResponse>(
-        `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/newRegEmail`,
+        `https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/newRegEmail`,
         { userId, newEmail }
       );
 
