@@ -37,8 +37,16 @@ const userStatusRouter = require('./srcNative/routes/userStatusRouter');
 // middleware
 const errorMiddleware = require('./srcNative/middlewares/error-middleware');
 // const authMiddleware = require('./srcNative/middlewares/auth-middleware');
-
+const https = require('https');
+const fs = require('fs');
 const { PORT, IP } = process.env;
+
+const privateKeyPath = '/etc/letsencrypt/live/lkft.dolgovagro.ru/privkey.pem';
+const certificatePath =
+  '/etc/letsencrypt/live/lkft.dolgovagro.ru/fullchain.pem';
+
+const privateKey = fs.readFileSync(privateKeyPath, 'utf8');
+const certificate = fs.readFileSync(certificatePath, 'utf8');
 
 const sessionConfig = {
   name: 'name',
@@ -121,6 +129,18 @@ app.use('/', promotionRouter);
 app.use('/', lawsRouter);
 app.use('/', questionRouter);
 
-app.listen(PORT, () => {
-  console.log(`Сервер крутится на ${PORT} порту`);
+// app.listen(PORT, () => {
+//   console.log(`Сервер крутится на ${PORT} порту`);
+// });
+
+const server = https.createServer(options, app);
+
+const options = {
+  key: privateKey,
+  cert: certificate
+};
+
+
+server.listen(PORT, () => {
+  console.log(`Сервер крутится на порту ${PORT} (HTTPS)`);
 });
