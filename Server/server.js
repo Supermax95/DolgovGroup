@@ -89,9 +89,8 @@ app.use(
   })
 );
 
-const privateKeyPath = path.join(__dirname,'..','..',privkey.pem);
-console.log('===>',privateKeyPath);
-const certificatePath = '.Sertificate/cert.pem';
+const privateKeyPath = path.join(__dirname, 'Sertificate', 'privkey.pem');
+const certificatePath = path.join(__dirname, 'Sertificate', 'cert.pem');
 
 const privateKey = fs.readFileSync(privateKeyPath, 'utf8');
 const certificate = fs.readFileSync(certificatePath, 'utf8');
