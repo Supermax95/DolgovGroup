@@ -41,7 +41,7 @@ class UserController {
       await userService.activate(activationLink);
       // Когда будет деплой должно работать
       // return res.redirect(`http://lkft.dolgovagro.ru/registration/success`);
-      return res.redirect(`http://${SUCCESS}/registration/success`);
+      return res.redirect(`https://${SUCCESS}/registration/success`);
       // return res.redirect('https://ya.ru');
     } catch (e) {
       const errorMessage = typeof e === 'string' ? e : 'Internal Server Error';

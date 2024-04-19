@@ -225,7 +225,7 @@ router
           },
         }
       );
-      return res.redirect(`http://${SUCCESS}/email/success`);
+      return res.redirect(`https://${SUCCESS}/email/success`);
       // return res.redirect(`http://lkft.dolgovagro.ru/email/success`);
     } catch (error) {
       console.error(error);
