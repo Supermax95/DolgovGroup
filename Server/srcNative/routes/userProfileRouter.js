@@ -222,7 +222,7 @@ router
         }
       );
       return res.redirect(`https://${SUCCESS}/email/success`);
-      // return res.redirect(`https://lkft.dolgovagro.ru/email/success`);
+      // return res.redirect(`http://lkft.dolgovagro.ru/email/success`);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Произошла ошибка на сервере' });

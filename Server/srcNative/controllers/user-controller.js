@@ -40,7 +40,7 @@ class UserController {
       const activationLink = req.params.link;
       await userService.activate(activationLink);
       // Когда будет деплой должно работать
-      // return res.redirect(`https://lkft.dolgovagro.ru/registration/success`);
+      // return res.redirect(`http://lkft.dolgovagro.ru/registration/success`);
       return res.redirect(`https://${SUCCESS}/registration/success`);
       // return res.redirect('https://ya.ru');
     } catch (e) {
