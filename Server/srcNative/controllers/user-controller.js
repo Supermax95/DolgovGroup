@@ -23,7 +23,6 @@ class UserController {
         password,
         phoneNumber
       );
-      console.log(email);
       return res.status(200).json({
         email,
         message: 'Регистрация прошла успешно',
@@ -40,7 +39,7 @@ class UserController {
       const activationLink = req.params.link;
       await userService.activate(activationLink);
       // Когда будет деплой должно работать
-      return res.redirect(`https://${IP}/registration/success`);
+      return res.redirect(`https://lkft.dolgovagro/registration/success`);
     } catch (e) {
       const errorMessage = typeof e === 'string' ? e : 'Internal Server Error';
       console.log(errorMessage);

@@ -221,7 +221,7 @@ router
           },
         }
       );
-      return res.redirect(`https://${IP}/email/success`);
+      return res.redirect(`https://lkft.dolgovagro/email/success`);
       // return res.redirect(`http://lkft.dolgovagro.ru/email/success`);
     } catch (error) {
       console.error(error);
