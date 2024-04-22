@@ -193,6 +193,7 @@ router
   })
 
   .get('/confirm-email/:confirmationCode/:newEmail', async (req, res) => {
+    console.log('ddfghjkjhgfdfghjkljhgfdfghjAAAAAAAAAAAAAAAAAAAAAAAAAAA');
     try {
       const { confirmationCode, newEmail } = req.params;
       const userData = await DiscountCard.findOne({
