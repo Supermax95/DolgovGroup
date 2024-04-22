@@ -221,6 +221,11 @@ router
           },
         }
       );
+
+      console.log(
+        '============================================>',
+        `https://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/updateclientcard?ClientCardID=${userData.barcode}&Email=${userData.email}`
+      );
       return res.redirect(`https://lkft.dolgovagro/email/success`);
       // return res.redirect(`http://lkft.dolgovagro.ru/email/success`);
     } catch (error) {

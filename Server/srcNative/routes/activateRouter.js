@@ -1,10 +1,10 @@
-const router = require('express').Router();
-const tokenService = require('../services/token-service');
-const { DiscountCard } = require('../../db/models');
-const UserDto = require('../dtos/user-dto');
-const MailService = require('../services/mail-service');
-const uuid = require('uuid');
 const { PORT, IP } = process.env;
+const router = require('express').Router();
+const uuid = require('uuid');
+const tokenService = require('../services/token-service');
+const MailService = require('../services/mail-service');
+const UserDto = require('../dtos/user-dto');
+const { DiscountCard } = require('../../db/models');
 
 router.get('/check/:userEmail', async (req, res) => {
   try {

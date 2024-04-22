@@ -39,6 +39,10 @@ class UserController {
       const activationLink = req.params.link;
       await userService.activate(activationLink);
       // Когда будет деплой должно работать
+      console.log(
+        '~ UserController ~ activate ~==========>',
+        'https://lkft.dolgovagro/registration/success'
+      );
       return res.redirect(`https://lkft.dolgovagro/registration/success`);
     } catch (e) {
       const errorMessage = typeof e === 'string' ? e : 'Internal Server Error';
