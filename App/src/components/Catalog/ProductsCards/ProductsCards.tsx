@@ -11,7 +11,7 @@ import {
   Alert,
 } from 'react-native';
 import ProductCard from 'ui/ProductCard';
-import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
+import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_API_URL } from '@env';
 import UniversalHeader from 'ui/UniversalHeader';
 import FilterModal from 'ui/FilterModal';
 import SearchAndFilter from 'ui/SearchAndFilter';
@@ -249,7 +249,7 @@ const ProductsCards: FC = ({ route }: any) => {
                     100
                 )}
                 isNew={item.isNew}
-                imageProduct={`https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}${item.photo}`}
+                imageProduct={`${EXPO_PUBLIC_API_URL}:${EXPO_PUBLIC_PORT}${item.photo}`}
               />
             )}
             refreshControl={

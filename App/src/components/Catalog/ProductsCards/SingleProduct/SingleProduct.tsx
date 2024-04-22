@@ -11,7 +11,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import SingleProductCard from 'ui/SingleProductCard';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
-import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
+import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_API_URL } from '@env';
 import currentProduct from 'Redux/thunks/Catalog/getcurrentProduct';
 import RenderHtml from 'react-native-render-html';
 import { useWindowDimensions } from 'react-native';
@@ -131,7 +131,7 @@ const SingleProduct = ({ route }: any) => {
                   100
               )}
               isNew={currentProductOpen.isNew}
-              image={`https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}${currentProductOpen.photo}`}
+              image={`${EXPO_PUBLIC_API_URL}:${EXPO_PUBLIC_PORT}${currentProductOpen.photo}`}
               description={desc}
             />
             <View

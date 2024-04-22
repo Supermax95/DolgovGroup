@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
-import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
+import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_API_URL } from '@env';
 
 interface RequestData {
   token:
@@ -37,7 +37,7 @@ const refreshToken = createAsyncThunk<ResponseData, RequestData>(
       };
 
       const response: AxiosResponse = await axios.post(
-        `https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/refresh`,
+        `${EXPO_PUBLIC_API_URL}:${EXPO_PUBLIC_PORT}/refresh`,
         userData,
         config
       );

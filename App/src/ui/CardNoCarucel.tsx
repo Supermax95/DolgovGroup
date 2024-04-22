@@ -7,7 +7,7 @@ import {
   Dimensions,
   StyleSheet,
 } from 'react-native';
-import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
+import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_API_URL } from '@env';
 
 interface ICardNoCarusel {
   onPress: () => void;
@@ -42,7 +42,7 @@ const CardNoCarusel: FC<ICardNoCarusel> = ({
       >
         <Image
           source={{
-            uri: `https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}${promotionImage}`,
+            uri: `${EXPO_PUBLIC_API_URL}:${EXPO_PUBLIC_PORT}${promotionImage}`,
           }}
           resizeMode="cover"
           style={styles.image}

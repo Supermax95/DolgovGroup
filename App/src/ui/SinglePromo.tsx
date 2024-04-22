@@ -7,7 +7,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import React, { FC } from 'react';
-import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
+import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_API_URL } from '@env';
 import { isToday, parseISO } from 'date-fns';
 import Padding from './Padding';
 
@@ -55,7 +55,7 @@ const SinglePromo: FC<ISinglePromo> = ({
           <View style={styles.imageBox}>
             <Image
               source={{
-                uri: `https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}${image}`,
+                uri: `${EXPO_PUBLIC_API_URL}:${EXPO_PUBLIC_PORT}${image}`,
               }}
               resizeMode="contain"
               style={styles.image}

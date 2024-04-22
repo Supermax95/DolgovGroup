@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
-import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
+import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_API_URL } from '@env';
 import { axiosInstance } from '../Logout401/axios.api';
 
 interface RequestData {
@@ -23,7 +23,7 @@ const profileNotification = createAsyncThunk<ResponseData, RequestData>(
   ) => {
     try {
       const response: AxiosResponse = await axiosInstance.put(
-        `https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/notification`,
+        `${EXPO_PUBLIC_API_URL}:${EXPO_PUBLIC_PORT}/notification`,
         {
           notificationPush,
           notificationEmail,

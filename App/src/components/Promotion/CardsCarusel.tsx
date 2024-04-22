@@ -1,4 +1,4 @@
-import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
+import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_API_URL } from '@env';
 import { useNavigation } from '@react-navigation/native';
 import { useAppSelector } from 'Redux/hooks';
 import { StackNavigationProp } from 'navigation/types';
@@ -63,7 +63,7 @@ const CardsCarusel = () => {
             <View style={styles.imageBox}>
               <Image
                 source={{
-                  uri: `https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}${item.photo}`,
+                  uri: `${EXPO_PUBLIC_API_URL}:${EXPO_PUBLIC_PORT}${item.photo}`,
                 }}
                 resizeMode="contain"
                 style={styles.image}

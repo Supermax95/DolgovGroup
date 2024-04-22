@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
+import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_API_URL } from '@env';
 
 interface RequestData {
   email: string;
@@ -15,7 +15,7 @@ const resetPassword = createAsyncThunk<ResponseData, RequestData>(
   async (requestData, { rejectWithValue }) => {
     try {
       await axios.post(
-        `https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/api/new-password`,
+        `${EXPO_PUBLIC_API_URL}:${EXPO_PUBLIC_PORT}/api/new-password`,
         {
           email: requestData.email,
         }

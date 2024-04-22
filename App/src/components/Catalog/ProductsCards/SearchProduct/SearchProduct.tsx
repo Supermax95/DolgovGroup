@@ -8,7 +8,7 @@ import {
   Alert,
 } from 'react-native';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
-import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
+import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_API_URL } from '@env';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from 'navigation/types';
 import UniversalHeader from 'ui/UniversalHeader';
@@ -208,7 +208,7 @@ const SearchProduct = () => {
                     item.originalPrice) *
                     100
                 )}
-                imageProduct={`https://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}${item.photo}`}
+                imageProduct={`${EXPO_PUBLIC_API_URL}:${EXPO_PUBLIC_PORT}${item.photo}`}
               />
             )}
             refreshControl={
