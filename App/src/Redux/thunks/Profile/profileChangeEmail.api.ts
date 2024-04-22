@@ -31,6 +31,7 @@ const profileChangeEmail = createAsyncThunk<
       }
     );
 
+    console.log('🚀 ~ > ~ response.data:', response.data);
     return response.data;
   } catch (error) {
     throw error;
