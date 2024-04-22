@@ -211,7 +211,12 @@ router
       });
 
       const credentials = 'Lichkab:Ko9dyfum';
+      console.log('🚀 ~ .get ~ credentials:', credentials);
       const base64Credentials = Buffer.from(credentials).toString('base64');
+      console.log(
+        '🚀 ~ .get ~ base64Credentials:+++++++++++++++++',
+        base64Credentials
+      );
       await axios.post(
         `https://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/updateclientcard?ClientCardID=${userData.barcode}&Email=${userData.email}
       `,
