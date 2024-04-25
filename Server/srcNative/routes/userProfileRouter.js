@@ -211,13 +211,9 @@ router
       });
 
       const credentials = 'Lichkab:Ko9dyfum';
-      console.log('🚀 ~ .get ~ credentials:', credentials);
       const base64Credentials = Buffer.from(credentials).toString('base64');
-      console.log(
-        '🚀 ~ .get ~ base64Credentials:+++++++++++++++++',
-        base64Credentials
-      );
-      await axios.post(
+
+      result = await axios.post(
         `https://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/updateclientcard?ClientCardID=${userData.barcode}&Email=${userData.email}
       `,
         {},
@@ -228,10 +224,7 @@ router
         }
       );
 
-      console.log(
-        '============================================>',
-        `https://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/updateclientcard?ClientCardID=${userData.barcode}&Email=${userData.email}`
-      );
+      console.log('============================================>', result);
       return res.redirect(`https://lkft.dolgovagro/email/success`);
       // return res.redirect(`http://lkft.dolgovagro.ru/email/success`);
     } catch (error) {
