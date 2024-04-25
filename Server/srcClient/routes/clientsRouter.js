@@ -166,7 +166,7 @@ router.put('/admin/clients/:id', checkUser, async (req, res) => {
       const credentials = 'Lichkab:Ko9dyfum';
       const base64Credentials = Buffer.from(credentials).toString('base64');
       // console.log(' newInfo.barcode', newInfo.barcode, trimmedPhoneNumber);
-      await axios.post(
+      const response = await axios.post(
         `https://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/updateclientcard?ClientCardID=${
           newInfo.barcode
         }&Phone=${'+7' + trimmedPhoneNumber}
@@ -178,6 +178,7 @@ router.put('/admin/clients/:id', checkUser, async (req, res) => {
           },
         }
       );
+      console.log('Response Data:', response);
     } else {
       await DiscountCard.update(newInfo, { where: { id: clientId } });
     }
