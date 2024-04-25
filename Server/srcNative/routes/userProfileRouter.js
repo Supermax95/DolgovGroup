@@ -212,7 +212,7 @@ router
       const credentials = 'Lichkab:Ko9dyfum';
       const base64Credentials = Buffer.from(credentials).toString('base64');
 
-      result = await axios.post(
+      await axios.post(
         `https://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/updateclientcard?ClientCardID=${userData.barcode}&Email=${userData.email}
       `,
         {},
@@ -223,7 +223,6 @@ router
         }
       );
 
-      console.log('============================================>', result);
       return res.redirect(`https://lkft.dolgovagro.ru/email/success`);
     } catch (error) {
       console.error(error);
