@@ -209,23 +209,22 @@ router
         newEmail: '',
       });
 
-      // const credentials = 'Lichkab:Ko9dyfum';
-      // const base64Credentials = Buffer.from(credentials).toString('base64');
+      const credentials = 'Lichkab:Ko9dyfum';
+      const base64Credentials = Buffer.from(credentials).toString('base64');
 
-      // result = await axios.post(
-      //   `https://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/updateclientcard?ClientCardID=${userData.barcode}&Email=${userData.email}
-      // `,
-      //   {},
-      //   {
-      //     headers: {
-      //       Authorization: `Basic ${base64Credentials}`,
-      //     },
-      //   }
-      // );
+      result = await axios.post(
+        `https://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/updateclientcard?ClientCardID=${userData.barcode}&Email=${userData.email}
+      `,
+        {},
+        {
+          headers: {
+            Authorization: `Basic ${base64Credentials}`,
+          },
+        }
+      );
 
-      // console.log('============================================>', result);
+      console.log('============================================>', result);
       return res.redirect(`https://lkft.dolgovagro.ru/email/success`);
-      // return res.redirect(`http://lkft.dolgovagro.ru/email/success`);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Произошла ошибка на сервере' });
