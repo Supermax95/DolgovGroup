@@ -193,7 +193,6 @@ router
   })
 
   .get('/confirm-email/:confirmationCode/:newEmail', async (req, res) => {
-    console.log('ddfghjkjhgfdfghjkljhgfdfghjAAAAAAAAAAAAAAAAAAAAAAAAAAA');
     try {
       const { confirmationCode, newEmail } = req.params;
       const userData = await DiscountCard.findOne({
@@ -210,7 +209,8 @@ router
         newEmail: '',
       });
 
-      const credentials = 'Lichkab:Ko9dyfum';
+      // const credentials = 'Lichkab:Ko9dyfum';
+      const credentials = 'Lichkab:dsdwwdwd';
       const base64Credentials = Buffer.from(credentials).toString('base64');
 
       result = await axios.post(
