@@ -210,21 +210,20 @@ router
       });
 
       // const credentials = 'Lichkab:Ko9dyfum';
-      const credentials = 'Lichkab:dsdwwdwd';
-      const base64Credentials = Buffer.from(credentials).toString('base64');
+      // const base64Credentials = Buffer.from(credentials).toString('base64');
 
-      result = await axios.post(
-        `https://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/updateclientcard?ClientCardID=${userData.barcode}&Email=${userData.email}
-      `,
-        {},
-        {
-          headers: {
-            Authorization: `Basic ${base64Credentials}`,
-          },
-        }
-      );
+      // result = await axios.post(
+      //   `https://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/updateclientcard?ClientCardID=${userData.barcode}&Email=${userData.email}
+      // `,
+      //   {},
+      //   {
+      //     headers: {
+      //       Authorization: `Basic ${base64Credentials}`,
+      //     },
+      //   }
+      // );
 
-      console.log('============================================>', result);
+      // console.log('============================================>', result);
       return res.redirect(`https://lkft.dolgovagro/email/success`);
       // return res.redirect(`http://lkft.dolgovagro.ru/email/success`);
     } catch (error) {
