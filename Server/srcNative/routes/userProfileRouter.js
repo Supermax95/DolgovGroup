@@ -212,6 +212,8 @@ router
       const credentials = 'Lichkab:Ko9dyfum';
       const base64Credentials = Buffer.from(credentials).toString('base64');
 
+      //* здесь ссылки при смене email в ЛК
+
       await axios.post(
         `http://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/updateclientcard?ClientCardID=${userData.barcode}&Email=${userData.email}
       `,
