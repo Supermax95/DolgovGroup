@@ -61,7 +61,7 @@ class UserService {
       // Отправляем письмо активации
       await MailService.sendActivationMail(
         email,
-        `https://${IP}:${PORT}/api/activate/${activationLink}`
+        `http://${IP}:${PORT}/api/activate/${activationLink}`
       );
 
       // Пользователь успешно зарегистрирован, в этом месте можно выполнить дополнительные действия, например, вернуть DTO пользователя
