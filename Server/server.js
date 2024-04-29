@@ -41,7 +41,7 @@ const userStatusRouter = require('./srcNative/routes/userStatusRouter');
 const errorMiddleware = require('./srcNative/middlewares/error-middleware');
 // const authMiddleware = require('./srcNative/middlewares/auth-middleware');
 
-const { PORT, IP } = process.env;
+const { PORT, PORT_HTTP, IP } = process.env;
 
 const sessionConfig = {
   name: 'name',
@@ -52,8 +52,8 @@ const sessionConfig = {
   cookie: {
     maxAge: 30 * 24 * 60 * 60 * 1000,
     httpOnly: true,
-    secure: true, 
-    sameSite: 'None', 
+    secure: true,
+    sameSite: 'None',
   },
 };
 
@@ -143,7 +143,6 @@ server.listen(PORT, () => {
   console.log(`Сервер запущен на порту ${PORT} (HTTPS)`);
 });
 
-// app.listen(PORT, () => {
-//   console.log(`Сервер запущен на порту ${PORT}`);
-// });
-
+app.listen(PORT_HTTP, () => {
+  console.log(`Сервер запущен на порту ${PORT_HTTP} (HTTP)`);
+});
