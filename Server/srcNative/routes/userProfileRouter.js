@@ -95,7 +95,7 @@ const sendConfirmationEmail = async (newEmail, confirmationCode) => {
     },
   });
 
-  const activeLinkForNewEmail = `http://${IP}:${PORT}/confirm-email/${confirmationCode}/${newEmail}`;
+  const activeLinkForNewEmail = `https://${IP}:${PORT}/confirm-email/${confirmationCode}/${newEmail}`;
 
   const mailOptions = {
     from: process.env.EMAIL,
@@ -225,8 +225,8 @@ router
         }
       );
 
-      // return res.redirect(`https://lkft.dolgovagro/email/success`);
-      return res.redirect(`http://lkft.dolgovagro.ru/email/success`);
+      return res.redirect(`https://lkft.dolgovagro/email/success`);
+      // return res.redirect(`http://lkft.dolgovagro.ru/email/success`);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Произошла ошибка на сервере' });
