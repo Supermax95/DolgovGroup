@@ -87,7 +87,7 @@ router.post('/nodemailerActivation/:id', checkUser, async (req, res) => {
         Для активации вашего аккаунта, пожалуйста, перейдите по следующей ссылке:
       </p>
       <div style="text-align: center; margin-bottom: 20px;">
-        <a href="https://${IP}:${PORT}/api/activate/${activationLink}" style="display: inline-block; padding: 15px 30px; background-color: #4caf50; color: #fff; text-decoration: none; border-radius: 5px; font-size: 16px;">
+        <a href="http://${IP}:${PORT}/api/activate/${activationLink}" style="display: inline-block; padding: 15px 30px; background-color: #4caf50; color: #fff; text-decoration: none; border-radius: 5px; font-size: 16px;">
           Активировать аккаунт
         </a>
       </div>`,
