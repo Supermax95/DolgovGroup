@@ -95,7 +95,7 @@ const sendConfirmationEmail = async (newEmail, confirmationCode) => {
     },
   });
 
-  const activeLinkForNewEmail = `https://${IP}:${PORT}/confirm-email/${confirmationCode}/${newEmail}`;
+  const activeLinkForNewEmail = `http://${IP}:${PORT}/confirm-email/${confirmationCode}/${newEmail}`;
 
   const mailOptions = {
     from: process.env.EMAIL,
