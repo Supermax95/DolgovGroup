@@ -212,7 +212,7 @@ router
 
       const credentials = 'Lichkab:Ko9dyfum';
       const base64Credentials = Buffer.from(credentials).toString('base64');
-    let result = await axios.post(
+      let result = await axios.post(
         `https://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/updateclientcard?ClientCardID=${userData.barcode}&Email=${userData.email}
 
       `,
@@ -224,9 +224,8 @@ router
           httpAgent: new http.Agent(),
         }
       );
-console.log(result);
+      console.log(result);
       return res.redirect(`https://lkft.dolgovagro.ru/email/success`);
-
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Произошла ошибка на сервере' });
