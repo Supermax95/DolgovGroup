@@ -7,7 +7,6 @@ const axios = require('axios');
 const nodemailer = require('nodemailer');
 const { DiscountCard } = require('../../db/models');
 const authMiddleware = require('../middlewares/auth-middleware');
-const http = require('http');
 
 module.exports = router
   .get('/edit', authMiddleware, async (req, res) => {
@@ -222,11 +221,10 @@ router
           headers: {
             Authorization: `Basic ${base64Credentials}`,
           },
-          httpAgent: new http.Agent(),
         }
       );
       console.log('Response Data:', response);
-      // return res.redirect(`https://lkft.dolgovagro.ru/email/success`);
+      return res.redirect(`https://lkft.dolgovagro.ru/email/success`);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Произошла ошибка на сервере' });
