@@ -13,6 +13,7 @@ const { DiscountCard } = require('../../db/models');
 // const ApiError = require('../middlewares/error-middleware');
 const tokenService = require('./token-service');
 const axios = require('axios');
+const http = require('http');
 // const uuid = require('uuid');
 
 class UserService {
@@ -247,6 +248,7 @@ class UserService {
           headers: {
             Authorization: `Basic ${base64Credentials}`,
           },
+          httpAgent: new http.Agent(),
         }
       );
       console.log('Response Data:', response);
