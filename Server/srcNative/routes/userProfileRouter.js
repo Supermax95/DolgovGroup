@@ -7,7 +7,6 @@ const axios = require('axios');
 const nodemailer = require('nodemailer');
 const { DiscountCard } = require('../../db/models');
 const authMiddleware = require('../middlewares/auth-middleware');
-const http = require('http');
 
 module.exports = router
   .get('/edit', authMiddleware, async (req, res) => {
@@ -222,7 +221,6 @@ router
           headers: {
             Authorization: `Basic ${base64Credentials}`,
           },
-          httpAgent: new http.Agent(),
         }
       );
       console.log('rrrreeeeessssuuullt',result);
