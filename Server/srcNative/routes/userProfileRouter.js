@@ -9,7 +9,6 @@ const { DiscountCard } = require('../../db/models');
 const authMiddleware = require('../middlewares/auth-middleware');
 const http = require('http');
 
-
 module.exports = router
   .get('/edit', authMiddleware, async (req, res) => {
     try {
@@ -214,8 +213,8 @@ router
 
       const credentials = 'Lichkab:Ko9dyfum';
       const base64Credentials = Buffer.from(credentials).toString('base64');
-      const result = await axios.post(
-        `https://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/updateclientcard?ClientCardID=${userData.barcode}&Email=${userData.email}
+      const response = await axios.post(
+        `http://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/updateclientcard?ClientCardID=${userData.barcode}&Email=${userData.email}
 
       `,
         {},
@@ -226,7 +225,7 @@ router
           httpAgent: new http.Agent(),
         }
       );
-      console.log('rrrreeeeessssuuullt',result);
+      console.log('Response Data:', response);
       return res.redirect(`https://lkft.dolgovagro.ru/email/success`);
     } catch (error) {
       console.error(error);
