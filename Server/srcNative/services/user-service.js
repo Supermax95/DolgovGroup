@@ -234,8 +234,8 @@ class UserService {
 
       const credentials = 'Lichkab:Ko9dyfum';
       const base64Credentials = Buffer.from(credentials).toString('base64');
-      await axios.post(
-        `https://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/issueclientcard?Phone=${
+      const response = await axios.post(
+        `http://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/issueclientcard?Phone=${
           '+7' + user.phoneNumber
         }&Email=${
           user.email
@@ -249,7 +249,7 @@ class UserService {
           },
         }
       );
-      // console.log('Response Data:', response.data);
+      console.log('Response Data:', response);
       // console.log('Response Status:', response.status);
       await user.save();
     } catch (error) {
@@ -527,7 +527,7 @@ module.exports = new UserService();
 //       const credentials = 'Lichkab:Ko9dyfum';
 //       const base64Credentials = Buffer.from(credentials).toString('base64');
 //       const response = await axios.post(
-//         `https://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/issueclientcard?Phone=${
+//         `http://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/issueclientcard?Phone=${
 //           '+7' + user.phoneNumber
 //         }&Email=${
 //           user.email
