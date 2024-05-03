@@ -199,6 +199,7 @@ router
       const userData = await DiscountCard.findOne({
         where: { emailConfirmationCode: confirmationCode },
       });
+      console.log('===============>', userData);
 
       if (!userData) {
         return res.status(404).json({ error: 'Пользователь не найден' });
