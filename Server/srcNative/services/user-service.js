@@ -249,7 +249,9 @@ class UserService {
           },
         }
       );
-      console.log('Response Data:', response);
+      console.log('Response Data:', response.data.CardID);
+
+      user.barcode = response.data.CardID;
       // console.log('Response Status:', response.status);
       await user.save();
     } catch (error) {
