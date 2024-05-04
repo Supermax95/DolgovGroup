@@ -224,7 +224,7 @@ router
         }
       );
       console.log('Response Data:', response);
-      res.status(200).json({ message: 'Email успешно подтвержден и обновлен' });
+      // res.status(200).json({ message: 'Email успешно подтвержден и обновлен' });
       return res.redirect(`https://lkft.dolgovagro.ru/email/success`);
     } catch (error) {
       console.error(error);
