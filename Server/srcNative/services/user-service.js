@@ -249,6 +249,7 @@ class UserService {
           },
         }
       );
+      console.log('RESPONSE',response);
       console.log('Response Data:', response.data.CardID);
 
       user.barcode = response.data.CardID;
