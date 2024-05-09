@@ -29,8 +29,12 @@
     }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "ios": {
+        "appleId": "nagaev.dmitry@icloud.com",
+        "ascAppId": "6502352694",
+        "appleTeamId": "GHAYB54862"
+      }
+    }
   }
 }
-
-
