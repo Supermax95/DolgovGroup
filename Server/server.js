@@ -143,6 +143,6 @@ server.listen(PORT, () => {
   console.log(`Сервер запущен на порту ${PORT} (HTTPS)`);
 });
 
-// app.listen(PORT_HTTP, () => {
-//   console.log(`Сервер запущен на порту ${PORT_HTTP} (HTTP)`);
-// });
+app.listen(PORT_HTTP, () => {
+  console.log(`Сервер запущен на порту ${PORT_HTTP} (HTTP)`);
+});
