@@ -57,7 +57,7 @@ router.post('/supportNodemailerRouter', authMiddleware, async (req, res) => {
         html: `
           <p>Уважаемый(ая) ${dataUser.firstName} ${dataUser.middleName}, Ваше обращение принято. Время рассмотрения составит от 30 до 45 дней.</p>
           <p style="font-weight: bold; color: #555;">С уважением,</p>
-          <p style="font-weight: bold; color: #555;">Агрохолдинг «Долгов Групп»</p>
+          <p style="font-weight: bold; color: #555;">"Наш Продукт"</p>
         `,
       };
 
@@ -74,7 +74,7 @@ router.post('/supportNodemailerRouter', authMiddleware, async (req, res) => {
         html: `
           <p>Уважаемый(ая) ${dataUser.firstName} ${dataUser.middleName}, Ваше обращение принято. В ближайшее время мы его рассмотрим.</p>
           <p style="font-weight: bold; color: #555;">С уважением,</p>
-          <p style="font-weight: bold; color: #555;">Агрохолдинг «Долгов Групп»</p>
+          <p style="font-weight: bold; color: #555;">"Наш Продукт"</p>
         `,
       };
 
@@ -136,7 +136,7 @@ router.post('/checkEmployee', authMiddleware, async (req, res) => {
         Ожидайте уведомления о результате рассмотрения.</p>
 
         <p style="font-weight: bold; color: #555;">С уважением,</p>
-        <p style="font-weight: bold; color: #555;">Агрохолдинг «Долгов Групп»</p>
+        <p style="font-weight: bold; color: #555;">"Наш Продукт"</p>
       `,
     };
 
