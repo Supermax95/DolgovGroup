@@ -11,7 +11,7 @@ import {
   Alert,
 } from 'react-native';
 import ProductCard from 'ui/ProductCard';
-import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
+import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_API_URL } from '@env';
 import UniversalHeader from 'ui/UniversalHeader';
 import FilterModal from 'ui/FilterModal';
 import SearchAndFilter from 'ui/SearchAndFilter';
@@ -84,10 +84,61 @@ const ProductsCards: FC = ({ route }: any) => {
         subcategoryIdArray?.includes(prod.subcategoryId))
   );
 
-  const maxProductOriginalPrice = Math.max(
-    ...products.map((product: IProduct) => product.originalPrice),
-    0
-  );
+  // const maxProductOriginalPrice = Math.max(
+  //   ...products.map((product: IProduct) => product.originalPrice),
+  //   0
+  // );
+
+  // let maxProductOriginalPrice = 0;
+
+  // if (userStatus === 'Сотрудник') {
+  //   maxProductOriginalPrice = Math.max(
+  //     ...products.map((product) => {
+  //       if (product.originalPrice >= product.employeePrice) {
+  //         return product.originalPrice;
+  //       } else {
+  //         return product.employeePrice;
+  //       }
+  //     }),
+  //     0
+  //   );
+  // } else if (userStatus === 'Клиент' || userStatus === 'Новый сотрудник') {
+  //   maxProductOriginalPrice = Math.max(
+  //     ...products.map((product) => {
+  //       if (product.customerPrice >= product.originalPrice) {
+  //         return product.customerPrice;
+  //       } else {
+  //         return product.originalPrice;
+  //       }
+  //     }),
+  //     0
+  //   );
+  // }
+
+  let maxProductOriginalPrice = 0;
+  if (userStatus === 'Сотрудник') {
+    maxProductOriginalPrice = Math.max(
+      ...products.map((product) => {
+        if (product.originalPrice >= product.employeePrice) {
+          return product.originalPrice;
+        } else {
+          return product.employeePrice;
+        }
+      }),
+      0
+    );
+  } else if (userStatus === 'Клиент' || userStatus === 'Новый сотрудник') {
+    maxProductOriginalPrice = Math.max(
+      ...products.map((product) => {
+        if (product.customerPrice >= product.originalPrice) {
+          return product.customerPrice;
+        } else {
+          return product.originalPrice;
+        }
+      }),
+      0
+    );
+  }
 
   const applyFilters = () => {
     let filtered: IProduct[] = Array.isArray(products) ? products : [];
@@ -97,7 +148,13 @@ const ProductsCards: FC = ({ route }: any) => {
     }
 
     if (showDiscounted) {
-      filtered = filtered.filter((product) => product.isDiscounted === true);
+      if (userStatus === 'Клиент' || userStatus === 'Новый сотрудник') {
+        filtered = filtered.filter((product) => product.isDiscounted === true);
+      } else if (userStatus === 'Сотрудник') {
+        filtered = filtered.filter(
+          (product) => product.employeePrice < product.originalPrice
+        );
+      }
     }
 
     if (searchText !== '') {
@@ -192,7 +249,7 @@ const ProductsCards: FC = ({ route }: any) => {
                     100
                 )}
                 isNew={item.isNew}
-                imageProduct={`http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}${item.photo}`}
+                imageProduct={`${EXPO_PUBLIC_API_URL}:${EXPO_PUBLIC_PORT}${item.photo}`}
               />
             )}
             refreshControl={

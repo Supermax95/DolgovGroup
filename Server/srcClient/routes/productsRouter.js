@@ -1,11 +1,12 @@
 const router = require('express').Router();
-const path = require('path');
-const { isPast, parseISO, addDays, subDays } = require('date-fns');
-const { Op } = require('sequelize');
 const fsPromises = require('fs').promises;
+const { isPast, parseISO, addDays, subDays } = require('date-fns');
+const path = require('path');
 const axios = require('axios');
 const cron = require('node-cron');
+const { Op } = require('sequelize');
 const { Product } = require('../../db/models');
+const checkUser = require('../middlewares/auth-middleware-client');
 
 router.get('/admin/products', async (req, res) => {
   try {
@@ -17,6 +18,7 @@ router.get('/admin/products', async (req, res) => {
 
     for (const product of products) {
       if (
+        product.customerPrice !== product.originalPrice &&
         product.promoEndDate &&
         isPast(addDays(parseISO(product.promoEndDate), 1))
       ) {
@@ -24,19 +26,16 @@ router.get('/admin/products', async (req, res) => {
           { isDiscounted: false, customerPrice: product.originalPrice },
           { where: { id: product.id } }
         );
+      } else if (
+        product.customerPrice !== product.originalPrice &&
+        !product.isDiscounted
+      ) {
+        await Product.update(
+          { customerPrice: product.originalPrice },
+          { where: { id: product.id } }
+        );
       }
     }
-
-    // Обновить поле photo, если оно равно null
-    // await Product.update(
-    //   { photo: '/uploads/noPhoto/null.png' },
-    //   { where: { photo: null } }
-    // );
-
-    // await Product.update(
-    //   { photo: '/uploads/noPhoto/null.png' },
-    //   { where: { photo: '' } }
-    // );
 
     await Product.update(
       { photo: '/uploads/noPhoto/null.png' },
@@ -59,13 +58,15 @@ router.get('/admin/products', async (req, res) => {
   }
 });
 
-const task = cron.schedule('05 00 * * *', async () => {
+const task = cron.schedule('00 01 * * *', async () => {
   try {
     const products = await Product.findAll({
       attributes: { exclude: ['description'] },
       order: [['productName', 'ASC']],
       raw: true,
     });
+
+    const emptyResponseProducts = [];
 
     for (const product of products) {
       const credentials = 'Lichkab:Ko9dyfum';
@@ -78,23 +79,44 @@ const task = cron.schedule('05 00 * * *', async () => {
           },
         }
       );
+      try {
+        if (response.data.length > 0) {
+          const newOriginalPrice = parseFloat(
+            response.data[0].Price.replace(',', '.')
+          );
 
-      const newOriginalPrice = parseFloat(
-        response.data.Price.replace(',', '.')
-      );
-
-      if (!isNaN(newOriginalPrice)) {
-        // Только если newOriginalPrice является числом, выполнить обновление
-        await Product.update(
-          {
-            originalPrice: newOriginalPrice,
-          },
-          { where: { article: product.article } }
+          if (!isNaN(newOriginalPrice)) {
+            await Product.update(
+              {
+                originalPrice: newOriginalPrice,
+              },
+              { where: { article: product.article } }
+            );
+          } else {
+            console.error('Ошибка: newOriginalPrice не является числом.');
+          }
+        } else {
+          console.error(
+            'Ошибка: response.data пустой массив для продукта с кодом номенклатуры',
+            product.article
+          );
+          emptyResponseProducts.push(product);
+        }
+      } catch (error) {
+        console.error(
+          '===========>'`Ошибка при обработке продукта с кодом номенклатуры ${product.article}:`,
+          error
         );
-      } else {
-        console.error('Ошибка: newOriginalPrice не является числом.');
       }
     }
+
+    // Выводим продукты с пустыми ответами
+    emptyResponseProducts.forEach((product) => {
+      console.log(
+        `Продукт с кодом номенклатуры ${product.article} имеет пустой массив в ответе.`
+      );
+    });
+
     // Дополнительные обновления (например, обновление поля photo)
   } catch (error) {
     console.error('Ошибка при выполнении плановой задачи', error);
@@ -122,7 +144,7 @@ router.get('/admin/currentproduct/:id', async (req, res) => {
   }
 });
 
-router.post('/admin/products', async (req, res) => {
+router.post('/admin/products', checkUser, async (req, res) => {
   const { newProduct } = req.body;
   try {
     const existingProduct = await Product.findOne({
@@ -170,7 +192,7 @@ router.post('/admin/products', async (req, res) => {
   }
 });
 
-router.delete('/admin/products/:id', async (req, res) => {
+router.delete('/admin/products/:id', checkUser, async (req, res) => {
   const productId = req.params.id;
   try {
     // Найдите информацию о продукте
@@ -222,9 +244,9 @@ router.delete('/admin/products/:id', async (req, res) => {
   }
 });
 
-router.put('/admin/products', async (req, res) => {
+router.put('/admin/products', checkUser, async (req, res) => {
   const { newInfo } = req.body;
- 
+
   try {
     const existingProduct = await Product.findOne({
       where: { article: newInfo.article, id: { [Op.not]: newInfo.id } },
@@ -287,7 +309,7 @@ router.put('/admin/products', async (req, res) => {
   }
 });
 
-router.delete('/admin/products/photo/:id', async (req, res) => {
+router.delete('/admin/products/photo/:id', checkUser, async (req, res) => {
   const productId = req.params.id;
 
   try {

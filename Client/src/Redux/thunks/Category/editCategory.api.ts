@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
 import { VITE_URL } from '../../../VITE_URL';
+import { axiosInstance } from '../Logout401/axios.api';
 
 interface RequestData {
   categoryId: number;
@@ -19,9 +20,12 @@ const editCategory = createAsyncThunk<ArrayResponseData, RequestData>(
 
   async ({ categoryId, newCategoryName }, { rejectWithValue }) => {
     try {
-      const response: AxiosResponse = await axios.put(
+      const response: AxiosResponse = await axiosInstance.put(
         `${VITE_URL}/admin/category/${categoryId}`,
-        { newCategoryName }
+        { newCategoryName },
+        {
+          withCredentials: true,
+        }
       );
       return response.data;
     } catch (error) {

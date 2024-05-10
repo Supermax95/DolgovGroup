@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const { Subcategory, Category } = require('../../db/models');
+const checkUser = require('../middlewares/auth-middleware-client');
 
 router.get('/admin/subcategory', async (req, res) => {
   try {
@@ -14,7 +15,7 @@ router.get('/admin/subcategory', async (req, res) => {
   }
 });
 
-router.post('/admin/subcategory', async (req, res) => {
+router.post('/admin/subcategory', checkUser, async (req, res) => {
   const { newSubcategory, categoryId } = req.body;
 
   try {
@@ -52,7 +53,7 @@ router.post('/admin/subcategory', async (req, res) => {
   }
 });
 
-router.delete('/admin/subcategory/:id', async (req, res) => {
+router.delete('/admin/subcategory/:id', checkUser, async (req, res) => {
   const subcategoryId = req.params.id;
   try {
     await Subcategory.destroy({
@@ -74,7 +75,7 @@ router.delete('/admin/subcategory/:id', async (req, res) => {
 
 //* даже если название подкатегории осталось прежним у текущего id,
 //* появится уведомление, что изменения внесены
-router.put('/admin/subcategory/:id', async (req, res) => {
+router.put('/admin/subcategory/:id', checkUser, async (req, res) => {
   const subcategoryId = req.params.id;
   const { newSubcategoryName } = req.body;
   console.log('newSubcategoryName', newSubcategoryName);

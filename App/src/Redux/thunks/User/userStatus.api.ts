@@ -1,9 +1,7 @@
-
-
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { AxiosResponse } from 'axios';
 import axios from 'axios';
-import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
+import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_API_URL } from '@env';
 
 interface ICheckRequest {
   token?: string | undefined;
@@ -21,7 +19,7 @@ const getUserStatus = createAsyncThunk(
   async ({ token }: ICheckRequest, { rejectWithValue }) => {
     try {
       const response: AxiosResponse<ICheckResponse> = await axios.get(
-        `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/userStatus`,
+        `${EXPO_PUBLIC_API_URL}:${EXPO_PUBLIC_PORT}/userStatus`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

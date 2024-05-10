@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
 import { VITE_URL } from '../../../VITE_URL';
+import { axiosInstance } from '../Logout401/axios.api';
 
 interface RequestData {
   newInfo: {
@@ -14,12 +15,12 @@ interface RequestData {
 }
 
 interface ResponseData {
-    id: number;
-    title: string;
-    description: string;
-    documentLink: string;
-    dateFrom: string;
-    updatedAt: Date;
+  id: number;
+  title: string;
+  description: string;
+  documentLink: string;
+  dateFrom: string;
+  updatedAt: Date;
 }
 
 interface ResponseDataId {
@@ -27,17 +28,17 @@ interface ResponseDataId {
   laws: ResponseData[];
 }
 
-
-
 const editLaw = createAsyncThunk<ResponseDataId, RequestData>(
   'admin/editLaw',
 
-
   async ({ newInfo }, { rejectWithValue }) => {
     try {
-      const response: AxiosResponse = await axios.put(
+      const response: AxiosResponse = await axiosInstance.put(
         `${VITE_URL}/admin/laws`,
-        { newInfo }
+        { newInfo },
+        {
+          withCredentials: true,
+        }
       );
       return response.data;
     } catch (error) {
@@ -50,6 +51,5 @@ const editLaw = createAsyncThunk<ResponseDataId, RequestData>(
     }
   }
 );
-
 
 export default editLaw;

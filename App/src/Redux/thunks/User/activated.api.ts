@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
-import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
+import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_API_URL } from '@env';
 
 interface IPropsActivateResponse {
   token:
@@ -14,23 +14,22 @@ interface IPropsActivateResponse {
     firstName: string;
     id?: number | undefined;
     isActivated: boolean;
-    userStatus:string;
+    userStatus: string;
   };
 }
 
 interface IPropsActivateRequest {
-  userId?: number | undefined;
+  userEmail: string;
   force?: boolean;
 }
 
 const checkActivation = createAsyncThunk<
   IPropsActivateResponse | undefined,
   IPropsActivateRequest
->('api/activate', async ({userId}) => {
-  
+>('api/activate', async ({ userEmail }) => {
   try {
     const response: AxiosResponse = await axios.get(
-      `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}/check/${userId}`
+      `${EXPO_PUBLIC_API_URL}:${EXPO_PUBLIC_PORT}/check/${userEmail}`
     );
 
     if (response.status === 200) {
@@ -46,7 +45,7 @@ const checkActivation = createAsyncThunk<
           firstName: data.user.firstName,
           id: data.user.id,
           isActivated: data.user.isActivated,
-          userStatus:data.user.userStatus,
+          userStatus: data.user.userStatus,
         },
       };
       return activatedInfo;

@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const jwt = require('jsonwebtoken');
 const { DiscountCard } = require('../../db/models');
+// const authMiddleware = require('../middlewares/auth-middleware');
 
 module.exports = router.get('/barcode', async (req, res) => {
   try {

@@ -19,7 +19,8 @@ router.post('/sendNewActivationLink/:userId', async (req, res, next) => {
 
     await MailService.sendActivationMail(
       user.email,
-      `http://${IP}:${PORT}/api/activate/${newActivationLink}`
+      // `http://${IP}:${PORT}/api/activate/${newActivationLink}`
+      `https://${IP}:${PORT}/api/activate/${newActivationLink}`
     );
 
     return res

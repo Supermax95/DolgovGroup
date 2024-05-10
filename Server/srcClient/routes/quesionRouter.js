@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const { Op } = require('sequelize');
 const { Question } = require('../../db/models');
+const checkUser = require('../middlewares/auth-middleware-client');
 
 router.get('/admin/questions', async (req, res) => {
   try {
@@ -18,27 +19,7 @@ router.get('/admin/questions', async (req, res) => {
   }
 });
 
-// router.get('/admin/questions/:id', async (req, res) => {
-//   const questionId = req.params.id;
-
-//   try {
-//     const question = await Question.findByPk(questionId, {
-//       raw: true,
-//     });
-
-//     if (!question) {
-//       return res.status(404).json({ error: 'Вопрос/ответ не найдены' });
-//     }
-//     res.json(question);
-//   } catch (error) {
-//     console.error('Ошибка при получении данных из базы данных', error);
-//     res.status(500).json({
-//       error: 'Произошла ошибка на сервере при получении данных из базы',
-//     });
-//   }
-// });
-
-router.post('/admin/questions', async (req, res) => {
+router.post('/admin/questions', checkUser, async (req, res) => {
   const { newQuestion } = req.body;
 
   try {
@@ -70,7 +51,7 @@ router.post('/admin/questions', async (req, res) => {
   }
 });
 
-router.delete('/admin/questions/:id', async (req, res) => {
+router.delete('/admin/questions/:id', checkUser, async (req, res) => {
   const questionId = req.params.id;
   try {
     await Question.destroy({
@@ -90,7 +71,7 @@ router.delete('/admin/questions/:id', async (req, res) => {
   }
 });
 
-router.put('/admin/questions', async (req, res) => {
+router.put('/admin/questions', checkUser, async (req, res) => {
   const { newInfo } = req.body;
 
   try {

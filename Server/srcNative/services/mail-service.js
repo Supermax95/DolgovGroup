@@ -6,7 +6,6 @@ class MailService {
       host: 'smtp.yandex.ru',
       port: 465,
       secure: true,
-      secure: true,
       auth: {
         user: process.env.EMAIL,
         pass: process.env.PASSWORD,

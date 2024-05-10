@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { VITE_URL } from '../../../../VITE_URL';
 import axios, { AxiosResponse } from 'axios';
+import { axiosInstance } from '../../Logout401/axios.api';
 
 interface RequestData {
   newManager: {
@@ -31,9 +32,12 @@ const addManager = createAsyncThunk<ServerResponse, RequestData>(
   'api/addManager',
   async ({ newManager }, { rejectWithValue }) => {
     try {
-      const response: AxiosResponse = await axios.post(
+      const response: AxiosResponse = await axiosInstance.post(
         `${VITE_URL}/management/newManager`,
-        { newManager }
+        { newManager },
+        {
+          withCredentials: true,
+        }
       );
 
       return response.data;

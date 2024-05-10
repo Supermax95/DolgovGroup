@@ -8,7 +8,7 @@ import {
   Alert,
 } from 'react-native';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
-import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
+import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_API_URL } from '@env';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from 'navigation/types';
 import UniversalHeader from 'ui/UniversalHeader';
@@ -75,10 +75,36 @@ const SearchProduct = () => {
     navigation.navigate('SingleProduct', { productId });
   };
 
-  const maxProductOriginalPrice = Math.max(
-    ...products.map((product: IProduct) => product.originalPrice),
-    0
-  );
+  // const maxProductOriginalPrice = Math.max(
+  //   ...products.map((product: IProduct) => product.originalPrice),
+  //   0
+  // );
+
+  let maxProductOriginalPrice = 0;
+
+  if (userStatus === 'Сотрудник') {
+    maxProductOriginalPrice = Math.max(
+      ...products.map((product) => {
+        if (product.originalPrice >= product.employeePrice) {
+          return product.originalPrice;
+        } else {
+          return product.employeePrice;
+        }
+      }),
+      0
+    );
+  } else if (userStatus === 'Клиент' || userStatus === 'Новый сотрудник') {
+    maxProductOriginalPrice = Math.max(
+      ...products.map((product) => {
+        if (product.customerPrice >= product.originalPrice) {
+          return product.customerPrice;
+        } else {
+          return product.originalPrice;
+        }
+      }),
+      0
+    );
+  }
 
   const applyFilters = () => {
     let filtered: IProduct[] = Array.isArray(products) ? products : [];
@@ -88,7 +114,13 @@ const SearchProduct = () => {
     }
 
     if (showDiscounted) {
-      filtered = filtered.filter((product) => product.isDiscounted === true);
+      if (userStatus === 'Клиент' || userStatus === 'Новый сотрудник') {
+        filtered = filtered.filter((product) => product.isDiscounted === true);
+      } else if (userStatus === 'Сотрудник') {
+        filtered = filtered.filter(
+          (product) => product.employeePrice < product.originalPrice
+        );
+      }
     }
 
     if (searchText !== '') {
@@ -176,7 +208,7 @@ const SearchProduct = () => {
                     item.originalPrice) *
                     100
                 )}
-                imageProduct={`http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}${item.photo}`}
+                imageProduct={`${EXPO_PUBLIC_API_URL}:${EXPO_PUBLIC_PORT}${item.photo}`}
               />
             )}
             refreshControl={

@@ -2,6 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { AxiosResponse } from 'axios';
 import axios from 'axios';
 import { VITE_URL } from '../../../VITE_URL';
+import { axiosInstance } from '../Logout401/axios.api';
 
 interface RequestDate {
   managerId: number;
@@ -17,9 +18,12 @@ const changePassword = createAsyncThunk<ResponseData, RequestDate>(
   'api/changePassword',
   async ({ managerId, oldPassword, newPassword }, { rejectWithValue }) => {
     try {
-      const response: AxiosResponse = await axios.put(
+      const response: AxiosResponse = await axiosInstance.put(
         `${VITE_URL}/profileManager/password`,
-        { managerId, oldPassword, newPassword }
+        { managerId, oldPassword, newPassword },
+        {
+          withCredentials: true,
+        }
       );
 
       return response.data;

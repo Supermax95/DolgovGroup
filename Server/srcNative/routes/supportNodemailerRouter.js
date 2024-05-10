@@ -3,6 +3,7 @@ const router = require('express').Router();
 const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
 const { DiscountCard } = require('../../db/models');
+const authMiddleware = require('../middlewares/auth-middleware');
 
 const transporter = nodemailer.createTransport({
   host: 'smtp.yandex.ru',
@@ -12,10 +13,9 @@ const transporter = nodemailer.createTransport({
     user: process.env.EMAIL,
     pass: process.env.PASSWORD,
   },
-  secure: true,
 });
 
-router.post('/supportNodemailerRouter', async (req, res) => {
+router.post('/supportNodemailerRouter', authMiddleware, async (req, res) => {
   try {
     const { titleMessage, message } = req.body;
     const token = req.headers.authorization.split(' ')[1];
@@ -57,7 +57,7 @@ router.post('/supportNodemailerRouter', async (req, res) => {
         html: `
           <p>Уважаемый(ая) ${dataUser.firstName} ${dataUser.middleName}, Ваше обращение принято. Время рассмотрения составит от 30 до 45 дней.</p>
           <p style="font-weight: bold; color: #555;">С уважением,</p>
-          <p style="font-weight: bold; color: #555;">ООО "ДОЛГОВ ГРУПП"</p>
+          <p style="font-weight: bold; color: #555;">"Наш Продукт"</p>
         `,
       };
 
@@ -74,7 +74,7 @@ router.post('/supportNodemailerRouter', async (req, res) => {
         html: `
           <p>Уважаемый(ая) ${dataUser.firstName} ${dataUser.middleName}, Ваше обращение принято. В ближайшее время мы его рассмотрим.</p>
           <p style="font-weight: bold; color: #555;">С уважением,</p>
-          <p style="font-weight: bold; color: #555;">ООО "ДОЛГОВ ГРУПП"</p>
+          <p style="font-weight: bold; color: #555;">"Наш Продукт"</p>
         `,
       };
 
@@ -91,7 +91,7 @@ router.post('/supportNodemailerRouter', async (req, res) => {
   }
 });
 
-router.post('/checkEmployee', async (req, res) => {
+router.post('/checkEmployee', authMiddleware, async (req, res) => {
   try {
     const token = req.headers.authorization.split(' ')[1];
     const user = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
@@ -136,7 +136,7 @@ router.post('/checkEmployee', async (req, res) => {
         Ожидайте уведомления о результате рассмотрения.</p>
 
         <p style="font-weight: bold; color: #555;">С уважением,</p>
-        <p style="font-weight: bold; color: #555;">ООО "ДОЛГОВ ГРУПП"</p>
+        <p style="font-weight: bold; color: #555;">"Наш Продукт"</p>
       `,
     };
 

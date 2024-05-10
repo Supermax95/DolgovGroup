@@ -7,7 +7,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import React, { FC } from 'react';
-import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_IP } from '@env';
+import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_API_URL } from '@env';
 import { isToday, parseISO } from 'date-fns';
 import Padding from './Padding';
 
@@ -55,7 +55,7 @@ const SinglePromo: FC<ISinglePromo> = ({
           <View style={styles.imageBox}>
             <Image
               source={{
-                uri: `http://${EXPO_PUBLIC_IP}:${EXPO_PUBLIC_PORT}${image}`,
+                uri: `${EXPO_PUBLIC_API_URL}:${EXPO_PUBLIC_PORT}${image}`,
               }}
               resizeMode="contain"
               style={styles.image}
@@ -88,11 +88,12 @@ const SinglePromo: FC<ISinglePromo> = ({
                 </View>
               )
             ) : (
-              <View className="flex-row items-center mt-2">
-                <Text className="text-md font-medium text-slate-600">
-                  Акция бессрочная
-                </Text>
-              </View>
+              // <View className="flex-row items-center mt-2">
+              //   <Text className="text-md font-medium text-slate-600">
+              //     Акция бессрочная
+              //   </Text>
+              // </View>
+              <></>
             )}
             <View className="mt-2 flex items-start justify-start w-full">
               <Text className="text-md font-black text-green-800">{title}</Text>

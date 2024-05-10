@@ -114,6 +114,7 @@ const SupportMessage: FC = () => {
       value: 'Накопленные баллы отсутствуют',
     },
     { label: 'Прочее', value: 'Прочее' },
+    { label: 'Удаление аккаунта', value: 'Удаление аккаунта' },
   ];
 
   return (
@@ -172,31 +173,46 @@ const SupportMessage: FC = () => {
                     </Text>
                   </View>
                 )}
-                <FieldInput
-                  value={data.message}
-                  placeholder="Текст"
-                  onChange={(value) => handleFieldChange('message', value)}
-                  autoCapitalize="sentences"
-                  style={{ height: 200, textAlignVertical: 'top' }}
-                  // style={{ minHeight: 200, textAlignVertical: 'top' }}
-                  multiline
-                  onFocus={() => setIsShowKeyboard(true)}
-                />
-
-                <View className="mt-2 justify-center items-center w-full">
-                  <Text className="text-xs font-molmal text-zinc-500">
-                    Подробное описание позволит нам предоставить ответ в
-                    кратчайшие сроки без уточнения дополнительной информации.
-                    Письмо с ответом будет направлено на ваш адрес электронной
-                    почты, указанный в вашем профиле
-                  </Text>
-                </View>
-
-                <ButtonWithDisable
-                  title="Отправить"
-                  onPress={handleSubmit}
-                  disabled={isResendDisabled}
-                />
+                {selectedOption === 'Удаление аккаунта' && (
+                  <View className="mt-2 justify-center items-center w-full">
+                    <Text className="text-xs font-molmal text-red-700">
+                      Если вы хотите удалить свой аккаунт, выберите этот запрос.
+                      Укажите, пожалуйста, причину удаления. Это поможет нам
+                      улучшить сервис в будущем. Удаление аккаунта займёт 15
+                      дней.
+                    </Text>
+                  </View>
+                )}
+                {selectedOption !== '' && (
+                  <FieldInput
+                    value={data.message}
+                    placeholder="Текст"
+                    onChange={(value) => handleFieldChange('message', value)}
+                    autoCapitalize="sentences"
+                    style={{ height: 200, textAlignVertical: 'top' }}
+                    // style={{ minHeight: 200, textAlignVertical: 'top' }}
+                    multiline
+                    onFocus={() => setIsShowKeyboard(true)}
+                  />
+                )}
+                {selectedOption !== 'Удаление аккаунта' &&
+                  selectedOption !== '' && (
+                    <View className="mt-2 justify-center items-center w-full">
+                      <Text className="text-xs font-molmal text-zinc-500">
+                        Подробное описание позволит нам предоставить ответ в
+                        кратчайшие сроки без уточнения дополнительной
+                        информации. Письмо с ответом будет направлено на ваш
+                        адрес электронной почты, указанный в вашем профиле
+                      </Text>
+                    </View>
+                  )}
+                {selectedOption !== '' && (
+                  <ButtonWithDisable
+                    title="Отправить"
+                    onPress={handleSubmit}
+                    disabled={isResendDisabled}
+                  />
+                )}
                 {isResendDisabled && (
                   <View className="mt-2 justify-center items-center">
                     <Text className="text-xs font-molmal text-zinc-500">

@@ -8,6 +8,7 @@ import { StatusBar } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import registerNNPushToken from 'native-notify';
 
+
 // //!!!!Для сброса состояния не удалять
 // persistor
 //   .purge()
@@ -19,6 +20,8 @@ import registerNNPushToken from 'native-notify';
 //   });
 
 export default function App() {
+
+  
   registerNNPushToken(20294, 'GdT8ZAf6ZMwPPqd1E5x5DU');
     return (
     <Provider store={store}>

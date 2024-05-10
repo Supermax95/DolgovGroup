@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
 const { Manager } = require('../../db/models');
+const checkUser = require('../middlewares/auth-middleware-client');
 
 module.exports = router
   .get('/info', async (req, res) => {
@@ -23,7 +24,7 @@ module.exports = router
     }
   })
 
-  .put('/fullName/', async (req, res) => {
+  .put('/fullName/', checkUser, async (req, res) => {
     const { managerId, newLastName, newFirstName, newMiddleName } = req.body;
     try {
       const manager = await Manager.findOne({ where: { id: managerId } });
@@ -56,7 +57,7 @@ module.exports = router
 
   //* даже если email осталось прежним у текущего id,
   //* появится уведомление, что изменения внесены
-  .put('/email/', async (req, res) => {
+  .put('/email/', checkUser, async (req, res) => {
     const { managerId, newEmail } = req.body;
 
     try {
@@ -99,7 +100,7 @@ module.exports = router
 
   //* даже если phone осталось прежним у текущего id,
   //* появится уведомление, что изменения внесены
-  .put('/phone/', async (req, res) => {
+  .put('/phone/', checkUser, async (req, res) => {
     const { managerId, newPhone } = req.body;
 
     try {
@@ -140,7 +141,7 @@ module.exports = router
     }
   })
 
-  .put('/password/', async (req, res) => {
+  .put('/password/', checkUser, async (req, res) => {
     const { managerId, oldPassword, newPassword } = req.body;
 
     try {

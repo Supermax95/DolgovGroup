@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
 import { VITE_URL } from '../../../VITE_URL';
+import { axiosInstance } from '../Logout401/axios.api';
 
 interface ResponseData {
   id: number;
@@ -15,8 +16,11 @@ const deleteSubcategory = createAsyncThunk<ArrayResponseData, number>(
 
   async (subcategoryId, { rejectWithValue }) => {
     try {
-      const response: AxiosResponse = await axios.delete(
-        `${VITE_URL}/admin/subcategory/${subcategoryId}`
+      const response: AxiosResponse = await axiosInstance.delete(
+        `${VITE_URL}/admin/subcategory/${subcategoryId}`,
+        {
+          withCredentials: true,
+        }
       );
       return response.data;
     } catch (error) {

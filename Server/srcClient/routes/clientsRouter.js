@@ -3,6 +3,7 @@ const nodemailer = require('nodemailer');
 const axios = require('axios');
 const { Op } = require('sequelize');
 const { DiscountCard } = require('../../db/models');
+const checkUser = require('../middlewares/auth-middleware-client');
 
 const transporter = nodemailer.createTransport({
   host: 'smtp.yandex.ru',
@@ -12,7 +13,6 @@ const transporter = nodemailer.createTransport({
     user: process.env.EMAIL,
     pass: process.env.PASSWORD,
   },
-  secure: true,
 });
 
 router.get('/admin/clients', async (req, res) => {
@@ -44,7 +44,7 @@ router.get('/admin/clients', async (req, res) => {
   }
 });
 
-router.delete('/admin/clientDelete/:id', async (req, res) => {
+router.delete('/admin/clientDelete/:id', checkUser, async (req, res) => {
   const userId = req.params.id;
   try {
     await DiscountCard.destroy({
@@ -79,9 +79,10 @@ router.delete('/admin/clientDelete/:id', async (req, res) => {
   }
 });
 
-router.put('/admin/clients/:id', async (req, res) => {
+router.put('/admin/clients/:id', checkUser, async (req, res) => {
   const clientId = req.params.id;
   const { newInfo } = req.body;
+  console.log('🚀 ~ router.put ~ newInfo:', newInfo);
 
   try {
     const existingClient = await DiscountCard.findOne({
@@ -165,7 +166,7 @@ router.put('/admin/clients/:id', async (req, res) => {
       const credentials = 'Lichkab:Ko9dyfum';
       const base64Credentials = Buffer.from(credentials).toString('base64');
       // console.log(' newInfo.barcode', newInfo.barcode, trimmedPhoneNumber);
-      await axios.post(
+      const response = await axios.post(
         `http://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/updateclientcard?ClientCardID=${
           newInfo.barcode
         }&Phone=${'+7' + trimmedPhoneNumber}
@@ -177,6 +178,7 @@ router.put('/admin/clients/:id', async (req, res) => {
           },
         }
       );
+      console.log('Response Data:', response);
     } else {
       await DiscountCard.update(newInfo, { where: { id: clientId } });
     }

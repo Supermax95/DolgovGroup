@@ -109,6 +109,7 @@ const EditProfile: FC = () => {
           >
             Изменить пароль
           </FieldEditProfile>
+          
         </Padding>
       </ScrollView>
     </SafeAreaView>

@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
 import { VITE_URL } from '../../../VITE_URL';
+import { axiosInstance } from '../Logout401/axios.api';
 
 interface RequestData {
   newProduct: {
@@ -46,9 +47,12 @@ const addProduct = createAsyncThunk<ResponseDataId, RequestData>(
 
   async ({ newProduct }, { rejectWithValue }) => {
     try {
-      const response: AxiosResponse = await axios.post(
+      const response: AxiosResponse = await axiosInstance.post(
         `${VITE_URL}/admin/products`,
-        { newProduct }
+        { newProduct },
+        {
+          withCredentials: true,
+        }
       );
       return response.data;
     } catch (error) {

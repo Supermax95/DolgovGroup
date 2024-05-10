@@ -1,8 +1,9 @@
 const router = require('express').Router();
-const { Category } = require('../../db/models');
 const path = require('path');
-const { Op } = require('sequelize');
 const fsPromises = require('fs').promises;
+const { Op } = require('sequelize');
+const { Category } = require('../../db/models');
+const checkUser = require('../middlewares/auth-middleware-client');
 
 router.get('/admin/category', async (req, res) => {
   try {
@@ -23,7 +24,7 @@ router.get('/admin/category', async (req, res) => {
   }
 });
 
-router.post('/admin/category', async (req, res) => {
+router.post('/admin/category', checkUser, async (req, res) => {
   const { newCategory } = req.body;
 
   try {
@@ -52,7 +53,7 @@ router.post('/admin/category', async (req, res) => {
   }
 });
 
-router.delete('/admin/category/:id', async (req, res) => {
+router.delete('/admin/category/:id', checkUser, async (req, res) => {
   const categoryId = req.params.id;
   try {
     await Category.destroy({
@@ -74,7 +75,7 @@ router.delete('/admin/category/:id', async (req, res) => {
 
 //* даже если название категории осталось прежним у текущего id,
 //* появится уведомление, что изменения внесены
-router.put('/admin/category/:id', async (req, res) => {
+router.put('/admin/category/:id', checkUser, async (req, res) => {
   const categoryId = req.params.id;
   const { newCategoryName } = req.body;
 
@@ -92,12 +93,6 @@ router.put('/admin/category/:id', async (req, res) => {
 
       if (!searchCategoryName) {
         await category.update({ categoryName: newCategoryName });
-
-        //! мб, сделать так, чтобы возвращал не массив всех,
-        //! а одну конкретную категорию, которая изменена
-        // res.status(200).json({
-        //   message: 'Категория успешно изменена',
-        // });
 
         const categories = await Category.findAll({
           order: [['categoryName', 'ASC']],
@@ -122,7 +117,7 @@ router.put('/admin/category/:id', async (req, res) => {
   }
 });
 
-router.delete('/admin/category/photo/:id', async (req, res) => {
+router.delete('/admin/category/photo/:id', checkUser, async (req, res) => {
   const categoryId = req.params.id;
 
   try {

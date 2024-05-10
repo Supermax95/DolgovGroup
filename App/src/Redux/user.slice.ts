@@ -34,6 +34,7 @@ type UserState = {
   isLoading: boolean;
   error: undefined | string;
   activationError: undefined | string;
+  email: string;
 };
 
 const initialState: UserState = {
@@ -53,7 +54,7 @@ const initialState: UserState = {
   isLoading: false,
   error: undefined,
   activationError: undefined,
-  // email:'',
+  email: '',
 };
 
 const userSlice = createSlice({
@@ -86,7 +87,8 @@ const userSlice = createSlice({
       })
       .addCase(userRegister.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.user = action.payload.user;
+        // state.user = action.payload.user;
+        state.email = action.payload.email;
         state.isAuth = true;
       })
       .addCase(userRegister.rejected, (state) => {
@@ -162,6 +164,26 @@ const userSlice = createSlice({
         state.isLoading = false;
         state.error = action.error.message;
       })
+      // .addCase(getCheck.fulfilled, (state, action) => {
+      //   state.isLoading = false;
+      //   if (state.user) {
+      //     state.user.id = action.payload.id;
+      //     state.user.isActivated = action.payload.isActivated || undefined;
+      //     state.user.userStatus = action.payload.userStatus || undefined;
+      //   }
+      // })
+      // .addCase(getCheck.rejected, (state, action) => {
+      //   state.isLoading = false;
+      //   state.error = action.error.message;
+      //   if (state.user) {
+      //     state.user.id = 0;
+      //     state.user.isActivated = false;
+      //     state.user.userStatus = '';
+      //   }
+      // })
+      // .addCase(getCheck.pending, (state) => {
+      //   state.isLoading = true;
+      // })
       .addCase(getCheck.fulfilled, (state, action) => {
         state.isLoading = false;
         if (state.user) {
@@ -173,6 +195,8 @@ const userSlice = createSlice({
       .addCase(getCheck.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
+        state.user = initialState.user;
+        state.token = initialState.token;
       })
       .addCase(getCheck.pending, (state) => {
         state.isLoading = true;

@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
 import { VITE_URL } from '../../../../VITE_URL';
+import { axiosInstance } from '../../Logout401/axios.api';
 
 interface RequestData {
   managerId: number;
@@ -21,9 +22,12 @@ const deleteManager = createAsyncThunk<ResponseData[], RequestData>(
 
   async ({ managerId }, { rejectWithValue }) => {
     try {
-      const response: AxiosResponse = await axios.delete(
+      const response: AxiosResponse = await axiosInstance.delete(
         `${VITE_URL}/management/deleteManager`,
-        { data: { managerId } }
+        {
+          data: { managerId },
+          withCredentials: true,
+        }
       );
 
       return response.data;
