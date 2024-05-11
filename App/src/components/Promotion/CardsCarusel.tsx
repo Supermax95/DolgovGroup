@@ -10,6 +10,7 @@ import {
   Dimensions,
   StyleSheet,
   FlatList,
+  Platform,
 } from 'react-native';
 
 export interface IPromotion {
@@ -50,26 +51,65 @@ const CardsCarusel = () => {
       decelerationRate="fast"
       showsHorizontalScrollIndicator={false}
       renderItem={({ item, index }) => (
+        // <Pressable
+        //   key={item.id}
+        //   onPress={() => navigateToPromoDetail(item.id)}
+        //   className="ml-8"
+        //   style={{
+        //     marginLeft: 24,
+        //     marginRight: index === promotions.length - 1 ? 24 : 0,
+        //   }}
+        // >
+        //   {Platform.OS === 'android' ? (
+        //     <View style={styles.card}>
+        //       <View style={styles.imageBox}>
+        //         <Image
+        //           source={{
+        //             uri: `${EXPO_PUBLIC_API_URL}:${EXPO_PUBLIC_PORT}${item.photo}`,
+        //           }}
+        //           resizeMode="contain"
+        //           style={styles.image}
+        //         />
+        //       </View>
+        //     </View>
+        //   ) : (
+        //     <View style={styles.cardIOS}>
+        //       <View style={styles.imageBoxIOS}>
+        //         <Image
+        //           source={{
+        //             uri: `${EXPO_PUBLIC_API_URL}:${EXPO_PUBLIC_PORT}${item.photo}`,
+        //           }}
+        //           resizeMode="contain"
+        //           style={styles.image}
+        //         />
+        //       </View>
+        //     </View>
+        //   )}
+        // </Pressable>
         <Pressable
-          key={item.id}
           onPress={() => navigateToPromoDetail(item.id)}
-          className="ml-8"
+          className="m-1 rounded-xl flex-col items-center justify-start bg-white"
           style={{
-            marginLeft: 24,
+            width: cardWidth,
+            shadowColor: '#000',
+            shadowRadius: 2,
+            shadowOpacity: 0.1,
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            elevation: 3,
+            marginLeft: 20,
             marginRight: index === promotions.length - 1 ? 24 : 0,
           }}
         >
-          <View style={styles.card}>
-            <View style={styles.imageBox}>
-              <Image
-                source={{
-                  uri: `${EXPO_PUBLIC_API_URL}:${EXPO_PUBLIC_PORT}${item.photo}`,
-                }}
-                resizeMode="contain"
-                style={styles.image}
-              />
-            </View>
-          </View>
+          <Image
+            source={{
+              uri: `${EXPO_PUBLIC_API_URL}:${EXPO_PUBLIC_PORT}${item.photo}`,
+            }}
+            resizeMode="cover"
+            style={styles.image}
+          />
         </Pressable>
       )}
     />
@@ -81,25 +121,38 @@ const styles = StyleSheet.create({
     height: cardHeight,
     width: cardWidth,
     marginVertical: 10,
-    shadowColor: '#000',
-    shadowRadius: 2,
-    shadowOpacity: 0.2,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
   },
   imageBox: {
     width: cardWidth,
     height: cardHeight,
     overflow: 'hidden',
     borderRadius: 16,
-    elevation: 3,
+    elevation: 2,
   },
+  // // cardIOS: {
+  // //   height: cardHeight,
+  // //   width: cardWidth,
+  // //   marginVertical: 10,
+  // //   shadowColor: '#000',
+  // //   shadowRadius: 2,
+  // //   shadowOpacity: 0.2,
+  // //   shadowOffset: {
+  // //     width: 0,
+  // //     height: 2,
+  // //   },
+  // // },
+  // // imageBoxIOS: {
+  // //   width: cardWidth,
+  // //   height: cardHeight,
+  // //   overflow: 'hidden',
+  // //   borderRadius: 16,
+  // //   elevation: 2,
+  // // },
   image: {
     width: cardWidth,
     height: cardHeight,
     resizeMode: 'cover',
+    borderRadius: 12,
   },
 });
 
