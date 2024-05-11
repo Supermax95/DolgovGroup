@@ -23,6 +23,8 @@ const CardNoCarusel: FC<ICardNoCarusel> = ({
   const screenWidth = Math.round(Dimensions.get('window').width);
   const cardWidth = screenWidth / 2 - 20;
 
+  const lengthMax = 20;
+
   return (
     <>
       <Pressable
@@ -47,15 +49,28 @@ const CardNoCarusel: FC<ICardNoCarusel> = ({
           resizeMode="cover"
           style={styles.image}
         />
-        <View className="justify-start items-start py-2">
-          <Text
-            className="text-md font-semibold text-zinc-900"
-            numberOfLines={2}
-            ellipsizeMode="tail"
-          >
-            {promotionTitle}
-          </Text>
-        </View>
+
+        {promotionTitle.length < lengthMax ? (
+          <View className="justify-start items-start py-2">
+            <Text
+              className="text-md font-semibold text-zinc-900"
+              numberOfLines={2}
+              ellipsizeMode="tail"
+            >
+              {promotionTitle}
+            </Text>
+          </View>
+        ) : (
+          <View className="px-2 py-2 w-full flex justify-center">
+            <Text
+              className="text-md font-semibold text-zinc-900"
+              numberOfLines={2}
+              ellipsizeMode="tail"
+            >
+              {promotionTitle}
+            </Text>
+          </View>
+        )}
       </Pressable>
     </>
   );
