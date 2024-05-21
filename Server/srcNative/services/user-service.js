@@ -6,13 +6,13 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const path = require('path');
 const fs = require('fs').promises;
+const axios = require('axios');
 const MailService = require('./mail-service');
 // const TokenService = require('./token-service');
 const UserDto = require('../dtos/user-dto');
 const { DiscountCard } = require('../../db/models');
 // const ApiError = require('../middlewares/error-middleware');
 const tokenService = require('./token-service');
-const axios = require('axios');
 // const uuid = require('uuid');
 
 class UserService {
@@ -217,7 +217,7 @@ class UserService {
       }
       user.isActivated = true;
 
-      //!!!ЭТО 1С не трогать
+      //! !!ЭТО 1С не трогать
       // {retailServer}/{retailDatabase}/hs/loyaltyservice/issueclientcard?Phone={phoneNumber}&Email={email}&Client={clientFullName}&DateOfBirth={dateOfBirth}&ClientCardID={barcode}
       function formatBirthDate(inputDate) {
         const dateParts = inputDate.split('-');
@@ -225,9 +225,8 @@ class UserService {
           const [year, month, day] = dateParts;
           const formattedDate = `${day}.${month}.${year}`;
           return formattedDate;
-        } else {
-          throw new Error('Некорректный формат даты.');
         }
+        throw new Error('Некорректный формат даты.');
       }
 
       const formattedBirthDate = formatBirthDate(user.birthDate);
@@ -235,9 +234,7 @@ class UserService {
       const credentials = 'Lichkab:Ko9dyfum';
       const base64Credentials = Buffer.from(credentials).toString('base64');
       const response = await axios.post(
-        `http://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/issueclientcard?Phone=${
-          '+7' + user.phoneNumber
-        }&Email=${
+        `http://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/issueclientcard?Phone=${`+7${user.phoneNumber}`}&Email=${
           user.email
         }&Client=${`${user.lastName} ${user.firstName} ${user.middleName}`}&DateOfBirth=${formattedBirthDate}&ClientCardID=${
           user.barcode
@@ -249,7 +246,7 @@ class UserService {
           },
         }
       );
-      console.log('RESPONSE',response);
+      console.log('RESPONSE', response);
       console.log('Response Data:', response.data.CardID);
 
       user.barcode = response.data.CardID;
@@ -257,7 +254,7 @@ class UserService {
       await user.save();
     } catch (error) {
       console.error(`Ошибка активации: ${error}`);
-      throw 'Произошла ошибка при активации пользователя';
+      // throw 'Произошла ошибка при активации пользователя';
     }
   }
 
