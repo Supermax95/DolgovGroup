@@ -36,7 +36,7 @@ const Navigation: FC = () => {
 
     const SuccessPage =
       location.pathname.includes('/registration/success') ||
-      location.pathname.includes('/email/success');
+      location.pathname.includes('/email/success') ||
       location.pathname.includes('/registration/unsuccess');
 
     if (
