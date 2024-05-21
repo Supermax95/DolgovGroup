@@ -228,7 +228,8 @@ router
       return res.redirect(`https://lkft.dolgovagro.ru/email/success`);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: 'Произошла ошибка на сервере' });
+      return res.redirect('https://lkft.dolgovagro.ru/email/unsuccess');
+      // res.status(500).json({ message: 'Произошла ошибка на сервере' });
     }
   })
 

@@ -22,6 +22,7 @@ import Questions from '../components/Admin/Questions/Questions';
 import EmailSuccess from '../components/Success/EmailSucces';
 import NotFound from '../components/Errors/404/NotFound';
 import Activate500 from '../components/Errors/OldLink/Activate500';
+import ErrorEmail500 from '../components/Errors/ErrorEmail/ErrorEmail500';
 
 const Navigation: FC = () => {
   const manager = useAppSelector((state) => state.managerSlice.manager);
@@ -37,6 +38,7 @@ const Navigation: FC = () => {
     const SuccessPage =
       location.pathname.includes('/registration/success') ||
       location.pathname.includes('/email/success') ||
+      location.pathname.includes('/email/unsuccess') ||
       location.pathname.includes('/registration/unsuccess');
     if (
       !SuccessPage &&
@@ -177,6 +179,7 @@ const Navigation: FC = () => {
 
             <Route path="/registration/success" element={<Success />} />
             <Route path="/registration/unsuccess" element={<Activate500 />} />
+            <Route path="/email/unsuccess" element={<ErrorEmail500 />} />
             <Route path="/email/success" element={<EmailSuccess />} />
             <Route path="*" element={<NotFound />} />
             <Route />
