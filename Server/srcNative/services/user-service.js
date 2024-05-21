@@ -255,6 +255,8 @@ class UserService {
     } catch (error) {
       console.error(`Ошибка активации: ${error}`);
       // throw 'Произошла ошибка при активации пользователя';
+      window.location.href =
+        'https://lkft.dolgovagro.ru/registration/unsuccess';
     }
   }
 
