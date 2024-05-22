@@ -31,10 +31,16 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
+      "infoPlist": {
+        "CFBundleAllowMixedLocalizations": true
+      },
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/adaptive-icon.png"
       },
       "bundleIdentifier": "com.supermax95.dolgovapp"
+    },
+    "locales": {
+      "ru": "./languages/ru.json"
     },
     "config": {
       "googleMaps": {
