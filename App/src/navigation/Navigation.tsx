@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
@@ -103,23 +103,32 @@ export const AppNavigator: FC = () => {
   //   }
   // }, [token]);
 
+  const [delayedToken, setDelayedToken] = useState<string | undefined>(undefined);
 
   useEffect(() => {
-    if (token) {
-      console.log('Setting up interceptors with token:', token);
-      setupInterceptors(token, dispatch);
+    const timeoutId = setTimeout(() => {
+      setDelayedToken(token);
+    }, 2000);
+
+    return () => clearTimeout(timeoutId);
+  }, [token]);
+
+  useEffect(() => {
+    if (delayedToken) {
+      console.log('Setting up interceptors with token:', delayedToken);
+      setupInterceptors(delayedToken, dispatch);
     }
-  }, [token, dispatch]);
+  }, [delayedToken, dispatch]);
 
   useEffect(() => {
     const performActions = async () => {
-      if (token) {
+      if (delayedToken) {
         try {
-          console.log('Fetching profile info with token:', token);
-          await dispatch(getProfileInfo({ token }));
+          console.log('Fetching profile info with token:', delayedToken);
+          await dispatch(getProfileInfo({ token: delayedToken }));
 
-          console.log('Checking user with token:', token);
-          await dispatch(getCheck({ token }));
+          console.log('Checking user with token:', delayedToken);
+          await dispatch(getCheck({ token: delayedToken }));
 
           if (notificationPush) {
             setTimeout(() => {
@@ -136,7 +145,7 @@ export const AppNavigator: FC = () => {
     };
 
     performActions();
-  }, [token, notificationPush, dispatch]);
+  }, [delayedToken, notificationPush, dispatch]);
 
   // useEffect(() => {
   //   if (token) {
