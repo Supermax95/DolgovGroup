@@ -30,9 +30,10 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true,
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "Данное приложение использует ваше местоположение, чтобы предоставить информацию о ближайших магазинах."
+        "NSLocationWhenInUseUsageDescription": "Данное приложение использует ваше местоположение, чтобы предоставить информацию о ближайших магазинах.",
+        "NSLocationAlwaysUsageDescription": "Данное приложение использует ваше местоположение, чтобы предоставить информацию о ближайших магазинах.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Данное приложение использует ваше местоположение, чтобы предоставить информацию о ближайших магазинах."
       },
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/adaptive-icon.png"
