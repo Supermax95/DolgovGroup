@@ -97,33 +97,68 @@ export const AppNavigator: FC = () => {
     (state) => state.userSlice.token?.refreshToken
   );
 
+  // useEffect(() => {
+  //   if (token) {
+  //     setupInterceptors(token, dispatch);
+  //   }
+  // }, [token]);
+
+
   useEffect(() => {
     if (token) {
+      console.log('Setting up interceptors with token:', token);
       setupInterceptors(token, dispatch);
     }
-  }, [token]);
+  }, [token, dispatch]);
 
   useEffect(() => {
-    if (token) {
-      dispatch(getProfileInfo({ token }));
-    }
+    const performActions = async () => {
+      if (token) {
+        try {
+          console.log('Fetching profile info with token:', token);
+          await dispatch(getProfileInfo({ token }));
 
-    const timeoutId = setTimeout(() => {
-      if (notificationPush) {
-        // console.log('======>через 3 дня будет уведомление');
-        sendPushNotification();
+          console.log('Checking user with token:', token);
+          await dispatch(getCheck({ token }));
+
+          if (notificationPush) {
+            setTimeout(() => {
+              console.log('Sending push notification');
+              sendPushNotification();
+            }, 2000);
+          }
+        } catch (error) {
+          console.error('Error performing actions:', error);
+        }
+      } else {
+        console.log('Token is not available yet.');
       }
-      // console.log('упало уведомление');
-    }, 2000);
+    };
 
-    return () => clearTimeout(timeoutId);
-  }, [notificationPush]);
+    performActions();
+  }, [token, notificationPush, dispatch]);
 
-  useEffect(() => {
-    if (token) {
-      dispatch(getCheck({ token }));
-    }
-  }, [dispatch]);
+  // useEffect(() => {
+  //   if (token) {
+  //     dispatch(getProfileInfo({ token }));
+  //   }
+
+  //   const timeoutId = setTimeout(() => {
+  //     if (notificationPush) {
+  //       // console.log('======>через 3 дня будет уведомление');
+  //       sendPushNotification();
+  //     }
+  //     // console.log('упало уведомление');
+  //   }, 2000);
+
+  //   return () => clearTimeout(timeoutId);
+  // }, [notificationPush]);
+
+  // useEffect(() => {
+  //   if (token) {
+  //     dispatch(getCheck({ token }));
+  //   }
+  // }, [dispatch]);
 
   // useEffect(() => {
   //   dispatch(getCheck({ token }));
