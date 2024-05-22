@@ -108,7 +108,7 @@ export const AppNavigator: FC = () => {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setDelayedToken(token);
-    }, 2000);
+    }, 500);
 
     return () => clearTimeout(timeoutId);
   }, [token]);
