@@ -96,6 +96,7 @@ export const AppNavigator: FC = () => {
   const token = useAppSelector<string | undefined>(
     (state) => state.userSlice.token?.refreshToken
   );
+  Alert.alert('token', token);
 
   // useEffect(() => {
   //   if (token) {
@@ -103,7 +104,9 @@ export const AppNavigator: FC = () => {
   //   }
   // }, [token]);
 
-  const [delayedToken, setDelayedToken] = useState<string | undefined>(undefined);
+  const [delayedToken, setDelayedToken] = useState<string | undefined>(
+    undefined
+  );
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
