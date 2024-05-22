@@ -31,12 +31,15 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "Данное приложение использует ваше местоположение, чтобы предоставить информацию о ближайших магазинах.",
+        "CFBundleAllowMixedLocalizations": true
       },
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/adaptive-icon.png"
       },
       "bundleIdentifier": "com.supermax95.dolgovapp"
+    },
+    "locales": {
+      "ru": "./languages/ru.json"
     },
     "config": {
       "googleMaps": {
