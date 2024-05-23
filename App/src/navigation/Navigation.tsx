@@ -96,7 +96,6 @@ export const AppNavigator: FC = () => {
   const token = useAppSelector<string | undefined>(
     (state) => state.userSlice.token?.refreshToken
   );
-  Alert.alert('token', typeof token);
 
   // useEffect(() => {
   //   if (token) {

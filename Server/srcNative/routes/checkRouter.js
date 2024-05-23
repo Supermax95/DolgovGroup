@@ -16,6 +16,7 @@ module.exports = router.get('/checkUser', async (req, res) => {
       id: userData.id,
       isActivated: userData.isActivated,
       userStatus: userData.userStatus,
+      barcode: userData.barcode,
     });
   } catch (error) {
     console.error(error);

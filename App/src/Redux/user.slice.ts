@@ -186,12 +186,14 @@ const userSlice = createSlice({
       // })
       .addCase(getCheck.fulfilled, (state, action) => {
         state.isLoading = false;
-        if (state.user) {
-          state.user.id = action.payload.id;
-          state.user.isActivated = action.payload.isActivated || undefined;
-          state.user.userStatus = action.payload.userStatus || undefined;
+        if (Object.keys(action.payload).length !== 0 && state.user) { 
+            state.user.id = action.payload.id;
+            state.user.isActivated = action.payload.isActivated;
+            state.user.userStatus = action.payload.userStatus;
+            state.user.barcode = action.payload.barcode;
         }
-      })
+    })
+    
       .addCase(getCheck.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
