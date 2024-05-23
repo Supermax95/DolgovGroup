@@ -2,7 +2,7 @@
   "expo": {
     "name": "Наш Продукт",
     "slug": "dolgovapp",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "plugins": [
       [
@@ -49,6 +49,7 @@
       }
     },
     "android": {
+      "versionCode": 2,
       "package": "com.supermax95.dolgovapp",
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {

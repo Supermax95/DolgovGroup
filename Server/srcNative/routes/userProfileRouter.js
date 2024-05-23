@@ -201,7 +201,7 @@ router
       console.log('===============>', userData);
 
       if (!userData) {
-        return res.status(404).json({ error: 'Пользователь не найден' });
+        return res.redirect('https://lkft.dolgovagro.ru/email/unsuccess');
       }
 
       await userData.update({
