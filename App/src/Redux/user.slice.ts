@@ -185,16 +185,19 @@ const userSlice = createSlice({
       //   state.isLoading = true;
       // })
       .addCase(getCheck.fulfilled, (state, action) => {
+        console.log(state.user);
+
         state.isLoading = false;
-        if (Object.keys(action.payload).length !== 0 && state.user) { 
-            state.user.id = action.payload.id;
-            state.user.isActivated = action.payload.isActivated;
-            state.user.userStatus = action.payload.userStatus;
-            state.user.barcode = action.payload.barcode;
+        if (Object.keys(action.payload).length !== 0 && state.user) {
+          state.user.id = action.payload.id;
+          state.user.isActivated = action.payload.isActivated;
+          state.user.userStatus = action.payload.userStatus;
+          state.user.barcode = action.payload.barcode;
         }
-    })
-    
+      })
+
       .addCase(getCheck.rejected, (state, action) => {
+        console.log('=======>');
         state.isLoading = false;
         state.error = action.error.message;
         state.user = initialState.user;
@@ -222,7 +225,7 @@ const userSlice = createSlice({
       })
       .addCase(getBarcode.fulfilled, (state, action) => {
         state.isLoading = false;
-        if (state.user) {
+        if (state.user && action.payload.barcode !== undefined) {
           state.user.barcode = action.payload.barcode;
         }
       })

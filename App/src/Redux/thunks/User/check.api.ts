@@ -50,7 +50,7 @@ const getCheck = createAsyncThunk<
         response.data.isActivated !== undefined &&
         response.data.userStatus !== undefined &&
         response.data.barcode !== undefined
-      ) {
+      ) {        
         return response.data;
       } else {
         // Обрабатываем случай, когда 'id' отсутствует или undefined
