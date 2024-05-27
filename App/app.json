@@ -19,6 +19,12 @@
             "usesCleartextTraffic": true
           }
         }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Данное приложение использует ваше местоположение, чтобы предоставить информацию о ближайших магазинах."
+        }
       ]
     ],
     "icon": "./src/assets/images/icon.png",
@@ -33,10 +39,7 @@
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/adaptive-icon.png"
       },
-      "bundleIdentifier": "com.supermax95.dolgovapp",
-      "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "Данное приложение использует ваше местоположение, чтобы предоставить информацию о ближайших магазинах."
-      }
+      "bundleIdentifier": "com.supermax95.dolgovapp"
     },
     "config": {
       "googleMaps": {

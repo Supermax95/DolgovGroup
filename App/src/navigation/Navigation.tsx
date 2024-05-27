@@ -45,7 +45,9 @@ const Tab = createBottomTabNavigator<TabNavigatorOptions>();
 const requestNotificationPermission = async () => {
   const { status } = await Notifications.requestPermissionsAsync();
   if (status !== 'granted') {
-    Alert.alert('Вам нужно разрешить отправку уведомлений');
+    Alert.alert(
+      'Чтобы не пропустить наши акции, пожалуйста, разрешите отправку уведомлений.'
+    );
     return false;
   }
   return true;

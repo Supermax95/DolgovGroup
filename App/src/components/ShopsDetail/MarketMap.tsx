@@ -8,6 +8,7 @@ import {
   Linking,
   Pressable,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
@@ -55,91 +56,15 @@ const MarketMap: FC<MarketMapProps> = ({ selectedShop, onMarkerPress }) => {
     longitudeDelta: 0.0421,
   });
 
-  // useEffect(() => {
-  //   const fetchInitialLocation = async () => {
-  //     let { status } = await Location.requestForegroundPermissionsAsync();
-  //     if (status === 'granted') {
-  //       const startTimestamp = Date.now();
-  //       let userLocation = await Location.getCurrentPositionAsync({
-  //         accuracy: Location.Accuracy.Low,
-  //       });
-  //       const endTimestamp = Date.now();
-  //       const elapsedTime = endTimestamp - startTimestamp;
-  //       console.log(elapsedTime);
-  //       if (userLocation && mapRef.current) {
-  //         if (selectedShop) {
-  //           mapRef.current.animateToRegion({
-  //             latitude: parseFloat(selectedShop.latitude),
-  //             longitude: parseFloat(selectedShop.longitude),
-  //             latitudeDelta: 0.005,
-  //             longitudeDelta: 0.005,
-  //           });
-  //           setInitialRegion({
-  //             latitude: parseFloat(selectedShop.latitude),
-  //             longitude: parseFloat(selectedShop.longitude),
-  //             latitudeDelta: 0.005,
-  //             longitudeDelta: 0.005,
-  //           });
-  //         } else {
-  //           mapRef.current.animateToRegion({
-  //             latitude: userLocation.coords.latitude,
-  //             longitude: userLocation.coords.longitude,
-  //             latitudeDelta: 0.005,
-  //             longitudeDelta: 0.005,
-  //           });
-  //           setInitialRegion({
-  //             latitude: userLocation.coords.latitude,
-  //             longitude: userLocation.coords.longitude,
-  //             latitudeDelta: 0.005,
-  //             longitudeDelta: 0.005,
-  //           });
-  //         }
-  //       }
-  //     }
-  //   };
-  //   fetchInitialLocation();
-  // }, [selectedShop]);
-
-  // useEffect(() => {
-  //   const fetchInitialLocation = async () => {
-  //     let { status } = await Location.requestForegroundPermissionsAsync();
-  //     if (status === 'granted') {
-  //       let userLocation = await Location.getCurrentPositionAsync({
-  //         accuracy: Location.Accuracy.Low,
-  //       });
-
-  //       if (!userLocation || !mapRef.current) return;
-
-  //       const { latitude, longitude } = userLocation.coords;
-  //       const newRegion = {
-  //         latitude,
-  //         longitude,
-  //         latitudeDelta: 0.005,
-  //         longitudeDelta: 0.005,
-  //       };
-
-  //       if (selectedShop) {
-  //         newRegion.latitude = parseFloat(selectedShop.latitude);
-  //         newRegion.longitude = parseFloat(selectedShop.longitude);
-  //       }
-
-  //       mapRef.current.animateCamera({
-  //         center: {
-  //           latitude: newRegion.latitude,
-  //           longitude: newRegion.longitude,
-  //         },
-  //         zoom: 16,
-  //       });
-  //       setInitialRegion(newRegion);
-  //     }
-  //   };
-  //   fetchInitialLocation();
-  // }, [selectedShop]);
-
   useEffect(() => {
     const fetchInitialLocation = async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status === 'granted' && selectedShop) {
+      if (status !== 'granted') {
+        Alert.alert(
+          'Пожалуйста, разрешите доступ к геопозиции, чтобы увидеть ближайшие к вам магазины.'
+        );
+        return;
+      } else if (status === 'granted' && selectedShop) {
         const newRegion = {
           latitude: parseFloat(selectedShop.latitude),
           longitude: parseFloat(selectedShop.longitude),
