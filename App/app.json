@@ -8,7 +8,7 @@
       [
         "expo-location",
         {
-          "locationWhenInUsePermission": "Разрешите приложению 'Наш продукт' использовать вашу геолокацию."
+          "locationWhenInUsePermission": "Данное приложение использует ваше местоположение, чтобы предоставить информацию о ближайших магазинах."
         }
       ],
       [
@@ -25,7 +25,8 @@
             "usesCleartextTraffic": true
           }
         }
-      ]
+      ],
+      ["expo-localization"]
     ],
     "icon": "./src/assets/images/icon.png",
     "userInterfaceStyle": "light",
@@ -37,7 +38,9 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "Данное приложение использует ваше местоположение, чтобы предоставить информацию о ближайших магазинах."
+        "NSLocationWhenInUseUsageDescription": "Данное приложение использует ваше местоположение, чтобы предоставить информацию о ближайших магазинах.",
+        "NSLocationAlwaysUsageDescription": "Данное приложение использует ваше местоположение, чтобы предоставить информацию о ближайших магазинах.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Данное приложение использует ваше местоположение, чтобы предоставить информацию о ближайших магазинах."
       },
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/adaptive-icon.png"

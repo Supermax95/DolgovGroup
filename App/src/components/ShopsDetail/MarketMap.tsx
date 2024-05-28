@@ -11,6 +11,7 @@ import {
   Alert,
 } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+// import * as Localization from 'expo-localization';
 import * as Location from 'expo-location';
 import getUserLocations from 'Redux/thunks/Shops/locationsUser.api';
 import { useAppDispatch, useAppSelector } from 'Redux/hooks';
@@ -32,6 +33,7 @@ interface MarketMapProps {
 }
 
 const MarketMap: FC<MarketMapProps> = ({ selectedShop, onMarkerPress }) => {
+  
   // const navigation = useNavigation<StackNavigationProp>();
   const dispatch = useAppDispatch();
   const [isLoadingPage, setIsLoadingPage] = useState<boolean>(true);
