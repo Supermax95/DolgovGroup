@@ -80,6 +80,7 @@ module.exports = router
         throw new Error('Некорректный формат даты.');
       }
       const formattedBirthDate = formatBirthDate(userData.birthDate);
+      console.log('formattedBirthDate', formattedBirthDate);
       const credentials = 'Lichkab:Ko9dyfum';
       const base64Credentials = Buffer.from(credentials).toString('base64');
       const response = await axios.post(
