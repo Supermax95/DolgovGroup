@@ -37,9 +37,10 @@
 const router = require('express').Router();
 const { Op } = require('sequelize');
 const { Location } = require('../../db/models');
-const authMiddleware = require('../middlewares/auth-middleware');
+// const authMiddleware = require('../middlewares/auth-middleware');
 
-router.get('/userlocations', authMiddleware, async (req, res) => {
+// router.get('/userlocations', authMiddleware, async (req, res) => {
+router.get('/userlocations', async (req, res) => {
   try {
     const locations = await Location.findAll({
       where: {
