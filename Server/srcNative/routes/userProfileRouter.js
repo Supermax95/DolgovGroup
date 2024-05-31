@@ -73,13 +73,11 @@ module.exports = router
 
       console.log('newBirthDate', newBirthDate);
       function formatBirthDate(inputDate) {
-        const dateParts = inputDate.split('-');
-        if (dateParts.length === 3) {
-          const [year, month, day] = dateParts;
-          const formattedDate = `${day}.${month}.${year}`;
-          return formattedDate;
-        }
-        throw new Error('Некорректный формат даты.');
+        const date = new Date(inputDate);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Месяцы в JavaScript начинаются с 0
+        const year = date.getFullYear();
+        return `${day}.${month}.${year}`;
       }
       const formattedBirthDate = formatBirthDate(newBirthDate);
       console.log('formattedBirthDate', formattedBirthDate);
