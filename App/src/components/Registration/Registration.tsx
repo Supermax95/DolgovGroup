@@ -205,8 +205,8 @@ export const Registration: FC = () => {
       if (
         !validateCyrillicName(trimmedFirstName || '') ||
         !validateCyrillicName(trimmedLastName || '') ||
-        !validateCyrillicName(trimmedMiddleName || '') ||
-        !data.birthDate
+        !validateCyrillicName(trimmedMiddleName || '')
+        //  || !data.birthDate
       ) {
         setErrorMessages({
           firstName: !validateCyrillicName(trimmedFirstName || '')
@@ -218,7 +218,7 @@ export const Registration: FC = () => {
           middleName: !validateCyrillicName(trimmedMiddleName || '')
             ? 'Отчество должно содержать только кириллические символы'
             : '',
-          birthDate: !data.birthDate ? 'Введите дату рождения' : '',
+          // birthDate: !data.birthDate ? 'Введите дату рождения' : '',
         });
       } else {
         setErrorMessages({});
@@ -318,7 +318,7 @@ export const Registration: FC = () => {
                         {errorMessages.middleName}
                       </Text>
                     )}
-                    <Calendar
+                    {/* <Calendar
                       onDateChange={(selectedDate) =>
                         handleFieldChange('birthDate', selectedDate)
                       }
@@ -330,7 +330,7 @@ export const Registration: FC = () => {
                           ? errorMessages.birthDate.toLocaleString()
                           : ''}
                       </Text>
-                    )}
+                    )} */}
                     <View className="mt-1">
                       <Button onPress={handleNextStep} title="Далее" />
                     </View>

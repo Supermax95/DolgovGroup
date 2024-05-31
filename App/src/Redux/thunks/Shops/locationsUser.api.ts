@@ -4,7 +4,7 @@ import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_API_URL } from '@env';
 import { axiosInstance } from '../Logout401/axios.api';
 
 interface Request {
-  token?: string | undefined;
+  // token?: string | undefined;
 }
 
 interface ResponseDataLocation {
@@ -24,15 +24,16 @@ type ResponseData = Array<ResponseDataLocation>;
 
 const getUserLocations = createAsyncThunk<ResponseData, Request>(
   'api/getuserlocations',
-  async ({ token }) => {
+  // async ({ token }) => {
+  async () => {
     try {
       const response: AxiosResponse = await axiosInstance.get(
-        `${EXPO_PUBLIC_API_URL}:${EXPO_PUBLIC_PORT}/userlocations`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        `${EXPO_PUBLIC_API_URL}:${EXPO_PUBLIC_PORT}/userlocations`
+        // {
+        //   headers: {
+        //     Authorization: `Bearer ${token}`,
+        //   },
+        // }
       );
       return response.data;
     } catch (error) {

@@ -36,15 +36,16 @@ const ShopsList: FC = () => {
     setSelectedShop(selectedShop);
     navigation.navigate('Shops', { selectedShop });
   };
-  const token = useAppSelector<string | undefined>(
-    (state) => state.userSlice.token?.refreshToken
-  );
+  // const token = useAppSelector<string | undefined>(
+  //   (state) => state.userSlice.token?.refreshToken
+  // );
 
   const onRefresh = async () => {
     setRefreshing(true);
 
     try {
-      await dispatch(getUserLocations({ token }));
+      // await dispatch(getUserLocations({ token }));
+      await dispatch(getUserLocations());
     } catch (error) {
       Alert.alert('Ошибка при обновлении данных');
     } finally {

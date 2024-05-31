@@ -11,7 +11,7 @@ class UserController {
         firstName,
         middleName,
         email,
-        birthDate,
+        // birthDate,
         password,
         phoneNumber,
       } = req.body;
@@ -20,7 +20,7 @@ class UserController {
         firstName,
         middleName,
         email,
-        birthDate,
+        // birthDate,
         password,
         phoneNumber
       );

@@ -303,6 +303,46 @@ export const AppNavigator: FC = () => {
   const renderNonLoggedInUserScreens = () => (
     <>
       <Stack.Screen
+        name="FooterTabs"
+        component={FooterTabs}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ShopsList"
+        component={ShopsList}
+        options={{ title: 'Список магазинов' }}
+      />
+      <Stack.Screen
+        name="MarketMap"
+        component={MarketMap}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ProductsCards"
+        component={ProductsCards}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="SubcategoryDetail"
+        component={SubcategoryDetail}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="SingleProduct"
+        component={SingleProduct}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="PromoOneDetail"
+        component={PromoOneDetail}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="SearchProduct"
+        component={SearchProduct}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
         name="SignIn"
         component={SignIn}
         options={{ headerShown: false }}
@@ -337,7 +377,7 @@ export const AppNavigator: FC = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={user ? 'FooterTabs' : 'SignIn'}>
+      <Stack.Navigator initialRouteName={user ? 'FooterTabs' : 'FooterTabs'}>
         {user ? renderLoggedInUserScreens() : renderNonLoggedInUserScreens()}
       </Stack.Navigator>
     </NavigationContainer>
@@ -345,98 +385,125 @@ export const AppNavigator: FC = () => {
 };
 
 export const FooterTabs: FC = () => {
+  const user = useAppSelector((state) => state.userSlice.user?.isActivated);
+
   return (
     <Tab.Navigator>
-      {/* <Tab.Screen
-        name="Auth"
-        component={Auth}
-        options={{
-          title: 'Auth',
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="account" color={color} size={size} />
-          ),
-        }}
-      /> */}
-      <Tab.Screen
-        name="Home"
-        component={Home}
-        options={{
-          title: 'Главная',
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons
-              name="credit-card-outline"
-              color={color}
-              size={27}
-            />
-          ),
-          headerShown: false,
-        }}
-      />
-
-      <Tab.Screen
-        name="Catalog"
-        component={Catalog}
-        options={{
-          title: 'Каталог',
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons
-              name="text-box-search-outline"
-              color={color}
-              size={25}
-            />
-          ),
-          headerShown: false,
-        }}
-      />
-      <Tab.Screen
-        name="Shops"
-        component={Shops}
-        options={{
-          title: 'Магазины',
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons
-              name="map-marker-outline"
-              color={color}
-              size={25}
-            />
-          ),
-          headerShown: false,
-        }}
-      />
-      {/* <Tab.Screen
-        name="Support"
-        component={Support}
-        options={{
-          title: 'Служба поддержки',
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons
-              name="chat-question-outline"
-              color={color}
-              size={25}
-            />
-          ),
-          headerShown: false,
-        }}
-      /> */}
-      <Tab.Screen
-        name="Profile"
-        component={Profile}
-        options={{
-          title: 'Профиль',
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons
-              name="account-outline"
-              color={color}
-              size={25}
-            />
-          ),
-          headerShown: false,
-        }}
-      />
+      {user ? (
+        <>
+          <Tab.Screen
+            name="Home"
+            component={Home}
+            options={{
+              title: 'Главная',
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons
+                  name="credit-card-outline"
+                  color={color}
+                  size={27}
+                />
+              ),
+              headerShown: false,
+            }}
+          />
+          <Tab.Screen
+            name="Catalog"
+            component={Catalog}
+            options={{
+              title: 'Каталог',
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons
+                  name="text-box-search-outline"
+                  color={color}
+                  size={25}
+                />
+              ),
+              headerShown: false,
+            }}
+          />
+          <Tab.Screen
+            name="Shops"
+            component={Shops}
+            options={{
+              title: 'Магазины',
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons
+                  name="map-marker-outline"
+                  color={color}
+                  size={25}
+                />
+              ),
+              headerShown: false,
+            }}
+          />
+          <Tab.Screen
+            name="Profile"
+            component={Profile}
+            options={{
+              title: 'Профиль',
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons
+                  name="account-outline"
+                  color={color}
+                  size={25}
+                />
+              ),
+              headerShown: false,
+            }}
+          />
+        </>
+      ) : (
+        <>
+          <Tab.Screen
+            name="Home"
+            component={Home}
+            options={{
+              title: 'Главная',
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons
+                  name="credit-card-outline"
+                  color={color}
+                  size={27}
+                />
+              ),
+              headerShown: false,
+            }}
+          />
+          <Tab.Screen
+            name="Catalog"
+            component={Catalog}
+            options={{
+              title: 'Каталог',
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons
+                  name="text-box-search-outline"
+                  color={color}
+                  size={25}
+                />
+              ),
+              headerShown: false,
+            }}
+          />
+          <Tab.Screen
+            name="Shops"
+            component={Shops}
+            options={{
+              title: 'Магазины',
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons
+                  name="map-marker-outline"
+                  color={color}
+                  size={25}
+                />
+              ),
+              headerShown: false,
+            }}
+          />
+        </>
+      )}
     </Tab.Navigator>
   );
 };
-
 //////export const FooterTabs: FC = () => {
 
 //   const dispatch = useAppDispatch();

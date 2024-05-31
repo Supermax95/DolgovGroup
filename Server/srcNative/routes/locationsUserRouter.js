@@ -6,11 +6,11 @@ const authMiddleware = require('../middlewares/auth-middleware');
 
 router.get('/userlocations', authMiddleware,  async (req, res) => {
   try {
-    const token = req.headers.authorization.split(' ')[1];
+    // const token = req.headers.authorization.split(' ')[1];
 
-    if (!token) {
-      return res.status(401).json({ error: 'Пользователь не авторизован' });
-    }
+    // if (!token) {
+    //   return res.status(401).json({ error: 'Пользователь не авторизован' });
+    // }
     const locations = await Location.findAll({
       where: {
         invisible: { [Op.not]: [true] },

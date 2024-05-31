@@ -4,7 +4,7 @@ import axios from 'axios';
 import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_API_URL } from '@env';
 
 interface RequestData {
-  birthDate?: Date | null | string;
+  // birthDate?: Date | null | string;
   email?: string;
   phoneNumber?: string;
   firstName?: string;

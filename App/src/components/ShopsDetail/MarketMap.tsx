@@ -39,11 +39,12 @@ const MarketMap: FC<MarketMapProps> = ({ selectedShop, onMarkerPress }) => {
   const [isLoadingPage, setIsLoadingPage] = useState<boolean>(true);
   const mapRef = useRef<MapView | null>(null);
 
-  const token = useAppSelector<string | undefined>(
-    (state) => state.userSlice.token?.refreshToken
-  );
+  // const token = useAppSelector<string | undefined>(
+  //   (state) => state.userSlice.token?.refreshToken
+  // );
   useEffect(() => {
-    dispatch(getUserLocations({ token }));
+    // dispatch(getUserLocations({ token }));
+    dispatch(getUserLocations());
     setIsLoadingPage(false);
   }, [dispatch]);
 

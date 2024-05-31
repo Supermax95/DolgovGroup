@@ -21,7 +21,7 @@ class UserService {
     firstName,
     middleName,
     email,
-    birthDate,
+    // birthDate,
     password,
     phoneNumber
   ) {
@@ -53,7 +53,7 @@ class UserService {
         firstName,
         middleName,
         email,
-        birthDate,
+        // birthDate,
         password: hash,
         phoneNumber: trimmedPhoneNumber,
       });
@@ -170,7 +170,7 @@ class UserService {
         firstName: userToken.firstName,
         middleName: userToken.middleName,
         email: userToken.email,
-        birthDate: userToken.birthDate,
+        // birthDate: userToken.birthDate,
         password: userToken.password,
         phoneNumber: userToken.phoneNumber,
         isActivated: true,
@@ -218,25 +218,30 @@ class UserService {
       user.isActivated = true;
 
       //! !!ЭТО 1С не трогать
-      // {retailServer}/{retailDatabase}/hs/loyaltyservice/issueclientcard?Phone={phoneNumber}&Email={email}&Client={clientFullName}&DateOfBirth={dateOfBirth}&ClientCardID={barcode}
-      function formatBirthDate(inputDate) {
-        const dateParts = inputDate.split('-');
-        if (dateParts.length === 3) {
-          const [year, month, day] = dateParts;
-          const formattedDate = `${day}.${month}.${year}`;
-          return formattedDate;
-        }
-        throw new Error('Некорректный формат даты.');
-      }
+      // function formatBirthDate(inputDate) {
+      //   const dateParts = inputDate.split('-');
+      //   if (dateParts.length === 3) {
+      //     const [year, month, day] = dateParts;
+      //     const formattedDate = `${day}.${month}.${year}`;
+      //     return formattedDate;
+      //   }
+      //   throw new Error('Некорректный формат даты.');
+      // }
 
-      const formattedBirthDate = formatBirthDate(user.birthDate);
+      // const formattedBirthDate = formatBirthDate(user.birthDate);
 
       const credentials = 'Lichkab:Ko9dyfum';
       const base64Credentials = Buffer.from(credentials).toString('base64');
+      // const response = await axios.post(
+      //   `http://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/issueclientcard?Phone=${`+7${user.phoneNumber}`}&Email=${
+      //     user.email
+      //   }&Client=${`${user.lastName} ${user.firstName} ${user.middleName}`}&DateOfBirth=${formattedBirthDate}&ClientCardID=${
+      //     user.barcode
+      //   }`,
       const response = await axios.post(
         `http://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/issueclientcard?Phone=${`+7${user.phoneNumber}`}&Email=${
           user.email
-        }&Client=${`${user.lastName} ${user.firstName} ${user.middleName}`}&DateOfBirth=${formattedBirthDate}&ClientCardID=${
+        }&Client=${`${user.lastName} ${user.firstName} ${user.middleName}`}&ClientCardID=${
           user.barcode
         }`,
         {},
