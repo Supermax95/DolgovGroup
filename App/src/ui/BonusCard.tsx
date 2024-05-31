@@ -11,6 +11,8 @@ import React, { FC } from 'react';
 import { Feather } from '@expo/vector-icons';
 import { Svg } from 'react-native-svg';
 import Barcode from 'react-native-barcode-svg';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from 'navigation/types';
 
 interface IBonusCard {
   onPressBonuses: () => void;
@@ -35,6 +37,8 @@ const BonusCard: FC<IBonusCard> = ({
   secondsRemaining,
   isLoading,
 }) => {
+  const navigation = useNavigation<StackNavigationProp>();
+
   return (
     <>
       <View className="relative">
@@ -42,6 +46,16 @@ const BonusCard: FC<IBonusCard> = ({
           <Text className=" text-2xl font-extrabold text-lime-600">
             {numberPoints} ₽
           </Text>
+          <Pressable
+            onPress={() => navigation.navigate('SignIn')}
+            disabled={isResendDisabled}
+          >
+            <Text
+              style={{ textAlign: 'center', fontSize: 16, color: '#4A5568' }}
+            >
+              Вход
+            </Text>
+          </Pressable>
         </View>
         <View style={styles.card}>
           <View style={styles.imageBox}>

@@ -2,6 +2,7 @@ import {
   ActivityIndicator,
   Alert,
   Platform,
+  Pressable,
   RefreshControl,
   ScrollView,
   View,
@@ -28,7 +29,6 @@ import getSubcategory from 'Redux/thunks/Catalog/subcategoryGet.api';
 import getPromotions from 'Redux/thunks/Promotion/getPromotion.api';
 
 const HomeDetail: FC = () => {
-  // const navigation = useNavigation<StackNavigationProp>();
   const dispatch = useAppDispatch();
   const [numberPoints, setNumberPoints] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);

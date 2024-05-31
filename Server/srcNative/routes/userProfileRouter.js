@@ -70,7 +70,28 @@ module.exports = router
       if (!userData) {
         return res.status(404).json({ error: 'Пользователь не найден' });
       }
-
+      function formatBirthDate(inputDate) {
+        const dateParts = inputDate.split('-');
+        if (dateParts.length === 3) {
+          const [year, month, day] = dateParts;
+          const formattedDate = `${day}.${month}.${year}`;
+          return formattedDate;
+        }
+        throw new Error('Некорректный формат даты.');
+      }
+      const formattedBirthDate = formatBirthDate(userData.birthDate);
+      const credentials = 'Lichkab:Ko9dyfum';
+      const base64Credentials = Buffer.from(credentials).toString('base64');
+      const response = await axios.post(
+        `http://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/updateclientcard?ClientCardID=${userData.barcode}&DateOfBirth=${formattedBirthDate}`,
+        {},
+        {
+          headers: {
+            Authorization: `Basic ${base64Credentials}`,
+          },
+        }
+      );
+      console.log('RESPONSE', response);
       await userData.update({
         birthDate: newBirthDate,
       });
@@ -225,7 +246,7 @@ router
       );
       console.log('Response Data:', response);
       // res.status(200).json({ message: 'Email успешно подтвержден и обновлен' });
-      return res.redirect(`https://lkft.dolgovagro.ru/email/success`);
+      return res.redirect('https://lkft.dolgovagro.ru/email/success');
     } catch (error) {
       console.error(error);
       return res.redirect('https://lkft.dolgovagro.ru/email/unsuccess');
@@ -297,7 +318,7 @@ router
       await axios.post(
         `http://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/updateclientcard?ClientCardID=${
           userData.barcode
-        }&Phone=${'+7' + trimmedPhoneNumber}
+        }&Phone=${`+7${trimmedPhoneNumber}`}
       `,
         {},
         {

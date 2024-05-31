@@ -27,8 +27,8 @@ const getUserLocations = createAsyncThunk<ResponseData, Request>(
   // async ({ token }) => {
   async () => {
     try {
-      // const response: AxiosResponse = await axiosInstance.get(
-           const response: AxiosResponse = await axios.get(
+      const response: AxiosResponse = await axiosInstance.get(
+          //  const response: AxiosResponse = await axios.get(
         `${EXPO_PUBLIC_API_URL}:${EXPO_PUBLIC_PORT}/userlocations`
         // {
         //   headers: {
