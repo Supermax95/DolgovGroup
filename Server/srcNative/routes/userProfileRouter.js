@@ -70,6 +70,8 @@ module.exports = router
       if (!userData) {
         return res.status(404).json({ error: 'Пользователь не найден' });
       }
+
+      console.log('newBirthDate', newBirthDate);
       function formatBirthDate(inputDate) {
         const dateParts = inputDate.split('-');
         if (dateParts.length === 3) {
