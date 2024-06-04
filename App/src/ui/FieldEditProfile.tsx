@@ -18,7 +18,8 @@ const FieldEditProfile: FC<IFieldEditProfile> = ({
 }) => {
   return (
     <>
-      {title === 'Email' && warningIcon ? (
+      {(title === 'Email' && warningIcon) ||
+      (title === 'Дата рождения' && warningIcon) ? (
         <Padding>
           <Pressable
             onPress={onPress}

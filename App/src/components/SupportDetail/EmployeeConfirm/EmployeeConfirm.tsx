@@ -18,7 +18,6 @@ import {
   Animated,
   PanResponder,
 } from 'react-native';
-import { StackNavigationProp } from 'navigation/types';
 
 import checkEmployee from 'Redux/thunks/Support/checkEmployee.api';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';

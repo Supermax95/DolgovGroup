@@ -16,7 +16,7 @@ import { StackNavigationProp } from 'navigation/types';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Button from 'ui/Button';
 import FieldInput from 'ui/FieldInput';
-import Calendar from '../Calendar/Calendar';
+// import Calendar from '../Calendar/Calendar';
 import userRegister from 'Redux/thunks/User/reg.api';
 import { TextInputMask } from 'react-native-masked-text';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -126,7 +126,7 @@ export const Registration: FC = () => {
     const trimmedFirstName = data.firstName ? data.firstName.trim() : '';
     const trimmedLastName = data.lastName ? data.lastName.trim() : '';
     const trimmedMiddleName = data.middleName ? data.middleName.trim() : '';
-    const trimmedPassword =  data.password ? data.password.trim() : '';
+    const trimmedPassword = data.password ? data.password.trim() : '';
     const trimmedPasswordCheck = passwordCheck ? passwordCheck.trim() : '';
     if (step === 2) {
       if (
@@ -144,7 +144,9 @@ export const Registration: FC = () => {
             ? 'Пароль должен содержать минимум 6 символов, включая заглавную и строчную букву, а также одну цифру.'
             : '',
           passwordCheck:
-          trimmedPassword !== trimmedPasswordCheck ? 'Пароли не совпадают' : '',
+            trimmedPassword !== trimmedPasswordCheck
+              ? 'Пароли не совпадают'
+              : '',
         });
         return;
       } else {
@@ -170,9 +172,9 @@ export const Registration: FC = () => {
                   firstName: trimmedFirstName,
                   lastName: trimmedLastName,
                   middleName: trimmedMiddleName,
-                  password: trimmedPassword
+                  password: trimmedPassword,
                 })
-                );
+              );
               if (result.meta.requestStatus === 'rejected') {
                 setTimeout(() => {
                   setIsLoading(false);

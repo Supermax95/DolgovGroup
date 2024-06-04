@@ -73,7 +73,7 @@ async function sendPushNotification() {
       vibrate: [0, 250, 250, 250],
       // attachments: [
       //   {
-      //     identifier: 'attachment-identifier',
+      //     idHomeentifier: 'attachment-identifier',
       //     asset: require('../assets/images/adaptive-icon.png'),
       //     type: '.png',
       //   },

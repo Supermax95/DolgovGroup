@@ -8,10 +8,12 @@ interface RequestData {
   newPhoneNumber: string | null;
   token?: string | undefined;
 }
+
 interface ResponseData {
   phoneNumber: string | '';
   message: string | '';
 }
+
 const profileChangePhoneNumber = createAsyncThunk<ResponseData, RequestData>(
   'api/profileChangePhoneNumber',
 

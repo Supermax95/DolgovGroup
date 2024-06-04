@@ -6,12 +6,14 @@ interface IUniversalHeader {
   onPress?: () => void | undefined;
   title?: string | undefined;
   onPressSearch?: () => void | undefined;
+  handleDeleteShowModal?: () => void | undefined;
 }
 
 const UniversalHeader: FC<IUniversalHeader> = ({
   onPress,
   title,
   onPressSearch,
+  handleDeleteShowModal,
 }) => {
   return (
     <>
@@ -29,6 +31,26 @@ const UniversalHeader: FC<IUniversalHeader> = ({
           </View>
           <Pressable onPress={onPressSearch} className="w-10">
             <MaterialCommunityIcons name="magnify" size={26} color="#71716F" />
+          </Pressable>
+        </View>
+      ) : onPress && title && handleDeleteShowModal ? (
+        <View className="flex-row items-center justify-between p-2 w-full h-12">
+          <Pressable onPress={onPress} className="w-10">
+            <MaterialCommunityIcons
+              name="chevron-left"
+              size={36}
+              color="#71716F"
+            />
+          </Pressable>
+          <View className="flex-1 px-3 flex-row justify-center">
+            <Text className="text-lg font-bold text-emerald-700">{title}</Text>
+          </View>
+          <Pressable onPress={handleDeleteShowModal} className="w-10">
+            <MaterialCommunityIcons
+              name="trash-can-outline"
+              size={24}
+              color="#ef4444"
+            />
           </Pressable>
         </View>
       ) : onPress && title && !onPressSearch ? (

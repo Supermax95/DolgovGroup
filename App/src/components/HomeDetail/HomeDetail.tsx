@@ -2,7 +2,6 @@ import {
   ActivityIndicator,
   Alert,
   Platform,
-  Pressable,
   RefreshControl,
   ScrollView,
   View,
@@ -27,9 +26,14 @@ import getCategory from 'Redux/thunks/Catalog/categoryGet.api';
 import getProducts from 'Redux/thunks/Catalog/productGet.api';
 import getSubcategory from 'Redux/thunks/Catalog/subcategoryGet.api';
 import getPromotions from 'Redux/thunks/Promotion/getPromotion.api';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from 'navigation/types';
+import CardSignIn from 'ui/CardSignIn';
 
 const HomeDetail: FC = () => {
   const dispatch = useAppDispatch();
+  const navigation = useNavigation<StackNavigationProp>();
+
   const [numberPoints, setNumberPoints] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isLoadingPage, setIsLoadingPage] = useState<boolean>(true);
@@ -192,22 +196,33 @@ const HomeDetail: FC = () => {
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
               }
             >
-              {/* Бонусная карта */}
-              <View className="py-4 flex-1 rounded-b-3xl ">
-                <Padding>
-                  <View className="pt-4 flex justify-center items-center">
-                    <BonusCard
-                      onPressBonuses={handleGetClientBonuses}
-                      onPressBrightness={increaseBrightness}
-                      numberPoints={numberPoints}
-                      barcode={barcode}
-                      isResendDisabled={isResendDisabled}
-                      secondsRemaining={secondsRemaining}
-                      isLoading={isLoading}
-                    />
-                  </View>
-                </Padding>
-              </View>
+              {!token ? (
+                <View className="py-4 flex-1">
+                  <Padding>
+                    <View className="pt-0 flex justify-center items-center">
+                      <CardSignIn
+                        onPress={() => navigation.navigate('SignIn')}
+                      />
+                    </View>
+                  </Padding>
+                </View>
+              ) : (
+                <View className="py-4 flex-1">
+                  <Padding>
+                    <View className="pt-0 flex justify-center items-center">
+                      <BonusCard
+                        onPressBonuses={handleGetClientBonuses}
+                        onPressBrightness={increaseBrightness}
+                        numberPoints={numberPoints}
+                        barcode={barcode}
+                        isResendDisabled={isResendDisabled}
+                        secondsRemaining={secondsRemaining}
+                        isLoading={isLoading}
+                      />
+                    </View>
+                  </Padding>
+                </View>
+              )}
 
               {/* акции вне карусели */}
               <View className="pb-4">

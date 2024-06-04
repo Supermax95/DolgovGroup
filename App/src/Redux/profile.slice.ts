@@ -7,6 +7,7 @@ import profileChangeEmail from './thunks/Profile/profileChangeEmail.api';
 import profileNotification from './thunks/Profile/profileNotificationUpdate.api';
 import profileChangePhoneNumber from './thunks/Profile/profileChangePhoneNumber.api';
 import profileCancelEmail from './thunks/Profile/profileCancelNewEmail.api';
+import profileDelete from './thunks/Profile/profileDelete.api';
 
 interface IUser {
   lastName: string;
@@ -186,6 +187,19 @@ const profileSlice = createSlice({
         state.isLoading = false;
         state.phoneNumber = action.payload.phoneNumber;
         state.successMessage = action.payload.message;
+      })
+      //* удаление пользователя
+      .addCase(profileDelete.rejected, (state) => {
+        state.isLoading = false;
+        state.error = null;
+      })
+      .addCase(profileDelete.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(profileDelete.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message || 'Произошла ошибка при удалении';
       });
   },
 });

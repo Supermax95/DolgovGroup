@@ -8,6 +8,16 @@ const nodemailer = require('nodemailer');
 const { DiscountCard } = require('../../db/models');
 const authMiddleware = require('../middlewares/auth-middleware');
 
+const transporter = nodemailer.createTransport({
+  host: 'smtp.yandex.ru',
+  port: 465,
+  secure: true,
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.PASSWORD,
+  },
+});
+
 module.exports = router
   .get('/edit', authMiddleware, async (req, res) => {
     try {
@@ -367,5 +377,53 @@ router
     } catch (error) {
       console.error('Ошибка при обновлении настроек уведомлений:', error);
       return res.status(500).json({ error: 'Внутренняя ошибка сервера' });
+    }
+  })
+
+  .delete('/profile/:phoneNumber', async (req, res) => {
+    try {
+      const { phoneNumber } = req.params;
+      console.log('🚀 ~ .delete ~ newPhoneNumber:', phoneNumber);
+      const token = req.headers.authorization.split(' ')[1];
+      const user = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+
+      const userData = await DiscountCard.findOne({ where: { id: user.id } });
+
+      if (!userData) {
+        return res.status(404).json({ error: 'Пользователь не найден' });
+      }
+
+      const cleanedPhoneNumber = phoneNumber.replace(/\D/g, '');
+
+      const trimmedPhoneNumber = cleanedPhoneNumber.substring(1);
+
+      const deleteAccount = await DiscountCard.destroy({
+        where: { phoneNumber: trimmedPhoneNumber },
+      });
+
+      const mailData = {
+        from: process.env.EMAIL,
+        to: userData.email,
+        subject: 'Профиль пользователя удалён',
+        text: ' ',
+        html: `
+        <div style="text-align: center;">
+        <h2 style="color: #333;">Уважаемый(ая), ${userData.firstName} ${userData.middleName}!</h2>
+        <p style="font-weight: bold">Ваш профиль удалён.</p>
+        <p >Спасибо, что были с нами!</p>
+        <p style="font-weight: bold; color: #555;">Если Вы передумаете, то зарегистрируйтесь по тому же номеру.</p>
+        <p style="font-weight: bold; color: #555;">С уважением,</p>
+        <p style="font-weight: bold; color: #555;">"Наш Продукт"</p>
+        </div>
+        `,
+      };
+
+      // Отправка электронного письма
+      await transporter.sendMail(mailData);
+
+      res.status(200).json({ message: 'Аккаунт пользователя удалён' });
+    } catch (error) {
+      console.error('Произошла ошибка при удалении пользователя:', error);
+      res.status(500).json({ error: 'Произошла ошибка' });
     }
   });

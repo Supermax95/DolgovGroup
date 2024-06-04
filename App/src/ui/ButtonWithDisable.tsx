@@ -22,7 +22,9 @@ const ButtonWithDisable: FC<IButtonWithDisable> = ({
         disabled ? colors[1] : colors[0]
       }`}
     >
-      <Text className="text-white text-center text-base">{title}</Text>
+      <Text className="text-white text-center text-base font-semibold">
+        {title}
+      </Text>
     </Pressable>
   );
 };

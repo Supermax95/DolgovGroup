@@ -37,25 +37,13 @@ const BonusCard: FC<IBonusCard> = ({
   secondsRemaining,
   isLoading,
 }) => {
-  const navigation = useNavigation<StackNavigationProp>();
-
   return (
     <>
       <View className="relative">
         <View className="mx-2 absolute z-10 left-4 top-8">
-          <Text className=" text-2xl font-extrabold text-lime-600">
+          <Text className="text-2xl font-extrabold text-lime-600">
             {numberPoints} ₽
           </Text>
-          <Pressable
-            onPress={() => navigation.navigate('SignIn')}
-            disabled={isResendDisabled}
-          >
-            <Text
-              style={{ textAlign: 'center', fontSize: 16, color: '#4A5568' }}
-            >
-              Вход
-            </Text>
-          </Pressable>
         </View>
         <View style={styles.card}>
           <View style={styles.imageBox}>
@@ -89,12 +77,12 @@ const BonusCard: FC<IBonusCard> = ({
         {/* баланс */}
         {isResendDisabled ? (
           <View
-            className={`
-        ${
-          Platform.OS === 'android'
-            ? 'absolute bottom-5 left-10'
-            : 'absolute bottom-5 left-10'
-        }`}
+          className={`
+          ${
+            Platform.OS === 'android'
+              ? 'absolute bottom-5 left-10'
+              : 'absolute bottom-5 left-10'
+          }`}
           >
             <Text className="text-xs font-molmal text-zinc-500">
               Повторно обновить возможно через {secondsRemaining % 60} секунд

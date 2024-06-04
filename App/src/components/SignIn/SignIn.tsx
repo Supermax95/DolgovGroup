@@ -21,7 +21,7 @@ import userLogin from 'Redux/thunks/User/login.api';
 import Button from 'ui/Button';
 import FieldInput from 'ui/FieldInput';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
+import UniversalHeader from 'ui/UniversalHeader';
 
 interface IData {
   email: string;
@@ -102,10 +102,7 @@ const SignIn: FC = () => {
         style={{ width: '100%', height: '100%' }}
       > */}
       <SafeAreaView className="bg-white h-full flex-1">
-        {/* <UniversalHeader
-          // onPress={() => navigation.goBack()}
-          title="Вход"
-        /> */}
+        <UniversalHeader onPress={() => navigation.goBack()} />
         <KeyboardAvoidingView
           className="flex-1"
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
