@@ -13,7 +13,16 @@ interface ICardSignIn {
 const CardSignIn: FC<ICardSignIn> = ({ onPress }) => {
   return (
     <>
-      <View className="relative">
+      <View
+        style={{
+          shadowOpacity: 0.2,
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+        }}
+        className="relative"
+      >
         <View
           style={[styles.card, styles.imageBox]}
           className="flex flex-col justify-between p-4 bg-white rounded-3xl"
@@ -39,11 +48,11 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     shadowColor: '#000',
     shadowRadius: 4,
-    shadowOpacity: 0.2,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
+    // shadowOpacity: 0.2,
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 2,
+    // },
   },
   imageBox: {
     width: cardWidth,

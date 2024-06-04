@@ -66,6 +66,7 @@ const SearchProduct = () => {
   const userStatus = useAppSelector<string | undefined>(
     (state) => state.userSlice.user?.userStatus
   );
+  
 
   const products = useAppSelector<IProduct[]>(
     (state) => state.productSlice.data
@@ -93,7 +94,7 @@ const SearchProduct = () => {
       }),
       0
     );
-  } else if (userStatus === 'Клиент' || userStatus === 'Новый сотрудник') {
+  } else if (userStatus === 'Клиент' || userStatus === 'Новый сотрудник' ||  userStatus === '') {
     maxProductOriginalPrice = Math.max(
       ...products.map((product) => {
         if (product.customerPrice >= product.originalPrice) {
@@ -114,7 +115,7 @@ const SearchProduct = () => {
     }
 
     if (showDiscounted) {
-      if (userStatus === 'Клиент' || userStatus === 'Новый сотрудник') {
+      if (userStatus === 'Клиент' || userStatus === 'Новый сотрудник' ||  userStatus === '') {
         filtered = filtered.filter((product) => product.isDiscounted === true);
       } else if (userStatus === 'Сотрудник') {
         filtered = filtered.filter(
@@ -141,7 +142,7 @@ const SearchProduct = () => {
     }
 
     filtered = filtered.filter((product) => {
-      if (userStatus === 'Клиент' || userStatus === 'Новый сотрудник') {
+      if (userStatus === 'Клиент' || userStatus === 'Новый сотрудник' ||  userStatus === '') {
         return (
           product.customerPrice >= minPrice && product.customerPrice <= maxPrice
         );

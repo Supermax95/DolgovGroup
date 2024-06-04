@@ -78,7 +78,7 @@ const getCheck = createAsyncThunk<
         return {};
       } else {
         // Возвращаем объект с общей ошибкой
-        console.error('Ошибка при получении данных:', error);
+        // console.error('Ошибка при получении данных:', error);
         return rejectWithValue({
           id: undefined,
           isActivated: undefined,

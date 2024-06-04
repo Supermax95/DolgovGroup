@@ -28,15 +28,10 @@ import userLogout from 'Redux/thunks/User/logout.api';
 import { StackNavigationProp, TabScreenNavigationProp } from 'navigation/types';
 
 interface IDeleteAccount {
-  phoneNumber: string | undefined;
   visible: boolean;
   setModalVisible: Dispatch<SetStateAction<boolean>>;
 }
 
-// type HomeAndPropResetPassword = CompositeNavigationProp<
-//   StackNavigationProp,
-//   TabScreenNavigationProp
-// >;
 
 const DeleteAccount: FC<IDeleteAccount> = ({ visible, setModalVisible }) => {
   const navigation = useNavigation<TabScreenNavigationProp>();
@@ -189,11 +184,11 @@ const DeleteAccount: FC<IDeleteAccount> = ({ visible, setModalVisible }) => {
                 </View>
 
                 <View>
-                  <Button
+                  {/* <Button
                     title="Назад"
                     onPress={() => setModalVisible(false)}
                     colors={['bg-red-500', 'bg-red-400']}
-                  />
+                  /> */}
                   <Button
                     title="Удалить профиль"
                     onPress={handleDelete}

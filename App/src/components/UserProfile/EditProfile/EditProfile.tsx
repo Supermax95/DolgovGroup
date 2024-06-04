@@ -147,7 +147,6 @@ const EditProfile: FC = () => {
       </ScrollView>
 
       <DeleteAccount
-        phoneNumber={profile.phoneNumber}
         visible={isModalVisible}
         setModalVisible={setModalVisible}
       />
