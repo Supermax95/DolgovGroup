@@ -380,10 +380,8 @@ router
     }
   })
 
-  .delete('/profile/:phoneNumber', async (req, res) => {
+  .delete('/profile/delete', async (req, res) => {
     try {
-      const { phoneNumber } = req.params;
-      console.log('🚀 ~ .delete ~ newPhoneNumber:', phoneNumber);
       const token = req.headers.authorization.split(' ')[1];
       const user = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
 
@@ -392,13 +390,8 @@ router
       if (!userData) {
         return res.status(404).json({ error: 'Пользователь не найден' });
       }
-
-      const cleanedPhoneNumber = phoneNumber.replace(/\D/g, '');
-
-      const trimmedPhoneNumber = cleanedPhoneNumber.substring(1);
-
-      const deleteAccount = await DiscountCard.destroy({
-        where: { phoneNumber: trimmedPhoneNumber },
+      await DiscountCard.destroy({
+        where: { id: userData.id },
       });
 
       const mailData = {

@@ -24,6 +24,7 @@ import {
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Button from 'ui/Button';
 import profileDelete from 'Redux/thunks/Profile/profileDelete.api';
+import userLogout from 'Redux/thunks/User/logout.api';
 import { StackNavigationProp, TabScreenNavigationProp } from 'navigation/types';
 
 interface IDeleteAccount {
@@ -37,11 +38,7 @@ interface IDeleteAccount {
 //   TabScreenNavigationProp
 // >;
 
-const DeleteAccount: FC<IDeleteAccount> = ({
-  phoneNumber,
-  visible,
-  setModalVisible,
-}) => {
+const DeleteAccount: FC<IDeleteAccount> = ({ visible, setModalVisible }) => {
   const navigation = useNavigation<TabScreenNavigationProp>();
   const dispatch = useAppDispatch();
   const token = useAppSelector<string | undefined>(
@@ -51,22 +48,32 @@ const DeleteAccount: FC<IDeleteAccount> = ({
   const [modalOffset, setModalOffset] = useState(new Animated.Value(0));
 
   const handleDelete = async (): Promise<void> => {
-    const result = await dispatch(
-      profileDelete({
-        phoneNumber,
-        token,
-      })
-    );
-    if (result.meta.requestStatus === 'rejected') {
-      Alert.alert(
-        'Ошибка',
-        'Произошла ошибка при удалении профиля, попробуйте повторить позже'
+    try {
+      const result = await dispatch(
+        profileDelete({
+          token,
+        })
       );
-      setModalVisible(false);
-    } else {
+
+      if (result.meta.requestStatus === 'rejected') {
+        Alert.alert(
+          'Ошибка',
+          'Произошла ошибка при удалении профиля, попробуйте повторить позже'
+        );
+        setModalVisible(false);
+        return; // Прекращаем выполнение функции, если произошла ошибка
+      }
+
+      await dispatch(userLogout({ token }));
       Alert.alert('Ваш профиль удалён');
       setModalVisible(false);
       navigation.navigate('Home');
+    } catch (error) {
+      Alert.alert(
+        'Ошибка',
+        'Произошла непредвиденная ошибка, попробуйте повторить позже'
+      );
+      setModalVisible(false);
     }
   };
 

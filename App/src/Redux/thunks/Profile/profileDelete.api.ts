@@ -4,35 +4,26 @@ import axios, { AxiosResponse } from 'axios';
 import { EXPO_PUBLIC_PORT, EXPO_PUBLIC_API_URL } from '@env';
 import { axiosInstance } from '../Logout401/axios.api';
 
-interface ResponseData {
-  // id: number;
-  // lastName: string;
-  // firstName: string;
-  // middleName: string;
-  // email: string;
-  // barcode: string;
-  // userStatus: string;
-  // isActivated: boolean;
-  // bonusProgram: string;
-  // birthDate: Date;
-  // balance: number;
-  phoneNumber: string;
+
+
+
+interface RequestData {
   token?: string | undefined;
 }
 
-type ArrayResponseData = Array<ResponseData>;
 
-const profileDelete = createAsyncThunk<ArrayResponseData, number>(
+interface ResponseData {
+  message:string;
+}
+
+
+const profileDelete = createAsyncThunk<ResponseData, RequestData>(
   'admin/profileDelete',
 
-  async ({ phoneNumber, token }, { rejectWithValue }) => {
-    console.log(
-      '🚀 ~ phoneNumber================================>:',
-      phoneNumber
-    );
+  async ({ token }, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await axiosInstance.delete(
-        `${EXPO_PUBLIC_API_URL}:${EXPO_PUBLIC_PORT}/profile/${phoneNumber}`,
+        `${EXPO_PUBLIC_API_URL}:${EXPO_PUBLIC_PORT}/profile/delete`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

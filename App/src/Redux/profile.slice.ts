@@ -199,7 +199,7 @@ const profileSlice = createSlice({
       })
       .addCase(profileDelete.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message || 'Произошла ошибка при удалении';
+        state.error = action.payload || 'Произошла ошибка при удалении';
       });
   },
 });
