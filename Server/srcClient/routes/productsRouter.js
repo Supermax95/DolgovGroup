@@ -37,6 +37,15 @@ router.get('/admin/products', async (req, res) => {
       }
     }
 
+    for (const product of products) {
+      if (product.employeePrice !== product.originalPrice) {
+        await Product.update(
+          { isDiscounted: false, employeePrice: product.originalPrice },
+          { where: { id: product.id } }
+        );
+      }
+    }
+
     await Product.update(
       { photo: '/uploads/noPhoto/null.png' },
       { where: { [Op.or]: [{ photo: null }, { photo: '' }] } }
