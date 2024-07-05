@@ -38,12 +38,10 @@ router.get('/admin/products', async (req, res) => {
     }
 
     for (const product of products) {
-      if (product.employeePrice !== product.originalPrice) {
-        await Product.update(
-          { isDiscounted: false, employeePrice: product.customerPrice },
-          { where: { id: product.id } }
-        );
-      }
+      await Product.update(
+        { employeePrice: product.customerPrice },
+        { where: { id: product.id } }
+      );
     }
 
     await Product.update(
