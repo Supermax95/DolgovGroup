@@ -564,7 +564,7 @@ const Products: FC = () => {
                     }}
                     className="w-4 h-4 text-amber-600 text-sm font-normal bg-slate-100 border-slate-300 rounded focus:ring-amber-500"
                   />
-                  <span className="ml-1">Текущие акциии</span>
+                  <span className="ml-1">Текущие акции</span>
                 </label>
                 <label className="flex items-center space-x-2 text-slate-600 text-sm font-normal  cursor-pointer">
                   <input
