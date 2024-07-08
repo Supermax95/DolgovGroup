@@ -6,10 +6,6 @@ module.exports = router.get('/checkUser', async (req, res) => {
   try {
     console.log('req.headers', req.headers);
 
-    if (!req.headers.authorization.split(' ')[1]) {
-      return res.status(401).json({ message: 'Пользователь не авторизован' });
-    }
-
     const token = req.headers.authorization.split(' ')[1];
 
     console.log(
@@ -17,7 +13,7 @@ module.exports = router.get('/checkUser', async (req, res) => {
       token
     );
     if (!token) {
-      res.status(401).json({ message: 'Пользователь не авторизован' });
+      return res.status(401).json({ message: 'Пользователь не авторизован' });
     }
     const user = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
     const userData = await DiscountCard.findOne({ where: { id: user.id } });
