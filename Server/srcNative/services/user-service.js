@@ -66,8 +66,16 @@ class UserService {
 
       // Пользователь успешно зарегистрирован, в этом месте можно выполнить дополнительные действия, например, вернуть DTO пользователя
     } catch (error) {
-      console.log('Ошибка регистрации пользователя:', error);
-      throw error; // Пробрасываем ошибку выше для обработки контроллером
+      console.error('Ошибка регистрации пользователя:');
+      console.error(
+        `  Данные пользователя: ${JSON.stringify({
+          lastName,
+          firstName,
+          middleName,
+          email,
+        })}`
+      );
+      console.error('  Ошибка:', error);
     }
   }
 
