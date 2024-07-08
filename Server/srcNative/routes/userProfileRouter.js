@@ -91,18 +91,21 @@ module.exports = router
       }
       const formattedBirthDate = formatBirthDate(newBirthDate);
       console.log('formattedBirthDate', formattedBirthDate);
-      const credentials = 'Lichkab:Ko9dyfum';
-      const base64Credentials = Buffer.from(credentials).toString('base64');
-      const response = await axios.post(
-        `http://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/updateclientcard?ClientCardID=${userData.barcode}&DateOfBirth=${formattedBirthDate}`,
-        {},
-        {
-          headers: {
-            Authorization: `Basic ${base64Credentials}`,
-          },
-        }
-      );
-      console.log('RESPONSE', response);
+
+      //* 1C запрос
+      // const credentials = 'Lichkab:Ko9dyfum';
+      // const base64Credentials = Buffer.from(credentials).toString('base64');
+      // const response = await axios.post(
+      //   `http://retail.dolgovagro.ru/retail2020/hs/loyaltyservice/updateclientcard?ClientCardID=${userData.barcode}&DateOfBirth=${formattedBirthDate}`,
+      //   {},
+      //   {
+      //     headers: {
+      //       Authorization: `Basic ${base64Credentials}`,
+      //     },
+      //   }
+      // );
+      // console.log('RESPONSE', response);
+
       await userData.update({
         birthDate: newBirthDate,
       });
