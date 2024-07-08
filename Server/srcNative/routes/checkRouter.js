@@ -4,6 +4,7 @@ const { DiscountCard } = require('../../db/models');
 
 module.exports = router.get('/checkUser', async (req, res) => {
   try {
+    console.log('req.headers', req.headers);
     const token = req.headers.authorization.split(' ')[1];
     console.log(
       '🚀 ~ module.exports=router.get ~ token:===================>',
