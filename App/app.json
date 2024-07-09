@@ -1,0 +1,88 @@
+{
+  "expo": {
+    "name": "Наш Продукт",
+    "slug": "dolgovapp",
+    "version": "1.0.5",
+    "orientation": "portrait",
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Данное приложение использует ваше местоположение, чтобы предоставить информацию о ближайших магазинах."
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./src/assets/images/adaptive-icon.png",
+          "color": "#ffffff"
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
+        }
+      ],
+      ["expo-localization"]
+    ],
+    "icon": "./src/assets/images/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./src/assets/images/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Данное приложение использует ваше местоположение, чтобы предоставить информацию о ближайших магазинах.",
+        "NSLocationAlwaysUsageDescription": "Данное приложение использует ваше местоположение, чтобы предоставить информацию о ближайших магазинах.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Данное приложение использует ваше местоположение, чтобы предоставить информацию о ближайших магазинах."
+      },
+      "adaptiveIcon": {
+        "foregroundImage": "./src/assets/images/adaptive-icon.png"
+      },
+      "bundleIdentifier": "com.supermax95.dolgovapp"
+    },
+    "config": {
+      "googleMaps": {
+        "apiKey": "AIzaSyBQVCBBj3wCbJIQzhD68LV3Fn3n_lEKZd4"
+      }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ca7ac5b0-6ced-4fa9-ab4e-c79396d8ad27"
+      }
+    },
+    "android": {
+      "versionCode": 3,
+      "package": "com.supermax95.dolgovapp",
+      "googleServicesFile": "./google-services.json",
+      "adaptiveIcon": {
+        "foregroundImage": "./src/assets/images/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyBQVCBBj3wCbJIQzhD68LV3Fn3n_lEKZd4"
+        }
+      }
+    },
+    "runtimeVersion": "1.0.5",
+    "updates": {
+      "url": "https://u.expo.dev/ca7ac5b0-6ced-4fa9-ab4e-c79396d8ad27"
+    }
+  },
+  "web": {
+    "favicon": "./src/assets/favicon.png"
+  },
+  "extra": {
+    "eas": {
+      "projectId": "ca7ac5b0-6ced-4fa9-ab4e-c79396d8ad27"
+    }
+  },
+  "owner": "supermax95"
+}
