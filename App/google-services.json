@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "593951259143",
+    "project_id": "dolgovapp",
+    "storage_bucket": "dolgovapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:593951259143:android:ac2b92fb1144f07f1c48a2",
+        "android_client_info": {
+          "package_name": "com.supermax95.dolgovapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUzUXA2qH74iZtX_cSWb8HdWpr92svrNY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
