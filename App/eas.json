@@ -9,7 +9,7 @@
       },
       "env": {
         "EXPO_PUBLIC_PORT": "3000",
-        "EXPO_PUBLIC_API_URL": "https://lkft.dolgovagro.ru"
+        "EXPO_PUBLIC_API_URL": "http://lkft.dolgovagro.ru"
       },
       "channel": "production"
     },
