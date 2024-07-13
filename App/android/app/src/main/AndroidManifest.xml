@@ -65,6 +65,7 @@
             <action android:name="android.intent.action.VIEW"/>
             <category android:name="android.intent.category.BROWSABLE"/>
             <data android:scheme="https"/>
+            <data android:scheme="http"/>
         </intent>
         <!-- Разрешение для вашей схемы, по которой будет открываться приложение -->
         <intent>
