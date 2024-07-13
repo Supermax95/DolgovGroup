@@ -5,9 +5,10 @@ import axios from 'axios';
 
 const getCategory = createAsyncThunk('getCategoryUser', async () => {
   try {
+    
     const response: AxiosResponse = await axios.get(
       `${EXPO_PUBLIC_API_URL}:${EXPO_PUBLIC_PORT}/admin/category`
-    );
+      );
     return response.data;
   } catch (error) {
     throw error;
@@ -15,3 +16,4 @@ const getCategory = createAsyncThunk('getCategoryUser', async () => {
 });
 
 export default getCategory;
+
