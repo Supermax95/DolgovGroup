@@ -1,4 +1,4 @@
-<!-- <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.supermax95.dolgovapp">
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
   <uses-permission android:name="android.permission.CAMERA"/>
@@ -14,9 +14,16 @@
       <action android:name="android.intent.action.VIEW"/>
       <category android:name="android.intent.category.BROWSABLE"/>
       <data android:scheme="https"/>
+      <data android:scheme="http"/>
+    </intent>
+    <intent>
+      <action android:name="android.intent.action.VIEW"/>
+      <category android:name="android.intent.category.DEFAULT"/>
+      <category android:name="android.intent.category.BROWSABLE"/>
+      <data android:scheme="com.supermax95.dolgovapp"/>
     </intent>
   </queries>
-  <application android:name=".MainApplication" android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round" android:allowBackup="true" android:theme="@style/AppTheme" android:usesCleartextTraffic="true">
+  <application android:name=".MainApplication" android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round" android:allowBackup="true" android:theme="@style/AppTheme" android:networkSecurityConfig="@xml/network_security_config">
     <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyBQVCBBj3wCbJIQzhD68LV3Fn3n_lEKZd4"/>
     <meta-data android:name="expo.modules.notifications.default_notification_color" android:resource="@color/notification_icon_color"/>
     <meta-data android:name="expo.modules.notifications.default_notification_icon" android:resource="@drawable/notification_icon"/>
@@ -40,93 +47,4 @@
     <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" android:exported="false"/>
     <uses-library android:name="org.apache.http.legacy" android:required="false"/>
   </application>
-</manifest> -->
-
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.supermax95.dolgovapp">
-
-    <!-- Разрешения -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
-
-    <!-- Запросы для разрешения работы с HTTPS -->
-    <queries>
-        <!-- Разрешение на открытие ссылок по HTTPS -->
-        <intent>
-            <action android:name="android.intent.action.VIEW"/>
-            <category android:name="android.intent.category.BROWSABLE"/>
-            <data android:scheme="https"/>
-            <data android:scheme="http"/>
-        </intent>
-        <!-- Разрешение для вашей схемы, по которой будет открываться приложение -->
-        <intent>
-            <action android:name="android.intent.action.VIEW"/>
-            <category android:name="android.intent.category.DEFAULT"/>
-            <category android:name="android.intent.category.BROWSABLE"/>
-            <data android:scheme="com.supermax95.dolgovapp"/>
-        </intent>
-    </queries>
-
-    <!-- Основные настройки приложения -->
-    <application
-        android:name=".MainApplication"
-        android:label="@string/app_name"
-        android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:allowBackup="true"
-        android:theme="@style/AppTheme"
-        android:networkSecurityConfig="@xml/network_security_config">
-
-        <!-- Мета-данные -->
-        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyBQVCBBj3wCbJIQzhD68LV3Fn3n_lEKZd4"/>
-        <meta-data android:name="expo.modules.notifications.default_notification_color" android:resource="@color/notification_icon_color"/>
-        <meta-data android:name="expo.modules.notifications.default_notification_icon" android:resource="@drawable/notification_icon"/>
-        <meta-data android:name="expo.modules.updates.ENABLED" android:value="true"/>
-        <meta-data android:name="expo.modules.updates.EXPO_RUNTIME_VERSION" android:value="@string/expo_runtime_version"/>
-        <meta-data android:name="expo.modules.updates.EXPO_UPDATES_CHECK_ON_LAUNCH" android:value="ALWAYS"/>
-        <meta-data android:name="expo.modules.updates.EXPO_UPDATES_LAUNCH_WAIT_MS" android:value="0"/>
-        <meta-data android:name="expo.modules.updates.EXPO_UPDATE_URL" android:value="https://u.expo.dev/ca7ac5b0-6ced-4fa9-ab4e-c79396d8ad27"/>
-
-        <!-- Основная активити (точка входа) -->
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode|locale|layoutDirection"
-            android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustResize"
-            android:theme="@style/Theme.App.SplashScreen"
-            android:exported="true"
-            android:screenOrientation="portrait">
-            <!-- Основной фильтр активити для точки входа -->
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-            <!-- Фильтр для обработки схемы вашего приложения -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="com.supermax95.dolgovapp"/>
-            </intent-filter>
-        </activity>
-
-        <!-- Активити для настроек разработчика (девелоперские настройки) -->
-        <activity
-            android:name="com.facebook.react.devsupport.DevSettingsActivity"
-            android:exported="false"/>
-
-        <!-- Опциональная библиотека для совместимости с Apache HTTP -->
-        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
-    </application>
-
 </manifest>
