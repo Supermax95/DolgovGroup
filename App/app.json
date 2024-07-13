@@ -58,7 +58,7 @@
       }
     },
     "android": {
-      "versionCode": 4,
+      "versionCode": 5,
       "package": "com.supermax95.dolgovapp",
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
