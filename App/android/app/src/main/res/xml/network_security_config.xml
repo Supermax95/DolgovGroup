@@ -1,14 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
-    <!-- Разрешить все небезопасные HTTP-соединения -->
-    <base-config cleartextTrafficPermitted="true">
-        <trust-anchors>
-            <certificates src="system" />
-        </trust-anchors>
-    </base-config>
-
-    <!-- Настройки для домена lkft.dolgovagro.ru -->
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">lkft.dolgovagro.ru</domain>
     </domain-config>
 </network-security-config>
