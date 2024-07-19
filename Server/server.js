@@ -139,9 +139,9 @@ app.use('/', questionRouter);
 
 const server = https.createServer(options, app);
 
-// server.listen(PORT, () => {
-//   console.log(`Сервер запущен на порту ${PORT} (HTTPS)`);
-// });
+server.listen(PORT, () => {
+  console.log(`Сервер запущен на порту ${PORT} (HTTPS)`);
+});
 
 app.listen(PORT_HTTP, () => {
   console.log(`Сервер запущен на порту ${PORT_HTTP} (HTTP)`);
