@@ -31,6 +31,8 @@ module.exports = (sequelize) => {
       dateEnd: DataTypes.STRING,
       carousel: DataTypes.BOOLEAN,
       invisible: DataTypes.BOOLEAN,
+      oldPrice: DataTypes.FLOAT,
+      newPrice: DataTypes.FLOAT,
     },
     {
       sequelize,

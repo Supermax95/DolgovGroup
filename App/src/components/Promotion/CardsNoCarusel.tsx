@@ -4,15 +4,9 @@ import { useAppSelector } from 'Redux/hooks';
 import { StackNavigationProp } from 'navigation/types';
 import React from 'react';
 import {
-  ScrollView,
-  Image,
   View,
   Text,
-  Pressable,
-  Dimensions,
-  StyleSheet,
 } from 'react-native';
-import CardCategory from 'ui/CardCategory';
 import CardNoCarusel from 'ui/CardNoCarucel';
 
 export interface IPromotion {
@@ -24,6 +18,8 @@ export interface IPromotion {
   carousel: boolean;
   invisible: boolean;
   photo: string;
+  oldPrice?: number | null;
+  newPrice?: number | null;
 }
 
 export default function CardsNoCarusel() {
@@ -41,30 +37,33 @@ export default function CardsNoCarusel() {
     navigation.navigate('PromoOneDetail', { promotionId });
   };
 
+  // Показываем только первые 4 акции для сетки 2x2
+  const displayedPromotions = promotions.slice(0, 4);
+
   return (
-    <ScrollView
-      style={{ flex: 1, width: '100%', flexShrink: 0, margin: 2 }}
-      horizontal={true}
-      showsHorizontalScrollIndicator={false}
-    >
+    <View style={{ paddingHorizontal: 16 }}>
       {promotions.length ? (
-        <View className="flex-row flex-wrap justify-center mx-3">
-          {promotions.map((promotion) => (
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }}>
+          {displayedPromotions.map((promotion, index) => (
             <CardNoCarusel
               key={promotion.id}
               onPress={() => navigateToPromoDetail(promotion.id)}
               promotionTitle={promotion.title}
               promotionImage={promotion.photo}
+              isNew={false}
+              isPromotion={true} // Все акции будут "АКЦИЯ!"
+              oldPrice={promotion.oldPrice}
+              newPrice={promotion.newPrice}
             />
           ))}
         </View>
       ) : (
-        <View className="flex-row flex-wrap justify-center">
-          <Text className="text-gray-600 font-medium text-lg mt-4">
-            Акции отсутствуют
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingVertical: 32 }}>
+          <Text style={{ fontSize: 14, color: '#6B7280' }}>
+            🎁 Новые акции скоро появятся
           </Text>
         </View>
       )}
-    </ScrollView>
+    </View>
   );
 }

@@ -26,6 +26,8 @@ interface Promotion {
   description: string;
   photo?: string;
   carousel: boolean;
+  oldPrice?: number | null;
+  newPrice?: number | null;
 }
 
 interface PromotionsModalProps {
@@ -431,6 +433,69 @@ const PromotionsModal: FC<PromotionsModalProps> = ({
                   </label>
                 </div>
               </div>
+            </div>
+          )}
+
+          {/* Цены */}
+          {currentStep === 1 && (
+            <div className="mb-6">
+              <div className="text-center mb-2">
+                <span className="text-xs text-blue-500 font-normal">
+                  Укажите цены для отображения на карточке акции (необязательно)
+                </span>
+              </div>
+              <div className="grid grid-cols-2 gap-5">
+                <div className="relative">
+                  <input
+                    id="oldPrice"
+                    type="number"
+                    step="0.01"
+                    value={editedPromotion.oldPrice || ''}
+                    onChange={(e) =>
+                      setEditedPromotion({
+                        ...editedPromotion,
+                        oldPrice: e.target.value ? parseFloat(e.target.value) : null,
+                      })
+                    }
+                    className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
+                  />
+                  <label
+                    htmlFor="oldPrice"
+                    className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-slate-400 peer-focus:text-sm"
+                  >
+                    Старая цена (₽)
+                  </label>
+                </div>
+
+                <div className="relative">
+                  <input
+                    id="newPrice"
+                    type="number"
+                    step="0.01"
+                    value={editedPromotion.newPrice || ''}
+                    onChange={(e) =>
+                      setEditedPromotion({
+                        ...editedPromotion,
+                        newPrice: e.target.value ? parseFloat(e.target.value) : null,
+                      })
+                    }
+                    className="block py-2.5 px-0 w-full text-sm text-slate-500 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-400 peer focus:text-green-500"
+                  />
+                  <label
+                    htmlFor="newPrice"
+                    className="absolute left-0 -top-3.5 text-slate-400 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-lime-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-slate-400 peer-focus:text-sm"
+                  >
+                    Новая цена (₽)
+                  </label>
+                </div>
+              </div>
+              {editedPromotion.oldPrice && editedPromotion.newPrice && editedPromotion.oldPrice > editedPromotion.newPrice && (
+                <div className="text-center mt-2">
+                  <span className="text-xs text-green-600 font-medium">
+                    Скидка: {Math.round(((editedPromotion.oldPrice - editedPromotion.newPrice) / editedPromotion.oldPrice) * 100)}%
+                  </span>
+                </div>
+              )}
             </div>
           )}
 
